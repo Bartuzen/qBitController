@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -26,7 +26,7 @@ class SettingsViewModel @Inject constructor(
     val settingsFragmentEvent = settingsFragmentEventChannel.receiveAsFlow()
 
     fun getServers() = runBlocking {
-        settingsManager.getServers()
+        settingsManager.serversFlow.first()
     }
 
     fun movePage(fragment: PreferenceFragmentCompat) = viewModelScope.launch {
