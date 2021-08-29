@@ -80,10 +80,7 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
             oldItem.hash == newItem.hash
 
         override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) =
-            oldItem.name == newItem.name && oldItem.downloaded == newItem.downloaded &&
-                    oldItem.size == newItem.size && oldItem.eta == newItem.eta &&
-                    oldItem.state == newItem.state && oldItem.downloadSpeed == newItem.downloadSpeed &&
-                    oldItem.uploadSpeed == newItem.uploadSpeed && oldItem.progress == newItem.progress
+            oldItem == newItem
     }
 
     interface OnItemClickListener {
