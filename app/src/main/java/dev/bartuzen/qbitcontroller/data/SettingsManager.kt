@@ -101,13 +101,6 @@ class SettingsManager @Inject constructor(
         requestHelper.removeTorrentService(serverConfig)
     }
 
-    suspend fun getServers(): ServerConfigMap = dataStore.data.map { settings ->
-        val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: return@map sortedMapOf()
-
-        val mapper = jacksonObjectMapper()
-        return@map mapper.readValue<ServerConfigMap>(serverConfigsJson)
-    }.first()
-
     private object PreferenceKeys {
         val THEME = stringPreferencesKey("theme")
         val SERVER_CONFIGS = stringPreferencesKey("server_configs")
