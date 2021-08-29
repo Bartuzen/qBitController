@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">qBitController</string>
+
+    <string name="menu_main">Settings</string>
+    <string name="menu_add_edit_server_delete">Delete</string>
+    <string name="menu_add_edit_server_save">Save</string>
+
+    <string name="tab_torrent_overview">Overview</string>
+    <string name="tab_torrent_files">Files</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="torrent_tabs">Torrent Tabs</string>
+
+    <string name="torrent_status_error">Error</string>
+    <string name="torrent_status_missing_files">Missing Files</string>
+    <string name="torrent_status_seeding">Seeding</string>
+    <string name="torrent_status_paused">Paused</string>
+    <string name="torrent_status_queued">Queued</string>
+    <string name="torrent_status_stalled">Stalled</string>
+    <string name="torrent_status_checking">Checking</string>
+    <string name="torrent_status_force_seeding">[F] Seeding</string>
+    <string name="torrent_status_allocating_space">Allocating Space</string>
+    <string name="torrent_status_downloading">Downloading</string>
+    <string name="torrent_status_downloading_metadata">Downloading Metadata</string>
+    <string name="torrent_status_force_downloading">[F] Downloading</string>
+    <string name="torrent_status_moving">Moving</string>
+    <string name="torrent_status_unknown">Unknown</string>
+
+    <string name="eta_seconds">%1$ss</string>
+    <string name="eta_minutes_seconds">%1$sm %2$ss</string>
+    <string name="eta_minutes">%1$sm</string>
+    <string name="eta_hours_minutes">%1$sh %2$sm</string>
+    <string name="eta_hours">%1$sh</string>
+    <string name="eta_days_hours">%1$sd %2$sh</string>
+    <string name="eta_days">%1$sd</string>
+
+    <string name="size_byte">%1$s B</string>
+    <string name="size_kibibyte">%1$s KiB</string>
+    <string name="size_mebibyte">%1$s MiB</string>
+    <string name="size_gibibyte">%1$s GiB</string>
+
+    <string name="speed_byte_per_second">%1$s B/s</string>
+    <string name="speed_kibibyte_per_second">%1$s KiB/s</string>
+    <string name="speed_mebibyte_per_second">%1$s MiB/s</string>
+    <string name="speed_gibibyte_per_second">%1$s GiB/s</string>
+
+    <string name="error_invalid_credentials">Invalid username or password.</string>
+    <string name="error_banned">You have been banned because of too many failed login attempts.</string>
+    <string name="error_cannot_connect">Cannot connect to server.</string>
+    <string name="error_unknown_host">Unknown host.</string>
+    <string name="error_timeout">Connection timed out.</string>
+    <string name="error_unknown">An unknown error has occurred.</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_servers">Servers</string>
+    <string name="settings_add_new_server">Add New Server</string>
+    <string name="settings_other">Other</string>
+    <string name="settings_theme">Theme</string>
+
+    <string-array name="settings_theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System Default</item>
+    </string-array>
+
+    <string name="settings_torrent_name">Name</string>
+    <string name="settings_host">IP Address or Host Name</string>
+    <string name="settings_username">Username</string>
+    <string name="settings_password">Password</string>
+    <string name="settings_server_add_success">Server has been added successfully.</string>
+    <string name="settings_server_edit_success">Server has been edited successfully.</string>
+    <string name="settings_server_remove_success">Server has been removed successfully.</string>
+    <string name="settings_fill_blank_fields">Please fill required blank fields.</string>
+    <string name="settings_default_server_name">Server</string>
+
+    <string name="an_error_occurred">An error occurred.</string>
+
+    <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
+</resources>
