@@ -1,0 +1,73 @@
+package dev.bartuzen.qbitcontroller.ui.torrent
+
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
+import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.model.Torrent
+import dev.bartuzen.qbitcontroller.model.TorrentFile
+import dev.bartuzen.qbitcontroller.network.RequestHelper
+import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.ui.common.SettableLiveData
+import dev.bartuzen.qbitcontroller.ui.common.StateDelegate
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class TorrentViewModel @Inject constructor(
+    private val repository: TorrentRepository,
+    private val requestHelper: RequestHelper,
+    state: SavedStateHandle
+) : ViewModel() {
+    val torrent = SettableLiveData<Torrent>()
+    val fileList = SettableLiveData<List<TorrentFile>>()
+
+    var torrentHash: String? by StateDelegate(state, "torrent_hash")
+    var serverConfig: ServerConfig? by StateDelegate(state, "server_config")
+
+    private val torrentOverviewEventChannel = Channel<TorrentOverviewEvent>()
+    val torrentOverviewEvent = torrentOverviewEventChannel.receiveAsFlow()
+
+    private val torrentFileListEventChannel = Channel<TorrentFileListEvent>()
+    val torrentFileListEvent = torrentFileListEventChannel.receiveAsFlow()
+
+    fun updateTorrent() = viewModelScope.launch {
+        serverConfig?.let { config ->
+            val result = requestHelper.request(config) {
+                repository.getTorrent(config, torrentHash ?: "")
+            }
+            if (result.second?.body()?.size == 1) {
+                torrent.value = result.second?.body()?.first()
+
+                torrentOverviewEventChannel.send(TorrentOverviewEvent.OnRequestComplete(result.first))
+            } else if (torrent.value == null) {
+                torrent.isSet = true
+            }
+        }
+    }
+
+    fun updateFileList() = viewModelScope.launch {
+        serverConfig?.let { config ->
+            val result = requestHelper.request(config) {
+                repository.getFileList(config, torrentHash ?: "")
+            }
+
+            fileList.value = result.second?.body()
+
+            torrentFileListEventChannel.send(TorrentFileListEvent.OnRequestComplete(result.first))
+        }
+
+    }
+
+    sealed class TorrentOverviewEvent {
+        data class OnRequestComplete(val result: RequestResult) : TorrentOverviewEvent()
+    }
+
+    sealed class TorrentFileListEvent {
+        data class OnRequestComplete(val result: RequestResult) : TorrentFileListEvent()
+    }
+}
