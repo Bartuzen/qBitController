@@ -14,8 +14,14 @@ interface TorrentService {
     ): Response<String>
 
     @GET("api/v2/torrents/info")
-    suspend fun getTorrentList(@Query("hashes") hash: String? = null): Response<List<Torrent>>
+    suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
 
     @GET("api/v2/torrents/files")
     suspend fun getFileList(@Query("hash") hash: String): Response<List<TorrentFile>>
+
+    @GET("api/v2/torrents/pause")
+    suspend fun pauseTorrent(@Query("hashes") hashes: String): Response<String>
+
+    @GET("api/v2/torrents/resume")
+    suspend fun resumeTorrent(@Query("hashes") hashes: String): Response<String>
 }

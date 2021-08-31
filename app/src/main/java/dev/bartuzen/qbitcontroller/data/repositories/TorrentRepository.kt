@@ -14,4 +14,10 @@ class TorrentRepository @Inject constructor(
 
     suspend fun getFileList(serverConfig: ServerConfig, hash: String) =
         requestHelper.getTorrentService(serverConfig).getFileList(hash)
+
+    suspend fun pauseTorrent(serverConfig: ServerConfig, hash: String) =
+        requestHelper.getTorrentService(serverConfig).pauseTorrent(hash)
+
+    suspend fun resumeTorrent(serverConfig: ServerConfig, hash: String) =
+        requestHelper.getTorrentService(serverConfig).resumeTorrent(hash)
 }
