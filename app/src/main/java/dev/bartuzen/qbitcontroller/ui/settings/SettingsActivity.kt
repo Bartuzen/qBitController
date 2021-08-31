@@ -36,7 +36,7 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launchWhenStarted {
-            viewModel.settingsActivityEvent.collect { event: SettingsViewModel.SettingsActivityEvent ->
+            viewModel.settingsActivityEvent.collect { event ->
                 when (event) {
                     is SettingsViewModel.SettingsActivityEvent.MovePage -> {
                         supportFragmentManager.beginTransaction()

@@ -2,6 +2,10 @@
     <string name="app_name">qBitController</string>
 
     <string name="menu_main">Settings</string>
+
+    <string name="menu_pause">Pause</string>
+    <string name="menu_resume">Resume</string>
+
     <string name="menu_add_edit_server_delete">Delete</string>
     <string name="menu_add_edit_server_save">Save</string>
 
@@ -77,4 +81,7 @@
     <string name="an_error_occurred">An error occurred.</string>
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
+
+    <string name="torrent_paused_success">Torrent paused successfully.</string>
+    <string name="torrent_resumed_success">Torrent resumed successfully.</string>
 </resources>

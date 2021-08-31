@@ -16,6 +16,10 @@ fun Activity.showToast(@StringRes resId: Int) {
     Toast.makeText(this, resId, Toast.LENGTH_LONG).show()
 }
 
+fun Activity.showSnackbar(text: String) {
+    Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).show()
+}
+
 fun Fragment.showSnackbar(text: String, view: View? = this.view) {
     view?.let {
         Snackbar.make(requireContext(), it, text, Snackbar.LENGTH_LONG).show()
