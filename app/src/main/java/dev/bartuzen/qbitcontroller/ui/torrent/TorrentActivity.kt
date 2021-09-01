@@ -17,6 +17,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.filelist.TorrentFileListFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
 import kotlinx.coroutines.flow.collect
@@ -59,11 +60,12 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 2
+            override fun getItemCount() = 3
 
             override fun createFragment(position: Int) = when (position) {
                 0 -> TorrentOverviewFragment()
                 1 -> TorrentFileListFragment()
+                2 -> TorrentPiecesFragment()
                 else -> Fragment()
             }
         }.apply {
@@ -74,6 +76,7 @@ class TorrentActivity : AppCompatActivity() {
             when (position) {
                 0 -> tab.text = getString(R.string.tab_torrent_overview)
                 1 -> tab.text = getString(R.string.tab_torrent_files)
+                2 -> tab.text = getString(R.string.tab_torrent_pieces)
             }
         }.attach()
 

@@ -36,7 +36,6 @@ class TorrentFileListAdapter(private val listener: OnItemClickListener? = null) 
         fun bind(file: TorrentFile) {
             binding.textName.text = file.name
         }
-
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<TorrentFile>() {
@@ -45,7 +44,6 @@ class TorrentFileListAdapter(private val listener: OnItemClickListener? = null) 
 
         override fun areContentsTheSame(oldItem: TorrentFile, newItem: TorrentFile) =
             oldItem.name == newItem.name
-
     }
 
     interface OnItemClickListener {
