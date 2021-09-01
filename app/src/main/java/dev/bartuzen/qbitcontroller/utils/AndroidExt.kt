@@ -3,10 +3,11 @@ package dev.bartuzen.qbitcontroller.utils
 import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -32,6 +33,8 @@ fun Fragment.showSnackbar(@StringRes resId: Int, view: View? = this.view) {
     }
 }
 
+fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)
+
 fun RecyclerView.setItemMargin(vertical: Int, horizontal: Int) {
     addItemDecoration(object : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(
@@ -54,5 +57,6 @@ fun RecyclerView.setItemMargin(vertical: Int, horizontal: Int) {
     })
 }
 
-fun Int.toPx(context: Context): Int =
-    ceil(this * (context.resources.displayMetrics.densityDpi.toDouble() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+fun Int.toPx(context: Context) = ceil(this * context.resources.displayMetrics.density).toInt()
+
+fun Int.toDp(context: Context) = ceil(this / context.resources.displayMetrics.density).toInt()

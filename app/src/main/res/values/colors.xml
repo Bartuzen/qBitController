@@ -9,5 +9,10 @@
     <color name="color_secondary_variant">#C68400</color>
     <color name="color_on_secondary">#000000</color>
 
-    <color name="server_selected_background">#D5D5D5</color>
+    <color name="gray">#D5D5D5</color>
+
+    <color name="server_selected_background">@color/gray</color>
+
+    <color name="piece_downloaded">@color/color_primary</color>
+    <color name="piece_not_downloaded">@color/gray</color>
 </resources>

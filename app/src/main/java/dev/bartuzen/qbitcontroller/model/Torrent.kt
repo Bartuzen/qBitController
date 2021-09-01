@@ -19,6 +19,7 @@ data class Torrent(
     @JsonProperty("progress") val progress: Double,
 ) : Parcelable
 
+@Suppress("unused")
 enum class TorrentState {
     @JsonProperty("error")
     ERROR,
@@ -76,4 +77,10 @@ enum class TorrentState {
 
     @JsonProperty("unknown")
     UNKNOWN
+}
+
+
+@Suppress("unused")
+enum class PieceState {
+    NOT_DOWNLOADED, DOWNLOADING, DOWNLOADED
 }

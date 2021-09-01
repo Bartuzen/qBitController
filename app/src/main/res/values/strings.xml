@@ -11,6 +11,7 @@
 
     <string name="tab_torrent_overview">Overview</string>
     <string name="tab_torrent_files">Files</string>
+    <string name="tab_torrent_pieces">Pieces</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -84,4 +85,8 @@
 
     <string name="torrent_paused_success">Torrent paused successfully.</string>
     <string name="torrent_resumed_success">Torrent resumed successfully.</string>
+
+    <string name="torrent_pieces">PIECES</string>
+    <string name="torrent_piece_size">PIECE SIZE</string>
+    <string name="torrent_piece_map">PIECE MAP</string>
 </resources>
