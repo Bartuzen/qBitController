@@ -1,4 +1,4 @@
-package dev.bartuzen.qbitcontroller.ui.torrent.tabs.filelist
+package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.databinding.ItemFileBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 
-class TorrentFileListAdapter(private val listener: OnItemClickListener? = null) :
-    ListAdapter<TorrentFile, TorrentFileListAdapter.ViewHolder>(DiffCallBack()) {
+class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
+    ListAdapter<TorrentFile, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )

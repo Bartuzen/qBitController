@@ -34,18 +34,18 @@ class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
         _binding = FragmentTorrentPiecesBinding.bind(view)
 
         val adapter = TorrentPiecesAdapter()
-        binding.recyclerFileList.adapter = adapter
+        binding.recyclerPieces.adapter = adapter
 
         val displayMetrics = requireContext().resources.displayMetrics
         val screenWidthDp = displayMetrics.widthPixels.toDp(requireContext())
         val columns = (screenWidthDp - 32) / 20
-        binding.recyclerFileList.layoutManager = GridLayoutManager(context, columns).apply {
+        binding.recyclerPieces.layoutManager = GridLayoutManager(context, columns).apply {
             spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int) = if (position == 0) columns else 1
             }
         }
 
-        binding.recyclerFileList.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        binding.recyclerPieces.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
                 view: View,

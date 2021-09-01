@@ -19,7 +19,7 @@ interface TorrentService {
     suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
 
     @GET("api/v2/torrents/files")
-    suspend fun getFileList(@Query("hash") hash: String): Response<List<TorrentFile>>
+    suspend fun getFiles(@Query("hash") hash: String): Response<List<TorrentFile>>
 
     @GET("api/v2/torrents/pause")
     suspend fun pauseTorrent(@Query("hashes") hashes: String): Response<String>
