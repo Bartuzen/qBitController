@@ -25,7 +25,7 @@ class TorrentViewModel @Inject constructor(
     state: SavedStateHandle
 ) : ViewModel() {
     val torrent = SettableLiveData<Torrent>()
-    val fileList = SettableLiveData<List<TorrentFile>>()
+    val torrentFiles = SettableLiveData<List<TorrentFile>>()
     val torrentPieces = SettableLiveData<List<PieceState>>()
     val torrentProperties = SettableLiveData<TorrentProperties>()
 
@@ -38,8 +38,8 @@ class TorrentViewModel @Inject constructor(
     private val torrentOverviewEventChannel = Channel<TorrentOverviewEvent>()
     val torrentOverviewEvent = torrentOverviewEventChannel.receiveAsFlow()
 
-    private val torrentFileListEventChannel = Channel<TorrentFileListEvent>()
-    val torrentFileListEvent = torrentFileListEventChannel.receiveAsFlow()
+    private val torrentFilesEventChannel = Channel<TorrentFilesEvent>()
+    val torrentFilesEvent = torrentFilesEventChannel.receiveAsFlow()
 
     private val torrentPiecesEventChannel = Channel<TorrentPiecesEvent>()
     val torrentPiecesEvent = torrentPiecesEventChannel.receiveAsFlow()
@@ -59,15 +59,15 @@ class TorrentViewModel @Inject constructor(
         }
     }
 
-    fun updateFileList() = viewModelScope.launch {
+    fun updateFiles() = viewModelScope.launch {
         serverConfig?.let { config ->
             val result = requestHelper.request(config) {
-                repository.getFileList(config, torrentHash ?: "")
+                repository.getFiles(config, torrentHash ?: "")
             }
 
-            fileList.value = result.second?.body()
+            torrentFiles.value = result.second?.body()
 
-            torrentFileListEventChannel.send(TorrentFileListEvent.OnRequestComplete(result.first))
+            torrentFilesEventChannel.send(TorrentFilesEvent.OnRequestComplete(result.first))
         }
     }
 
@@ -131,8 +131,8 @@ class TorrentViewModel @Inject constructor(
         data class OnRequestComplete(val result: RequestResult) : TorrentOverviewEvent()
     }
 
-    sealed class TorrentFileListEvent {
-        data class OnRequestComplete(val result: RequestResult) : TorrentFileListEvent()
+    sealed class TorrentFilesEvent {
+        data class OnRequestComplete(val result: RequestResult) : TorrentFilesEvent()
     }
 
     sealed class TorrentPiecesEvent {

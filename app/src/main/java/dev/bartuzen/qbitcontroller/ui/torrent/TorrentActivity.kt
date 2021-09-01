@@ -16,7 +16,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.TorrentOverviewFragment
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.filelist.TorrentFileListFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
@@ -64,7 +64,7 @@ class TorrentActivity : AppCompatActivity() {
 
             override fun createFragment(position: Int) = when (position) {
                 0 -> TorrentOverviewFragment()
-                1 -> TorrentFileListFragment()
+                1 -> TorrentFilesFragment()
                 2 -> TorrentPiecesFragment()
                 else -> Fragment()
             }

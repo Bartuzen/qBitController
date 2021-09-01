@@ -12,8 +12,8 @@ class TorrentRepository @Inject constructor(
     suspend fun getTorrent(serverConfig: ServerConfig, hash: String) =
         requestHelper.getTorrentService(serverConfig).getTorrentList(hash)
 
-    suspend fun getFileList(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).getFileList(hash)
+    suspend fun getFiles(serverConfig: ServerConfig, hash: String) =
+        requestHelper.getTorrentService(serverConfig).getFiles(hash)
 
     suspend fun getPieces(serverConfig: ServerConfig, hash: String) =
         requestHelper.getTorrentService(serverConfig).getTorrentPieces(hash)
