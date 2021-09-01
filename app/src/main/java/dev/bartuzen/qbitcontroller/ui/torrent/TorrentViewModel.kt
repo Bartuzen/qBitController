@@ -49,13 +49,14 @@ class TorrentViewModel @Inject constructor(
             val result = requestHelper.request(config) {
                 repository.getTorrent(config, torrentHash ?: "")
             }
+
             if (result.second?.body()?.size == 1) {
                 torrent.value = result.second?.body()?.first()
-
-                torrentOverviewEventChannel.send(TorrentOverviewEvent.OnRequestComplete(result.first))
             } else if (torrent.value == null) {
                 torrent.isSet = true
             }
+
+            torrentOverviewEventChannel.send(TorrentOverviewEvent.OnRequestComplete(result.first))
         }
     }
 
