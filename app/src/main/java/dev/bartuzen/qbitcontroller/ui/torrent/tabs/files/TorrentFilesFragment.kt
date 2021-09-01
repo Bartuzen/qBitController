@@ -51,7 +51,9 @@ class TorrentFilesFragment : Fragment(R.layout.fragment_torrent_files) {
         }
 
         viewModel.torrentFiles.observe(viewLifecycleOwner) { files ->
-            adapter.submitList(files)
+            files?.let {
+                adapter.submitList(it)
+            }
         }
 
         lifecycleScope.launchWhenStarted {
