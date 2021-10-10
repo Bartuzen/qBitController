@@ -30,7 +30,6 @@ interface TorrentService {
     @GET("api/v2/torrents/pieceStates")
     suspend fun getTorrentPieces(@Query("hash") hash: String): Response<List<PieceState>>
 
-
     @GET("api/v2/torrents/properties")
     suspend fun getTorrentProperties(@Query("hash") hash: String): Response<TorrentProperties>
 }
