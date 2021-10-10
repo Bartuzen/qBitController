@@ -15,7 +15,6 @@ class MainActivityViewModel @Inject constructor(
     settingsManager: SettingsManager,
     state: SavedStateHandle
 ) : ViewModel() {
-
     val currentServer = state.getLiveData<ServerConfig?>("current_server")
 
     val serverList = settingsManager.serversFlow.asLiveData()
