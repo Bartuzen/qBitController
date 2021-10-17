@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">qBitController</string>
 
-    <string name="menu_main">Settings</string>
+    <string name="menu_settings">Settings</string>
 
     <string name="menu_pause">Pause</string>
     <string name="menu_resume">Resume</string>
