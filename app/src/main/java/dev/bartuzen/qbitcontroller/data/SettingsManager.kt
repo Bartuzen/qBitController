@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,6 +29,10 @@ class SettingsManager @Inject constructor(
 
     val themeFlow = getFromDataStore { settings ->
         Theme.valueOf(settings[PreferenceKeys.THEME] ?: Theme.SYSTEM_DEFAULT.name)
+    }
+
+    val sortFlow = getFromDataStore { settings ->
+        TorrentSort.valueOf(settings[PreferenceKeys.TORRENT_SORT] ?: TorrentSort.NAME.name)
     }
 
     val serversFlow = getFromDataStore { settings ->
@@ -100,10 +105,17 @@ class SettingsManager @Inject constructor(
         requestHelper.removeTorrentService(serverConfig)
     }
 
+    suspend fun setTorrentSort(torrentSort: TorrentSort) {
+        dataStore.edit { settings ->
+            settings[PreferenceKeys.TORRENT_SORT] = torrentSort.name
+        }
+    }
+
     private object PreferenceKeys {
         val THEME = stringPreferencesKey("theme")
         val SERVER_CONFIGS = stringPreferencesKey("server_configs")
         val LAST_SERVER_ID = intPreferencesKey("last_server_id")
+        val TORRENT_SORT = stringPreferencesKey("sort")
     }
 }
 
@@ -111,6 +123,23 @@ typealias ServerConfigMap = SortedMap<Int, ServerConfig>
 
 enum class Theme {
     LIGHT, DARK, SYSTEM_DEFAULT
+}
+
+enum class TorrentSort {
+    @JsonProperty("name")
+    NAME,
+
+    @JsonProperty("hash")
+    HASH,
+
+    @JsonProperty("dlspeed")
+    DOWNLOAD_SPEED,
+
+    @JsonProperty("upspeed")
+    UPLOAD_SPEED,
+
+    @JsonProperty("priority")
+    PRIORITY
 }
 
 fun Theme.toDelegate() = when (this) {

@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.network
 
+import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
@@ -16,7 +17,10 @@ interface TorrentService {
     ): Response<String>
 
     @GET("api/v2/torrents/info")
-    suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
+    suspend fun getTorrentList(
+        @Query("hashes") hashes: String? = null,
+        @Query("sort") torrentSort: TorrentSort? = null
+    ): Response<List<Torrent>>
 
     @GET("api/v2/torrents/files")
     suspend fun getFiles(@Query("hash") hash: String): Response<List<TorrentFile>>
