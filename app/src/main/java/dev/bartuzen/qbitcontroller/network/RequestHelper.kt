@@ -41,6 +41,7 @@ class RequestHelper @Inject constructor() {
                                 .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
                         )
                     )
+                    .addConverterFactory(EnumConverterFactory())
                     .build()
                 val service = retrofit.create(TorrentService::class.java)
                 torrentServiceMap[id] = service
@@ -96,7 +97,6 @@ class RequestHelper @Inject constructor() {
             }
         }
     }
-
 }
 
 enum class RequestResult {

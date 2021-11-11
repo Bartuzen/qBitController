@@ -17,6 +17,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="torrent_tabs">Torrent Tabs</string>
 
+    <string name="torrent_sort_name">Name</string>
+    <string name="torrent_sort_hash">Hash</string>
+    <string name="torrent_sort_dlspeed">Download Speed</string>
+    <string name="torrent_sort_upspeed">Upload Speed</string>
+    <string name="torrent_sort_priority">Priority</string>
+
     <string name="torrent_status_error">Error</string>
     <string name="torrent_status_missing_files">Missing Files</string>
     <string name="torrent_status_seeding">Seeding</string>

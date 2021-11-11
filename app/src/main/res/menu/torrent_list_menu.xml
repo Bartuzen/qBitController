@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menu_sort"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu_sort_name"
+            android:title="@string/torrent_sort_name" />
+
+        <item
+            android:id="@+id/menu_sort_hash"
+            android:title="@string/torrent_sort_hash" />
+
+        <item
+            android:id="@+id/menu_sort_dlspeed"
+            android:title="@string/torrent_sort_dlspeed" />
+
+        <item
+            android:id="@+id/menu_sort_upspeed"
+            android:title="@string/torrent_sort_upspeed" />
+
+        <item
+            android:id="@+id/menu_sort_priority"
+            android:title="@string/torrent_sort_priority" />
+
+    </group>
+
+</menu>
