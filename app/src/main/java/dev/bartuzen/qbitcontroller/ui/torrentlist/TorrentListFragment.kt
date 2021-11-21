@@ -6,8 +6,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.hannesdorfmann.fragmentargs.FragmentArgs
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +19,6 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.setItemMargin
@@ -26,13 +27,18 @@ import kotlinx.coroutines.flow.collect
 
 @FragmentWithArgs
 @AndroidEntryPoint
-class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
+class TorrentListFragment : Fragment(R.layout.fragment_torrent_list) {
     private var _binding: FragmentTorrentListBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: TorrentListViewModel by viewModels()
 
     @Arg lateinit var serverConfig: ServerConfig
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        FragmentArgs.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,7 +50,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             override fun onClick(torrent: Torrent) {
                 val intent = Intent(context, TorrentActivity::class.java).apply {
                     putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
-                    putExtra(TorrentActivity.Extras.TORRENT, torrent)
                     putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
                 }
                 startActivity(intent)

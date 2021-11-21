@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">qBitController</string>
 
     <string name="menu_settings">Settings</string>
@@ -74,6 +74,9 @@
         <item>Dark</item>
         <item>System Default</item>
     </string-array>
+
+    <string name="settings_ok">OK</string>
+    <string name="settings_cancel" tools:ignore="ButtonCase">CANCEL</string>
 
     <string name="settings_torrent_name">Name</string>
     <string name="settings_host">IP Address or Host Name</string>

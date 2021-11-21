@@ -89,20 +89,26 @@ class SettingsManager @Inject constructor(
 
             settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
         }
-        requestHelper.removeTorrentService(serverConfig)
+        requestHelper.removeTorrentService(serverConfig.id)
     }
 
-    suspend fun removeServer(serverConfig: ServerConfig) {
+    suspend fun removeServer(serverId: Int) {
         dataStore.edit { settings ->
             val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: return@edit
 
             val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-                serverConfigs.remove(serverConfig.id)
+                serverConfigs.remove(serverId)
             }
 
             settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
         }
-        requestHelper.removeTorrentService(serverConfig)
+        requestHelper.removeTorrentService(serverId)
+    }
+
+    suspend fun setTheme(theme: Theme) {
+        dataStore.edit { settings ->
+            settings[PreferenceKeys.THEME] = theme.name
+        }
     }
 
     suspend fun setTorrentSort(torrentSort: TorrentSort) {

@@ -52,7 +52,7 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
             binding.textProgress.text =
                 context.getString(
                     R.string.torrent_item_progress,
-                    context.formatByte(torrent.downloaded),
+                    context.formatByte(torrent.completed),
                     context.formatByte(torrent.size),
                     progressText
                 )

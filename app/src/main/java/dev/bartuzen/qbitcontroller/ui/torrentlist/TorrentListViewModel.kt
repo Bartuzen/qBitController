@@ -7,11 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
+import dev.bartuzen.qbitcontroller.di.ApplicationScope
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestHelper
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.common.SettableLiveData
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class TorrentListViewModel @Inject constructor(
     private val repository: TorrentListRepository,
     private val requestHelper: RequestHelper,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    @ApplicationScope private val applicationScope: CoroutineScope
 ) : ViewModel() {
     val torrentList = SettableLiveData<List<Torrent>>()
 
@@ -40,7 +43,7 @@ class TorrentListViewModel @Inject constructor(
         torrentListEventChannel.send(TorrentListEvent.OnRequestComplete(result.first))
     }
 
-    fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
+    fun setTorrentSort(torrentSort: TorrentSort) = applicationScope.launch {
         settingsManager.setTorrentSort(torrentSort)
     }
 
