@@ -68,7 +68,7 @@ fun AddEditServer(
     Scaffold(
         scaffoldState = scaffoldState,
         modifier = modifier.fillMaxSize(),
-        topBar = { AddEditAppBar(navController, viewModel) }
+        topBar = { AddEditServerAppBar(navController, viewModel) }
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -122,7 +122,7 @@ fun AddEditServer(
 }
 
 @Composable
-fun AddEditAppBar(
+fun AddEditServerAppBar(
     navController: NavController,
     viewModel: AddEditServerViewModel = viewModel()
 ) {
