@@ -30,7 +30,9 @@ class TorrentPiecesViewModel @Inject constructor(
             repository.getProperties(serverConfig, torrentHash)
         }
 
-        if (piecesResult.first == RequestResult.SUCCESS) {
+        if (piecesResult.first == RequestResult.SUCCESS &&
+            propertiesResult.first == RequestResult.SUCCESS
+        ) {
             pieces = piecesResult.second?.body() ?: emptyList()
             properties = propertiesResult.second?.body()
         } else {
