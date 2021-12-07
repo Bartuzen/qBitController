@@ -38,11 +38,8 @@ fun TorrentTabContent(
     }
 
     LaunchedEffect(true) {
-        if (!viewModel.isLoaded) {
-            viewModel.isLoaded = true
-            updateData()
-            viewModel.isLoading = false
-        }
+        updateData()
+        viewModel.isLoading = false
     }
 
     LaunchedEffect(viewModel.isRefreshing) {
