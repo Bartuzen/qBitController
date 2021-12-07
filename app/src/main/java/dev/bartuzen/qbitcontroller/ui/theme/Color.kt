@@ -18,3 +18,6 @@ val Colors.pieceDownloaded: Color
 
 val Colors.pieceNotDownloaded: Color
     get() = if (isLight) Gray400 else Gray700
+
+val Colors.selectedServerBackground: Color
+    get() = if (isLight) Gray400 else Gray700
