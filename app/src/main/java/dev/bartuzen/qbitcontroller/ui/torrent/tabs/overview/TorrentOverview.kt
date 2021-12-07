@@ -47,7 +47,6 @@ fun TorrentOverview(
                 .verticalScroll(scrollState)
         ) {
             viewModel.torrent?.let { torrent ->
-
                 Text(
                     text = torrent.name,
                     style = TextStyle(fontSize = 18.sp),
