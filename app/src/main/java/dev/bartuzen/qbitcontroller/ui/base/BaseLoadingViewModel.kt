@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 abstract class BaseLoadingViewModel : ViewModel() {
-    var isLoaded by mutableStateOf(false)
     var isLoading by mutableStateOf(true)
     var isRefreshing by mutableStateOf(false)
 }
