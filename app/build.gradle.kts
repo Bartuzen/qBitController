@@ -43,7 +43,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.5"
+        kotlinCompilerExtensionVersion = "1.1.0-beta04"
     }
 }
 
@@ -71,8 +71,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
 
-    implementation("com.google.dagger:hilt-android:2.40.1")
-    kapt("com.google.dagger:hilt-compiler:2.40.1")
+    implementation("com.google.dagger:hilt-android:2.40.2")
+    kapt("com.google.dagger:hilt-compiler:2.40.2")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
@@ -87,13 +87,13 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
 
-    implementation("androidx.compose.ui:ui:1.0.5")
-    implementation("androidx.compose.ui:ui-tooling:1.0.5")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.0.5")
-    implementation("androidx.compose.foundation:foundation:1.0.5")
-    implementation("androidx.compose.material:material:1.0.5")
-    implementation("androidx.compose.material:material-icons-core:1.0.5")
-    implementation("androidx.compose.material:material-icons-extended:1.0.5")
+    implementation("androidx.compose.ui:ui:1.1.0-beta04")
+    implementation("androidx.compose.ui:ui-tooling:1.1.0-beta04")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.1.0-beta04")
+    implementation("androidx.compose.foundation:foundation:1.1.0-beta04")
+    implementation("androidx.compose.material:material:1.1.0-beta04")
+    implementation("androidx.compose.material:material-icons-core:1.1.0-beta04")
+    implementation("androidx.compose.material:material-icons-extended:1.1.0-beta04")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
     implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
@@ -102,8 +102,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02")
 
     implementation("com.google.accompanist:accompanist-swiperefresh:0.21.2-beta")
-    implementation("com.google.accompanist:accompanist-pager:0.21.2-beta")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.21.2-beta")
+    implementation("com.google.accompanist:accompanist-pager:0.21.3-beta")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.21.3-beta")
 
     implementation("me.onebone:toolbar-compose:2.2.0")
 }
