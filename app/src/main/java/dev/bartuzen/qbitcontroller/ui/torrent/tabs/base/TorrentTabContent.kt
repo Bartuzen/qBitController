@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun TorrentTabContent(
@@ -28,7 +28,7 @@ fun TorrentTabContent(
     content: @Composable () -> Unit
 ) {
     LaunchedEffect(true) {
-        viewModel.eventFlow.collectLatest { event ->
+        viewModel.eventFlow.collect { event ->
             when (event) {
                 is TorrentTabViewModel.TorrentEvent.ShowError -> {
                     onError(event.message)

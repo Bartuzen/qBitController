@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.settings.common.EditTextPreference
 import dev.bartuzen.qbitcontroller.ui.settings.common.PreferenceItem
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 
 enum class AddEditServerResult {
     SERVER_CREATED, SERVER_EDITED, SERVER_DELETED
@@ -42,7 +42,7 @@ fun AddEditServer(
             }
         }
 
-        viewModel.eventFlow.collectLatest { event ->
+        viewModel.eventFlow.collect { event ->
             when (event) {
                 is AddEditServerViewModel.AddEditServerEvent.ServerCreated -> {
                     navController.popBackStack()
