@@ -8,13 +8,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
+import dev.bartuzen.qbitcontroller.di.ApplicationScope
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestHelper
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.common.PersistentState
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.base.TorrentTabViewModel
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class TorrentViewModel @Inject constructor(
     private val repository: TorrentRepository,
     private val requestHelper: RequestHelper,
+    @ApplicationScope private val appScope: CoroutineScope,
     settingsManager: SettingsManager,
     state: SavedStateHandle
 ) : TorrentTabViewModel() {
@@ -47,7 +49,7 @@ class TorrentViewModel @Inject constructor(
         }
     }
 
-    fun pauseTorrent() = MainScope().launch {
+    fun pauseTorrent() = appScope.launch {
         serverConfig?.let { config ->
             val result = requestHelper.request(config) {
                 repository.pauseTorrent(config, torrentHash)
@@ -63,7 +65,7 @@ class TorrentViewModel @Inject constructor(
         }
     }
 
-    fun resumeTorrent() = MainScope().launch {
+    fun resumeTorrent() = appScope.launch {
         serverConfig?.let { config ->
             val result = requestHelper.request(config) {
                 repository.resumeTorrent(config, torrentHash)
