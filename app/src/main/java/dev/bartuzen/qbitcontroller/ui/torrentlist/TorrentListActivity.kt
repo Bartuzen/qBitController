@@ -37,7 +37,7 @@ import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.theme.selectedServerBackground
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.*
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
@@ -117,7 +117,7 @@ fun TorrentListContent(
             }
 
             LaunchedEffect(true) {
-                viewModel.eventFlow.collectLatest { event ->
+                viewModel.eventFlow.collect { event ->
                     when (event) {
                         is TorrentListViewModel.TorrentListEvent.ShowError -> {
                             scaffoldState.snackbarHostState.showSnackbar(

@@ -33,7 +33,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverview
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPieces
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.showToast
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
@@ -81,7 +81,7 @@ class TorrentActivity : ComponentActivity() {
                 var snackbarMessage by remember { mutableStateOf("") }
 
                 LaunchedEffect(true) {
-                    viewModel.customEventFlow.collectLatest { event ->
+                    viewModel.customEventFlow.collect { event ->
                         when (event) {
                             is TorrentViewModel.TorrentActivityEvent.ShowError -> {
                                 val message = when (event.message) {
