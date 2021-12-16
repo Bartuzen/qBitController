@@ -44,7 +44,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-beta04"
+        kotlinCompilerExtensionVersion = "1.1.0-rc01"
     }
 }
 
@@ -66,8 +66,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
-    implementation("com.google.dagger:hilt-android:2.40.2")
-    kapt("com.google.dagger:hilt-compiler:2.40.2")
+    implementation("com.google.dagger:hilt-android:2.40.5")
+    kapt("com.google.dagger:hilt-compiler:2.40.5")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
@@ -77,23 +77,23 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0")
 
-    implementation("androidx.compose.ui:ui:1.1.0-beta04")
-    implementation("androidx.compose.ui:ui-tooling:1.1.0-beta04")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.1.0-beta04")
-    implementation("androidx.compose.foundation:foundation:1.1.0-beta04")
-    implementation("androidx.compose.material:material:1.1.0-beta04")
-    implementation("androidx.compose.material:material-icons-core:1.1.0-beta04")
-    implementation("androidx.compose.material:material-icons-extended:1.1.0-beta04")
+    implementation("androidx.compose.ui:ui:1.1.0-rc01")
+    implementation("androidx.compose.ui:ui-tooling:1.1.0-rc01")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.1.0-rc01")
+    implementation("androidx.compose.foundation:foundation:1.1.0-rc01")
+    implementation("androidx.compose.material:material:1.1.0-rc01")
+    implementation("androidx.compose.material:material-icons-core:1.1.0-rc01")
+    implementation("androidx.compose.material:material-icons-extended:1.1.0-rc01")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0")
-    implementation("androidx.navigation:navigation-compose:2.4.0-beta02")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-beta01")
+    implementation("androidx.navigation:navigation-compose:2.4.0-rc01")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-rc01")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02")
 
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.21.2-beta")
-    implementation("com.google.accompanist:accompanist-pager:0.21.3-beta")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.21.3-beta")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.21.4-beta")
+    implementation("com.google.accompanist:accompanist-pager:0.21.4-beta")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.21.4-beta")
 
-    implementation("me.onebone:toolbar-compose:2.2.0")
+    implementation("me.onebone:toolbar-compose:2.3.0")
 }
