@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
+import dev.bartuzen.qbitcontroller.di.ApplicationScope
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestHelper
@@ -16,7 +17,7 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.base.BaseLoadingViewModel
 import dev.bartuzen.qbitcontroller.ui.common.PersistentMutableState
 import dev.bartuzen.qbitcontroller.utils.first
-import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
@@ -28,6 +29,7 @@ class TorrentListViewModel @Inject constructor(
     private val requestHelper: RequestHelper,
     private val settingsManager: SettingsManager,
     private val repository: TorrentListRepository,
+    @ApplicationScope private val appScope: CoroutineScope,
     state: SavedStateHandle
 ) : BaseLoadingViewModel() {
     private var _currentServer = mutableStateOf(null as ServerConfig?)
@@ -79,7 +81,7 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun setTorrentSort(torrentSort: TorrentSort) = MainScope().launch {
+    fun setTorrentSort(torrentSort: TorrentSort) = appScope.launch {
         settingsManager.setTorrentSort(torrentSort)
     }
 
