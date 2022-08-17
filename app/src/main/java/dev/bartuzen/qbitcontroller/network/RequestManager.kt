@@ -18,7 +18,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RequestHelper @Inject constructor() {
+class RequestManager @Inject constructor() {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
 
     private fun getTorrentService(serverConfig: ServerConfig): TorrentService =

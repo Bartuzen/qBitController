@@ -10,7 +10,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.network.RequestHelper
+import dev.bartuzen.qbitcontroller.network.RequestManager
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
@@ -23,7 +23,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings"
 @Singleton
 class SettingsManager @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val requestHelper: RequestHelper
+    private val requestManager: RequestManager
 ) {
     private val dataStore = context.dataStore
 
@@ -89,7 +89,7 @@ class SettingsManager @Inject constructor(
 
             settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
         }
-        requestHelper.removeTorrentService(serverConfig)
+        requestManager.removeTorrentService(serverConfig)
     }
 
     suspend fun removeServer(serverConfig: ServerConfig) {
@@ -102,7 +102,7 @@ class SettingsManager @Inject constructor(
 
             settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
         }
-        requestHelper.removeTorrentService(serverConfig)
+        requestManager.removeTorrentService(serverConfig)
     }
 
     suspend fun setTorrentSort(torrentSort: TorrentSort) {
