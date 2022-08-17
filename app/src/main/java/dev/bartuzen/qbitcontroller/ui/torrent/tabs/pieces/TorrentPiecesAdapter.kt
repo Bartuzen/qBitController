@@ -19,6 +19,10 @@ class TorrentPiecesAdapter :
 
     override fun getItemViewType(position: Int) = if (position == 0) 0 else 1
 
+    override fun getItemCount(): Int {
+        return super.getItemCount() + 1
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == 0) {
         HeaderViewHolder(
             ItemTorrentPieceHeaderBinding.inflate(
