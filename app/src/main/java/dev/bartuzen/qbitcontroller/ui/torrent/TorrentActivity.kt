@@ -18,9 +18,9 @@ import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TorrentActivity : AppCompatActivity() {
@@ -87,9 +87,13 @@ class TorrentActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.torrentActivityEvent.collect { event ->
                 when (event) {
-                    is TorrentViewModel.TorrentActivityEvent.ShowMessage -> {
-                        showSnackbar(event.message)
-                    }
+                    is TorrentViewModel.TorrentActivityEvent.OnError ->
+                        showSnackbar(getErrorMessage(event.error))
+                    TorrentViewModel.TorrentActivityEvent.OnTorrentPause ->
+                        showSnackbar(getString(R.string.torrent_paused_success))
+                    TorrentViewModel.TorrentActivityEvent.OnTorrentResume ->
+                        showSnackbar(getString(R.string.torrent_resumed_success))
+
                 }
             }
         }
@@ -112,11 +116,11 @@ class TorrentActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             R.id.menu_pause -> {
-                viewModel.pauseTorrent(this)
+                viewModel.pauseTorrent()
                 true
             }
             R.id.menu_resume -> {
-                viewModel.resumeTorrent(this)
+                viewModel.resumeTorrent()
                 true
             }
             else -> super.onOptionsItemSelected(item)

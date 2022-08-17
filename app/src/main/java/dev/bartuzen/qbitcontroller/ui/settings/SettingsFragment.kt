@@ -13,7 +13,6 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.dataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch

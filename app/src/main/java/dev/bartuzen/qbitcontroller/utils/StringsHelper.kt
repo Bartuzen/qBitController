@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.utils
 import android.content.Context
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentState
-import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.network.RequestError
 import kotlin.math.roundToInt
 
 fun Context.formatByte(byte: Long) = when (byte) {
@@ -89,13 +89,12 @@ fun Context.formatState(state: TorrentState?) = getString(
     }
 )
 
-fun Context.getErrorMessage(error: RequestResult) =
+fun Context.getErrorMessage(error: RequestError) =
     when (error) {
-        RequestResult.SUCCESS -> ""
-        RequestResult.INVALID_CREDENTIALS -> getString(R.string.error_invalid_credentials)
-        RequestResult.BANNED -> getString(R.string.error_banned)
-        RequestResult.CANNOT_CONNECT -> getString(R.string.error_cannot_connect)
-        RequestResult.UNKNOWN_HOST -> getString(R.string.error_unknown_host)
-        RequestResult.TIMEOUT -> getString(R.string.error_timeout)
-        RequestResult.UNKNOWN -> getString(R.string.error_unknown)
+        RequestError.INVALID_CREDENTIALS -> getString(R.string.error_invalid_credentials)
+        RequestError.BANNED -> getString(R.string.error_banned)
+        RequestError.CANNOT_CONNECT -> getString(R.string.error_cannot_connect)
+        RequestError.UNKNOWN_HOST -> getString(R.string.error_unknown_host)
+        RequestError.TIMEOUT -> getString(R.string.error_timeout)
+        RequestError.UNKNOWN -> getString(R.string.error_unknown)
     }

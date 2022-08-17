@@ -9,7 +9,7 @@ import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
-import dev.bartuzen.qbitcontroller.network.RequestHelper
+import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.common.SettableLiveData
 import kotlinx.coroutines.channels.Channel
@@ -20,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class TorrentListViewModel @Inject constructor(
     private val repository: TorrentListRepository,
-    private val requestHelper: RequestHelper,
     private val settingsManager: SettingsManager
 ) : ViewModel() {
     val torrentList = SettableLiveData<List<Torrent>>()
@@ -31,13 +30,13 @@ class TorrentListViewModel @Inject constructor(
     val torrentListEvent = torrentListEventChannel.receiveAsFlow()
 
     fun updateTorrentList(serverConfig: ServerConfig) = viewModelScope.launch {
-        val result = requestHelper.request(serverConfig) {
-            repository.getTorrentList(serverConfig, torrentSort.value ?: TorrentSort.NAME)
+        when (val result =
+            repository.getTorrentList(serverConfig, torrentSort.value ?: TorrentSort.NAME)) {
+            is RequestResult.Success -> torrentList.value = result.data
+            is RequestResult.Error -> torrentListEventChannel.send(
+                TorrentListEvent.OnError(result.error)
+            )
         }
-
-        torrentList.value = result.second?.body()
-
-        torrentListEventChannel.send(TorrentListEvent.OnRequestComplete(result.first))
     }
 
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
@@ -45,6 +44,6 @@ class TorrentListViewModel @Inject constructor(
     }
 
     sealed class TorrentListEvent {
-        data class OnRequestComplete(val result: RequestResult) : TorrentListEvent()
+        data class OnError(val result: RequestError) : TorrentListEvent()
     }
 }

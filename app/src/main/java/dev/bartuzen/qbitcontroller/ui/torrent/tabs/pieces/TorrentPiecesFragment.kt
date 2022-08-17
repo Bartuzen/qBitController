@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPiecesBinding
-import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toDp
 import dev.bartuzen.qbitcontroller.utils.toPx
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -101,6 +99,7 @@ class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
 
         viewModel.torrentPieces.observe(viewLifecycleOwner) { pieces ->
             pieces?.let {
+                binding.progressIndicator.visibility = View.GONE
                 adapter.submitList(it)
             }
         }
@@ -108,12 +107,9 @@ class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
         lifecycleScope.launchWhenStarted {
             viewModel.torrentPiecesEvent.collect { event ->
                 when (event) {
-                    is TorrentViewModel.TorrentPiecesEvent.OnRequestComplete -> {
-                        binding.progressIndicator.visibility = View.GONE
-                        if (event.result != RequestResult.SUCCESS) {
-                            context?.getErrorMessage(event.result)?.let {
-                                showSnackbar(it)
-                            }
+                    is TorrentViewModel.TorrentPiecesEvent.OnError -> {
+                        context?.getErrorMessage(event.error)?.let {
+                            showSnackbar(it)
                         }
                     }
                 }

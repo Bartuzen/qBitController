@@ -8,10 +8,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
-import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
 import dev.bartuzen.qbitcontroller.utils.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
@@ -40,6 +38,8 @@ class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
 
         viewModel.torrent.observe(viewLifecycleOwner) { torrent ->
             val context = requireContext()
+
+            binding.progressIndicator.visibility = View.GONE
 
             binding.textName.text = torrent.name
 
@@ -79,12 +79,9 @@ class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
         lifecycleScope.launchWhenStarted {
             viewModel.torrentOverviewEvent.collect { event ->
                 when (event) {
-                    is TorrentViewModel.TorrentOverviewEvent.OnRequestComplete -> {
-                        binding.progressIndicator.visibility = View.GONE
-                        if (event.result != RequestResult.SUCCESS) {
-                            context?.getErrorMessage(event.result)?.let {
-                                showSnackbar(it)
-                            }
+                    is TorrentViewModel.TorrentOverviewEvent.OnError -> {
+                        context?.getErrorMessage(event.error)?.let {
+                            showSnackbar(it)
                         }
                     }
                 }

@@ -10,20 +10,32 @@ class TorrentRepository @Inject constructor(
     private val requestHelper: RequestHelper
 ) {
     suspend fun getTorrent(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).getTorrentList(hash)
+        requestHelper.request(serverConfig) { service ->
+            service.getTorrentList(hash)
+        }
 
     suspend fun getFiles(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).getFiles(hash)
+        requestHelper.request(serverConfig) { service ->
+            service.getFiles(hash)
+        }
 
     suspend fun getPieces(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).getTorrentPieces(hash)
+        requestHelper.request(serverConfig) { service ->
+            service.getTorrentPieces(hash)
+        }
 
     suspend fun getProperties(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).getTorrentProperties(hash)
+        requestHelper.request(serverConfig) { service ->
+            service.getTorrentProperties(hash)
+        }
 
     suspend fun pauseTorrent(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).pauseTorrent(hash)
+        requestHelper.request(serverConfig) { service ->
+            service.pauseTorrent(hash)
+        }
 
     suspend fun resumeTorrent(serverConfig: ServerConfig, hash: String) =
-        requestHelper.getTorrentService(serverConfig).resumeTorrent(hash)
+        requestHelper.request(serverConfig) { service ->
+            service.resumeTorrent(hash)
+        }
 }

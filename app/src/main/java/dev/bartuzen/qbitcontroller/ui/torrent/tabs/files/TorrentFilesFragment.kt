@@ -9,12 +9,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFile
-import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TorrentFilesFragment : Fragment(R.layout.fragment_torrent_files) {
@@ -52,6 +50,7 @@ class TorrentFilesFragment : Fragment(R.layout.fragment_torrent_files) {
 
         viewModel.torrentFiles.observe(viewLifecycleOwner) { files ->
             files?.let {
+                binding.progressIndicator.visibility = View.GONE
                 adapter.submitList(it)
             }
         }
@@ -59,12 +58,9 @@ class TorrentFilesFragment : Fragment(R.layout.fragment_torrent_files) {
         lifecycleScope.launchWhenStarted {
             viewModel.torrentFilesEvent.collect { event ->
                 when (event) {
-                    is TorrentViewModel.TorrentFilesEvent.OnRequestComplete -> {
-                        binding.progressIndicator.visibility = View.GONE
-                        if (event.result != RequestResult.SUCCESS) {
-                            context?.getErrorMessage(event.result)?.let {
-                                showSnackbar(it)
-                            }
+                    is TorrentViewModel.TorrentFilesEvent.OnError -> {
+                        context?.getErrorMessage(event.error)?.let {
+                            showSnackbar(it)
                         }
                     }
                 }

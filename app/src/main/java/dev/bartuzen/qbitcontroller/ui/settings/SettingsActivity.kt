@@ -7,7 +7,6 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivitySettingsBinding
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {

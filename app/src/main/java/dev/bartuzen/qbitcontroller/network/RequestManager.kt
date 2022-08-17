@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -19,7 +21,7 @@ import javax.inject.Singleton
 class RequestHelper @Inject constructor() {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
 
-    fun getTorrentService(serverConfig: ServerConfig): TorrentService =
+    private fun getTorrentService(serverConfig: ServerConfig): TorrentService =
         serverConfig.run {
             torrentServiceMap.getOrElse(id) {
                 val retrofit = Retrofit.Builder()
@@ -59,39 +61,47 @@ class RequestHelper @Inject constructor() {
 
     suspend fun <T : Any> request(
         serverConfig: ServerConfig,
-        block: suspend (host: String) -> Response<T>
-    ): Pair<RequestResult, Response<T>?> {
-        return try {
-            val blockResponse = block(serverConfig.host)
+        block: suspend (service: TorrentService) -> Response<T>
+    ): RequestResult<T> = withContext(Dispatchers.IO) {
+        try {
+            val service = getTorrentService(serverConfig)
+            val blockResponse = block(service)
+            val body = blockResponse.body()
+
             if (blockResponse.message() == "Forbidden") {
                 val loginResponse = login(serverConfig)
 
-                if (loginResponse.code() == 403) {
-                    return Pair(RequestResult.BANNED, null)
+                return@withContext if (loginResponse.code() == 403) {
+                    RequestResult.Error(RequestError.BANNED)
                 } else if (loginResponse.body() == "Fails.") {
-                    return Pair(RequestResult.INVALID_CREDENTIALS, null)
+                    RequestResult.Error(RequestError.INVALID_CREDENTIALS)
                 } else if (!loginResponse.isSuccessful || loginResponse.body() != "Ok.") {
-                    return Pair(RequestResult.UNKNOWN, null)
+                    RequestResult.Error(RequestError.UNKNOWN)
+                } else {
+                    val newResponse = block(service)
+                    val newBody = newResponse.body()
+                    if (newBody != null) {
+                        RequestResult.Success(newBody)
+                    } else {
+                        RequestResult.Error(RequestError.UNKNOWN)
+                    }
                 }
-
-                val newResponse = block(serverConfig.host)
-                return Pair(RequestResult.SUCCESS, newResponse)
-            } else if (!blockResponse.isSuccessful || blockResponse.body() == null) {
-                Pair(RequestResult.UNKNOWN, null)
+            } else if (!blockResponse.isSuccessful || body == null) {
+                RequestResult.Error(RequestError.UNKNOWN)
             } else {
-                Pair(RequestResult.SUCCESS, blockResponse)
+                RequestResult.Success(body)
             }
         } catch (e: ConnectException) {
-            Pair(RequestResult.CANNOT_CONNECT, null)
+            RequestResult.Error(RequestError.CANNOT_CONNECT)
         } catch (e: SocketTimeoutException) {
-            Pair(RequestResult.TIMEOUT, null)
+            RequestResult.Error(RequestError.TIMEOUT)
         } catch (e: UnknownHostException) {
-            Pair(RequestResult.UNKNOWN_HOST, null)
+            RequestResult.Error(RequestError.UNKNOWN_HOST)
         } catch (e: IllegalArgumentException) {
-            Pair(RequestResult.UNKNOWN_HOST, null)
+            RequestResult.Error(RequestError.UNKNOWN_HOST)
         } catch (e: JsonMappingException) {
             if (e.cause is SocketTimeoutException) {
-                Pair(RequestResult.TIMEOUT, null)
+                RequestResult.Error(RequestError.TIMEOUT)
             } else {
                 throw e
             }
@@ -99,6 +109,11 @@ class RequestHelper @Inject constructor() {
     }
 }
 
-enum class RequestResult {
-    SUCCESS, INVALID_CREDENTIALS, BANNED, CANNOT_CONNECT, UNKNOWN_HOST, TIMEOUT, UNKNOWN
+sealed class RequestResult<out T: Any> {
+    data class Success<out T: Any>(val data: T) : RequestResult<T>()
+    data class Error(val error: RequestError) : RequestResult<Nothing>()
+}
+
+enum class RequestError {
+    INVALID_CREDENTIALS, BANNED, CANNOT_CONNECT, UNKNOWN_HOST, TIMEOUT, UNKNOWN
 }

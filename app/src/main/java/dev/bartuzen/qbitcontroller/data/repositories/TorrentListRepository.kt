@@ -11,7 +11,9 @@ class TorrentListRepository @Inject constructor(
     private val requestHelper: RequestHelper
 ) {
     suspend fun getTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort) =
-        requestHelper.getTorrentService(serverConfig).getTorrentList(
-            torrentSort = torrentSort
-        )
+        requestHelper.request(serverConfig) { service ->
+            service.getTorrentList(
+                torrentSort = torrentSort
+            )
+        }
 }
