@@ -49,8 +49,8 @@ class RequestHelper @Inject constructor() {
             }
         }
 
-    fun removeTorrentService(serverId: Int) {
-        torrentServiceMap.remove(serverId)
+    fun removeTorrentService(serverConfig: ServerConfig) {
+        torrentServiceMap.remove(serverConfig.id)
     }
 
     private suspend fun login(serverConfig: ServerConfig) = serverConfig.run {

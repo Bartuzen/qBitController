@@ -1,8 +1,7 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">qBitController</string>
 
     <string name="menu_settings">Settings</string>
-    <string name="menu_sort">Sort</string>
 
     <string name="menu_pause">Pause</string>
     <string name="menu_resume">Resume</string>
@@ -13,6 +12,10 @@
     <string name="tab_torrent_overview">Overview</string>
     <string name="tab_torrent_files">Files</string>
     <string name="tab_torrent_pieces">Pieces</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="torrent_tabs">Torrent Tabs</string>
 
     <string name="torrent_sort_name">Name</string>
     <string name="torrent_sort_hash">Hash</string>
@@ -71,9 +74,6 @@
         <item>Dark</item>
         <item>System Default</item>
     </string-array>
-
-    <string name="settings_ok">OK</string>
-    <string name="settings_cancel" tools:ignore="ButtonCase">CANCEL</string>
 
     <string name="settings_torrent_name">Name</string>
     <string name="settings_host">IP Address or Host Name</string>

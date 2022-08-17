@@ -1,22 +1,20 @@
 package dev.bartuzen.qbitcontroller.ui.torrent
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
-import dev.bartuzen.qbitcontroller.di.ApplicationScope
-import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.model.Torrent
+import dev.bartuzen.qbitcontroller.model.*
 import dev.bartuzen.qbitcontroller.network.RequestHelper
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import dev.bartuzen.qbitcontroller.ui.common.PersistentState
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.base.TorrentTabViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
+import dev.bartuzen.qbitcontroller.ui.common.SettableLiveData
+import dev.bartuzen.qbitcontroller.ui.common.StateDelegate
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,64 +22,121 @@ import javax.inject.Inject
 class TorrentViewModel @Inject constructor(
     private val repository: TorrentRepository,
     private val requestHelper: RequestHelper,
-    @ApplicationScope private val appScope: CoroutineScope,
-    settingsManager: SettingsManager,
     state: SavedStateHandle
-) : TorrentTabViewModel() {
-    var torrent by mutableStateOf<Torrent?>(null)
+) : ViewModel() {
+    val torrent = SettableLiveData<Torrent>()
+    val torrentFiles = SettableLiveData<List<TorrentFile>>()
+    val torrentPieces = SettableLiveData<List<PieceState>>()
+    val torrentProperties = SettableLiveData<TorrentProperties>()
 
-    var torrentHash: String by PersistentState(state, "torrent_hash", "")
-    var serverConfig: ServerConfig? by PersistentState(state, "server_config", null)
+    var torrentHash: String? by StateDelegate(state, "torrent_hash")
+    var serverConfig: ServerConfig? by StateDelegate(state, "server_config")
 
-    val themeFlow = settingsManager.themeFlow
+    private val torrentActivityEventChannel = Channel<TorrentActivityEvent>()
+    val torrentActivityEvent = torrentActivityEventChannel.receiveAsFlow()
 
-    val customEventFlow = MutableSharedFlow<TorrentActivityEvent>()
+    private val torrentOverviewEventChannel = Channel<TorrentOverviewEvent>()
+    val torrentOverviewEvent = torrentOverviewEventChannel.receiveAsFlow()
 
-    suspend fun updateOverview(serverConfig: ServerConfig, torrentHash: String) {
-        val result = requestHelper.request(serverConfig) {
-            repository.getTorrent(serverConfig, torrentHash)
-        }
+    private val torrentFilesEventChannel = Channel<TorrentFilesEvent>()
+    val torrentFilesEvent = torrentFilesEventChannel.receiveAsFlow()
 
-        if (result.first == RequestResult.SUCCESS) {
-            torrent = result.second?.body()?.first()
-        } else {
-            eventFlow.emit(TorrentEvent.ShowError(result.first))
+    private val torrentPiecesEventChannel = Channel<TorrentPiecesEvent>()
+    val torrentPiecesEvent = torrentPiecesEventChannel.receiveAsFlow()
+
+    fun updateTorrent() = viewModelScope.launch {
+        serverConfig?.let { config ->
+            val result = requestHelper.request(config) {
+                repository.getTorrent(config, torrentHash ?: "")
+            }
+
+            if (result.second?.body()?.size == 1) {
+                torrent.value = result.second?.body()?.first()
+            } else if (torrent.value == null) {
+                torrent.isSet = true
+            }
+
+            torrentOverviewEventChannel.send(TorrentOverviewEvent.OnRequestComplete(result.first))
         }
     }
 
-    fun pauseTorrent() = appScope.launch {
+    fun updateFiles() = viewModelScope.launch {
         serverConfig?.let { config ->
             val result = requestHelper.request(config) {
-                repository.pauseTorrent(config, torrentHash)
+                repository.getFiles(config, torrentHash ?: "")
             }
 
-            val message = if (result.first == RequestResult.SUCCESS) {
-                R.string.torrent_paused_success
-            } else {
-                result.first
-            }
+            torrentFiles.value = result.second?.body()
 
-            customEventFlow.emit(TorrentActivityEvent.ShowError(message))
+            torrentFilesEventChannel.send(TorrentFilesEvent.OnRequestComplete(result.first))
         }
     }
 
-    fun resumeTorrent() = appScope.launch {
+    fun updatePieces() = viewModelScope.launch {
         serverConfig?.let { config ->
             val result = requestHelper.request(config) {
-                repository.resumeTorrent(config, torrentHash)
+                repository.getPieces(config, torrentHash ?: "")
+            }
+
+            torrentPieces.value = result.second?.body()
+
+            torrentPiecesEventChannel.send(TorrentPiecesEvent.OnRequestComplete(result.first))
+        }
+    }
+
+    fun updateProperties() = viewModelScope.launch {
+        serverConfig?.let { config ->
+            val result = requestHelper.request(config) {
+                repository.getProperties(config, torrentHash ?: "")
+            }
+
+            torrentProperties.value = result.second?.body()
+        }
+    }
+
+    fun pauseTorrent(context: Context) = viewModelScope.launch {
+        serverConfig?.let { config ->
+            val result = requestHelper.request(config) {
+                repository.pauseTorrent(config, torrentHash ?: "")
             }
 
             val message = if (result.first == RequestResult.SUCCESS) {
-                R.string.torrent_resumed_success
+                context.getString(R.string.torrent_paused_success)
             } else {
-                result.first
+                context.getErrorMessage(result.first)
+            }
+            torrentActivityEventChannel.send(TorrentActivityEvent.ShowMessage(message))
+        }
+    }
+
+    fun resumeTorrent(context: Context) = viewModelScope.launch {
+        serverConfig?.let { config ->
+            val result = requestHelper.request(config) {
+                repository.resumeTorrent(config, torrentHash ?: "")
             }
 
-            customEventFlow.emit(TorrentActivityEvent.ShowError(message))
+            val message = if (result.first == RequestResult.SUCCESS) {
+                context.getString(R.string.torrent_resumed_success)
+            } else {
+                context.getErrorMessage(result.first)
+            }
+            torrentActivityEventChannel.send(TorrentActivityEvent.ShowMessage(message))
         }
     }
 
     sealed class TorrentActivityEvent {
-        data class ShowError(val message: Any) : TorrentActivityEvent()
+        data class ShowMessage(val message: String) : TorrentActivityEvent()
+    }
+
+    sealed class TorrentOverviewEvent {
+        data class OnRequestComplete(val result: RequestResult) : TorrentOverviewEvent()
+    }
+
+    sealed class TorrentFilesEvent {
+        data class OnRequestComplete(val result: RequestResult) : TorrentFilesEvent()
+    }
+
+    sealed class TorrentPiecesEvent {
+        data class OnRequestComplete(val result: RequestResult) : TorrentPiecesEvent()
     }
 }

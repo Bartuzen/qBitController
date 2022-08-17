@@ -13,11 +13,10 @@ data class Torrent(
     @JsonProperty("state") val state: TorrentState?,
     @JsonProperty("downloaded") val downloaded: Long,
     @JsonProperty("size") val size: Long,
-    @JsonProperty("eta") val eta: Long,
+    @JsonProperty("eta") val eta: Int,
     @JsonProperty("dlspeed") val downloadSpeed: Long,
     @JsonProperty("upspeed") val uploadSpeed: Long,
     @JsonProperty("progress") val progress: Double,
-    @JsonProperty("completed") val completed: Long,
 ) : Parcelable
 
 @Suppress("unused")
