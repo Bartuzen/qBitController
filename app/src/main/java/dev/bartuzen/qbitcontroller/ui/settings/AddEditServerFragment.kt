@@ -143,7 +143,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
             if (preference.key != "password")
                 preference.text
             else
-                preference.text.toAsterisks()
+                preference.text?.toAsterisks()
         }
 
     inner class AddEditDataStore : PreferenceDataStore() {
