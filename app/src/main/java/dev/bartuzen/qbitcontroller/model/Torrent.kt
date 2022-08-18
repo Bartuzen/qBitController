@@ -9,7 +9,7 @@ data class Torrent(
     @JsonProperty("hash") val hash: String,
     @JsonProperty("name") val name: String,
     @JsonProperty("state") val state: TorrentState?,
-    @JsonProperty("downloaded") val downloaded: Long,
+    @JsonProperty("completed") val completed: Long,
     @JsonProperty("size") val size: Long,
     @JsonProperty("eta") val eta: Int,
     @JsonProperty("dlspeed") val downloadSpeed: Long,

@@ -54,7 +54,7 @@ class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
             binding.textProgress.text =
                 context.getString(
                     R.string.torrent_item_progress,
-                    context.formatByte(torrent.downloaded),
+                    context.formatByte(torrent.completed),
                     context.formatByte(torrent.size),
                     progressText
                 )
