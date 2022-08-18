@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -62,49 +60,47 @@ class RequestManager @Inject constructor() {
     suspend fun <T : Any> request(
         serverConfig: ServerConfig,
         block: suspend (service: TorrentService) -> Response<T>
-    ): RequestResult<T> = withContext(Dispatchers.IO) {
-        try {
-            val service = getTorrentService(serverConfig)
-            val blockResponse = block(service)
-            val body = blockResponse.body()
+    ): RequestResult<T> = try {
+        val service = getTorrentService(serverConfig)
+        val blockResponse = block(service)
+        val body = blockResponse.body()
 
-            if (blockResponse.message() == "Forbidden") {
-                val loginResponse = login(serverConfig)
+        if (blockResponse.message() == "Forbidden") {
+            val loginResponse = login(serverConfig)
 
-                return@withContext if (loginResponse.code() == 403) {
-                    RequestResult.Error(RequestError.BANNED)
-                } else if (loginResponse.body() == "Fails.") {
-                    RequestResult.Error(RequestError.INVALID_CREDENTIALS)
-                } else if (!loginResponse.isSuccessful || loginResponse.body() != "Ok.") {
-                    RequestResult.Error(RequestError.UNKNOWN)
-                } else {
-                    val newResponse = block(service)
-                    val newBody = newResponse.body()
-                    if (newBody != null) {
-                        RequestResult.Success(newBody)
-                    } else {
-                        RequestResult.Error(RequestError.UNKNOWN)
-                    }
-                }
-            } else if (!blockResponse.isSuccessful || body == null) {
+            if (loginResponse.code() == 403) {
+                RequestResult.Error(RequestError.BANNED)
+            } else if (loginResponse.body() == "Fails.") {
+                RequestResult.Error(RequestError.INVALID_CREDENTIALS)
+            } else if (!loginResponse.isSuccessful || loginResponse.body() != "Ok.") {
                 RequestResult.Error(RequestError.UNKNOWN)
             } else {
-                RequestResult.Success(body)
+                val newResponse = block(service)
+                val newBody = newResponse.body()
+                if (newBody != null) {
+                    RequestResult.Success(newBody)
+                } else {
+                    RequestResult.Error(RequestError.UNKNOWN)
+                }
             }
-        } catch (e: ConnectException) {
-            RequestResult.Error(RequestError.CANNOT_CONNECT)
-        } catch (e: SocketTimeoutException) {
+        } else if (!blockResponse.isSuccessful || body == null) {
+            RequestResult.Error(RequestError.UNKNOWN)
+        } else {
+            RequestResult.Success(body)
+        }
+    } catch (e: ConnectException) {
+        RequestResult.Error(RequestError.CANNOT_CONNECT)
+    } catch (e: SocketTimeoutException) {
+        RequestResult.Error(RequestError.TIMEOUT)
+    } catch (e: UnknownHostException) {
+        RequestResult.Error(RequestError.UNKNOWN_HOST)
+    } catch (e: IllegalArgumentException) {
+        RequestResult.Error(RequestError.UNKNOWN_HOST)
+    } catch (e: JsonMappingException) {
+        if (e.cause is SocketTimeoutException) {
             RequestResult.Error(RequestError.TIMEOUT)
-        } catch (e: UnknownHostException) {
-            RequestResult.Error(RequestError.UNKNOWN_HOST)
-        } catch (e: IllegalArgumentException) {
-            RequestResult.Error(RequestError.UNKNOWN_HOST)
-        } catch (e: JsonMappingException) {
-            if (e.cause is SocketTimeoutException) {
-                RequestResult.Error(RequestError.TIMEOUT)
-            } else {
-                throw e
-            }
+        } else {
+            throw e
         }
     }
 }
