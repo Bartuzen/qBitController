@@ -1,16 +1,17 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
 import android.os.Bundle
+import android.view.View
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.*
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.dataStore
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -29,12 +30,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             SettingsDataStore(preferenceManager.context.dataStore)
 
         initSettings()
+    }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingsFragmentEvent.collect { event ->
-                when (event) {
-                    is SettingsViewModel.SettingsFragmentEvent.AddEditServerCompleted ->
-                        initSettings()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.settingsFragmentEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+            when (event) {
+                SettingsViewModel.SettingsFragmentEvent.AddEditServerCompleted -> {
+                    initSettings()
                 }
             }
         }

@@ -17,6 +17,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragmentBuilder
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = ServerListAdapter(object : ServerListAdapter.OnItemClickListener {
             override fun onClick(serverConfig: ServerConfig) {
                 binding.layoutDrawer.closeDrawer(GravityCompat.START)
-                viewModel.currentServer.value = serverConfig
+                viewModel.setCurrentServer(serverConfig)
             }
         })
         binding.recyclerServerList.adapter = adapter
@@ -49,14 +50,13 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
 
-        viewModel.serverList.observe(this) { serverList ->
-            viewModel.onServerListChanged(serverList)
+        viewModel.serverList.launchAndCollectLatestIn(this) { serverList ->
             adapter.submitList(serverList.values.toList())
         }
 
-        viewModel.currentServer.observe(this) { serverConfig ->
+        viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
             adapter.selectedServerId = serverConfig?.id ?: -1
-            val currentFragment: TorrentListFragment? =
+            val currentFragment =
                 supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
 
             supportActionBar?.title = serverConfig?.name ?: getString(R.string.app_name)

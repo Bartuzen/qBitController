@@ -3,10 +3,10 @@ package dev.bartuzen.qbitcontroller.ui.settings
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivitySettingsBinding
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
@@ -34,18 +34,16 @@ class SettingsActivity : AppCompatActivity() {
                 .commit()
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.settingsActivityEvent.collect { event ->
-                when (event) {
-                    is SettingsViewModel.SettingsActivityEvent.MovePage -> {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.container, event.fragment)
-                            .addToBackStack(null)
-                            .commit()
-                    }
-                    is SettingsViewModel.SettingsActivityEvent.AddEditServerCompleted -> {
-                        supportFragmentManager.popBackStack()
-                    }
+        viewModel.settingsActivityEvent.launchAndCollectIn(this) { event ->
+            when (event) {
+                is SettingsViewModel.SettingsActivityEvent.MovePage -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, event.fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+                SettingsViewModel.SettingsActivityEvent.AddEditServerCompleted -> {
+                    supportFragmentManager.popBackStack()
                 }
             }
         }

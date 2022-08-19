@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
-import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.setItemMargin
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.*
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class TorrentFilesFragment : Fragment(R.layout.fragment_torrent_files) {
@@ -42,27 +40,25 @@ class TorrentFilesFragment : Fragment(R.layout.fragment_torrent_files) {
             }
         }
 
-        if (viewModel.torrentFiles.isSet) {
-            binding.progressIndicator.visibility = View.GONE
-        } else {
-            viewModel.updateFiles()
-        }
-
-        viewModel.torrentFiles.observe(viewLifecycleOwner) { files ->
-            files?.let {
-                binding.progressIndicator.visibility = View.GONE
-                adapter.submitList(it)
+        if (savedInstanceState == null) {
+            viewModel.updateFiles().invokeOnCompletion {
+                viewModel.isTorrentFilesLoading.value = false
             }
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.torrentFilesEvent.collect { event ->
-                when (event) {
-                    is TorrentViewModel.TorrentFilesEvent.OnError -> {
-                        context?.getErrorMessage(event.error)?.let {
-                            showSnackbar(it)
-                        }
-                    }
+        viewModel.isTorrentFilesLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.torrentFiles.filterNotNull()
+            .launchAndCollectLatestIn(viewLifecycleOwner) { files ->
+                adapter.submitList(files)
+            }
+
+        viewModel.torrentFilesEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+            when (event) {
+                is TorrentViewModel.TorrentFilesEvent.OnError -> {
+                    showSnackbar(requireContext().getErrorMessage(event.error))
                 }
             }
         }

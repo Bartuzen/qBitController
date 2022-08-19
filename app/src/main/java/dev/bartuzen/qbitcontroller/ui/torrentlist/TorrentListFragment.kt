@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,9 +17,8 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
-import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.setItemMargin
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.*
+import kotlinx.coroutines.flow.filterNotNull
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -52,10 +50,10 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.setItemMargin(8, 8)
 
-        viewModel.torrentList.observe(viewLifecycleOwner) { torrentList ->
-            binding.progressIndicator.visibility = View.GONE
-            adapter.submitList(torrentList)
-        }
+        viewModel.torrentList.filterNotNull()
+            .launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
+                adapter.submitList(torrentList)
+            }
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
@@ -63,20 +61,20 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }
         }
 
-        if (viewModel.torrentList.isSet) {
-            binding.progressIndicator.visibility = View.GONE
-        } else {
-            viewModel.updateTorrentList(serverConfig)
+        if (savedInstanceState == null) {
+            viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                viewModel.isLoading.value = false
+            }
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.torrentListEvent.collect { event ->
-                when (event) {
-                    is TorrentListViewModel.TorrentListEvent.OnError -> {
-                        context?.getErrorMessage(event.result)?.let {
-                            showSnackbar(it)
-                        }
-                    }
+        viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.torrentListEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+            when (event) {
+                is TorrentListViewModel.TorrentListEvent.OnError -> {
+                    showSnackbar(requireContext().getErrorMessage(event.result))
                 }
             }
         }
@@ -85,19 +83,16 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.torrent_list_menu, menu)
 
-        viewModel.torrentSort.observe(viewLifecycleOwner) {
-            val selectedSort = when (viewModel.torrentSort.value) {
+        viewModel.torrentSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
+            val selectedSort = when (sort) {
                 TorrentSort.HASH -> R.id.menu_sort_hash
                 TorrentSort.NAME -> R.id.menu_sort_name
                 TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
                 TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
                 TorrentSort.PRIORITY -> R.id.menu_sort_priority
-                else -> return@observe
             }
             menu.findItem(selectedSort).isChecked = true
         }
-
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {

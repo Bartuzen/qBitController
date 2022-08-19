@@ -8,9 +8,9 @@ import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.*
 import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import dev.bartuzen.qbitcontroller.ui.common.SettableLiveData
 import dev.bartuzen.qbitcontroller.ui.common.StateDelegate
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,10 +20,10 @@ class TorrentViewModel @Inject constructor(
     private val repository: TorrentRepository,
     state: SavedStateHandle
 ) : ViewModel() {
-    val torrent = SettableLiveData<Torrent>()
-    val torrentFiles = SettableLiveData<List<TorrentFile>>()
-    val torrentPieces = SettableLiveData<List<PieceState>>()
-    val torrentProperties = SettableLiveData<TorrentProperties>()
+    val torrent = MutableStateFlow<Torrent?>(null)
+    val torrentFiles = MutableStateFlow<List<TorrentFile>?>(null)
+    val torrentPieces = MutableStateFlow<List<PieceState>?>(null)
+    val torrentProperties = MutableStateFlow<TorrentProperties?>(null)
 
     var torrentHash: String? by StateDelegate(state, "torrent_hash")
     var serverConfig: ServerConfig? by StateDelegate(state, "server_config")
@@ -40,19 +40,19 @@ class TorrentViewModel @Inject constructor(
     private val torrentPiecesEventChannel = Channel<TorrentPiecesEvent>()
     val torrentPiecesEvent = torrentPiecesEventChannel.receiveAsFlow()
 
+    val isTorrentLoading = MutableStateFlow(true)
+    val isTorrentFilesLoading = MutableStateFlow(true)
+    val isTorrentPiecesLoading = MutableStateFlow(true)
+
     fun updateTorrent() = viewModelScope.launch {
         serverConfig?.let { config ->
             when (val result = repository.getTorrent(config, torrentHash ?: "")) {
-                is RequestResult.Success -> {
-                    if (result.data.size == 1) {
-                        torrent.value = result.data.first()
-                    } else if (torrent.value == null) {
-                        torrent.isSet = true
-                    }
+                is RequestResult.Success -> if (result.data.size == 1) {
+                    torrent.value = result.data.first()
                 }
-                is RequestResult.Error -> {
-                    torrentOverviewEventChannel.send(TorrentOverviewEvent.OnError(result.error))
-                }
+                is RequestResult.Error -> torrentOverviewEventChannel.send(
+                    TorrentOverviewEvent.OnError(result.error)
+                )
             }
         }
     }
@@ -68,22 +68,24 @@ class TorrentViewModel @Inject constructor(
         }
     }
 
-    fun updatePieces() = viewModelScope.launch {
+    fun updatePiecesAndProperties() = viewModelScope.launch {
         serverConfig?.let { config ->
-            when (val result = repository.getPieces(config, torrentHash ?: "")) {
-                is RequestResult.Success -> torrentPieces.value = result.data
+            when (val piecesResult = repository.getPieces(config, torrentHash ?: "")) {
+                is RequestResult.Success -> {
+                    when (val propertiesResult =
+                        repository.getProperties(config, torrentHash ?: "")) {
+                        is RequestResult.Success -> {
+                            torrentPieces.value = piecesResult.data
+                            torrentProperties.value = propertiesResult.data
+                        }
+                        is RequestResult.Error -> torrentPiecesEventChannel.send(
+                            TorrentPiecesEvent.OnError(propertiesResult.error)
+                        )
+                    }
+                }
                 is RequestResult.Error -> torrentPiecesEventChannel.send(
-                    TorrentPiecesEvent.OnError(result.error)
+                    TorrentPiecesEvent.OnError(piecesResult.error)
                 )
-            }
-        }
-    }
-
-    fun updateProperties() = viewModelScope.launch {
-        serverConfig?.let { config ->
-            when (val result = repository.getProperties(config, torrentHash ?: "")) {
-                is RequestResult.Success -> torrentProperties.value = result.data
-                is RequestResult.Error -> {}
             }
         }
     }
@@ -103,7 +105,7 @@ class TorrentViewModel @Inject constructor(
 
     fun resumeTorrent() = viewModelScope.launch {
         serverConfig?.let { config ->
-            when(val result = repository.resumeTorrent(config, torrentHash ?: "")) {
+            when (val result = repository.resumeTorrent(config, torrentHash ?: "")) {
                 is RequestResult.Success -> torrentActivityEventChannel.send(
                     TorrentActivityEvent.OnTorrentResume
                 )

@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
 import dev.bartuzen.qbitcontroller.utils.*
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
@@ -30,17 +30,21 @@ class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
             }
         }
 
-        if (viewModel.torrent.isSet) {
-            binding.progressIndicator.visibility = View.GONE
-        } else {
-            viewModel.updateTorrent()
+        if (savedInstanceState == null) {
+            if (viewModel.torrent.value == null) {
+                viewModel.updateTorrent().invokeOnCompletion {
+                    viewModel.isTorrentLoading.value = false
+                }
+            } else {
+                viewModel.isTorrentLoading.value = false
+            }
         }
 
-        viewModel.torrent.observe(viewLifecycleOwner) { torrent ->
-            val context = requireContext()
+        viewModel.isTorrentLoading.launchAndCollectLatestIn(viewLifecycleOwner) {isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
 
-            binding.progressIndicator.visibility = View.GONE
-
+        viewModel.torrent.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrent ->
             binding.textName.text = torrent.name
 
             val progress = torrent.progress * 100
@@ -51,39 +55,34 @@ class TorrentOverviewFragment : Fragment(R.layout.fragment_torrent_overview) {
             } else {
                 "100"
             }
-            binding.textProgress.text =
-                context.getString(
-                    R.string.torrent_item_progress,
-                    context.formatByte(torrent.completed),
-                    context.formatByte(torrent.size),
-                    progressText
-                )
+            binding.textProgress.text = requireContext().getString(
+                R.string.torrent_item_progress,
+                requireContext().formatByte(torrent.completed),
+                requireContext().formatByte(torrent.size),
+                progressText
+            )
 
-            val eta = context.formatTime(torrent.eta)
+            val eta = requireContext().formatTime(torrent.eta)
             if (eta != "inf") {
                 binding.textEta.text = eta
             }
-            binding.textState.text = context.formatState(torrent.state)
+            binding.textState.text = requireContext().formatState(torrent.state)
 
 
             val speedList = mutableListOf<String>()
             if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${context.formatBytePerSecond(torrent.uploadSpeed)}")
+                speedList.add("↑ ${requireContext().formatBytePerSecond(torrent.uploadSpeed)}")
             }
             if (torrent.downloadSpeed > 0) {
-                speedList.add("↓ ${context.formatBytePerSecond(torrent.downloadSpeed)}")
+                speedList.add("↓ ${requireContext().formatBytePerSecond(torrent.downloadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.torrentOverviewEvent.collect { event ->
-                when (event) {
-                    is TorrentViewModel.TorrentOverviewEvent.OnError -> {
-                        context?.getErrorMessage(event.error)?.let {
-                            showSnackbar(it)
-                        }
-                    }
+        viewModel.torrentOverviewEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+            when (event) {
+                is TorrentViewModel.TorrentOverviewEvent.OnError -> {
+                    showSnackbar(requireContext().getErrorMessage(event.error))
                 }
             }
         }

@@ -5,18 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPiecesBinding
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
-import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import dev.bartuzen.qbitcontroller.utils.toDp
-import dev.bartuzen.qbitcontroller.utils.toPx
-import kotlinx.coroutines.launch
+import dev.bartuzen.qbitcontroller.utils.*
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
@@ -74,44 +70,35 @@ class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            lifecycleScope.launch {
-                viewModel.updatePieces().join()
-                viewModel.updateProperties().join()
+            viewModel.updatePiecesAndProperties().invokeOnCompletion {
                 binding.swipeRefresh.isRefreshing = false
             }
         }
 
-        if (!viewModel.torrentProperties.isSet) {
-            viewModel.updateProperties()
-        }
-
-        if (viewModel.torrentPieces.isSet) {
-            binding.progressIndicator.visibility = View.GONE
-        } else {
-            viewModel.updatePieces()
-        }
-
-        viewModel.torrentProperties.observe(viewLifecycleOwner) { properties ->
-            properties?.apply {
-                adapter.submitHeaderData(piecesCount, pieceSize)
+        if (savedInstanceState == null) {
+            viewModel.updatePiecesAndProperties().invokeOnCompletion {
+                viewModel.isTorrentPiecesLoading.value = false
             }
         }
 
-        viewModel.torrentPieces.observe(viewLifecycleOwner) { pieces ->
-            pieces?.let {
-                binding.progressIndicator.visibility = View.GONE
-                adapter.submitList(it)
-            }
+        viewModel.isTorrentPiecesLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.torrentPiecesEvent.collect { event ->
-                when (event) {
-                    is TorrentViewModel.TorrentPiecesEvent.OnError -> {
-                        context?.getErrorMessage(event.error)?.let {
-                            showSnackbar(it)
-                        }
-                    }
+        viewModel.torrentProperties.filterNotNull()
+            .launchAndCollectLatestIn(viewLifecycleOwner) { properties ->
+                adapter.submitHeaderData(properties.piecesCount, properties.pieceSize)
+            }
+
+        viewModel.torrentPieces.filterNotNull()
+            .launchAndCollectLatestIn(viewLifecycleOwner) { pieces ->
+                adapter.submitList(pieces)
+            }
+
+        viewModel.torrentPiecesEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+            when (event) {
+                is TorrentViewModel.TorrentPiecesEvent.OnError -> {
+                    showSnackbar(requireContext().getErrorMessage(event.error))
                 }
             }
         }

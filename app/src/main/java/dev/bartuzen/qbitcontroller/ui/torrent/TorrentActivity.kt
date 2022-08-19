@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,9 +17,8 @@ import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
-import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import dev.bartuzen.qbitcontroller.utils.showToast
+import dev.bartuzen.qbitcontroller.utils.*
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class TorrentActivity : AppCompatActivity() {
@@ -84,16 +82,16 @@ class TorrentActivity : AppCompatActivity() {
             viewModel.torrent.value = torrent
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.torrentActivityEvent.collect { event ->
-                when (event) {
-                    is TorrentViewModel.TorrentActivityEvent.OnError ->
-                        showSnackbar(getErrorMessage(event.error))
-                    TorrentViewModel.TorrentActivityEvent.OnTorrentPause ->
-                        showSnackbar(getString(R.string.torrent_paused_success))
-                    TorrentViewModel.TorrentActivityEvent.OnTorrentResume ->
-                        showSnackbar(getString(R.string.torrent_resumed_success))
-
+        viewModel.torrentActivityEvent.launchAndCollectIn(this) { event ->
+            when (event) {
+                is TorrentViewModel.TorrentActivityEvent.OnError -> {
+                    showSnackbar(getErrorMessage(event.error))
+                }
+                TorrentViewModel.TorrentActivityEvent.OnTorrentPause -> {
+                    showSnackbar(getString(R.string.torrent_paused_success))
+                }
+                TorrentViewModel.TorrentActivityEvent.OnTorrentResume -> {
+                    showSnackbar(getString(R.string.torrent_resumed_success))
                 }
             }
         }
@@ -101,7 +99,8 @@ class TorrentActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.torrent_menu, menu)
-        viewModel.torrent.observe(this) { torrent ->
+
+        viewModel.torrent.filterNotNull().launchAndCollectLatestIn(this) { torrent ->
             if (torrent.state == TorrentState.PAUSED_DL || torrent.state == TorrentState.PAUSED_UP) {
                 menu.findItem(R.id.menu_resume).isVisible = true
                 menu.findItem(R.id.menu_pause).isVisible = false
@@ -110,6 +109,7 @@ class TorrentActivity : AppCompatActivity() {
                 menu.findItem(R.id.menu_resume).isVisible = false
             }
         }
+
         return true
     }
 
