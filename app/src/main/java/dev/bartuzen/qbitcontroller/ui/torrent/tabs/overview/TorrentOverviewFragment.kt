@@ -1,4 +1,4 @@
-package dev.bartuzen.qbitcontroller.ui.torrent.tabs
+package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 
 import android.os.Bundle
 import android.view.View
