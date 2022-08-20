@@ -38,8 +38,8 @@ class TorrentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)
-        val torrent = intent.getParcelableExtra<Torrent>(Extras.TORRENT)
-        val serverConfig = intent.getParcelableExtra<ServerConfig>(Extras.SERVER_CONFIG)
+        val torrent = intent.getParcelable<Torrent>(Extras.TORRENT)
+        val serverConfig = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
 
         if (serverConfig == null || torrentHash == null || (torrent != null && torrent.hash != torrentHash)) {
             finish()
