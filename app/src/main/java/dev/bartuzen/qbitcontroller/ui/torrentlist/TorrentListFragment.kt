@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -35,7 +36,36 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentListBinding.bind(view)
 
-        setHasOptionsMenu(true)
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.torrent_list_menu, menu)
+
+                viewModel.torrentSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
+                    val selectedSort = when (sort) {
+                        TorrentSort.HASH -> R.id.menu_sort_hash
+                        TorrentSort.NAME -> R.id.menu_sort_name
+                        TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
+                        TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
+                        TorrentSort.PRIORITY -> R.id.menu_sort_priority
+                    }
+                    menu.findItem(selectedSort).isChecked = true
+                }
+
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_sort_name -> viewModel.setTorrentSort(TorrentSort.NAME)
+                    R.id.menu_sort_hash -> viewModel.setTorrentSort(TorrentSort.HASH)
+                    R.id.menu_sort_dlspeed -> viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED)
+                    R.id.menu_sort_upspeed -> viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED)
+                    R.id.menu_sort_priority -> viewModel.setTorrentSort(TorrentSort.PRIORITY)
+                    else -> return false
+                }
+                return true
+            }
+
+        }, viewLifecycleOwner)
 
         val adapter = TorrentListAdapter(object : TorrentListAdapter.OnItemClickListener {
             override fun onClick(torrent: Torrent) {
@@ -78,45 +108,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 }
             }
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.torrent_list_menu, menu)
-
-        viewModel.torrentSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
-            val selectedSort = when (sort) {
-                TorrentSort.HASH -> R.id.menu_sort_hash
-                TorrentSort.NAME -> R.id.menu_sort_name
-                TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
-                TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
-                TorrentSort.PRIORITY -> R.id.menu_sort_priority
-            }
-            menu.findItem(selectedSort).isChecked = true
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.menu_sort_name -> {
-            viewModel.setTorrentSort(TorrentSort.NAME)
-            true
-        }
-        R.id.menu_sort_hash -> {
-            viewModel.setTorrentSort(TorrentSort.HASH)
-            true
-        }
-        R.id.menu_sort_dlspeed -> {
-            viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED)
-            true
-        }
-        R.id.menu_sort_upspeed -> {
-            viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED)
-            true
-        }
-        R.id.menu_sort_priority -> {
-            viewModel.setTorrentSort(TorrentSort.PRIORITY)
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

@@ -2,9 +2,11 @@ package dev.bartuzen.qbitcontroller.ui.torrent
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -78,6 +80,34 @@ class TorrentActivity : AppCompatActivity() {
             }
         }.attach()
 
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.torrent_menu, menu)
+
+                viewModel.torrent.filterNotNull()
+                    .launchAndCollectLatestIn(this@TorrentActivity) { torrent ->
+                        if (torrent.state == TorrentState.PAUSED_DL ||
+                            torrent.state == TorrentState.PAUSED_UP
+                        ) {
+                            menu.findItem(R.id.menu_resume).isVisible = true
+                            menu.findItem(R.id.menu_pause).isVisible = false
+                        } else {
+                            menu.findItem(R.id.menu_pause).isVisible = true
+                            menu.findItem(R.id.menu_resume).isVisible = false
+                        }
+                    }
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_pause -> viewModel.pauseTorrent()
+                    R.id.menu_resume -> viewModel.resumeTorrent()
+                    else -> return false
+                }
+                return true
+            }
+        })
+
         if (torrent != null) {
             viewModel.torrent.value = torrent
         }
@@ -96,33 +126,4 @@ class TorrentActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.torrent_menu, menu)
-
-        viewModel.torrent.filterNotNull().launchAndCollectLatestIn(this) { torrent ->
-            if (torrent.state == TorrentState.PAUSED_DL || torrent.state == TorrentState.PAUSED_UP) {
-                menu.findItem(R.id.menu_resume).isVisible = true
-                menu.findItem(R.id.menu_pause).isVisible = false
-            } else {
-                menu.findItem(R.id.menu_pause).isVisible = true
-                menu.findItem(R.id.menu_resume).isVisible = false
-            }
-        }
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.menu_pause -> {
-                viewModel.pauseTorrent()
-                true
-            }
-            R.id.menu_resume -> {
-                viewModel.resumeTorrent()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 }

@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -39,8 +40,6 @@ class AddEditServerFragment : BasePreferenceFragment() {
             }
         }
         preferenceManager.preferenceDataStore = dataStore
-
-        setHasOptionsMenu(true)
 
         val context = preferenceManager.context
         val screen = preferenceManager.createPreferenceScreen(context)
@@ -84,59 +83,64 @@ class AddEditServerFragment : BasePreferenceFragment() {
         preferenceScreen = screen
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.add_edit_server_menu, menu)
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.add_edit_server_menu, menu)
+            }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        if (serverConfig == null) {
-            menu.findItem(R.id.menu_delete).isVisible = false
-        }
-    }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_save -> {
+                        val host = dataStore.getString("host", "")
+                        val username = dataStore.getString("username", "")
+                        val password = dataStore.getString("password", "")
+                        val name = dataStore.getString("name", "")
 
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.menu_save -> {
-                val host = dataStore.getString("host", "")
-                val username = dataStore.getString("username", "")
-                val password = dataStore.getString("password", "")
-                val name = dataStore.getString("name", "")
-
-                val view = requireActivity().findViewById<View>(android.R.id.content)
-                if (host.isNotBlank() && username.isNotBlank() && password.isNotBlank()) {
-                    if (serverConfig == null) {
-                        val config = ServerConfig(
-                            -1,
-                            host,
-                            username,
-                            password,
-                            if (name.isNotBlank()) name else getString(R.string.settings_default_server_name)
-                        )
-                        viewModel.addServer(config)
-                        showSnackbar(R.string.settings_server_add_success, view)
-                    } else {
-                        serverConfig?.let { config ->
-                            dataStore.toServerConfig(config)
-                            viewModel.editServer(config)
+                        val parentView = requireActivity().findViewById<View>(android.R.id.content)
+                        if (host.isNotBlank() && username.isNotBlank() && password.isNotBlank()) {
+                            if (serverConfig == null) {
+                                val config = ServerConfig(
+                                    -1,
+                                    host,
+                                    username,
+                                    password,
+                                    name.ifBlank { getString(R.string.settings_default_server_name) }
+                                )
+                                viewModel.addServer(config)
+                                showSnackbar(R.string.settings_server_add_success, parentView)
+                            } else {
+                                serverConfig?.let { config ->
+                                    dataStore.toServerConfig(config)
+                                    viewModel.editServer(config)
+                                }
+                                showSnackbar(R.string.settings_server_edit_success, parentView)
+                            }
+                        } else {
+                            showSnackbar(R.string.settings_fill_blank_fields, parentView)
                         }
-                        showSnackbar(R.string.settings_server_edit_success, view)
                     }
-                } else {
-                    showSnackbar(R.string.settings_fill_blank_fields, view)
+                    R.id.menu_delete -> {
+                        serverConfig?.let { config ->
+                            viewModel.removeServer(config)
+                            val parentView =
+                                requireActivity().findViewById<View>(android.R.id.content)
+                            showSnackbar(R.string.settings_server_remove_success, parentView)
+                        }
+                    }
+                    else -> return false
                 }
-                true
+                return true
             }
-            R.id.menu_delete -> {
-                serverConfig?.let { config ->
-                    viewModel.removeServer(config)
-                    val view = requireActivity().findViewById<View>(R.id.content)
-                    showSnackbar(R.string.settings_server_remove_success, view)
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
+            override fun onPrepareMenu(menu: Menu) {
+                if (serverConfig == null) {
+                    menu.findItem(R.id.menu_delete).isVisible = false
+                }
+            }
+        }, viewLifecycleOwner)
+    }
 
     private val customSummaryProvider =
         Preference.SummaryProvider<EditTextPreference> { preference ->
@@ -181,7 +185,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
 
         fun toServerConfig(serverConfig: ServerConfig) {
             serverConfig.name =
-                if (name.isNotBlank()) name else getString(R.string.settings_default_server_name)
+                name.ifBlank { getString(R.string.settings_default_server_name) }
             serverConfig.host = host
             serverConfig.username = username
             serverConfig.password = password

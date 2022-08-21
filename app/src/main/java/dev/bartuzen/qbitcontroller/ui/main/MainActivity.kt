@@ -3,11 +3,13 @@ package dev.bartuzen.qbitcontroller.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.MenuProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +33,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.main_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_settings -> {
+                        startActivity(
+                            Intent(this@MainActivity, SettingsActivity::class.java)
+                        )
+                    }
+                    else -> return false
+                }
+                return true
+            }
+        })
 
         val actionBarDrawerToggle = ActionBarDrawerToggle(
             this, binding.layoutDrawer, binding.toolbar,
@@ -76,20 +96,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            R.id.menu_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
     override fun onBackPressed() {
         if (binding.layoutDrawer.isDrawerOpen(GravityCompat.START)) {
