@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -52,6 +53,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.layoutDrawer.isDrawerOpen(GravityCompat.START)) {
+                    binding.layoutDrawer.closeDrawer(GravityCompat.START)
+                }
+            }
+        })
+
         val actionBarDrawerToggle = ActionBarDrawerToggle(
             this, binding.layoutDrawer, binding.toolbar,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -94,14 +103,6 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, fragment)
                     .commit()
             }
-        }
-    }
-
-    override fun onBackPressed() {
-        if (binding.layoutDrawer.isDrawerOpen(GravityCompat.START)) {
-            binding.layoutDrawer.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
         }
     }
 }
