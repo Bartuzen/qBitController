@@ -1,12 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -14,25 +9,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.model.Torrent
-import dev.bartuzen.qbitcontroller.model.TorrentState
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
-import dev.bartuzen.qbitcontroller.utils.*
-import kotlinx.coroutines.flow.filterNotNull
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragmentBuilder
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragmentBuilder
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragmentBuilder
+import dev.bartuzen.qbitcontroller.utils.getParcelable
+import dev.bartuzen.qbitcontroller.utils.showToast
 
 @AndroidEntryPoint
 class TorrentActivity : AppCompatActivity() {
     object Extras {
         const val TORRENT_HASH = "dev.bartuzen.qbitcontroller.TORRENT_HASH"
-        const val TORRENT = "dev.bartuzen.qbitcontroller.TORRENT"
         const val SERVER_CONFIG = "dev.bartuzen.qbitcontroller.SERVER_CONFIG"
     }
 
     private lateinit var binding: ActivityTorrentBinding
-
-    private val viewModel: TorrentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,17 +30,13 @@ class TorrentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)
-        val torrent = intent.getParcelable<Torrent>(Extras.TORRENT)
         val serverConfig = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
 
-        if (serverConfig == null || torrentHash == null || (torrent != null && torrent.hash != torrentHash)) {
+        if (serverConfig == null || torrentHash == null) {
             finish()
             showToast(R.string.an_error_occurred)
             return
         }
-
-        viewModel.torrentHash = torrentHash
-        viewModel.serverConfig = serverConfig
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = serverConfig.name
@@ -63,9 +49,9 @@ class TorrentActivity : AppCompatActivity() {
             override fun getItemCount() = 3
 
             override fun createFragment(position: Int) = when (position) {
-                0 -> TorrentOverviewFragment()
-                1 -> TorrentFilesFragment()
-                2 -> TorrentPiecesFragment()
+                0 -> TorrentOverviewFragmentBuilder(serverConfig, torrentHash).build()
+                1 -> TorrentFilesFragmentBuilder(serverConfig, torrentHash).build()
+                2 -> TorrentPiecesFragmentBuilder(serverConfig, torrentHash).build()
                 else -> Fragment()
             }
         }.apply {
@@ -79,51 +65,5 @@ class TorrentActivity : AppCompatActivity() {
                 2 -> tab.text = getString(R.string.tab_torrent_pieces)
             }
         }.attach()
-
-        addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.torrent_menu, menu)
-
-                viewModel.torrent.filterNotNull()
-                    .launchAndCollectLatestIn(this@TorrentActivity) { torrent ->
-                        if (torrent.state == TorrentState.PAUSED_DL ||
-                            torrent.state == TorrentState.PAUSED_UP
-                        ) {
-                            menu.findItem(R.id.menu_resume).isVisible = true
-                            menu.findItem(R.id.menu_pause).isVisible = false
-                        } else {
-                            menu.findItem(R.id.menu_pause).isVisible = true
-                            menu.findItem(R.id.menu_resume).isVisible = false
-                        }
-                    }
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menu_pause -> viewModel.pauseTorrent()
-                    R.id.menu_resume -> viewModel.resumeTorrent()
-                    else -> return false
-                }
-                return true
-            }
-        })
-
-        if (torrent != null) {
-            viewModel.torrent.value = torrent
-        }
-
-        viewModel.torrentActivityEvent.launchAndCollectIn(this) { event ->
-            when (event) {
-                is TorrentViewModel.TorrentActivityEvent.OnError -> {
-                    showSnackbar(getErrorMessage(event.error))
-                }
-                TorrentViewModel.TorrentActivityEvent.OnTorrentPause -> {
-                    showSnackbar(getString(R.string.torrent_paused_success))
-                }
-                TorrentViewModel.TorrentActivityEvent.OnTorrentResume -> {
-                    showSnackbar(getString(R.string.torrent_resumed_success))
-                }
-            }
-        }
     }
 }

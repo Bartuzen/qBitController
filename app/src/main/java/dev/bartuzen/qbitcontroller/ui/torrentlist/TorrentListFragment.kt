@@ -71,7 +71,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             override fun onClick(torrent: Torrent) {
                 val intent = Intent(context, TorrentActivity::class.java).apply {
                     putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
-                    putExtra(TorrentActivity.Extras.TORRENT, torrent)
                     putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
                 }
                 startActivity(intent)

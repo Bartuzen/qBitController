@@ -3,25 +3,32 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hannesdorfmann.fragmentargs.annotation.Arg
+import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPiecesBinding
-import dev.bartuzen.qbitcontroller.ui.torrent.TorrentViewModel
+import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.*
 import kotlinx.coroutines.flow.filterNotNull
 
+@FragmentWithArgs
 @AndroidEntryPoint
-class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
+class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
     private var _binding: FragmentTorrentPiecesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: TorrentViewModel by viewModels(
-        ownerProducer = { requireActivity() }
-    )
+    private val viewModel: TorrentPiecesViewModel by viewModels()
+
+    @Arg
+    lateinit var serverConfig: ServerConfig
+
+    @Arg
+    lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,18 +77,18 @@ class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.updatePiecesAndProperties().invokeOnCompletion {
+            viewModel.updatePieces(serverConfig, torrentHash).invokeOnCompletion {
                 binding.swipeRefresh.isRefreshing = false
             }
         }
 
         if (savedInstanceState == null) {
-            viewModel.updatePiecesAndProperties().invokeOnCompletion {
-                viewModel.isTorrentPiecesLoading.value = false
+            viewModel.updatePieces(serverConfig, torrentHash).invokeOnCompletion {
+                viewModel.isLoading.value = false
             }
         }
 
-        viewModel.isTorrentPiecesLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
+        viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
             binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
@@ -95,9 +102,9 @@ class TorrentPiecesFragment : Fragment(R.layout.fragment_torrent_pieces) {
                 adapter.submitList(pieces)
             }
 
-        viewModel.torrentPiecesEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+        viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
-                is TorrentViewModel.TorrentPiecesEvent.OnError -> {
+                is TorrentPiecesViewModel.Event.OnError -> {
                     showSnackbar(requireContext().getErrorMessage(event.error))
                 }
             }
