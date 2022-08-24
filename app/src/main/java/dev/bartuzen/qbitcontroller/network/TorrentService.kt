@@ -6,14 +6,18 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import retrofit2.Response
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface TorrentService {
-    @GET("api/v2/auth/login")
+    @FormUrlEncoded
+    @POST("api/v2/auth/login")
     suspend fun login(
-        @Query("username") username: String,
-        @Query("password") password: String
+        @Field("username") username: String,
+        @Field("password") password: String
     ): Response<String>
 
     @GET("api/v2/torrents/info")
@@ -25,10 +29,10 @@ interface TorrentService {
     @GET("api/v2/torrents/files")
     suspend fun getFiles(@Query("hash") hash: String): Response<List<TorrentFile>>
 
-    @GET("api/v2/torrents/pause")
+    @POST("api/v2/torrents/pause")
     suspend fun pauseTorrent(@Query("hashes") hashes: String): Response<String>
 
-    @GET("api/v2/torrents/resume")
+    @POST("api/v2/torrents/resume")
     suspend fun resumeTorrent(@Query("hashes") hashes: String): Response<String>
 
     @GET("api/v2/torrents/pieceStates")
