@@ -25,8 +25,8 @@ class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
 
         init {
             binding.root.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(adapterPosition)?.let { file ->
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { file ->
                         listener?.onClick(file)
                     }
                 }

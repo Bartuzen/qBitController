@@ -29,8 +29,8 @@ class ServerListAdapter(private val listener: OnItemClickListener? = null) :
 
         init {
             binding.root.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(adapterPosition)?.let { serverConfig ->
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { serverConfig ->
                         currentList.forEachIndexed { i, config ->
                             if (config.id == selectedServerId || config.id == serverConfig.id) {
                                 notifyItemChanged(i)

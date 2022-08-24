@@ -28,8 +28,8 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
 
         init {
             binding.root.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(adapterPosition)?.let { torrent ->
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { torrent ->
                         listener?.onClick(torrent)
                     }
                 }
