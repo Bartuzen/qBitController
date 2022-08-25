@@ -3,16 +3,20 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ConcatAdapter
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.model.TorrentFile
+import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
-import dev.bartuzen.qbitcontroller.utils.*
-import kotlinx.coroutines.flow.filterNotNull
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import kotlinx.coroutines.flow.combine
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -32,14 +36,21 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentFilesBinding.bind(view)
 
-        val adapter =
-            TorrentFilesAdapter(object : TorrentFilesAdapter.OnItemClickListener {
-                override fun onClick(file: TorrentFile) {
-
+        val adapter = TorrentFilesAdapter(object : TorrentFilesAdapter.OnItemClickListener {
+            override fun onClick(file: TorrentFileNode) {
+                if (file.isFolder) {
+                    viewModel.goToFolder(file.name)
                 }
-            })
-        binding.recyclerFiles.adapter = adapter
-        binding.recyclerFiles.setItemMargin(16, 16)
+            }
+        })
+        val backButtonAdapter = TorrentFilesBackButtonAdapter(
+            object : TorrentFilesBackButtonAdapter.OnItemClickListener {
+                override fun onClick() {
+                    viewModel.goBack()
+                }
+            }
+        )
+        binding.recyclerFiles.adapter = ConcatAdapter(backButtonAdapter, adapter)
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.updateFiles(serverConfig, torrentHash).invokeOnCompletion {
@@ -57,10 +68,20 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
             binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        viewModel.torrentFiles.filterNotNull()
-            .launchAndCollectLatestIn(viewLifecycleOwner) { files ->
-                adapter.submitList(files)
+        combine(viewModel.nodeStack, viewModel.torrentFiles) { nodeStack, torrentFiles ->
+            nodeStack to torrentFiles
+        }.launchAndCollectLatestIn(viewLifecycleOwner) { (nodeStack, torrentFiles) ->
+            if (torrentFiles != null) {
+                val fileList = torrentFiles.findChildNode(nodeStack)?.children?.sortedWith(
+                    compareBy({ it.isFile }, { it.name.lowercase() })
+                )
+                if (fileList != null) {
+                    adapter.submitList(fileList) {
+                        backButtonAdapter.isVisible = nodeStack.isNotEmpty()
+                    }
+                }
             }
+        }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {

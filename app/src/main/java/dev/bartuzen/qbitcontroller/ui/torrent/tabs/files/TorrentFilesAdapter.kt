@@ -2,14 +2,17 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemFileBinding
-import dev.bartuzen.qbitcontroller.model.TorrentFile
+import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 
 class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
-    ListAdapter<TorrentFile, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
+    ListAdapter<TorrentFileNode, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -33,20 +36,25 @@ class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
             }
         }
 
-        fun bind(file: TorrentFile) {
+        fun bind(file: TorrentFileNode) {
             binding.textName.text = file.name
+
+            val iconId = if (file.isFile) R.drawable.ic_file else R.drawable.ic_folder
+            binding.imageIcon.setImageDrawable(
+                AppCompatResources.getDrawable(binding.root.context, iconId)
+            )
         }
     }
 
-    class DiffCallBack : DiffUtil.ItemCallback<TorrentFile>() {
-        override fun areItemsTheSame(oldItem: TorrentFile, newItem: TorrentFile) =
-            oldItem.index == newItem.index
+    class DiffCallBack : DiffUtil.ItemCallback<TorrentFileNode>() {
+        override fun areItemsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) =
+            oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: TorrentFile, newItem: TorrentFile) =
+        override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) =
             oldItem.name == newItem.name
     }
 
     interface OnItemClickListener {
-        fun onClick(file: TorrentFile)
+        fun onClick(file: TorrentFileNode)
     }
 }

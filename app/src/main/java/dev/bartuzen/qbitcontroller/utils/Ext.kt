@@ -20,3 +20,6 @@ fun <K, V> SortedMap<K, V>.first(): V? = firstKey().let { key ->
         null
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+fun <T> Stack<T>.copy() = clone() as Stack<T>

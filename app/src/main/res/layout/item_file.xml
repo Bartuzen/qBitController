@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -14,10 +14,10 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="8dp"
-        android:src="@drawable/ic_file"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_file" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_name"
@@ -26,8 +26,8 @@
         android:layout_margin="4dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/image_icon"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="File Name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
