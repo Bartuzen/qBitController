@@ -62,6 +62,12 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     R.id.menu_sort_priority -> viewModel.setTorrentSort(TorrentSort.PRIORITY)
                     else -> return false
                 }
+
+                viewModel.isLoading.value = true
+                viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                    viewModel.isLoading.value = false
+                }
+
                 return true
             }
 
