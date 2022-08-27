@@ -1,10 +1,12 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentBinding
 import dev.bartuzen.qbitcontroller.model.Torrent
@@ -72,6 +74,26 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
                 speedList.add("↓ ${context.formatBytePerSecond(torrent.downloadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
+
+            binding.chipGroupCategoryAndTag.removeAllViews()
+
+            if (torrent.category != null) {
+                val chip = Chip(context)
+                chip.text = torrent.category
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_category)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                binding.chipGroupCategoryAndTag.addView(chip)
+            }
+
+            torrent.tags.forEach { tag ->
+                val chip = Chip(context)
+                chip.text = tag
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_tag)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                binding.chipGroupCategoryAndTag.addView(chip)
+            }
         }
     }
 

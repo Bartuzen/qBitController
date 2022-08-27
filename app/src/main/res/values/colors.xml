@@ -15,4 +15,7 @@
 
     <color name="piece_downloaded">@color/color_primary</color>
     <color name="piece_not_downloaded">@color/gray</color>
+
+    <color name="torrent_category">@color/color_primary</color>
+    <color name="torrent_tag">@color/color_secondary</color>
 </resources>

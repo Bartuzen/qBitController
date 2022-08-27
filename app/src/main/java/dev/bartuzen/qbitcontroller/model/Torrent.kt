@@ -2,6 +2,9 @@ package dev.bartuzen.qbitcontroller.model
 
 import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import dev.bartuzen.qbitcontroller.model.deserializers.CategoryDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,6 +18,8 @@ data class Torrent(
     @JsonProperty("dlspeed") val downloadSpeed: Long,
     @JsonProperty("upspeed") val uploadSpeed: Long,
     @JsonProperty("progress") val progress: Double,
+    @JsonDeserialize(using = CategoryDeserializer::class) @JsonProperty("category") val category: String?,
+    @JsonDeserialize(using = TagDeserializer::class) @JsonProperty("tags") val tags: List<String>
 ) : Parcelable
 
 @Suppress("unused")

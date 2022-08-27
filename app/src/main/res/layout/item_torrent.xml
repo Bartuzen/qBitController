@@ -25,6 +25,15 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Torrent Name" />
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_category_and_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:chipSpacing="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_name" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_progress"
             android:layout_width="0dp"
@@ -32,7 +41,7 @@
             android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_name"
+            app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
             tools:text="Progress Text" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -41,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_name"
+            app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
             tools:text="ETA" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
