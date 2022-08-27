@@ -54,17 +54,18 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menu_sort_name -> viewModel.setTorrentSort(TorrentSort.NAME)
-                    R.id.menu_sort_hash -> viewModel.setTorrentSort(TorrentSort.HASH)
-                    R.id.menu_sort_dlspeed -> viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED)
-                    R.id.menu_sort_upspeed -> viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED)
-                    R.id.menu_sort_priority -> viewModel.setTorrentSort(TorrentSort.PRIORITY)
+                val sort = when (menuItem.itemId) {
+                    R.id.menu_sort_name -> TorrentSort.NAME
+                    R.id.menu_sort_hash -> TorrentSort.HASH
+                    R.id.menu_sort_dlspeed -> TorrentSort.DOWNLOAD_SPEED
+                    R.id.menu_sort_upspeed -> TorrentSort.UPLOAD_SPEED
+                    R.id.menu_sort_priority -> TorrentSort.PRIORITY
                     else -> return false
                 }
+                viewModel.setTorrentSort(sort)
 
                 viewModel.isLoading.value = true
-                viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                viewModel.updateTorrentList(serverConfig, sort).invokeOnCompletion {
                     viewModel.isLoading.value = false
                 }
 

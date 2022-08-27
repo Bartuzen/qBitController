@@ -31,14 +31,21 @@ class TorrentListViewModel @Inject constructor(
 
     val isLoading = MutableStateFlow(true)
 
-    fun updateTorrentList(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (val result = repository.getTorrentList(serverConfig, torrentSort.first())) {
-            is RequestResult.Success -> torrentList.value = result.data
-            is RequestResult.Error -> torrentListEventChannel.send(
-                TorrentListEvent.OnError(result.error)
-            )
+    fun updateTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) =
+        viewModelScope.launch {
+            when (
+                val result = repository.getTorrentList(
+                    serverConfig, torrentSort ?: this@TorrentListViewModel.torrentSort.first()
+                )
+            ) {
+                is RequestResult.Success -> {
+                    torrentList.value = result.data
+                }
+                is RequestResult.Error -> {
+                    torrentListEventChannel.send(TorrentListEvent.OnError(result.error))
+                }
+            }
         }
-    }
 
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
