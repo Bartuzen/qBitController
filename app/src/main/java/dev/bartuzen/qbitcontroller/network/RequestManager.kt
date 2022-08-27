@@ -102,6 +102,8 @@ class RequestManager @Inject constructor() {
         } else {
             throw e
         }
+    } catch (e: Exception) {
+        RequestResult.Error(RequestError.UNKNOWN)
     }
 }
 
