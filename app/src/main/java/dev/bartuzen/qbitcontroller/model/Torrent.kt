@@ -18,8 +18,8 @@ data class Torrent(
     @JsonProperty("dlspeed") val downloadSpeed: Long,
     @JsonProperty("upspeed") val uploadSpeed: Long,
     @JsonProperty("progress") val progress: Double,
-    @JsonDeserialize(using = CategoryDeserializer::class) @JsonProperty("category") val category: String?,
-    @JsonDeserialize(using = TagDeserializer::class) @JsonProperty("tags") val tags: List<String>
+    @JsonProperty("category") @JsonDeserialize(using = CategoryDeserializer::class) val category: String?,
+    @JsonProperty("tags") @JsonDeserialize(using = TagDeserializer::class) val tags: List<String>
 ) : Parcelable
 
 @Suppress("unused")
