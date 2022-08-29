@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.databinding.ItemPieceBinding
+import dev.bartuzen.qbitcontroller.databinding.ItemTorrentPieceBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentPieceHeaderBinding
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.utils.formatByte
@@ -33,7 +33,7 @@ class TorrentPiecesAdapter :
         )
     } else {
         ViewHolder(
-            ItemPieceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemTorrentPieceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
@@ -53,7 +53,7 @@ class TorrentPiecesAdapter :
         notifyItemChanged(0)
     }
 
-    inner class ViewHolder(private val binding: ItemPieceBinding) :
+    inner class ViewHolder(private val binding: ItemTorrentPieceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(piece: PieceState) {

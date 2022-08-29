@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import dev.bartuzen.qbitcontroller.databinding.ItemFileBinding
+import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 
 class TorrentFilesBackButtonAdapter(private val listener: OnItemClickListener? = null) :
     RecyclerView.Adapter<TorrentFilesBackButtonAdapter.ViewHolder>() {
@@ -20,14 +20,14 @@ class TorrentFilesBackButtonAdapter(private val listener: OnItemClickListener? =
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ItemTorrentFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind()
     }
 
-    inner class ViewHolder(private val binding: ItemFileBinding) :
+    inner class ViewHolder(private val binding: ItemTorrentFileBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {

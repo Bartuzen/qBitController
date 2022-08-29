@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.databinding.ItemFileBinding
+import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 
 class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
     ListAdapter<TorrentFileNode, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ItemTorrentFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -23,7 +23,7 @@ class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
         }
     }
 
-    inner class ViewHolder(private val binding: ItemFileBinding) :
+    inner class ViewHolder(private val binding: ItemTorrentFileBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {

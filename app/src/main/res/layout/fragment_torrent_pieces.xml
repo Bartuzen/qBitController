@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="20"
-            tools:listitem="@layout/item_piece"
+            tools:listitem="@layout/item_torrent_piece"
             tools:spanCount="20" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
