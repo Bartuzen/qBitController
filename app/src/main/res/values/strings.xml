@@ -12,6 +12,7 @@
     <string name="tab_torrent_overview">Overview</string>
     <string name="tab_torrent_files">Files</string>
     <string name="tab_torrent_pieces">Pieces</string>
+    <string name="tab_torrent_trackers">Trackers</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -95,4 +96,9 @@
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>
     <string name="torrent_piece_map">PIECE MAP</string>
+
+    <string name="torrent_trackers_peers">Peers</string>
+    <string name="torrent_trackers_seeds">Seeds</string>
+    <string name="torrent_trackers_leeches">Leeches</string>
+    <string name="torrent_trackers_downloaded">Downloaded</string>
 </resources>

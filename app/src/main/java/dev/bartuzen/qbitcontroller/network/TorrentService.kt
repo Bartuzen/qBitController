@@ -1,16 +1,9 @@
 package dev.bartuzen.qbitcontroller.network
 
 import dev.bartuzen.qbitcontroller.data.TorrentSort
-import dev.bartuzen.qbitcontroller.model.PieceState
-import dev.bartuzen.qbitcontroller.model.Torrent
-import dev.bartuzen.qbitcontroller.model.TorrentFile
-import dev.bartuzen.qbitcontroller.model.TorrentProperties
+import dev.bartuzen.qbitcontroller.model.*
 import retrofit2.Response
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface TorrentService {
     @FormUrlEncoded
@@ -40,4 +33,7 @@ interface TorrentService {
 
     @GET("api/v2/torrents/properties")
     suspend fun getTorrentProperties(@Query("hash") hash: String): Response<TorrentProperties>
+
+    @GET("api/v2/torrents/trackers")
+    suspend fun getTorrentTrackers(@Query("hash") hash: String): Response<List<TorrentTracker>>
 }

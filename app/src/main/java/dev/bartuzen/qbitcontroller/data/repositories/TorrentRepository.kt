@@ -38,4 +38,9 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.resumeTorrent(hash)
         }
+
+    suspend fun getTrackers(serverConfig: ServerConfig, hash: String) =
+        requestManager.request(serverConfig) { service ->
+            service.getTorrentTrackers(hash)
+        }
 }

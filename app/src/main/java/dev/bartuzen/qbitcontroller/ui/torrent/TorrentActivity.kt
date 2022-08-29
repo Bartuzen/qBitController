@@ -12,6 +12,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragmentBuilder
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragmentBuilder
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragmentBuilder
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.getParcelable
 import dev.bartuzen.qbitcontroller.utils.showToast
 
@@ -46,12 +47,13 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 3
+            override fun getItemCount() = 4
 
             override fun createFragment(position: Int) = when (position) {
                 0 -> TorrentOverviewFragmentBuilder(serverConfig, torrentHash).build()
                 1 -> TorrentFilesFragmentBuilder(serverConfig, torrentHash).build()
                 2 -> TorrentPiecesFragmentBuilder(serverConfig, torrentHash).build()
+                3 -> TorrentTrackersFragmentBuilder(serverConfig, torrentHash).build()
                 else -> Fragment()
             }
         }.apply {
@@ -59,11 +61,15 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.tab_torrent_overview)
-                1 -> tab.text = getString(R.string.tab_torrent_files)
-                2 -> tab.text = getString(R.string.tab_torrent_pieces)
+            val resId = when (position) {
+                0 -> R.string.tab_torrent_overview
+                1 -> R.string.tab_torrent_files
+                2 -> R.string.tab_torrent_pieces
+                3 -> R.string.tab_torrent_trackers
+                else -> return@TabLayoutMediator
             }
+
+            tab.text = getString(resId)
         }.attach()
     }
 }
