@@ -22,11 +22,13 @@ interface TorrentService {
     @GET("api/v2/torrents/files")
     suspend fun getFiles(@Query("hash") hash: String): Response<List<TorrentFile>>
 
+    @FormUrlEncoded
     @POST("api/v2/torrents/pause")
-    suspend fun pauseTorrent(@Query("hashes") hashes: String): Response<String>
+    suspend fun pauseTorrent(@Field("hashes") hashes: String): Response<String>
 
+    @FormUrlEncoded
     @POST("api/v2/torrents/resume")
-    suspend fun resumeTorrent(@Query("hashes") hashes: String): Response<String>
+    suspend fun resumeTorrent(@Field("hashes") hashes: String): Response<String>
 
     @GET("api/v2/torrents/pieceStates")
     suspend fun getTorrentPieces(@Query("hash") hash: String): Response<List<PieceState>>
