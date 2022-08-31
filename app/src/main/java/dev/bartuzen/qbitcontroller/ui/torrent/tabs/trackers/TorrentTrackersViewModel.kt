@@ -25,7 +25,7 @@ class TorrentTrackersViewModel @Inject constructor(
 
     val isLoading = MutableStateFlow(true)
 
-    fun updateTorrentList(serverConfig: ServerConfig, hash: String) = viewModelScope.launch {
+    fun updateTrackers(serverConfig: ServerConfig, hash: String) = viewModelScope.launch {
         when (val result = repository.getTrackers(serverConfig, hash)) {
             is RequestResult.Success -> {
                 torrentTrackers.value = result.data

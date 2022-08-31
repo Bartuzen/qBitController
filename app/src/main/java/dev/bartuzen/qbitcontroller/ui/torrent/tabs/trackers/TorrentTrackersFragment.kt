@@ -35,13 +35,13 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         binding.recyclerTrackers.setItemMargin(8, 8)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.updateTorrentList(serverConfig, torrentHash).invokeOnCompletion {
+            viewModel.updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
                 binding.swipeRefresh.isRefreshing = false
             }
         }
 
         if (savedInstanceState == null) {
-            viewModel.updateTorrentList(serverConfig, torrentHash).invokeOnCompletion {
+            viewModel.updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
                 viewModel.isLoading.value = false
             }
         }
