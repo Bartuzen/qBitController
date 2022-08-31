@@ -36,7 +36,20 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
+    fun addTrackers(serverConfig: ServerConfig, hash: String, urls: String) =
+        viewModelScope.launch {
+            when (val result = repository.addTrackers(serverConfig, hash, urls)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TrackersAdded)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.OnError(result.error))
+                }
+            }
+        }
+
     sealed class Event {
         data class OnError(val error: RequestError) : Event()
+        object TrackersAdded : Event()
     }
 }

@@ -38,4 +38,11 @@ interface TorrentService {
 
     @GET("api/v2/torrents/trackers")
     suspend fun getTorrentTrackers(@Query("hash") hash: String): Response<List<TorrentTracker>>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/addTrackers")
+    suspend fun addTorrentTrackers(
+        @Field("hash") hash: String,
+        @Field("urls") urls: String
+    ): Response<Unit>
 }

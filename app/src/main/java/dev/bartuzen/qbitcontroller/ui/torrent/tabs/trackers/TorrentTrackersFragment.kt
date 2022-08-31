@@ -1,8 +1,13 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +34,25 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentTrackersBinding.bind(view)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.torrent_trackers_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_add -> {
+                        TorrentTrackersAddDialogFragmentBuilder(serverConfig, torrentHash)
+                            .build()
+                            .show(childFragmentManager, null)
+                    }
+                    else -> return false
+                }
+
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         val adapter = TorrentTrackersAdapter()
         binding.recyclerTrackers.adapter = adapter
@@ -58,6 +82,9 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             when (event) {
                 is TorrentTrackersViewModel.Event.OnError -> {
                     showSnackbar(requireContext().getErrorMessage(event.error))
+                }
+                TorrentTrackersViewModel.Event.TrackersAdded -> {
+                    showSnackbar(getString(R.string.torrent_trackers_added))
                 }
             }
         }

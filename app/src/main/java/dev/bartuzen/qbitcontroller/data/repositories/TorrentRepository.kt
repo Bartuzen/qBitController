@@ -43,4 +43,9 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.getTorrentTrackers(hash)
         }
+
+    suspend fun addTrackers(serverConfig: ServerConfig, hash: String, urls: String) =
+        requestManager.request(serverConfig) { service ->
+            service.addTorrentTrackers(hash, urls)
+        }
 }
