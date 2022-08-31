@@ -13,6 +13,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -43,14 +44,18 @@ class TorrentFilesViewModel @Inject constructor(
     }
 
     fun goToFolder(node: String) {
-        _nodeStack.value = nodeStack.value.copy().apply {
-            push(node)
+        _nodeStack.update { stack ->
+            stack.copy().apply {
+                push(node)
+            }
         }
     }
 
     fun goBack() {
-        _nodeStack.value = nodeStack.value.copy().apply {
-            pop()
+        _nodeStack.update { stack ->
+            stack.copy().apply {
+                pop()
+            }
         }
     }
 
