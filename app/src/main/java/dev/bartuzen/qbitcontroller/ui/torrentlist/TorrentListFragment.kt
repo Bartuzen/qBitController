@@ -109,7 +109,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
         viewModel.torrentListEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
-                is TorrentListViewModel.TorrentListEvent.OnError -> {
+                is TorrentListViewModel.TorrentListEvent.Error -> {
                     showSnackbar(requireContext().getErrorMessage(event.result))
                 }
             }

@@ -31,7 +31,7 @@ class TorrentTrackersViewModel @Inject constructor(
                 torrentTrackers.value = result.data
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.OnError(result.error))
+                eventChannel.send(Event.Error(result.error))
             }
         }
     }
@@ -43,13 +43,13 @@ class TorrentTrackersViewModel @Inject constructor(
                     eventChannel.send(Event.TrackersAdded)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.OnError(result.error))
+                    eventChannel.send(Event.Error(result.error))
                 }
             }
         }
 
     sealed class Event {
-        data class OnError(val error: RequestError) : Event()
+        data class Error(val error: RequestError) : Event()
         object TrackersAdded : Event()
     }
 }

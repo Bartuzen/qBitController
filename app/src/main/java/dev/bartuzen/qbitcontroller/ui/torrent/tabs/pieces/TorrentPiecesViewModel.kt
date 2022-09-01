@@ -36,7 +36,7 @@ class TorrentPiecesViewModel @Inject constructor(
                     result.data
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.OnError(result.error))
+                    eventChannel.send(Event.Error(result.error))
                     throw CancellationException()
                 }
             }
@@ -47,7 +47,7 @@ class TorrentPiecesViewModel @Inject constructor(
                     result.data
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.OnError(result.error))
+                    eventChannel.send(Event.Error(result.error))
                     throw CancellationException()
                 }
             }
@@ -61,6 +61,6 @@ class TorrentPiecesViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class OnError(val error: RequestError) : Event()
+        data class Error(val error: RequestError) : Event()
     }
 }

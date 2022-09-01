@@ -38,7 +38,7 @@ class TorrentFilesViewModel @Inject constructor(
                 torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.OnError(result.error))
+                eventChannel.send(Event.Error(result.error))
             }
         }
     }
@@ -60,6 +60,6 @@ class TorrentFilesViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class OnError(val error: RequestError) : Event()
+        data class Error(val error: RequestError) : Event()
     }
 }

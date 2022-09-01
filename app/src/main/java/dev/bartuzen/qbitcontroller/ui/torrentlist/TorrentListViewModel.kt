@@ -42,7 +42,7 @@ class TorrentListViewModel @Inject constructor(
                     torrentList.value = result.data
                 }
                 is RequestResult.Error -> {
-                    torrentListEventChannel.send(TorrentListEvent.OnError(result.error))
+                    torrentListEventChannel.send(TorrentListEvent.Error(result.error))
                 }
             }
         }
@@ -52,6 +52,6 @@ class TorrentListViewModel @Inject constructor(
     }
 
     sealed class TorrentListEvent {
-        data class OnError(val result: RequestError) : TorrentListEvent()
+        data class Error(val result: RequestError) : TorrentListEvent()
     }
 }

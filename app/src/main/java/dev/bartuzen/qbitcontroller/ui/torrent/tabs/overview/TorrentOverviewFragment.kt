@@ -117,7 +117,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
-                is TorrentOverviewViewModel.Event.OnError -> {
+                is TorrentOverviewViewModel.Event.Error -> {
                     showSnackbar(requireContext().getErrorMessage(event.error))
                 }
                 TorrentOverviewViewModel.Event.OnTorrentPause -> {

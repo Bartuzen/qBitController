@@ -33,7 +33,7 @@ class TorrentOverviewViewModel @Inject constructor(
                 }
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.OnError(result.error))
+                eventChannel.send(Event.Error(result.error))
             }
         }
     }
@@ -44,7 +44,7 @@ class TorrentOverviewViewModel @Inject constructor(
                 eventChannel.send(Event.OnTorrentPause)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.OnError(result.error))
+                eventChannel.send(Event.Error(result.error))
             }
         }
     }
@@ -55,13 +55,13 @@ class TorrentOverviewViewModel @Inject constructor(
                 eventChannel.send(Event.OnTorrentResume)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.OnError(result.error))
+                eventChannel.send(Event.Error(result.error))
             }
         }
     }
 
     sealed class Event {
-        data class OnError(val error: RequestError) : Event()
+        data class Error(val error: RequestError) : Event()
         object OnTorrentPause : Event()
         object OnTorrentResume : Event()
     }
