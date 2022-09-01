@@ -35,9 +35,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.settingsFragmentEvent.launchAndCollectIn(viewLifecycleOwner) { event ->
+        viewModel.fragmentEventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
-                SettingsViewModel.SettingsFragmentEvent.AddEditServerCompleted -> {
+                SettingsViewModel.FragmentEvent.AddEditServerCompleted -> {
                     initSettings()
                 }
             }

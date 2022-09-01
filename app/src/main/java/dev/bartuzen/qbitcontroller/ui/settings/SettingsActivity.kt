@@ -34,15 +34,15 @@ class SettingsActivity : AppCompatActivity() {
                 .commit()
         }
 
-        viewModel.settingsActivityEvent.launchAndCollectIn(this) { event ->
+        viewModel.activityEventFlow.launchAndCollectIn(this) { event ->
             when (event) {
-                is SettingsViewModel.SettingsActivityEvent.MovePage -> {
+                is SettingsViewModel.ActivityEvent.MovePage -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.container, event.fragment)
                         .addToBackStack(null)
                         .commit()
                 }
-                SettingsViewModel.SettingsActivityEvent.AddEditServerCompleted -> {
+                SettingsViewModel.ActivityEvent.AddEditServerCompleted -> {
                     supportFragmentManager.popBackStack()
                 }
             }

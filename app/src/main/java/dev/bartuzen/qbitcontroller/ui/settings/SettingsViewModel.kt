@@ -19,44 +19,44 @@ class SettingsViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
     val state: SavedStateHandle
 ) : ViewModel() {
-    private val settingsActivityEventChannel = Channel<SettingsActivityEvent>()
-    val settingsActivityEvent = settingsActivityEventChannel.receiveAsFlow()
+    private val activityEventChannel = Channel<ActivityEvent>()
+    val activityEventFlow = activityEventChannel.receiveAsFlow()
 
-    private val settingsFragmentEventChannel = Channel<SettingsFragmentEvent>()
-    val settingsFragmentEvent = settingsFragmentEventChannel.receiveAsFlow()
+    private val fragmentEventChannel = Channel<FragmentEvent>()
+    val fragmentEventFlow = fragmentEventChannel.receiveAsFlow()
 
     fun getServers() = runBlocking {
         settingsManager.serversFlow.first()
     }
 
     fun movePage(fragment: PreferenceFragmentCompat) = viewModelScope.launch {
-        settingsActivityEventChannel.send(SettingsActivityEvent.MovePage(fragment))
+        activityEventChannel.send(ActivityEvent.MovePage(fragment))
     }
 
     fun addServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        settingsActivityEventChannel.send(SettingsActivityEvent.AddEditServerCompleted)
+        activityEventChannel.send(ActivityEvent.AddEditServerCompleted)
         settingsManager.addServer(serverConfig)
-        settingsFragmentEventChannel.send(SettingsFragmentEvent.AddEditServerCompleted)
+        fragmentEventChannel.send(FragmentEvent.AddEditServerCompleted)
     }
 
     fun editServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        settingsActivityEventChannel.send(SettingsActivityEvent.AddEditServerCompleted)
+        activityEventChannel.send(ActivityEvent.AddEditServerCompleted)
         settingsManager.editServer(serverConfig)
-        settingsFragmentEventChannel.send(SettingsFragmentEvent.AddEditServerCompleted)
+        fragmentEventChannel.send(FragmentEvent.AddEditServerCompleted)
     }
 
     fun removeServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        settingsActivityEventChannel.send(SettingsActivityEvent.AddEditServerCompleted)
+        activityEventChannel.send(ActivityEvent.AddEditServerCompleted)
         settingsManager.removeServer(serverConfig)
-        settingsFragmentEventChannel.send(SettingsFragmentEvent.AddEditServerCompleted)
+        fragmentEventChannel.send(FragmentEvent.AddEditServerCompleted)
     }
 
-    sealed class SettingsActivityEvent {
-        data class MovePage(val fragment: PreferenceFragmentCompat) : SettingsActivityEvent()
-        object AddEditServerCompleted : SettingsActivityEvent()
+    sealed class ActivityEvent {
+        data class MovePage(val fragment: PreferenceFragmentCompat) : ActivityEvent()
+        object AddEditServerCompleted : ActivityEvent()
     }
 
-    sealed class SettingsFragmentEvent {
-        object AddEditServerCompleted : SettingsFragmentEvent()
+    sealed class FragmentEvent {
+        object AddEditServerCompleted : FragmentEvent()
     }
 }

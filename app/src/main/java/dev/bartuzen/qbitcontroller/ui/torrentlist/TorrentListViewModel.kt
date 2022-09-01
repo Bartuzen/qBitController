@@ -26,8 +26,8 @@ class TorrentListViewModel @Inject constructor(
 
     val torrentSort = settingsManager.sortFlow
 
-    private val torrentListEventChannel = Channel<TorrentListEvent>()
-    val torrentListEvent = torrentListEventChannel.receiveAsFlow()
+    private val eventChannel = Channel<Event>()
+    val eventFlow = eventChannel.receiveAsFlow()
 
     val isLoading = MutableStateFlow(true)
 
@@ -42,7 +42,7 @@ class TorrentListViewModel @Inject constructor(
                     torrentList.value = result.data
                 }
                 is RequestResult.Error -> {
-                    torrentListEventChannel.send(TorrentListEvent.Error(result.error))
+                    eventChannel.send(Event.Error(result.error))
                 }
             }
         }
@@ -51,7 +51,7 @@ class TorrentListViewModel @Inject constructor(
         settingsManager.setTorrentSort(torrentSort)
     }
 
-    sealed class TorrentListEvent {
-        data class Error(val result: RequestError) : TorrentListEvent()
+    sealed class Event {
+        data class Error(val result: RequestError) : Event()
     }
 }
