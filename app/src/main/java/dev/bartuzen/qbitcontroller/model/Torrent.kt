@@ -1,13 +1,10 @@
 package dev.bartuzen.qbitcontroller.model
 
-import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.CategoryDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class Torrent(
     @JsonProperty("hash") val hash: String,
     @JsonProperty("name") val name: String,
@@ -20,7 +17,7 @@ data class Torrent(
     @JsonProperty("progress") val progress: Double,
     @JsonProperty("category") @JsonDeserialize(using = CategoryDeserializer::class) val category: String?,
     @JsonProperty("tags") @JsonDeserialize(using = TagDeserializer::class) val tags: List<String>
-) : Parcelable
+)
 
 @Suppress("unused")
 enum class TorrentState {
