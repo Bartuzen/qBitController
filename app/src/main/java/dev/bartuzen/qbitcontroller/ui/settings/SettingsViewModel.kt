@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceFragmentCompat
@@ -16,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsManager: SettingsManager,
-    val state: SavedStateHandle
+    private val settingsManager: SettingsManager
 ) : ViewModel() {
     private val activityEventChannel = Channel<ActivityEvent>()
     val activityEventFlow = activityEventChannel.receiveAsFlow()
