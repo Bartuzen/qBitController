@@ -1,10 +1,10 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.FragmentArgs
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -39,7 +39,7 @@ class TorrentTrackersAddDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         _binding = FragmentTorrentTrackersAddDialogBinding.inflate(layoutInflater)
 
-        return AlertDialog.Builder(requireActivity())
+        return MaterialAlertDialogBuilder(requireActivity())
             .setTitle(R.string.torrent_trackers_add)
             .setView(binding.root)
             .setPositiveButton(R.string.dialog_ok) { _, _ ->
