@@ -115,10 +115,10 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 is TorrentOverviewViewModel.Event.Error -> {
                     showSnackbar(requireContext().getErrorMessage(event.error))
                 }
-                TorrentOverviewViewModel.Event.OnTorrentPause -> {
+                TorrentOverviewViewModel.Event.TorrentPaused -> {
                     showSnackbar(getString(R.string.torrent_paused_success))
                 }
-                TorrentOverviewViewModel.Event.OnTorrentResume -> {
+                TorrentOverviewViewModel.Event.TorrentResumed -> {
                     showSnackbar(getString(R.string.torrent_resumed_success))
                 }
             }

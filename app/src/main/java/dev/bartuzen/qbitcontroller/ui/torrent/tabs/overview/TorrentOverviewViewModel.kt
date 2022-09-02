@@ -41,7 +41,7 @@ class TorrentOverviewViewModel @Inject constructor(
     fun pauseTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.pauseTorrent(serverConfig, torrentHash)) {
             is RequestResult.Success -> {
-                eventChannel.send(Event.OnTorrentPause)
+                eventChannel.send(Event.TorrentPaused)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result.error))
@@ -52,7 +52,7 @@ class TorrentOverviewViewModel @Inject constructor(
     fun resumeTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.resumeTorrent(serverConfig, torrentHash)) {
             is RequestResult.Success -> {
-                eventChannel.send(Event.OnTorrentResume)
+                eventChannel.send(Event.TorrentResumed)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result.error))
@@ -62,7 +62,7 @@ class TorrentOverviewViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestError) : Event()
-        object OnTorrentPause : Event()
-        object OnTorrentResume : Event()
+        object TorrentPaused : Event()
+        object TorrentResumed : Event()
     }
 }
