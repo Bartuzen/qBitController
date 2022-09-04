@@ -8,7 +8,6 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import dev.bartuzen.qbitcontroller.utils.copy
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +23,8 @@ class TorrentFilesViewModel @Inject constructor(
 ) : ViewModel() {
     val torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
 
-    private val _nodeStack = MutableStateFlow(Stack<String>())
-    val nodeStack: StateFlow<Stack<String>> = _nodeStack
+    private val _nodeStack = MutableStateFlow(ArrayDeque<String>())
+    val nodeStack: StateFlow<ArrayDeque<String>> = _nodeStack
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -45,7 +44,7 @@ class TorrentFilesViewModel @Inject constructor(
 
     fun goToFolder(node: String) {
         _nodeStack.update { stack ->
-            stack.copy().apply {
+            stack.clone().apply {
                 push(node)
             }
         }
@@ -53,7 +52,7 @@ class TorrentFilesViewModel @Inject constructor(
 
     fun goBack() {
         _nodeStack.update { stack ->
-            stack.copy().apply {
+            stack.clone().apply {
                 pop()
             }
         }
