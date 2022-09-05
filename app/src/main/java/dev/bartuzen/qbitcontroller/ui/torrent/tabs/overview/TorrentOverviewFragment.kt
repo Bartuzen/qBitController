@@ -65,7 +65,8 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             }
         }
 
-        if (savedInstanceState == null) {
+        if (!viewModel.isInitialLoadStarted) {
+            viewModel.isInitialLoadStarted = true
             viewModel.updateTorrent(serverConfig, torrentHash).invokeOnCompletion {
                 viewModel.isLoading.value = false
             }

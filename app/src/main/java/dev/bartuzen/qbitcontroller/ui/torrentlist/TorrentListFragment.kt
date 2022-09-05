@@ -97,7 +97,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }
         }
 
-        if (savedInstanceState == null) {
+        if (!viewModel.isInitialLoadStarted) {
+            viewModel.isInitialLoadStarted = true
             viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
                 viewModel.isLoading.value = false
             }

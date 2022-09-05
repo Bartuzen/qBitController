@@ -30,6 +30,7 @@ class TorrentFilesViewModel @Inject constructor(
     val eventFlow = eventChannel.receiveAsFlow()
 
     val isLoading = MutableStateFlow(true)
+    var isInitialLoadStarted = false
 
     fun updateFiles(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getFiles(serverConfig, torrentHash)) {

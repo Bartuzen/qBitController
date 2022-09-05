@@ -64,7 +64,8 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             }
         }
 
-        if (savedInstanceState == null) {
+        if (!viewModel.isInitialLoadStarted) {
+            viewModel.isInitialLoadStarted = true
             viewModel.updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
                 viewModel.isLoading.value = false
             }
