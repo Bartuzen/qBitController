@@ -5,6 +5,7 @@
 
     <string name="menu_pause">Pause</string>
     <string name="menu_resume">Resume</string>
+    <string name="menu_delete">Delete</string>
 
     <string name="menu_add_edit_server_delete">Delete</string>
     <string name="menu_add_edit_server_save">Save</string>
@@ -93,6 +94,9 @@
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
 
+    <string name="torrent_delete">Delete Torrent</string>
+    <string name="torrent_delete_files">Also delete the files on the hard disk</string>
+    <string name="torrent_deleted_success">Torrent deleted successfully.</string>
     <string name="torrent_paused_success">Torrent paused successfully.</string>
     <string name="torrent_resumed_success">Torrent resumed successfully.</string>
 

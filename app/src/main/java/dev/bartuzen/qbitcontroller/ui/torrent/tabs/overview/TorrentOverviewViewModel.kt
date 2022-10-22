@@ -39,6 +39,18 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun deleteTorrent(serverConfig: ServerConfig, torrentHash: String, deleteFiles: Boolean) =
+        viewModelScope.launch {
+            when (val result = repository.deleteTorrent(serverConfig, torrentHash, deleteFiles)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentDeleted)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     fun pauseTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.pauseTorrent(serverConfig, torrentHash)) {
             is RequestResult.Success -> {
@@ -63,6 +75,7 @@ class TorrentOverviewViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestError) : Event()
+        object TorrentDeleted : Event()
         object TorrentPaused : Event()
         object TorrentResumed : Event()
     }

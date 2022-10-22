@@ -23,6 +23,13 @@ interface TorrentService {
     suspend fun getFiles(@Query("hash") hash: String): Response<List<TorrentFile>>
 
     @FormUrlEncoded
+    @POST("api/v2/torrents/delete")
+    suspend fun deleteTorrents(
+        @Field("hashes") hashes: String,
+        @Field("deleteFiles") deleteFiles: Boolean
+    ): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/torrents/pause")
     suspend fun pauseTorrent(@Field("hashes") hashes: String): Response<String>
 

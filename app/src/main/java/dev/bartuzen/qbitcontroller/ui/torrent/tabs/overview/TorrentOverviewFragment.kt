@@ -53,6 +53,11 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 when (menuItem.itemId) {
                     R.id.menu_pause -> viewModel.pauseTorrent(serverConfig, torrentHash)
                     R.id.menu_resume -> viewModel.resumeTorrent(serverConfig, torrentHash)
+                    R.id.menu_delete -> {
+                        TorrentDeleteDialogFragmentBuilder(serverConfig, torrentHash)
+                            .build()
+                            .show(childFragmentManager, null)
+                    }
                     else -> return false
                 }
                 return true
@@ -115,6 +120,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             when (event) {
                 is TorrentOverviewViewModel.Event.Error -> {
                     showSnackbar(requireContext().getErrorMessage(event.error))
+                }
+                TorrentOverviewViewModel.Event.TorrentDeleted -> {
+                    showSnackbar(getString(R.string.torrent_deleted_success))
                 }
                 TorrentOverviewViewModel.Event.TorrentPaused -> {
                     showSnackbar(getString(R.string.torrent_paused_success))
