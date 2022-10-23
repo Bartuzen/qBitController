@@ -48,15 +48,15 @@
     <string name="eta_days_hours">%1$sd %2$sh</string>
     <string name="eta_days">%1$sd</string>
 
-    <string name="size_byte">%1$s B</string>
-    <string name="size_kibibyte">%1$s KiB</string>
-    <string name="size_mebibyte">%1$s MiB</string>
-    <string name="size_gibibyte">%1$s GiB</string>
+    <string name="size_bytes">%1$s B</string>
+    <string name="size_kibibytes">%1$s KiB</string>
+    <string name="size_mebibytes">%1$s MiB</string>
+    <string name="size_gibibytes">%1$s GiB</string>
 
-    <string name="speed_byte_per_second">%1$s B/s</string>
-    <string name="speed_kibibyte_per_second">%1$s KiB/s</string>
-    <string name="speed_mebibyte_per_second">%1$s MiB/s</string>
-    <string name="speed_gibibyte_per_second">%1$s GiB/s</string>
+    <string name="speed_bytes_per_second">%1$s B/s</string>
+    <string name="speed_kibibytes_per_second">%1$s KiB/s</string>
+    <string name="speed_mebibytes_per_second">%1$s MiB/s</string>
+    <string name="speed_gibibytes_per_second">%1$s GiB/s</string>
 
     <string name="error_invalid_credentials">Invalid username or password.</string>
     <string name="error_banned">You have been banned because of too many failed login attempts.</string>

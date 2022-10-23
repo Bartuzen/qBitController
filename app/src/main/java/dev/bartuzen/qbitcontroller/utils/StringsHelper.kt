@@ -7,34 +7,34 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import kotlin.math.roundToInt
 
 fun Context.formatByte(byte: Long) = when (byte) {
-    in 0 until 1024 -> getString(R.string.size_byte, byte.toString())
+    in 0 until 1024 -> getString(R.string.size_bytes, byte.toString())
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
-        getString(R.string.size_kibibyte, text)
+        getString(R.string.size_kibibytes, text)
     }
     in 1024 * 1024 until 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024)).floorToDecimal(1).toString()
-        getString(R.string.size_mebibyte, text)
+        getString(R.string.size_mebibytes, text)
     }
     else -> {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
-        getString(R.string.size_gibibyte, text)
+        getString(R.string.size_gibibytes, text)
     }
 }
 
 fun Context.formatBytePerSecond(byte: Long) = when (byte) {
-    in 0 until 1024 -> getString(R.string.speed_byte_per_second, byte.toString())
+    in 0 until 1024 -> getString(R.string.speed_bytes_per_second, byte.toString())
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
-        getString(R.string.speed_kibibyte_per_second, text)
+        getString(R.string.speed_kibibytes_per_second, text)
     }
     in 1024 * 1024 until 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024)).floorToDecimal(1).toString()
-        getString(R.string.speed_mebibyte_per_second, text)
+        getString(R.string.speed_mebibytes_per_second, text)
     }
     else -> {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
-        getString(R.string.speed_gibibyte_per_second, text)
+        getString(R.string.speed_gibibytes_per_second, text)
     }
 }
 
