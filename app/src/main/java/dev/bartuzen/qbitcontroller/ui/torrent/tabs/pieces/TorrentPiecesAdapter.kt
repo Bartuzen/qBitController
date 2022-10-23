@@ -76,7 +76,7 @@ class TorrentPiecesAdapter :
                 binding.textPieces.text = it.toString()
             }
             pieceSize?.let {
-                binding.textPieceSize.text = binding.root.context.formatBytes(it.toLong())
+                binding.textPieceSize.text = formatBytes(binding.root.context, it.toLong())
             }
         }
     }

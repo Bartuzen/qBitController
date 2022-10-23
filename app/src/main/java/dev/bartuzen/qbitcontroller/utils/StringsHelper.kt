@@ -6,71 +6,73 @@ import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestError
 import kotlin.math.roundToInt
 
-fun Context.formatBytes(byte: Long) = when (byte) {
-    in 0 until 1024 -> getString(R.string.size_bytes, byte.toString())
+fun formatBytes(context: Context, byte: Long) = when (byte) {
+    in 0 until 1024 -> context.getString(R.string.size_bytes, byte.toString())
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
-        getString(R.string.size_kibibytes, text)
+        context.getString(R.string.size_kibibytes, text)
     }
     in 1024 * 1024 until 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024)).floorToDecimal(1).toString()
-        getString(R.string.size_mebibytes, text)
+        context.getString(R.string.size_mebibytes, text)
     }
     else -> {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
-        getString(R.string.size_gibibytes, text)
+        context.getString(R.string.size_gibibytes, text)
     }
 }
 
-fun Context.formatBytesPerSecond(byte: Long) = when (byte) {
-    in 0 until 1024 -> getString(R.string.speed_bytes_per_second, byte.toString())
+fun formatBytesPerSecond(context: Context, byte: Long) = when (byte) {
+    in 0 until 1024 -> context.getString(R.string.speed_bytes_per_second, byte.toString())
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
-        getString(R.string.speed_kibibytes_per_second, text)
+        context.getString(R.string.speed_kibibytes_per_second, text)
     }
     in 1024 * 1024 until 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024)).floorToDecimal(1).toString()
-        getString(R.string.speed_mebibytes_per_second, text)
+        context.getString(R.string.speed_mebibytes_per_second, text)
     }
     else -> {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
-        getString(R.string.speed_gibibytes_per_second, text)
+        context.getString(R.string.speed_gibibytes_per_second, text)
     }
 }
 
-fun Context.formatSeconds(seconds: Int) = when (seconds) {
-    in 0 until 60 -> getString(R.string.eta_seconds, seconds.toString())
+fun formatSeconds(context: Context, seconds: Int) = when (seconds) {
+    in 0 until 60 -> {
+        context.getString(R.string.eta_seconds, seconds.toString())
+    }
     in 60 until 60 * 60 -> {
         val remainder = seconds % 60
         val minutes = (seconds / 60).toString()
         if (remainder != 0) {
-            getString(R.string.eta_minutes_seconds, minutes, remainder.toString())
+            context.getString(R.string.eta_minutes_seconds, minutes, remainder.toString())
         } else {
-            getString(R.string.eta_minutes, minutes)
+            context.getString(R.string.eta_minutes, minutes)
         }
     }
     in 60 * 60 until 60 * 60 * 60 -> {
         val remainder = ((seconds % (60 * 60)) / 60.0).roundToInt()
         val hours = (seconds / (60 * 60)).toString()
         if (remainder != 0) {
-            getString(R.string.eta_hours_minutes, hours, remainder.toString())
+            context.getString(R.string.eta_hours_minutes, hours, remainder.toString())
         } else {
-            getString(R.string.eta_hours, hours)
+            context.getString(R.string.eta_hours, hours)
         }
     }
     in 60 * 60 * 60 until 8640000 -> {
         val remainder = ((seconds % (24 * 60 * 60)) / (60.0 * 60)).roundToInt()
         val days = (seconds / (24 * 60 * 60)).toString()
         if (remainder != 0) {
-            getString(R.string.eta_days_hours, days, remainder.toString())
+            context.getString(R.string.eta_days_hours, days, remainder.toString())
         } else {
-            getString(R.string.eta_days, days)
+            context.getString(R.string.eta_days, days)
         }
     }
     else -> "inf"
 }
 
-fun Context.formatTorrentState(state: TorrentState?) = getString(
+fun formatTorrentState(context: Context, state: TorrentState?) = context.getString(
     when (state) {
         TorrentState.ERROR -> R.string.torrent_status_error
         TorrentState.MISSING_FILES -> R.string.torrent_status_missing_files
@@ -89,12 +91,13 @@ fun Context.formatTorrentState(state: TorrentState?) = getString(
     }
 )
 
-fun Context.getErrorMessage(error: RequestError) =
+fun getErrorMessage(context: Context, error: RequestError) = context.getString(
     when (error) {
-        RequestError.INVALID_CREDENTIALS -> getString(R.string.error_invalid_credentials)
-        RequestError.BANNED -> getString(R.string.error_banned)
-        RequestError.CANNOT_CONNECT -> getString(R.string.error_cannot_connect)
-        RequestError.UNKNOWN_HOST -> getString(R.string.error_unknown_host)
-        RequestError.TIMEOUT -> getString(R.string.error_timeout)
-        RequestError.UNKNOWN -> getString(R.string.error_unknown)
+        RequestError.INVALID_CREDENTIALS -> R.string.error_invalid_credentials
+        RequestError.BANNED -> R.string.error_banned
+        RequestError.CANNOT_CONNECT -> R.string.error_cannot_connect
+        RequestError.UNKNOWN_HOST -> R.string.error_unknown_host
+        RequestError.TIMEOUT -> R.string.error_timeout
+        RequestError.UNKNOWN -> R.string.error_unknown
     }
+)

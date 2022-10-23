@@ -54,24 +54,24 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
             binding.textProgress.text =
                 context.getString(
                     R.string.torrent_item_progress,
-                    context.formatBytes(torrent.completed),
-                    context.formatBytes(torrent.size),
+                    formatBytes(context, torrent.completed),
+                    formatBytes(context, torrent.size),
                     progressText
                 )
 
-            val eta = context.formatSeconds(torrent.eta)
+            val eta = formatSeconds(context, torrent.eta)
             if (eta != "inf") {
                 binding.textEta.text = eta
             }
-            binding.textState.text = context.formatTorrentState(torrent.state)
+            binding.textState.text = formatTorrentState(context, torrent.state)
 
 
             val speedList = mutableListOf<String>()
             if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${context.formatBytesPerSecond(torrent.uploadSpeed)}")
+                speedList.add("↑ ${formatBytesPerSecond(context, torrent.uploadSpeed)}")
             }
             if (torrent.downloadSpeed > 0) {
-                speedList.add("↓ ${context.formatBytesPerSecond(torrent.downloadSpeed)}")
+                speedList.add("↓ ${formatBytesPerSecond(context, torrent.downloadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
 

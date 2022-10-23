@@ -94,24 +94,24 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             }
             binding.textProgress.text = requireContext().getString(
                 R.string.torrent_item_progress,
-                requireContext().formatBytes(torrent.completed),
-                requireContext().formatBytes(torrent.size),
+                formatBytes(requireContext(), torrent.completed),
+                formatBytes(requireContext(), torrent.size),
                 progressText
             )
 
-            val eta = requireContext().formatSeconds(torrent.eta)
+            val eta = formatSeconds(requireContext(), torrent.eta)
             if (eta != "inf") {
                 binding.textEta.text = eta
             }
-            binding.textState.text = requireContext().formatTorrentState(torrent.state)
+            binding.textState.text = formatTorrentState(requireContext(), torrent.state)
 
 
             val speedList = mutableListOf<String>()
             if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${requireContext().formatBytesPerSecond(torrent.uploadSpeed)}")
+                speedList.add("↑ ${formatBytesPerSecond(requireContext(), torrent.uploadSpeed)}")
             }
             if (torrent.downloadSpeed > 0) {
-                speedList.add("↓ ${requireContext().formatBytesPerSecond(torrent.downloadSpeed)}")
+                speedList.add("↓ ${formatBytesPerSecond(requireContext(), torrent.downloadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
         }
@@ -119,7 +119,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentOverviewViewModel.Event.Error -> {
-                    showSnackbar(requireContext().getErrorMessage(event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 TorrentOverviewViewModel.Event.TorrentDeleted -> {
                     showSnackbar(getString(R.string.torrent_deleted_success))

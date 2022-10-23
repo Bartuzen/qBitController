@@ -82,7 +82,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentTrackersViewModel.Event.Error -> {
-                    showSnackbar(requireContext().getErrorMessage(event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
                     showSnackbar(getString(R.string.torrent_trackers_added))

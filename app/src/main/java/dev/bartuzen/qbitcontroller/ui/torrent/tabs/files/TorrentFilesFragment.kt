@@ -87,7 +87,7 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentFilesViewModel.Event.Error -> {
-                    showSnackbar(requireContext().getErrorMessage(event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
             }
         }
