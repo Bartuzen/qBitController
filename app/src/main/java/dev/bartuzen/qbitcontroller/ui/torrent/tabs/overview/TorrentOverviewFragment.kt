@@ -94,24 +94,24 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             }
             binding.textProgress.text = requireContext().getString(
                 R.string.torrent_item_progress,
-                requireContext().formatByte(torrent.completed),
-                requireContext().formatByte(torrent.size),
+                requireContext().formatBytes(torrent.completed),
+                requireContext().formatBytes(torrent.size),
                 progressText
             )
 
-            val eta = requireContext().formatTime(torrent.eta)
+            val eta = requireContext().formatSeconds(torrent.eta)
             if (eta != "inf") {
                 binding.textEta.text = eta
             }
-            binding.textState.text = requireContext().formatState(torrent.state)
+            binding.textState.text = requireContext().formatTorrentState(torrent.state)
 
 
             val speedList = mutableListOf<String>()
             if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${requireContext().formatBytePerSecond(torrent.uploadSpeed)}")
+                speedList.add("↑ ${requireContext().formatBytesPerSecond(torrent.uploadSpeed)}")
             }
             if (torrent.downloadSpeed > 0) {
-                speedList.add("↓ ${requireContext().formatBytePerSecond(torrent.downloadSpeed)}")
+                speedList.add("↓ ${requireContext().formatBytesPerSecond(torrent.downloadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
         }

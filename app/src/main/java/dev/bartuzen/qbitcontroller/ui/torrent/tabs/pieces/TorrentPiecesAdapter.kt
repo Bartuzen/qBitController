@@ -9,7 +9,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentPieceBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentPieceHeaderBinding
 import dev.bartuzen.qbitcontroller.model.PieceState
-import dev.bartuzen.qbitcontroller.utils.formatByte
+import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
 class TorrentPiecesAdapter :
@@ -76,7 +76,7 @@ class TorrentPiecesAdapter :
                 binding.textPieces.text = it.toString()
             }
             pieceSize?.let {
-                binding.textPieceSize.text = binding.root.context.formatByte(it.toLong())
+                binding.textPieceSize.text = binding.root.context.formatBytes(it.toLong())
             }
         }
     }

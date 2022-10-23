@@ -6,7 +6,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestError
 import kotlin.math.roundToInt
 
-fun Context.formatByte(byte: Long) = when (byte) {
+fun Context.formatBytes(byte: Long) = when (byte) {
     in 0 until 1024 -> getString(R.string.size_bytes, byte.toString())
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
@@ -22,7 +22,7 @@ fun Context.formatByte(byte: Long) = when (byte) {
     }
 }
 
-fun Context.formatBytePerSecond(byte: Long) = when (byte) {
+fun Context.formatBytesPerSecond(byte: Long) = when (byte) {
     in 0 until 1024 -> getString(R.string.speed_bytes_per_second, byte.toString())
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
@@ -38,7 +38,7 @@ fun Context.formatBytePerSecond(byte: Long) = when (byte) {
     }
 }
 
-fun Context.formatTime(seconds: Int) = when (seconds) {
+fun Context.formatSeconds(seconds: Int) = when (seconds) {
     in 0 until 60 -> getString(R.string.eta_seconds, seconds.toString())
     in 60 until 60 * 60 -> {
         val remainder = seconds % 60
@@ -70,7 +70,7 @@ fun Context.formatTime(seconds: Int) = when (seconds) {
     else -> "inf"
 }
 
-fun Context.formatState(state: TorrentState?) = getString(
+fun Context.formatTorrentState(state: TorrentState?) = getString(
     when (state) {
         TorrentState.ERROR -> R.string.torrent_status_error
         TorrentState.MISSING_FILES -> R.string.torrent_status_missing_files
