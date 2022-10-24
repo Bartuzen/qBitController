@@ -1,9 +1,17 @@
 package dev.bartuzen.qbitcontroller.network
 
 import dev.bartuzen.qbitcontroller.data.TorrentSort
-import dev.bartuzen.qbitcontroller.model.*
+import dev.bartuzen.qbitcontroller.model.PieceState
+import dev.bartuzen.qbitcontroller.model.Torrent
+import dev.bartuzen.qbitcontroller.model.TorrentFile
+import dev.bartuzen.qbitcontroller.model.TorrentProperties
+import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface TorrentService {
     @FormUrlEncoded

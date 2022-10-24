@@ -1,6 +1,6 @@
 package dev.bartuzen.qbitcontroller.utils
 
-import java.util.*
+import java.util.SortedMap
 import kotlin.math.floor
 
 fun String.toAsterisks() = "*".repeat(this.length)

@@ -15,7 +15,15 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
-import dev.bartuzen.qbitcontroller.utils.*
+import dev.bartuzen.qbitcontroller.utils.floorToDecimal
+import dev.bartuzen.qbitcontroller.utils.formatBytes
+import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
+import dev.bartuzen.qbitcontroller.utils.formatSeconds
+import dev.bartuzen.qbitcontroller.utils.formatTorrentState
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.flow.filterNotNull
 
 @FragmentWithArgs

@@ -18,7 +18,11 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
-import dev.bartuzen.qbitcontroller.utils.*
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setItemMargin
+import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.flow.filterNotNull
 
 @FragmentWithArgs

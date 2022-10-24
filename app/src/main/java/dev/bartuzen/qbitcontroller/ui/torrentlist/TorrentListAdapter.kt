@@ -10,7 +10,11 @@ import com.google.android.material.chip.Chip
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentBinding
 import dev.bartuzen.qbitcontroller.model.Torrent
-import dev.bartuzen.qbitcontroller.utils.*
+import dev.bartuzen.qbitcontroller.utils.floorToDecimal
+import dev.bartuzen.qbitcontroller.utils.formatBytes
+import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
+import dev.bartuzen.qbitcontroller.utils.formatSeconds
+import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 
 class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
     ListAdapter<Torrent, TorrentListAdapter.ViewHolder>(DiffCallBack()) {
