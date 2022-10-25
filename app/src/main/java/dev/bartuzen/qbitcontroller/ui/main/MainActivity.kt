@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel: MainViewModel by viewModels()
+
+    private val onDrawerBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            binding.layoutDrawer.close()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +61,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (binding.layoutDrawer.isDrawerOpen(GravityCompat.START)) {
-                    binding.layoutDrawer.closeDrawer(GravityCompat.START)
-                }
+        onBackPressedDispatcher.addCallback(this, onDrawerBackPressedCallback)
+        binding.layoutDrawer.addDrawerListener(object : DrawerListener {
+            override fun onDrawerOpened(drawerView: View) {
+                onDrawerBackPressedCallback.isEnabled = true
             }
+
+            override fun onDrawerClosed(drawerView: View) {
+                onDrawerBackPressedCallback.isEnabled = false
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+            override fun onDrawerStateChanged(newState: Int) {}
         })
 
         val actionBarDrawerToggle = ActionBarDrawerToggle(
@@ -103,6 +118,14 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, fragment)
                     .commit()
             }
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        if (binding.layoutDrawer.isOpen) {
+            onDrawerBackPressedCallback.isEnabled = true
         }
     }
 }
