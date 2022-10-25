@@ -21,13 +21,20 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ui.torrent.TorrentActivity" />
-        <activity android:name=".ui.settings.SettingsActivity" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 
