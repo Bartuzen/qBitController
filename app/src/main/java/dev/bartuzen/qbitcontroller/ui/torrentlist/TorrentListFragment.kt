@@ -44,6 +44,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     @Arg
     lateinit var serverConfig: ServerConfig
 
+    private lateinit var drawerListener: DrawerListener
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentListBinding.bind(view)
@@ -127,7 +129,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.setItemMargin(8, 8)
 
-        activityBinding.layoutDrawer.addDrawerListener(object : DrawerListener {
+        drawerListener = object : DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
                 actionMode?.finish()
             }
@@ -137,7 +139,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             override fun onDrawerOpened(drawerView: View) {}
 
             override fun onDrawerClosed(drawerView: View) {}
-        })
+        }
+        activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
         viewModel.torrentList.filterNotNull()
             .launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
@@ -213,6 +216,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        activityBinding.layoutDrawer.removeDrawerListener(drawerListener)
         _activityBinding = null
     }
 }
