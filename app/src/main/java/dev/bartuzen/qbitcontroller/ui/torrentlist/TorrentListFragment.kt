@@ -187,7 +187,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
     }
 
-    fun showDeleteTorrentsDialog(adapter: TorrentListAdapter, actionMode: ActionMode?) {
+    private fun showDeleteTorrentsDialog(adapter: TorrentListAdapter, actionMode: ActionMode?) {
         val dialogBinding = FragmentTorrentDeleteDialogBinding.inflate(layoutInflater)
 
         MaterialAlertDialogBuilder(requireActivity())
