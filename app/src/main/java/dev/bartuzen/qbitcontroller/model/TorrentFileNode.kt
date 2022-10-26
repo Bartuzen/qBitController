@@ -1,5 +1,7 @@
 package dev.bartuzen.qbitcontroller.model
 
+import java.util.ArrayDeque
+
 data class TorrentFileNode(
     val name: String,
     val children: MutableList<TorrentFileNode>?
@@ -8,9 +10,9 @@ data class TorrentFileNode(
 
     val isFolder get() = children != null
 
-    fun findChildNode(childList: Collection<String>): TorrentFileNode? {
+    fun findChildNode(childList: ArrayDeque<String>): TorrentFileNode? {
         var currentNode = this
-        childList.forEach { child ->
+        for (child in childList.descendingIterator()) {
             currentNode = currentNode.children?.find {
                 it.name == child
             } ?: return null
