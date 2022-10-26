@@ -13,6 +13,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,39 +28,62 @@ class TorrentPiecesViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    val isLoading = MutableStateFlow(true)
-    val isRefreshing = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var isInitialLoadStarted = false
 
-    fun updatePieces(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
-        val piecesDeferred = async {
-            when (val result = repository.getPieces(serverConfig, torrentHash)) {
-                is RequestResult.Success -> {
-                    result.data
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
-                    throw CancellationException()
-                }
-            }
-        }
-        val propertiesDeferred = async {
-            when (val result = repository.getProperties(serverConfig, torrentHash)) {
-                is RequestResult.Success -> {
-                    result.data
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
-                    throw CancellationException()
+    private fun updatePieces(serverConfig: ServerConfig, torrentHash: String) =
+        viewModelScope.launch {
+            val piecesDeferred = async {
+                when (val result = repository.getPieces(serverConfig, torrentHash)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        eventChannel.send(Event.Error(result.error))
+                        throw CancellationException()
+                    }
                 }
             }
+            val propertiesDeferred = async {
+                when (val result = repository.getProperties(serverConfig, torrentHash)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        eventChannel.send(Event.Error(result.error))
+                        throw CancellationException()
+                    }
+                }
+            }
+
+            val pieces = piecesDeferred.await()
+            val properties = propertiesDeferred.await()
+
+            torrentPieces.value = pieces
+            torrentProperties.value = properties
         }
 
-        val pieces = piecesDeferred.await()
-        val properties = propertiesDeferred.await()
+    fun loadPieces(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isLoading.value) {
+            _isLoading.value = true
+            updatePieces(serverConfig, torrentHash).invokeOnCompletion {
+                _isLoading.value = false
+            }
+        }
+    }
 
-        torrentPieces.value = pieces
-        torrentProperties.value = properties
+    fun refreshPieces(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isRefreshing.value) {
+            _isRefreshing.value = true
+            updatePieces(serverConfig, torrentHash).invokeOnCompletion {
+                _isRefreshing.value = false
+            }
+        }
     }
 
     sealed class Event {

@@ -29,17 +29,40 @@ class TorrentFilesViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    val isLoading = MutableStateFlow(true)
-    val isRefreshing = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var isInitialLoadStarted = false
 
-    fun updateFiles(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.getFiles(serverConfig, torrentHash)) {
-            is RequestResult.Success -> {
-                torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
+    private fun updateFiles(serverConfig: ServerConfig, torrentHash: String) =
+        viewModelScope.launch {
+            when (val result = repository.getFiles(serverConfig, torrentHash)) {
+                is RequestResult.Success -> {
+                    torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
             }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+        }
+
+    fun loadFiles(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isLoading.value) {
+            _isLoading.value = true
+            updateFiles(serverConfig, torrentHash).invokeOnCompletion {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun refreshFiles(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isRefreshing.value) {
+            _isRefreshing.value = true
+            updateFiles(serverConfig, torrentHash).invokeOnCompletion {
+                _isRefreshing.value = false
             }
         }
     }

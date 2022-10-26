@@ -53,17 +53,12 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
         binding.recyclerFiles.adapter = ConcatAdapter(backButtonAdapter, adapter)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.isRefreshing.value = true
-            viewModel.updateFiles(serverConfig, torrentHash).invokeOnCompletion {
-                viewModel.isRefreshing.value = false
-            }
+            viewModel.refreshFiles(serverConfig, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.updateFiles(serverConfig, torrentHash).invokeOnCompletion {
-                viewModel.isLoading.value = false
-            }
+            viewModel.loadFiles(serverConfig, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->

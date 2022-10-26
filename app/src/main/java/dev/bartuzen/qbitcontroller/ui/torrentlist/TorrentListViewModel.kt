@@ -12,6 +12,7 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -29,11 +30,15 @@ class TorrentListViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    val isLoading = MutableStateFlow(true)
-    val isRefreshing = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var isInitialLoadStarted = false
 
-    fun updateTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) =
+    private fun updateTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) =
         viewModelScope.launch {
             when (
                 val result = repository.getTorrentList(
@@ -48,6 +53,24 @@ class TorrentListViewModel @Inject constructor(
                 }
             }
         }
+
+    fun loadTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) {
+        if (!isLoading.value) {
+            _isLoading.value = true
+            updateTorrentList(serverConfig, torrentSort).invokeOnCompletion {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun refreshTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) {
+        if (!isRefreshing.value) {
+            _isRefreshing.value = true
+            updateTorrentList(serverConfig, torrentSort).invokeOnCompletion {
+                _isRefreshing.value = false
+            }
+        }
+    }
 
     fun deleteTorrents(
         serverConfig: ServerConfig,

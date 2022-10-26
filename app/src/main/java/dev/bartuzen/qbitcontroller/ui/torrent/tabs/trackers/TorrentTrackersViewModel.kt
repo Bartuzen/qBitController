@@ -10,6 +10,7 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,17 +24,40 @@ class TorrentTrackersViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    val isLoading = MutableStateFlow(true)
-    val isRefreshing = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var isInitialLoadStarted = false
 
-    fun updateTrackers(serverConfig: ServerConfig, hash: String) = viewModelScope.launch {
-        when (val result = repository.getTrackers(serverConfig, hash)) {
-            is RequestResult.Success -> {
-                torrentTrackers.value = result.data
+    private fun updateTrackers(serverConfig: ServerConfig, torrentHash: String) =
+        viewModelScope.launch {
+            when (val result = repository.getTrackers(serverConfig, torrentHash)) {
+                is RequestResult.Success -> {
+                    torrentTrackers.value = result.data
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
             }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+        }
+
+    fun loadTrackers(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isLoading.value) {
+            _isLoading.value = true
+            updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun refreshTrackers(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isRefreshing.value) {
+            _isRefreshing.value = true
+            updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
+                _isRefreshing.value = false
             }
         }
     }

@@ -58,10 +58,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     TorrentActivity.Extras.TORRENT_DELETED, false
                 ) ?: false
                 if (isTorrentDeleted) {
-                    viewModel.isLoading.value = true
-                    viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
-                        viewModel.isLoading.value = false
-                    }
+                    viewModel.loadTorrentList(serverConfig)
                     showSnackbar(getString(R.string.torrent_deleted_success))
                 }
             }
@@ -100,10 +97,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 }
                 viewModel.setTorrentSort(sort)
 
-                viewModel.isLoading.value = true
-                viewModel.updateTorrentList(serverConfig, sort).invokeOnCompletion {
-                    viewModel.isLoading.value = false
-                }
+                viewModel.loadTorrentList(serverConfig)
 
                 return true
             }
@@ -199,17 +193,12 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.isRefreshing.value = true
-            viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
-                viewModel.isRefreshing.value = false
-            }
+            viewModel.refreshTorrentList(serverConfig)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
-                viewModel.isLoading.value = false
-            }
+            viewModel.loadTorrentList(serverConfig)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -234,10 +223,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         )
                     )
 
-                    viewModel.isLoading.value = true
-                    viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
-                        viewModel.isLoading.value = false
-                    }
+                    viewModel.loadTorrentList(serverConfig)
                 }
                 is TorrentListViewModel.Event.TorrentsPaused -> {
                     showSnackbar(
@@ -250,10 +236,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent pauses the torrent
-                        viewModel.isLoading.value = true
-                        viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
-                            viewModel.isLoading.value = false
-                        }
+                        viewModel.loadTorrentList(serverConfig)
                     }
                 }
                 is TorrentListViewModel.Event.TorrentsResumed -> {
@@ -267,10 +250,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
-                        viewModel.isLoading.value = true
-                        viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
-                            viewModel.isLoading.value = false
-                        }
+                        viewModel.loadTorrentList(serverConfig)
                     }
                 }
             }

@@ -63,17 +63,12 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         binding.recyclerTrackers.setItemMargin(8, 8)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.isRefreshing.value = true
-            viewModel.updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
-                viewModel.isRefreshing.value = false
-            }
+            viewModel.refreshTrackers(serverConfig, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
-                viewModel.isLoading.value = false
-            }
+            viewModel.loadTrackers(serverConfig, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->

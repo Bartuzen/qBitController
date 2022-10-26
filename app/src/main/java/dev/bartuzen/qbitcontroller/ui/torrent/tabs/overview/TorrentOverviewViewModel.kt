@@ -10,6 +10,7 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,19 +24,42 @@ class TorrentOverviewViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    val isLoading = MutableStateFlow(true)
-    val isRefreshing = MutableStateFlow(false)
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     var isInitialLoadStarted = false
 
-    fun updateTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.getTorrent(serverConfig, torrentHash)) {
-            is RequestResult.Success -> {
-                if (result.data.size == 1) {
-                    torrent.value = result.data.first()
+    private fun updateTorrent(serverConfig: ServerConfig, torrentHash: String) =
+        viewModelScope.launch {
+            when (val result = repository.getTorrent(serverConfig, torrentHash)) {
+                is RequestResult.Success -> {
+                    if (result.data.size == 1) {
+                        torrent.value = result.data.first()
+                    }
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
                 }
             }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+        }
+
+    fun loadTorrent(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isLoading.value) {
+            _isLoading.value = true
+            updateTorrent(serverConfig, torrentHash).invokeOnCompletion {
+                _isLoading.value = false
+            }
+        }
+    }
+
+    fun refreshTorrent(serverConfig: ServerConfig, torrentHash: String) {
+        if (!isRefreshing.value) {
+            _isRefreshing.value = true
+            updateTorrent(serverConfig, torrentHash).invokeOnCompletion {
+                _isRefreshing.value = false
             }
         }
     }

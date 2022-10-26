@@ -76,17 +76,12 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
         }, viewLifecycleOwner)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.isRefreshing.value = true
-            viewModel.updateTorrent(serverConfig, torrentHash).invokeOnCompletion {
-                viewModel.isRefreshing.value = false
-            }
+            viewModel.refreshTorrent(serverConfig, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.updateTorrent(serverConfig, torrentHash).invokeOnCompletion {
-                viewModel.isLoading.value = false
-            }
+            viewModel.loadTorrent(serverConfig, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
