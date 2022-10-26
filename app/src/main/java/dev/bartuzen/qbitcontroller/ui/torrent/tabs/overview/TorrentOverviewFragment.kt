@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,9 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -141,9 +144,19 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 }
                 TorrentOverviewViewModel.Event.TorrentPaused -> {
                     showSnackbar(getString(R.string.torrent_paused_success))
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent pauses the torrent
+                        viewModel.loadTorrent(serverConfig, torrentHash)
+                    }
                 }
                 TorrentOverviewViewModel.Event.TorrentResumed -> {
                     showSnackbar(getString(R.string.torrent_resumed_success))
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent resumes the torrent
+                        viewModel.loadTorrent(serverConfig, torrentHash)
+                    }
                 }
             }
         }
