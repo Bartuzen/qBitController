@@ -152,7 +152,7 @@ class TorrentListAdapter(
         fun bind(torrent: Torrent) {
             val context = binding.root.context
 
-            binding.root.isSelected = selectedTorrentHashes.contains(torrent.hash)
+            binding.root.isSelected = torrent.hash in selectedTorrentHashes
 
             binding.textName.text = torrent.name
 
