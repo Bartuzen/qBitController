@@ -20,8 +20,7 @@ class TorrentListAdapter(
     private val onClick: (torrent: Torrent) -> Unit,
     private val onSelectionModeStart: () -> Unit,
     private val onSelectionModeEnd: () -> Unit
-) :
-    ListAdapter<Torrent, TorrentListAdapter.ViewHolder>(DiffCallBack()) {
+) : ListAdapter<Torrent, TorrentListAdapter.ViewHolder>(DiffCallBack()) {
     private val _selectedTorrentHashes = mutableListOf<String>()
     val selectedTorrentHashes: List<String> get() = _selectedTorrentHashes
     val isInSelectionMode get() = selectedTorrentHashes.isNotEmpty()
@@ -34,6 +33,25 @@ class TorrentListAdapter(
                 notifyItemChanged(index)
             }
         }
+    }
+
+    // If a torrent is removed after list change, remove it from hash list
+    override fun onCurrentListChanged(
+        previousList: MutableList<Torrent>,
+        currentList: MutableList<Torrent>
+    ) {
+        val updatedList = selectedTorrentHashes.filter { hash ->
+            currentList.find { torrent ->
+                torrent.hash == hash
+            } != null
+        }
+
+        if(selectedTorrentHashes.isNotEmpty() && updatedList.isEmpty()) {
+            onSelectionModeEnd()
+        }
+
+        _selectedTorrentHashes.clear()
+        _selectedTorrentHashes.addAll(updatedList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
