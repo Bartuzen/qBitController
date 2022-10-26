@@ -73,8 +73,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
         }, viewLifecycleOwner)
 
         binding.swipeRefresh.setOnRefreshListener {
+            viewModel.isRefreshing.value = true
             viewModel.updateTorrent(serverConfig, torrentHash).invokeOnCompletion {
-                binding.swipeRefresh.isRefreshing = false
+                viewModel.isRefreshing.value = false
             }
         }
 
@@ -87,6 +88,10 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
             binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
+            binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
         viewModel.torrent.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrent ->

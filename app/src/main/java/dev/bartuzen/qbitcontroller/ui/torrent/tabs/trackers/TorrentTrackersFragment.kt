@@ -63,8 +63,9 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         binding.recyclerTrackers.setItemMargin(8, 8)
 
         binding.swipeRefresh.setOnRefreshListener {
+            viewModel.isRefreshing.value = true
             viewModel.updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
-                binding.swipeRefresh.isRefreshing = false
+                viewModel.isRefreshing.value = false
             }
         }
 
@@ -77,6 +78,10 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
             binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
+            binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
         viewModel.torrentTrackers.launchAndCollectLatestIn(viewLifecycleOwner) { trackers ->

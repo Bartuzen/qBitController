@@ -24,6 +24,7 @@ class TorrentTrackersViewModel @Inject constructor(
     val eventFlow = eventChannel.receiveAsFlow()
 
     val isLoading = MutableStateFlow(true)
+    val isRefreshing = MutableStateFlow(false)
     var isInitialLoadStarted = false
 
     fun updateTrackers(serverConfig: ServerConfig, hash: String) = viewModelScope.launch {
