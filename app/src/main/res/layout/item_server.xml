@@ -5,9 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:focusable="true"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:ignore="UnusedAttribute">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_name"
