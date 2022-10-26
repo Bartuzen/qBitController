@@ -42,7 +42,7 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = serverConfig.name
+        supportActionBar?.title = serverConfig.name ?: getString(R.string.app_name)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             finish()
