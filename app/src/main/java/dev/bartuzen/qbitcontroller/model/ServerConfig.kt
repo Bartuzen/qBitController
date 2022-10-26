@@ -9,5 +9,5 @@ data class ServerConfig(
     var host: String,
     var username: String,
     var password: String,
-    var name: String
+    var name: String?
 ) : Parcelable

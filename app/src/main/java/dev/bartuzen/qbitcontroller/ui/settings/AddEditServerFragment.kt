@@ -106,7 +106,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
                                     host,
                                     username,
                                     password,
-                                    name.ifBlank { getString(R.string.settings_default_server_name) }
+                                    name.ifEmpty { null }
                                 )
                                 viewModel.addServer(config)
                                 showSnackbar(R.string.settings_server_add_success, parentView)
@@ -177,15 +177,14 @@ class AddEditServerFragment : BasePreferenceFragment() {
             }
 
         fun fromServerConfig(serverConfig: ServerConfig) {
-            name = serverConfig.name
+            name = serverConfig.name ?: ""
             host = serverConfig.host
             username = serverConfig.username
             password = serverConfig.password
         }
 
         fun toServerConfig(serverConfig: ServerConfig) {
-            serverConfig.name =
-                name.ifBlank { getString(R.string.settings_default_server_name) }
+            serverConfig.name = name.ifBlank { null }
             serverConfig.host = host
             serverConfig.username = username
             serverConfig.password = password

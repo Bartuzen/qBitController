@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -53,7 +54,11 @@ class ServerListAdapter(private val listener: OnItemClickListener? = null) :
                 }
             )
 
-            binding.textName.text = serverConfig.name
+            if (serverConfig.name != null) {
+                binding.textName.text = serverConfig.name
+            } else {
+                binding.textName.visibility = View.GONE
+            }
             binding.textHost.text = serverConfig.host
         }
     }
