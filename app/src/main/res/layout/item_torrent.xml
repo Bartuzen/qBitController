@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/selectable_card_background"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    app:cardBackgroundColor="@color/selectable_card_background"
     app:cardCornerRadius="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
