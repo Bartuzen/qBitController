@@ -10,10 +10,12 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
@@ -65,12 +67,14 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    R.id.menu_pause -> viewModel.pauseTorrent(serverConfig, torrentHash)
-                    R.id.menu_resume -> viewModel.resumeTorrent(serverConfig, torrentHash)
+                    R.id.menu_pause -> {
+                        viewModel.pauseTorrent(serverConfig, torrentHash)
+                    }
+                    R.id.menu_resume -> {
+                        viewModel.resumeTorrent(serverConfig, torrentHash)
+                    }
                     R.id.menu_delete -> {
-                        TorrentDeleteDialogFragmentBuilder(serverConfig, torrentHash)
-                            .build()
-                            .show(childFragmentManager, null)
+                        showDeleteTorrentDialog()
                     }
                     else -> return false
                 }
@@ -160,6 +164,24 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 }
             }
         }
+    }
+
+    private fun showDeleteTorrentDialog() {
+        val dialogBinding = DialogTorrentDeleteBinding.inflate(layoutInflater)
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.torrent_delete)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                viewModel.deleteTorrent(
+                    serverConfig,
+                    torrentHash,
+                    dialogBinding.checkBoxDeleteFiles.isChecked
+                )
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
     }
 
     override fun onDestroyView() {

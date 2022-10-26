@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
-import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentDeleteDialogBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
@@ -258,7 +258,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     }
 
     private fun showDeleteTorrentsDialog(adapter: TorrentListAdapter, actionMode: ActionMode?) {
-        val dialogBinding = FragmentTorrentDeleteDialogBinding.inflate(layoutInflater)
+        val dialogBinding = DialogTorrentDeleteBinding.inflate(layoutInflater)
 
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(

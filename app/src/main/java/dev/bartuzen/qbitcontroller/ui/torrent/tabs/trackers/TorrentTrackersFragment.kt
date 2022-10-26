@@ -8,10 +8,12 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTrackersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentTrackersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
@@ -47,9 +49,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.menu_add -> {
-                        TorrentTrackersAddDialogFragmentBuilder(serverConfig, torrentHash)
-                            .build()
-                            .show(childFragmentManager, null)
+                        showAddTrackersDialog()
                     }
                     else -> return false
                 }
@@ -93,6 +93,24 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                 }
             }
         }
+    }
+
+    private fun showAddTrackersDialog() {
+        val dialogBinding = DialogTorrentTrackersAddBinding.inflate(layoutInflater)
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.torrent_trackers_add)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                viewModel.addTrackers(
+                    serverConfig,
+                    torrentHash,
+                    dialogBinding.editTrackers.text.toString()
+                )
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
     }
 
     override fun onDestroyView() {
