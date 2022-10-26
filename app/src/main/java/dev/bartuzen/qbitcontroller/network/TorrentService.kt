@@ -39,11 +39,11 @@ interface TorrentService {
 
     @FormUrlEncoded
     @POST("api/v2/torrents/pause")
-    suspend fun pauseTorrent(@Field("hashes") hashes: String): Response<String>
+    suspend fun pauseTorrents(@Field("hashes") hashes: String): Response<String>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/resume")
-    suspend fun resumeTorrent(@Field("hashes") hashes: String): Response<String>
+    suspend fun resumeTorrents(@Field("hashes") hashes: String): Response<String>
 
     @GET("api/v2/torrents/pieceStates")
     suspend fun getTorrentPieces(@Query("hash") hash: String): Response<List<PieceState>>
