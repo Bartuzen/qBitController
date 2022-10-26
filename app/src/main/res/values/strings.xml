@@ -80,6 +80,16 @@
         <item>System Default</item>
     </string-array>
 
+
+    <plurals name="torrent_list_delete_torrents">
+        <item quantity="one">Delete %1$d Torrent</item>
+        <item quantity="other">Delete %1$d Torrents</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_deleted_success">
+        <item quantity="one">%1$d torrent deleted successfully.</item>
+        <item quantity="other">%1$d torrents deleted successfully.</item>
+    </plurals>
+
     <string name="settings_torrent_name">Name</string>
     <string name="settings_host">IP Address or Host Name</string>
     <string name="settings_username">Username</string>

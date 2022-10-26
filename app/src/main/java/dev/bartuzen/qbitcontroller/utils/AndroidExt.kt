@@ -8,6 +8,7 @@ import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Parcelable
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
@@ -72,3 +73,5 @@ inline fun <reified T : Parcelable> Intent.getParcelable(name: String) =
         @Suppress("DEPRECATION")
         getParcelableExtra(name)
     }
+
+val Activity.view: View get() = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)

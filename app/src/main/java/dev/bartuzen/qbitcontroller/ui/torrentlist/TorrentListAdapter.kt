@@ -16,8 +16,26 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 
-class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
+class TorrentListAdapter(
+    private val onClick: (torrent: Torrent) -> Unit,
+    private val onSelectionModeStart: () -> Unit,
+    private val onSelectionModeEnd: () -> Unit
+) :
     ListAdapter<Torrent, TorrentListAdapter.ViewHolder>(DiffCallBack()) {
+    private val _selectedTorrentHashes = mutableListOf<String>()
+    val selectedTorrentHashes: List<String> get() = _selectedTorrentHashes
+    val isInSelectionMode get() = selectedTorrentHashes.isNotEmpty()
+
+    fun finishSelection() {
+        val selectedHashesCopy = selectedTorrentHashes.toList()
+        _selectedTorrentHashes.clear()
+        currentList.forEachIndexed { index, torrent ->
+            if (torrent.hash in selectedHashesCopy) {
+                notifyItemChanged(index)
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemTorrentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -31,19 +49,54 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
 
     inner class ViewHolder(private val binding: ItemTorrentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        private var isSelected: Boolean
+            get() = binding.root.isSelected
+            set(value) {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { torrent ->
+                        if (value) {
+                            _selectedTorrentHashes.add(torrent.hash)
+                        } else {
+                            _selectedTorrentHashes.remove(torrent.hash)
+                        }
+                        notifyItemChanged(bindingAdapterPosition, Unit)
+                    }
+                }
+            }
 
         init {
             binding.root.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    getItem(bindingAdapterPosition)?.let { torrent ->
-                        listener?.onClick(torrent)
+                    if (isInSelectionMode) {
+                        if (isSelected) {
+                            isSelected = false
+                            if (!isInSelectionMode) {
+                                onSelectionModeEnd()
+                            }
+                        } else {
+                            isSelected = true
+                        }
+                    } else {
+                        getItem(bindingAdapterPosition)?.let { torrent ->
+                            onClick(torrent)
+                        }
                     }
                 }
+            }
+
+            binding.root.setOnLongClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION && !isInSelectionMode) {
+                    isSelected = true
+                    onSelectionModeStart()
+                }
+                true
             }
         }
 
         fun bind(torrent: Torrent) {
             val context = binding.root.context
+
+            binding.root.isSelected = selectedTorrentHashes.contains(torrent.hash)
 
             binding.textName.text = torrent.name
 
@@ -107,9 +160,5 @@ class TorrentListAdapter(private val listener: OnItemClickListener? = null) :
 
         override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) =
             oldItem == newItem
-    }
-
-    interface OnItemClickListener {
-        fun onClick(torrent: Torrent)
     }
 }

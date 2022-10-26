@@ -2,20 +2,24 @@ package dev.bartuzen.qbitcontroller.ui.torrentlist
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.MenuProvider
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.TorrentSort
+import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
+import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentDeleteDialogBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -23,6 +27,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.flow.filterNotNull
 
 @FragmentWithArgs
@@ -30,6 +35,9 @@ import kotlinx.coroutines.flow.filterNotNull
 class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     private var _binding: FragmentTorrentListBinding? = null
     private val binding get() = _binding!!
+
+    private var _activityBinding: ActivityMainBinding? = null
+    private val activityBinding get() = _activityBinding!!
 
     private val viewModel: TorrentListViewModel by viewModels()
 
@@ -39,6 +47,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentListBinding.bind(view)
+        _activityBinding = ActivityMainBinding.bind(requireActivity().view)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -78,17 +87,57 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
         }, viewLifecycleOwner)
 
-        val adapter = TorrentListAdapter(object : TorrentListAdapter.OnItemClickListener {
-            override fun onClick(torrent: Torrent) {
+        var actionMode: ActionMode? = null
+        lateinit var adapter: TorrentListAdapter
+        adapter = TorrentListAdapter(
+            onClick = { torrent ->
                 val intent = Intent(context, TorrentActivity::class.java).apply {
                     putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
                     putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
                 }
                 startActivity(intent)
+            },
+            onSelectionModeStart = {
+                actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
+                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        mode.menuInflater.inflate(R.menu.torrent_list_selection_menu, menu)
+                        return true
+                    }
+
+                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
+                        when (item.itemId) {
+                            R.id.menu_delete -> {
+                                showDeleteTorrentsDialog(adapter, actionMode)
+                                true
+                            }
+                            else -> false
+                        }
+
+                    override fun onDestroyActionMode(mode: ActionMode) {
+                        adapter.finishSelection()
+                    }
+                })
+            },
+            onSelectionModeEnd = {
+                actionMode?.finish()
             }
-        })
+        )
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.setItemMargin(8, 8)
+
+        activityBinding.layoutDrawer.addDrawerListener(object : DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+                actionMode?.finish()
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
+
+            override fun onDrawerOpened(drawerView: View) {}
+
+            override fun onDrawerClosed(drawerView: View) {}
+        })
 
         viewModel.torrentList.filterNotNull()
             .launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
@@ -117,8 +166,48 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 is TorrentListViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.result))
                 }
+                is TorrentListViewModel.Event.TorrentsDeleted -> {
+                    showSnackbar(
+                        resources.getQuantityString(
+                            R.plurals.torrent_list_torrents_deleted_success,
+                            event.count,
+                            event.count
+                        )
+                    )
+
+                    viewModel.isLoading.value = true
+                    viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                        viewModel.isLoading.value = false
+                    }
+                }
             }
         }
+    }
+
+    fun showDeleteTorrentsDialog(adapter: TorrentListAdapter, actionMode: ActionMode?) {
+        val dialogBinding = FragmentTorrentDeleteDialogBinding.inflate(layoutInflater)
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(
+                resources.getQuantityString(
+                    R.plurals.torrent_list_delete_torrents,
+                    adapter.selectedTorrentHashes.size,
+                    adapter.selectedTorrentHashes.size
+                )
+            )
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                viewModel.deleteTorrents(
+                    serverConfig,
+                    adapter.selectedTorrentHashes.joinToString("|"),
+                    dialogBinding.checkBoxDeleteFiles.isChecked
+                )
+                adapter.finishSelection()
+                actionMode?.finish()
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
     }
 
     override fun onDestroyView() {

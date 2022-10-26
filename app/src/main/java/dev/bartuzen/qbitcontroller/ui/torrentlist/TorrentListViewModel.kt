@@ -48,11 +48,26 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
+    fun deleteTorrents(serverConfig: ServerConfig, torrentHashes: String, deleteFiles: Boolean) =
+        viewModelScope.launch {
+            when (val result =
+                repository.deleteTorrents(serverConfig, torrentHashes, deleteFiles)
+            ) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsDeleted(torrentHashes.count { it == '|' } + 1))
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
     }
 
     sealed class Event {
         data class Error(val result: RequestError) : Event()
+        data class TorrentsDeleted(val count: Int) : Event()
     }
 }

@@ -18,4 +18,6 @@
 
     <color name="torrent_category">@color/color_primary</color>
     <color name="torrent_tag">@color/color_secondary</color>
+
+    <color name="selected_card_background">@color/gray</color>
 </resources>
