@@ -101,8 +101,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
                 }
                 startActivity(intent)
-            },
-            onSelectionModeStart = {
+            }, onSelectionModeStart = {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                         mode.menuInflater.inflate(R.menu.torrent_list_selection_menu, menu)
@@ -140,9 +139,16 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         adapter.finishSelection()
                     }
                 })
-            },
-            onSelectionModeEnd = {
+            }, onSelectionModeEnd = {
                 actionMode?.finish()
+            }, onUpdateSelection = { count ->
+                if (count != 0) {
+                    actionMode?.title = resources.getQuantityString(
+                        R.plurals.torrent_list_torrents_selected,
+                        count,
+                        count
+                    )
+                }
             }
         )
         binding.recyclerTorrentList.adapter = adapter

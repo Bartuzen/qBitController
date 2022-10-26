@@ -19,7 +19,8 @@ import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 class TorrentListAdapter(
     private val onClick: (torrent: Torrent) -> Unit,
     private val onSelectionModeStart: () -> Unit,
-    private val onSelectionModeEnd: () -> Unit
+    private val onSelectionModeEnd: () -> Unit,
+    private val onUpdateSelection: (torrentCount: Int) -> Unit
 ) : ListAdapter<Torrent, TorrentListAdapter.ViewHolder>(DiffCallBack()) {
     private val _selectedTorrentHashes = mutableListOf<String>()
     val selectedTorrentHashes: List<String> get() = _selectedTorrentHashes
@@ -46,7 +47,11 @@ class TorrentListAdapter(
             } != null
         }
 
-        if(selectedTorrentHashes.isNotEmpty() && updatedList.isEmpty()) {
+        if (updatedList.size != selectedTorrentHashes.size) {
+            onUpdateSelection(updatedList.size)
+        }
+
+        if (selectedTorrentHashes.isNotEmpty() && updatedList.isEmpty()) {
             onSelectionModeEnd()
         }
 
@@ -88,11 +93,13 @@ class TorrentListAdapter(
                     if (isInSelectionMode) {
                         if (isSelected) {
                             isSelected = false
+                            onUpdateSelection(selectedTorrentHashes.size)
                             if (!isInSelectionMode) {
                                 onSelectionModeEnd()
                             }
                         } else {
                             isSelected = true
+                            onUpdateSelection(selectedTorrentHashes.size)
                         }
                     } else {
                         getItem(bindingAdapterPosition)?.let { torrent ->
@@ -106,6 +113,7 @@ class TorrentListAdapter(
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION && !isInSelectionMode) {
                     isSelected = true
                     onSelectionModeStart()
+                    onUpdateSelection(selectedTorrentHashes.size)
                 }
                 true
             }
