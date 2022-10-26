@@ -3,6 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_pause"
+        android:icon="@drawable/ic_pause"
+        android:title="@string/menu_pause"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_resume"
+        android:icon="@drawable/ic_resume"
+        android:title="@string/menu_resume"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/menu_delete"

@@ -89,6 +89,14 @@
         <item quantity="one">%1$d torrent deleted successfully.</item>
         <item quantity="other">%1$d torrents deleted successfully.</item>
     </plurals>
+    <plurals name="torrent_list_torrents_paused_success">
+        <item quantity="one">%1$d torrent paused successfully.</item>
+        <item quantity="other">%1$d torrents paused successfully.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_resumed_success">
+        <item quantity="one">%1$d torrent resumed successfully.</item>
+        <item quantity="other">%1$d torrents resumed successfully.</item>
+    </plurals>
 
     <string name="settings_torrent_name">Name</string>
     <string name="settings_host">IP Address or Host Name</string>

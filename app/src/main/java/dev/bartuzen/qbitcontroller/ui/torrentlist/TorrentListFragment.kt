@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -28,7 +29,9 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -114,6 +117,22 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                                 showDeleteTorrentsDialog(adapter, actionMode)
                                 true
                             }
+                            R.id.menu_pause -> {
+                                viewModel.pauseTorrents(
+                                    serverConfig, adapter.selectedTorrentHashes.toList()
+                                )
+                                adapter.finishSelection()
+                                actionMode?.finish()
+                                true
+                            }
+                            R.id.menu_resume -> {
+                                viewModel.resumeTorrents(
+                                    serverConfig, adapter.selectedTorrentHashes.toList()
+                                )
+                                adapter.finishSelection()
+                                actionMode?.finish()
+                                true
+                            }
                             else -> false
                         }
 
@@ -188,6 +207,40 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         viewModel.isLoading.value = false
                     }
                 }
+                is TorrentListViewModel.Event.TorrentsPaused -> {
+                    showSnackbar(
+                        resources.getQuantityString(
+                            R.plurals.torrent_list_torrents_paused_success,
+                            event.count,
+                            event.count
+                        )
+                    )
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent pauses the torrent
+                        viewModel.isLoading.value = true
+                        viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                            viewModel.isLoading.value = false
+                        }
+                    }
+                }
+                is TorrentListViewModel.Event.TorrentsResumed -> {
+                    showSnackbar(
+                        resources.getQuantityString(
+                            R.plurals.torrent_list_torrents_resumed_success,
+                            event.count,
+                            event.count
+                        )
+                    )
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent resumes the torrent
+                        viewModel.isLoading.value = true
+                        viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                            viewModel.isLoading.value = false
+                        }
+                    }
+                }
             }
         }
     }
@@ -207,7 +260,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             .setPositiveButton(R.string.dialog_ok) { _, _ ->
                 viewModel.deleteTorrents(
                     serverConfig,
-                    adapter.selectedTorrentHashes.joinToString("|"),
+                    adapter.selectedTorrentHashes,
                     dialogBinding.checkBoxDeleteFiles.isChecked
                 )
                 adapter.finishSelection()

@@ -19,8 +19,17 @@ class TorrentListRepository @Inject constructor(
         serverConfig: ServerConfig,
         torrentHashes: String,
         deleteFiles: Boolean
-    ) =
+    ) = requestManager.request(serverConfig) { service ->
+        service.deleteTorrents(torrentHashes, deleteFiles)
+    }
+
+    suspend fun pauseTorrents(serverConfig: ServerConfig, torrentHashes: String) =
         requestManager.request(serverConfig) { service ->
-            service.deleteTorrents(torrentHashes, deleteFiles)
+            service.pauseTorrents(torrentHashes)
+        }
+
+    suspend fun resumeTorrents(serverConfig: ServerConfig, torrentHashes: String) =
+        requestManager.request(serverConfig) { service ->
+            service.resumeTorrents(torrentHashes)
         }
 }

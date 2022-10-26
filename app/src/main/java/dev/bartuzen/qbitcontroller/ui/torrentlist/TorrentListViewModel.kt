@@ -49,13 +49,50 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
-    fun deleteTorrents(serverConfig: ServerConfig, torrentHashes: String, deleteFiles: Boolean) =
+    fun deleteTorrents(
+        serverConfig: ServerConfig,
+        torrentHashes: List<String>,
+        deleteFiles: Boolean
+    ) = viewModelScope.launch {
+        when (
+            val result = repository.deleteTorrents(
+                serverConfig, torrentHashes.joinToString("|"), deleteFiles
+            )
+        ) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsDeleted(torrentHashes.size))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result.error))
+            }
+        }
+    }
+
+    fun pauseTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
         viewModelScope.launch {
-            when (val result =
-                repository.deleteTorrents(serverConfig, torrentHashes, deleteFiles)
+            when (
+                val result = repository.pauseTorrents(
+                    serverConfig, torrentHashes.joinToString("|")
+                )
             ) {
                 is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsDeleted(torrentHashes.count { it == '|' } + 1))
+                    eventChannel.send(Event.TorrentsPaused(torrentHashes.size))
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun resumeTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
+        viewModelScope.launch {
+            when (
+                val result = repository.resumeTorrents(
+                    serverConfig, torrentHashes.joinToString("|")
+                )
+            ) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsResumed(torrentHashes.size))
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result.error))
@@ -70,5 +107,7 @@ class TorrentListViewModel @Inject constructor(
     sealed class Event {
         data class Error(val result: RequestError) : Event()
         data class TorrentsDeleted(val count: Int) : Event()
+        data class TorrentsPaused(val count: Int) : Event()
+        data class TorrentsResumed(val count: Int) : Event()
     }
 }
