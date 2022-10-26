@@ -90,6 +90,8 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                 }
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
                     showSnackbar(getString(R.string.torrent_trackers_added))
+
+                    viewModel.loadTrackers(serverConfig, torrentHash)
                 }
             }
         }
