@@ -20,4 +20,16 @@
         android:title="@string/menu_delete"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_select_all"
+        android:icon="@drawable/ic_select_all"
+        android:title="@string/menu_select_all"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_select_inverse"
+        android:icon="@drawable/ic_select_inverse"
+        android:title="@string/menu_select_inverse"
+        app:showAsAction="ifRoom" />
+
 </menu>

@@ -132,6 +132,14 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                                 actionMode?.finish()
                                 true
                             }
+                            R.id.menu_select_all -> {
+                                adapter.selectAll()
+                                true
+                            }
+                            R.id.menu_select_inverse -> {
+                                adapter.selectInverse()
+                                true
+                            }
                             else -> false
                         }
 

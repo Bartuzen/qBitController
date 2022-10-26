@@ -36,6 +36,36 @@ class TorrentListAdapter(
         }
     }
 
+    fun selectAll() {
+        currentList.forEachIndexed { index, torrent ->
+            if (torrent.hash !in selectedTorrentHashes) {
+                _selectedTorrentHashes.add(torrent.hash)
+                notifyItemChanged(index)
+            }
+        }
+        onUpdateSelection(selectedTorrentHashes.size)
+    }
+
+    fun selectInverse() {
+        val inverseHashList = mutableListOf<String>()
+
+        currentList.forEachIndexed { index, torrent ->
+            if (torrent.hash !in selectedTorrentHashes) {
+                inverseHashList.add(torrent.hash)
+            }
+            notifyItemChanged(index)
+        }
+
+        _selectedTorrentHashes.clear()
+        _selectedTorrentHashes.addAll(inverseHashList)
+
+        if (inverseHashList.isEmpty()) {
+            onSelectionModeEnd()
+        } else {
+            onUpdateSelection(inverseHashList.size)
+        }
+    }
+
     // If a torrent is removed after list change, remove it from hash list
     override fun onCurrentListChanged(
         previousList: MutableList<Torrent>,

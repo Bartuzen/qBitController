@@ -6,6 +6,8 @@
     <string name="menu_pause">Pause</string>
     <string name="menu_resume">Resume</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_select_all">Select All</string>
+    <string name="menu_select_inverse">Select Inverse</string>
 
     <string name="menu_add_edit_server_delete">Delete</string>
     <string name="menu_add_edit_server_save">Save</string>
