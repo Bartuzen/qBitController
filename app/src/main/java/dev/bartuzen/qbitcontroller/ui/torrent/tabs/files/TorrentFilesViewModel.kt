@@ -10,7 +10,7 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class TorrentFilesViewModel @Inject constructor(
     val torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
 
     private val _nodeStack = MutableStateFlow(ArrayDeque<String>())
-    val nodeStack: StateFlow<ArrayDeque<String>> = _nodeStack
+    val nodeStack = _nodeStack.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
