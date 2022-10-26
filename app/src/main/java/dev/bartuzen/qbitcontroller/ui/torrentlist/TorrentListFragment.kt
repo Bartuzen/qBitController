@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ActionMode
@@ -7,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
@@ -48,6 +50,22 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     lateinit var serverConfig: ServerConfig
 
     private lateinit var drawerListener: DrawerListener
+
+    private val startTorrentActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val isTorrentDeleted = result.data?.getBooleanExtra(
+                    TorrentActivity.Extras.TORRENT_DELETED, false
+                ) ?: false
+                if (isTorrentDeleted) {
+                    viewModel.isLoading.value = true
+                    viewModel.updateTorrentList(serverConfig).invokeOnCompletion {
+                        viewModel.isLoading.value = false
+                    }
+                    showSnackbar(getString(R.string.torrent_deleted_success))
+                }
+            }
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -100,7 +118,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
                     putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
                 }
-                startActivity(intent)
+                startTorrentActivity.launch(intent)
             }, onSelectionModeStart = {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {

@@ -1,5 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -15,6 +17,7 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -135,7 +138,11 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 TorrentOverviewViewModel.Event.TorrentDeleted -> {
-                    showSnackbar(getString(R.string.torrent_deleted_success))
+                    val intent = Intent().apply {
+                        putExtra(TorrentActivity.Extras.TORRENT_DELETED, true)
+                    }
+                    requireActivity().setResult(Activity.RESULT_OK, intent)
+                    requireActivity().finish()
                 }
                 TorrentOverviewViewModel.Event.TorrentPaused -> {
                     showSnackbar(getString(R.string.torrent_paused_success))

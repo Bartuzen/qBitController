@@ -21,6 +21,8 @@ class TorrentActivity : AppCompatActivity() {
     object Extras {
         const val TORRENT_HASH = "dev.bartuzen.qbitcontroller.TORRENT_HASH"
         const val SERVER_CONFIG = "dev.bartuzen.qbitcontroller.SERVER_CONFIG"
+
+        const val TORRENT_DELETED = "dev.bartuzen.qbitcontroller.TORRENT_DELETED"
     }
 
     private lateinit var binding: ActivityTorrentBinding
