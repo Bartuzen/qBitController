@@ -213,5 +213,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _activityBinding = null
     }
 }
