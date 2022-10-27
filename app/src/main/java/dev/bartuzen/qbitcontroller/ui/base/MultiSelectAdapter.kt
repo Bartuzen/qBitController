@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class MultiSelectAdapter<T, K, VH : RecyclerView.ViewHolder>(
+abstract class MultiSelectAdapter<T, K, VH : MultiSelectAdapter.ViewHolder<T, K>>(
     diffCallBack: DiffUtil.ItemCallback<T>,
     private val getKey: (item: T) -> K,
 ) : ListAdapter<T, VH>(diffCallBack) {
