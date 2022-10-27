@@ -6,10 +6,26 @@ import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.TrackerPropertyDeserializer
 
 data class TorrentTracker(
-    @JsonProperty("url") val url: String,
-    @JsonProperty("num_peers") @JsonDeserialize(using = TrackerPropertyDeserializer::class) val peers: Int?,
-    @JsonProperty("num_seeds") @JsonDeserialize(using = TrackerPropertyDeserializer::class) val seeds: Int?,
-    @JsonProperty("num_leeches") @JsonDeserialize(using = TrackerPropertyDeserializer::class) val leeches: Int?,
-    @JsonProperty("num_downloaded") @JsonDeserialize(using = TrackerPropertyDeserializer::class) val downloaded: Int?,
-    @JsonProperty("msg") @JsonDeserialize(using = NullableStringDeserializer::class) val message: String?
+    @JsonProperty("url")
+    val url: String,
+
+    @JsonProperty("num_peers")
+    @JsonDeserialize(using = TrackerPropertyDeserializer::class)
+    val peers: Int?,
+
+    @JsonProperty("num_seeds")
+    @JsonDeserialize(using = TrackerPropertyDeserializer::class)
+    val seeds: Int?,
+
+    @JsonProperty("num_leeches")
+    @JsonDeserialize(using = TrackerPropertyDeserializer::class)
+    val leeches: Int?,
+
+    @JsonProperty("num_downloaded")
+    @JsonDeserialize(using = TrackerPropertyDeserializer::class)
+    val downloaded: Int?,
+
+    @JsonProperty("msg")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val message: String?
 )

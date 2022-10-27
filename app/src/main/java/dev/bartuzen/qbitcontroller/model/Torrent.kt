@@ -6,17 +6,41 @@ import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 
 data class Torrent(
-    @JsonProperty("hash") val hash: String,
-    @JsonProperty("name") val name: String,
-    @JsonProperty("state") val state: TorrentState?,
-    @JsonProperty("completed") val completed: Long,
-    @JsonProperty("size") val size: Long,
-    @JsonProperty("eta") val eta: Int,
-    @JsonProperty("dlspeed") val downloadSpeed: Long,
-    @JsonProperty("upspeed") val uploadSpeed: Long,
-    @JsonProperty("progress") val progress: Double,
-    @JsonProperty("category") @JsonDeserialize(using = NullableStringDeserializer::class) val category: String?,
-    @JsonProperty("tags") @JsonDeserialize(using = TagDeserializer::class) val tags: List<String>
+    @JsonProperty("hash")
+    val hash: String,
+
+    @JsonProperty("name")
+    val name: String,
+
+    @JsonProperty("state")
+    val state: TorrentState?,
+
+    @JsonProperty("completed")
+    val completed: Long,
+
+    @JsonProperty("size")
+    val size: Long,
+
+    @JsonProperty("eta")
+    val eta: Int,
+
+    @JsonProperty("dlspeed")
+    val downloadSpeed: Long,
+
+    @JsonProperty("upspeed")
+    val uploadSpeed: Long,
+
+    @JsonProperty("progress")
+    val progress: Double,
+
+    @JsonProperty("category")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val category: String?,
+
+    @JsonProperty("tags")
+    @JsonDeserialize(using = TagDeserializer::class)
+    val tags: List<String>
+
 )
 
 @Suppress("unused")
@@ -78,7 +102,6 @@ enum class TorrentState {
     @JsonProperty("unknown")
     UNKNOWN
 }
-
 
 @Suppress("unused")
 enum class PieceState {
