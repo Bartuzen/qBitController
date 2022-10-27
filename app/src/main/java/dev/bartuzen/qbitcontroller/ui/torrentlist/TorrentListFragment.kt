@@ -105,15 +105,15 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }, viewLifecycleOwner)
 
         var actionMode: ActionMode? = null
-        lateinit var adapter: TorrentListAdapter
-        adapter = TorrentListAdapter(
-            onClick = { torrent ->
+        val adapter = TorrentListAdapter().apply {
+            onClick { torrent ->
                 val intent = Intent(context, TorrentActivity::class.java).apply {
                     putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
                     putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
                 }
                 startTorrentActivity.launch(intent)
-            }, onSelectionModeStart = {
+            }
+            onSelectionModeStart {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                         mode.menuInflater.inflate(R.menu.torrent_list_selection_menu, menu)
@@ -125,52 +125,55 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
                         when (item.itemId) {
                             R.id.menu_delete -> {
-                                showDeleteTorrentsDialog(adapter, actionMode)
+                                showDeleteTorrentsDialog(this@apply, actionMode)
                                 true
                             }
                             R.id.menu_pause -> {
                                 viewModel.pauseTorrents(
-                                    serverConfig, adapter.selectedTorrentHashes.toList()
+                                    serverConfig, selectedItems.toList()
                                 )
-                                adapter.finishSelection()
+                                finishSelection()
                                 actionMode?.finish()
                                 true
                             }
                             R.id.menu_resume -> {
                                 viewModel.resumeTorrents(
-                                    serverConfig, adapter.selectedTorrentHashes.toList()
+                                    serverConfig, selectedItems.toList()
                                 )
-                                adapter.finishSelection()
+                                finishSelection()
                                 actionMode?.finish()
                                 true
                             }
                             R.id.menu_select_all -> {
-                                adapter.selectAll()
+                                selectAll()
                                 true
                             }
                             R.id.menu_select_inverse -> {
-                                adapter.selectInverse()
+                                selectInverse()
                                 true
                             }
                             else -> false
                         }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
-                        adapter.finishSelection()
+                        finishSelection()
                     }
                 })
-            }, onSelectionModeEnd = {
+            }
+            onSelectionModeEnd {
                 actionMode?.finish()
-            }, onUpdateSelection = { count ->
-                if (count != 0) {
+            }
+            onUpdateSelection {
+                val itemCount = selectedItemCount
+                if (itemCount != 0) {
                     actionMode?.title = resources.getQuantityString(
                         R.plurals.torrent_list_torrents_selected,
-                        count,
-                        count
+                        itemCount,
+                        itemCount
                     )
                 }
             }
-        )
+        }
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.setItemMargin(8, 8)
 
@@ -264,15 +267,15 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             .setTitle(
                 resources.getQuantityString(
                     R.plurals.torrent_list_delete_torrents,
-                    adapter.selectedTorrentHashes.size,
-                    adapter.selectedTorrentHashes.size
+                    adapter.selectedItemCount,
+                    adapter.selectedItemCount
                 )
             )
             .setView(dialogBinding.root)
             .setPositiveButton(R.string.dialog_ok) { _, _ ->
                 viewModel.deleteTorrents(
                     serverConfig,
-                    adapter.selectedTorrentHashes,
+                    adapter.selectedItems.toList(),
                     dialogBinding.checkBoxDeleteFiles.isChecked
                 )
                 adapter.finishSelection()
