@@ -2,7 +2,7 @@ package dev.bartuzen.qbitcontroller.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import dev.bartuzen.qbitcontroller.model.deserializers.CategoryDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 
 data class Torrent(
@@ -15,7 +15,7 @@ data class Torrent(
     @JsonProperty("dlspeed") val downloadSpeed: Long,
     @JsonProperty("upspeed") val uploadSpeed: Long,
     @JsonProperty("progress") val progress: Double,
-    @JsonProperty("category") @JsonDeserialize(using = CategoryDeserializer::class) val category: String?,
+    @JsonProperty("category") @JsonDeserialize(using = NullableStringDeserializer::class) val category: String?,
     @JsonProperty("tags") @JsonDeserialize(using = TagDeserializer::class) val tags: List<String>
 )
 

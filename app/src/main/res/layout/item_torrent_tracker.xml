@@ -113,6 +113,16 @@
             app:layout_constraintTop_toBottomOf="@id/text_downloaded_title"
             tools:text="0" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_peers"
+            tools:text="Tracker Message" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

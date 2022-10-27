@@ -132,6 +132,7 @@
     <string name="torrent_trackers_seeds">Seeds</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_downloaded">Downloaded</string>
+    <string name="torrent_trackers_message">Message: %1$s</string>
     <string name="torrent_trackers_add">Add Trackers</string>
     <string name="torrent_trackers_added">Trackers added successfully.</string>
 </resources>
