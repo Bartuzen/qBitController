@@ -4,14 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentTrackerBinding
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
+import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
 
 class TorrentTrackersAdapter :
-    ListAdapter<TorrentTracker, TorrentTrackersAdapter.ViewHolder>(DiffCallBack()) {
+    MultiSelectAdapter<TorrentTracker, String, TorrentTrackersAdapter.ViewHolder>(
+        diffCallBack = DiffCallBack(),
+        getKey = { tracker ->
+            tracker.url
+        }
+    ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemTorrentTrackerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -23,9 +27,11 @@ class TorrentTrackersAdapter :
     }
 
     inner class ViewHolder(private val binding: ItemTorrentTrackerBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        MultiSelectAdapter.ViewHolder<TorrentTracker, String>(binding.root, this) {
 
         fun bind(tracker: TorrentTracker) {
+            binding.root.isSelected = isItemSelected(tracker.url)
+
             binding.textUrl.text = tracker.url
 
             binding.textPeers.text = (tracker.peers ?: "-").toString()

@@ -53,4 +53,9 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.addTorrentTrackers(hash, urls)
         }
+
+    suspend fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: String) =
+        requestManager.request(serverConfig) { service ->
+            service.deleteTorrentTrackers(hash, urls)
+        }
 }

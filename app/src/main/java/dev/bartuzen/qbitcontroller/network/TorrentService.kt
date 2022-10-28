@@ -60,4 +60,11 @@ interface TorrentService {
         @Field("hash") hash: String,
         @Field("urls") urls: String
     ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/removeTrackers")
+    suspend fun deleteTorrentTrackers(
+        @Field("hash") hash: String,
+        @Field("urls") urls: String
+    ): Response<Unit>
 }

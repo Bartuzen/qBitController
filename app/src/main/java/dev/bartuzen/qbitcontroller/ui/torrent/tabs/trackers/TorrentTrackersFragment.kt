@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
 import android.os.Bundle
+import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -58,7 +59,49 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        val adapter = TorrentTrackersAdapter()
+        var actionMode: ActionMode? = null
+        val adapter = TorrentTrackersAdapter().apply {
+            onSelectionModeStart {
+                actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
+                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        mode.menuInflater.inflate(R.menu.torrent_trackers_selection_menu, menu)
+                        return true
+                    }
+
+                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
+                        when (item.itemId) {
+                            R.id.menu_delete -> {
+                                showDeleteTrackersDialog(this@apply, actionMode)
+                                true
+                            }
+                            R.id.menu_select_all -> {
+                                selectAll()
+                                true
+                            }
+                            R.id.menu_select_inverse -> {
+                                selectInverse()
+                                true
+                            }
+                            else -> false
+                        }
+
+                    override fun onDestroyActionMode(mode: ActionMode) {
+                        finishSelection()
+                    }
+                })
+            }
+            onSelectionModeEnd {
+                actionMode?.finish()
+            }
+            onUpdateSelection {
+                val itemCount = selectedItemCount
+                if (itemCount != 0) {
+                    actionMode?.title = "$itemCount trackers selected"
+                }
+            }
+        }
         binding.recyclerTrackers.adapter = adapter
         binding.recyclerTrackers.setItemMargin(8, 8)
 
@@ -93,6 +136,11 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
 
                     viewModel.loadTrackers(serverConfig, torrentHash)
                 }
+                TorrentTrackersViewModel.Event.TrackersDeleted -> {
+                    showSnackbar(getString(R.string.torrent_trackers_deleted))
+
+                    viewModel.loadTrackers(serverConfig, torrentHash)
+                }
             }
         }
     }
@@ -109,6 +157,29 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                     torrentHash,
                     dialogBinding.editTrackers.text.toString()
                 )
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+
+    private fun showDeleteTrackersDialog(adapter: TorrentTrackersAdapter, actionMode: ActionMode?) {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(
+                resources.getQuantityString(
+                    R.plurals.torrent_trackers_delete,
+                    adapter.selectedItemCount,
+                    adapter.selectedItemCount
+                )
+            )
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                viewModel.deleteTrackers(
+                    serverConfig,
+                    torrentHash,
+                    adapter.selectedItems.toList()
+                )
+                adapter.finishSelection()
+                actionMode?.finish()
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()

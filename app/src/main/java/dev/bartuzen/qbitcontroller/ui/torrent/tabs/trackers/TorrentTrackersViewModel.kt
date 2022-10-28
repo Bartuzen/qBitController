@@ -74,8 +74,25 @@ class TorrentTrackersViewModel @Inject constructor(
             }
         }
 
+    fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
+        viewModelScope.launch {
+            when (
+                val result = repository.deleteTrackers(
+                    serverConfig, hash, urls.joinToString("|")
+                )
+            ) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TrackersDeleted)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     sealed class Event {
         data class Error(val error: RequestError) : Event()
         object TrackersAdded : Event()
+        object TrackersDeleted : Event()
     }
 }
