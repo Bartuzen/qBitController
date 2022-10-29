@@ -21,6 +21,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="torrent_tabs">Torrent Tabs</string>
 
+    <string name="torrent_sort_menu">Sort</string>
     <string name="torrent_sort_name">Name</string>
     <string name="torrent_sort_hash">Hash</string>
     <string name="torrent_sort_dlspeed">Download Speed</string>
