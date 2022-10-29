@@ -136,11 +136,11 @@
     <string name="torrent_trackers_add">Add Trackers</string>
     <plurals name="torrent_trackers_delete">
         <item quantity="one">Delete %1$d tracker</item>
-        <item quantity="many">Delete %1$d trackers</item>
+        <item quantity="other">Delete %1$d trackers</item>
     </plurals>
     <plurals name="torrent_trackers_selected">
         <item quantity="one">%1$d tracker selected</item>
-        <item quantity="many">%1$d trackers selected</item>
+        <item quantity="other">%1$d trackers selected</item>
     </plurals>
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
