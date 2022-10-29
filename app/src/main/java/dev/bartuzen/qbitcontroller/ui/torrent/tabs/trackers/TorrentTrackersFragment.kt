@@ -9,11 +9,13 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTrackersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentTrackersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -23,12 +25,16 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.view
 
 @FragmentWithArgs
 @AndroidEntryPoint
 class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers) {
     private var _binding: FragmentTorrentTrackersBinding? = null
     private val binding get() = _binding!!
+
+    private var _activityBinding: ActivityTorrentBinding? = null
+    private val activityBinding get() = _activityBinding!!
 
     private val viewModel: TorrentTrackersViewModel by viewModels()
 
@@ -38,9 +44,12 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     @Arg
     lateinit var torrentHash: String
 
+    private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentTrackersBinding.bind(view)
+        _activityBinding = ActivityTorrentBinding.bind(requireActivity().view)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -109,6 +118,13 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         }
         binding.recyclerTrackers.adapter = adapter
         binding.recyclerTrackers.setItemMargin(8, 8)
+
+        onPageChange = object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                actionMode?.finish()
+            }
+        }
+        activityBinding.viewPager.registerOnPageChangeCallback(onPageChange)
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTrackers(serverConfig, torrentHash)
@@ -194,5 +210,8 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+
+        activityBinding.viewPager.unregisterOnPageChangeCallback(onPageChange)
+        _activityBinding = null
     }
 }
