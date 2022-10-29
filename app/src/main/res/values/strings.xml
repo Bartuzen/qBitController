@@ -94,8 +94,6 @@
         <item quantity="other">%1$d torrents selected</item>
     </plurals>
 
-    <string name="an_error_occurred">An error occurred.</string>
-
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
 
     <string name="torrent_delete">Delete Torrent</string>

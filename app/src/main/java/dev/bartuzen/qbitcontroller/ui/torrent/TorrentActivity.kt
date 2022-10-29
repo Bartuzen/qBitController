@@ -14,7 +14,6 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragm
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragmentBuilder
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.getParcelable
-import dev.bartuzen.qbitcontroller.utils.showToast
 
 @AndroidEntryPoint
 class TorrentActivity : AppCompatActivity() {
@@ -37,7 +36,6 @@ class TorrentActivity : AppCompatActivity() {
 
         if (serverConfig == null || torrentHash == null) {
             finish()
-            showToast(R.string.an_error_occurred)
             return
         }
 
