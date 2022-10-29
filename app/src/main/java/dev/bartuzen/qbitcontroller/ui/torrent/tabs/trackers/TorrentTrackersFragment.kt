@@ -89,6 +89,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
 
                     override fun onDestroyActionMode(mode: ActionMode) {
                         finishSelection()
+                        actionMode = null
                     }
                 })
             }

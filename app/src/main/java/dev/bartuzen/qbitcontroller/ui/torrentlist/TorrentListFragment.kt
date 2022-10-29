@@ -157,6 +157,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
                     override fun onDestroyActionMode(mode: ActionMode) {
                         finishSelection()
+                        actionMode = null
                     }
                 })
             }
