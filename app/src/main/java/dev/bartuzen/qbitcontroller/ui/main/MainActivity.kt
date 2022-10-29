@@ -94,8 +94,15 @@ class MainActivity : AppCompatActivity() {
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
 
+        binding.textClickToAddServer.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
         viewModel.serverList.launchAndCollectLatestIn(this) { serverList ->
             adapter.submitList(serverList.values.toList())
+
+            binding.textClickToAddServer.visibility =
+                if (serverList.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->

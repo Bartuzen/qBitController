@@ -21,6 +21,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="torrent_tabs">Torrent Tabs</string>
 
+    <string name="main_screen_no_servers">No servers have been found. Click here to go to the settings and add one.</string>
+
     <string name="torrent_sort_menu">Sort</string>
     <string name="torrent_sort_name">Name</string>
     <string name="torrent_sort_hash">Hash</string>
