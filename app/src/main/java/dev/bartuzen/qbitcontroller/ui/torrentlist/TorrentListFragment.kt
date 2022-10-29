@@ -97,7 +97,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 }
                 viewModel.setTorrentSort(sort)
 
-                viewModel.loadTorrentList(serverConfig)
+                viewModel.loadTorrentList(serverConfig, sort)
 
                 return true
             }
