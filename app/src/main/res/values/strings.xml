@@ -73,19 +73,6 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
 
-    <string name="settings_title">Settings</string>
-    <string name="settings_servers">Servers</string>
-    <string name="settings_add_new_server">Add New Server</string>
-    <string name="settings_other">Other</string>
-    <string name="settings_theme">Theme</string>
-
-    <string-array name="settings_theme_entries">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>System Default</item>
-    </string-array>
-
-
     <plurals name="torrent_list_delete_torrents">
         <item quantity="one">Delete %1$d Torrent</item>
         <item quantity="other">Delete %1$d Torrents</item>
@@ -106,15 +93,6 @@
         <item quantity="one">%1$d torrent selected</item>
         <item quantity="other">%1$d torrents selected</item>
     </plurals>
-
-    <string name="settings_torrent_name">Name</string>
-    <string name="settings_host">IP Address or Host Name</string>
-    <string name="settings_username">Username</string>
-    <string name="settings_password">Password</string>
-    <string name="settings_server_add_success">Server has been added successfully.</string>
-    <string name="settings_server_edit_success">Server has been edited successfully.</string>
-    <string name="settings_server_remove_success">Server has been removed successfully.</string>
-    <string name="settings_fill_blank_fields">Please fill required blank fields.</string>
 
     <string name="an_error_occurred">An error occurred.</string>
 
@@ -146,4 +124,25 @@
     </plurals>
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_servers">Servers</string>
+    <string name="settings_add_new_server">Add New Server</string>
+    <string name="settings_other">Other</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_torrent_name">Name</string>
+    <string name="settings_host">IP Address or Host Name</string>
+    <string name="settings_username">Username</string>
+    <string name="settings_password">Password</string>
+
+    <string-array name="settings_theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System Default</item>
+    </string-array>
+
+    <string name="settings_server_add_success">Server has been added successfully.</string>
+    <string name="settings_server_edit_success">Server has been edited successfully.</string>
+    <string name="settings_server_remove_success">Server has been removed successfully.</string>
+    <string name="settings_fill_blank_fields">Please fill required blank fields.</string>
 </resources>
