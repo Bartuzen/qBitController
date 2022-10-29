@@ -98,7 +98,11 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             onUpdateSelection {
                 val itemCount = selectedItemCount
                 if (itemCount != 0) {
-                    actionMode?.title = "$itemCount trackers selected"
+                    actionMode?.title = resources.getQuantityString(
+                        R.plurals.torrent_trackers_selected,
+                        itemCount,
+                        itemCount
+                    )
                 }
             }
         }
