@@ -115,7 +115,6 @@
     <string name="settings_server_edit_success">Server has been edited successfully.</string>
     <string name="settings_server_remove_success">Server has been removed successfully.</string>
     <string name="settings_fill_blank_fields">Please fill required blank fields.</string>
-    <string name="settings_default_server_name">Server</string>
 
     <string name="an_error_occurred">An error occurred.</string>
 
