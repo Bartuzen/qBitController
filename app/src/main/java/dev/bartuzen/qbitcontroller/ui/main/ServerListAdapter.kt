@@ -46,7 +46,7 @@ class ServerListAdapter(private val listener: OnItemClickListener? = null) :
         }
 
         fun bind(serverConfig: ServerConfig) {
-            binding.layoutLinear.setBackgroundResource(
+            binding.root.setBackgroundResource(
                 if (serverConfig.id == selectedServerId) {
                     R.color.server_selected_background
                 } else {
