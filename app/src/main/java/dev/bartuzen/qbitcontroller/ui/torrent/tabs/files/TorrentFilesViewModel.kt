@@ -21,7 +21,8 @@ import javax.inject.Inject
 class TorrentFilesViewModel @Inject constructor(
     private val repository: TorrentRepository
 ) : ViewModel() {
-    val torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
+    private val _torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
+    val torrentFiles = _torrentFiles.asStateFlow()
 
     private val _nodeStack = MutableStateFlow(ArrayDeque<String>())
     val nodeStack = _nodeStack.asStateFlow()
@@ -41,7 +42,7 @@ class TorrentFilesViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = repository.getFiles(serverConfig, torrentHash)) {
                 is RequestResult.Success -> {
-                    torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
+                    _torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result.error))

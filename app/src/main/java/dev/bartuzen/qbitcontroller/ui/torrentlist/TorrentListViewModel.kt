@@ -23,7 +23,8 @@ class TorrentListViewModel @Inject constructor(
     private val repository: TorrentListRepository,
     private val settingsManager: SettingsManager
 ) : ViewModel() {
-    val torrentList = MutableStateFlow<List<Torrent>?>(null)
+    private val _torrentList = MutableStateFlow<List<Torrent>?>(null)
+    val torrentList = _torrentList.asStateFlow()
 
     val torrentSort = settingsManager.sortFlow
 
@@ -46,7 +47,7 @@ class TorrentListViewModel @Inject constructor(
                 )
             ) {
                 is RequestResult.Success -> {
-                    torrentList.value = result.data
+                    _torrentList.value = result.data
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result.error))

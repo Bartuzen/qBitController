@@ -19,7 +19,8 @@ import javax.inject.Inject
 class TorrentOverviewViewModel @Inject constructor(
     private val repository: TorrentRepository
 ) : ViewModel() {
-    val torrent = MutableStateFlow<Torrent?>(null)
+    private val _torrent = MutableStateFlow<Torrent?>(null)
+    val torrent = _torrent.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -37,7 +38,7 @@ class TorrentOverviewViewModel @Inject constructor(
             when (val result = repository.getTorrent(serverConfig, torrentHash)) {
                 is RequestResult.Success -> {
                     if (result.data.size == 1) {
-                        torrent.value = result.data.first()
+                        _torrent.value = result.data.first()
                     }
                 }
                 is RequestResult.Error -> {

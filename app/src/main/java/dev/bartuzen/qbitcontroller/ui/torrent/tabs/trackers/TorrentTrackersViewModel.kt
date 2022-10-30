@@ -19,7 +19,8 @@ import javax.inject.Inject
 class TorrentTrackersViewModel @Inject constructor(
     private val repository: TorrentRepository
 ) : ViewModel() {
-    val torrentTrackers = MutableStateFlow<List<TorrentTracker>?>(null)
+    private val _torrentTrackers = MutableStateFlow<List<TorrentTracker>?>(null)
+    val torrentTrackers = _torrentTrackers.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -36,7 +37,7 @@ class TorrentTrackersViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = repository.getTrackers(serverConfig, torrentHash)) {
                 is RequestResult.Success -> {
-                    torrentTrackers.value = result.data
+                    _torrentTrackers.value = result.data
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result.error))

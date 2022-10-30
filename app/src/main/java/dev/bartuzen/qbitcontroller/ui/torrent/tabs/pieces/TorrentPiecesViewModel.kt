@@ -22,8 +22,11 @@ import javax.inject.Inject
 class TorrentPiecesViewModel @Inject constructor(
     private val repository: TorrentRepository
 ) : ViewModel() {
-    val torrentPieces = MutableStateFlow<List<PieceState>?>(null)
-    val torrentProperties = MutableStateFlow<TorrentProperties?>(null)
+    private val _torrentPieces = MutableStateFlow<List<PieceState>?>(null)
+    val torrentPieces = _torrentPieces.asStateFlow()
+
+    private val _torrentProperties = MutableStateFlow<TorrentProperties?>(null)
+    val torrentProperties = _torrentProperties.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -64,8 +67,8 @@ class TorrentPiecesViewModel @Inject constructor(
             val pieces = piecesDeferred.await()
             val properties = propertiesDeferred.await()
 
-            torrentPieces.value = pieces
-            torrentProperties.value = properties
+            _torrentPieces.value = pieces
+            _torrentProperties.value = properties
         }
 
     fun loadPieces(serverConfig: ServerConfig, torrentHash: String) {
