@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="@string/torrent_sort_menu">
+    <item
+        android:id="@+id/menu_sort"
+        android:title="@string/torrent_sort_menu">
         <menu>
-            <group
-                android:id="@+id/menu_sort"
-                android:checkableBehavior="single">
-
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/menu_sort_name"
                     android:title="@string/torrent_sort_name" />
-
                 <item
                     android:id="@+id/menu_sort_hash"
                     android:title="@string/torrent_sort_hash" />
-
                 <item
                     android:id="@+id/menu_sort_dlspeed"
                     android:title="@string/torrent_sort_dlspeed" />
-
                 <item
                     android:id="@+id/menu_sort_upspeed"
                     android:title="@string/torrent_sort_upspeed" />
-
                 <item
                     android:id="@+id/menu_sort_priority"
                     android:title="@string/torrent_sort_priority" />
-
             </group>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

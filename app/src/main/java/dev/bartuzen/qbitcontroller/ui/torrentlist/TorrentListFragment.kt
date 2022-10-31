@@ -7,8 +7,11 @@ import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MenuItem.OnActionExpandListener
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
@@ -32,6 +35,7 @@ import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -84,6 +88,39 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     menu.findItem(selectedSort).isChecked = true
                 }
 
+                val settingsItem = menu.findItem(R.id.menu_settings)
+                val sortItem = menu.findItem(R.id.menu_sort)
+                val searchItem = menu.findItem(R.id.menu_search)
+
+                val searchView = searchItem.actionView as SearchView
+                searchView.queryHint = getString(R.string.torrent_list_search_torrents)
+                searchView.isSubmitButtonEnabled = false
+                searchView.setOnQueryTextListener(object : OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?) = false
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        viewModel.setSearchQuery(newText ?: "")
+                        return true
+                    }
+                })
+
+                searchItem.setOnActionExpandListener(object : OnActionExpandListener {
+                    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                        // we need to make other items invisible when search bar
+                        // is expanded otherwise they act oddly
+                        settingsItem.isVisible = false
+                        sortItem.isVisible = false
+
+                        // SearchView does not completely expand without doing this
+                        searchView.maxWidth = Integer.MAX_VALUE
+                        return true
+                    }
+
+                    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                        requireActivity().invalidateOptionsMenu()
+                        return true
+                    }
+                })
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -191,10 +228,20 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
         activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
-        viewModel.torrentList.filterNotNull()
-            .launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
-                adapter.submitList(torrentList)
+        combine(viewModel.torrentList, viewModel.searchQuery) { torrentList, searchQuery ->
+            if (torrentList != null) {
+                torrentList to searchQuery
+            } else {
+                null
             }
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query) ->
+            val list = if (query.isEmpty()) {
+                torrentList
+            } else {
+                torrentList.filter { torrent -> torrent.name.contains(query, ignoreCase = true) }
+            }
+            adapter.submitList(list)
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTorrentList(serverConfig)

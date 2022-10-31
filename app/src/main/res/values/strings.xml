@@ -6,6 +6,7 @@
     <string name="menu_pause">Pause</string>
     <string name="menu_resume">Resume</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_search">Search</string>
     <string name="menu_select_all">Select All</string>
     <string name="menu_select_inverse">Select Inverse</string>
 
@@ -93,6 +94,7 @@
         <item quantity="one">%1$d torrent selected</item>
         <item quantity="other">%1$d torrents selected</item>
     </plurals>
+    <string name="torrent_list_search_torrents">Search torrents…</string>
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
 

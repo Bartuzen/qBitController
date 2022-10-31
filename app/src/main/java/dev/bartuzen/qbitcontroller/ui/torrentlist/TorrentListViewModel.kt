@@ -26,6 +26,9 @@ class TorrentListViewModel @Inject constructor(
     private val _torrentList = MutableStateFlow<List<Torrent>?>(null)
     val torrentList = _torrentList.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
     val torrentSort = settingsManager.sortFlow
 
     private val eventChannel = Channel<Event>()
@@ -126,6 +129,10 @@ class TorrentListViewModel @Inject constructor(
 
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     sealed class Event {
