@@ -118,11 +118,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             )
 
             val eta = formatSeconds(requireContext(), torrent.eta)
-            if (eta != "inf") {
-                binding.textEta.text = eta
-            }
-            binding.textState.text = formatTorrentState(requireContext(), torrent.state)
+            binding.textEta.text = if (eta != "inf") eta else null
 
+            binding.textState.text = formatTorrentState(requireContext(), torrent.state)
 
             val speedList = mutableListOf<String>()
             if (torrent.uploadSpeed > 0) {

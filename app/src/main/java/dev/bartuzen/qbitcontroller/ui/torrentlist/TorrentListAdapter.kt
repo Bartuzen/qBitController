@@ -59,11 +59,9 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 )
 
             val eta = formatSeconds(context, torrent.eta)
-            if (eta != "inf") {
-                binding.textEta.text = eta
-            }
-            binding.textState.text = formatTorrentState(context, torrent.state)
+            binding.textEta.text = if (eta != "inf") eta else null
 
+            binding.textState.text = formatTorrentState(context, torrent.state)
 
             val speedList = mutableListOf<String>()
             if (torrent.uploadSpeed > 0) {
