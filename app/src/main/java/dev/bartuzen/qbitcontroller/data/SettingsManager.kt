@@ -59,7 +59,6 @@ class SettingsManager @Inject constructor(
                 block(settings)
             }
 
-
     private fun editServerMap(serverConfigsJson: String, block: (ServerConfigMap) -> Unit): String {
         val mapper = jacksonObjectMapper()
         val serverConfigs = mapper.readValue<ServerConfigMap>(serverConfigsJson)

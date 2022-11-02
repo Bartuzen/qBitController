@@ -166,17 +166,13 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                                 true
                             }
                             R.id.menu_pause -> {
-                                viewModel.pauseTorrents(
-                                    serverConfig, selectedItems.toList()
-                                )
+                                viewModel.pauseTorrents(serverConfig, selectedItems.toList())
                                 finishSelection()
                                 actionMode?.finish()
                                 true
                             }
                             R.id.menu_resume -> {
-                                viewModel.resumeTorrents(
-                                    serverConfig, selectedItems.toList()
-                                )
+                                viewModel.resumeTorrents(serverConfig, selectedItems.toList())
                                 finishSelection()
                                 actionMode?.finish()
                                 true
