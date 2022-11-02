@@ -13,13 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ConcatAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
+import dev.bartuzen.qbitcontroller.ui.torrentlist.CategoryTagAdapter
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel: MainViewModel by viewModels()
+
+    private val drawerAdapter = ConcatAdapter()
 
     private val onDrawerBackPressedCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -83,30 +85,29 @@ class MainActivity : AppCompatActivity() {
         binding.layoutDrawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-        val adapter = ServerListAdapter(object : ServerListAdapter.OnItemClickListener {
+        val serverListAdapter = ServerListAdapter(object : ServerListAdapter.OnItemClickListener {
             override fun onClick(serverConfig: ServerConfig) {
                 binding.layoutDrawer.closeDrawer(GravityCompat.START)
                 viewModel.setCurrentServer(serverConfig)
             }
         })
-        binding.recyclerServerList.adapter = adapter
-        binding.recyclerServerList.addItemDecoration(
-            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
-        )
+        drawerAdapter.addAdapter(serverListAdapter)
+
+        binding.recyclerDrawer.adapter = drawerAdapter
 
         binding.textClickToAddServer.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
         viewModel.serverList.launchAndCollectLatestIn(this) { serverList ->
-            adapter.submitList(serverList.values.toList())
+            serverListAdapter.submitList(serverList.values.toList())
 
             binding.textClickToAddServer.visibility =
                 if (serverList.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
-            adapter.selectedServerId = serverConfig?.id ?: -1
+            serverListAdapter.selectedServerId = serverConfig?.id ?: -1
             val currentFragment =
                 supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
 
@@ -134,5 +135,21 @@ class MainActivity : AppCompatActivity() {
         if (binding.layoutDrawer.isOpen) {
             onDrawerBackPressedCallback.isEnabled = true
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding.recyclerDrawer.adapter = null
+    }
+
+    fun submitCategoryTagAdapter(adapter: CategoryTagAdapter) {
+        drawerAdapter.addAdapter(adapter)
+    }
+
+    fun removeCategoryTagAdapter(adapter: CategoryTagAdapter) {
+        drawerAdapter.removeAdapter(adapter)
+        binding.recyclerDrawer.adapter = null
+        binding.recyclerDrawer.adapter = drawerAdapter
     }
 }

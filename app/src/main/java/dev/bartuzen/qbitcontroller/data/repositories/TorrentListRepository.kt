@@ -32,4 +32,14 @@ class TorrentListRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.resumeTorrents(torrentHashes)
         }
+
+    suspend fun getCategories(serverConfig: ServerConfig) =
+        requestManager.request(serverConfig) { service ->
+            service.getCategories()
+        }
+
+    suspend fun getTags(serverConfig: ServerConfig) =
+        requestManager.request(serverConfig) { service ->
+            service.getTags()
+        }
 }

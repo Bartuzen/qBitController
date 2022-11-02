@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.network
 
 import dev.bartuzen.qbitcontroller.data.TorrentSort
+import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
@@ -67,4 +68,10 @@ interface TorrentService {
         @Field("hash") hash: String,
         @Field("urls") urls: String
     ): Response<Unit>
+
+    @GET("api/v2/torrents/categories")
+    suspend fun getCategories(): Response<Map<String, Category>>
+
+    @GET("api/v2/torrents/tags")
+    suspend fun getTags(): Response<List<String>>
 }

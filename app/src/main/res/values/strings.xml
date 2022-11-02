@@ -96,6 +96,10 @@
     </plurals>
     <string name="torrent_list_search_torrents">Search torrents…</string>
 
+    <string name="torrent_list_category_tag_all">All</string>
+    <string name="torrent_list_categories">Categories</string>
+    <string name="torrent_list_tags">Tags</string>
+
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
 
     <string name="torrent_delete">Delete Torrent</string>

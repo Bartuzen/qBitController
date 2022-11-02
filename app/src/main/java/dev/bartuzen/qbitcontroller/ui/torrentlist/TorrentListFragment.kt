@@ -27,7 +27,9 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
+import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import dev.bartuzen.qbitcontroller.utils.Quadruple
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -49,6 +51,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     private val activityBinding get() = _activityBinding!!
 
     private val viewModel: TorrentListViewModel by viewModels()
+
+    private lateinit var categoryTagAdapter: CategoryTagAdapter
 
     @Arg
     lateinit var serverConfig: ServerConfig
@@ -211,6 +215,17 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.setItemMargin(8, 8)
 
+        categoryTagAdapter = CategoryTagAdapter { isCategory, name ->
+            if (isCategory) {
+                viewModel.setSelectedCategory(name)
+            } else {
+                viewModel.setSelectedTag(name)
+            }
+
+            activityBinding.layoutDrawer.close()
+        }
+        (requireActivity() as MainActivity).submitCategoryTagAdapter(categoryTagAdapter)
+
         drawerListener = object : DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
                 actionMode?.finish()
@@ -224,28 +239,49 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
         activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
-        combine(viewModel.torrentList, viewModel.searchQuery) { torrentList, searchQuery ->
+        combine(
+            viewModel.torrentList,
+            viewModel.searchQuery,
+            viewModel.selectedCategory,
+            viewModel.selectedTag
+        ) { torrentList, searchQuery, selectedCategory, selectedTag ->
             if (torrentList != null) {
-                torrentList to searchQuery
+                Quadruple(torrentList, searchQuery, selectedCategory, selectedTag)
             } else {
                 null
             }
-        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query) ->
-            val list = if (query.isEmpty()) {
-                torrentList
-            } else {
-                torrentList.filter { torrent -> torrent.name.contains(query, ignoreCase = true) }
+        }.filterNotNull()
+            .launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query, selectedCategory, selectedTag) ->
+                val list = torrentList.filter { torrent ->
+                    if (query.isNotEmpty()) {
+                        if (!torrent.name.contains(query, ignoreCase = true)) {
+                            return@filter false
+                        }
+                    }
+                    if (selectedCategory != null) {
+                        if (torrent.category != selectedCategory) {
+                            return@filter false
+                        }
+                    }
+                    if (selectedTag != null) {
+                        if (selectedTag !in torrent.tags) {
+                            return@filter false
+                        }
+                    }
+                    true
+                }
+
+                adapter.submitList(list)
             }
-            adapter.submitList(list)
-        }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshTorrentList(serverConfig)
+            viewModel.refreshTorrentListCategoryTags(serverConfig)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
             viewModel.loadTorrentList(serverConfig)
+            viewModel.updateCategoryAndTags(serverConfig)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -254,6 +290,16 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
             binding.swipeRefresh.isRefreshing = isRefreshing
+        }
+
+        combine(viewModel.categoryList, viewModel.tagList) { categoryList, tagList ->
+            if (categoryList != null && tagList != null) {
+                categoryList to tagList
+            } else {
+                null
+            }
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (categoryList, tagList) ->
+            categoryTagAdapter.submitLists(categoryList, tagList)
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
@@ -335,6 +381,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         _binding = null
 
         activityBinding.layoutDrawer.removeDrawerListener(drawerListener)
+        (requireActivity() as MainActivity).removeCategoryTagAdapter(categoryTagAdapter)
+
         _activityBinding = null
     }
 }
