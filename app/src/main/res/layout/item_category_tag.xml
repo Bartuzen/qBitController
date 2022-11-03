@@ -4,5 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/selectable_category_tag_background"
+    android:foreground="?attr/selectableItemBackground"
     android:padding="12dp"
+    tools:ignore="UnusedAttribute"
     tools:text="Category or Tag Name" />
