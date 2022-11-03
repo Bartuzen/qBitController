@@ -104,11 +104,7 @@ class TorrentListViewModel @Inject constructor(
         torrentHashes: List<String>,
         deleteFiles: Boolean
     ) = viewModelScope.launch {
-        when (
-            val result = repository.deleteTorrents(
-                serverConfig, torrentHashes.joinToString("|"), deleteFiles
-            )
-        ) {
+        when (val result = repository.deleteTorrents(serverConfig, torrentHashes, deleteFiles)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsDeleted(torrentHashes.size))
             }
@@ -120,11 +116,7 @@ class TorrentListViewModel @Inject constructor(
 
     fun pauseTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
         viewModelScope.launch {
-            when (
-                val result = repository.pauseTorrents(
-                    serverConfig, torrentHashes.joinToString("|")
-                )
-            ) {
+            when (val result = repository.pauseTorrents(serverConfig, torrentHashes)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.TorrentsPaused(torrentHashes.size))
                 }
@@ -136,11 +128,7 @@ class TorrentListViewModel @Inject constructor(
 
     fun resumeTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
         viewModelScope.launch {
-            when (
-                val result = repository.resumeTorrents(
-                    serverConfig, torrentHashes.joinToString("|")
-                )
-            ) {
+            when (val result = repository.resumeTorrents(serverConfig, torrentHashes)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.TorrentsResumed(torrentHashes.size))
                 }

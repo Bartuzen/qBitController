@@ -176,7 +176,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                 viewModel.addTrackers(
                     serverConfig,
                     torrentHash,
-                    dialogBinding.editTrackers.text.toString()
+                    dialogBinding.editTrackers.text.toString().split("\n")
                 )
             }
             .setNegativeButton(R.string.dialog_cancel, null)

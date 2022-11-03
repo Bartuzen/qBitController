@@ -37,8 +37,8 @@ class TorrentOverviewViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = repository.getTorrent(serverConfig, torrentHash)) {
                 is RequestResult.Success -> {
-                    if (result.data.size == 1) {
-                        _torrent.value = result.data.first()
+                    result.data?.let { torrent ->
+                        _torrent.value = torrent
                     }
                 }
                 is RequestResult.Error -> {

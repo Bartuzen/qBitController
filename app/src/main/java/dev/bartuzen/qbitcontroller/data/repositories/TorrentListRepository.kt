@@ -16,21 +16,19 @@ class TorrentListRepository @Inject constructor(
         }
 
     suspend fun deleteTorrents(
-        serverConfig: ServerConfig,
-        torrentHashes: String,
-        deleteFiles: Boolean
+        serverConfig: ServerConfig, torrentHashes: List<String>, deleteFiles: Boolean
     ) = requestManager.request(serverConfig) { service ->
-        service.deleteTorrents(torrentHashes, deleteFiles)
+        service.deleteTorrents(torrentHashes.joinToString("|"), deleteFiles)
     }
 
-    suspend fun pauseTorrents(serverConfig: ServerConfig, torrentHashes: String) =
+    suspend fun pauseTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
         requestManager.request(serverConfig) { service ->
-            service.pauseTorrents(torrentHashes)
+            service.pauseTorrents(torrentHashes.joinToString("|"))
         }
 
-    suspend fun resumeTorrents(serverConfig: ServerConfig, torrentHashes: String) =
+    suspend fun resumeTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
         requestManager.request(serverConfig) { service ->
-            service.resumeTorrents(torrentHashes)
+            service.resumeTorrents(torrentHashes.joinToString("|"))
         }
 
     suspend fun getCategories(serverConfig: ServerConfig) =
