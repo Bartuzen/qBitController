@@ -188,7 +188,14 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(
                 resources.getQuantityString(
-                    R.plurals.torrent_trackers_delete,
+                    R.plurals.torrent_trackers_delete_title,
+                    adapter.selectedItemCount,
+                    adapter.selectedItemCount
+                )
+            )
+            .setMessage(
+                resources.getQuantityString(
+                    R.plurals.torrent_trackers_delete_desc,
                     adapter.selectedItemCount,
                     adapter.selectedItemCount
                 )
