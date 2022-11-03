@@ -25,7 +25,8 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+                    android:theme="@style/AppTheme.ToolbarOverlay"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
