@@ -99,26 +99,11 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteTorrents(
-        serverConfig: ServerConfig,
-        torrentHashes: List<String>,
-        deleteFiles: Boolean
-    ) = viewModelScope.launch {
-        when (val result = repository.deleteTorrents(serverConfig, torrentHashes, deleteFiles)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.TorrentsDeleted(torrentHashes.size))
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
-            }
-        }
-    }
-
-    fun pauseTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
+    fun deleteTorrents(serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean) =
         viewModelScope.launch {
-            when (val result = repository.pauseTorrents(serverConfig, torrentHashes)) {
+            when (val result = repository.deleteTorrents(serverConfig, hashes, deleteFiles)) {
                 is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsPaused(torrentHashes.size))
+                    eventChannel.send(Event.TorrentsDeleted(hashes.size))
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result.error))
@@ -126,11 +111,23 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
-    fun resumeTorrents(serverConfig: ServerConfig, torrentHashes: List<String>) =
+    fun pauseTorrents(serverConfig: ServerConfig, hashes: List<String>) =
         viewModelScope.launch {
-            when (val result = repository.resumeTorrents(serverConfig, torrentHashes)) {
+            when (val result = repository.pauseTorrents(serverConfig, hashes)) {
                 is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsResumed(torrentHashes.size))
+                    eventChannel.send(Event.TorrentsPaused(hashes.size))
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun resumeTorrents(serverConfig: ServerConfig, hashes: List<String>) =
+        viewModelScope.launch {
+            when (val result = repository.resumeTorrents(serverConfig, hashes)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsResumed(hashes.size))
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result.error))
