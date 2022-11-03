@@ -43,13 +43,13 @@ class TorrentListRepository @Inject constructor(
             service.getTags()
         }
 
-    suspend fun deleteCategories(serverConfig: ServerConfig, categories: String) =
+    suspend fun deleteCategory(serverConfig: ServerConfig, category: String) =
         requestManager.request(serverConfig) { service ->
-            service.deleteCategories(categories)
+            service.deleteCategories(category)
         }
 
-    suspend fun deleteTags(serverConfig: ServerConfig, tags: String) =
+    suspend fun deleteTag(serverConfig: ServerConfig, tag: String) =
         requestManager.request(serverConfig) { service ->
-            service.deleteTags(tags)
+            service.deleteTags(tag)
         }
 }
