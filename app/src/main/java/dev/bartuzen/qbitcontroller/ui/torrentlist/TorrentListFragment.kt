@@ -215,15 +215,20 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.setItemMargin(8, 8)
 
-        categoryTagAdapter = CategoryTagAdapter { isCategory, name ->
-            if (isCategory) {
-                viewModel.setSelectedCategory(name)
-            } else {
-                viewModel.setSelectedTag(name)
-            }
+        categoryTagAdapter = CategoryTagAdapter(
+            onSelected = { isCategory, name ->
+                if (isCategory) {
+                    viewModel.setSelectedCategory(name)
+                } else {
+                    viewModel.setSelectedTag(name)
+                }
 
-            activityBinding.layoutDrawer.close()
-        }
+                activityBinding.layoutDrawer.close()
+            }, onLongClick = { isCategory, name ->
+                activityBinding.layoutDrawer.close()
+                showDeleteCategoryTagDialog(isCategory, name)
+            }
+        )
         (requireActivity() as MainActivity).submitCategoryTagAdapter(categoryTagAdapter)
 
         drawerListener = object : DrawerListener {
@@ -345,6 +350,22 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         delay(1000) // wait until qBittorrent resumes the torrent
                         viewModel.loadTorrentList(serverConfig)
                     }
+                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.updateCategoryAndTags(serverConfig)
+                }
+                is TorrentListViewModel.Event.CategoryDeleted -> {
+                    showSnackbar(
+                        getString(R.string.torrent_list_delete_category_success, event.name)
+                    )
+                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.updateCategoryAndTags(serverConfig)
+                }
+                is TorrentListViewModel.Event.TagDeleted -> {
+                    showSnackbar(
+                        getString(R.string.torrent_list_delete_tag_success, event.name)
+                    )
+                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.updateCategoryAndTags(serverConfig)
                 }
             }
         }
@@ -370,6 +391,36 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 )
                 adapter.finishSelection()
                 actionMode?.finish()
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+
+    private fun showDeleteCategoryTagDialog(isCategory: Boolean, name: String) {
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(
+                if (isCategory) {
+                    R.string.torrent_list_delete_category_title
+                } else {
+                    R.string.torrent_list_delete_tag_title
+                }
+            )
+            .setMessage(
+                getString(
+                    if (isCategory) {
+                        R.string.torrent_list_delete_category_desc
+                    } else {
+                        R.string.torrent_list_delete_tag_desc
+                    }, name
+                )
+            )
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                if (isCategory) {
+                    viewModel.deleteCategory(serverConfig, name)
+                } else {
+                    viewModel.deleteTag(serverConfig, name)
+                }
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()

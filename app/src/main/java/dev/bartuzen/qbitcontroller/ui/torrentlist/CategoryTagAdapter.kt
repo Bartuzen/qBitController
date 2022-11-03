@@ -11,7 +11,8 @@ import dev.bartuzen.qbitcontroller.databinding.ItemDividerBinding
 import kotlin.properties.Delegates
 
 class CategoryTagAdapter(
-    private val onSelected: (isCategory: Boolean, name: String?) -> Unit
+    private val onSelected: (isCategory: Boolean, name: String?) -> Unit,
+    private val onLongClick: (isCategory: Boolean, name: String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categoryList: List<String> = emptyList()
@@ -138,6 +139,13 @@ class CategoryTagAdapter(
                 notifyItemChanged(oldPosition)
 
                 onSelected(isCategory, name)
+            }
+
+            binding.root.setOnLongClickListener {
+                name?.let { name ->
+                    onLongClick(isCategory, name)
+                    true
+                } ?: false
             }
         }
 

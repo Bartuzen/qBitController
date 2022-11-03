@@ -184,6 +184,32 @@ class TorrentListViewModel @Inject constructor(
         _tagList.value = tags
     }
 
+    fun deleteCategory(serverConfig: ServerConfig, category: String) = viewModelScope.launch {
+        when (
+            val result = repository.deleteCategories(serverConfig, category)
+        ) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.CategoryDeleted(category))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result.error))
+            }
+        }
+    }
+
+    fun deleteTag(serverConfig: ServerConfig, tag: String) = viewModelScope.launch {
+        when (
+            val result = repository.deleteTags(serverConfig, tag)
+        ) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TagDeleted(tag))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result.error))
+            }
+        }
+    }
+
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
     }
@@ -205,5 +231,7 @@ class TorrentListViewModel @Inject constructor(
         data class TorrentsDeleted(val count: Int) : Event()
         data class TorrentsPaused(val count: Int) : Event()
         data class TorrentsResumed(val count: Int) : Event()
+        data class CategoryDeleted(val name: String) : Event()
+        data class TagDeleted(val name: String) : Event()
     }
 }

@@ -74,4 +74,12 @@ interface TorrentService {
 
     @GET("api/v2/torrents/tags")
     suspend fun getTags(): Response<List<String>>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/removeCategories")
+    suspend fun deleteCategories(@Field("categories") categories: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/deleteTags")
+    suspend fun deleteTags(@Field("tags") tags: String): Response<Unit>
 }
