@@ -350,8 +350,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         delay(1000) // wait until qBittorrent resumes the torrent
                         viewModel.loadTorrentList(serverConfig)
                     }
-                    viewModel.loadTorrentList(serverConfig)
-                    viewModel.updateCategoryAndTags(serverConfig)
                 }
                 is TorrentListViewModel.Event.CategoryDeleted -> {
                     showSnackbar(
