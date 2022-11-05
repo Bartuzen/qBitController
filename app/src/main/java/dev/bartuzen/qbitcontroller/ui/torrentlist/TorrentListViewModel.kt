@@ -72,6 +72,40 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
+    fun updateCategoryAndTags(serverConfig: ServerConfig) = viewModelScope.launch {
+        val categoriesDeferred = async {
+            when (val result = repository.getCategories(serverConfig)) {
+                is RequestResult.Success -> {
+                    result.data.values
+                        .toList()
+                        .map { it.name }
+                        .sortedBy { it }
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                    throw CancellationException()
+                }
+            }
+        }
+        val tagsDeferred = async {
+            when (val result = repository.getTags(serverConfig)) {
+                is RequestResult.Success -> {
+                    result.data.sortedBy { it }
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                    throw CancellationException()
+                }
+            }
+        }
+
+        val categories = categoriesDeferred.await()
+        val tags = tagsDeferred.await()
+
+        _categoryList.value = categories
+        _tagList.value = tags
+    }
+
     fun loadTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) {
         if (!isLoading.value) {
             _isLoading.value = true
@@ -134,40 +168,6 @@ class TorrentListViewModel @Inject constructor(
                 }
             }
         }
-
-    fun updateCategoryAndTags(serverConfig: ServerConfig) = viewModelScope.launch {
-        val categoriesDeferred = async {
-            when (val result = repository.getCategories(serverConfig)) {
-                is RequestResult.Success -> {
-                    result.data.values
-                        .toList()
-                        .map { it.name }
-                        .sortedBy { it }
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
-                    throw CancellationException()
-                }
-            }
-        }
-        val tagsDeferred = async {
-            when (val result = repository.getTags(serverConfig)) {
-                is RequestResult.Success -> {
-                    result.data.sortedBy { it }
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
-                    throw CancellationException()
-                }
-            }
-        }
-
-        val categories = categoriesDeferred.await()
-        val tags = tagsDeferred.await()
-
-        _categoryList.value = categories
-        _tagList.value = tags
-    }
 
     fun deleteCategory(serverConfig: ServerConfig, category: String) = viewModelScope.launch {
         when (val result = repository.deleteCategory(serverConfig, category)) {
