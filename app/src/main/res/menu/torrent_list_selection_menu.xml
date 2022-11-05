@@ -21,6 +21,30 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_priority_increase"
+        android:icon="@drawable/ic_priority_increase"
+        android:title="@string/menu_priority_increase"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_priority_decrease"
+        android:icon="@drawable/ic_priority_decrease"
+        android:title="@string/menu_priority_decrease"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_priority_maximize"
+        android:icon="@drawable/ic_priority_maximize"
+        android:title="@string/menu_priority_maximize"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_priority_minimize"
+        android:icon="@drawable/ic_priority_minimize"
+        android:title="@string/menu_priority_minimize"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
         android:title="@string/menu_select_all"

@@ -181,6 +181,34 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                                 actionMode?.finish()
                                 true
                             }
+                            R.id.menu_priority_increase -> {
+                                viewModel.increaseTorrentPriority(
+                                    serverConfig, selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                                true
+                            }
+                            R.id.menu_priority_decrease -> {
+                                viewModel.decreaseTorrentPriority(
+                                    serverConfig, selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                                true
+                            }
+                            R.id.menu_priority_maximize -> {
+                                viewModel.maximizeTorrentPriority(
+                                    serverConfig, selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                                true
+                            }
+                            R.id.menu_priority_minimize -> {
+                                viewModel.minimizeTorrentPriority(
+                                    serverConfig, selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                                true
+                            }
                             R.id.menu_select_all -> {
                                 selectAll()
                                 true
@@ -364,6 +392,34 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     )
                     viewModel.loadTorrentList(serverConfig)
                     viewModel.updateCategoryAndTags(serverConfig)
+                }
+                TorrentListViewModel.Event.TorrentsPriorityDecreased -> {
+                    showSnackbar(R.string.torrent_list_priority_decreased_success)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent changes the priority
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                }
+                TorrentListViewModel.Event.TorrentsPriorityIncreased -> {
+                    showSnackbar(R.string.torrent_list_priority_increased_success)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent changes the priority
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                }
+                TorrentListViewModel.Event.TorrentsPriorityMaximized -> {
+                    showSnackbar(R.string.torrent_list_priority_maximized_success)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent changes the priority
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                }
+                TorrentListViewModel.Event.TorrentsPriorityMinimized -> {
+                    showSnackbar(R.string.torrent_list_priority_minimized_success)
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent changes the priority
+                        viewModel.loadTorrentList(serverConfig)
+                    }
                 }
             }
         }

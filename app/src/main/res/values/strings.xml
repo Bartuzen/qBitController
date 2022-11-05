@@ -13,6 +13,11 @@
     <string name="menu_add_edit_server_delete">Delete</string>
     <string name="menu_add_edit_server_save">Save</string>
 
+    <string name="menu_priority_increase">Increase Priority</string>
+    <string name="menu_priority_decrease">Decrease Priority</string>
+    <string name="menu_priority_maximize">Maximize Priority</string>
+    <string name="menu_priority_minimize">Minimize Priority</string>
+
     <string name="tab_torrent_overview">Overview</string>
     <string name="tab_torrent_files">Files</string>
     <string name="tab_torrent_pieces">Pieces</string>
@@ -102,6 +107,11 @@
     <string name="torrent_list_delete_category_title">Delete Category</string>
     <string name="torrent_list_delete_category_desc">Are you sure you want to delete category \"%1$s\"?</string>
     <string name="torrent_list_delete_category_success">Category \"%1$s\" deleted successfully.</string>
+
+    <string name="torrent_list_priority_increased_success">Priority increased successfully.</string>
+    <string name="torrent_list_priority_decreased_success">Priority decreased successfully.</string>
+    <string name="torrent_list_priority_maximized_success">Priority maximized successfully.</string>
+    <string name="torrent_list_priority_minimized_success">Priority minimized successfully.</string>
 
     <string name="torrent_list_tags">Tags</string>
     <string name="torrent_list_delete_tag_title">Delete Tag</string>

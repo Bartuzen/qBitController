@@ -50,4 +50,24 @@ class TorrentListRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.deleteTags(tag)
         }
+
+    suspend fun increaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.increaseTorrentPriority(hashes.joinToString("|"))
+        }
+
+    suspend fun decreaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.decreaseTorrentPriority(hashes.joinToString("|"))
+        }
+
+    suspend fun maximizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.maximizeTorrentPriority(hashes.joinToString("|"))
+        }
+
+    suspend fun minimizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.minimizeTorrentPriority(hashes.joinToString("|"))
+        }
 }

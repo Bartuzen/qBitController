@@ -191,6 +191,54 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
+    fun increaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        viewModelScope.launch {
+            when (val result = repository.increaseTorrentPriority(serverConfig, hashes)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsPriorityIncreased)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun decreaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        viewModelScope.launch {
+            when (val result = repository.decreaseTorrentPriority(serverConfig, hashes)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsPriorityDecreased)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun maximizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        viewModelScope.launch {
+            when (val result = repository.maximizeTorrentPriority(serverConfig, hashes)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsPriorityMaximized)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun minimizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
+        viewModelScope.launch {
+            when (val result = repository.minimizeTorrentPriority(serverConfig, hashes)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TorrentsPriorityMinimized)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
     }
@@ -214,5 +262,9 @@ class TorrentListViewModel @Inject constructor(
         data class TorrentsResumed(val count: Int) : Event()
         data class CategoryDeleted(val name: String) : Event()
         data class TagDeleted(val name: String) : Event()
+        object TorrentsPriorityIncreased : Event()
+        object TorrentsPriorityDecreased : Event()
+        object TorrentsPriorityMaximized : Event()
+        object TorrentsPriorityMinimized : Event()
     }
 }

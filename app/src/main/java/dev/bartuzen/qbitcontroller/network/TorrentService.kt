@@ -82,4 +82,20 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/deleteTags")
     suspend fun deleteTags(@Field("tags") tags: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/increasePrio")
+    suspend fun increaseTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/decreasePrio")
+    suspend fun decreaseTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/topPrio")
+    suspend fun maximizeTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/bottomPrio")
+    suspend fun minimizeTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
 }
