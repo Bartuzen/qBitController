@@ -23,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogCreateCategoryBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -255,6 +257,13 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }, onLongClick = { isCategory, name ->
                 activityBinding.layoutDrawer.close()
                 showDeleteCategoryTagDialog(isCategory, name)
+            }, onCreateClick = { isCategory ->
+                activityBinding.layoutDrawer.close()
+                if (isCategory) {
+                    showCreateCategoryDialog()
+                } else {
+                    showCreateTagDialog()
+                }
             }
         )
         (requireActivity() as MainActivity).submitCategoryTagAdapter(categoryTagAdapter)
@@ -421,6 +430,14 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         viewModel.loadTorrentList(serverConfig)
                     }
                 }
+                TorrentListViewModel.Event.CategoryCreated -> {
+                    showSnackbar(R.string.torrent_list_create_category_success)
+                    viewModel.updateCategoryAndTags(serverConfig)
+                }
+                TorrentListViewModel.Event.TagCreated -> {
+                    showSnackbar(R.string.torrent_list_create_tag_success)
+                    viewModel.updateCategoryAndTags(serverConfig)
+                }
             }
         }
     }
@@ -475,6 +492,41 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 } else {
                     viewModel.deleteTag(serverConfig, name)
                 }
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+
+    private fun showCreateCategoryDialog() {
+        val dialogBinding = DialogCreateCategoryBinding.inflate(layoutInflater)
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.torrent_list_create_category_title)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                viewModel.createCategory(
+                    serverConfig,
+                    dialogBinding.editName.text.toString(),
+                    dialogBinding.editSavePath.text.toString()
+                )
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+
+    private fun showCreateTagDialog() {
+        val dialogBinding = DialogCreateTagBinding.inflate(layoutInflater)
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.torrent_list_create_tag_title)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                viewModel.createTags(
+                    serverConfig,
+                    dialogBinding.editName.text.toString().split("\n")
+                )
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()

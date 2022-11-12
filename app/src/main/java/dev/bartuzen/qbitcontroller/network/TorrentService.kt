@@ -98,4 +98,15 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/bottomPrio")
     suspend fun minimizeTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/createCategory")
+    suspend fun createCategory(
+        @Field("category") name: String,
+        @Field("savePath") savePath: String
+    ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/createTags")
+    suspend fun createTags(@Field("tags") names: String): Response<Unit>
 }

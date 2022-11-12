@@ -104,9 +104,13 @@
     <string name="torrent_list_category_tag_all">All</string>
 
     <string name="torrent_list_categories">Categories</string>
+    <string name="torrent_list_create_category_title">Create Category</string>
     <string name="torrent_list_delete_category_title">Delete Category</string>
     <string name="torrent_list_delete_category_desc">Are you sure you want to delete category \"%1$s\"?</string>
     <string name="torrent_list_delete_category_success">Category \"%1$s\" deleted successfully.</string>
+    <string name="torrent_list_create_category_success">Category created successfully.</string>
+    <string name="torrent_list_create_category_hint">Category Name</string>
+    <string name="torrent_list_create_category_save_path_hint">Save Path</string>
 
     <string name="torrent_list_priority_increased_success">Priority increased successfully.</string>
     <string name="torrent_list_priority_decreased_success">Priority decreased successfully.</string>
@@ -114,9 +118,12 @@
     <string name="torrent_list_priority_minimized_success">Priority minimized successfully.</string>
 
     <string name="torrent_list_tags">Tags</string>
+    <string name="torrent_list_create_tag_title">Create Tag</string>
     <string name="torrent_list_delete_tag_title">Delete Tag</string>
     <string name="torrent_list_delete_tag_desc">Are you sure you want to delete tag \"%1$s\"?</string>
     <string name="torrent_list_delete_tag_success">Tag \"%1$s\" deleted successfully.</string>
+    <string name="torrent_list_create_tag_success">Tag created successfully.</string>
+    <string name="torrent_list_create_tag_hint">Tag Name(s)</string>
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
 

@@ -70,4 +70,14 @@ class TorrentListRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.minimizeTorrentPriority(hashes.joinToString("|"))
         }
+
+    suspend fun createCategory(serverConfig: ServerConfig, name: String, savePath: String) =
+        requestManager.request(serverConfig) { service ->
+            service.createCategory(name, savePath)
+        }
+
+    suspend fun createTags(serverConfig: ServerConfig, names: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.createTags(names.joinToString(","))
+        }
 }

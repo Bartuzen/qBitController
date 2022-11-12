@@ -12,7 +12,8 @@ import kotlin.properties.Delegates
 
 class CategoryTagAdapter(
     private val onSelected: (isCategory: Boolean, name: String?) -> Unit,
-    private val onLongClick: (isCategory: Boolean, name: String) -> Unit
+    private val onLongClick: (isCategory: Boolean, name: String) -> Unit,
+    private val onCreateClick: (isCategory: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categoryList: List<String> = emptyList()
@@ -164,9 +165,13 @@ class CategoryTagAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(isCategory: Boolean) {
-            binding.root.text = binding.root.context.getString(
+            binding.textTitle.text = binding.root.context.getString(
                 if (isCategory) R.string.torrent_list_categories else R.string.torrent_list_tags
             )
+
+            binding.imageCreate.setOnClickListener {
+                onCreateClick(isCategory)
+            }
         }
     }
 

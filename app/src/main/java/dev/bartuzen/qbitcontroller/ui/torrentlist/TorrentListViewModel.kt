@@ -239,6 +239,29 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
+    fun createCategory(serverConfig: ServerConfig, name: String, savePath: String) =
+        viewModelScope.launch {
+            when (val result = repository.createCategory(serverConfig, name, savePath)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.CategoryCreated)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun createTags(serverConfig: ServerConfig, names: List<String>) = viewModelScope.launch {
+        when (val result = repository.createTags(serverConfig, names)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TagCreated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result.error))
+            }
+        }
+    }
+
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
     }
@@ -266,5 +289,7 @@ class TorrentListViewModel @Inject constructor(
         object TorrentsPriorityDecreased : Event()
         object TorrentsPriorityMaximized : Event()
         object TorrentsPriorityMinimized : Event()
+        object CategoryCreated : Event()
+        object TagCreated : Event()
     }
 }
