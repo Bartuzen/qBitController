@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.view.MenuProvider
+import androidx.core.view.iterator
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -94,8 +95,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     menu.findItem(selectedSort).isChecked = true
                 }
 
-                val settingsItem = menu.findItem(R.id.menu_settings)
-                val sortItem = menu.findItem(R.id.menu_sort)
                 val searchItem = menu.findItem(R.id.menu_search)
 
                 val searchView = searchItem.actionView as SearchView
@@ -114,8 +113,9 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     override fun onMenuItemActionExpand(item: MenuItem): Boolean {
                         // we need to make other items invisible when search bar
                         // is expanded otherwise they act oddly
-                        settingsItem.isVisible = false
-                        sortItem.isVisible = false
+                        for (menuItem in menu.iterator()) {
+                            menuItem.isVisible = false
+                        }
 
                         // SearchView does not completely expand without doing this
                         searchView.maxWidth = Integer.MAX_VALUE
