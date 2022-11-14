@@ -58,8 +58,13 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
                 viewModel.torrent.filterNotNull()
                     .launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
-                        val isPaused = torrent.state == TorrentState.PAUSED_DL ||
-                                torrent.state == TorrentState.PAUSED_UP
+                        val isPaused = when (torrent.state) {
+                            TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
+                            TorrentState.MISSING_FILES, TorrentState.ERROR,
+                            -> true
+
+                            else -> false
+                        }
                         menu.findItem(R.id.menu_resume).isVisible = isPaused
                         menu.findItem(R.id.menu_pause).isVisible = !isPaused
                     }
