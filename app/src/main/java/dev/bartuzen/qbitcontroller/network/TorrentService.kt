@@ -109,4 +109,8 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/createTags")
     suspend fun createTags(@Field("tags") names: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/toggleSequentialDownload")
+    suspend fun toggleSequentialDownload(@Field("hashes") hashes: String): Response<Unit>
 }

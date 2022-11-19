@@ -40,8 +40,10 @@ data class Torrent(
 
     @JsonProperty("tags")
     @JsonDeserialize(using = TagDeserializer::class)
-    val tags: List<String>
+    val tags: List<String>,
 
+    @JsonProperty("seq_dl")
+    val isSequentialDownloadEnabled: Boolean
 )
 
 enum class TorrentState {

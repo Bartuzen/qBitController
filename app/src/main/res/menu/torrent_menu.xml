@@ -24,4 +24,10 @@
         android:title="@string/menu_delete"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_sequential_download"
+        android:checkable="true"
+        android:title="@string/torrent_menu_sequential_download"
+        app:showAsAction="never" />
+
 </menu>

@@ -22,7 +22,6 @@ class TorrentRepository @Inject constructor(
             }
         }
 
-
     suspend fun getFiles(serverConfig: ServerConfig, hash: String) =
         requestManager.request(serverConfig) { service ->
             service.getFiles(hash)
@@ -66,5 +65,10 @@ class TorrentRepository @Inject constructor(
     suspend fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
         requestManager.request(serverConfig) { service ->
             service.deleteTorrentTrackers(hash, urls.joinToString("|"))
+        }
+
+    suspend fun toggleSequentialDownload(serverConfig: ServerConfig, hash: String) =
+        requestManager.request(serverConfig) { service ->
+            service.toggleSequentialDownload(hash)
         }
 }

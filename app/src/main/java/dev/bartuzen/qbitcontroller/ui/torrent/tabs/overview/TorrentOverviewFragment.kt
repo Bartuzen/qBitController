@@ -67,6 +67,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         }
                         menu.findItem(R.id.menu_resume).isVisible = isPaused
                         menu.findItem(R.id.menu_pause).isVisible = !isPaused
+
+                        menu.findItem(R.id.menu_sequential_download).isChecked =
+                            torrent.isSequentialDownloadEnabled
                     }
             }
 
@@ -80,6 +83,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     }
                     R.id.menu_delete -> {
                         showDeleteTorrentDialog()
+                    }
+                    R.id.menu_sequential_download -> {
+                        viewModel.toggleSequentialDownload(serverConfig, torrentHash)
                     }
                     else -> return false
                 }
@@ -164,6 +170,10 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         delay(1000) // wait until qBittorrent resumes the torrent
                         viewModel.loadTorrent(serverConfig, torrentHash)
                     }
+                }
+                TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
+                    showSnackbar(getString(R.string.torrent_toggle_sequential_download_success))
+                    viewModel.loadTorrent(serverConfig, torrentHash)
                 }
             }
         }

@@ -133,6 +133,9 @@
     <string name="torrent_paused_success">Torrent paused successfully.</string>
     <string name="torrent_resumed_success">Torrent resumed successfully.</string>
 
+    <string name="torrent_menu_sequential_download">Sequential Download</string>
+    <string name="torrent_toggle_sequential_download_success">Sequential download toggled successfully.</string>
+
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>
     <string name="torrent_piece_map">PIECE MAP</string>
