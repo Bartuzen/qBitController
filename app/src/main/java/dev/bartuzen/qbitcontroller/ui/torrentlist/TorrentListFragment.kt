@@ -76,7 +76,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentListBinding.bind(view)
         _activityBinding = ActivityMainBinding.bind(requireActivity().view)
 

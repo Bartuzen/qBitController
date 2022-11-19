@@ -36,7 +36,6 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentPiecesBinding.bind(view)
 
         val adapter = TorrentPiecesAdapter()

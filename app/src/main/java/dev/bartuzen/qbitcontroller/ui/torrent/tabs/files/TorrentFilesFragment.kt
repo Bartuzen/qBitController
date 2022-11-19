@@ -33,7 +33,6 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentFilesBinding.bind(view)
 
         val adapter = TorrentFilesAdapter(object : TorrentFilesAdapter.OnItemClickListener {

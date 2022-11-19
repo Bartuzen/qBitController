@@ -47,7 +47,6 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentTrackersBinding.bind(view)
         _activityBinding = ActivityTorrentBinding.bind(requireActivity().view)
 

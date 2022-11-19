@@ -49,7 +49,6 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         _binding = FragmentTorrentOverviewBinding.bind(view)
 
         requireActivity().addMenuProvider(object : MenuProvider {
