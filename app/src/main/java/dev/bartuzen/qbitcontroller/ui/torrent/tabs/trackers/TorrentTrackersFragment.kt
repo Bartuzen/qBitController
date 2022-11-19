@@ -10,6 +10,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.widget.ViewPager2
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -30,11 +31,10 @@ import dev.bartuzen.qbitcontroller.utils.view
 @FragmentWithArgs
 @AndroidEntryPoint
 class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers) {
-    private var _binding: FragmentTorrentTrackersBinding? = null
-    private val binding get() = _binding!!
-
-    private var _activityBinding: ActivityTorrentBinding? = null
-    private val activityBinding get() = _activityBinding!!
+    private val binding by viewBinding(FragmentTorrentTrackersBinding::bind)
+    private val activityBinding by viewBinding(ActivityTorrentBinding::bind,
+        viewProvider = { requireActivity().view }
+    )
 
     private val viewModel: TorrentTrackersViewModel by viewModels()
 
@@ -47,9 +47,6 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _binding = FragmentTorrentTrackersBinding.bind(view)
-        _activityBinding = ActivityTorrentBinding.bind(requireActivity().view)
-
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.torrent_trackers_menu, menu)
@@ -215,9 +212,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
 
         activityBinding.viewPager.unregisterOnPageChangeCallback(onPageChange)
-        _activityBinding = null
     }
 }

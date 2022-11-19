@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -37,8 +38,7 @@ import kotlinx.coroutines.launch
 @FragmentWithArgs
 @AndroidEntryPoint
 class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview) {
-    private var _binding: FragmentTorrentOverviewBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentTorrentOverviewBinding::bind)
 
     private val viewModel: TorrentOverviewViewModel by viewModels()
 
@@ -49,7 +49,6 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _binding = FragmentTorrentOverviewBinding.bind(view)
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -194,10 +193,5 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()
             .show()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

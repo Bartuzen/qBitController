@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,8 +22,7 @@ import kotlinx.coroutines.flow.combine
 @FragmentWithArgs
 @AndroidEntryPoint
 class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
-    private var _binding: FragmentTorrentFilesBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentTorrentFilesBinding::bind)
 
     private val viewModel: TorrentFilesViewModel by viewModels()
 
@@ -33,8 +33,6 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _binding = FragmentTorrentFilesBinding.bind(view)
-
         val adapter = TorrentFilesAdapter(object : TorrentFilesAdapter.OnItemClickListener {
             override fun onClick(file: TorrentFileNode) {
                 if (file.isFolder) {
@@ -90,10 +88,5 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

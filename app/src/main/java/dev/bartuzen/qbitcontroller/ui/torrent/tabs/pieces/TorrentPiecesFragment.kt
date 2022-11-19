@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,8 +25,7 @@ import kotlinx.coroutines.flow.filterNotNull
 @FragmentWithArgs
 @AndroidEntryPoint
 class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
-    private var _binding: FragmentTorrentPiecesBinding? = null
-    private val binding get() = _binding!!
+    private val binding by viewBinding(FragmentTorrentPiecesBinding::bind)
 
     private val viewModel: TorrentPiecesViewModel by viewModels()
 
@@ -36,8 +36,6 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _binding = FragmentTorrentPiecesBinding.bind(view)
-
         val adapter = TorrentPiecesAdapter()
         binding.recyclerPieces.adapter = adapter
 
@@ -114,10 +112,5 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

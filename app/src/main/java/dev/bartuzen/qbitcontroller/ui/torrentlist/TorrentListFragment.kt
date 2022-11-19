@@ -17,6 +17,7 @@ import androidx.core.view.iterator
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -47,11 +48,10 @@ import kotlinx.coroutines.launch
 @FragmentWithArgs
 @AndroidEntryPoint
 class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
-    private var _binding: FragmentTorrentListBinding? = null
-    private val binding get() = _binding!!
-
-    private var _activityBinding: ActivityMainBinding? = null
-    private val activityBinding get() = _activityBinding!!
+    private val binding by viewBinding(FragmentTorrentListBinding::bind)
+    private val activityBinding by viewBinding(ActivityMainBinding::bind,
+        viewProvider = { requireActivity().view }
+    )
 
     private val viewModel: TorrentListViewModel by viewModels()
 
@@ -76,9 +76,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _binding = FragmentTorrentListBinding.bind(view)
-        _activityBinding = ActivityMainBinding.bind(requireActivity().view)
-
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.torrent_list_menu, menu)
@@ -534,11 +531,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
 
         activityBinding.layoutDrawer.removeDrawerListener(drawerListener)
         (requireActivity() as MainActivity).removeCategoryTagAdapter(categoryTagAdapter)
-
-        _activityBinding = null
     }
 }
