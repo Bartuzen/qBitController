@@ -40,7 +40,7 @@ class RequestManager @Inject constructor() {
                 .addConverterFactory(
                     JacksonConverterFactory.create(
                         jacksonObjectMapper()
-                            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+                            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
                             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                     )
                 )

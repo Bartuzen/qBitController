@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.model
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
@@ -13,7 +14,7 @@ data class Torrent(
     val name: String,
 
     @JsonProperty("state")
-    val state: TorrentState?,
+    val state: TorrentState,
 
     @JsonProperty("completed")
     val completed: Long,
@@ -43,7 +44,6 @@ data class Torrent(
 
 )
 
-@Suppress("unused")
 enum class TorrentState {
     @JsonProperty("error")
     ERROR,
@@ -100,6 +100,7 @@ enum class TorrentState {
     MOVING,
 
     @JsonProperty("unknown")
+    @JsonEnumDefaultValue
     UNKNOWN
 }
 

@@ -72,7 +72,7 @@ fun formatSeconds(context: Context, seconds: Int) = when (seconds) {
     else -> "inf"
 }
 
-fun formatTorrentState(context: Context, state: TorrentState?) = context.getString(
+fun formatTorrentState(context: Context, state: TorrentState) = context.getString(
     when (state) {
         TorrentState.ERROR -> R.string.torrent_status_error
         TorrentState.MISSING_FILES -> R.string.torrent_status_missing_files
@@ -87,7 +87,7 @@ fun formatTorrentState(context: Context, state: TorrentState?) = context.getStri
         TorrentState.META_DL -> R.string.torrent_status_downloading_metadata
         TorrentState.FORCED_DL -> R.string.torrent_status_force_downloading
         TorrentState.MOVING -> R.string.torrent_status_moving
-        else -> R.string.torrent_status_unknown
+        TorrentState.UNKNOWN -> R.string.torrent_status_unknown
     }
 )
 
