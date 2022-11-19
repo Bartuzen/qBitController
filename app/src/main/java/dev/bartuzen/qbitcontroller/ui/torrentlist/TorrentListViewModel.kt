@@ -56,13 +56,9 @@ class TorrentListViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) =
+    private fun updateTorrentList(serverConfig: ServerConfig) =
         viewModelScope.launch {
-            when (
-                val result = repository.getTorrentList(
-                    serverConfig, torrentSort ?: this@TorrentListViewModel.torrentSort.first()
-                )
-            ) {
+            when (val result = repository.getTorrentList(serverConfig, torrentSort.first())) {
                 is RequestResult.Success -> {
                     _torrentList.value = result.data
                 }
@@ -106,23 +102,20 @@ class TorrentListViewModel @Inject constructor(
         _tagList.value = tags
     }
 
-    fun loadTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort? = null) {
+    fun loadTorrentList(serverConfig: ServerConfig) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateTorrentList(serverConfig, torrentSort).invokeOnCompletion {
+            updateTorrentList(serverConfig).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshTorrentListCategoryTags(
-        serverConfig: ServerConfig,
-        torrentSort: TorrentSort? = null
-    ) {
+    fun refreshTorrentListCategoryTags(serverConfig: ServerConfig) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             viewModelScope.launch {
-                val torrentListJob = updateTorrentList(serverConfig, torrentSort)
+                val torrentListJob = updateTorrentList(serverConfig)
                 val categoryTagJob = updateCategoryAndTags(serverConfig)
 
                 torrentListJob.join()

@@ -138,9 +138,9 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     R.id.menu_sort_priority -> TorrentSort.PRIORITY
                     else -> return false
                 }
-                viewModel.setTorrentSort(sort)
-
-                viewModel.loadTorrentList(serverConfig, sort)
+                viewModel.setTorrentSort(sort).invokeOnCompletion {
+                    viewModel.loadTorrentList(serverConfig)
+                }
 
                 return true
             }
