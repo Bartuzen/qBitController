@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivitySettingsBinding
@@ -25,9 +26,10 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, SettingsFragment())
-                .commit()
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace(R.id.container, SettingsFragment())
+            }
         }
     }
 }

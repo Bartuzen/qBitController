@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ConcatAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -115,16 +116,18 @@ class MainActivity : AppCompatActivity() {
 
             if (serverConfig == null) {
                 if (currentFragment != null) {
-                    supportFragmentManager.beginTransaction()
-                        .remove(currentFragment)
-                        .commit()
+                    supportFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        remove(currentFragment)
+                    }
                 }
             } else if (currentFragment?.serverConfig != serverConfig) {
                 val fragment = TorrentListFragmentBuilder(serverConfig)
                     .build()
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .commit()
+                supportFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    replace(R.id.container, fragment)
+                }
             }
         }
     }

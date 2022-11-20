@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
@@ -70,10 +71,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     val fragment = AddEditServerFragmentBuilder()
                         .serverConfig(serverConfig)
                         .build()
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .addToBackStack(null)
-                        .commit()
+                    parentFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        replace(R.id.container, fragment)
+                        addToBackStack(null)
+                    }
                     true
                 }
             }
@@ -84,10 +86,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setOnPreferenceClickListener {
                 val fragment = AddEditServerFragmentBuilder()
                     .build()
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.container, fragment)
-                    .addToBackStack(null)
-                    .commit()
+                parentFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    replace(R.id.container, fragment)
+                    addToBackStack(null)
+                }
                 true
             }
         }
