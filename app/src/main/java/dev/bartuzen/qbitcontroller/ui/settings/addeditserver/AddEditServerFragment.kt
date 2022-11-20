@@ -1,4 +1,4 @@
-package dev.bartuzen.qbitcontroller.ui.settings
+package dev.bartuzen.qbitcontroller.ui.settings.addeditserver
 
 import android.os.Bundle
 import android.text.InputType
@@ -26,9 +26,7 @@ import dev.bartuzen.qbitcontroller.utils.toAsterisks
 @FragmentWithArgs
 @AndroidEntryPoint
 class AddEditServerFragment : BasePreferenceFragment() {
-    private val viewModel: SettingsViewModel by viewModels(
-        ownerProducer = { requireActivity() }
-    )
+    private val viewModel: AddEditServerViewModel by viewModels()
 
     private lateinit var dataStore: AddEditDataStore
 

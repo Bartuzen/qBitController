@@ -14,6 +14,8 @@ import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.dataStore
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
@@ -26,9 +28,7 @@ import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
-    private val viewModel: SettingsViewModel by viewModels(
-        ownerProducer = { requireActivity() }
-    )
+    private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore =
