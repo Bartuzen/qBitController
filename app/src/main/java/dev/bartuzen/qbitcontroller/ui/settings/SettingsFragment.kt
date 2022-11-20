@@ -8,15 +8,13 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.plusAssign
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.dataStore
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
+import dev.bartuzen.qbitcontroller.utils.preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -49,19 +47,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun initSettings() {
-        val context = preferenceManager.context
-        val screen = preferenceManager.createPreferenceScreen(context)
-
+    private fun initSettings() = preferences {
         val servers = viewModel.getServers()
 
-        screen += PreferenceCategory(context).apply {
+        category {
             setTitle(R.string.settings_servers)
             initialExpandedChildrenCount = servers.size + 1
         }
 
         servers.forEach { (_, serverConfig) ->
-            screen += Preference(context).apply {
+            preference {
                 title = serverConfig.name
                 summary = serverConfig.host
                 setOnPreferenceClickListener {
@@ -74,7 +69,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        screen += Preference(context).apply {
+        preference {
             setTitle(R.string.settings_add_new_server)
             setOnPreferenceClickListener {
                 val fragment = AddEditServerFragmentBuilder()
@@ -84,12 +79,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-        screen += PreferenceCategory(context).apply {
+        category {
             setTitle(R.string.settings_other)
             initialExpandedChildrenCount = 1
         }
 
-        screen += ListPreference(context).apply {
+        list {
             key = "theme"
             setTitle(R.string.settings_theme)
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
@@ -97,8 +92,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             entryValues = arrayOf("LIGHT", "DARK", "SYSTEM_DEFAULT")
             setDefaultValue("SYSTEM_DEFAULT")
         }
-
-        preferenceScreen = screen
     }
 
     class SettingsDataStore(private val dataStore: DataStore<Preferences>) : PreferenceDataStore() {

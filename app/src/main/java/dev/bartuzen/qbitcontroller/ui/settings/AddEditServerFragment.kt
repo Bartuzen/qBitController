@@ -11,13 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceDataStore
-import androidx.preference.plusAssign
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.BasePreferenceFragment
+import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toAsterisks
 
@@ -33,7 +33,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
     @Arg(required = false)
     var serverConfig: ServerConfig? = null
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) = preferences {
         dataStore = AddEditDataStore().apply {
             serverConfig?.let { config ->
                 fromServerConfig(config)
@@ -41,10 +41,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
         }
         preferenceManager.preferenceDataStore = dataStore
 
-        val context = preferenceManager.context
-        val screen = preferenceManager.createPreferenceScreen(context)
-
-        screen += EditTextPreference(context).apply {
+        editText {
             key = "name"
             setTitle(R.string.settings_torrent_name)
             setDialogTitle(R.string.settings_torrent_name)
@@ -52,7 +49,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
             isSingleLineTitle = true
         }
 
-        screen += EditTextPreference(context).apply {
+        editText {
             key = "host"
             setTitle(R.string.settings_host)
             setDialogTitle(R.string.settings_host)
@@ -60,7 +57,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
             isSingleLineTitle = true
         }
 
-        screen += EditTextPreference(context).apply {
+        editText {
             key = "username"
             setTitle(R.string.settings_username)
             setDialogTitle(R.string.settings_username)
@@ -68,7 +65,7 @@ class AddEditServerFragment : BasePreferenceFragment() {
             isSingleLineTitle = true
         }
 
-        screen += EditTextPreference(context).apply {
+        editText {
             key = "password"
             setTitle(R.string.settings_password)
             setDialogTitle(R.string.settings_password)
@@ -79,8 +76,6 @@ class AddEditServerFragment : BasePreferenceFragment() {
                     InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             }
         }
-
-        preferenceScreen = screen
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
