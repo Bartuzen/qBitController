@@ -6,7 +6,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -89,41 +91,10 @@ class AddEditServerFragment : BasePreferenceFragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.menu_save -> {
-                        val host = dataStore.getString("host", "")
-                        val username = dataStore.getString("username", "")
-                        val password = dataStore.getString("password", "")
-                        val name = dataStore.getString("name", "")
-
-                        val parentView = requireActivity().findViewById<View>(android.R.id.content)
-                        if (host.isNotBlank() && username.isNotBlank() && password.isNotBlank()) {
-                            if (serverConfig == null) {
-                                val config = ServerConfig(
-                                    -1,
-                                    host,
-                                    username,
-                                    password,
-                                    name.ifEmpty { null }
-                                )
-                                viewModel.addServer(config)
-                                showSnackbar(R.string.settings_server_add_success, parentView)
-                            } else {
-                                serverConfig?.let { config ->
-                                    dataStore.toServerConfig(config)
-                                    viewModel.editServer(config)
-                                }
-                                showSnackbar(R.string.settings_server_edit_success, parentView)
-                            }
-                        } else {
-                            showSnackbar(R.string.settings_fill_blank_fields, parentView)
-                        }
+                        saveServerConfig()
                     }
                     R.id.menu_delete -> {
-                        serverConfig?.let { config ->
-                            viewModel.removeServer(config)
-                            val parentView =
-                                requireActivity().findViewById<View>(android.R.id.content)
-                            showSnackbar(R.string.settings_server_remove_success, parentView)
-                        }
+                        deleteServerConfig()
                     }
                     else -> return false
                 }
@@ -136,6 +107,48 @@ class AddEditServerFragment : BasePreferenceFragment() {
                 }
             }
         }, viewLifecycleOwner)
+    }
+
+    private fun saveServerConfig() {
+        val host = dataStore.getString("host", "")
+        val username = dataStore.getString("username", "")
+        val password = dataStore.getString("password", "")
+        val name = dataStore.getString("name", "")
+
+        if (host.isNotBlank() && username.isNotBlank() && password.isNotBlank()) {
+            if (serverConfig == null) {
+                val config = ServerConfig(-1, host, username, password, name.ifEmpty { null })
+                viewModel.addServer(config).invokeOnCompletion {
+                    setFragmentResult(
+                        "addEditServerResult", bundleOf("result" to Result.ADDED)
+                    )
+                    parentFragmentManager.popBackStack()
+                }
+            } else {
+                serverConfig?.let { config ->
+                    dataStore.toServerConfig(config)
+                    viewModel.editServer(config).invokeOnCompletion {
+                        setFragmentResult(
+                            "addEditServerResult", bundleOf("result" to Result.EDITED)
+                        )
+                        parentFragmentManager.popBackStack()
+                    }
+                }
+            }
+        } else {
+            showSnackbar(R.string.settings_fill_blank_fields)
+        }
+    }
+
+    private fun deleteServerConfig() {
+        serverConfig?.let { config ->
+            viewModel.removeServer(config).invokeOnCompletion {
+                setFragmentResult(
+                    "addEditServerResult", bundleOf("result" to Result.DELETED)
+                )
+                parentFragmentManager.popBackStack()
+            }
+        }
     }
 
     private val customSummaryProvider =
@@ -185,5 +198,9 @@ class AddEditServerFragment : BasePreferenceFragment() {
             serverConfig.username = username
             serverConfig.password = password
         }
+    }
+
+    enum class Result {
+        ADDED, EDITED, DELETED
     }
 }

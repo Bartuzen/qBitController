@@ -1,11 +1,11 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
 import android.os.Bundle
-import android.view.View
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceDataStore
@@ -13,8 +13,9 @@ import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.dataStore
-import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
+import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
+import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -33,16 +34,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
             SettingsDataStore(preferenceManager.context.dataStore)
 
         initSettings()
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        viewModel.fragmentEventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
-            when (event) {
-                SettingsViewModel.FragmentEvent.AddEditServerCompleted -> {
+        setFragmentResultListener("addEditServerResult") { _, bundle ->
+            when (bundle.getSerializableCompat<AddEditServerFragment.Result>("result")) {
+                AddEditServerFragment.Result.ADDED -> {
+                    showSnackbar(R.string.settings_server_add_success)
                     initSettings()
                 }
+                AddEditServerFragment.Result.EDITED -> {
+                    showSnackbar(R.string.settings_server_edit_success)
+                    initSettings()
+                }
+                AddEditServerFragment.Result.DELETED -> {
+                    showSnackbar(R.string.settings_server_remove_success)
+                    initSettings()
+                }
+                null -> {}
             }
         }
     }
@@ -63,7 +70,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     val fragment = AddEditServerFragmentBuilder()
                         .serverConfig(serverConfig)
                         .build()
-                    viewModel.movePage(fragment)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit()
                     true
                 }
             }
@@ -74,7 +84,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setOnPreferenceClickListener {
                 val fragment = AddEditServerFragmentBuilder()
                     .build()
-                viewModel.movePage(fragment)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .addToBackStack(null)
+                    .commit()
                 true
             }
         }
