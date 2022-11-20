@@ -113,4 +113,15 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/toggleSequentialDownload")
     suspend fun toggleSequentialDownload(@Field("hashes") hashes: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/add")
+    suspend fun addTorrent(
+        @Field("urls") links: String,
+        @Field("paused") isPaused: Boolean,
+        @Field("skip_checking") skipHashChecking: Boolean,
+        @Field("autoTMM") isAutoTorrentManagementEnabled: Boolean,
+        @Field("sequentialDownload") isSequentialDownloadEnabled: Boolean,
+        @Field("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean
+    ): Response<Unit>
 }

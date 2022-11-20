@@ -3,6 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@drawable/ic_add"
+        android:title="@string/torrent_add_menu_add_torrent"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_sort"
         android:title="@string/torrent_sort_menu">
         <menu>
@@ -25,12 +38,5 @@
             </group>
         </menu>
     </item>
-
-    <item
-        android:id="@+id/menu_search"
-        android:icon="@drawable/ic_search"
-        android:title="@string/menu_search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

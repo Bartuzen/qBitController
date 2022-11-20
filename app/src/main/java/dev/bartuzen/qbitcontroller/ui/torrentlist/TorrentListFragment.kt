@@ -30,6 +30,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
@@ -71,6 +72,19 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 if (isTorrentDeleted) {
                     viewModel.loadTorrentList(serverConfig)
                     showSnackbar(getString(R.string.torrent_deleted_success))
+                }
+            }
+        }
+
+    private val startAddTorrentActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val isAdded = result.data?.getBooleanExtra(
+                    AddTorrentActivity.Extras.IS_ADDED, false
+                ) ?: false
+                if (isAdded) {
+                    viewModel.loadTorrentList(serverConfig)
+                    showSnackbar(R.string.torrent_add_success)
                 }
             }
         }
@@ -125,22 +139,46 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 })
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                val sort = when (menuItem.itemId) {
-                    R.id.menu_sort_name -> TorrentSort.NAME
-                    R.id.menu_sort_hash -> TorrentSort.HASH
-                    R.id.menu_sort_dlspeed -> TorrentSort.DOWNLOAD_SPEED
-                    R.id.menu_sort_upspeed -> TorrentSort.UPLOAD_SPEED
-                    R.id.menu_sort_priority -> TorrentSort.PRIORITY
-                    else -> return false
+            override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+                R.id.menu_add -> {
+                    val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
+                        putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                    }
+                    startAddTorrentActivity.launch(intent)
+                    true
                 }
-                viewModel.setTorrentSort(sort).invokeOnCompletion {
-                    viewModel.loadTorrentList(serverConfig)
+                R.id.menu_sort_name -> {
+                    viewModel.setTorrentSort(TorrentSort.NAME).invokeOnCompletion {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                    true
                 }
-
-                return true
+                R.id.menu_sort_hash -> {
+                    viewModel.setTorrentSort(TorrentSort.HASH).invokeOnCompletion {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                    true
+                }
+                R.id.menu_sort_dlspeed -> {
+                    viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED).invokeOnCompletion {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                    true
+                }
+                R.id.menu_sort_upspeed -> {
+                    viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED).invokeOnCompletion {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                    true
+                }
+                R.id.menu_sort_priority -> {
+                    viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                    true
+                }
+                else -> false
             }
-
         }, viewLifecycleOwner)
 
         var actionMode: ActionMode? = null

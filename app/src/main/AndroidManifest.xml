@@ -37,6 +37,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.addtorrent.AddTorrentActivity"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>
