@@ -50,7 +50,7 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         binding.editTorrentLink.setOnTouchListener { _, _ ->
-            binding.root.requestDisallowInterceptTouchEvent(true)
+            binding.scrollView.requestDisallowInterceptTouchEvent(true)
             false
         }
 
