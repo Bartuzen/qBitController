@@ -10,6 +10,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
@@ -73,13 +74,22 @@ class AddTorrentActivity : AppCompatActivity() {
                             isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
                         )
                     } else {
-                        showSnackbar(R.string.torrent_add_link_cannot_be_empty)
+                        binding.inputLayoutTorrentLink.error =
+                            getString(R.string.torrent_add_link_cannot_be_empty)
                     }
                     true
                 }
                 else -> false
             }
         })
+
+        binding.editTorrentLink.addTextChangedListener(
+            onTextChanged = { text, _, _, _ ->
+                if (binding.inputLayoutTorrentLink.isErrorEnabled && text?.isNotBlank() == true) {
+                    binding.inputLayoutTorrentLink.isErrorEnabled = false
+                }
+            }
+        )
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
             when (event) {
