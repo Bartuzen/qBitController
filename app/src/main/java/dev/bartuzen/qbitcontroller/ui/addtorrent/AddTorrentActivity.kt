@@ -66,11 +66,11 @@ class AddTorrentActivity : AppCompatActivity() {
                         viewModel.createTorrent(
                             serverConfig = serverConfig,
                             links = links.split("\n"),
-                            isPaused = !binding.checkBoxStartTorrent.isChecked,
-                            skipHashChecking = binding.checkBoxSkipChecking.isChecked,
-                            isAutoTorrentManagementEnabled = binding.checkBoxAutoTmm.isChecked,
-                            isSequentialDownloadEnabled = binding.checkBoxSequentialDownload.isChecked,
-                            isFirstLastPiecePrioritized = binding.checkBoxPrioritizeFirstLastPiece.isChecked
+                            isPaused = !binding.checkStartTorrent.isChecked,
+                            skipHashChecking = binding.checkSkipChecking.isChecked,
+                            isAutoTorrentManagementEnabled = binding.checkAutoTmm.isChecked,
+                            isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
+                            isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
                         )
                     } else {
                         showSnackbar(R.string.torrent_add_link_cannot_be_empty)

@@ -187,7 +187,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 viewModel.deleteTorrent(
                     serverConfig,
                     torrentHash,
-                    dialogBinding.checkBoxDeleteFiles.isChecked
+                    dialogBinding.checkDeleteFiles.isChecked
                 )
             }
             .setNegativeButton(R.string.dialog_cancel, null)

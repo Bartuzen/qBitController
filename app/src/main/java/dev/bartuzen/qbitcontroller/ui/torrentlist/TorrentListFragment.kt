@@ -492,7 +492,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 viewModel.deleteTorrents(
                     serverConfig,
                     adapter.selectedItems.toList(),
-                    dialogBinding.checkBoxDeleteFiles.isChecked
+                    dialogBinding.checkDeleteFiles.isChecked
                 )
                 adapter.finishSelection()
                 actionMode?.finish()
