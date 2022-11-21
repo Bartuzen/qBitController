@@ -24,6 +24,7 @@ class AddTorrentViewModel @Inject constructor(
     fun createTorrent(
         serverConfig: ServerConfig,
         links: List<String>,
+        ratioLimit: Double?,
         isPaused: Boolean,
         skipHashChecking: Boolean,
         isAutoTorrentManagementEnabled: Boolean,
@@ -36,6 +37,7 @@ class AddTorrentViewModel @Inject constructor(
                 val result = repository.createTorrent(
                     serverConfig,
                     links,
+                    ratioLimit,
                     isPaused,
                     skipHashChecking,
                     isAutoTorrentManagementEnabled,

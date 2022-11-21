@@ -12,6 +12,7 @@ class AddTorrentRepository @Inject constructor(
     suspend fun createTorrent(
         serverConfig: ServerConfig,
         links: List<String>,
+        ratioLimit: Double?,
         isPaused: Boolean,
         skipHashChecking: Boolean,
         isAutoTorrentManagementEnabled: Boolean,
@@ -20,6 +21,7 @@ class AddTorrentRepository @Inject constructor(
     ) = requestManager.request(serverConfig) { service ->
         service.addTorrent(
             links.joinToString("\n"),
+            ratioLimit,
             isPaused,
             skipHashChecking,
             isAutoTorrentManagementEnabled,

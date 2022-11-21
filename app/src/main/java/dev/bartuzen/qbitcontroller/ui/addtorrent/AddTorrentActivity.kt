@@ -67,6 +67,7 @@ class AddTorrentActivity : AppCompatActivity() {
                         viewModel.createTorrent(
                             serverConfig = serverConfig,
                             links = links.split("\n"),
+                            ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
                             isPaused = !binding.checkStartTorrent.isChecked,
                             skipHashChecking = binding.checkSkipChecking.isChecked,
                             isAutoTorrentManagementEnabled = binding.checkAutoTmm.isChecked,
