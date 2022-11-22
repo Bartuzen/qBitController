@@ -165,6 +165,8 @@
 
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
     <string name="torrent_add_ratio_limit">Ratio Limit</string>
+    <string name="torrent_add_dlspeed_limit">Download Speed Limit (KiB/s)</string>
+    <string name="torrent_add_upspeed_limit">Upload Speed Limit (KiB/s)</string>
     <string name="torrent_add_start_torrent">Start torrent</string>
     <string name="torrent_add_skip_hash_checking">Skip Hash Checking</string>
     <string name="torrent_add_auto_tmm">Automatic Torrent Management</string>

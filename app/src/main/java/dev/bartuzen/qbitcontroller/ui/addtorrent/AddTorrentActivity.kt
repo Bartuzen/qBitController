@@ -26,6 +26,7 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class AddTorrentActivity : AppCompatActivity() {
@@ -98,10 +99,29 @@ class AddTorrentActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
                 R.id.menu_add -> {
                     val links = binding.editTorrentLink.text.toString()
+                    val downloadSpeedLimit =
+                        binding.editDlspeedLimit.text.toString().toDoubleOrNull().let { limit ->
+                            if (limit != null) {
+                                (limit * 1024).roundToInt()
+                            } else {
+                                null
+                            }
+                        }
+                    val uploadSpeedLimit =
+                        binding.editUpspeedLimit.text.toString().toDoubleOrNull().let { limit ->
+                            if (limit != null) {
+                                (limit * 1024).roundToInt()
+                            } else {
+                                null
+                            }
+                        }
+
                     if (links.isNotBlank()) {
                         viewModel.createTorrent(
                             serverConfig = serverConfig,
                             links = links.split("\n"),
+                            downloadSpeedLimit = downloadSpeedLimit,
+                            uploadSpeedLimit = uploadSpeedLimit,
                             ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
                             isPaused = !binding.checkStartTorrent.isChecked,
                             skipHashChecking = binding.checkSkipChecking.isChecked,

@@ -28,6 +28,8 @@ class AddTorrentViewModel @Inject constructor(
     fun createTorrent(
         serverConfig: ServerConfig,
         links: List<String>,
+        downloadSpeedLimit: Int?,
+        uploadSpeedLimit: Int?,
         ratioLimit: Double?,
         isPaused: Boolean,
         skipHashChecking: Boolean,
@@ -37,18 +39,18 @@ class AddTorrentViewModel @Inject constructor(
     ) = viewModelScope.launch {
         if (!isCreating) {
             isCreating = true
-            when (
-                val result = repository.createTorrent(
-                    serverConfig,
-                    links,
-                    ratioLimit,
-                    isPaused,
-                    skipHashChecking,
-                    isAutoTorrentManagementEnabled,
-                    isSequentialDownloadEnabled,
-                    isFirstLastPiecePrioritized
-                )
-            ) {
+            when (val result = repository.createTorrent(
+                serverConfig,
+                links,
+                downloadSpeedLimit,
+                uploadSpeedLimit,
+                ratioLimit,
+                isPaused,
+                skipHashChecking,
+                isAutoTorrentManagementEnabled,
+                isSequentialDownloadEnabled,
+                isFirstLastPiecePrioritized
+            )) {
                 is RequestResult.Success -> {
                     _eventChannel.send(Event.TorrentCreated)
                 }

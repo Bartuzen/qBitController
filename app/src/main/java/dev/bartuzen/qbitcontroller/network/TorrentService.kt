@@ -118,6 +118,8 @@ interface TorrentService {
     @POST("api/v2/torrents/add")
     suspend fun addTorrent(
         @Field("urls") links: String,
+        @Field("dlLimit") downloadSpeedLimit: Int?,
+        @Field("upLimit") uploadSpeedLimit: Int?,
         @Field("ratioLimit") ratioLimit: Double?,
         @Field("paused") isPaused: Boolean,
         @Field("skip_checking") skipHashChecking: Boolean,
