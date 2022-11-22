@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestError
@@ -14,10 +15,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTorrentViewModel @Inject constructor(
-    private val repository: AddTorrentRepository
+    private val repository: AddTorrentRepository,
+    settingsManager: SettingsManager
 ) : ViewModel() {
     private val _eventChannel = Channel<Event>()
     val eventFlow = _eventChannel.receiveAsFlow()
+
+    val serversFlow = settingsManager.serversFlow
 
     private var isCreating = false
 

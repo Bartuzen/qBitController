@@ -28,16 +28,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
+
+            <LinearLayout
+                android:id="@+id/layout_server_selector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/torrent_add_select_server" />
+
+                <Spinner
+                    android:id="@+id/spinner_servers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp" />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_torrent_link"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
                 app:errorEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -56,9 +75,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp">
+                android:layout_marginTop="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_ratio_limit"
@@ -74,7 +91,6 @@
                 android:id="@+id/check_start_torrent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:checked="true"
                 android:text="@string/torrent_add_start_torrent" />
 
@@ -82,28 +98,24 @@
                 android:id="@+id/check_skip_checking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:text="@string/torrent_add_skip_hash_checking" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/check_auto_tmm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:text="@string/torrent_add_auto_tmm" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/check_sequential_download"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:text="@string/torrent_add_sequential_download" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/check_prioritize_first_last_piece"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:text="@string/torrent_add_prioritize_first_last_piece" />
 
         </LinearLayout>

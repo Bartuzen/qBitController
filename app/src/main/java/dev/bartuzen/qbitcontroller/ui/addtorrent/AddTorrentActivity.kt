@@ -7,6 +7,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -19,6 +23,9 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelable
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.showToast
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class AddTorrentActivity : AppCompatActivity() {
@@ -38,10 +45,38 @@ class AddTorrentActivity : AppCompatActivity() {
         binding = ActivityAddTorrentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val serverConfig = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
-        if (serverConfig == null) {
-            finish()
-            return
+        val serverConfigFromIntent = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
+        lateinit var serverConfig: ServerConfig
+        if (serverConfigFromIntent != null) {
+            serverConfig = serverConfigFromIntent
+        } else {
+            val servers = runBlocking { viewModel.serversFlow.first().values.toList() }
+
+            if (servers.isEmpty()) {
+                showToast(R.string.torrent_add_no_server)
+                finish()
+                return
+            }
+
+            binding.spinnerServers.adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                servers.map { server -> server.name ?: server.host }
+            )
+            binding.spinnerServers.setSelection(0)
+            binding.spinnerServers.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                    ) {
+                        serverConfig = servers[position]
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                }
+            binding.layoutServerSelector.visibility = View.VISIBLE
+
+            binding.editTorrentLink.setText(intent.data.toString())
         }
 
         setSupportActionBar(binding.toolbar)
@@ -98,10 +133,16 @@ class AddTorrentActivity : AppCompatActivity() {
                     showSnackbar(getErrorMessage(this@AddTorrentActivity, event.error))
                 }
                 AddTorrentViewModel.Event.TorrentCreated -> {
-                    val intent = Intent().apply {
-                        putExtra(Extras.IS_ADDED, true)
+                    if (intent.data == null) {
+                        val intent = Intent().apply {
+                            putExtra(Extras.IS_ADDED, true)
+                        }
+                        setResult(Activity.RESULT_OK, intent)
+                    } else {
+                        Toast.makeText(
+                            this@AddTorrentActivity, R.string.torrent_add_success, Toast.LENGTH_LONG
+                        ).show()
                     }
-                    setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
             }

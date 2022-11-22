@@ -171,6 +171,8 @@
     <string name="torrent_add_sequential_download">Download in sequential order</string>
     <string name="torrent_add_prioritize_first_last_piece">Download first and last piece first</string>
 
+    <string name="torrent_add_select_server">Server</string>
+    <string name="torrent_add_no_server">No servers found.</string>
     <string name="torrent_add_link_cannot_be_empty">Link cannot be empty</string>
     <string name="torrent_add_success">Torrent added successfully.</string>
 
