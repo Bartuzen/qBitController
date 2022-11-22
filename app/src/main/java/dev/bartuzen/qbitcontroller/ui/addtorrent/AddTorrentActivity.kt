@@ -59,25 +59,29 @@ class AddTorrentActivity : AppCompatActivity() {
                 return
             }
 
-            binding.spinnerServers.adapter = ArrayAdapter(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                servers.map { server -> server.name ?: server.host }
-            )
-            binding.spinnerServers.setSelection(0)
-            binding.spinnerServers.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?, view: View?, position: Int, id: Long
-                    ) {
-                        serverConfig = servers[position]
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                }
-            binding.layoutServerSelector.visibility = View.VISIBLE
-
             binding.editTorrentLink.setText(intent.data.toString())
+
+            if (servers.size == 1) {
+                serverConfig = servers.first()
+            } else {
+                binding.spinnerServers.adapter = ArrayAdapter(
+                    this,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    servers.map { server -> server.name ?: server.host }
+                )
+                binding.spinnerServers.setSelection(0)
+                binding.spinnerServers.onItemSelectedListener =
+                    object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                        ) {
+                            serverConfig = servers[position]
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {}
+                    }
+                binding.layoutServerSelector.visibility = View.VISIBLE
+            }
         }
 
         setSupportActionBar(binding.toolbar)
