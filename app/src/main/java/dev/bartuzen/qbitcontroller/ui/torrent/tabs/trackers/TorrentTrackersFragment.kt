@@ -78,7 +78,21 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
                         when (item.itemId) {
                             R.id.menu_delete -> {
-                                showDeleteTrackersDialog(this@apply, actionMode)
+                                val items = selectedItems
+                                    .filter { !it.startsWith("0") }
+                                    .map { it.substring(1) }
+                                if (items.isNotEmpty()) {
+                                    showDeleteTrackersDialog(
+                                        trackerKeys = items,
+                                        onDelete = {
+                                            finishSelection()
+                                            actionMode?.finish()
+                                        })
+                                } else {
+                                    showSnackbar(R.string.torrent_trackers_cannot_delete_default)
+                                    finishSelection()
+                                    actionMode?.finish()
+                                }
                                 true
                             }
                             R.id.menu_select_all -> {
@@ -180,32 +194,25 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             .show()
     }
 
-    private fun showDeleteTrackersDialog(adapter: TorrentTrackersAdapter, actionMode: ActionMode?) {
+    private fun showDeleteTrackersDialog(trackerKeys: List<String>, onDelete: () -> Unit) {
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(
                 resources.getQuantityString(
-                    R.plurals.torrent_trackers_delete_title,
-                    adapter.selectedItemCount,
-                    adapter.selectedItemCount
+                    R.plurals.torrent_trackers_delete_title, trackerKeys.size, trackerKeys.size
                 )
             )
             .setMessage(
                 resources.getQuantityString(
-                    R.plurals.torrent_trackers_delete_desc,
-                    adapter.selectedItemCount,
-                    adapter.selectedItemCount
+                    R.plurals.torrent_trackers_delete_desc, trackerKeys.size, trackerKeys.size
                 )
             )
             .setPositiveButton(R.string.dialog_ok) { _, _ ->
                 viewModel.deleteTrackers(
                     serverConfig,
                     torrentHash,
-                    adapter.selectedItems
-                        .filter { !it.startsWith("0") }
-                        .map { it.substring(1) }
+                    trackerKeys
                 )
-                adapter.finishSelection()
-                actionMode?.finish()
+                onDelete()
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()

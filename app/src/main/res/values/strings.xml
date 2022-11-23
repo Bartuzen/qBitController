@@ -160,6 +160,7 @@
     </plurals>
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
+    <string name="torrent_trackers_cannot_delete_default">You can\'t delete default trackers.</string>
 
     <string name="torrent_add_menu_add_torrent">Add Torrent</string>
 
