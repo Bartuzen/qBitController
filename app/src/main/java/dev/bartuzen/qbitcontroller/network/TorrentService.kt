@@ -7,11 +7,14 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface TorrentService {
@@ -114,17 +117,18 @@ interface TorrentService {
     @POST("api/v2/torrents/toggleSequentialDownload")
     suspend fun toggleSequentialDownload(@Field("hashes") hashes: String): Response<Unit>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("api/v2/torrents/add")
     suspend fun addTorrent(
-        @Field("urls") links: String,
-        @Field("dlLimit") downloadSpeedLimit: Int?,
-        @Field("upLimit") uploadSpeedLimit: Int?,
-        @Field("ratioLimit") ratioLimit: Double?,
-        @Field("paused") isPaused: Boolean,
-        @Field("skip_checking") skipHashChecking: Boolean,
-        @Field("autoTMM") isAutoTorrentManagementEnabled: Boolean,
-        @Field("sequentialDownload") isSequentialDownloadEnabled: Boolean,
-        @Field("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean
+        @Part("urls") links: String?,
+        @Part filePart: MultipartBody.Part?,
+        @Part("dlLimit") downloadSpeedLimit: Int?,
+        @Part("upLimit") uploadSpeedLimit: Int?,
+        @Part("ratioLimit") ratioLimit: Double?,
+        @Part("paused") isPaused: Boolean,
+        @Part("skip_checking") skipHashChecking: Boolean,
+        @Part("autoTMM") isAutoTorrentManagementEnabled: Boolean,
+        @Part("sequentialDownload") isSequentialDownloadEnabled: Boolean,
+        @Part("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean
     ): Response<Unit>
 }

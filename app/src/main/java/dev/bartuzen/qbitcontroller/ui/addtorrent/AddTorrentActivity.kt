@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -59,8 +60,6 @@ class AddTorrentActivity : AppCompatActivity() {
                 return
             }
 
-            binding.editTorrentLink.setText(intent.data.toString())
-
             if (servers.size == 1) {
                 serverConfig = servers.first()
             } else {
@@ -83,6 +82,22 @@ class AddTorrentActivity : AppCompatActivity() {
                 binding.layoutServerSelector.visibility = View.VISIBLE
             }
         }
+
+        val uri = intent.data
+        val fileUri = when (uri?.scheme) {
+            "http", "https", "magnet" -> {
+                binding.editTorrentLink.setText(uri.toString())
+                null
+            }
+            "content", "file" -> {
+                binding.layoutFileName.visibility = View.VISIBLE
+                binding.inputLayoutTorrentLink.visibility = View.GONE
+                binding.textFileName.text = Uri.decode(uri.path)?.split("/")?.last()
+                uri
+            }
+            else -> null
+        }
+
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -120,10 +135,11 @@ class AddTorrentActivity : AppCompatActivity() {
                             }
                         }
 
-                    if (links.isNotBlank()) {
+                    if (links.isNotBlank() || fileUri != null) {
                         viewModel.createTorrent(
                             serverConfig = serverConfig,
-                            links = links.split("\n"),
+                            links = if (fileUri == null) links.split("\n") else null,
+                            fileUri = fileUri,
                             downloadSpeedLimit = downloadSpeedLimit,
                             uploadSpeedLimit = uploadSpeedLimit,
                             ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),

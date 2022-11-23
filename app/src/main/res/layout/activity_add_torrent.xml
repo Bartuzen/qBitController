@@ -52,6 +52,29 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_file_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_file"
+                    tools:ignore="ContentDescription" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_file_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    tools:text="File name here" />
+
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_torrent_link"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
