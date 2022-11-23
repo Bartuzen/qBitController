@@ -9,6 +9,9 @@ data class TorrentTracker(
     @JsonProperty("url")
     val url: String,
 
+    @JsonProperty("tier")
+    val tier: Int,
+
     @JsonProperty("num_peers")
     @JsonDeserialize(using = TrackerPropertyDeserializer::class)
     val peers: Int?,

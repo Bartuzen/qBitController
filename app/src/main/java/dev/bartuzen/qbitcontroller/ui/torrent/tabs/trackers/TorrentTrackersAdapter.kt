@@ -13,7 +13,7 @@ class TorrentTrackersAdapter :
     MultiSelectAdapter<TorrentTracker, String, TorrentTrackersAdapter.ViewHolder>(
         diffCallBack = DiffCallBack(),
         getKey = { tracker ->
-            tracker.url
+            "${if (tracker.tier == -1) 0 else 1}${tracker.url}"
         }
     ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -30,7 +30,9 @@ class TorrentTrackersAdapter :
         MultiSelectAdapter.ViewHolder<TorrentTracker, String>(binding.root, this) {
 
         fun bind(tracker: TorrentTracker) {
-            binding.root.isSelected = isItemSelected(tracker.url)
+            binding.root.isSelected = isItemSelected(
+                "${if (tracker.tier == -1) 0 else 1}${tracker.url}"
+            )
 
             binding.textUrl.text = tracker.url
 

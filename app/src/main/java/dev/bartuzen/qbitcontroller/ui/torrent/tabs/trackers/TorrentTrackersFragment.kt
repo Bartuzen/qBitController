@@ -200,7 +200,9 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                 viewModel.deleteTrackers(
                     serverConfig,
                     torrentHash,
-                    adapter.selectedItems.toList()
+                    adapter.selectedItems
+                        .filter { !it.startsWith("0") }
+                        .map { it.substring(1) }
                 )
                 adapter.finishSelection()
                 actionMode?.finish()
