@@ -100,6 +100,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
 
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setTitle(R.string.torrent_add_title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             finish()

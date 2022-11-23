@@ -163,6 +163,7 @@
 
     <string name="torrent_add_menu_add_torrent">Add Torrent</string>
 
+    <string name="torrent_add_title">@string/torrent_add_menu_add_torrent</string>
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
     <string name="torrent_add_ratio_limit">Ratio Limit</string>
     <string name="torrent_add_dlspeed_limit">Download Speed Limit (KiB/s)</string>
