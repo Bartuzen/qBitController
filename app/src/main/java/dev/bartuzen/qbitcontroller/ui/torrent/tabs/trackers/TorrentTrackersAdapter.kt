@@ -36,10 +36,10 @@ class TorrentTrackersAdapter :
 
             binding.textUrl.text = tracker.url
 
-            binding.textPeers.text = (tracker.peers ?: "-").toString()
-            binding.textSeeds.text = (tracker.seeds ?: "-").toString()
-            binding.textLeeches.text = (tracker.leeches ?: "-").toString()
-            binding.textDownloaded.text = (tracker.downloaded ?: "-").toString()
+            binding.textPeers.text = tracker.peers?.toString() ?: "-"
+            binding.textSeeds.text = tracker.seeds?.toString() ?: "-"
+            binding.textLeeches.text = tracker.leeches?.toString() ?: "-"
+            binding.textDownloaded.text = tracker.downloaded?.toString() ?: "-"
 
             if (tracker.message != null) {
                 binding.textMessage.text = binding.root.context
