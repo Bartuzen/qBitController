@@ -114,6 +114,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
                     name = name,
                     protocol = protocol,
                     host = host,
+                    port = port,
                     username = username,
                     password = password
                 )
