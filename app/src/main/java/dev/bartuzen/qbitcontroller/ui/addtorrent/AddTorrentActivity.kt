@@ -141,6 +141,7 @@ class AddTorrentActivity : AppCompatActivity() {
                             serverConfig = serverConfig,
                             links = if (fileUri == null) links.split("\n") else null,
                             fileUri = fileUri,
+                            torrentName = binding.editTorrentName.text.toString().ifBlank { null },
                             downloadSpeedLimit = downloadSpeedLimit,
                             uploadSpeedLimit = uploadSpeedLimit,
                             ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),

@@ -17,6 +17,7 @@ class AddTorrentRepository @Inject constructor(
         serverConfig: ServerConfig,
         links: List<String>?,
         fileBytes: ByteArray?,
+        torrentName: String?,
         downloadSpeedLimit: Int?,
         uploadSpeedLimit: Int?,
         ratioLimit: Double?,
@@ -37,6 +38,7 @@ class AddTorrentRepository @Inject constructor(
             service.addTorrent(
                 links?.joinToString("\n"),
                 filePart,
+                torrentName,
                 downloadSpeedLimit,
                 uploadSpeedLimit,
                 ratioLimit,
