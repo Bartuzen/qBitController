@@ -74,6 +74,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         .build()
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
+                        setCustomAnimations(
+                            R.anim.slide_in_right,
+                            R.anim.slide_out_left,
+                            R.anim.slide_in_left,
+                            R.anim.slide_out_right,
+                        )
                         replace(R.id.container, fragment)
                         addToBackStack(null)
                     }
@@ -89,6 +95,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     .build()
                 parentFragmentManager.commit {
                     setReorderingAllowed(true)
+                    setCustomAnimations(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left,
+                        R.anim.slide_in_left,
+                        R.anim.slide_out_right,
+                    )
                     replace(R.id.container, fragment)
                     addToBackStack(null)
                 }

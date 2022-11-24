@@ -1,15 +1,18 @@
 package dev.bartuzen.qbitcontroller.ui.settings.addeditserver
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
@@ -64,7 +67,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
                     menu.findItem(R.id.menu_delete).isVisible = false
                 }
             }
-        }, viewLifecycleOwner)
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         binding.spinnerProtocol.adapter = ArrayAdapter(
             requireContext(),
@@ -137,6 +140,18 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
     private fun finish(result: Result) {
         setFragmentResult("addEditServerResult", bundleOf("result" to result))
         parentFragmentManager.popBackStack()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        // hide the keyboard immediately, don't wait for animation to finish
+        val windowToken = requireActivity().currentFocus?.windowToken
+        if (windowToken != null) {
+            val inputMethodManager =
+                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+        }
     }
 
     enum class Result {
