@@ -30,4 +30,10 @@
         android:title="@string/torrent_menu_sequential_download"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_prioritize_first_last_pieces"
+        android:checkable="true"
+        android:title="@string/torrent_menu_prioritize_first_last_pieces"
+        app:showAsAction="never" />
+
 </menu>

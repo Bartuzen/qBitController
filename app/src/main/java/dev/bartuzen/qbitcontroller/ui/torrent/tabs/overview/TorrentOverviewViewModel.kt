@@ -111,11 +111,25 @@ class TorrentOverviewViewModel @Inject constructor(
             }
         }
 
+    fun togglePrioritizeFirstLastPiecesDownload(serverConfig: ServerConfig, torrentHash: String) =
+        viewModelScope.launch {
+            when (val result =
+                repository.togglePrioritizeFirstLastPiecesDownload(serverConfig, torrentHash)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.PrioritizeFirstLastPiecesToggled)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     sealed class Event {
         data class Error(val error: RequestError) : Event()
         object TorrentDeleted : Event()
         object TorrentPaused : Event()
         object TorrentResumed : Event()
         object SequentialDownloadToggled : Event()
+        object PrioritizeFirstLastPiecesToggled : Event()
     }
 }

@@ -134,7 +134,9 @@
     <string name="torrent_resumed_success">Torrent resumed successfully.</string>
 
     <string name="torrent_menu_sequential_download">Sequential Download</string>
+    <string name="torrent_menu_prioritize_first_last_pieces">Prioritize First and Last Pieces</string>
     <string name="torrent_toggle_sequential_download_success">Sequential download toggled successfully.</string>
+    <string name="torrent_toggle_prioritize_first_last_pieces">Prioritizing first and last pieces toggled successfully.</string>
 
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>

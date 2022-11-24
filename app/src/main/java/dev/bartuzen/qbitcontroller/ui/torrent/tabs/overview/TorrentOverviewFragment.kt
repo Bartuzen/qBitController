@@ -68,6 +68,8 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
                         menu.findItem(R.id.menu_sequential_download).isChecked =
                             torrent.isSequentialDownloadEnabled
+                        menu.findItem(R.id.menu_prioritize_first_last_pieces).isChecked =
+                            torrent.isFirstLastPiecesPrioritized
                     }
             }
 
@@ -84,6 +86,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     }
                     R.id.menu_sequential_download -> {
                         viewModel.toggleSequentialDownload(serverConfig, torrentHash)
+                    }
+                    R.id.menu_prioritize_first_last_pieces -> {
+                        viewModel.togglePrioritizeFirstLastPiecesDownload(serverConfig, torrentHash)
                     }
                     else -> return false
                 }
@@ -171,6 +176,10 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 }
                 TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
                     showSnackbar(getString(R.string.torrent_toggle_sequential_download_success))
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
+                TorrentOverviewViewModel.Event.PrioritizeFirstLastPiecesToggled -> {
+                    showSnackbar(getString(R.string.torrent_toggle_prioritize_first_last_pieces))
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
             }

@@ -117,6 +117,11 @@ interface TorrentService {
     @POST("api/v2/torrents/toggleSequentialDownload")
     suspend fun toggleSequentialDownload(@Field("hashes") hashes: String): Response<Unit>
 
+    @FormUrlEncoded
+    @POST("api/v2/torrents/toggleFirstLastPiecePrio")
+    suspend fun togglePrioritizeFirstLastPiecesDownload(@Field("hashes") hashes: String):
+            Response<Unit>
+
     @Multipart
     @POST("api/v2/torrents/add")
     suspend fun addTorrent(
