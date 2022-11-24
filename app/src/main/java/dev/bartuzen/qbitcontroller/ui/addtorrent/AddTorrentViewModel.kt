@@ -12,9 +12,11 @@ import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,11 +49,13 @@ class AddTorrentViewModel @Inject constructor(
         if (!isCreating) {
             isCreating = true
 
-            val fileBytes = if (fileUri != null) {
-                context.contentResolver.openInputStream(fileUri).use { stream ->
-                    stream?.readBytes()
-                }
-            } else null
+            val fileBytes = withContext(Dispatchers.IO) {
+                if (fileUri != null) {
+                    context.contentResolver.openInputStream(fileUri).use { stream ->
+                        stream?.readBytes()
+                    }
+                } else null
+            }
 
             when (val result = repository.createTorrent(
                 serverConfig,
