@@ -170,6 +170,7 @@
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
     <string name="torrent_add_name">Torrent Name</string>
     <string name="torrent_add_ratio_limit">Ratio Limit</string>
+    <string name="torrent_add_seeding_time_limit">Seeding Time Limit (Minutes)</string>
     <string name="torrent_add_dlspeed_limit">Download Speed Limit (KiB/s)</string>
     <string name="torrent_add_upspeed_limit">Upload Speed Limit (KiB/s)</string>
     <string name="torrent_add_start_torrent">Start torrent</string>

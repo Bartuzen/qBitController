@@ -131,6 +131,7 @@ interface TorrentService {
         @Part("dlLimit") downloadSpeedLimit: Int?,
         @Part("upLimit") uploadSpeedLimit: Int?,
         @Part("ratioLimit") ratioLimit: Double?,
+        @Part("seedingTimeLimit") seedingTimeLimit: Int?,
         @Part("paused") isPaused: Boolean,
         @Part("skip_checking") skipHashChecking: Boolean,
         @Part("autoTMM") isAutoTorrentManagementEnabled: Boolean,

@@ -145,6 +145,8 @@ class AddTorrentActivity : AppCompatActivity() {
                             downloadSpeedLimit = downloadSpeedLimit,
                             uploadSpeedLimit = uploadSpeedLimit,
                             ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
+                            seedingTimeLimit = binding.editSeedingTimeLimit.text.toString()
+                                .toIntOrNull(),
                             isPaused = !binding.checkStartTorrent.isChecked,
                             skipHashChecking = binding.checkSkipChecking.isChecked,
                             isAutoTorrentManagementEnabled = binding.checkAutoTmm.isChecked,
