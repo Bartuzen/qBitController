@@ -10,7 +10,7 @@ data class ServerConfig(
     val name: String?,
     val protocol: Protocol,
     val host: String,
-    val port: Int,
+    val port: Int?,
     val username: String,
     val password: String
 ) : Parcelable {

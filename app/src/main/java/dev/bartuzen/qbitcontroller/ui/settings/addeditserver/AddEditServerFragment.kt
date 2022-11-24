@@ -85,7 +85,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
             binding.editName.setText(config.name)
             binding.spinnerProtocol.setSelection(config.protocol.ordinal)
             binding.editHost.setText(config.host)
-            binding.editPort.setText(config.port.toString())
+            binding.editPort.setText(config.port?.toString())
             binding.editUsername.setText(config.username)
             binding.editPassword.setText(config.password)
 
@@ -105,7 +105,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
         val username = binding.editUsername.text.toString().ifBlank { null }
         val password = binding.editPassword.text.toString().ifBlank { null }
 
-        if (host != null && port != null && username != null && password != null) {
+        if (host != null && username != null && password != null) {
             val serverConfig = serverConfig
             if (serverConfig == null) {
                 viewModel.addServer(name, protocol, host, port, username, password)

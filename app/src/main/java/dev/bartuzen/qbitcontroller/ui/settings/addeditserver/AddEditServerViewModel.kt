@@ -17,7 +17,7 @@ class AddEditServerViewModel @Inject constructor(
         name: String?,
         protocol: Protocol,
         host: String,
-        port: Int,
+        port: Int?,
         username: String,
         password: String
     ) = viewModelScope.launch {
