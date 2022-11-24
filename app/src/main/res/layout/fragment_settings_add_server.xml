@@ -38,7 +38,7 @@
             <Spinner
                 android:id="@+id/spinner_protocol"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_host"

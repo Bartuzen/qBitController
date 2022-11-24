@@ -208,5 +208,7 @@
     <string name="settings_server_add_success">Server has been added successfully.</string>
     <string name="settings_server_edit_success">Server has been edited successfully.</string>
     <string name="settings_server_remove_success">Server has been removed successfully.</string>
-    <string name="settings_fill_blank_fields">Please fill required blank fields.</string>
+    <string name="settings_server_required_field">This field is required.</string>
+    <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
+    <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
 </resources>

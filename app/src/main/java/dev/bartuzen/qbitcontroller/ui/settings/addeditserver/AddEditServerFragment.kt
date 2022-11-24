@@ -23,7 +23,6 @@ import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -101,15 +100,37 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
     }
 
     private fun saveServerConfig() {
-        val name = binding.editName.text.toString().ifBlank { null }
+        val name = binding.editName.text.toString().trim().ifEmpty { null }
         val protocol = Protocol.values()[binding.spinnerProtocol.selectedItemPosition]
-        val host = binding.editHost.text.toString().ifBlank { null }
+        val host = binding.editHost.text.toString().trim().ifEmpty { null }
         val port = binding.editPort.text.toString().toIntOrNull()
-        val path = binding.editPath.text.toString().ifBlank { null }
-        val username = binding.editUsername.text.toString().ifBlank { null }
-        val password = binding.editPassword.text.toString().ifBlank { null }
+        val path = binding.editPath.text.toString().trim().ifEmpty { null }
+        val username = binding.editUsername.text.toString().ifEmpty { null }
+        val password = binding.editPassword.text.toString().ifEmpty { null }
 
-        if (host != null && username != null && password != null) {
+        if (host == null) {
+            binding.inputLayoutHost.error = getString(R.string.settings_server_required_field)
+        } else {
+            binding.inputLayoutHost.isErrorEnabled = false
+        }
+        if (username == null) {
+            binding.inputLayoutUsername.error = getString(R.string.settings_server_required_field)
+        } else if (username.length < 3) {
+            binding.inputLayoutUsername.error =
+                getString(R.string.settings_server_username_min_character)
+        } else {
+            binding.inputLayoutUsername.isErrorEnabled = false
+        }
+        if (password == null) {
+            binding.inputLayoutPassword.error = getString(R.string.settings_server_required_field)
+        } else if (password.length < 6) {
+            binding.inputLayoutPassword.error =
+                getString(R.string.settings_server_password_min_character)
+        } else {
+            binding.inputLayoutPassword.isErrorEnabled = false
+        }
+
+        if (host != null && username != null && username.length >= 3 && password != null && password.length >= 6) {
             val serverConfig = serverConfig
             if (serverConfig == null) {
                 viewModel.addServer(name, protocol, host, port, path, username, password)
@@ -130,8 +151,6 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
                     finish(Result.EDITED)
                 }
             }
-        } else {
-            showSnackbar(R.string.settings_fill_blank_fields)
         }
     }
 
