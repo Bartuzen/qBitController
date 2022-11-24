@@ -23,6 +23,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelable
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
 import kotlinx.coroutines.flow.first
@@ -166,6 +167,10 @@ class AddTorrentActivity : AppCompatActivity() {
                 }
             }
         )
+
+        viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
+            binding.progressIndicator.visibility = if (isCreating) View.VISIBLE else View.INVISIBLE
+        }
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
             when (event) {

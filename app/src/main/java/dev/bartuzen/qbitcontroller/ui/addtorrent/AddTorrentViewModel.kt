@@ -14,6 +14,8 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -31,7 +33,8 @@ class AddTorrentViewModel @Inject constructor(
 
     val serversFlow = settingsManager.serversFlow
 
-    private var isCreating = false
+    private val _isCreating = MutableStateFlow(false)
+    val isCreating = _isCreating.asStateFlow()
 
     fun createTorrent(
         serverConfig: ServerConfig,
@@ -46,8 +49,8 @@ class AddTorrentViewModel @Inject constructor(
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean
     ) = viewModelScope.launch {
-        if (!isCreating) {
-            isCreating = true
+        if (!isCreating.value) {
+            _isCreating.value = true
 
             val fileBytes = withContext(Dispatchers.IO) {
                 if (fileUri != null) {
@@ -77,7 +80,7 @@ class AddTorrentViewModel @Inject constructor(
                     _eventChannel.send(Event.Error(result.error))
                 }
             }
-            isCreating = false
+            _isCreating.value = false
         }
     }
 
