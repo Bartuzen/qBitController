@@ -15,7 +15,6 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.setTitle(R.string.settings_title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             if (supportFragmentManager.backStackEntryCount > 0) {

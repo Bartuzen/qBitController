@@ -18,6 +18,7 @@ import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragme
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -133,5 +134,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             }.first()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireAppCompatActivity().supportActionBar?.setTitle(R.string.settings_title)
     }
 }

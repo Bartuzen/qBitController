@@ -19,6 +19,7 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddServerBinding
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 
 @FragmentWithArgs
@@ -32,6 +33,14 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
     var serverConfig: ServerConfig? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireAppCompatActivity().supportActionBar?.setTitle(
+            if (serverConfig == null)
+                R.string.settings_server_title_add
+            else {
+                R.string.settings_server_title_edit
+            }
+        )
+
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.add_edit_server_menu, menu)
