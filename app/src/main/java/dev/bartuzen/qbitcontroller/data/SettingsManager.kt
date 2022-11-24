@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import kotlinx.coroutines.flow.catch
@@ -66,12 +67,20 @@ class SettingsManager @Inject constructor(
         return mapper.writeValueAsString(serverConfigs)
     }
 
-    suspend fun addServer(serverConfig: ServerConfig) {
+    suspend fun addServer(
+        name: String?,
+        protocol: Protocol,
+        host: String,
+        port: Int,
+        username: String,
+        password: String
+    ) {
         dataStore.edit { settings ->
             val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: "{}"
             val serverId = (settings[PreferenceKeys.LAST_SERVER_ID] ?: 0) + 1
 
-            serverConfig.id = serverId
+            val serverConfig =
+                ServerConfig(serverId, name, protocol, host, port, username, password)
 
             val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
                 serverConfigs[serverId] = serverConfig

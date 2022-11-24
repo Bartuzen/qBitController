@@ -23,13 +23,7 @@ class RequestManager @Inject constructor() {
         torrentServiceMap.getOrPut(serverConfig.id) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(
-                    if (serverConfig.host.startsWith("http://") ||
-                        serverConfig.host.startsWith("https://")
-                    ) {
-                        serverConfig.host
-                    } else {
-                        "http://${serverConfig.host}"
-                    }
+                    "${serverConfig.protocolString}://${serverConfig.host}:${serverConfig.port}"
                 )
                 .client(
                     OkHttpClient().newBuilder()

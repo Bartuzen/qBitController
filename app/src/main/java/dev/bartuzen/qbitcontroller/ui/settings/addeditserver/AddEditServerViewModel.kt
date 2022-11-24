@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
+import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -12,8 +13,15 @@ import javax.inject.Inject
 class AddEditServerViewModel @Inject constructor(
     private val settingsManager: SettingsManager
 ) : ViewModel() {
-    fun addServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        settingsManager.addServer(serverConfig)
+    fun addServer(
+        name: String?,
+        protocol: Protocol,
+        host: String,
+        port: Int,
+        username: String,
+        password: String
+    ) = viewModelScope.launch {
+        settingsManager.addServer(name, protocol, host, port, username, password)
     }
 
     fun editServer(serverConfig: ServerConfig) = viewModelScope.launch {
