@@ -195,6 +195,7 @@
     <string name="settings_server_name">Name</string>
     <string name="settings_server_host">Host</string>
     <string name="settings_server_port">Port</string>
+    <string name="settings_server_path">Path</string>
     <string name="settings_server_username">Username</string>
     <string name="settings_server_password">Password</string>
 

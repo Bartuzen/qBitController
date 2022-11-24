@@ -25,9 +25,11 @@ class RequestManager @Inject constructor() {
                 .baseUrl(
                     buildString {
                         append("${serverConfig.protocolString}://${serverConfig.host}")
-                        
-                        if (serverConfig.port != null) {
-                            append(":${serverConfig.port}")
+                        serverConfig.port?.let { port ->
+                            append(":$port")
+                        }
+                        serverConfig.path?.let { path ->
+                            append("/$path")
                         }
                     }
                 )

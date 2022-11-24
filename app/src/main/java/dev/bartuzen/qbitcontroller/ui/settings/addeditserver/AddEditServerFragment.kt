@@ -79,6 +79,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
             binding.inputLayoutName.isHintAnimationEnabled = false
             binding.inputLayoutHost.isHintAnimationEnabled = false
             binding.inputLayoutPort.isHintAnimationEnabled = false
+            binding.inputLayoutPath.isHintAnimationEnabled = false
             binding.inputLayoutUsername.isHintAnimationEnabled = false
             binding.inputLayoutPassword.isHintAnimationEnabled = false
 
@@ -86,12 +87,14 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
             binding.spinnerProtocol.setSelection(config.protocol.ordinal)
             binding.editHost.setText(config.host)
             binding.editPort.setText(config.port?.toString())
+            binding.editPath.setText(config.path)
             binding.editUsername.setText(config.username)
             binding.editPassword.setText(config.password)
 
             binding.inputLayoutName.isHintAnimationEnabled = true
             binding.inputLayoutHost.isHintAnimationEnabled = true
             binding.inputLayoutPort.isHintAnimationEnabled = true
+            binding.inputLayoutPath.isHintAnimationEnabled = true
             binding.inputLayoutUsername.isHintAnimationEnabled = true
             binding.inputLayoutPassword.isHintAnimationEnabled = true
         }
@@ -102,13 +105,14 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
         val protocol = Protocol.values()[binding.spinnerProtocol.selectedItemPosition]
         val host = binding.editHost.text.toString().ifBlank { null }
         val port = binding.editPort.text.toString().toIntOrNull()
+        val path = binding.editPath.text.toString().ifBlank { null }
         val username = binding.editUsername.text.toString().ifBlank { null }
         val password = binding.editPassword.text.toString().ifBlank { null }
 
         if (host != null && username != null && password != null) {
             val serverConfig = serverConfig
             if (serverConfig == null) {
-                viewModel.addServer(name, protocol, host, port, username, password)
+                viewModel.addServer(name, protocol, host, port, path, username, password)
                     .invokeOnCompletion {
                         finish(Result.ADDED)
                     }
@@ -118,6 +122,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
                     protocol = protocol,
                     host = host,
                     port = port,
+                    path = path,
                     username = username,
                     password = password
                 )

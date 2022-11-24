@@ -18,10 +18,11 @@ class AddEditServerViewModel @Inject constructor(
         protocol: Protocol,
         host: String,
         port: Int?,
+        path: String?,
         username: String,
         password: String
     ) = viewModelScope.launch {
-        settingsManager.addServer(name, protocol, host, port, username, password)
+        settingsManager.addServer(name, protocol, host, port, path, username, password)
     }
 
     fun editServer(serverConfig: ServerConfig) = viewModelScope.launch {

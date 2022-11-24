@@ -72,6 +72,7 @@ class SettingsManager @Inject constructor(
         protocol: Protocol,
         host: String,
         port: Int?,
+        path: String?,
         username: String,
         password: String
     ) {
@@ -80,7 +81,7 @@ class SettingsManager @Inject constructor(
             val serverId = (settings[PreferenceKeys.LAST_SERVER_ID] ?: 0) + 1
 
             val serverConfig =
-                ServerConfig(serverId, name, protocol, host, port, username, password)
+                ServerConfig(serverId, name, protocol, host, port, path, username, password)
 
             val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
                 serverConfigs[serverId] = serverConfig
