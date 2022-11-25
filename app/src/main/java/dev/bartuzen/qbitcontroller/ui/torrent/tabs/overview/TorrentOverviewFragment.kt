@@ -54,8 +54,14 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.torrent_menu, menu)
 
-                viewModel.torrent.filterNotNull()
-                    .launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
+                viewModel.torrent.launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
+                    menu.findItem(R.id.menu_sequential_download).isEnabled = torrent != null
+                    menu.findItem(R.id.menu_prioritize_first_last_pieces).isEnabled =
+                        torrent != null
+                    menu.findItem(R.id.menu_automatic_torrent_management).isEnabled =
+                        torrent != null
+
+                    if (torrent != null) {
                         val isPaused = when (torrent.state) {
                             TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
                             TorrentState.MISSING_FILES, TorrentState.ERROR,
@@ -73,6 +79,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         menu.findItem(R.id.menu_automatic_torrent_management).isChecked =
                             torrent.isAutomaticTorrentManagementEnabled
                     }
+                }
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
