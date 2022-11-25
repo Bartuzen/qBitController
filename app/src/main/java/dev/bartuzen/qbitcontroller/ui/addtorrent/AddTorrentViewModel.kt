@@ -28,8 +28,8 @@ class AddTorrentViewModel @Inject constructor(
     private val repository: AddTorrentRepository,
     settingsManager: SettingsManager
 ) : ViewModel() {
-    private val _eventChannel = Channel<Event>()
-    val eventFlow = _eventChannel.receiveAsFlow()
+    private val eventChannel = Channel<Event>()
+    val eventFlow = eventChannel.receiveAsFlow()
 
     val serversFlow = settingsManager.serversFlow
 
@@ -78,10 +78,10 @@ class AddTorrentViewModel @Inject constructor(
                 isFirstLastPiecePrioritized
             )) {
                 is RequestResult.Success -> {
-                    _eventChannel.send(Event.TorrentCreated)
+                    eventChannel.send(Event.TorrentCreated)
                 }
                 is RequestResult.Error -> {
-                    _eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result.error))
                 }
             }
             _isCreating.value = false
