@@ -124,6 +124,21 @@ class TorrentOverviewViewModel @Inject constructor(
             }
         }
 
+    fun setAutomaticTorrentManagement(
+        serverConfig: ServerConfig, torrentHash: String, enable: Boolean
+    ) = viewModelScope.launch {
+        when (
+            val result = repository.setAutomaticTorrentManagement(serverConfig, torrentHash, enable)
+        ) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.AutomaticTorrentManagementChanged(enable))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result.error))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestError) : Event()
         object TorrentDeleted : Event()
@@ -131,5 +146,6 @@ class TorrentOverviewViewModel @Inject constructor(
         object TorrentResumed : Event()
         object SequentialDownloadToggled : Event()
         object PrioritizeFirstLastPiecesToggled : Event()
+        data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()
     }
 }

@@ -46,7 +46,10 @@ data class Torrent(
     val isSequentialDownloadEnabled: Boolean,
 
     @JsonProperty("f_l_piece_prio")
-    val isFirstLastPiecesPrioritized: Boolean
+    val isFirstLastPiecesPrioritized: Boolean,
+
+    @JsonProperty("auto_tmm")
+    val isAutomaticTorrentManagementEnabled: Boolean
 )
 
 enum class TorrentState {

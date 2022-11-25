@@ -70,6 +70,8 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                             torrent.isSequentialDownloadEnabled
                         menu.findItem(R.id.menu_prioritize_first_last_pieces).isChecked =
                             torrent.isFirstLastPiecesPrioritized
+                        menu.findItem(R.id.menu_automatic_torrent_management).isChecked =
+                            torrent.isAutomaticTorrentManagementEnabled
                     }
             }
 
@@ -89,6 +91,14 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     }
                     R.id.menu_prioritize_first_last_pieces -> {
                         viewModel.togglePrioritizeFirstLastPiecesDownload(serverConfig, torrentHash)
+                    }
+                    R.id.menu_automatic_torrent_management -> {
+                        val isEnabled = viewModel.torrent.value?.isAutomaticTorrentManagementEnabled
+                            ?: return true
+
+                        viewModel.setAutomaticTorrentManagement(
+                            serverConfig, torrentHash, !isEnabled
+                        )
                     }
                     else -> return false
                 }
@@ -180,6 +190,17 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 }
                 TorrentOverviewViewModel.Event.PrioritizeFirstLastPiecesToggled -> {
                     showSnackbar(getString(R.string.torrent_toggle_prioritize_first_last_pieces))
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
+                is TorrentOverviewViewModel.Event.AutomaticTorrentManagementChanged -> {
+                    showSnackbar(
+                        if (event.isEnabled) {
+                            (R.string.torrent_enable_automatic_torrent_management_success)
+                        } else {
+                            R.string.torrent_disable_automatic_torrent_management_success
+                        }
+                    )
+
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
             }

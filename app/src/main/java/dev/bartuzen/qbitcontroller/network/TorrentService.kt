@@ -138,4 +138,10 @@ interface TorrentService {
         @Part("sequentialDownload") isSequentialDownloadEnabled: Boolean,
         @Part("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean
     ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/setAutoManagement")
+    suspend fun setAutomaticTorrentManagement(
+        @Field("hashes") hashes: String, @Field("enable") enable: Boolean
+    ): Response<Unit>
 }

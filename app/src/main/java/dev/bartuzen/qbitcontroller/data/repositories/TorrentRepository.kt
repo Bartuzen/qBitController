@@ -76,4 +76,10 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.togglePrioritizeFirstLastPiecesDownload(hash)
         }
+
+    suspend fun setAutomaticTorrentManagement(
+        serverConfig: ServerConfig, hash: String, enable: Boolean
+    ) = requestManager.request(serverConfig) { service ->
+        service.setAutomaticTorrentManagement(hash, enable)
+    }
 }
