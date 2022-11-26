@@ -15,7 +15,7 @@ import dev.bartuzen.qbitcontroller.utils.getColorCompat
 class TorrentPiecesAdapter :
     ListAdapter<PieceState, RecyclerView.ViewHolder>(DiffCallBack()) {
     private var pieceCount: Int? = null
-    private var pieceSize: Int? = null
+    private var pieceSize: Long? = null
 
     override fun getItemViewType(position: Int) = if (position == 0) 0 else 1
 
@@ -47,7 +47,7 @@ class TorrentPiecesAdapter :
         }
     }
 
-    fun submitHeaderData(pieceCount: Int, pieceSize: Int) {
+    fun submitHeaderData(pieceCount: Int?, pieceSize: Long?) {
         this.pieceCount = pieceCount
         this.pieceSize = pieceSize
         notifyItemChanged(0)
@@ -72,12 +72,13 @@ class TorrentPiecesAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
-            pieceCount?.let {
-                binding.textPieces.text = it.toString()
-            }
-            pieceSize?.let {
-                binding.textPieceSize.text = formatBytes(binding.root.context, it.toLong())
-            }
+            binding.textPieces.text = pieceCount?.toString() ?: "-"
+
+            val pieceSize = pieceSize
+            binding.textPieceSize.text = if (pieceSize != null) {
+                formatBytes(binding.root.context, pieceSize)
+            } else "-"
+
         }
     }
 

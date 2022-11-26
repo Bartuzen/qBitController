@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 
-class TrackerPropertyDeserializer : JsonDeserializer<Int?>() {
+class NullableIntDeserializer : JsonDeserializer<Int?>() {
     override fun deserialize(parser: JsonParser?, context: DeserializationContext?): Int? {
         return parser?.intValue.takeIf { it != -1 }
     }
