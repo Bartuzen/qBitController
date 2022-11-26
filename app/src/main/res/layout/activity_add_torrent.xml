@@ -109,8 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/torrent_add_category"
-                    app:chipSpacing="8dp" />
+                    android:text="@string/torrent_add_category" />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/progress_category"
@@ -124,6 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    app:chipSpacing="8dp"
                     app:singleSelection="true" />
 
                 <com.google.android.material.textview.MaterialTextView
