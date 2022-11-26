@@ -44,6 +44,9 @@ class AddTorrentViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     private val _isCreating = MutableStateFlow(false)
     val isCreating = _isCreating.asStateFlow()
 
@@ -144,6 +147,15 @@ class AddTorrentViewModel @Inject constructor(
             _isLoading.value = true
             updateCategoryAndTags(serverConfig).invokeOnCompletion {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun refreshCategoryAndTags(serverConfig: ServerConfig) {
+        if (!isRefreshing.value) {
+            _isRefreshing.value = true
+            updateCategoryAndTags(serverConfig).invokeOnCompletion {
+                _isRefreshing.value = false
             }
         }
     }

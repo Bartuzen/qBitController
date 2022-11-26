@@ -187,6 +187,10 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         )
 
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refreshCategoryAndTags(serverConfig)
+        }
+
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
             viewModel.loadCategoryAndTags(serverConfig)
@@ -204,6 +208,10 @@ class AddTorrentActivity : AppCompatActivity() {
                 binding.progressCategory.visibility = View.GONE
                 binding.progressTag.visibility = View.GONE
             }
+        }
+
+        viewModel.isRefreshing.launchAndCollectLatestIn(this) { isRefreshing ->
+            binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
         viewModel.categoryList.filterNotNull().launchAndCollectLatestIn(this) { categoryList ->
