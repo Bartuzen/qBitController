@@ -172,6 +172,8 @@
 
     <string name="torrent_add_title">@string/torrent_add_menu_add_torrent</string>
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
+    <string name="torrent_add_category">Category</string>
+    <string name="torrent_add_tags">Tags</string>
     <string name="torrent_add_name">Torrent Name</string>
     <string name="torrent_add_ratio_limit">Ratio Limit</string>
     <string name="torrent_add_seeding_time_limit">Seeding Time Limit (Minutes)</string>

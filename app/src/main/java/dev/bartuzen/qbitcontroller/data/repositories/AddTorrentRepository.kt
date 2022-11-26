@@ -17,6 +17,8 @@ class AddTorrentRepository @Inject constructor(
         serverConfig: ServerConfig,
         links: List<String>?,
         fileBytes: ByteArray?,
+        category: String?,
+        tags: List<String>,
         torrentName: String?,
         downloadSpeedLimit: Int?,
         uploadSpeedLimit: Int?,
@@ -39,6 +41,8 @@ class AddTorrentRepository @Inject constructor(
             service.addTorrent(
                 links?.joinToString("\n"),
                 filePart,
+                category,
+                tags.joinToString(",").ifEmpty { null },
                 torrentName,
                 downloadSpeedLimit,
                 uploadSpeedLimit,
@@ -52,4 +56,14 @@ class AddTorrentRepository @Inject constructor(
             )
         }
     }
+
+    suspend fun getCategories(serverConfig: ServerConfig) =
+        requestManager.request(serverConfig) { service ->
+            service.getCategories()
+        }
+
+    suspend fun getTags(serverConfig: ServerConfig) =
+        requestManager.request(serverConfig) { service ->
+            service.getTags()
+        }
 }

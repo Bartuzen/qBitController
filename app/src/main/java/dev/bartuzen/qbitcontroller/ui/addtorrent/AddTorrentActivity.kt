@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -16,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
@@ -26,6 +28,8 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlin.math.roundToInt
@@ -137,10 +141,23 @@ class AddTorrentActivity : AppCompatActivity() {
                         }
 
                     if (links.isNotBlank() || fileUri != null) {
+                        val category = binding.chipGroupCategory.checkedChipId.let { id ->
+                            if (id != View.NO_ID) {
+                                binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
+                            } else null
+                        }
+
+                        val tags = mutableListOf<String>()
+                        binding.chipGroupTag.checkedChipIds.forEach { id ->
+                            tags.add(binding.chipGroupTag.findViewById<Chip>(id).text.toString())
+                        }
+
                         viewModel.createTorrent(
                             serverConfig = serverConfig,
                             links = if (fileUri == null) links.split("\n") else null,
                             fileUri = fileUri,
+                            category = category,
+                            tags = tags,
                             torrentName = binding.editTorrentName.text.toString().ifBlank { null },
                             downloadSpeedLimit = downloadSpeedLimit,
                             uploadSpeedLimit = uploadSpeedLimit,
@@ -171,8 +188,44 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         )
 
-        viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
-            binding.progressIndicator.visibility = if (isCreating) View.VISIBLE else View.INVISIBLE
+        if (!viewModel.isInitialLoadStarted) {
+            viewModel.isInitialLoadStarted = true
+            viewModel.loadCategoryAndTags(serverConfig)
+        }
+
+        combine(viewModel.isCreating, viewModel.isLoading) { isCreating, isLoading ->
+            isCreating to isLoading
+        }.launchAndCollectLatestIn(this) { (isCreating, isLoading) ->
+            binding.progressIndicator.visibility =
+                if (isCreating || isLoading) View.VISIBLE else View.INVISIBLE
+        }
+
+        viewModel.categoryList.filterNotNull().launchAndCollectLatestIn(this) { categoryList ->
+            binding.chipGroupCategory.removeAllViews()
+
+            categoryList.forEach { category ->
+                val chip = Chip(this@AddTorrentActivity)
+                chip.text = category
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_category)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isCheckable = true
+                binding.chipGroupCategory.addView(chip)
+            }
+        }
+
+        viewModel.tagList.filterNotNull().launchAndCollectLatestIn(this) { tagList ->
+            binding.chipGroupTag.removeAllViews()
+
+            tagList.forEach { tag ->
+                val chip = Chip(this@AddTorrentActivity)
+                chip.text = tag
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_tag)
+                chip.isCheckable = true
+                chip.ellipsize = TextUtils.TruncateAt.END
+                binding.chipGroupTag.addView(chip)
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
