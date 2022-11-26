@@ -28,7 +28,6 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -193,11 +192,18 @@ class AddTorrentActivity : AppCompatActivity() {
             viewModel.loadCategoryAndTags(serverConfig)
         }
 
-        combine(viewModel.isCreating, viewModel.isLoading) { isCreating, isLoading ->
-            isCreating to isLoading
-        }.launchAndCollectLatestIn(this) { (isCreating, isLoading) ->
-            binding.progressIndicator.visibility =
-                if (isCreating || isLoading) View.VISIBLE else View.INVISIBLE
+        viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
+            binding.progressIndicator.visibility = if (isCreating) View.VISIBLE else View.INVISIBLE
+        }
+
+        viewModel.isLoading.launchAndCollectLatestIn(this) { isLoading ->
+            if (isLoading) {
+                binding.progressCategory.visibility = View.VISIBLE
+                binding.progressTag.visibility = View.VISIBLE
+            } else {
+                binding.progressCategory.visibility = View.GONE
+                binding.progressTag.visibility = View.GONE
+            }
         }
 
         viewModel.categoryList.filterNotNull().launchAndCollectLatestIn(this) { categoryList ->
