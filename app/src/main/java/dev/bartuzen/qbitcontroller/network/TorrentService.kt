@@ -127,6 +127,7 @@ interface TorrentService {
     suspend fun addTorrent(
         @Part("urls") links: String?,
         @Part filePart: MultipartBody.Part?,
+        @Part("savepath") savePath: String?,
         @Part("category") category: String?,
         @Part("tags") tags: String?,
         @Part("rename") torrentName: String?,

@@ -155,6 +155,7 @@ class AddTorrentActivity : AppCompatActivity() {
                             serverConfig = serverConfig,
                             links = if (fileUri == null) links.split("\n") else null,
                             fileUri = fileUri,
+                            savePath = binding.editSavePath.text.toString().ifBlank { null },
                             category = category,
                             tags = tags,
                             torrentName = binding.editTorrentName.text.toString().ifBlank { null },
@@ -165,7 +166,7 @@ class AddTorrentActivity : AppCompatActivity() {
                                 .toIntOrNull(),
                             isPaused = !binding.checkStartTorrent.isChecked,
                             skipHashChecking = binding.checkSkipChecking.isChecked,
-                            isAutoTorrentManagementEnabled = binding.checkAutoTmm.isChecked,
+                            isAutoTorrentManagementEnabled = binding.spinnerTmm.selectedItemPosition == 1,
                             isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
                             isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
                         )
@@ -240,6 +241,28 @@ class AddTorrentActivity : AppCompatActivity() {
                 chip.ellipsize = TextUtils.TruncateAt.END
                 binding.chipGroupTag.addView(chip)
             }
+        }
+
+        binding.spinnerTmm.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            listOf(
+                getString(R.string.torrent_add_tmm_manual),
+                getString(R.string.torrent_add_tmm_auto)
+            )
+        )
+
+        binding.spinnerTmm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                binding.inputLayoutSavePath.isEnabled = position == 0
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->

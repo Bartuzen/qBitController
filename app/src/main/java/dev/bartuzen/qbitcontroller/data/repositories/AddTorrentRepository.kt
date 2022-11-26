@@ -17,6 +17,7 @@ class AddTorrentRepository @Inject constructor(
         serverConfig: ServerConfig,
         links: List<String>?,
         fileBytes: ByteArray?,
+        savePath: String?,
         category: String?,
         tags: List<String>,
         torrentName: String?,
@@ -41,6 +42,7 @@ class AddTorrentRepository @Inject constructor(
             service.addTorrent(
                 links?.joinToString("\n"),
                 filePart,
+                if (!isAutoTorrentManagementEnabled) savePath else null,
                 category,
                 tags.joinToString(",").ifEmpty { null },
                 torrentName,
