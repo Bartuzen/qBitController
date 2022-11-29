@@ -71,7 +71,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 ) ?: false
                 if (isTorrentDeleted) {
                     viewModel.loadTorrentList(serverConfig)
-                    showSnackbar(getString(R.string.torrent_deleted_success))
+                    showSnackbar(R.string.torrent_deleted_success)
                 }
             }
         }

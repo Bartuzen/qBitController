@@ -163,12 +163,12 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
-                    showSnackbar(getString(R.string.torrent_trackers_added))
+                    showSnackbar(R.string.torrent_trackers_added)
 
                     viewModel.loadTrackers(serverConfig, torrentHash)
                 }
                 TorrentTrackersViewModel.Event.TrackersDeleted -> {
-                    showSnackbar(getString(R.string.torrent_trackers_deleted))
+                    showSnackbar(R.string.torrent_trackers_deleted)
 
                     viewModel.loadTrackers(serverConfig, torrentHash)
                 }

@@ -185,7 +185,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     requireActivity().finish()
                 }
                 TorrentOverviewViewModel.Event.TorrentPaused -> {
-                    showSnackbar(getString(R.string.torrent_paused_success))
+                    showSnackbar(R.string.torrent_paused_success)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent pauses the torrent
@@ -193,7 +193,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     }
                 }
                 TorrentOverviewViewModel.Event.TorrentResumed -> {
-                    showSnackbar(getString(R.string.torrent_resumed_success))
+                    showSnackbar(R.string.torrent_resumed_success)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
@@ -201,11 +201,11 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     }
                 }
                 TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
-                    showSnackbar(getString(R.string.torrent_toggle_sequential_download_success))
+                    showSnackbar(R.string.torrent_toggle_sequential_download_success)
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.PrioritizeFirstLastPiecesToggled -> {
-                    showSnackbar(getString(R.string.torrent_toggle_prioritize_first_last_pieces))
+                    showSnackbar(R.string.torrent_toggle_prioritize_first_last_pieces)
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
                 is TorrentOverviewViewModel.Event.AutomaticTorrentManagementChanged -> {
