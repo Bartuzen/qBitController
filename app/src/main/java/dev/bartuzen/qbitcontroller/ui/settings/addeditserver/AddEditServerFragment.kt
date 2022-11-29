@@ -23,6 +23,7 @@ import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -75,27 +76,13 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
         )
 
         serverConfig?.let { config ->
-            binding.inputLayoutName.isHintAnimationEnabled = false
-            binding.inputLayoutHost.isHintAnimationEnabled = false
-            binding.inputLayoutPort.isHintAnimationEnabled = false
-            binding.inputLayoutPath.isHintAnimationEnabled = false
-            binding.inputLayoutUsername.isHintAnimationEnabled = false
-            binding.inputLayoutPassword.isHintAnimationEnabled = false
-
-            binding.editName.setText(config.name)
+            binding.inputLayoutName.setTextWithoutAnimation(config.name)
             binding.spinnerProtocol.setSelection(config.protocol.ordinal)
-            binding.editHost.setText(config.host)
-            binding.editPort.setText(config.port?.toString())
-            binding.editPath.setText(config.path)
-            binding.editUsername.setText(config.username)
-            binding.editPassword.setText(config.password)
-
-            binding.inputLayoutName.isHintAnimationEnabled = true
-            binding.inputLayoutHost.isHintAnimationEnabled = true
-            binding.inputLayoutPort.isHintAnimationEnabled = true
-            binding.inputLayoutPath.isHintAnimationEnabled = true
-            binding.inputLayoutUsername.isHintAnimationEnabled = true
-            binding.inputLayoutPassword.isHintAnimationEnabled = true
+            binding.inputLayoutHost.setTextWithoutAnimation(config.host)
+            binding.inputLayoutPort.setTextWithoutAnimation(config.port?.toString())
+            binding.inputLayoutPath.setTextWithoutAnimation(config.path)
+            binding.inputLayoutUsername.setTextWithoutAnimation(config.username)
+            binding.inputLayoutPassword.setTextWithoutAnimation(config.password)
         }
     }
 

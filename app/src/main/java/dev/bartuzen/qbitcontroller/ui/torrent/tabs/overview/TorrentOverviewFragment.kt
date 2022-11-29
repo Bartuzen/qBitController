@@ -32,6 +32,7 @@ import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
@@ -254,10 +255,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
         val currentLimit = viewModel.torrent.value?.downloadSpeedLimit?.let { speed ->
             speed / 1024
         }
-
-        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = false
-        dialogBinding.editLimit.setText(currentLimit.toString())
-        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = true
+        dialogBinding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
 
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(R.string.torrent_dlspeed_limit_dialog_title)
@@ -280,10 +278,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
         val currentLimit = viewModel.torrent.value?.uploadSpeedLimit?.let { speed ->
             speed / 1024
         }
-
-        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = false
-        dialogBinding.editLimit.setText(currentLimit.toString())
-        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = true
+        dialogBinding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
 
         MaterialAlertDialogBuilder(requireActivity())
             .setTitle(R.string.torrent_upspeed_limit_dialog_title)
