@@ -10,44 +10,13 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.ColorRes
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
 import kotlin.math.ceil
-
-fun Activity.showToast(text: String) {
-    Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-}
-
-fun Activity.showToast(@StringRes resId: Int) {
-    Toast.makeText(this, resId, Toast.LENGTH_LONG).show()
-}
-
-fun Activity.showSnackbar(text: String) {
-    Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).show()
-}
-
-fun Activity.showSnackbar(@StringRes resId: Int) {
-    Snackbar.make(findViewById(android.R.id.content), resId, Snackbar.LENGTH_LONG).show()
-}
-
-fun Fragment.showSnackbar(text: String, view: View? = this.view) {
-    view?.let {
-        Snackbar.make(requireContext(), it, text, Snackbar.LENGTH_LONG).show()
-    }
-}
-
-fun Fragment.showSnackbar(@StringRes resId: Int, view: View? = this.view) {
-    view?.let {
-        Snackbar.make(it, resId, Snackbar.LENGTH_LONG).show()
-    }
-}
 
 fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)
 
