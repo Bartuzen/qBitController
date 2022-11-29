@@ -11,10 +11,4 @@ fun Double.floorToDecimal(decimals: Int): Double {
     return floor(this * multiplier) / multiplier
 }
 
-fun <K, V> SortedMap<K, V>.first(): V? = firstKey().let { key ->
-    if (this.containsKey(key)) {
-        this[key]
-    } else {
-        null
-    }
-}
+fun <K, V> SortedMap<K, V>.first(): V? = get(firstKey())
