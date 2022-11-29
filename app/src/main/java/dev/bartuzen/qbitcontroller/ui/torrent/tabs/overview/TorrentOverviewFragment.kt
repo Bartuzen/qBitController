@@ -210,7 +210,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 is TorrentOverviewViewModel.Event.AutomaticTorrentManagementChanged -> {
                     showSnackbar(
                         if (event.isEnabled) {
-                            (R.string.torrent_enable_automatic_torrent_management_success)
+                            R.string.torrent_enable_automatic_torrent_management_success
                         } else {
                             R.string.torrent_disable_automatic_torrent_management_success
                         }
