@@ -82,4 +82,14 @@ class TorrentRepository @Inject constructor(
     ) = requestManager.request(serverConfig) { service ->
         service.setAutomaticTorrentManagement(hash, enable)
     }
+
+    suspend fun setDownloadSpeedLimit(serverConfig: ServerConfig, hash: String, limit: Int) =
+        requestManager.request(serverConfig) { service ->
+            service.setDownloadSpeedLimit(hash, limit)
+        }
+
+    suspend fun setUploadSpeedLimit(serverConfig: ServerConfig, hash: String, limit: Int) =
+        requestManager.request(serverConfig) { service ->
+            service.setUploadSpeedLimit(hash, limit)
+        }
 }

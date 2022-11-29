@@ -139,6 +139,34 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun setDownloadSpeedLimit(serverConfig: ServerConfig, torrentHash: String, limit: Int) =
+        viewModelScope.launch {
+            when (
+                val result = repository.setDownloadSpeedLimit(serverConfig, torrentHash, limit)
+            ) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.DownloadSpeedLimitUpdated)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun setUploadSpeedLimit(serverConfig: ServerConfig, torrentHash: String, limit: Int) =
+        viewModelScope.launch {
+            when (
+                val result = repository.setUploadSpeedLimit(serverConfig, torrentHash, limit)
+            ) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.DownloadSpeedLimitUpdated)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     sealed class Event {
         data class Error(val error: RequestError) : Event()
         object TorrentDeleted : Event()
@@ -147,5 +175,7 @@ class TorrentOverviewViewModel @Inject constructor(
         object SequentialDownloadToggled : Event()
         object PrioritizeFirstLastPiecesToggled : Event()
         data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()
+        object DownloadSpeedLimitUpdated : Event()
+        object UploadSpeedLimitUpdated : Event()
     }
 }

@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.model
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 
@@ -30,6 +31,14 @@ data class Torrent(
 
     @JsonProperty("upspeed")
     val uploadSpeed: Long,
+
+    @JsonProperty("dl_limit")
+    @JsonDeserialize(using = NullableIntDeserializer::class)
+    val downloadSpeedLimit: Int?,
+
+    @JsonProperty("up_limit")
+    @JsonDeserialize(using = NullableIntDeserializer::class)
+    val uploadSpeedLimit: Int?,
 
     @JsonProperty("progress")
     val progress: Double,

@@ -25,6 +25,16 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_dlspeed_limit"
+        android:title="@string/torrent_menu_dlspeed_limit"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_upspeed_limit"
+        android:title="@string/torrent_menu_upspeed_limit"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_sequential_download"
         android:checkable="true"
         android:title="@string/torrent_menu_sequential_download"

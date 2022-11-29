@@ -16,6 +16,8 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitDownloadBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitUploadBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -92,6 +94,12 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     }
                     R.id.menu_delete -> {
                         showDeleteTorrentDialog()
+                    }
+                    R.id.menu_dlspeed_limit -> {
+                        showDownloadSpeedLimitDialog()
+                    }
+                    R.id.menu_upspeed_limit -> {
+                        showUploadSpeedLimitDialog()
                     }
                     R.id.menu_sequential_download -> {
                         viewModel.toggleSequentialDownload(serverConfig, torrentHash)
@@ -210,6 +218,14 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
+                TorrentOverviewViewModel.Event.DownloadSpeedLimitUpdated -> {
+                    showSnackbar(R.string.torrent_dlspeed_limit_change_success)
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
+                TorrentOverviewViewModel.Event.UploadSpeedLimitUpdated -> {
+                    showSnackbar(R.string.torrent_upspeed_limit_change_success)
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
             }
         }
     }
@@ -226,6 +242,58 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     torrentHash,
                     dialogBinding.checkDeleteFiles.isChecked
                 )
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+
+    private fun showDownloadSpeedLimitDialog() {
+        val dialogBinding = DialogSpeedLimitDownloadBinding.inflate(layoutInflater)
+
+        val currentLimit = viewModel.torrent.value?.downloadSpeedLimit?.let { speed ->
+            speed / 1024
+        }
+
+        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = false
+        dialogBinding.editLimit.setText(currentLimit.toString())
+        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = true
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.torrent_dlspeed_limit_dialog_title)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                val limit = dialogBinding.editLimit.text.toString().toIntOrNull()?.let { speed ->
+                    speed * 1024
+                } ?: 0
+
+                viewModel.setDownloadSpeedLimit(serverConfig, torrentHash, limit)
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+            .show()
+    }
+
+    private fun showUploadSpeedLimitDialog() {
+        val dialogBinding = DialogSpeedLimitUploadBinding.inflate(layoutInflater)
+
+        val currentLimit = viewModel.torrent.value?.uploadSpeedLimit?.let { speed ->
+            speed / 1024
+        }
+
+        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = false
+        dialogBinding.editLimit.setText(currentLimit.toString())
+        dialogBinding.inputLayoutLimit.isHintAnimationEnabled = true
+
+        MaterialAlertDialogBuilder(requireActivity())
+            .setTitle(R.string.torrent_upspeed_limit_dialog_title)
+            .setView(dialogBinding.root)
+            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                val limit = dialogBinding.editLimit.text.toString().toIntOrNull()?.let { speed ->
+                    speed * 1024
+                } ?: 0
+
+                viewModel.setUploadSpeedLimit(serverConfig, torrentHash, limit)
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .create()
