@@ -152,6 +152,7 @@
     <string name="torrent_trackers_downloaded">Downloaded</string>
     <string name="torrent_trackers_message">Message: %1$s</string>
     <string name="torrent_trackers_add">Add Trackers</string>
+    <string name="torrent_trackers_add_hint">Trackers</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">Delete %1$d Tracker</item>
         <item quantity="other">Delete %1$d Trackers</item>
