@@ -146,7 +146,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             binding.progressTorrent.progress = progress.toInt()
 
             val progressText = if (torrent.progress < 1) {
-                progress.floorToDecimal(1)
+                progress.floorToDecimal(1).toString()
             } else {
                 "100"
             }

@@ -46,7 +46,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
             binding.progressTorrent.progress = progress.toInt()
 
             val progressText = if (torrent.progress < 1) {
-                progress.floorToDecimal(1)
+                progress.floorToDecimal(1).toString()
             } else {
                 "100"
             }
