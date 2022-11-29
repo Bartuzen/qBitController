@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.utils.first
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,14 +27,15 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             serverList.collectLatest { serverList ->
                 val currentServerId = currentServer.value?.id ?: -1
-
-                if (serverList.size == 1 && currentServerId != serverList.first()?.id) {
-                    state["current_server"] = serverList.first()
+                val firstServer = try {
+                    serverList[serverList.firstKey()]
+                } catch (_: NoSuchElementException) {
+                    null
                 }
 
-                if (!serverList.containsKey(currentServerId)) {
-                    state["current_server"] = if (serverList.size != 0) serverList.first() else null
-                } else if (serverList[currentServerId] != currentServer.value) {
+                if (currentServerId !in serverList) { // Server is removed
+                    state["current_server"] = firstServer
+                } else if (serverList[currentServerId] != currentServer.value) { // Server is updated
                     state["current_server"] = serverList[currentServerId]
                 }
             }

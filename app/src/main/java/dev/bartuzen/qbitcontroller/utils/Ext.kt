@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.utils
 
-import java.util.SortedMap
 import kotlin.math.floor
 
 fun Double.floorToDecimal(decimals: Int): Double {
@@ -10,5 +9,3 @@ fun Double.floorToDecimal(decimals: Int): Double {
     }
     return floor(this * multiplier) / multiplier
 }
-
-fun <K, V> SortedMap<K, V>.first(): V? = get(firstKey())
