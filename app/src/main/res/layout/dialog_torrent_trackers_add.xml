@@ -4,15 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/edit_trackers"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:importantForAutofill="no"
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        tools:ignore="LabelFor" />
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:id="@+id/edit_trackers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:maxLines="10"
+            tools:ignore="LabelFor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </FrameLayout>
