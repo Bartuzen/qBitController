@@ -52,4 +52,16 @@
         android:title="@string/torrent_menu_automatic_torrent_management"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_force_start"
+        android:checkable="true"
+        android:title="@string/torrent_menu_force_start"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_super_seeding"
+        android:checkable="true"
+        android:title="@string/torrent_menu_super_seeding"
+        app:showAsAction="never" />
+
 </menu>

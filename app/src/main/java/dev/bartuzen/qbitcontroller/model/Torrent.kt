@@ -58,7 +58,13 @@ data class Torrent(
     val isFirstLastPiecesPrioritized: Boolean,
 
     @JsonProperty("auto_tmm")
-    val isAutomaticTorrentManagementEnabled: Boolean
+    val isAutomaticTorrentManagementEnabled: Boolean,
+
+    @JsonProperty("force_start")
+    val isForceStartEnabled: Boolean,
+
+    @JsonProperty("super_seeding")
+    val isSuperSeedingEnabled: Boolean
 )
 
 enum class TorrentState {

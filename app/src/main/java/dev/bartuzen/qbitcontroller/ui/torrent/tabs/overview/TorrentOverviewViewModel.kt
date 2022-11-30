@@ -167,6 +167,30 @@ class TorrentOverviewViewModel @Inject constructor(
             }
         }
 
+    fun setForceStart(serverConfig: ServerConfig, torrentHash: String, value: Boolean) =
+        viewModelScope.launch {
+            when (val result = repository.setForceStart(serverConfig, torrentHash, value)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.ForceStartChanged(value))
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
+    fun setSuperSeeding(serverConfig: ServerConfig, torrentHash: String, value: Boolean) =
+        viewModelScope.launch {
+            when (val result = repository.setSuperSeeding(serverConfig, torrentHash, value)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.SuperSeedingChanged(value))
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
+            }
+        }
+
     sealed class Event {
         data class Error(val error: RequestError) : Event()
         object TorrentDeleted : Event()
@@ -177,5 +201,7 @@ class TorrentOverviewViewModel @Inject constructor(
         data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()
         object DownloadSpeedLimitUpdated : Event()
         object UploadSpeedLimitUpdated : Event()
+        data class ForceStartChanged(val isEnabled: Boolean) : Event()
+        data class SuperSeedingChanged(val isEnabled: Boolean) : Event()
     }
 }

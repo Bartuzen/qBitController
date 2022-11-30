@@ -159,4 +159,16 @@ interface TorrentService {
     suspend fun setUploadSpeedLimit(
         @Field("hashes") hashes: String, @Field("limit") limit: Int
     ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/setForceStart")
+    suspend fun setForceStart(
+        @Field("hashes") hashes: String, @Field("value") value: Boolean
+    ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/setSuperSeeding")
+    suspend fun setSuperSeeding(
+        @Field("hashes") hashes: String, @Field("value") value: Boolean
+    ): Response<Unit>
 }

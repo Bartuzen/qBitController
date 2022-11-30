@@ -136,11 +136,17 @@
     <string name="torrent_menu_sequential_download">Sequential Download</string>
     <string name="torrent_menu_prioritize_first_last_pieces">Prioritize First and Last Pieces</string>
     <string name="torrent_menu_automatic_torrent_management">Automatic Torrent Management</string>
+    <string name="torrent_menu_force_start">Force Start</string>
+    <string name="torrent_menu_super_seeding">Super Seeding</string>
 
     <string name="torrent_toggle_sequential_download_success">Sequential download toggled successfully.</string>
     <string name="torrent_toggle_prioritize_first_last_pieces">Prioritizing first and last pieces toggled successfully.</string>
     <string name="torrent_enable_automatic_torrent_management_success">Automatic Torrent Management enabled successfully.</string>
     <string name="torrent_disable_automatic_torrent_management_success">Automatic Torrent Management disabled successfully.</string>
+    <string name="torrent_enable_force_start_success">Force start enabled successfully.</string>
+    <string name="torrent_disable_force_start_success">Force start disabled successfully.</string>
+    <string name="torrent_enable_super_seeding_success">Super seeding enabled successfully.</string>
+    <string name="torrent_disable_super_seeding_success">Super seeding disabled successfully.</string>
 
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>

@@ -92,4 +92,14 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.setUploadSpeedLimit(hash, limit)
         }
+
+    suspend fun setForceStart(serverConfig: ServerConfig, hash: String, value: Boolean) =
+        requestManager.request(serverConfig) { service ->
+            service.setForceStart(hash, value)
+        }
+
+    suspend fun setSuperSeeding(serverConfig: ServerConfig, hash: String, value: Boolean) =
+        requestManager.request(serverConfig) { service ->
+            service.setSuperSeeding(hash, value)
+        }
 }
