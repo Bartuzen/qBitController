@@ -272,7 +272,7 @@ class TorrentListViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class Error(val result: RequestError) : Event()
+        data class Error(val error: RequestError) : Event()
         data class TorrentsDeleted(val count: Int) : Event()
         data class TorrentsPaused(val count: Int) : Event()
         data class TorrentsResumed(val count: Int) : Event()
