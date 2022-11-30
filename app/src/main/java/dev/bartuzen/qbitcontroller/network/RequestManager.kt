@@ -55,10 +55,6 @@ class RequestManager @Inject constructor() {
         torrentServiceMap.remove(serverConfig.id)
     }
 
-    private suspend fun login(serverConfig: ServerConfig) = serverConfig.run {
-        getTorrentService(serverConfig).login(username, password)
-    }
-
     suspend fun <T : Any> request(
         serverConfig: ServerConfig,
         block: suspend (service: TorrentService) -> Response<T>
@@ -68,7 +64,7 @@ class RequestManager @Inject constructor() {
         val body = blockResponse.body()
 
         if (blockResponse.message() == "Forbidden") {
-            val loginResponse = login(serverConfig)
+            val loginResponse = service.login(serverConfig.username, serverConfig.password)
 
             if (loginResponse.code() == 403) {
                 RequestResult.Error(RequestError.BANNED)
