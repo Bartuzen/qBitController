@@ -97,7 +97,10 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerDrawer.adapter = drawerAdapter
 
         binding.textClickToAddServer.setOnClickListener {
-            startActivity(Intent(this, SettingsActivity::class.java))
+            val intent = Intent(this, SettingsActivity::class.java).apply {
+                putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
+            }
+            startActivity(intent)
         }
 
         viewModel.serverList.launchAndCollectLatestIn(this) { serverList ->
