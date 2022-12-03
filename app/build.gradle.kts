@@ -91,7 +91,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6")
 }
