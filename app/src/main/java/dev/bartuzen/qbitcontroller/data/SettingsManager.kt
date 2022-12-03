@@ -78,7 +78,7 @@ class SettingsManager @Inject constructor(
     ) {
         dataStore.edit { settings ->
             val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: "{}"
-            val serverId = (settings[PreferenceKeys.LAST_SERVER_ID] ?: 0) + 1
+            val serverId = (settings[PreferenceKeys.LAST_SERVER_ID] ?: -1) + 1
 
             val serverConfig =
                 ServerConfig(serverId, name, protocol, host, port, path, username, password)
