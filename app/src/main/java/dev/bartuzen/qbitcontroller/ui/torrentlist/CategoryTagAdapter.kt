@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemCategoryTagBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemCategoryTagTitleBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemDividerBinding
+import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import kotlin.properties.Delegates
 
 class CategoryTagAdapter(
@@ -154,10 +156,16 @@ class CategoryTagAdapter(
             this.name = name
             this.isCategory = isCategory
 
-            binding.root.isSelected = (if (isCategory) selectedCategory else selectedTag) == name
+            val context = binding.root.context
 
-            binding.root.text =
-                name ?: binding.root.context.getString(R.string.torrent_list_category_tag_all)
+            val backgroundColor = if ((if (isCategory) selectedCategory else selectedTag) == name) {
+                context.getColorCompat(R.color.category_tag_selected_background)
+            } else {
+                Color.TRANSPARENT
+            }
+            binding.root.setBackgroundColor(backgroundColor)
+
+            binding.root.text = name ?: context.getString(R.string.torrent_list_category_tag_all)
         }
     }
 

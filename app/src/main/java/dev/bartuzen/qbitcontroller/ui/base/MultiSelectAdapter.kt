@@ -108,7 +108,13 @@ abstract class MultiSelectAdapter<T, K, VH : MultiSelectAdapter.ViewHolder<T, K>
         RecyclerView.ViewHolder(itemView) {
 
         private var isSelected: Boolean
-            get() = itemView.isSelected
+            get() = if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                val item = adapter.getItem(bindingAdapterPosition)
+                val key = adapter.getKey(item)
+                adapter.isItemSelected(key)
+            } else {
+                false
+            }
             set(value) {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     adapter.getItem(bindingAdapterPosition)?.let { item: T ->

@@ -1,13 +1,16 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.material.color.MaterialColors
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentTrackerBinding
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
+import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
 class TorrentTrackersAdapter :
     MultiSelectAdapter<TorrentTracker, String, TorrentTrackersAdapter.ViewHolder>(
@@ -30,9 +33,18 @@ class TorrentTrackersAdapter :
         MultiSelectAdapter.ViewHolder<TorrentTracker, String>(binding.root, this) {
 
         fun bind(tracker: TorrentTracker) {
-            binding.root.isSelected = isItemSelected(
-                "${if (tracker.tier == -1) 0 else 1}${tracker.url}"
-            )
+            val context = binding.root.context
+
+            val backgroundColor = if (
+                isItemSelected("${if (tracker.tier == -1) 0 else 1}${tracker.url}")
+            ) {
+                context.getColorCompat(R.color.selected_card_background)
+            } else {
+                MaterialColors.getColor(
+                    context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT
+                )
+            }
+            binding.root.setCardBackgroundColor(backgroundColor)
 
             binding.textUrl.text = tracker.url
 
