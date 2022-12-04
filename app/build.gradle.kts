@@ -48,8 +48,6 @@ android {
         }
         create("firebase") {
             dimension = "firebase"
-            apply(plugin = "com.google.gms.google-services")
-            apply(plugin = "com.google.firebase.crashlytics")
         }
     }
 
@@ -70,6 +68,12 @@ android {
 kapt {
     correctErrorTypes = true
 }
+
+if (!gradle.startParameter.taskRequests.toString().contains("Free")) {
+    apply(plugin = "com.google.gms.google-services")
+    apply(plugin = "com.google.firebase.crashlytics")
+}
+
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
