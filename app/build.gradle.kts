@@ -41,6 +41,18 @@ android {
         }
     }
 
+    flavorDimensions += "firebase"
+    productFlavors {
+        create("free") {
+            dimension = "firebase"
+        }
+        create("firebase") {
+            dimension = "firebase"
+            apply(plugin = "com.google.gms.google-services")
+            apply(plugin = "com.google.firebase.crashlytics")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -94,4 +106,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6")
+
+    val firebaseImplementation by configurations
+    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.1.0"))
+    firebaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
+    firebaseImplementation("com.google.firebase:firebase-analytics-ktx")
 }

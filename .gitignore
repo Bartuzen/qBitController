@@ -46,3 +46,6 @@ captures/
 
 # Android Profiling
 *.hprof
+
+# Firebase
+google-services.json
