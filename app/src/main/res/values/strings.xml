@@ -35,6 +35,7 @@
     <string name="torrent_sort_dlspeed">Download Speed</string>
     <string name="torrent_sort_upspeed">Upload Speed</string>
     <string name="torrent_sort_priority">Priority</string>
+    <string name="torrent_sort_reverse">Reverse</string>
 
     <string name="torrent_status_error">Error</string>
     <string name="torrent_status_missing_files">Missing Files</string>

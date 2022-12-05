@@ -10,10 +10,16 @@ import javax.inject.Singleton
 class TorrentListRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
-    suspend fun getTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort) =
-        requestManager.request(serverConfig) { service ->
-            service.getTorrentList(torrentSort = torrentSort)
-        }
+    suspend fun getTorrentList(
+        serverConfig: ServerConfig,
+        torrentSort: TorrentSort,
+        isReverseSorting: Boolean
+    ) = requestManager.request(serverConfig) { service ->
+        service.getTorrentList(
+            torrentSort = torrentSort,
+            isReverseSorting = isReverseSorting
+        )
+    }
 
     suspend fun deleteTorrents(
         serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean

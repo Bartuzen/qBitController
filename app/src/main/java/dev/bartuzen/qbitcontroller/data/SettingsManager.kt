@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -38,6 +39,10 @@ class SettingsManager @Inject constructor(
 
     val sortFlow = getFromDataStore { settings ->
         TorrentSort.valueOf(settings[PreferenceKeys.TORRENT_SORT] ?: TorrentSort.NAME.name)
+    }
+
+    val isReverseSortingFlow = getFromDataStore { settings ->
+        settings[PreferenceKeys.IS_REVERSE_SORTING] ?: false
     }
 
     val serversFlow = getFromDataStore { settings ->
@@ -124,11 +129,18 @@ class SettingsManager @Inject constructor(
         }
     }
 
+    suspend fun setIsReverseSorting(isReversed: Boolean) {
+        dataStore.edit { settings ->
+            settings[PreferenceKeys.IS_REVERSE_SORTING] = isReversed
+        }
+    }
+
     private object PreferenceKeys {
         val THEME = stringPreferencesKey("theme")
         val SERVER_CONFIGS = stringPreferencesKey("server_configs")
         val LAST_SERVER_ID = intPreferencesKey("last_server_id")
         val TORRENT_SORT = stringPreferencesKey("sort")
+        val IS_REVERSE_SORTING = booleanPreferencesKey("is_sort_reversed")
     }
 }
 

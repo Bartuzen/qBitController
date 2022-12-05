@@ -44,6 +44,7 @@ class TorrentListViewModel @Inject constructor(
     val selectedTag = _selectedTag.asStateFlow()
 
     val torrentSort = settingsManager.sortFlow
+    val isReverseSorting = settingsManager.isReverseSortingFlow
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -58,7 +59,11 @@ class TorrentListViewModel @Inject constructor(
 
     private fun updateTorrentList(serverConfig: ServerConfig) =
         viewModelScope.launch {
-            when (val result = repository.getTorrentList(serverConfig, torrentSort.first())) {
+            when (val result = repository.getTorrentList(
+                serverConfig,
+                torrentSort.first(),
+                isReverseSorting.first()
+            )) {
                 is RequestResult.Success -> {
                     _torrentList.value = result.data
                 }
@@ -257,6 +262,10 @@ class TorrentListViewModel @Inject constructor(
 
     fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
         settingsManager.setTorrentSort(torrentSort)
+    }
+
+    fun changeReverseSorting() = viewModelScope.launch {
+        settingsManager.setIsReverseSorting(!isReverseSorting.first())
     }
 
     fun setSearchQuery(query: String) {

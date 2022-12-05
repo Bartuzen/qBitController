@@ -28,7 +28,8 @@ interface TorrentService {
     @GET("api/v2/torrents/info")
     suspend fun getTorrentList(
         @Query("hashes") hashes: String? = null,
-        @Query("sort") torrentSort: TorrentSort? = null
+        @Query("sort") torrentSort: TorrentSort? = null,
+        @Query("reverse") isReverseSorting: Boolean? = null
     ): Response<List<Torrent>>
 
     @GET("api/v2/torrents/files")

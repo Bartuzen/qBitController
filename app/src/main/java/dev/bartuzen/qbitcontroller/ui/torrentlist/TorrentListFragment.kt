@@ -105,6 +105,10 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     menu.findItem(selectedSort).isChecked = true
                 }
 
+                viewModel.isReverseSorting.launchAndCollectLatestIn(viewLifecycleOwner) { isReverseSorting ->
+                    menu.findItem(R.id.menu_sort_reverse).isChecked = isReverseSorting
+                }
+
                 val searchItem = menu.findItem(R.id.menu_search)
 
                 val searchView = searchItem.actionView as SearchView
@@ -173,6 +177,12 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 }
                 R.id.menu_sort_priority -> {
                     viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                    true
+                }
+                R.id.menu_sort_reverse -> {
+                    viewModel.changeReverseSorting().invokeOnCompletion {
                         viewModel.loadTorrentList(serverConfig)
                     }
                     true

@@ -36,6 +36,10 @@
                     android:id="@+id/menu_sort_priority"
                     android:title="@string/torrent_sort_priority" />
             </group>
+            <item
+                android:id="@+id/menu_sort_reverse"
+                android:checkable="true"
+                android:title="@string/torrent_sort_reverse" />
         </menu>
     </item>
 
