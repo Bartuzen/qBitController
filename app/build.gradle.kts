@@ -93,8 +93,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-compiler:2.44.2")
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-
     implementation("androidx.preference:preference-ktx:1.2.0")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
