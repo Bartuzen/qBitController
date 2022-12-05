@@ -237,4 +237,8 @@
     <string name="settings_server_required_field">This field is required.</string>
     <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
+
+    <string name="about_menu_title">About</string>
+    <string name="about_dialog_title">@string/about_menu_title</string>
+    <string name="about_description">qBitController allows you to control qBittorrent from an Android device.\n\nFor more detailed information and source code: https://github.com/Bartuzen/qBitController</string>
 </resources>

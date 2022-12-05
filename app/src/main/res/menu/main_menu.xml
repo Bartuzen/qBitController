@@ -4,9 +4,15 @@
 
     <item
         android:id="@+id/menu_settings"
-        android:orderInCategory="1"
         android:icon="@drawable/ic_settings"
+        android:orderInCategory="1"
         android:title="@string/menu_settings"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_about"
+        android:orderInCategory="1"
+        android:title="@string/about_menu_title"
+        app:showAsAction="never" />
 
 </menu>

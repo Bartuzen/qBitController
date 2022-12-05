@@ -15,9 +15,12 @@ import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ConcatAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
+import dev.bartuzen.qbitcontroller.BuildConfig
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.CategoryTagAdapter
@@ -57,6 +60,9 @@ class MainActivity : AppCompatActivity() {
                         startActivity(
                             Intent(this@MainActivity, SettingsActivity::class.java)
                         )
+                    }
+                    R.id.menu_about -> {
+                        showAboutDialog()
                     }
                     else -> return false
                 }
@@ -133,6 +139,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun showAboutDialog() {
+        val binding = DialogAboutBinding.inflate(layoutInflater)
+        binding.textVersion.text = BuildConfig.VERSION_NAME
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.about_dialog_title)
+            .setView(binding.root)
+            .setPositiveButton(R.string.dialog_ok, null)
+            .create()
+            .show()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
