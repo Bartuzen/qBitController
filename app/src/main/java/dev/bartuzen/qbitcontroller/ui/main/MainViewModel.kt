@@ -2,18 +2,15 @@ package dev.bartuzen.qbitcontroller.ui.main
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val state: SavedStateHandle,
-    serverManager: ServerManager
+    private val serverManager: ServerManager
 ) : ViewModel() {
     val currentServer = state.getStateFlow<ServerConfig?>("current_server", null)
 
@@ -23,22 +20,41 @@ class MainViewModel @Inject constructor(
         state["current_server"] = serverConfig
     }
 
-    init {
-        viewModelScope.launch {
-            serversFlow.collectLatest { serverList ->
-                val currentServerId = currentServer.value?.id ?: -1
-                val firstServer = try {
-                    serverList[serverList.firstKey()]
-                } catch (_: NoSuchElementException) {
-                    null
-                }
+    private val serverListener: ServerManager.ServerListener
 
-                if (currentServerId !in serverList) { // Server is removed
-                    state["current_server"] = firstServer
-                } else if (serverList[currentServerId] != currentServer.value) { // Server is updated
-                    state["current_server"] = serverList[currentServerId]
+    init {
+        val firstServer = try {
+            val serverList = serversFlow.value
+            serverList[serverList.firstKey()]
+        } catch (_: NoSuchElementException) {
+            null
+        }
+        state["current_server"] = firstServer
+
+        serverListener = object : ServerManager.ServerListener {
+            override fun onServerAddedListener(serverConfig: ServerConfig) {
+                if (serversFlow.value.size == 1) {
+                    state["current_server"] = serverConfig
+                }
+            }
+
+            override fun onServerRemovedListener(serverConfig: ServerConfig) {
+                if (serversFlow.value.size == 0) {
+                    state["current_server"] = null
+                }
+            }
+
+            override fun onServerChangedListener(serverConfig: ServerConfig) {
+                if (currentServer.value?.id != serverConfig.id) {
+                    state["current_server"] = serverConfig
                 }
             }
         }
+
+        serverManager.addServerListener(serverListener)
+    }
+
+    override fun onCleared() {
+        serverManager.removeServerListener(serverListener)
     }
 }

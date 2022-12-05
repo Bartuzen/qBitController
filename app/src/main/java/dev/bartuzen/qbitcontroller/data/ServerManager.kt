@@ -7,7 +7,6 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.network.RequestManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
@@ -15,8 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ServerManager @Inject constructor(
-    @ApplicationContext context: Context,
-    private val requestManager: RequestManager
+    @ApplicationContext context: Context
 ) {
     private val sharedPref = context.getSharedPreferences("servers", Context.MODE_PRIVATE)
 
@@ -69,6 +67,8 @@ class ServerManager @Inject constructor(
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .putInt(Keys.LAST_SERVER_ID, serverId)
             .apply()
+
+        listeners.forEach { it.onServerAddedListener(serverConfig) }
     }
 
     fun editServer(serverConfig: ServerConfig) {
@@ -82,7 +82,7 @@ class ServerManager @Inject constructor(
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .apply()
 
-        requestManager.removeTorrentService(serverConfig)
+        listeners.forEach { it.onServerChangedListener(serverConfig) }
     }
 
     fun removeServer(serverConfig: ServerConfig) {
@@ -96,7 +96,23 @@ class ServerManager @Inject constructor(
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .apply()
 
-        requestManager.removeTorrentService(serverConfig)
+        listeners.forEach { it.onServerRemovedListener(serverConfig) }
+    }
+
+    private val listeners = mutableListOf<ServerListener>()
+
+    fun addServerListener(serverListener: ServerListener) {
+        listeners.add(serverListener)
+    }
+
+    fun removeServerListener(serverListener: ServerListener) {
+        listeners.add(serverListener)
+    }
+
+    interface ServerListener {
+        fun onServerAddedListener(serverConfig: ServerConfig)
+        fun onServerRemovedListener(serverConfig: ServerConfig)
+        fun onServerChangedListener(serverConfig: ServerConfig)
     }
 
     private object Keys {
