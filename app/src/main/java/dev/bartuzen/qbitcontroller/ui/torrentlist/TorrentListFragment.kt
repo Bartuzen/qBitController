@@ -152,44 +152,41 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     true
                 }
                 R.id.menu_sort_name -> {
-                    viewModel.setTorrentSort(TorrentSort.NAME).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
+                    viewModel.setTorrentSort(TorrentSort.NAME)
                     true
                 }
                 R.id.menu_sort_hash -> {
-                    viewModel.setTorrentSort(TorrentSort.HASH).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
+                    viewModel.setTorrentSort(TorrentSort.HASH)
                     true
                 }
                 R.id.menu_sort_dlspeed -> {
-                    viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
+                    viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED)
                     true
                 }
                 R.id.menu_sort_upspeed -> {
-                    viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
+                    viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED)
                     true
                 }
                 R.id.menu_sort_priority -> {
-                    viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
+                    viewModel.setTorrentSort(TorrentSort.PRIORITY)
                     true
                 }
                 R.id.menu_sort_reverse -> {
-                    viewModel.changeReverseSorting().invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
+                    viewModel.changeReverseSorting()
                     true
                 }
                 else -> false
             }
         }, viewLifecycleOwner)
+
+        combine(
+            viewModel.torrentSort,
+            viewModel.isReverseSorting
+        ) { _, _ ->
+
+        }.launchAndCollectLatestIn(viewLifecycleOwner) {
+            viewModel.loadTorrentList(serverConfig)
+        }
 
         var actionMode: ActionMode? = null
         val adapter = TorrentListAdapter().apply {
@@ -366,7 +363,6 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadTorrentList(serverConfig)
             viewModel.updateCategoryAndTags(serverConfig)
         }
 

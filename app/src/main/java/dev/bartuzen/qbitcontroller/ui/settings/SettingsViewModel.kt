@@ -2,16 +2,12 @@ package dev.bartuzen.qbitcontroller.ui.settings
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.bartuzen.qbitcontroller.data.SettingsManager
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import dev.bartuzen.qbitcontroller.data.ServerManager
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val settingsManager: SettingsManager
+    private val serverManager: ServerManager
 ) : ViewModel() {
-    fun getServers() = runBlocking {
-        settingsManager.serversFlow.first()
-    }
+    fun getServers() = serverManager.serversFlow.value
 }
