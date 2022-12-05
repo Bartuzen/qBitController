@@ -72,7 +72,7 @@ class ServerManager @Inject constructor(
     }
 
     fun editServer(serverConfig: ServerConfig) {
-        val serverConfigsJson = sharedPref.getString("serverConfigs", null) ?: "{}"
+        val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
 
         val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
             serverConfigs[serverConfig.id] = serverConfig
