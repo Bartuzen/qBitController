@@ -10,7 +10,10 @@ class EnumPreference<T : Enum<*>>(
     private val factory: (String) -> T
 ) {
     var value: T
-        get() = factory(sharedPref.getString(key, initialValue.name)!!)
+        get() {
+            val enumString = sharedPref.getString(key, null)
+            return if (enumString != null) factory(enumString) else initialValue
+        }
         set(value) {
             sharedPref.edit()
                 .putString(key, value.name)
