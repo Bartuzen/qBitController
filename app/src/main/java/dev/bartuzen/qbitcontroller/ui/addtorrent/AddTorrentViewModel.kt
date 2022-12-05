@@ -28,12 +28,10 @@ import javax.inject.Inject
 class AddTorrentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: AddTorrentRepository,
-    settingsManager: SettingsManager
+    private val settingsManager: SettingsManager
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
-
-    val serversFlow = settingsManager.serversFlow
 
     private val _categoryList = MutableStateFlow<List<String>?>(null)
     val categoryList = _categoryList.asStateFlow()
@@ -51,6 +49,8 @@ class AddTorrentViewModel @Inject constructor(
     val isCreating = _isCreating.asStateFlow()
 
     var isInitialLoadStarted = false
+
+    fun getServers() = settingsManager.serversFlow.value.values.toList()
 
     fun createTorrent(
         serverConfig: ServerConfig,
