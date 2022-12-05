@@ -56,7 +56,7 @@ class ServerManager @Inject constructor(
         password: String
     ) {
         val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
-        val serverId = sharedPref.getInt(Keys.SERVER_CONFIGS, -1) + 1
+        val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
 
         val serverConfig =
             ServerConfig(serverId, name, protocol, host, port, path, username, password)
