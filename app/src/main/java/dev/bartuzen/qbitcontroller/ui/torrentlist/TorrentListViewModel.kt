@@ -15,6 +15,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -42,8 +43,8 @@ class TorrentListViewModel @Inject constructor(
     private val _selectedTag = MutableStateFlow<String?>(null)
     val selectedTag = _selectedTag.asStateFlow()
 
-    val torrentSort = settingsManager.sort.flow
-    val isReverseSorting = settingsManager.isReverseSorting.flow
+    val torrentSort = settingsManager.sortFlow
+    val isReverseSorting = settingsManager.isReverseSortingFlow
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -56,19 +57,21 @@ class TorrentListViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateTorrentList(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (
-            val result =
-                repository.getTorrentList(serverConfig, torrentSort.value, isReverseSorting.value)
-        ) {
-            is RequestResult.Success -> {
-                _torrentList.value = result.data
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+    private fun updateTorrentList(serverConfig: ServerConfig) =
+        viewModelScope.launch {
+            when (val result = repository.getTorrentList(
+                serverConfig,
+                torrentSort.first(),
+                isReverseSorting.first()
+            )) {
+                is RequestResult.Success -> {
+                    _torrentList.value = result.data
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result.error))
+                }
             }
         }
-    }
 
     fun updateCategoryAndTags(serverConfig: ServerConfig) = viewModelScope.launch {
         val categoriesDeferred = async {
@@ -257,12 +260,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun setTorrentSort(torrentSort: TorrentSort) {
-        settingsManager.sort.value = torrentSort
+    fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
+        settingsManager.setTorrentSort(torrentSort)
     }
 
-    fun changeReverseSorting() {
-        settingsManager.isReverseSorting.value = !isReverseSorting.value
+    fun changeReverseSorting() = viewModelScope.launch {
+        settingsManager.setIsReverseSorting(!isReverseSorting.first())
     }
 
     fun setSearchQuery(query: String) {

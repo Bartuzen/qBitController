@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -13,11 +13,11 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val state: SavedStateHandle,
-    serverManager: ServerManager
+    settingsManager: SettingsManager
 ) : ViewModel() {
     val currentServer = state.getStateFlow<ServerConfig?>("current_server", null)
 
-    val serversFlow = serverManager.serversFlow
+    val serverList = settingsManager.serversFlow
 
     fun setCurrentServer(serverConfig: ServerConfig) {
         state["current_server"] = serverConfig
@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            serversFlow.collectLatest { serverList ->
+            serverList.collectLatest { serverList ->
                 val currentServerId = currentServer.value?.id ?: -1
                 val firstServer = try {
                     serverList[serverList.firstKey()]

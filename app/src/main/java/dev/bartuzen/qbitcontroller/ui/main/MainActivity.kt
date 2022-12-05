@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        viewModel.serversFlow.launchAndCollectLatestIn(this) { serverList ->
+        viewModel.serverList.launchAndCollectLatestIn(this) { serverList ->
             serverListAdapter.submitList(serverList.values.toList())
 
             binding.textClickToAddServer.visibility =

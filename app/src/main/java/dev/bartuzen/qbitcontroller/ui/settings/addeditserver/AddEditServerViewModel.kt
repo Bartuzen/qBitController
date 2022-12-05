@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.settings.addeditserver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditServerViewModel @Inject constructor(
-    private val serverManager: ServerManager
+    private val settingsManager: SettingsManager
 ) : ViewModel() {
     fun addServer(
         name: String?,
@@ -22,14 +22,14 @@ class AddEditServerViewModel @Inject constructor(
         username: String,
         password: String
     ) = viewModelScope.launch {
-        serverManager.addServer(name, protocol, host, port, path, username, password)
+        settingsManager.addServer(name, protocol, host, port, path, username, password)
     }
 
     fun editServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        serverManager.editServer(serverConfig)
+        settingsManager.editServer(serverConfig)
     }
 
     fun removeServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        serverManager.removeServer(serverConfig)
+        settingsManager.removeServer(serverConfig)
     }
 }
