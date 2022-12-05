@@ -6,6 +6,7 @@
     <item
         android:id="@+id/menu_pause"
         android:icon="@drawable/ic_pause"
+        android:orderInCategory="1"
         android:title="@string/menu_pause"
         android:visible="false"
         app:showAsAction="ifRoom"
@@ -14,6 +15,7 @@
     <item
         android:id="@+id/menu_resume"
         android:icon="@drawable/ic_resume"
+        android:orderInCategory="1"
         android:title="@string/menu_resume"
         android:visible="false"
         app:showAsAction="ifRoom" />
@@ -21,46 +23,54 @@
     <item
         android:id="@+id/menu_delete"
         android:icon="@drawable/ic_delete"
+        android:orderInCategory="1"
         android:title="@string/menu_delete"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_dlspeed_limit"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_dlspeed_limit"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_upspeed_limit"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_upspeed_limit"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_sequential_download"
         android:checkable="true"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_sequential_download"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_prioritize_first_last_pieces"
         android:checkable="true"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_prioritize_first_last_pieces"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_automatic_torrent_management"
         android:checkable="true"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_automatic_torrent_management"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_force_start"
         android:checkable="true"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_force_start"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_super_seeding"
         android:checkable="true"
+        android:orderInCategory="1"
         android:title="@string/torrent_menu_super_seeding"
         app:showAsAction="never" />
 
