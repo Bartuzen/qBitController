@@ -74,7 +74,6 @@ if (!gradle.startParameter.taskRequests.toString().contains("Free")) {
     apply(plugin = "com.google.firebase.crashlytics")
 }
 
-
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
