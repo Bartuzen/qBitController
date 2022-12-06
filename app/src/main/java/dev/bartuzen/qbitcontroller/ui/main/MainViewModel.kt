@@ -45,7 +45,7 @@ class MainViewModel @Inject constructor(
             }
 
             override fun onServerChangedListener(serverConfig: ServerConfig) {
-                if (currentServer.value?.id != serverConfig.id) {
+                if (currentServer.value?.id == serverConfig.id) {
                     state["current_server"] = serverConfig
                 }
             }
