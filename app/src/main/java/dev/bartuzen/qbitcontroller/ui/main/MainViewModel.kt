@@ -16,7 +16,7 @@ class MainViewModel @Inject constructor(
 
     val serversFlow = serverManager.serversFlow
 
-    fun setCurrentServer(serverConfig: ServerConfig) {
+    fun setCurrentServer(serverConfig: ServerConfig?) {
         state["current_server"] = serverConfig
     }
 
@@ -30,24 +30,24 @@ class MainViewModel @Inject constructor(
     }
 
     init {
-        state["current_server"] = getFirstServer()
+        setCurrentServer(getFirstServer())
 
         serverListener = object : ServerManager.ServerListener {
             override fun onServerAddedListener(serverConfig: ServerConfig) {
                 if (serversFlow.value.size == 1) {
-                    state["current_server"] = serverConfig
+                    setCurrentServer(serverConfig)
                 }
             }
 
             override fun onServerRemovedListener(serverConfig: ServerConfig) {
                 if (currentServer.value?.id == serverConfig.id) {
-                    state["current_server"] = getFirstServer()
+                    setCurrentServer(getFirstServer())
                 }
             }
 
             override fun onServerChangedListener(serverConfig: ServerConfig) {
                 if (currentServer.value?.id == serverConfig.id) {
-                    state["current_server"] = serverConfig
+                    setCurrentServer(serverConfig)
                 }
             }
         }
