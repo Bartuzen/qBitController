@@ -104,6 +104,14 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
             binding.inputLayoutHost.isErrorEnabled = false
         }
 
+        val portString = binding.editPort.text.toString()
+        if (port != null && port !in 1..65535 || portString.length > 5) {
+            binding.inputLayoutPort.error = getString(R.string.settings_server_port_must_be_between)
+            isValid = false
+        } else {
+            binding.inputLayoutPort.isErrorEnabled = false
+        }
+
         if (username == null) {
             binding.inputLayoutUsername.error = getString(R.string.settings_server_required_field)
             isValid = false
