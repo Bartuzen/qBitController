@@ -2,7 +2,6 @@ package dev.bartuzen.qbitcontroller.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,16 +28,6 @@ class ServerManager @Inject constructor(
     private val _serversFlow = MutableStateFlow(getServerConfigs())
     val serversFlow = _serversFlow.asStateFlow()
 
-    private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == Keys.SERVER_CONFIGS) {
-            _serversFlow.value = getServerConfigs()
-        }
-    }
-
-    init {
-        sharedPref.registerOnSharedPreferenceChangeListener(listener)
-    }
-
     private fun editServerMap(serverConfigsJson: String, block: (ServerConfigMap) -> Unit): String {
         val mapper = jacksonObjectMapper()
         val serverConfigs = mapper.readValue<ServerConfigMap>(serverConfigsJson)
@@ -59,12 +48,16 @@ class ServerManager @Inject constructor(
             serverConfigs[serverId] = newServerConfig
         }
 
-        sharedPref.edit()
+        val isSuccess = sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .putInt(Keys.LAST_SERVER_ID, serverId)
             .commit()
 
-        listeners.forEach { it.onServerAddedListener(newServerConfig) }
+        if (isSuccess) {
+            _serversFlow.value = getServerConfigs()
+            listeners.forEach { it.onServerAddedListener(newServerConfig) }
+        }
+
     }
 
     @SuppressLint("ApplySharedPref")
@@ -75,11 +68,14 @@ class ServerManager @Inject constructor(
             serverConfigs[serverConfig.id] = serverConfig
         }
 
-        sharedPref.edit()
+        val isSuccess = sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .commit()
 
-        listeners.forEach { it.onServerChangedListener(serverConfig) }
+        if (isSuccess) {
+            _serversFlow.value = getServerConfigs()
+            listeners.forEach { it.onServerChangedListener(serverConfig) }
+        }
     }
 
     @SuppressLint("ApplySharedPref")
@@ -90,11 +86,14 @@ class ServerManager @Inject constructor(
             serverConfigs.remove(serverConfig.id)
         }
 
-        sharedPref.edit()
+        val isSuccess = sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .commit()
 
-        listeners.forEach { it.onServerRemovedListener(serverConfig) }
+        if (isSuccess) {
+            _serversFlow.value = getServerConfigs()
+            listeners.forEach { it.onServerRemovedListener(serverConfig) }
+        }
     }
 
     private val listeners = mutableListOf<ServerListener>()
