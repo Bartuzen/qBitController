@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,23 +47,16 @@ class ServerManager @Inject constructor(
     }
 
     @SuppressLint("ApplySharedPref")
-    suspend fun addServer(
-        name: String?,
-        protocol: Protocol,
-        host: String,
-        port: Int?,
-        path: String?,
-        username: String,
-        password: String
-    ) = withContext(Dispatchers.IO) {
+    suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
         val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
 
-        val serverConfig =
-            ServerConfig(serverId, name, protocol, host, port, path, username, password)
+        val newServerConfig = serverConfig.copy(
+            id = serverId
+        )
 
         val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-            serverConfigs[serverId] = serverConfig
+            serverConfigs[serverId] = newServerConfig
         }
 
         sharedPref.edit()
@@ -72,7 +64,7 @@ class ServerManager @Inject constructor(
             .putInt(Keys.LAST_SERVER_ID, serverId)
             .commit()
 
-        listeners.forEach { it.onServerAddedListener(serverConfig) }
+        listeners.forEach { it.onServerAddedListener(newServerConfig) }
     }
 
     @SuppressLint("ApplySharedPref")

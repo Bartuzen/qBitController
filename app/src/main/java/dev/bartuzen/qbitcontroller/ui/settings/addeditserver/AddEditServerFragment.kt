@@ -119,21 +119,22 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server
 
         if (host != null && username != null && username.length >= 3 && password != null && password.length >= 6) {
             val serverConfig = serverConfig
+            val newConfig = ServerConfig(
+                id = serverConfig?.id ?: -1,
+                name = name,
+                protocol = protocol,
+                host = host,
+                port = port,
+                path = path,
+                username = username,
+                password = password
+            )
+
             if (serverConfig == null) {
-                viewModel.addServer(name, protocol, host, port, path, username, password)
-                    .invokeOnCompletion {
-                        finish(Result.ADDED)
-                    }
+                viewModel.addServer(newConfig).invokeOnCompletion {
+                    finish(Result.ADDED)
+                }
             } else {
-                val newConfig = serverConfig.copy(
-                    name = name,
-                    protocol = protocol,
-                    host = host,
-                    port = port,
-                    path = path,
-                    username = username,
-                    password = password
-                )
                 viewModel.editServer(newConfig).invokeOnCompletion {
                     finish(Result.EDITED)
                 }
