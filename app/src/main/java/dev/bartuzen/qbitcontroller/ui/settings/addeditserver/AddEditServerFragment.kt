@@ -18,7 +18,7 @@ import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddServerBinding
+import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddEditServerBinding
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
@@ -27,8 +27,8 @@ import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 
 @FragmentWithArgs
 @AndroidEntryPoint
-class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_server) {
-    private val binding by viewBinding(FragmentSettingsAddServerBinding::bind)
+class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_server) {
+    private val binding by viewBinding(FragmentSettingsAddEditServerBinding::bind)
 
     private val viewModel: AddEditServerViewModel by viewModels()
 
