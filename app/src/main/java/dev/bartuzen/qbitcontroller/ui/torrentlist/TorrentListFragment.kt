@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.torrentlist
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.Menu
@@ -17,6 +18,7 @@ import androidx.core.view.iterator
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
@@ -38,8 +40,8 @@ import dev.bartuzen.qbitcontroller.utils.Quadruple
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
-import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -287,7 +289,23 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }
         }
         binding.recyclerTorrentList.adapter = adapter
-        binding.recyclerTorrentList.setItemMargin(8, 8)
+        binding.recyclerTorrentList.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                val verticalPx = 8.toPx(requireContext())
+                val horizontalPx = 4.toPx(requireContext())
+                if (parent.getChildAdapterPosition(view) == 0) {
+                    outRect.top = verticalPx
+                }
+                outRect.bottom = verticalPx
+                outRect.left = horizontalPx
+                outRect.right = horizontalPx
+            }
+        })
 
         categoryTagAdapter = CategoryTagAdapter(
             onSelected = { isCategory, name ->

@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.Menu
@@ -9,6 +10,7 @@ import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -24,8 +26,8 @@ import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
-import dev.bartuzen.qbitcontroller.utils.setItemMargin
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 
 @FragmentWithArgs
@@ -127,7 +129,23 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
             }
         }
         binding.recyclerTrackers.adapter = adapter
-        binding.recyclerTrackers.setItemMargin(8, 8)
+        binding.recyclerTrackers.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                val verticalPx = 8.toPx(requireContext())
+                val horizontalPx = 4.toPx(requireContext())
+                if (parent.getChildAdapterPosition(view) == 0) {
+                    outRect.top = verticalPx
+                }
+                outRect.bottom = verticalPx
+                outRect.left = horizontalPx
+                outRect.right = horizontalPx
+            }
+        })
 
         onPageChange = object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
