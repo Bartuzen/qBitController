@@ -20,7 +20,25 @@ class MainViewModel @Inject constructor(
         state["current_server"] = serverConfig
     }
 
-    private val serverListener: ServerManager.ServerListener
+    private val serverListener = object : ServerManager.ServerListener {
+        override fun onServerAddedListener(serverConfig: ServerConfig) {
+            if (serversFlow.value.size == 1) {
+                setCurrentServer(serverConfig)
+            }
+        }
+
+        override fun onServerRemovedListener(serverConfig: ServerConfig) {
+            if (currentServer.value?.id == serverConfig.id) {
+                setCurrentServer(getFirstServer())
+            }
+        }
+
+        override fun onServerChangedListener(serverConfig: ServerConfig) {
+            if (currentServer.value?.id == serverConfig.id) {
+                setCurrentServer(serverConfig)
+            }
+        }
+    }
 
     private fun getFirstServer() = try {
         val serverList = serversFlow.value
@@ -31,26 +49,6 @@ class MainViewModel @Inject constructor(
 
     init {
         setCurrentServer(getFirstServer())
-
-        serverListener = object : ServerManager.ServerListener {
-            override fun onServerAddedListener(serverConfig: ServerConfig) {
-                if (serversFlow.value.size == 1) {
-                    setCurrentServer(serverConfig)
-                }
-            }
-
-            override fun onServerRemovedListener(serverConfig: ServerConfig) {
-                if (currentServer.value?.id == serverConfig.id) {
-                    setCurrentServer(getFirstServer())
-                }
-            }
-
-            override fun onServerChangedListener(serverConfig: ServerConfig) {
-                if (currentServer.value?.id == serverConfig.id) {
-                    setCurrentServer(serverConfig)
-                }
-            }
-        }
 
         serverManager.addServerListener(serverListener)
     }
