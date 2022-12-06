@@ -68,7 +68,7 @@ class ServerListAdapter(private val listener: OnItemClickListener? = null) :
             oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: ServerConfig, newItem: ServerConfig) =
-            oldItem.name == newItem.name && oldItem.host == newItem.name
+            oldItem.name == newItem.name && oldItem.host == newItem.host
     }
 
     interface OnItemClickListener {
