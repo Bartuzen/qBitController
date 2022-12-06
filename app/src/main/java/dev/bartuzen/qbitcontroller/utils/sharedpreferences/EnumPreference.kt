@@ -1,7 +1,9 @@
 package dev.bartuzen.qbitcontroller.utils.sharedpreferences
 
 import android.content.SharedPreferences
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.withContext
 
 class EnumPreference<T : Enum<*>>(
     private val sharedPref: SharedPreferences,
@@ -19,6 +21,12 @@ class EnumPreference<T : Enum<*>>(
                 .putString(key, value.name)
                 .apply()
         }
+
+    suspend fun setValue(value: T) = withContext(Dispatchers.IO) {
+        sharedPref.edit()
+            .putString(key, value.name)
+            .commit()
+    }
 
     val flow = MutableStateFlow(value)
 

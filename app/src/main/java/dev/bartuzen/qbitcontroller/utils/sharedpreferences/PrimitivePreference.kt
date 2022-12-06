@@ -1,7 +1,9 @@
 package dev.bartuzen.qbitcontroller.utils.sharedpreferences
 
 import android.content.SharedPreferences
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
@@ -11,6 +13,31 @@ class PrimitivePreference<T : Any>(
     private val initialValue: T,
     private val type: KClass<T>
 ) {
+    private fun getEditor(value: T): SharedPreferences.Editor {
+        val editor = sharedPref.edit()
+        when (type) {
+            Int::class -> {
+                editor.putInt(key, value as Int) as T
+            }
+            Boolean::class -> {
+                editor.putBoolean(key, value as Boolean) as T
+            }
+            Float::class -> {
+                editor.putFloat(key, value as Float) as T
+            }
+            Long::class -> {
+                editor.putLong(key, value as Long) as T
+            }
+            String::class -> {
+                editor.putString(key, value as String) as T
+            }
+            else -> {
+                throw UnsupportedOperationException("${type.simpleName} is not supported in PrimitivePreference")
+            }
+        }
+        return editor
+    }
+
     var value: T
         get() = when (type) {
             Int::class -> {
@@ -33,29 +60,12 @@ class PrimitivePreference<T : Any>(
             }
         }
         set(value) {
-            val editor = sharedPref.edit()
-            when (type) {
-                Int::class -> {
-                    editor.putInt(key, value as Int) as T
-                }
-                Boolean::class -> {
-                    editor.putBoolean(key, value as Boolean) as T
-                }
-                Float::class -> {
-                    editor.putFloat(key, value as Float) as T
-                }
-                Long::class -> {
-                    editor.putLong(key, value as Long) as T
-                }
-                String::class -> {
-                    editor.putString(key, value as String) as T
-                }
-                else -> {
-                    throw UnsupportedOperationException("${type.simpleName} is not supported in PrimitivePreference")
-                }
-            }
-            editor.apply()
+            getEditor(value).apply()
         }
+
+    suspend fun setValue(value: T) = withContext(Dispatchers.IO) {
+        getEditor(value).commit()
+    }
 
     val flow = MutableStateFlow(value)
 
