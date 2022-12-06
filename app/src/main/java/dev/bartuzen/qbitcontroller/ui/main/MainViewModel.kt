@@ -22,14 +22,15 @@ class MainViewModel @Inject constructor(
 
     private val serverListener: ServerManager.ServerListener
 
+    private fun getFirstServer() = try {
+        val serverList = serversFlow.value
+        serverList[serverList.firstKey()]
+    } catch (_: NoSuchElementException) {
+        null
+    }
+
     init {
-        val firstServer = try {
-            val serverList = serversFlow.value
-            serverList[serverList.firstKey()]
-        } catch (_: NoSuchElementException) {
-            null
-        }
-        state["current_server"] = firstServer
+        state["current_server"] = getFirstServer()
 
         serverListener = object : ServerManager.ServerListener {
             override fun onServerAddedListener(serverConfig: ServerConfig) {
@@ -39,8 +40,8 @@ class MainViewModel @Inject constructor(
             }
 
             override fun onServerRemovedListener(serverConfig: ServerConfig) {
-                if (serversFlow.value.size == 0) {
-                    state["current_server"] = null
+                if (currentServer.value?.id == serverConfig.id) {
+                    state["current_server"] = getFirstServer()
                 }
             }
 
