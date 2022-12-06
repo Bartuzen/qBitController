@@ -95,49 +95,63 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
         val username = binding.editUsername.text.toString().ifEmpty { null }
         val password = binding.editPassword.text.toString().ifEmpty { null }
 
+        var isValid = true
+
         if (host == null) {
             binding.inputLayoutHost.error = getString(R.string.settings_server_required_field)
+            isValid = false
         } else {
             binding.inputLayoutHost.isErrorEnabled = false
         }
+
         if (username == null) {
             binding.inputLayoutUsername.error = getString(R.string.settings_server_required_field)
+            isValid = false
         } else if (username.length < 3) {
             binding.inputLayoutUsername.error =
                 getString(R.string.settings_server_username_min_character)
+            isValid = false
         } else {
             binding.inputLayoutUsername.isErrorEnabled = false
         }
+
         if (password == null) {
             binding.inputLayoutPassword.error = getString(R.string.settings_server_required_field)
+            isValid = false
         } else if (password.length < 6) {
             binding.inputLayoutPassword.error =
                 getString(R.string.settings_server_password_min_character)
+            isValid = false
         } else {
             binding.inputLayoutPassword.isErrorEnabled = false
         }
 
-        if (host != null && username != null && username.length >= 3 && password != null && password.length >= 6) {
-            val serverConfig = serverConfig
-            val newConfig = ServerConfig(
-                id = serverConfig?.id ?: -1,
-                name = name,
-                protocol = protocol,
-                host = host,
-                port = port,
-                path = path,
-                username = username,
-                password = password
-            )
+        if (!isValid) {
+            return
+        }
 
-            if (serverConfig == null) {
-                viewModel.addServer(newConfig).invokeOnCompletion {
-                    finish(Result.ADDED)
-                }
-            } else {
-                viewModel.editServer(newConfig).invokeOnCompletion {
-                    finish(Result.EDITED)
-                }
+        requireNotNull(host)
+        requireNotNull(username)
+        requireNotNull(password)
+
+        val config = ServerConfig(
+            id = serverConfig?.id ?: -1,
+            name = name,
+            protocol = protocol,
+            host = host,
+            port = port,
+            path = path,
+            username = username,
+            password = password
+        )
+
+        if (config.id == -1) {
+            viewModel.addServer(config).invokeOnCompletion {
+                finish(Result.ADDED)
+            }
+        } else {
+            viewModel.editServer(config).invokeOnCompletion {
+                finish(Result.EDITED)
             }
         }
     }
