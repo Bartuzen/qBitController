@@ -137,7 +137,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
                 state: RecyclerView.State
             ) {
                 val verticalPx = 8.toPx(requireContext())
-                val horizontalPx = 4.toPx(requireContext())
+                val horizontalPx = 8.toPx(requireContext())
                 if (parent.getChildAdapterPosition(view) == 0) {
                     outRect.top = verticalPx
                 }
