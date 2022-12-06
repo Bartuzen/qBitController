@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import kotlinx.coroutines.CancellationException
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -114,6 +115,9 @@ class RequestManager @Inject constructor(
             throw e
         }
     } catch (e: Exception) {
+        if (e is CancellationException) {
+            throw e
+        }
         RequestResult.Error(RequestError.UNKNOWN)
     }
 }
