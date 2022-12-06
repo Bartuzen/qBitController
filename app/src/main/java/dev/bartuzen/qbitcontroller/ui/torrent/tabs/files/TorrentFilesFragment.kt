@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -33,18 +32,15 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val adapter = TorrentFilesAdapter(object : TorrentFilesAdapter.OnItemClickListener {
-            override fun onClick(file: TorrentFileNode) {
+        val adapter = TorrentFilesAdapter(
+            onClick = { file ->
                 if (file.isFolder) {
                     viewModel.goToFolder(file.name)
                 }
-            }
-        })
+            })
         val backButtonAdapter = TorrentFilesBackButtonAdapter(
-            object : TorrentFilesBackButtonAdapter.OnItemClickListener {
-                override fun onClick() {
-                    viewModel.goBack()
-                }
+            onClick = {
+                viewModel.goBack()
             }
         )
         binding.recyclerFiles.adapter = ConcatAdapter(backButtonAdapter, adapter)

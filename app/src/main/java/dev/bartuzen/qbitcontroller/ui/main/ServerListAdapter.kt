@@ -10,7 +10,9 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemServerBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 
-class ServerListAdapter(private val listener: OnItemClickListener? = null) :
+class ServerListAdapter(
+    private val onClick: (serverConfig: ServerConfig) -> Unit
+) :
     ListAdapter<ServerConfig, ServerListAdapter.ViewHolder>(DiffCallBack()) {
     var selectedServerId: Int = -1
 
@@ -39,7 +41,7 @@ class ServerListAdapter(private val listener: OnItemClickListener? = null) :
                         }
                         selectedServerId = serverConfig.id
 
-                        listener?.onClick(serverConfig)
+                        onClick.invoke(serverConfig)
                     }
                 }
             }
@@ -69,9 +71,5 @@ class ServerListAdapter(private val listener: OnItemClickListener? = null) :
 
         override fun areContentsTheSame(oldItem: ServerConfig, newItem: ServerConfig) =
             oldItem.name == newItem.name && oldItem.host == newItem.host
-    }
-
-    interface OnItemClickListener {
-        fun onClick(serverConfig: ServerConfig)
     }
 }

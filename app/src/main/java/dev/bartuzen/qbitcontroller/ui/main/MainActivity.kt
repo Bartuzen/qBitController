@@ -21,7 +21,6 @@ import dev.bartuzen.qbitcontroller.BuildConfig
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.CategoryTagAdapter
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
@@ -92,12 +91,12 @@ class MainActivity : AppCompatActivity() {
         binding.layoutDrawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-        val serverListAdapter = ServerListAdapter(object : ServerListAdapter.OnItemClickListener {
-            override fun onClick(serverConfig: ServerConfig) {
+        val serverListAdapter = ServerListAdapter(
+            onClick = { serverConfig ->
                 binding.layoutDrawer.closeDrawer(GravityCompat.START)
                 viewModel.setCurrentServer(serverConfig)
             }
-        })
+        )
         drawerAdapter.addAdapter(serverListAdapter)
 
         binding.recyclerDrawer.adapter = drawerAdapter

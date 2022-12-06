@@ -10,7 +10,9 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 
-class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
+class TorrentFilesAdapter(
+    private val onClick: (file: TorrentFileNode) -> Unit
+) :
     ListAdapter<TorrentFileNode, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -30,7 +32,7 @@ class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
             binding.root.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     getItem(bindingAdapterPosition)?.let { file ->
-                        listener?.onClick(file)
+                        onClick.invoke(file)
                     }
                 }
             }
@@ -52,9 +54,5 @@ class TorrentFilesAdapter(private val listener: OnItemClickListener? = null) :
 
         override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) =
             oldItem.name == newItem.name
-    }
-
-    interface OnItemClickListener {
-        fun onClick(file: TorrentFileNode)
     }
 }

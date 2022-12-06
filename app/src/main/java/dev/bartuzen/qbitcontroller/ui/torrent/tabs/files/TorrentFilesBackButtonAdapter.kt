@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 
-class TorrentFilesBackButtonAdapter(private val listener: OnItemClickListener? = null) :
+class TorrentFilesBackButtonAdapter(
+    private val onClick: () -> Unit
+) :
     RecyclerView.Adapter<TorrentFilesBackButtonAdapter.ViewHolder>() {
     var isVisible = false
         set(value) {
@@ -33,7 +35,7 @@ class TorrentFilesBackButtonAdapter(private val listener: OnItemClickListener? =
         init {
             binding.root.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    listener?.onClick()
+                    onClick.invoke()
                 }
             }
         }
@@ -41,10 +43,6 @@ class TorrentFilesBackButtonAdapter(private val listener: OnItemClickListener? =
         fun bind() {
             binding.textName.text = "..."
         }
-    }
-
-    interface OnItemClickListener {
-        fun onClick()
     }
 
     override fun getItemCount() = if (isVisible) 1 else 0
