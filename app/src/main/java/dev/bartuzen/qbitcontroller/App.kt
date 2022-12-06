@@ -20,7 +20,7 @@ class App : Application() {
         super.onCreate()
 
         CoroutineScope(Dispatchers.Main).launch {
-            settingsManager.themeFlow.collectLatest { theme ->
+            settingsManager.theme.flow.collectLatest { theme ->
                 AppCompatDelegate.setDefaultNightMode(theme.toDelegate())
             }
         }

@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.network
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -16,8 +17,24 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RequestManager @Inject constructor() {
+class RequestManager @Inject constructor(
+    serverManager: ServerManager
+) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
+
+    init {
+        serverManager.addServerListener(object : ServerManager.ServerListener {
+            override fun onServerAddedListener(serverConfig: ServerConfig) {}
+
+            override fun onServerRemovedListener(serverConfig: ServerConfig) {
+                torrentServiceMap.remove(serverConfig.id)
+            }
+
+            override fun onServerChangedListener(serverConfig: ServerConfig) {
+                torrentServiceMap.remove(serverConfig.id)
+            }
+        })
+    }
 
     private fun getTorrentService(serverConfig: ServerConfig) =
         torrentServiceMap.getOrPut(serverConfig.id) {
@@ -50,10 +67,6 @@ class RequestManager @Inject constructor() {
                 .build()
             retrofit.create(TorrentService::class.java)
         }
-
-    fun removeTorrentService(serverConfig: ServerConfig) {
-        torrentServiceMap.remove(serverConfig.id)
-    }
 
     suspend fun <T : Any> request(
         serverConfig: ServerConfig,

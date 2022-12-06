@@ -2,146 +2,24 @@ package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.network.RequestManager
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import java.io.IOException
+import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
+import dev.bartuzen.qbitcontroller.utils.sharedpreferences.primitivePreference
 import java.util.SortedMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
-
 @Singleton
 class SettingsManager @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val requestManager: RequestManager
+    @ApplicationContext context: Context
 ) {
-    private val dataStore = context.dataStore
+    private val sharedPref = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
-    val themeFlow = getFromDataStore { settings ->
-        Theme.valueOf(settings[PreferenceKeys.THEME] ?: Theme.SYSTEM_DEFAULT.name)
-    }
-
-    val sortFlow = getFromDataStore { settings ->
-        TorrentSort.valueOf(settings[PreferenceKeys.TORRENT_SORT] ?: TorrentSort.NAME.name)
-    }
-
-    val isReverseSortingFlow = getFromDataStore { settings ->
-        settings[PreferenceKeys.IS_REVERSE_SORTING] ?: false
-    }
-
-    val serversFlow = getFromDataStore { settings ->
-        val serverConfigsJson =
-            settings[PreferenceKeys.SERVER_CONFIGS] ?: return@getFromDataStore sortedMapOf()
-
-        val mapper = jacksonObjectMapper()
-        mapper.readValue<ServerConfigMap>(serverConfigsJson)
-    }
-
-    private fun <T> getFromDataStore(block: (Preferences) -> T) =
-        dataStore.data
-            .catch { exception ->
-                if (exception is IOException) {
-                    emit(emptyPreferences())
-                } else {
-                    throw exception
-                }
-            }.map { settings ->
-                block(settings)
-            }
-
-    private fun editServerMap(serverConfigsJson: String, block: (ServerConfigMap) -> Unit): String {
-        val mapper = jacksonObjectMapper()
-        val serverConfigs = mapper.readValue<ServerConfigMap>(serverConfigsJson)
-        block(serverConfigs)
-        return mapper.writeValueAsString(serverConfigs)
-    }
-
-    suspend fun addServer(
-        name: String?,
-        protocol: Protocol,
-        host: String,
-        port: Int?,
-        path: String?,
-        username: String,
-        password: String
-    ) {
-        dataStore.edit { settings ->
-            val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: "{}"
-            val serverId = (settings[PreferenceKeys.LAST_SERVER_ID] ?: -1) + 1
-
-            val serverConfig =
-                ServerConfig(serverId, name, protocol, host, port, path, username, password)
-
-            val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-                serverConfigs[serverId] = serverConfig
-            }
-
-            settings[PreferenceKeys.LAST_SERVER_ID] = serverId
-            settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
-        }
-    }
-
-    suspend fun editServer(serverConfig: ServerConfig) {
-        dataStore.edit { settings ->
-            val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: "{}"
-
-            val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-                serverConfigs[serverConfig.id] = serverConfig
-            }
-
-            settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
-        }
-        requestManager.removeTorrentService(serverConfig)
-    }
-
-    suspend fun removeServer(serverConfig: ServerConfig) {
-        dataStore.edit { settings ->
-            val serverConfigsJson = settings[PreferenceKeys.SERVER_CONFIGS] ?: return@edit
-
-            val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-                serverConfigs.remove(serverConfig.id)
-            }
-
-            settings[PreferenceKeys.SERVER_CONFIGS] = newServerConfigsJson
-        }
-        requestManager.removeTorrentService(serverConfig)
-    }
-
-    suspend fun setTorrentSort(torrentSort: TorrentSort) {
-        dataStore.edit { settings ->
-            settings[PreferenceKeys.TORRENT_SORT] = torrentSort.name
-        }
-    }
-
-    suspend fun setIsReverseSorting(isReversed: Boolean) {
-        dataStore.edit { settings ->
-            settings[PreferenceKeys.IS_REVERSE_SORTING] = isReversed
-        }
-    }
-
-    private object PreferenceKeys {
-        val THEME = stringPreferencesKey("theme")
-        val SERVER_CONFIGS = stringPreferencesKey("server_configs")
-        val LAST_SERVER_ID = intPreferencesKey("last_server_id")
-        val TORRENT_SORT = stringPreferencesKey("sort")
-        val IS_REVERSE_SORTING = booleanPreferencesKey("is_sort_reversed")
-    }
+    val theme = enumPreference(sharedPref, "theme", Theme.SYSTEM_DEFAULT, Theme::valueOf)
+    val sort = enumPreference(sharedPref, "sort", TorrentSort.NAME, TorrentSort::valueOf)
+    val isReverseSorting = primitivePreference(sharedPref, "isReverseSorting", false)
 }
 
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>

@@ -29,8 +29,6 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -56,7 +54,7 @@ class AddTorrentActivity : AppCompatActivity() {
         if (serverConfigFromIntent != null) {
             serverConfig = serverConfigFromIntent
         } else {
-            val servers = runBlocking { viewModel.serversFlow.first().values.toList() }
+            val servers = viewModel.getServers()
 
             if (servers.isEmpty()) {
                 showToast(R.string.torrent_add_no_server)
