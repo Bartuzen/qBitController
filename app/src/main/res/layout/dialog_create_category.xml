@@ -12,7 +12,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_save_path"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
