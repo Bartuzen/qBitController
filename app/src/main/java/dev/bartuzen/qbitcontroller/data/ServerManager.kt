@@ -21,15 +21,14 @@ class ServerManager @Inject constructor(
 
     private val mapper = jacksonObjectMapper()
 
-    private fun getServerConfigs() = mapper.readValue<ServerConfigMap>(
+    private fun readServerConfigs() = mapper.readValue<ServerConfigMap>(
         sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
     )
 
-    private val _serversFlow = MutableStateFlow(getServerConfigs())
+    private val _serversFlow = MutableStateFlow(readServerConfigs())
     val serversFlow = _serversFlow.asStateFlow()
 
     private fun editServerMap(serverConfigsJson: String, block: (ServerConfigMap) -> Unit): String {
-        val mapper = jacksonObjectMapper()
         val serverConfigs = mapper.readValue<ServerConfigMap>(serverConfigsJson)
         block(serverConfigs)
         return mapper.writeValueAsString(serverConfigs)
@@ -54,7 +53,7 @@ class ServerManager @Inject constructor(
             .commit()
 
         if (isSuccess) {
-            _serversFlow.value = getServerConfigs()
+            _serversFlow.value = readServerConfigs()
             listeners.forEach { it.onServerAddedListener(newServerConfig) }
         }
 
@@ -73,7 +72,7 @@ class ServerManager @Inject constructor(
             .commit()
 
         if (isSuccess) {
-            _serversFlow.value = getServerConfigs()
+            _serversFlow.value = readServerConfigs()
             listeners.forEach { it.onServerChangedListener(serverConfig) }
         }
     }
@@ -91,7 +90,7 @@ class ServerManager @Inject constructor(
             .commit()
 
         if (isSuccess) {
-            _serversFlow.value = getServerConfigs()
+            _serversFlow.value = readServerConfigs()
             listeners.forEach { it.onServerRemovedListener(serverConfig) }
         }
     }
