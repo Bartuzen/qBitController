@@ -28,32 +28,23 @@ class ServerManager @Inject constructor(
     private val _serversFlow = MutableStateFlow(readServerConfigs())
     val serversFlow = _serversFlow.asStateFlow()
 
-    private fun editServerMap(serverConfigsJson: String, block: (ServerConfigMap) -> Unit): String {
-        val serverConfigs = mapper.readValue<ServerConfigMap>(serverConfigsJson)
-        block(serverConfigs)
-        return mapper.writeValueAsString(serverConfigs)
-    }
-
     @SuppressLint("ApplySharedPref")
     suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
-        val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
+        val serverConfigs = readServerConfigs()
         val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
 
         val newServerConfig = serverConfig.copy(
             id = serverId
         )
-
-        val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-            serverConfigs[serverId] = newServerConfig
-        }
+        serverConfigs[serverId] = newServerConfig
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
+            .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))
             .putInt(Keys.LAST_SERVER_ID, serverId)
             .commit()
 
         if (isSuccess) {
-            _serversFlow.value = readServerConfigs()
+            _serversFlow.value = serverConfigs
             listeners.forEach { it.onServerAddedListener(newServerConfig) }
         }
 
@@ -61,36 +52,30 @@ class ServerManager @Inject constructor(
 
     @SuppressLint("ApplySharedPref")
     suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
-        val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
-
-        val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-            serverConfigs[serverConfig.id] = serverConfig
-        }
+        val serverConfigs = readServerConfigs()
+        serverConfigs[serverConfig.id] = serverConfig
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
+            .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))
             .commit()
 
         if (isSuccess) {
-            _serversFlow.value = readServerConfigs()
+            _serversFlow.value = serverConfigs
             listeners.forEach { it.onServerChangedListener(serverConfig) }
         }
     }
 
     @SuppressLint("ApplySharedPref")
     suspend fun removeServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
-        val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
-
-        val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
-            serverConfigs.remove(serverConfig.id)
-        }
+        val serverConfigs = readServerConfigs()
+        serverConfigs.remove(serverConfig.id)
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
+            .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))
             .commit()
 
         if (isSuccess) {
-            _serversFlow.value = readServerConfigs()
+            _serversFlow.value = serverConfigs
             listeners.forEach { it.onServerRemovedListener(serverConfig) }
         }
     }
