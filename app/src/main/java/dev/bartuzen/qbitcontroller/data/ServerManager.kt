@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -7,8 +8,10 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,7 +47,8 @@ class ServerManager @Inject constructor(
         return mapper.writeValueAsString(serverConfigs)
     }
 
-    fun addServer(
+    @SuppressLint("ApplySharedPref")
+    suspend fun addServer(
         name: String?,
         protocol: Protocol,
         host: String,
@@ -52,7 +56,7 @@ class ServerManager @Inject constructor(
         path: String?,
         username: String,
         password: String
-    ) {
+    ) = withContext(Dispatchers.IO) {
         val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
         val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
 
@@ -66,12 +70,13 @@ class ServerManager @Inject constructor(
         sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
             .putInt(Keys.LAST_SERVER_ID, serverId)
-            .apply()
+            .commit()
 
         listeners.forEach { it.onServerAddedListener(serverConfig) }
     }
 
-    fun editServer(serverConfig: ServerConfig) {
+    @SuppressLint("ApplySharedPref")
+    suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
 
         val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
@@ -80,12 +85,13 @@ class ServerManager @Inject constructor(
 
         sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
-            .apply()
+            .commit()
 
         listeners.forEach { it.onServerChangedListener(serverConfig) }
     }
 
-    fun removeServer(serverConfig: ServerConfig) {
+    @SuppressLint("ApplySharedPref")
+    suspend fun removeServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigsJson = sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
 
         val newServerConfigsJson = editServerMap(serverConfigsJson) { serverConfigs ->
@@ -94,7 +100,7 @@ class ServerManager @Inject constructor(
 
         sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, newServerConfigsJson)
-            .apply()
+            .commit()
 
         listeners.forEach { it.onServerRemovedListener(serverConfig) }
     }
