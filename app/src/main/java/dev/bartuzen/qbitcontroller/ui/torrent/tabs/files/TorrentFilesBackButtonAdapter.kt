@@ -35,7 +35,7 @@ class TorrentFilesBackButtonAdapter(
         init {
             binding.root.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    onClick.invoke()
+                    onClick()
                 }
             }
         }

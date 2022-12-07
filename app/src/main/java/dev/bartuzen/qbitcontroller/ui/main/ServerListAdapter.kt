@@ -41,7 +41,7 @@ class ServerListAdapter(
                         }
                         selectedServerId = serverConfig.id
 
-                        onClick.invoke(serverConfig)
+                        onClick(serverConfig)
                     }
                 }
             }

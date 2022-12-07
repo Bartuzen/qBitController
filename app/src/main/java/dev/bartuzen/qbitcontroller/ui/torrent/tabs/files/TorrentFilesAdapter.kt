@@ -32,7 +32,7 @@ class TorrentFilesAdapter(
             binding.root.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     getItem(bindingAdapterPosition)?.let { file ->
-                        onClick.invoke(file)
+                        onClick(file)
                     }
                 }
             }
