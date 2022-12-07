@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -31,6 +34,8 @@ android {
                 isOptimizeCode = true
                 proguardFile("proguard-rules.pro")
             }
+
+            signingConfig = signingConfigs.create("release")
         }
 
         create("debugMinified") {
@@ -52,6 +57,21 @@ android {
         }
         create("firebase") {
             dimension = "firebase"
+        }
+    }
+
+    signingConfigs {
+        getByName("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                val keystoreProperties = Properties()
+                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
         }
     }
 
