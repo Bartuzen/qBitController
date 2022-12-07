@@ -81,6 +81,8 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -141,6 +143,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6")
+
+    // Higher versions require alpha version of Android Gradle plugin
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.2.2")
 
     val firebaseImplementation by configurations
     firebaseImplementation(platform("com.google.firebase:firebase-bom:31.1.0"))

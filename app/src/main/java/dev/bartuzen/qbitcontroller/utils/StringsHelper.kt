@@ -4,6 +4,10 @@ import android.content.Context
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestError
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import kotlin.math.roundToInt
 
 fun formatBytes(context: Context, byte: Long) = when (byte) {
@@ -101,3 +105,11 @@ fun getErrorMessage(context: Context, error: RequestError) = context.getString(
         RequestError.UNKNOWN -> R.string.error_unknown
     }
 )
+
+private val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+    .withZone(ZoneId.systemDefault())
+
+fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)
+    .atZone(ZoneId.systemDefault())
+    .toLocalDateTime()
+    .format(dateTimeFormatter)

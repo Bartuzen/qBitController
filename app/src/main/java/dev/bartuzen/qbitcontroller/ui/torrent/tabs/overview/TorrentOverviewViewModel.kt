@@ -6,8 +6,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
+import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +25,9 @@ class TorrentOverviewViewModel @Inject constructor(
     private val _torrent = MutableStateFlow<Torrent?>(null)
     val torrent = _torrent.asStateFlow()
 
+    private val _torrentProperties = MutableStateFlow<TorrentProperties?>(null)
+    val torrentProperties = _torrentProperties.asStateFlow()
+
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
@@ -35,16 +41,34 @@ class TorrentOverviewViewModel @Inject constructor(
 
     private fun updateTorrent(serverConfig: ServerConfig, torrentHash: String) =
         viewModelScope.launch {
-            when (val result = repository.getTorrent(serverConfig, torrentHash)) {
-                is RequestResult.Success -> {
-                    result.data?.let { torrent ->
-                        _torrent.value = torrent
+            val torrentDeferred = async {
+                when (val result = repository.getTorrent(serverConfig, torrentHash)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        eventChannel.send(Event.Error(result.error))
+                        throw CancellationException()
                     }
                 }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+            }
+            val propertiesDeferred = async {
+                when (val result = repository.getProperties(serverConfig, torrentHash)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        eventChannel.send(Event.Error(result.error))
+                        throw CancellationException()
+                    }
                 }
             }
+
+            val torrent = torrentDeferred.await()
+            val properties = propertiesDeferred.await()
+
+            _torrent.value = torrent
+            _torrentProperties.value = properties
         }
 
     fun loadTorrent(serverConfig: ServerConfig, torrentHash: String) {

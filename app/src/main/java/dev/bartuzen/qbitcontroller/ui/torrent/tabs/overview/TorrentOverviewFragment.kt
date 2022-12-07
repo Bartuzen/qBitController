@@ -26,6 +26,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
+import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -37,6 +38,7 @@ import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
@@ -158,7 +160,13 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        viewModel.torrent.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrent ->
+        combine(viewModel.torrent, viewModel.torrentProperties) { torrent, properties ->
+            if (torrent != null && properties != null) {
+                torrent to properties
+            } else {
+                null
+            }
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrent, properties) ->
             binding.textName.text = torrent.name
 
             val progress = torrent.progress * 100
@@ -189,6 +197,38 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 speedList.add("↓ ${formatBytesPerSecond(requireContext(), torrent.downloadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
+
+            binding.textTotalSize.text = if (properties.totalSize != null) {
+                formatBytes(requireContext(), properties.totalSize)
+            } else {
+                "-"
+            }
+            binding.textAddedOn.text = formatDate(properties.additionDate)
+            binding.textHash.text = torrent.hash
+            binding.textSavePath.text = properties.savePath
+            binding.textComment.text = properties.comment ?: "-"
+            binding.textPieces.text =
+                if (properties.piecesCount != null && properties.pieceSize != null) {
+                    getString(
+                        R.string.torrent_overview_pieces_format,
+                        properties.piecesCount,
+                        formatBytes(requireContext(), properties.pieceSize),
+                        properties.piecesHave
+                    )
+                } else {
+                    "-"
+                }
+            binding.textCompletedOn.text = if (properties.completionDate != null) {
+                formatDate(properties.completionDate)
+            } else {
+                "-"
+            }
+            binding.textCreatedBy.text = properties.createdBy ?: "-"
+            binding.textCreatedOn.text = if (properties.creationDate != null) {
+                formatDate(properties.creationDate)
+            } else {
+                "-"
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->

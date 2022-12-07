@@ -158,6 +158,17 @@
     <string name="torrent_dlspeed_limit_change_success">Changed download speed limit successfully.</string>
     <string name="torrent_upspeed_limit_change_success">Changed upload speed limit successfully.</string>
 
+    <string name="torrent_overview_total_size">Total Size</string>
+    <string name="torrent_overview_added_on">Added On</string>
+    <string name="torrent_overview_hash">Hash</string>
+    <string name="torrent_overview_save_path">Save Path</string>
+    <string name="torrent_overview_comment">Comment</string>
+    <string name="torrent_overview_pieces">Pieces</string>
+    <string name="torrent_overview_completed_on">Completed On</string>
+    <string name="torrent_overview_created_by">Created By</string>
+    <string name="torrent_overview_created_on">Created On</string>
+    <string name="torrent_overview_pieces_format">%1$d x %2$s (have %3$d)</string>
+
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>
     <string name="torrent_piece_map">PIECE MAP</string>
