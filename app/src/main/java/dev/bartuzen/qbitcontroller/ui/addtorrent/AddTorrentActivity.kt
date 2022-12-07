@@ -86,18 +86,26 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         val uri = intent.data
-        val fileUri = when (uri?.scheme) {
-            "http", "https", "magnet" -> {
-                binding.editTorrentLink.setText(uri.toString())
-                null
+        val fileUri = if (uri != null) {
+            when (uri.scheme) {
+                "http", "https", "magnet" -> {
+                    binding.editTorrentLink.setText(uri.toString())
+                    null
+                }
+                "content", "file" -> {
+                    binding.layoutFileName.visibility = View.VISIBLE
+                    binding.inputLayoutTorrentLink.visibility = View.GONE
+                    binding.textFileName.text = Uri.decode(uri.path)?.split("/")?.last()
+                    uri
+                }
+                else -> null
             }
-            "content", "file" -> {
-                binding.layoutFileName.visibility = View.VISIBLE
-                binding.inputLayoutTorrentLink.visibility = View.GONE
-                binding.textFileName.text = Uri.decode(uri.path)?.split("/")?.last()
-                uri
-            }
-            else -> null
+        } else if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+            val text = intent.getStringExtra(Intent.EXTRA_TEXT)
+            binding.editTorrentLink.setText(text)
+            null
+        } else {
+            null
         }
 
         setSupportActionBar(binding.toolbar)
