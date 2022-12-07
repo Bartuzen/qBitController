@@ -98,7 +98,12 @@ kapt {
     correctErrorTypes = true
 }
 
-if (!gradle.startParameter.taskRequests.toString().contains("Free")) {
+val isFirebaseEnabled = gradle.startParameter.taskRequests.any { task ->
+    task.args.any { arg ->
+        arg.contains("Firebase")
+    }
+}
+if (isFirebaseEnabled) {
     apply(plugin = "com.google.gms.google-services")
     apply(plugin = "com.google.firebase.crashlytics")
 }
