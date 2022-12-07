@@ -63,15 +63,20 @@ android {
     signingConfigs {
         getByName("release") {
             val keystorePropertiesFile = rootProject.file("keystore.properties")
-            if (keystorePropertiesFile.exists()) {
-                val keystoreProperties = Properties()
-                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+            val keystoreProperties = Properties()
 
-                storeFile = file(keystoreProperties.getProperty("storeFile"))
-                storePassword = keystoreProperties.getProperty("storePassword")
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
+            if (keystorePropertiesFile.exists()) {
+                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
             }
+
+            fun getProperty(propertyName: String, envName: String) =
+                keystoreProperties.getProperty(propertyName)
+                    ?: System.getenv("QBITCONTROLLER_$envName")
+
+            storeFile = file(getProperty("storeFile", "STORE_FILE"))
+            storePassword = getProperty("storePassword", "STORE_PASSWORD")
+            keyAlias = getProperty("keyAlias", "KEY_ALIAS")
+            keyPassword = getProperty("keyPassword", "KEY_PASSWORD")
         }
     }
 
