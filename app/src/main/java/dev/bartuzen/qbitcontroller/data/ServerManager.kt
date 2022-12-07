@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.data
 
-import android.annotation.SuppressLint
 import android.content.Context
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -28,7 +27,6 @@ class ServerManager @Inject constructor(
     private val _serversFlow = MutableStateFlow(readServerConfigs())
     val serversFlow = _serversFlow.asStateFlow()
 
-    @SuppressLint("ApplySharedPref")
     suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
         val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
@@ -50,7 +48,6 @@ class ServerManager @Inject constructor(
 
     }
 
-    @SuppressLint("ApplySharedPref")
     suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
         serverConfigs[serverConfig.id] = serverConfig
@@ -65,7 +62,6 @@ class ServerManager @Inject constructor(
         }
     }
 
-    @SuppressLint("ApplySharedPref")
     suspend fun removeServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
         serverConfigs.remove(serverConfig.id)
