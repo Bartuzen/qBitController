@@ -73,7 +73,7 @@ android {
                 keystoreProperties.getProperty(propertyName)
                     ?: System.getenv("QBITCONTROLLER_$envName")
 
-            storeFile = file(getProperty("storeFile", "STORE_FILE"))
+            storeFile = getProperty("storeFile", "STORE_FILE")?.let { file(it) }
             storePassword = getProperty("storePassword", "STORE_PASSWORD")
             keyAlias = getProperty("keyAlias", "KEY_ALIAS")
             keyPassword = getProperty("keyPassword", "KEY_PASSWORD")
