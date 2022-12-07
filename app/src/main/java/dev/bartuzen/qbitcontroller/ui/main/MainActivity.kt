@@ -15,7 +15,6 @@ import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ConcatAdapter
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.BuildConfig
 import dev.bartuzen.qbitcontroller.R
@@ -26,6 +25,8 @@ import dev.bartuzen.qbitcontroller.ui.torrentlist.CategoryTagAdapter
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.showDialog
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -141,15 +142,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showAboutDialog() {
-        val binding = DialogAboutBinding.inflate(layoutInflater)
-        binding.textVersion.text = BuildConfig.VERSION_NAME
+        showDialog(DialogAboutBinding::inflate) { binding ->
+            binding.textVersion.text = BuildConfig.VERSION_NAME
 
-        MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.about_dialog_title)
-            .setView(binding.root)
-            .setPositiveButton(R.string.dialog_ok, null)
-            .create()
-            .show()
+            setTitle(R.string.about_dialog_title)
+            setPositiveButton()
+        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {

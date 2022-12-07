@@ -11,7 +11,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +31,10 @@ import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setNegativeButton
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
+import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
@@ -277,66 +279,54 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
     }
 
     private fun showDeleteTorrentDialog() {
-        val dialogBinding = DialogTorrentDeleteBinding.inflate(layoutInflater)
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.torrent_delete)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+        showDialog(DialogTorrentDeleteBinding::inflate) { binding ->
+            setTitle(R.string.torrent_delete)
+            setPositiveButton { _, _ ->
                 viewModel.deleteTorrent(
                     serverConfig,
                     torrentHash,
-                    dialogBinding.checkDeleteFiles.isChecked
+                    binding.checkDeleteFiles.isChecked
                 )
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     private fun showDownloadSpeedLimitDialog() {
-        val dialogBinding = DialogSpeedLimitDownloadBinding.inflate(layoutInflater)
+        showDialog(DialogSpeedLimitDownloadBinding::inflate) { binding ->
+            val currentLimit = viewModel.torrent.value?.downloadSpeedLimit?.let { speed ->
+                speed / 1024
+            }
+            binding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
 
-        val currentLimit = viewModel.torrent.value?.downloadSpeedLimit?.let { speed ->
-            speed / 1024
-        }
-        dialogBinding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.torrent_dlspeed_limit_dialog_title)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                val limit = dialogBinding.editLimit.text.toString().toIntOrNull()?.let { speed ->
+            setTitle(R.string.torrent_dlspeed_limit_dialog_title)
+            setPositiveButton { _, _ ->
+                val limit = binding.editLimit.text.toString().toIntOrNull()?.let { speed ->
                     speed * 1024
                 } ?: 0
 
                 viewModel.setDownloadSpeedLimit(serverConfig, torrentHash, limit)
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     private fun showUploadSpeedLimitDialog() {
-        val dialogBinding = DialogSpeedLimitUploadBinding.inflate(layoutInflater)
+        showDialog(DialogSpeedLimitUploadBinding::inflate) { binding ->
+            val currentLimit = viewModel.torrent.value?.uploadSpeedLimit?.let { speed ->
+                speed / 1024
+            }
+            binding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
 
-        val currentLimit = viewModel.torrent.value?.uploadSpeedLimit?.let { speed ->
-            speed / 1024
-        }
-        dialogBinding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.torrent_upspeed_limit_dialog_title)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                val limit = dialogBinding.editLimit.text.toString().toIntOrNull()?.let { speed ->
+            setTitle(R.string.torrent_upspeed_limit_dialog_title)
+            setPositiveButton { _, _ ->
+                val limit = binding.editLimit.text.toString().toIntOrNull()?.let { speed ->
                     speed * 1024
                 } ?: 0
 
                 viewModel.setUploadSpeedLimit(serverConfig, torrentHash, limit)
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 }

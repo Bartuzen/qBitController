@@ -20,7 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +39,9 @@ import dev.bartuzen.qbitcontroller.utils.Quadruple
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setNegativeButton
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
@@ -505,41 +507,37 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     }
 
     private fun showDeleteTorrentsDialog(adapter: TorrentListAdapter, actionMode: ActionMode?) {
-        val dialogBinding = DialogTorrentDeleteBinding.inflate(layoutInflater)
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(
+        showDialog(DialogTorrentDeleteBinding::inflate) { binding ->
+            setTitle(
                 resources.getQuantityString(
                     R.plurals.torrent_list_delete_torrents,
                     adapter.selectedItemCount,
                     adapter.selectedItemCount
                 )
             )
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+            setPositiveButton { _, _ ->
                 viewModel.deleteTorrents(
                     serverConfig,
                     adapter.selectedItems.toList(),
-                    dialogBinding.checkDeleteFiles.isChecked
+                    binding.checkDeleteFiles.isChecked
                 )
                 adapter.finishSelection()
                 actionMode?.finish()
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     private fun showDeleteCategoryTagDialog(isCategory: Boolean, name: String) {
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(
+        showDialog {
+            setTitle(
                 if (isCategory) {
                     R.string.torrent_list_delete_category_title
                 } else {
                     R.string.torrent_list_delete_tag_title
                 }
             )
-            .setMessage(
+            setMessage(
                 getString(
                     if (isCategory) {
                         R.string.torrent_list_delete_category_desc
@@ -548,51 +546,42 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     }, name
                 )
             )
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+            setPositiveButton { _, _ ->
                 if (isCategory) {
                     viewModel.deleteCategory(serverConfig, name)
                 } else {
                     viewModel.deleteTag(serverConfig, name)
                 }
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     private fun showCreateCategoryDialog() {
-        val dialogBinding = DialogCreateCategoryBinding.inflate(layoutInflater)
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.torrent_list_create_category_title)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+        showDialog(DialogCreateCategoryBinding::inflate) { binding ->
+            setTitle(R.string.torrent_list_create_category_title)
+            setPositiveButton { _, _ ->
                 viewModel.createCategory(
                     serverConfig,
-                    dialogBinding.editName.text.toString(),
-                    dialogBinding.editSavePath.text.toString()
+                    binding.editName.text.toString(),
+                    binding.editSavePath.text.toString()
                 )
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     private fun showCreateTagDialog() {
-        val dialogBinding = DialogCreateTagBinding.inflate(layoutInflater)
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.torrent_list_create_tag_title)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+        showDialog(DialogCreateTagBinding::inflate) { binding ->
+            setTitle(R.string.torrent_list_create_tag_title)
+            setPositiveButton { _, _ ->
                 viewModel.createTags(
                     serverConfig,
-                    dialogBinding.editName.text.toString().split("\n")
+                    binding.editName.text.toString().split("\n")
                 )
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     override fun onDestroyView() {

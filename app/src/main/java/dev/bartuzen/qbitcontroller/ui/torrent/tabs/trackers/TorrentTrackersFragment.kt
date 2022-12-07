@@ -13,7 +13,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.hannesdorfmann.fragmentargs.annotation.Arg
 import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +25,9 @@ import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setNegativeButton
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
@@ -195,46 +197,37 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     }
 
     private fun showAddTrackersDialog() {
-        val dialogBinding = DialogTorrentTrackersAddBinding.inflate(layoutInflater)
-
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.torrent_trackers_add)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
+        showDialog(DialogTorrentTrackersAddBinding::inflate) { binding ->
+            setTitle(R.string.torrent_trackers_add)
+            setPositiveButton { _, _ ->
                 viewModel.addTrackers(
                     serverConfig,
                     torrentHash,
-                    dialogBinding.editTrackers.text.toString().split("\n")
+                    binding.editTrackers.text.toString().split("\n")
                 )
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     private fun showDeleteTrackersDialog(trackerKeys: List<String>, onDelete: () -> Unit) {
-        MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(
+        showDialog {
+            setTitle(
                 resources.getQuantityString(
                     R.plurals.torrent_trackers_delete_title, trackerKeys.size, trackerKeys.size
                 )
             )
-            .setMessage(
+            setMessage(
                 resources.getQuantityString(
                     R.plurals.torrent_trackers_delete_desc, trackerKeys.size, trackerKeys.size
                 )
             )
-            .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                viewModel.deleteTrackers(
-                    serverConfig,
-                    torrentHash,
-                    trackerKeys
-                )
+            setPositiveButton { _, _ ->
+                viewModel.deleteTrackers(serverConfig, torrentHash, trackerKeys)
                 onDelete()
             }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .create()
-            .show()
+            setNegativeButton()
+        }
     }
 
     override fun onDestroyView() {
