@@ -84,12 +84,12 @@ class RequestManager @Inject constructor(
                 RequestResult.Error.RequestError.Banned
             } else if (loginResponse.body() == "Fails.") {
                 RequestResult.Error.RequestError.InvalidCredentials
-            } else if (!loginResponse.isSuccessful || loginResponse.body() != "Ok.") {
+            } else if (loginResponse.body() != "Ok.") {
                 RequestResult.Error.RequestError.Unknown
             } else {
                 val newResponse = block(service)
                 val newBody = newResponse.body()
-                if (newBody != null) {
+                if (newResponse.code() == 200 && newBody != null) {
                     RequestResult.Success(newBody)
                 } else {
                     RequestResult.Error.RequestError.Unknown
