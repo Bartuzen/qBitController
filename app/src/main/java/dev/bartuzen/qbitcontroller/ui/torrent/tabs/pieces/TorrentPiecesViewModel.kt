@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
-import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -47,7 +46,7 @@ class TorrentPiecesViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result.error))
+                        eventChannel.send(Event.Error(result))
                         throw CancellationException()
                     }
                 }
@@ -58,7 +57,7 @@ class TorrentPiecesViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result.error))
+                        eventChannel.send(Event.Error(result))
                         throw CancellationException()
                     }
                 }
@@ -90,6 +89,6 @@ class TorrentPiecesViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class Error(val error: RequestError) : Event()
+        data class Error(val error: RequestResult.Error) : Event()
     }
 }

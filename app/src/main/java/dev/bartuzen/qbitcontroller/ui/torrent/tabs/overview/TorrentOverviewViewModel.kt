@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
-import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -47,7 +46,7 @@ class TorrentOverviewViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result.error))
+                        eventChannel.send(Event.Error(result))
                         throw CancellationException()
                     }
                 }
@@ -58,9 +57,10 @@ class TorrentOverviewViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result.error))
+                        eventChannel.send(Event.Error(result))
                         throw CancellationException()
                     }
+
                 }
             }
 
@@ -96,7 +96,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentDeleted)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -107,7 +107,7 @@ class TorrentOverviewViewModel @Inject constructor(
                 eventChannel.send(Event.TorrentPaused)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -118,7 +118,7 @@ class TorrentOverviewViewModel @Inject constructor(
                 eventChannel.send(Event.TorrentResumed)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -130,7 +130,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.SequentialDownloadToggled)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -143,7 +143,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.PrioritizeFirstLastPiecesToggled)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -158,7 +158,7 @@ class TorrentOverviewViewModel @Inject constructor(
                 eventChannel.send(Event.AutomaticTorrentManagementChanged(enable))
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -172,7 +172,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.DownloadSpeedLimitUpdated)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -186,7 +186,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.DownloadSpeedLimitUpdated)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -198,7 +198,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.ForceStartChanged(value))
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -210,13 +210,13 @@ class TorrentOverviewViewModel @Inject constructor(
                     eventChannel.send(Event.SuperSeedingChanged(value))
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
 
     sealed class Event {
-        data class Error(val error: RequestError) : Event()
+        data class Error(val error: RequestResult.Error) : Event()
         object TorrentDeleted : Event()
         object TorrentPaused : Event()
         object TorrentResumed : Event()

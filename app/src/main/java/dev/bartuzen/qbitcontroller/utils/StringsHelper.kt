@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.utils
 import android.content.Context
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentState
-import dev.bartuzen.qbitcontroller.network.RequestError
+import dev.bartuzen.qbitcontroller.network.RequestResult
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -95,14 +95,14 @@ fun formatTorrentState(context: Context, state: TorrentState) = context.getStrin
     }
 )
 
-fun getErrorMessage(context: Context, error: RequestError) = context.getString(
+fun getErrorMessage(context: Context, error: RequestResult.Error) = context.getString(
     when (error) {
-        RequestError.INVALID_CREDENTIALS -> R.string.error_invalid_credentials
-        RequestError.BANNED -> R.string.error_banned
-        RequestError.CANNOT_CONNECT -> R.string.error_cannot_connect
-        RequestError.UNKNOWN_HOST -> R.string.error_unknown_host
-        RequestError.TIMEOUT -> R.string.error_timeout
-        RequestError.UNKNOWN -> R.string.error_unknown
+        RequestResult.Error.RequestError.Banned -> R.string.error_banned
+        RequestResult.Error.RequestError.CannotConnect -> R.string.error_cannot_connect
+        RequestResult.Error.RequestError.InvalidCredentials -> R.string.error_invalid_credentials
+        RequestResult.Error.RequestError.Timeout -> R.string.error_timeout
+        RequestResult.Error.RequestError.Unknown -> R.string.error_unknown
+        RequestResult.Error.RequestError.UnknownHost -> R.string.error_unknown_host
     }
 )
 

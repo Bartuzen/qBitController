@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
-import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,7 +44,7 @@ class TorrentFilesViewModel @Inject constructor(
                     _torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -85,6 +84,6 @@ class TorrentFilesViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class Error(val error: RequestError) : Event()
+        data class Error(val error: RequestResult.Error) : Event()
     }
 }
