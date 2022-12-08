@@ -1,0 +1,16 @@
+name: Feature request
+description: Suggest a feature to improve qBitController
+labels: [ feature ]
+body:
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Describe your suggested feature
+      description: Explain what feature you suggest to be added.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-details
+    attributes:
+      label: Additional details
