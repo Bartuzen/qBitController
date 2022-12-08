@@ -45,7 +45,6 @@ class ServerManager @Inject constructor(
             _serversFlow.value = serverConfigs
             listeners.forEach { it.onServerAddedListener(newServerConfig) }
         }
-
     }
 
     suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
