@@ -103,6 +103,7 @@ fun getErrorMessage(context: Context, error: RequestResult.Error) = context.getS
         RequestResult.Error.RequestError.Timeout -> R.string.error_timeout
         RequestResult.Error.RequestError.Unknown -> R.string.error_unknown
         RequestResult.Error.RequestError.UnknownHost -> R.string.error_unknown_host
+        is RequestResult.Error.ApiError -> R.string.error_unknown
     }
 )
 

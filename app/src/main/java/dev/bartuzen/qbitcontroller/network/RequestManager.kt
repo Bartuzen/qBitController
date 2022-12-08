@@ -95,10 +95,10 @@ class RequestManager @Inject constructor(
                     RequestResult.Error.RequestError.Unknown
                 }
             }
-        } else if (!blockResponse.isSuccessful || body == null) {
-            RequestResult.Error.RequestError.Unknown
-        } else {
+        } else if (blockResponse.code() == 200 && body != null) {
             RequestResult.Success(body)
+        } else {
+            RequestResult.Error.ApiError(blockResponse.code())
         }
     } catch (e: ConnectException) {
         RequestResult.Error.RequestError.CannotConnect
@@ -134,5 +134,7 @@ sealed class RequestResult<out T : Any?> {
             object Timeout : RequestError()
             object Unknown : RequestError()
         }
+
+        data class ApiError(val code: Int) : Error()
     }
 }
