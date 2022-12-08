@@ -192,7 +192,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityIncreased)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -204,7 +208,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityDecreased)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -216,7 +224,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityMaximized)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -228,7 +240,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityMinimized)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -278,6 +294,7 @@ class TorrentListViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object QueueingNotEnabled : Event()
         data class TorrentsDeleted(val count: Int) : Event()
         data class TorrentsPaused(val count: Int) : Event()
         data class TorrentsResumed(val count: Int) : Event()

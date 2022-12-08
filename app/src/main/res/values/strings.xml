@@ -150,6 +150,7 @@
     <string name="torrent_disable_force_start_success">Force start disabled successfully.</string>
     <string name="torrent_enable_super_seeding_success">Super seeding enabled successfully.</string>
     <string name="torrent_disable_super_seeding_success">Super seeding disabled successfully.</string>
+    <string name="torrent_queueing_is_not_enabled">Torrent queueing is not enabled.</string>
 
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
