@@ -40,17 +40,7 @@ class RequestManager @Inject constructor(
     private fun getTorrentService(serverConfig: ServerConfig) =
         torrentServiceMap.getOrPut(serverConfig.id) {
             val retrofit = Retrofit.Builder()
-                .baseUrl(
-                    buildString {
-                        append("${serverConfig.protocolString}://${serverConfig.host}")
-                        serverConfig.port?.let { port ->
-                            append(":$port")
-                        }
-                        serverConfig.path?.let { path ->
-                            append("/$path")
-                        }
-                    }
-                )
+                .baseUrl(serverConfig.url)
                 .client(
                     OkHttpClient().newBuilder()
                         .cookieJar(SessionCookieJar())
@@ -105,8 +95,6 @@ class RequestManager @Inject constructor(
     } catch (e: SocketTimeoutException) {
         RequestResult.Error.RequestError.Timeout
     } catch (e: UnknownHostException) {
-        RequestResult.Error.RequestError.UnknownHost
-    } catch (e: IllegalArgumentException) {
         RequestResult.Error.RequestError.UnknownHost
     } catch (e: JsonMappingException) {
         if (e.cause is SocketTimeoutException) {

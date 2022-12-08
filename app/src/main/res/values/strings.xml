@@ -251,6 +251,7 @@
     <string name="settings_server_port_must_be_between">Port must be between 1 and 65535.</string>
     <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
+    <string name="settings_server_url_config_not_valid">Entered URL configuration is not valid.</string>
 
     <string name="about_menu_title">About</string>
     <string name="about_dialog_title">@string/about_menu_title</string>

@@ -1,7 +1,7 @@
 package dev.bartuzen.qbitcontroller.model
 
 import android.os.Parcelable
-import kotlinx.parcelize.IgnoredOnParcel
+import com.fasterxml.jackson.annotation.JsonIgnore
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,8 +15,17 @@ data class ServerConfig(
     val username: String,
     val password: String
 ) : Parcelable {
-    @IgnoredOnParcel
-    val protocolString = protocol.toString().lowercase()
+    @get:JsonIgnore
+    val url
+        get() = buildString {
+            append("${protocol.toString().lowercase()}://${host}")
+            port?.let { port ->
+                append(":$port")
+            }
+            path?.let { path ->
+                append("/$path")
+            }
+        }
 }
 
 enum class Protocol {

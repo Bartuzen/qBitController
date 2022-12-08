@@ -24,6 +24,8 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
+import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import okhttp3.HttpUrl
 
 @FragmentWithArgs
 @AndroidEntryPoint
@@ -152,6 +154,11 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
             username = username,
             password = password
         )
+
+        if (HttpUrl.parse(config.url) == null) {
+            showSnackbar(R.string.settings_server_url_config_not_valid)
+            return
+        }
 
         if (config.id == -1) {
             viewModel.addServer(config).invokeOnCompletion {
