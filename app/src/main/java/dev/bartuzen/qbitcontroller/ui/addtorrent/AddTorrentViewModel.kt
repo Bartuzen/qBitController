@@ -14,6 +14,7 @@ import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,7 +49,7 @@ class AddTorrentViewModel @Inject constructor(
     private val _isCreating = MutableStateFlow(false)
     val isCreating = _isCreating.asStateFlow()
 
-    var isInitialLoadStarted = false
+    private var loadCategoryTagJob: Job? = null
 
     fun getServers() = serverManager.serversFlow.value.values.toList()
 
@@ -136,21 +137,34 @@ class AddTorrentViewModel @Inject constructor(
                 }
             }
         }
+        try {
+            val categories = categoriesDeferred.await()
+            val tags = tagsDeferred.await()
 
-        val categories = categoriesDeferred.await()
-        val tags = tagsDeferred.await()
+            _categoryList.value = categories
+            _tagList.value = tags
+        } catch (_: CancellationException) {
 
-        _categoryList.value = categories
-        _tagList.value = tags
+        }
+    }
+
+    fun removeCategoriesAndTags() {
+        _categoryList.value = null
+        _tagList.value = null
     }
 
     fun loadCategoryAndTags(serverConfig: ServerConfig) {
-        if (!isLoading.value) {
-            _isLoading.value = true
-            updateCategoryAndTags(serverConfig).invokeOnCompletion {
+        loadCategoryTagJob?.cancel()
+
+        _isLoading.value = true
+        val job = updateCategoryAndTags(serverConfig)
+        job.invokeOnCompletion { e ->
+            if (e !is CancellationException) {
                 _isLoading.value = false
+                loadCategoryTagJob = null
             }
         }
+        loadCategoryTagJob = job
     }
 
     fun refreshCategoryAndTags(serverConfig: ServerConfig) {

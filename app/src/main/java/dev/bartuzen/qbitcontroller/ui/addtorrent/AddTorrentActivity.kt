@@ -28,6 +28,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlin.math.roundToInt
 
@@ -49,11 +50,11 @@ class AddTorrentActivity : AppCompatActivity() {
         binding = ActivityAddTorrentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val serverConfigFromIntent = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
-        lateinit var serverConfig: ServerConfig
-        if (serverConfigFromIntent != null) {
-            serverConfig = serverConfigFromIntent
-        } else {
+        val serverConfig = MutableStateFlow<ServerConfig?>(
+            intent.getParcelable(Extras.SERVER_CONFIG)
+        )
+
+        if (serverConfig.value == null) {
             val servers = viewModel.getServers()
 
             if (servers.isEmpty()) {
@@ -63,20 +64,19 @@ class AddTorrentActivity : AppCompatActivity() {
             }
 
             if (servers.size == 1) {
-                serverConfig = servers.first()
+                serverConfig.value = servers.first()
             } else {
                 binding.spinnerServers.adapter = ArrayAdapter(
                     this,
                     android.R.layout.simple_spinner_dropdown_item,
                     servers.map { server -> server.name ?: server.host }
                 )
-                binding.spinnerServers.setSelection(0)
                 binding.spinnerServers.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
                             parent: AdapterView<*>?, view: View?, position: Int, id: Long
                         ) {
-                            serverConfig = servers[position]
+                            serverConfig.value = servers[position]
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -146,6 +146,8 @@ class AddTorrentActivity : AppCompatActivity() {
                         }
 
                     if (links.isNotBlank() || fileUri != null) {
+                        val config = serverConfig.value
+
                         val category = binding.chipGroupCategory.checkedChipId.let { id ->
                             if (id != View.NO_ID) {
                                 binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
@@ -157,25 +159,29 @@ class AddTorrentActivity : AppCompatActivity() {
                             tags.add(binding.chipGroupTag.findViewById<Chip>(id).text.toString())
                         }
 
-                        viewModel.createTorrent(
-                            serverConfig = serverConfig,
-                            links = if (fileUri == null) links.split("\n") else null,
-                            fileUri = fileUri,
-                            savePath = binding.editSavePath.text.toString().ifBlank { null },
-                            category = category,
-                            tags = tags,
-                            torrentName = binding.editTorrentName.text.toString().ifBlank { null },
-                            downloadSpeedLimit = downloadSpeedLimit,
-                            uploadSpeedLimit = uploadSpeedLimit,
-                            ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
-                            seedingTimeLimit = binding.editSeedingTimeLimit.text.toString()
-                                .toIntOrNull(),
-                            isPaused = !binding.checkStartTorrent.isChecked,
-                            skipHashChecking = binding.checkSkipChecking.isChecked,
-                            isAutoTorrentManagementEnabled = binding.spinnerTmm.selectedItemPosition == 1,
-                            isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
-                            isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
-                        )
+                        if (config != null) {
+                            viewModel.createTorrent(
+                                serverConfig = config,
+                                links = if (fileUri == null) links.split("\n") else null,
+                                fileUri = fileUri,
+                                savePath = binding.editSavePath.text.toString().ifBlank { null },
+                                category = category,
+                                tags = tags,
+                                torrentName = binding.editTorrentName.text.toString()
+                                    .ifBlank { null },
+                                downloadSpeedLimit = downloadSpeedLimit,
+                                uploadSpeedLimit = uploadSpeedLimit,
+                                ratioLimit = binding.editRatioLimit.text.toString()
+                                    .toDoubleOrNull(),
+                                seedingTimeLimit = binding.editSeedingTimeLimit.text.toString()
+                                    .toIntOrNull(),
+                                isPaused = !binding.checkStartTorrent.isChecked,
+                                skipHashChecking = binding.checkSkipChecking.isChecked,
+                                isAutoTorrentManagementEnabled = binding.spinnerTmm.selectedItemPosition == 1,
+                                isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
+                                isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
+                            )
+                        }
                     } else {
                         binding.inputLayoutTorrentLink.error =
                             getString(R.string.torrent_add_link_cannot_be_empty)
@@ -195,12 +201,17 @@ class AddTorrentActivity : AppCompatActivity() {
         )
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshCategoryAndTags(serverConfig)
+            serverConfig.value?.let { config ->
+                viewModel.refreshCategoryAndTags(config)
+            }
         }
 
-        if (!viewModel.isInitialLoadStarted) {
-            viewModel.isInitialLoadStarted = true
-            viewModel.loadCategoryAndTags(serverConfig)
+        serverConfig.filterNotNull().launchAndCollectLatestIn(this) { config ->
+            binding.chipGroupCategory.removeAllViews()
+            binding.chipGroupTag.removeAllViews()
+            viewModel.removeCategoriesAndTags()
+
+            viewModel.loadCategoryAndTags(config)
         }
 
         viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
