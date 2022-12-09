@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
@@ -316,9 +315,7 @@ class AddTorrentActivity : AppCompatActivity() {
                         }
                         setResult(Activity.RESULT_OK, intent)
                     } else {
-                        Toast.makeText(
-                            this@AddTorrentActivity, R.string.torrent_add_success, Toast.LENGTH_LONG
-                        ).show()
+                        showToast(R.string.torrent_add_success)
                     }
                     finish()
                 }
