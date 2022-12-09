@@ -3,8 +3,8 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -28,8 +29,11 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -95,7 +99,22 @@ class AddTorrentActivity : AppCompatActivity() {
                 "content", "file" -> {
                     binding.layoutFileName.visibility = View.VISIBLE
                     binding.inputLayoutTorrentLink.visibility = View.GONE
-                    binding.textFileName.text = Uri.decode(uri.path)?.split("/")?.last()
+
+                    lifecycleScope.launch {
+                        val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
+                        val fileName = withContext(Dispatchers.IO) {
+                            contentResolver.query(uri, projection, null, null, null)
+                                ?.use { metaCursor ->
+                                    if (metaCursor.moveToFirst()) {
+                                        metaCursor.getString(0)
+                                    } else {
+                                        null
+                                    }
+                                }
+                        }
+
+                        binding.textFileName.text = fileName
+                    }
                     uri
                 }
                 else -> null
