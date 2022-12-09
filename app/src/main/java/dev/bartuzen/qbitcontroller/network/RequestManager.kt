@@ -40,17 +40,7 @@ class RequestManager @Inject constructor(
     private fun getTorrentService(serverConfig: ServerConfig) =
         torrentServiceMap.getOrPut(serverConfig.id) {
             val retrofit = Retrofit.Builder()
-                .baseUrl(
-                    buildString {
-                        append("${serverConfig.protocolString}://${serverConfig.host}")
-                        serverConfig.port?.let { port ->
-                            append(":$port")
-                        }
-                        serverConfig.path?.let { path ->
-                            append("/$path")
-                        }
-                    }
-                )
+                .baseUrl(serverConfig.url)
                 .client(
                     OkHttpClient().newBuilder()
                         .cookieJar(SessionCookieJar())
@@ -81,36 +71,34 @@ class RequestManager @Inject constructor(
             val loginResponse = service.login(serverConfig.username, serverConfig.password)
 
             if (loginResponse.code() == 403) {
-                RequestResult.Error(RequestError.BANNED)
+                RequestResult.Error.RequestError.Banned
             } else if (loginResponse.body() == "Fails.") {
-                RequestResult.Error(RequestError.INVALID_CREDENTIALS)
-            } else if (!loginResponse.isSuccessful || loginResponse.body() != "Ok.") {
-                RequestResult.Error(RequestError.UNKNOWN)
+                RequestResult.Error.RequestError.InvalidCredentials
+            } else if (loginResponse.body() != "Ok.") {
+                RequestResult.Error.RequestError.Unknown
             } else {
                 val newResponse = block(service)
                 val newBody = newResponse.body()
-                if (newBody != null) {
+                if (newResponse.code() == 200 && newBody != null) {
                     RequestResult.Success(newBody)
                 } else {
-                    RequestResult.Error(RequestError.UNKNOWN)
+                    RequestResult.Error.RequestError.Unknown
                 }
             }
-        } else if (!blockResponse.isSuccessful || body == null) {
-            RequestResult.Error(RequestError.UNKNOWN)
-        } else {
+        } else if (blockResponse.code() == 200 && body != null) {
             RequestResult.Success(body)
+        } else {
+            RequestResult.Error.ApiError(blockResponse.code())
         }
     } catch (e: ConnectException) {
-        RequestResult.Error(RequestError.CANNOT_CONNECT)
+        RequestResult.Error.RequestError.CannotConnect
     } catch (e: SocketTimeoutException) {
-        RequestResult.Error(RequestError.TIMEOUT)
+        RequestResult.Error.RequestError.Timeout
     } catch (e: UnknownHostException) {
-        RequestResult.Error(RequestError.UNKNOWN_HOST)
-    } catch (e: IllegalArgumentException) {
-        RequestResult.Error(RequestError.UNKNOWN_HOST)
+        RequestResult.Error.RequestError.UnknownHost
     } catch (e: JsonMappingException) {
         if (e.cause is SocketTimeoutException) {
-            RequestResult.Error(RequestError.TIMEOUT)
+            RequestResult.Error.RequestError.Timeout
         } else {
             throw e
         }
@@ -118,15 +106,23 @@ class RequestManager @Inject constructor(
         if (e is CancellationException) {
             throw e
         }
-        RequestResult.Error(RequestError.UNKNOWN)
+        RequestResult.Error.RequestError.Unknown
     }
 }
 
 sealed class RequestResult<out T : Any?> {
     data class Success<out T : Any?>(val data: T) : RequestResult<T>()
-    data class Error(val error: RequestError) : RequestResult<Nothing>()
-}
 
-enum class RequestError {
-    INVALID_CREDENTIALS, BANNED, CANNOT_CONNECT, UNKNOWN_HOST, TIMEOUT, UNKNOWN
+    sealed class Error : RequestResult<Nothing>() {
+        sealed class RequestError : Error() {
+            object InvalidCredentials : RequestError()
+            object Banned : RequestError()
+            object CannotConnect : RequestError()
+            object UnknownHost : RequestError()
+            object Timeout : RequestError()
+            object Unknown : RequestError()
+        }
+
+        data class ApiError(val code: Int) : Error()
+    }
 }

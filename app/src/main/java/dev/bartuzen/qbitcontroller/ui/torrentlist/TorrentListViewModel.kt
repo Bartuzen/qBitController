@@ -8,7 +8,6 @@ import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
-import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -65,7 +64,7 @@ class TorrentListViewModel @Inject constructor(
                 _torrentList.value = result.data
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -80,7 +79,7 @@ class TorrentListViewModel @Inject constructor(
                         .sortedBy { it }
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                     throw CancellationException()
                 }
             }
@@ -91,7 +90,7 @@ class TorrentListViewModel @Inject constructor(
                     result.data.sortedBy { it }
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                     throw CancellationException()
                 }
             }
@@ -135,7 +134,7 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsDeleted(hashes.size))
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -147,7 +146,7 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPaused(hashes.size))
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -159,7 +158,7 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsResumed(hashes.size))
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -170,7 +169,7 @@ class TorrentListViewModel @Inject constructor(
                 eventChannel.send(Event.CategoryDeleted(category))
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -181,7 +180,7 @@ class TorrentListViewModel @Inject constructor(
                 eventChannel.send(Event.TagDeleted(tag))
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -193,7 +192,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityIncreased)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -205,7 +208,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityDecreased)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -217,7 +224,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityMaximized)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -229,7 +240,11 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentsPriorityMinimized)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.QueueingNotEnabled)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -241,7 +256,7 @@ class TorrentListViewModel @Inject constructor(
                     eventChannel.send(Event.CategoryCreated)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
@@ -252,7 +267,7 @@ class TorrentListViewModel @Inject constructor(
                 eventChannel.send(Event.TagCreated)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result.error))
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -278,7 +293,8 @@ class TorrentListViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class Error(val error: RequestError) : Event()
+        data class Error(val error: RequestResult.Error) : Event()
+        object QueueingNotEnabled : Event()
         data class TorrentsDeleted(val count: Int) : Event()
         data class TorrentsPaused(val count: Int) : Event()
         data class TorrentsResumed(val count: Int) : Event()

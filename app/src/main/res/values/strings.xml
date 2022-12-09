@@ -150,6 +150,7 @@
     <string name="torrent_disable_force_start_success">Force start disabled successfully.</string>
     <string name="torrent_enable_super_seeding_success">Super seeding enabled successfully.</string>
     <string name="torrent_disable_super_seeding_success">Super seeding disabled successfully.</string>
+    <string name="torrent_queueing_is_not_enabled">Torrent queueing is not enabled.</string>
 
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
@@ -197,6 +198,8 @@
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
     <string name="torrent_trackers_cannot_delete_default">You can\'t delete default trackers.</string>
+
+    <string name="torrent_error_not_found">Torrent not found.</string>
 
     <string name="torrent_add_menu_add_torrent">Add Torrent</string>
 
@@ -251,6 +254,7 @@
     <string name="settings_server_port_must_be_between">Port must be between 1 and 65535.</string>
     <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
+    <string name="settings_server_url_config_not_valid">Entered URL configuration is not valid.</string>
 
     <string name="about_menu_title">About</string>
     <string name="about_dialog_title">@string/about_menu_title</string>

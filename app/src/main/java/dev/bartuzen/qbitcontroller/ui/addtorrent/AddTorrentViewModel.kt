@@ -10,7 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -104,7 +103,7 @@ class AddTorrentViewModel @Inject constructor(
                     eventChannel.send(Event.TorrentCreated)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                 }
             }
             _isCreating.value = false
@@ -121,7 +120,7 @@ class AddTorrentViewModel @Inject constructor(
                         .sortedBy { it }
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                     throw CancellationException()
                 }
             }
@@ -132,7 +131,7 @@ class AddTorrentViewModel @Inject constructor(
                     result.data.sortedBy { it }
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    eventChannel.send(Event.Error(result))
                     throw CancellationException()
                 }
             }
@@ -177,7 +176,7 @@ class AddTorrentViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data class Error(val error: RequestError) : Event()
+        data class Error(val error: RequestResult.Error) : Event()
         object TorrentCreated : Event()
     }
 }

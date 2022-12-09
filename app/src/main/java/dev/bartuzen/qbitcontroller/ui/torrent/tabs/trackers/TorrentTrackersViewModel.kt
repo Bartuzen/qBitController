@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
-import dev.bartuzen.qbitcontroller.network.RequestError
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +39,11 @@ class TorrentTrackersViewModel @Inject constructor(
                     _torrentTrackers.value = result.data
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -70,7 +73,11 @@ class TorrentTrackersViewModel @Inject constructor(
                     eventChannel.send(Event.TrackersAdded)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -82,13 +89,18 @@ class TorrentTrackersViewModel @Inject constructor(
                     eventChannel.send(Event.TrackersDeleted)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result.error))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
 
     sealed class Event {
-        data class Error(val error: RequestError) : Event()
+        data class Error(val error: RequestResult.Error) : Event()
+        object TorrentNotFound : Event()
         object TrackersAdded : Event()
         object TrackersDeleted : Event()
     }

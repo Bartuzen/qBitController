@@ -110,6 +110,9 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
                 is TorrentPiecesViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+                TorrentPiecesViewModel.Event.TorrentNotFound -> {
+                    showSnackbar(R.string.torrent_error_not_found)
+                }
             }
         }
     }
