@@ -73,7 +73,11 @@ class TorrentTrackersViewModel @Inject constructor(
                     eventChannel.send(Event.TrackersAdded)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -85,7 +89,11 @@ class TorrentTrackersViewModel @Inject constructor(
                     eventChannel.send(Event.TrackersDeleted)
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
