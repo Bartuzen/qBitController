@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.FileNotFoundException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -73,12 +74,20 @@ class AddTorrentViewModel @Inject constructor(
         if (!isCreating.value) {
             _isCreating.value = true
 
-            val fileBytes = withContext(Dispatchers.IO) {
+            val fileBytes = try {
                 if (fileUri != null) {
-                    context.contentResolver.openInputStream(fileUri).use { stream ->
-                        stream?.readBytes()
+                    withContext(Dispatchers.IO) {
+                        context.contentResolver.openInputStream(fileUri).use { stream ->
+                            stream?.readBytes()
+                        }
                     }
-                } else null
+                } else {
+                    null
+                }
+            } catch (_: FileNotFoundException) {
+                eventChannel.send(Event.FileNotFound)
+                _isCreating.value = false
+                return@launch
             }
 
             when (val result = repository.createTorrent(
@@ -177,6 +186,7 @@ class AddTorrentViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object FileNotFound : Event()
         object TorrentCreated : Event()
     }
 }

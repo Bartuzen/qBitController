@@ -224,6 +224,7 @@
     <string name="torrent_add_select_server">Server</string>
     <string name="torrent_add_no_server">No servers found.</string>
     <string name="torrent_add_link_cannot_be_empty">Link cannot be empty.</string>
+    <string name="torrent_add_file_not_found">Torrent file is not found.</string>
     <string name="torrent_add_success">Torrent added successfully.</string>
 
     <string name="settings_title">Settings</string>
