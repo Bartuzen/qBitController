@@ -46,7 +46,11 @@ class TorrentPiecesViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result))
+                        if (result is RequestResult.Error.ApiError && result.code == 404) {
+                            eventChannel.send(Event.TorrentNotFound)
+                        } else {
+                            eventChannel.send(Event.Error(result))
+                        }
                         throw CancellationException()
                     }
                 }
@@ -57,7 +61,11 @@ class TorrentPiecesViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result))
+                        if (result is RequestResult.Error.ApiError && result.code == 404) {
+                            eventChannel.send(Event.TorrentNotFound)
+                        } else {
+                            eventChannel.send(Event.Error(result))
+                        }
                         throw CancellationException()
                     }
                 }
@@ -90,5 +98,6 @@ class TorrentPiecesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object TorrentNotFound : Event()
     }
 }

@@ -43,7 +43,12 @@ class TorrentOverviewViewModel @Inject constructor(
             val torrentDeferred = async {
                 when (val result = repository.getTorrent(serverConfig, torrentHash)) {
                     is RequestResult.Success -> {
-                        result.data
+                        if (result.data.size == 1) {
+                            result.data.first()
+                        } else {
+                            eventChannel.send(Event.TorrentNotFound)
+                            throw CancellationException()
+                        }
                     }
                     is RequestResult.Error -> {
                         eventChannel.send(Event.Error(result))
@@ -57,7 +62,11 @@ class TorrentOverviewViewModel @Inject constructor(
                         result.data
                     }
                     is RequestResult.Error -> {
-                        eventChannel.send(Event.Error(result))
+                        if (result is RequestResult.Error.ApiError && result.code == 404) {
+                            eventChannel.send(Event.TorrentNotFound)
+                        } else {
+                            eventChannel.send(Event.Error(result))
+                        }
                         throw CancellationException()
                     }
 
@@ -217,6 +226,7 @@ class TorrentOverviewViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object TorrentNotFound : Event()
         object TorrentDeleted : Event()
         object TorrentPaused : Event()
         object TorrentResumed : Event()

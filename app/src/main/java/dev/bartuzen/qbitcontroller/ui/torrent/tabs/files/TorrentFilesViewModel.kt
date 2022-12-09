@@ -44,7 +44,11 @@ class TorrentFilesViewModel @Inject constructor(
                     _torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -85,5 +89,6 @@ class TorrentFilesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object TorrentNotFound : Event()
     }
 }

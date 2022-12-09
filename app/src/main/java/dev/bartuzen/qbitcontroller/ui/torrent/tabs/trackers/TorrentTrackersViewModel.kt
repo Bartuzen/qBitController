@@ -39,7 +39,11 @@ class TorrentTrackersViewModel @Inject constructor(
                     _torrentTrackers.value = result.data
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
         }
@@ -88,6 +92,7 @@ class TorrentTrackersViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object TorrentNotFound : Event()
         object TrackersAdded : Event()
         object TrackersDeleted : Event()
     }
