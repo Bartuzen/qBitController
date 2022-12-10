@@ -24,6 +24,9 @@ data class ServerConfig(
             }
             path?.let { path ->
                 append("/$path")
+                if (!path.endsWith("/")) {
+                    append("/")
+                }
             }
         }
 }
