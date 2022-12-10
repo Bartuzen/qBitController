@@ -22,6 +22,8 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddEditServerBind
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
@@ -86,9 +88,29 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
             binding.inputLayoutUsername.setTextWithoutAnimation(config.username)
             binding.inputLayoutPassword.setTextWithoutAnimation(config.password)
         }
+
+        binding.buttonTest.setOnClickListener {
+            val config = validateAndGetServerConfig() ?: return@setOnClickListener
+            viewModel.testConnection(config)
+        }
+
+        viewModel.isTesting.launchAndCollectLatestIn(viewLifecycleOwner) { isTesting ->
+            binding.progressIndicator.visibility = if (isTesting) View.VISIBLE else View.GONE
+        }
+
+        viewModel.eventFlow.launchAndCollectLatestIn(viewLifecycleOwner) { event ->
+            when (event) {
+                is AddEditServerViewModel.Event.TestFailure -> {
+                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                }
+                AddEditServerViewModel.Event.TestSuccess -> {
+                    showSnackbar(R.string.settings_server_connection_success)
+                }
+            }
+        }
     }
 
-    private fun saveServerConfig() {
+    private fun validateAndGetServerConfig(): ServerConfig? {
         val name = binding.editName.text.toString().trim().ifEmpty { null }
         val protocol = Protocol.values()[binding.spinnerProtocol.selectedItemPosition]
         val host = binding.editHost.text.toString().trim().ifEmpty { null }
@@ -137,7 +159,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
         }
 
         if (!isValid) {
-            return
+            return null
         }
 
         requireNotNull(host)
@@ -157,8 +179,14 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
 
         if (HttpUrl.parse(config.url) == null) {
             showSnackbar(R.string.settings_server_url_config_not_valid)
-            return
+            return null
         }
+
+        return config
+    }
+
+    private fun saveServerConfig() {
+        val config = validateAndGetServerConfig() ?: return
 
         if (config.id == -1) {
             viewModel.addServer(config).invokeOnCompletion {

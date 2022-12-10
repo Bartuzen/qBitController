@@ -241,6 +241,7 @@
     <string name="settings_server_path">Path</string>
     <string name="settings_server_username">Username</string>
     <string name="settings_server_password">Password</string>
+    <string name="settings_server_test_configuration">Test Configuration</string>
 
     <string-array name="settings_theme_entries">
         <item>Light</item>
@@ -256,6 +257,7 @@
     <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
     <string name="settings_server_url_config_not_valid">Entered URL configuration is not valid.</string>
+    <string name="settings_server_connection_success">Connected to server successfully.</string>
 
     <string name="about_menu_title">About</string>
     <string name="about_dialog_title">@string/about_menu_title</string>
