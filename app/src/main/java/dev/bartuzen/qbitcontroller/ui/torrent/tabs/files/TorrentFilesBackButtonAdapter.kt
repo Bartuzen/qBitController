@@ -7,8 +7,7 @@ import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 
 class TorrentFilesBackButtonAdapter(
     private val onClick: () -> Unit
-) :
-    RecyclerView.Adapter<TorrentFilesBackButtonAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<TorrentFilesBackButtonAdapter.ViewHolder>() {
     var isVisible = false
         set(value) {
             if (field != value) {

@@ -12,8 +12,7 @@ import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
-class TorrentPiecesAdapter :
-    ListAdapter<PieceState, RecyclerView.ViewHolder>(DiffCallBack()) {
+class TorrentPiecesAdapter : ListAdapter<PieceState, RecyclerView.ViewHolder>(DiffCallBack()) {
     private var pieceCount: Int? = null
     private var pieceSize: Long? = null
 

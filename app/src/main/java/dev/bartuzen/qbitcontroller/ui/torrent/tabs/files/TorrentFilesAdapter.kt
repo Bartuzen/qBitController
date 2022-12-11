@@ -12,9 +12,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 
 class TorrentFilesAdapter(
     private val onClick: (file: TorrentFileNode) -> Unit
-) :
-    ListAdapter<TorrentFileNode, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
-
+) : ListAdapter<TorrentFileNode, TorrentFilesAdapter.ViewHolder>(DiffCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemTorrentFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )

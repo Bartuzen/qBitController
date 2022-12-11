@@ -12,8 +12,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 
 class ServerListAdapter(
     private val onClick: (serverConfig: ServerConfig) -> Unit
-) :
-    ListAdapter<ServerConfig, ServerListAdapter.ViewHolder>(DiffCallBack()) {
+) : ListAdapter<ServerConfig, ServerListAdapter.ViewHolder>(DiffCallBack()) {
     var selectedServerId: Int = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(

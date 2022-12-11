@@ -12,13 +12,12 @@ import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
-class TorrentTrackersAdapter :
-    MultiSelectAdapter<TorrentTracker, String, TorrentTrackersAdapter.ViewHolder>(
-        diffCallBack = DiffCallBack(),
-        getKey = { tracker ->
-            "${if (tracker.tier == -1) 0 else 1}${tracker.url}"
-        }
-    ) {
+class TorrentTrackersAdapter : MultiSelectAdapter<TorrentTracker, String, TorrentTrackersAdapter.ViewHolder>(
+    diffCallBack = DiffCallBack(),
+    getKey = { tracker ->
+        "${if (tracker.tier == -1) 0 else 1}${tracker.url}"
+    }
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemTorrentTrackerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
