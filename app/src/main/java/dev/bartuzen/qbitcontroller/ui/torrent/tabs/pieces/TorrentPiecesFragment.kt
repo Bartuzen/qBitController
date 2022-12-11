@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -37,7 +38,8 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = TorrentPiecesAdapter()
-        binding.recyclerPieces.adapter = adapter
+        val headerAdapter = TorrentPiecesHeaderAdapter()
+        binding.recyclerPieces.adapter = ConcatAdapter(headerAdapter, adapter)
 
         val displayMetrics = requireContext().resources.displayMetrics
         val screenWidthDp = displayMetrics.widthPixels.toDp(requireContext())
@@ -90,15 +92,13 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        viewModel.torrentProperties.filterNotNull()
-            .launchAndCollectLatestIn(viewLifecycleOwner) { properties ->
-                adapter.submitHeaderData(properties.piecesCount, properties.pieceSize)
-            }
+        viewModel.torrentProperties.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { properties ->
+            headerAdapter.submitHeaderData(properties.piecesCount, properties.pieceSize)
+        }
 
-        viewModel.torrentPieces.filterNotNull()
-            .launchAndCollectLatestIn(viewLifecycleOwner) { pieces ->
-                adapter.submitList(pieces)
-            }
+        viewModel.torrentPieces.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { pieces ->
+            adapter.submitPieces(pieces)
+        }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
