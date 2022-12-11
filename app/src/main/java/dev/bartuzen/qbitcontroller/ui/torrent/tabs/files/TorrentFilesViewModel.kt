@@ -37,21 +37,20 @@ class TorrentFilesViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateFiles(serverConfig: ServerConfig, torrentHash: String) =
-        viewModelScope.launch {
-            when (val result = repository.getFiles(serverConfig, torrentHash)) {
-                is RequestResult.Success -> {
-                    _torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 404) {
-                        eventChannel.send(Event.TorrentNotFound)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+    private fun updateFiles(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.getFiles(serverConfig, torrentHash)) {
+            is RequestResult.Success -> {
+                _torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
+    }
 
     fun loadFiles(serverConfig: ServerConfig, torrentHash: String) {
         if (!isLoading.value) {

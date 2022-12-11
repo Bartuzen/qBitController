@@ -56,92 +56,87 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
     lateinit var torrentHash: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.torrent_menu, menu)
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.torrent_menu, menu)
+                    viewModel.torrent.launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
+                        val resume = menu.findItem(R.id.menu_resume)
+                        val pause = menu.findItem(R.id.menu_pause)
+                        val sequentialDownload = menu.findItem(R.id.menu_sequential_download)
+                        val prioritizeFirstLastPieces = menu.findItem(R.id.menu_prioritize_first_last_pieces)
+                        val autoTmm = menu.findItem(R.id.menu_automatic_torrent_management)
+                        val forceStart = menu.findItem(R.id.menu_force_start)
+                        val superSeeding = menu.findItem(R.id.menu_super_seeding)
 
-                viewModel.torrent.launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
-                    val resume = menu.findItem(R.id.menu_resume)
-                    val pause = menu.findItem(R.id.menu_pause)
-                    val sequentialDownload = menu.findItem(R.id.menu_sequential_download)
-                    val prioritizeFirstLastPieces =
-                        menu.findItem(R.id.menu_prioritize_first_last_pieces)
-                    val autoTmm = menu.findItem(R.id.menu_automatic_torrent_management)
-                    val forceStart = menu.findItem(R.id.menu_force_start)
-                    val superSeeding = menu.findItem(R.id.menu_super_seeding)
+                        sequentialDownload.isEnabled = torrent != null
+                        prioritizeFirstLastPieces.isEnabled = torrent != null
+                        autoTmm.isEnabled = torrent != null
+                        forceStart.isEnabled = torrent != null
+                        superSeeding.isEnabled = torrent != null
 
-                    sequentialDownload.isEnabled = torrent != null
-                    prioritizeFirstLastPieces.isEnabled = torrent != null
-                    autoTmm.isEnabled = torrent != null
-                    forceStart.isEnabled = torrent != null
-                    superSeeding.isEnabled = torrent != null
+                        if (torrent != null) {
+                            val isPaused = when (torrent.state) {
+                                TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
+                                TorrentState.MISSING_FILES, TorrentState.ERROR -> true
 
-                    if (torrent != null) {
-                        val isPaused = when (torrent.state) {
-                            TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
-                            TorrentState.MISSING_FILES, TorrentState.ERROR,
-                            -> true
+                                else -> false
+                            }
+                            resume.isVisible = isPaused
+                            pause.isVisible = !isPaused
 
-                            else -> false
+                            sequentialDownload.isChecked = torrent.isSequentialDownloadEnabled
+                            prioritizeFirstLastPieces.isChecked = torrent.isFirstLastPiecesPrioritized
+                            autoTmm.isChecked = torrent.isAutomaticTorrentManagementEnabled
+                            forceStart.isChecked = torrent.isForceStartEnabled
+                            superSeeding.isChecked = torrent.isSuperSeedingEnabled
                         }
-                        resume.isVisible = isPaused
-                        pause.isVisible = !isPaused
-
-                        sequentialDownload.isChecked = torrent.isSequentialDownloadEnabled
-                        prioritizeFirstLastPieces.isChecked = torrent.isFirstLastPiecesPrioritized
-                        autoTmm.isChecked = torrent.isAutomaticTorrentManagementEnabled
-                        forceStart.isChecked = torrent.isForceStartEnabled
-                        superSeeding.isChecked = torrent.isSuperSeedingEnabled
                     }
                 }
-            }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menu_pause -> {
-                        viewModel.pauseTorrent(serverConfig, torrentHash)
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_pause -> {
+                            viewModel.pauseTorrent(serverConfig, torrentHash)
+                        }
+                        R.id.menu_resume -> {
+                            viewModel.resumeTorrent(serverConfig, torrentHash)
+                        }
+                        R.id.menu_delete -> {
+                            showDeleteTorrentDialog()
+                        }
+                        R.id.menu_dlspeed_limit -> {
+                            showDownloadSpeedLimitDialog()
+                        }
+                        R.id.menu_upspeed_limit -> {
+                            showUploadSpeedLimitDialog()
+                        }
+                        R.id.menu_sequential_download -> {
+                            viewModel.toggleSequentialDownload(serverConfig, torrentHash)
+                        }
+                        R.id.menu_prioritize_first_last_pieces -> {
+                            viewModel.togglePrioritizeFirstLastPiecesDownload(serverConfig, torrentHash)
+                        }
+                        R.id.menu_automatic_torrent_management -> {
+                            val isEnabled = viewModel.torrent.value?.isAutomaticTorrentManagementEnabled ?: return true
+                            viewModel.setAutomaticTorrentManagement(serverConfig, torrentHash, !isEnabled)
+                        }
+                        R.id.menu_force_start -> {
+                            val isEnabled = viewModel.torrent.value?.isForceStartEnabled ?: return true
+                            viewModel.setForceStart(serverConfig, torrentHash, !isEnabled)
+                        }
+                        R.id.menu_super_seeding -> {
+                            val isEnabled = viewModel.torrent.value?.isSuperSeedingEnabled ?: return true
+                            viewModel.setSuperSeeding(serverConfig, torrentHash, !isEnabled)
+                        }
+                        else -> return false
                     }
-                    R.id.menu_resume -> {
-                        viewModel.resumeTorrent(serverConfig, torrentHash)
-                    }
-                    R.id.menu_delete -> {
-                        showDeleteTorrentDialog()
-                    }
-                    R.id.menu_dlspeed_limit -> {
-                        showDownloadSpeedLimitDialog()
-                    }
-                    R.id.menu_upspeed_limit -> {
-                        showUploadSpeedLimitDialog()
-                    }
-                    R.id.menu_sequential_download -> {
-                        viewModel.toggleSequentialDownload(serverConfig, torrentHash)
-                    }
-                    R.id.menu_prioritize_first_last_pieces -> {
-                        viewModel.togglePrioritizeFirstLastPiecesDownload(serverConfig, torrentHash)
-                    }
-                    R.id.menu_automatic_torrent_management -> {
-                        val isEnabled = viewModel.torrent.value?.isAutomaticTorrentManagementEnabled
-                            ?: return true
-
-                        viewModel.setAutomaticTorrentManagement(
-                            serverConfig, torrentHash, !isEnabled
-                        )
-                    }
-                    R.id.menu_force_start -> {
-                        val isEnabled = viewModel.torrent.value?.isForceStartEnabled ?: return true
-                        viewModel.setForceStart(serverConfig, torrentHash, !isEnabled)
-                    }
-                    R.id.menu_super_seeding -> {
-                        val isEnabled =
-                            viewModel.torrent.value?.isSuperSeedingEnabled ?: return true
-                        viewModel.setSuperSeeding(serverConfig, torrentHash, !isEnabled)
-                    }
-                    else -> return false
+                    return true
                 }
-                return true
-            }
-        }, viewLifecycleOwner)
+            },
+            viewLifecycleOwner
+        )
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTorrent(serverConfig, torrentHash)
@@ -325,11 +320,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
         showDialog(DialogTorrentDeleteBinding::inflate) { binding ->
             setTitle(R.string.torrent_delete)
             setPositiveButton { _, _ ->
-                viewModel.deleteTorrent(
-                    serverConfig,
-                    torrentHash,
-                    binding.checkDeleteFiles.isChecked
-                )
+                viewModel.deleteTorrent(serverConfig, torrentHash, binding.checkDeleteFiles.isChecked)
             }
             setNegativeButton()
         }

@@ -25,16 +25,10 @@ class TorrentPiecesAdapter :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == 0) {
         HeaderViewHolder(
-            ItemTorrentPieceHeaderBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+            ItemTorrentPieceHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     } else {
-        ViewHolder(
-            ItemTorrentPieceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        ViewHolder(ItemTorrentPieceBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -77,16 +71,15 @@ class TorrentPiecesAdapter :
             val pieceSize = pieceSize
             binding.textPieceSize.text = if (pieceSize != null) {
                 formatBytes(binding.root.context, pieceSize)
-            } else "-"
-
+            } else {
+                "-"
+            }
         }
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<PieceState>() {
-        override fun areItemsTheSame(oldItem: PieceState, newItem: PieceState) =
-            oldItem == newItem
+        override fun areItemsTheSame(oldItem: PieceState, newItem: PieceState) = oldItem == newItem
 
-        override fun areContentsTheSame(oldItem: PieceState, newItem: PieceState) =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: PieceState, newItem: PieceState) = oldItem == newItem
     }
 }

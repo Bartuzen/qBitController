@@ -76,9 +76,7 @@ class AddTorrentActivity : AppCompatActivity() {
                 )
                 binding.spinnerServers.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?, view: View?, position: Int, id: Long
-                        ) {
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                             serverConfig.value = servers[position]
                         }
 
@@ -146,22 +144,20 @@ class AddTorrentActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
                 R.id.menu_add -> {
                     val links = binding.editTorrentLink.text.toString()
-                    val downloadSpeedLimit =
-                        binding.editDlspeedLimit.text.toString().toDoubleOrNull().let { limit ->
-                            if (limit != null) {
-                                (limit * 1024).roundToInt()
-                            } else {
-                                null
-                            }
+                    val downloadSpeedLimit = binding.editDlspeedLimit.text.toString().toDoubleOrNull().let { limit ->
+                        if (limit != null) {
+                            (limit * 1024).roundToInt()
+                        } else {
+                            null
                         }
-                    val uploadSpeedLimit =
-                        binding.editUpspeedLimit.text.toString().toDoubleOrNull().let { limit ->
-                            if (limit != null) {
-                                (limit * 1024).roundToInt()
-                            } else {
-                                null
-                            }
+                    }
+                    val uploadSpeedLimit = binding.editUpspeedLimit.text.toString().toDoubleOrNull().let { limit ->
+                        if (limit != null) {
+                            (limit * 1024).roundToInt()
+                        } else {
+                            null
                         }
+                    }
 
                     if (links.isNotBlank() || fileUri != null) {
                         val config = serverConfig.value
@@ -169,7 +165,9 @@ class AddTorrentActivity : AppCompatActivity() {
                         val category = binding.chipGroupCategory.checkedChipId.let { id ->
                             if (id != View.NO_ID) {
                                 binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
-                            } else null
+                            } else {
+                                null
+                            }
                         }
 
                         val tags = mutableListOf<String>()
@@ -185,14 +183,11 @@ class AddTorrentActivity : AppCompatActivity() {
                                 savePath = binding.editSavePath.text.toString().ifBlank { null },
                                 category = category,
                                 tags = tags,
-                                torrentName = binding.editTorrentName.text.toString()
-                                    .ifBlank { null },
+                                torrentName = binding.editTorrentName.text.toString().ifBlank { null },
                                 downloadSpeedLimit = downloadSpeedLimit,
                                 uploadSpeedLimit = uploadSpeedLimit,
-                                ratioLimit = binding.editRatioLimit.text.toString()
-                                    .toDoubleOrNull(),
-                                seedingTimeLimit = binding.editSeedingTimeLimit.text.toString()
-                                    .toIntOrNull(),
+                                ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
+                                seedingTimeLimit = binding.editSeedingTimeLimit.text.toString().toIntOrNull(),
                                 isPaused = !binding.checkStartTorrent.isChecked,
                                 skipHashChecking = binding.checkSkipChecking.isChecked,
                                 isAutoTorrentManagementEnabled = binding.spinnerTmm.selectedItemPosition == 1,
@@ -201,8 +196,7 @@ class AddTorrentActivity : AppCompatActivity() {
                             )
                         }
                     } else {
-                        binding.inputLayoutTorrentLink.error =
-                            getString(R.string.torrent_add_link_cannot_be_empty)
+                        binding.inputLayoutTorrentLink.error = getString(R.string.torrent_add_link_cannot_be_empty)
                     }
                     true
                 }
@@ -281,19 +275,11 @@ class AddTorrentActivity : AppCompatActivity() {
         binding.spinnerTmm.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
-            listOf(
-                getString(R.string.torrent_add_tmm_manual),
-                getString(R.string.torrent_add_tmm_auto)
-            )
+            listOf(getString(R.string.torrent_add_tmm_manual), getString(R.string.torrent_add_tmm_auto))
         )
 
         binding.spinnerTmm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 binding.inputLayoutSavePath.isEnabled = position == 0
             }
 

@@ -90,24 +90,26 @@ class AddTorrentViewModel @Inject constructor(
                 return@launch
             }
 
-            when (val result = repository.createTorrent(
-                serverConfig,
-                links,
-                fileBytes,
-                savePath,
-                category,
-                tags,
-                torrentName,
-                downloadSpeedLimit,
-                uploadSpeedLimit,
-                ratioLimit,
-                seedingTimeLimit,
-                isPaused,
-                skipHashChecking,
-                isAutoTorrentManagementEnabled,
-                isSequentialDownloadEnabled,
-                isFirstLastPiecePrioritized
-            )) {
+            when (
+                val result = repository.createTorrent(
+                    serverConfig,
+                    links,
+                    fileBytes,
+                    savePath,
+                    category,
+                    tags,
+                    torrentName,
+                    downloadSpeedLimit,
+                    uploadSpeedLimit,
+                    ratioLimit,
+                    seedingTimeLimit,
+                    isPaused,
+                    skipHashChecking,
+                    isAutoTorrentManagementEnabled,
+                    isSequentialDownloadEnabled,
+                    isFirstLastPiecePrioritized
+                )
+            ) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.TorrentCreated)
                 }
@@ -152,7 +154,6 @@ class AddTorrentViewModel @Inject constructor(
             _categoryList.value = categories
             _tagList.value = tags
         } catch (_: CancellationException) {
-
         }
     }
 

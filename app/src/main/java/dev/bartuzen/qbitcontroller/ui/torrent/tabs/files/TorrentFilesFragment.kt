@@ -37,7 +37,8 @@ class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
                 if (file.isFolder) {
                     viewModel.goToFolder(file.name)
                 }
-            })
+            }
+        )
         val backButtonAdapter = TorrentFilesBackButtonAdapter(
             onClick = {
                 viewModel.goBack()

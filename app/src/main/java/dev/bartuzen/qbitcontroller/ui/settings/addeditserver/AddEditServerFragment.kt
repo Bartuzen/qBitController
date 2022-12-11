@@ -41,37 +41,41 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         requireAppCompatActivity().supportActionBar?.setTitle(
-            if (serverConfig == null)
+            if (serverConfig == null) {
                 R.string.settings_server_title_add
-            else {
+            } else {
                 R.string.settings_server_title_edit
             }
         )
 
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.add_edit_server_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menu_save -> {
-                        saveServerConfig()
-                    }
-                    R.id.menu_delete -> {
-                        deleteServerConfig()
-                    }
-                    else -> return false
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.add_edit_server_menu, menu)
                 }
-                return true
-            }
 
-            override fun onPrepareMenu(menu: Menu) {
-                if (serverConfig == null) {
-                    menu.findItem(R.id.menu_delete).isVisible = false
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_save -> {
+                            saveServerConfig()
+                        }
+                        R.id.menu_delete -> {
+                            deleteServerConfig()
+                        }
+                        else -> return false
+                    }
+                    return true
                 }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+                override fun onPrepareMenu(menu: Menu) {
+                    if (serverConfig == null) {
+                        menu.findItem(R.id.menu_delete).isVisible = false
+                    }
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
 
         binding.spinnerProtocol.adapter = ArrayAdapter(
             requireContext(),
@@ -217,8 +221,7 @@ class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_s
         // hide the keyboard immediately, don't wait for animation to finish
         val windowToken = requireActivity().currentFocus?.windowToken
         if (windowToken != null) {
-            val inputMethodManager =
-                requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethodManager = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
         }
     }

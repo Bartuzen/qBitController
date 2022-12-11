@@ -45,7 +45,9 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 context.getColorCompat(R.color.selected_card_background)
             } else {
                 MaterialColors.getColor(
-                    context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT
+                    context,
+                    com.google.android.material.R.attr.colorSurface,
+                    Color.TRANSPARENT
                 )
             }
             binding.root.setCardBackgroundColor(backgroundColor)
@@ -104,10 +106,8 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<Torrent>() {
-        override fun areItemsTheSame(oldItem: Torrent, newItem: Torrent) =
-            oldItem.hash == newItem.hash
+        override fun areItemsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem.hash == newItem.hash
 
-        override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem == newItem
     }
 }

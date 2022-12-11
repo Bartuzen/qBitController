@@ -41,9 +41,5 @@ class EnumPreference<T : Enum<*>>(
     }
 }
 
-fun <T : Enum<*>> enumPreference(
-    sharedPref: SharedPreferences,
-    key: String,
-    initialValue: T,
-    factory: (String) -> T
-) = EnumPreference(sharedPref, key, initialValue, factory)
+fun <T : Enum<*>> enumPreference(sharedPref: SharedPreferences, key: String, initialValue: T, factory: (String) -> T) =
+    EnumPreference(sharedPref, key, initialValue, factory)

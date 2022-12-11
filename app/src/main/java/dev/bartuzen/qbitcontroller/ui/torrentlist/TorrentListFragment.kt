@@ -54,9 +54,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
     private val binding by viewBinding(FragmentTorrentListBinding::bind)
-    private val activityBinding by viewBinding(ActivityMainBinding::bind,
-        viewProvider = { requireActivity().view }
-    )
+    private val activityBinding by viewBinding(ActivityMainBinding::bind, viewProvider = { requireActivity().view })
 
     private val viewModel: TorrentListViewModel by viewModels()
 
@@ -71,7 +69,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val isTorrentDeleted = result.data?.getBooleanExtra(
-                    TorrentActivity.Extras.TORRENT_DELETED, false
+                    TorrentActivity.Extras.TORRENT_DELETED,
+                    false
                 ) ?: false
                 if (isTorrentDeleted) {
                     viewModel.loadTorrentList(serverConfig)
@@ -84,7 +83,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val isAdded = result.data?.getBooleanExtra(
-                    AddTorrentActivity.Extras.IS_ADDED, false
+                    AddTorrentActivity.Extras.IS_ADDED,
+                    false
                 ) ?: false
                 if (isAdded) {
                     viewModel.loadTorrentList(serverConfig)
@@ -94,106 +94,109 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.torrent_list_menu, menu)
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.torrent_list_menu, menu)
 
-                viewModel.torrentSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
-                    val selectedSort = when (sort) {
-                        TorrentSort.HASH -> R.id.menu_sort_hash
-                        TorrentSort.NAME -> R.id.menu_sort_name
-                        TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
-                        TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
-                        TorrentSort.PRIORITY -> R.id.menu_sort_priority
+                    viewModel.torrentSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
+                        val selectedSort = when (sort) {
+                            TorrentSort.HASH -> R.id.menu_sort_hash
+                            TorrentSort.NAME -> R.id.menu_sort_name
+                            TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
+                            TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
+                            TorrentSort.PRIORITY -> R.id.menu_sort_priority
+                        }
+                        menu.findItem(selectedSort).isChecked = true
                     }
-                    menu.findItem(selectedSort).isChecked = true
-                }
 
-                viewModel.isReverseSorting.launchAndCollectLatestIn(viewLifecycleOwner) { isReverseSorting ->
-                    menu.findItem(R.id.menu_sort_reverse).isChecked = isReverseSorting
-                }
-
-                val searchItem = menu.findItem(R.id.menu_search)
-
-                val searchView = searchItem.actionView as SearchView
-                searchView.queryHint = getString(R.string.torrent_list_search_torrents)
-                searchView.isSubmitButtonEnabled = false
-                searchView.setOnQueryTextListener(object : OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?) = false
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        viewModel.setSearchQuery(newText ?: "")
-                        return true
+                    viewModel.isReverseSorting.launchAndCollectLatestIn(viewLifecycleOwner) { isReverseSorting ->
+                        menu.findItem(R.id.menu_sort_reverse).isChecked = isReverseSorting
                     }
-                })
 
-                searchItem.setOnActionExpandListener(object : OnActionExpandListener {
-                    override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                        // we need to make other items invisible when search bar
-                        // is expanded otherwise they act oddly
-                        for (menuItem in menu.iterator()) {
-                            menuItem.isVisible = false
+                    val searchItem = menu.findItem(R.id.menu_search)
+
+                    val searchView = searchItem.actionView as SearchView
+                    searchView.queryHint = getString(R.string.torrent_list_search_torrents)
+                    searchView.isSubmitButtonEnabled = false
+                    searchView.setOnQueryTextListener(object : OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?) = false
+
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            viewModel.setSearchQuery(newText ?: "")
+                            return true
+                        }
+                    })
+
+                    searchItem.setOnActionExpandListener(object : OnActionExpandListener {
+                        override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                            // we need to make other items invisible when search bar
+                            // is expanded otherwise they act oddly
+                            for (menuItem in menu.iterator()) {
+                                menuItem.isVisible = false
+                            }
+
+                            // SearchView does not completely expand without doing this
+                            searchView.maxWidth = Integer.MAX_VALUE
+                            return true
                         }
 
-                        // SearchView does not completely expand without doing this
-                        searchView.maxWidth = Integer.MAX_VALUE
-                        return true
-                    }
+                        override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                            requireActivity().invalidateOptionsMenu()
+                            return true
+                        }
+                    })
+                }
 
-                    override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                        requireActivity().invalidateOptionsMenu()
-                        return true
+                override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+                    R.id.menu_add -> {
+                        val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
+                            putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                        }
+                        startAddTorrentActivity.launch(intent)
+                        true
                     }
-                })
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
-                R.id.menu_add -> {
-                    val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
-                        putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                    R.id.menu_sort_name -> {
+                        viewModel.setTorrentSort(TorrentSort.NAME).invokeOnCompletion {
+                            viewModel.loadTorrentList(serverConfig)
+                        }
+                        true
                     }
-                    startAddTorrentActivity.launch(intent)
-                    true
+                    R.id.menu_sort_hash -> {
+                        viewModel.setTorrentSort(TorrentSort.HASH).invokeOnCompletion {
+                            viewModel.loadTorrentList(serverConfig)
+                        }
+                        true
+                    }
+                    R.id.menu_sort_dlspeed -> {
+                        viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED).invokeOnCompletion {
+                            viewModel.loadTorrentList(serverConfig)
+                        }
+                        true
+                    }
+                    R.id.menu_sort_upspeed -> {
+                        viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED).invokeOnCompletion {
+                            viewModel.loadTorrentList(serverConfig)
+                        }
+                        true
+                    }
+                    R.id.menu_sort_priority -> {
+                        viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
+                            viewModel.loadTorrentList(serverConfig)
+                        }
+                        true
+                    }
+                    R.id.menu_sort_reverse -> {
+                        viewModel.changeReverseSorting().invokeOnCompletion {
+                            viewModel.loadTorrentList(serverConfig)
+                        }
+                        true
+                    }
+                    else -> false
                 }
-                R.id.menu_sort_name -> {
-                    viewModel.setTorrentSort(TorrentSort.NAME).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
-                    true
-                }
-                R.id.menu_sort_hash -> {
-                    viewModel.setTorrentSort(TorrentSort.HASH).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
-                    true
-                }
-                R.id.menu_sort_dlspeed -> {
-                    viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
-                    true
-                }
-                R.id.menu_sort_upspeed -> {
-                    viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
-                    true
-                }
-                R.id.menu_sort_priority -> {
-                    viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
-                    true
-                }
-                R.id.menu_sort_reverse -> {
-                    viewModel.changeReverseSorting().invokeOnCompletion {
-                        viewModel.loadTorrentList(serverConfig)
-                    }
-                    true
-                }
-                else -> false
-            }
-        }, viewLifecycleOwner)
+            },
+            viewLifecycleOwner
+        )
 
         var actionMode: ActionMode? = null
         val adapter = TorrentListAdapter().apply {
@@ -213,62 +216,65 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
                     override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
 
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
-                        when (item.itemId) {
-                            R.id.menu_delete -> {
-                                showDeleteTorrentsDialog(this@apply, actionMode)
-                                true
-                            }
-                            R.id.menu_pause -> {
-                                viewModel.pauseTorrents(serverConfig, selectedItems.toList())
-                                finishSelection()
-                                actionMode?.finish()
-                                true
-                            }
-                            R.id.menu_resume -> {
-                                viewModel.resumeTorrents(serverConfig, selectedItems.toList())
-                                finishSelection()
-                                actionMode?.finish()
-                                true
-                            }
-                            R.id.menu_priority_increase -> {
-                                viewModel.increaseTorrentPriority(
-                                    serverConfig, selectedItems.toList()
-                                )
-                                actionMode?.finish()
-                                true
-                            }
-                            R.id.menu_priority_decrease -> {
-                                viewModel.decreaseTorrentPriority(
-                                    serverConfig, selectedItems.toList()
-                                )
-                                actionMode?.finish()
-                                true
-                            }
-                            R.id.menu_priority_maximize -> {
-                                viewModel.maximizeTorrentPriority(
-                                    serverConfig, selectedItems.toList()
-                                )
-                                actionMode?.finish()
-                                true
-                            }
-                            R.id.menu_priority_minimize -> {
-                                viewModel.minimizeTorrentPriority(
-                                    serverConfig, selectedItems.toList()
-                                )
-                                actionMode?.finish()
-                                true
-                            }
-                            R.id.menu_select_all -> {
-                                selectAll()
-                                true
-                            }
-                            R.id.menu_select_inverse -> {
-                                selectInverse()
-                                true
-                            }
-                            else -> false
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
+                        R.id.menu_delete -> {
+                            showDeleteTorrentsDialog(this@apply, actionMode)
+                            true
                         }
+                        R.id.menu_pause -> {
+                            viewModel.pauseTorrents(serverConfig, selectedItems.toList())
+                            finishSelection()
+                            actionMode?.finish()
+                            true
+                        }
+                        R.id.menu_resume -> {
+                            viewModel.resumeTorrents(serverConfig, selectedItems.toList())
+                            finishSelection()
+                            actionMode?.finish()
+                            true
+                        }
+                        R.id.menu_priority_increase -> {
+                            viewModel.increaseTorrentPriority(
+                                serverConfig,
+                                selectedItems.toList()
+                            )
+                            actionMode?.finish()
+                            true
+                        }
+                        R.id.menu_priority_decrease -> {
+                            viewModel.decreaseTorrentPriority(
+                                serverConfig,
+                                selectedItems.toList()
+                            )
+                            actionMode?.finish()
+                            true
+                        }
+                        R.id.menu_priority_maximize -> {
+                            viewModel.maximizeTorrentPriority(
+                                serverConfig,
+                                selectedItems.toList()
+                            )
+                            actionMode?.finish()
+                            true
+                        }
+                        R.id.menu_priority_minimize -> {
+                            viewModel.minimizeTorrentPriority(
+                                serverConfig,
+                                selectedItems.toList()
+                            )
+                            actionMode?.finish()
+                            true
+                        }
+                        R.id.menu_select_all -> {
+                            selectAll()
+                            true
+                        }
+                        R.id.menu_select_inverse -> {
+                            selectInverse()
+                            true
+                        }
+                        else -> false
+                    }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
                         finishSelection()
@@ -292,12 +298,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         }
         binding.recyclerTorrentList.adapter = adapter
         binding.recyclerTorrentList.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 val verticalPx = 8.toPx(requireContext())
                 val horizontalPx = 4.toPx(requireContext())
                 if (parent.getChildAdapterPosition(view) == 0) {
@@ -318,10 +319,12 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 }
 
                 activityBinding.layoutDrawer.close()
-            }, onLongClick = { isCategory, name ->
+            },
+            onLongClick = { isCategory, name ->
                 activityBinding.layoutDrawer.close()
                 showDeleteCategoryTagDialog(isCategory, name)
-            }, onCreateClick = { isCategory ->
+            },
+            onCreateClick = { isCategory ->
                 activityBinding.layoutDrawer.close()
                 if (isCategory) {
                     showCreateCategoryDialog()
@@ -519,11 +522,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                 )
             )
             setPositiveButton { _, _ ->
-                viewModel.deleteTorrents(
-                    serverConfig,
-                    adapter.selectedItems.toList(),
-                    binding.checkDeleteFiles.isChecked
-                )
+                viewModel.deleteTorrents(serverConfig, adapter.selectedItems.toList(), binding.checkDeleteFiles.isChecked)
                 adapter.finishSelection()
                 actionMode?.finish()
             }
@@ -546,7 +545,8 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         R.string.torrent_list_delete_category_desc
                     } else {
                         R.string.torrent_list_delete_tag_desc
-                    }, name
+                    },
+                    name
                 )
             )
             setPositiveButton { _, _ ->

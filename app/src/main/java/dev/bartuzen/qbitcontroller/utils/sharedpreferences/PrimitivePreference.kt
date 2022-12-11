@@ -80,8 +80,5 @@ class PrimitivePreference<T : Any>(
     }
 }
 
-inline fun <reified T : Any> primitivePreference(
-    sharedPref: SharedPreferences,
-    key: String,
-    initialValue: T
-) = PrimitivePreference(sharedPref, key, initialValue, T::class)
+inline fun <reified T : Any> primitivePreference(sharedPref: SharedPreferences, key: String, initialValue: T) =
+    PrimitivePreference(sharedPref, key, initialValue, T::class)

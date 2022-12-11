@@ -38,45 +38,44 @@ class TorrentPiecesViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updatePieces(serverConfig: ServerConfig, torrentHash: String) =
-        viewModelScope.launch {
-            val piecesDeferred = async {
-                when (val result = repository.getPieces(serverConfig, torrentHash)) {
-                    is RequestResult.Success -> {
-                        result.data
+    private fun updatePieces(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
+        val piecesDeferred = async {
+            when (val result = repository.getPieces(serverConfig, torrentHash)) {
+                is RequestResult.Success -> {
+                    result.data
+                }
+                is RequestResult.Error -> {
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
                     }
-                    is RequestResult.Error -> {
-                        if (result is RequestResult.Error.ApiError && result.code == 404) {
-                            eventChannel.send(Event.TorrentNotFound)
-                        } else {
-                            eventChannel.send(Event.Error(result))
-                        }
-                        throw CancellationException()
-                    }
+                    throw CancellationException()
                 }
             }
-            val propertiesDeferred = async {
-                when (val result = repository.getProperties(serverConfig, torrentHash)) {
-                    is RequestResult.Success -> {
-                        result.data
-                    }
-                    is RequestResult.Error -> {
-                        if (result is RequestResult.Error.ApiError && result.code == 404) {
-                            eventChannel.send(Event.TorrentNotFound)
-                        } else {
-                            eventChannel.send(Event.Error(result))
-                        }
-                        throw CancellationException()
-                    }
-                }
-            }
-
-            val pieces = piecesDeferred.await()
-            val properties = propertiesDeferred.await()
-
-            _torrentPieces.value = pieces
-            _torrentProperties.value = properties
         }
+        val propertiesDeferred = async {
+            when (val result = repository.getProperties(serverConfig, torrentHash)) {
+                is RequestResult.Success -> {
+                    result.data
+                }
+                is RequestResult.Error -> {
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
+                    throw CancellationException()
+                }
+            }
+        }
+
+        val pieces = piecesDeferred.await()
+        val properties = propertiesDeferred.await()
+
+        _torrentPieces.value = pieces
+        _torrentProperties.value = properties
+    }
 
     fun loadPieces(serverConfig: ServerConfig, torrentHash: String) {
         if (!isLoading.value) {

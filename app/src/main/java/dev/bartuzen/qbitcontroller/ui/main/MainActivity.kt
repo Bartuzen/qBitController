@@ -57,9 +57,7 @@ class MainActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
                     R.id.menu_settings -> {
-                        startActivity(
-                            Intent(this@MainActivity, SettingsActivity::class.java)
-                        )
+                        startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
                     }
                     R.id.menu_about -> {
                         showAboutDialog()
@@ -86,8 +84,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         val actionBarDrawerToggle = ActionBarDrawerToggle(
-            this, binding.layoutDrawer, binding.toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this,
+            binding.layoutDrawer,
+            binding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         binding.layoutDrawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
@@ -112,14 +113,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.serversFlow.launchAndCollectLatestIn(this) { serverList ->
             serverListAdapter.submitList(serverList.values.toList())
 
-            binding.textClickToAddServer.visibility =
-                if (serverList.isEmpty()) View.VISIBLE else View.GONE
+            binding.textClickToAddServer.visibility = if (serverList.isEmpty()) View.VISIBLE else View.GONE
         }
 
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
             serverListAdapter.selectedServerId = serverConfig?.id ?: -1
-            val currentFragment =
-                supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
+            val currentFragment = supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
 
             supportActionBar?.title = serverConfig?.name ?: getString(R.string.app_name)
 

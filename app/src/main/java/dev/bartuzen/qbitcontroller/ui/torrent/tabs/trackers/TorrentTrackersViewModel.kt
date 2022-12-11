@@ -32,21 +32,20 @@ class TorrentTrackersViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateTrackers(serverConfig: ServerConfig, torrentHash: String) =
-        viewModelScope.launch {
-            when (val result = repository.getTrackers(serverConfig, torrentHash)) {
-                is RequestResult.Success -> {
-                    _torrentTrackers.value = result.data
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 404) {
-                        eventChannel.send(Event.TorrentNotFound)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+    private fun updateTrackers(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.getTrackers(serverConfig, torrentHash)) {
+            is RequestResult.Success -> {
+                _torrentTrackers.value = result.data
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
+    }
 
     fun loadTrackers(serverConfig: ServerConfig, torrentHash: String) {
         if (!isLoading.value) {
@@ -66,37 +65,35 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun addTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.addTrackers(serverConfig, hash, urls)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TrackersAdded)
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 404) {
-                        eventChannel.send(Event.TorrentNotFound)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+    fun addTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) = viewModelScope.launch {
+        when (val result = repository.addTrackers(serverConfig, hash, urls)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TrackersAdded)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
+    }
 
-    fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.deleteTrackers(serverConfig, hash, urls)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TrackersDeleted)
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 404) {
-                        eventChannel.send(Event.TorrentNotFound)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+    fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) = viewModelScope.launch {
+        when (val result = repository.deleteTrackers(serverConfig, hash, urls)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TrackersDeleted)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }
+    }
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()

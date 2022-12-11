@@ -36,9 +36,7 @@ import dev.bartuzen.qbitcontroller.utils.view
 @AndroidEntryPoint
 class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers) {
     private val binding by viewBinding(FragmentTorrentTrackersBinding::bind)
-    private val activityBinding by viewBinding(ActivityTorrentBinding::bind,
-        viewProvider = { requireActivity().view }
-    )
+    private val activityBinding by viewBinding(ActivityTorrentBinding::bind, viewProvider = { requireActivity().view })
 
     private val viewModel: TorrentTrackersViewModel by viewModels()
 
@@ -51,22 +49,26 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.torrent_trackers_menu, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menu_add -> {
-                        showAddTrackersDialog()
-                    }
-                    else -> return false
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.torrent_trackers_menu, menu)
                 }
 
-                return true
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_add -> {
+                            showAddTrackersDialog()
+                        }
+                        else -> return false
+                    }
+
+                    return true
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
 
         var actionMode: ActionMode? = null
         val adapter = TorrentTrackersAdapter().apply {
@@ -79,36 +81,36 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
 
                     override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
 
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) =
-                        when (item.itemId) {
-                            R.id.menu_delete -> {
-                                val items = selectedItems
-                                    .filter { !it.startsWith("0") }
-                                    .map { it.substring(1) }
-                                if (items.isNotEmpty()) {
-                                    showDeleteTrackersDialog(
-                                        trackerKeys = items,
-                                        onDelete = {
-                                            finishSelection()
-                                            actionMode?.finish()
-                                        })
-                                } else {
-                                    showSnackbar(R.string.torrent_trackers_cannot_delete_default)
-                                    finishSelection()
-                                    actionMode?.finish()
-                                }
-                                true
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
+                        R.id.menu_delete -> {
+                            val items = selectedItems
+                                .filter { !it.startsWith("0") }
+                                .map { it.substring(1) }
+                            if (items.isNotEmpty()) {
+                                showDeleteTrackersDialog(
+                                    trackerKeys = items,
+                                    onDelete = {
+                                        finishSelection()
+                                        actionMode?.finish()
+                                    }
+                                )
+                            } else {
+                                showSnackbar(R.string.torrent_trackers_cannot_delete_default)
+                                finishSelection()
+                                actionMode?.finish()
                             }
-                            R.id.menu_select_all -> {
-                                selectAll()
-                                true
-                            }
-                            R.id.menu_select_inverse -> {
-                                selectInverse()
-                                true
-                            }
-                            else -> false
+                            true
                         }
+                        R.id.menu_select_all -> {
+                            selectAll()
+                            true
+                        }
+                        R.id.menu_select_inverse -> {
+                            selectInverse()
+                            true
+                        }
+                        else -> false
+                    }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
                         finishSelection()
@@ -132,12 +134,7 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         }
         binding.recyclerTrackers.adapter = adapter
         binding.recyclerTrackers.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 val verticalPx = 8.toPx(requireContext())
                 val horizontalPx = 8.toPx(requireContext())
                 if (parent.getChildAdapterPosition(view) == 0) {
@@ -217,12 +214,16 @@ class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers)
         showDialog {
             setTitle(
                 resources.getQuantityString(
-                    R.plurals.torrent_trackers_delete_title, trackerKeys.size, trackerKeys.size
+                    R.plurals.torrent_trackers_delete_title,
+                    trackerKeys.size,
+                    trackerKeys.size
                 )
             )
             setMessage(
                 resources.getQuantityString(
-                    R.plurals.torrent_trackers_delete_desc, trackerKeys.size, trackerKeys.size
+                    R.plurals.torrent_trackers_delete_desc,
+                    trackerKeys.size,
+                    trackerKeys.size
                 )
             )
             setPositiveButton { _, _ ->

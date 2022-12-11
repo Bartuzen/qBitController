@@ -69,9 +69,8 @@ android {
                 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
             }
 
-            fun getProperty(propertyName: String, envName: String) =
-                keystoreProperties.getProperty(propertyName)
-                    ?: System.getenv("QBITCONTROLLER_$envName")
+            fun getProperty(propertyName: String, envName: String) = keystoreProperties.getProperty(propertyName)
+                ?: System.getenv("QBITCONTROLLER_$envName")
 
             storeFile = getProperty("storeFile", "STORE_FILE")?.let { file(it) }
             storePassword = getProperty("storePassword", "STORE_PASSWORD")

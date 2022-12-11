@@ -37,27 +37,26 @@ class RequestManager @Inject constructor(
         })
     }
 
-    private fun getTorrentService(serverConfig: ServerConfig) =
-        torrentServiceMap.getOrPut(serverConfig.id) {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(serverConfig.url)
-                .client(
-                    OkHttpClient().newBuilder()
-                        .cookieJar(SessionCookieJar())
-                        .build()
+    private fun getTorrentService(serverConfig: ServerConfig) = torrentServiceMap.getOrPut(serverConfig.id) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(serverConfig.url)
+            .client(
+                OkHttpClient().newBuilder()
+                    .cookieJar(SessionCookieJar())
+                    .build()
+            )
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(
+                JacksonConverterFactory.create(
+                    jacksonObjectMapper()
+                        .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
+                        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 )
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(
-                    JacksonConverterFactory.create(
-                        jacksonObjectMapper()
-                            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
-                            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                    )
-                )
-                .addConverterFactory(EnumConverterFactory())
-                .build()
-            retrofit.create(TorrentService::class.java)
-        }
+            )
+            .addConverterFactory(EnumConverterFactory())
+            .build()
+        retrofit.create(TorrentService::class.java)
+    }
 
     suspend fun <T : Any> request(
         serverConfig: ServerConfig,

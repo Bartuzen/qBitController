@@ -44,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
                         R.anim.slide_in_right,
                         R.anim.slide_out_left,
                         R.anim.slide_in_left,
-                        R.anim.slide_out_right,
+                        R.anim.slide_out_right
                     )
                     val fragment = AddEditServerFragmentBuilder()
                         .build()

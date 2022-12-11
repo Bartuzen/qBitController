@@ -10,22 +10,18 @@ import javax.inject.Singleton
 class TorrentListRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
-    suspend fun getTorrentList(
-        serverConfig: ServerConfig,
-        torrentSort: TorrentSort,
-        isReverseSorting: Boolean
-    ) = requestManager.request(serverConfig) { service ->
-        service.getTorrentList(
-            torrentSort = torrentSort,
-            isReverseSorting = isReverseSorting
-        )
-    }
+    suspend fun getTorrentList(serverConfig: ServerConfig, torrentSort: TorrentSort, isReverseSorting: Boolean) =
+        requestManager.request(serverConfig) { service ->
+            service.getTorrentList(
+                torrentSort = torrentSort,
+                isReverseSorting = isReverseSorting
+            )
+        }
 
-    suspend fun deleteTorrents(
-        serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean
-    ) = requestManager.request(serverConfig) { service ->
-        service.deleteTorrents(hashes.joinToString("|"), deleteFiles)
-    }
+    suspend fun deleteTorrents(serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean) =
+        requestManager.request(serverConfig) { service ->
+            service.deleteTorrents(hashes.joinToString("|"), deleteFiles)
+        }
 
     suspend fun pauseTorrents(serverConfig: ServerConfig, hashes: List<String>) =
         requestManager.request(serverConfig) { service ->
@@ -37,25 +33,22 @@ class TorrentListRepository @Inject constructor(
             service.resumeTorrents(hashes.joinToString("|"))
         }
 
-    suspend fun getCategories(serverConfig: ServerConfig) =
-        requestManager.request(serverConfig) { service ->
-            service.getCategories()
-        }
+    suspend fun getCategories(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+        service.getCategories()
+    }
 
-    suspend fun getTags(serverConfig: ServerConfig) =
-        requestManager.request(serverConfig) { service ->
-            service.getTags()
-        }
+    suspend fun getTags(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+        service.getTags()
+    }
 
     suspend fun deleteCategory(serverConfig: ServerConfig, category: String) =
         requestManager.request(serverConfig) { service ->
             service.deleteCategories(category)
         }
 
-    suspend fun deleteTag(serverConfig: ServerConfig, tag: String) =
-        requestManager.request(serverConfig) { service ->
-            service.deleteTags(tag)
-        }
+    suspend fun deleteTag(serverConfig: ServerConfig, tag: String) = requestManager.request(serverConfig) { service ->
+        service.deleteTags(tag)
+    }
 
     suspend fun increaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
         requestManager.request(serverConfig) { service ->

@@ -66,8 +66,7 @@ class ServerListAdapter(
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<ServerConfig>() {
-        override fun areItemsTheSame(oldItem: ServerConfig, newItem: ServerConfig) =
-            oldItem.id == newItem.id
+        override fun areItemsTheSame(oldItem: ServerConfig, newItem: ServerConfig) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: ServerConfig, newItem: ServerConfig) =
             oldItem.name == newItem.name && oldItem.host == newItem.host

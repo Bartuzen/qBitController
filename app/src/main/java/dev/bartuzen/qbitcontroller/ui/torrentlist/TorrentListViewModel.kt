@@ -56,10 +56,7 @@ class TorrentListViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     private fun updateTorrentList(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (
-            val result =
-                repository.getTorrentList(serverConfig, torrentSort.value, isReverseSorting.value)
-        ) {
+        when (val result = repository.getTorrentList(serverConfig, torrentSort.value, isReverseSorting.value)) {
             is RequestResult.Success -> {
                 _torrentList.value = result.data
             }
@@ -127,41 +124,38 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteTorrents(serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean) =
-        viewModelScope.launch {
-            when (val result = repository.deleteTorrents(serverConfig, hashes, deleteFiles)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsDeleted(hashes.size))
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                }
+    fun deleteTorrents(serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean) = viewModelScope.launch {
+        when (val result = repository.deleteTorrents(serverConfig, hashes, deleteFiles)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsDeleted(hashes.size))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
+    }
 
-    fun pauseTorrents(serverConfig: ServerConfig, hashes: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.pauseTorrents(serverConfig, hashes)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsPaused(hashes.size))
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                }
+    fun pauseTorrents(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.pauseTorrents(serverConfig, hashes)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsPaused(hashes.size))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
+    }
 
-    fun resumeTorrents(serverConfig: ServerConfig, hashes: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.resumeTorrents(serverConfig, hashes)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsResumed(hashes.size))
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                }
+    fun resumeTorrents(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.resumeTorrents(serverConfig, hashes)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsResumed(hashes.size))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
+    }
 
     fun deleteCategory(serverConfig: ServerConfig, category: String) = viewModelScope.launch {
         when (val result = repository.deleteCategory(serverConfig, category)) {
@@ -185,81 +179,76 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun increaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.increaseTorrentPriority(serverConfig, hashes)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsPriorityIncreased)
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 409) {
-                        eventChannel.send(Event.QueueingNotEnabled)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
-                }
+    fun increaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.increaseTorrentPriority(serverConfig, hashes)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsPriorityIncreased)
             }
-        }
-
-    fun decreaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.decreaseTorrentPriority(serverConfig, hashes)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsPriorityDecreased)
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 409) {
-                        eventChannel.send(Event.QueueingNotEnabled)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
-                }
-            }
-        }
-
-    fun maximizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.maximizeTorrentPriority(serverConfig, hashes)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsPriorityMaximized)
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 409) {
-                        eventChannel.send(Event.QueueingNotEnabled)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
-                }
-            }
-        }
-
-    fun minimizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) =
-        viewModelScope.launch {
-            when (val result = repository.minimizeTorrentPriority(serverConfig, hashes)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.TorrentsPriorityMinimized)
-                }
-                is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 409) {
-                        eventChannel.send(Event.QueueingNotEnabled)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
-                }
-            }
-        }
-
-    fun createCategory(serverConfig: ServerConfig, name: String, savePath: String) =
-        viewModelScope.launch {
-            when (val result = repository.createCategory(serverConfig, name, savePath)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.CategoryCreated)
-                }
-                is RequestResult.Error -> {
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.QueueingNotEnabled)
+                } else {
                     eventChannel.send(Event.Error(result))
                 }
             }
         }
+    }
+
+    fun decreaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.decreaseTorrentPriority(serverConfig, hashes)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsPriorityDecreased)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.QueueingNotEnabled)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
+    fun maximizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.maximizeTorrentPriority(serverConfig, hashes)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsPriorityMaximized)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.QueueingNotEnabled)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
+    fun minimizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.minimizeTorrentPriority(serverConfig, hashes)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsPriorityMinimized)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.QueueingNotEnabled)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
+    fun createCategory(serverConfig: ServerConfig, name: String, savePath: String) = viewModelScope.launch {
+        when (val result = repository.createCategory(serverConfig, name, savePath)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.CategoryCreated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
 
     fun createTags(serverConfig: ServerConfig, names: List<String>) = viewModelScope.launch {
         when (val result = repository.createTags(serverConfig, names)) {

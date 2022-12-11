@@ -26,21 +26,15 @@ class CategoryTagAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_category_tag -> {
-            ItemViewHolder(
-                ItemCategoryTagBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            ItemViewHolder(ItemCategoryTagBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
         R.layout.item_category_tag_title -> {
             TitleViewHolder(
-                ItemCategoryTagTitleBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false
-                )
+                ItemCategoryTagTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         }
         R.layout.item_divider -> {
-            DividerViewHolder(
-                ItemDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            DividerViewHolder(ItemDividerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
         else -> throw IllegalStateException()
     }

@@ -33,10 +33,13 @@ class AddTorrentRepository @Inject constructor(
     ): RequestResult<Unit> {
         val filePart = if (fileBytes != null) {
             MultipartBody.Part.createFormData(
-                "filename", "torrent",
+                "filename",
+                "torrent",
                 RequestBody.create(MediaType.parse("application/x-bittorrent"), fileBytes)
             )
-        } else null
+        } else {
+            null
+        }
 
         return requestManager.request(serverConfig) { service ->
             service.addTorrent(
@@ -59,13 +62,11 @@ class AddTorrentRepository @Inject constructor(
         }
     }
 
-    suspend fun getCategories(serverConfig: ServerConfig) =
-        requestManager.request(serverConfig) { service ->
-            service.getCategories()
-        }
+    suspend fun getCategories(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+        service.getCategories()
+    }
 
-    suspend fun getTags(serverConfig: ServerConfig) =
-        requestManager.request(serverConfig) { service ->
-            service.getTags()
-        }
+    suspend fun getTags(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+        service.getTags()
+    }
 }

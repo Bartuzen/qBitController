@@ -9,45 +9,38 @@ import javax.inject.Singleton
 class TorrentRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
-    suspend fun getTorrent(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.getTorrentList(hash)
-        }
+    suspend fun getTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.getTorrentList(hash)
+    }
 
-    suspend fun getFiles(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.getFiles(hash)
-        }
+    suspend fun getFiles(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.getFiles(hash)
+    }
 
-    suspend fun getPieces(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.getTorrentPieces(hash)
-        }
+    suspend fun getPieces(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.getTorrentPieces(hash)
+    }
 
-    suspend fun getProperties(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.getTorrentProperties(hash)
-        }
+    suspend fun getProperties(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.getTorrentProperties(hash)
+    }
 
     suspend fun deleteTorrent(serverConfig: ServerConfig, hash: String, deleteFiles: Boolean) =
         requestManager.request(serverConfig) { service ->
             service.deleteTorrents(hash, deleteFiles)
         }
 
-    suspend fun pauseTorrent(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.pauseTorrents(hash)
-        }
+    suspend fun pauseTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.pauseTorrents(hash)
+    }
 
-    suspend fun resumeTorrent(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.resumeTorrents(hash)
-        }
+    suspend fun resumeTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.resumeTorrents(hash)
+    }
 
-    suspend fun getTrackers(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.getTorrentTrackers(hash)
-        }
+    suspend fun getTrackers(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.getTorrentTrackers(hash)
+    }
 
     suspend fun addTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
         requestManager.request(serverConfig) { service ->
@@ -69,11 +62,10 @@ class TorrentRepository @Inject constructor(
             service.togglePrioritizeFirstLastPiecesDownload(hash)
         }
 
-    suspend fun setAutomaticTorrentManagement(
-        serverConfig: ServerConfig, hash: String, enable: Boolean
-    ) = requestManager.request(serverConfig) { service ->
-        service.setAutomaticTorrentManagement(hash, enable)
-    }
+    suspend fun setAutomaticTorrentManagement(serverConfig: ServerConfig, hash: String, enable: Boolean) =
+        requestManager.request(serverConfig) { service ->
+            service.setAutomaticTorrentManagement(hash, enable)
+        }
 
     suspend fun setDownloadSpeedLimit(serverConfig: ServerConfig, hash: String, limit: Int) =
         requestManager.request(serverConfig) { service ->

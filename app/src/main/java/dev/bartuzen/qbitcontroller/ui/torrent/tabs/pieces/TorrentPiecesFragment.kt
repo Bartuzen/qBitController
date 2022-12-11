@@ -49,12 +49,7 @@ class TorrentPiecesFragment : ArgsFragment(R.layout.fragment_torrent_pieces) {
         }
 
         binding.recyclerPieces.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 parent.adapter?.itemCount?.let { itemCount ->
                     val position = parent.getChildAdapterPosition(view) - 1
                     if (position != -1) {

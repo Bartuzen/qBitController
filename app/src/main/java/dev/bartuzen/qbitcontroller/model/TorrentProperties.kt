@@ -43,5 +43,5 @@ data class TorrentProperties(
 
     @JsonProperty("comment")
     @JsonDeserialize(using = NullableStringDeserializer::class)
-    val comment: String?,
+    val comment: String?
 )

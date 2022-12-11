@@ -70,7 +70,6 @@ class AddEditServerViewModel @Inject constructor(
                 } else {
                     null
                 }
-
             } catch (e: ConnectException) {
                 RequestResult.Error.RequestError.CannotConnect
             } catch (e: SocketTimeoutException) {

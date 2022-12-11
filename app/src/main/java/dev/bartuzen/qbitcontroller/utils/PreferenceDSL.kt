@@ -56,5 +56,4 @@ class PreferenceDSL(private val fragment: PreferenceFragmentCompat) {
     }
 }
 
-fun PreferenceFragmentCompat.preferences(block: PreferenceDSL.() -> Unit) =
-    PreferenceDSL(this).apply(block).build()
+fun PreferenceFragmentCompat.preferences(block: PreferenceDSL.() -> Unit) = PreferenceDSL(this).apply(block).build()

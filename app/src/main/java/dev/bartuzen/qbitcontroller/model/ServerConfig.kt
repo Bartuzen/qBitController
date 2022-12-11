@@ -18,7 +18,7 @@ data class ServerConfig(
     @get:JsonIgnore
     val url
         get() = buildString {
-            append("${protocol.toString().lowercase()}://${host}")
+            append("${protocol.toString().lowercase()}://$host")
             port?.let { port ->
                 append(":$port")
             }

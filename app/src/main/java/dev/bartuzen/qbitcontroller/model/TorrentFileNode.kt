@@ -13,9 +13,7 @@ data class TorrentFileNode(
     fun findChildNode(childList: ArrayDeque<String>): TorrentFileNode? {
         var currentNode = this
         for (child in childList.descendingIterator()) {
-            currentNode = currentNode.children?.find {
-                it.name == child
-            } ?: return null
+            currentNode = currentNode.children?.find { it.name == child } ?: return null
         }
         return currentNode
     }
@@ -32,9 +30,7 @@ data class TorrentFileNode(
                     if (i == pathList.lastIndex) {
                         currentNode.children?.add(TorrentFileNode(pathItem, null))
                     } else {
-                        currentNode = currentNode.children?.find {
-                            it.name == pathItem
-                        } ?: currentNode.children.let {
+                        currentNode = currentNode.children?.find { it.name == pathItem } ?: currentNode.children.let {
                             val newFile = TorrentFileNode(pathItem, mutableListOf())
                             it?.add(newFile)
                             newFile

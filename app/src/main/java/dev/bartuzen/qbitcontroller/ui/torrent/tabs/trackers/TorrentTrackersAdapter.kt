@@ -35,14 +35,10 @@ class TorrentTrackersAdapter :
         fun bind(tracker: TorrentTracker) {
             val context = binding.root.context
 
-            val backgroundColor = if (
-                isItemSelected("${if (tracker.tier == -1) 0 else 1}${tracker.url}")
-            ) {
+            val backgroundColor = if (isItemSelected("${if (tracker.tier == -1) 0 else 1}${tracker.url}")) {
                 context.getColorCompat(R.color.selected_card_background)
             } else {
-                MaterialColors.getColor(
-                    context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT
-                )
+                MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT)
             }
             binding.root.setCardBackgroundColor(backgroundColor)
 
@@ -63,10 +59,8 @@ class TorrentTrackersAdapter :
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<TorrentTracker>() {
-        override fun areItemsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) =
-            oldItem.url == newItem.url
+        override fun areItemsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) = oldItem.url == newItem.url
 
-        override fun areContentsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) =
-            oldItem == newItem
+        override fun areContentsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) = oldItem == newItem
     }
 }

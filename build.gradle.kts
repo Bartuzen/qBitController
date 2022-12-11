@@ -1,3 +1,17 @@
+import org.jmailen.gradle.kotlinter.KotlinterExtension
+
+plugins {
+    id("org.jmailen.kotlinter") version "3.12.0"
+}
+
+subprojects {
+    apply(plugin = "org.jmailen.kotlinter")
+
+    configure<KotlinterExtension> {
+        experimentalRules = true
+    }
+}
+
 buildscript {
     repositories {
         google()

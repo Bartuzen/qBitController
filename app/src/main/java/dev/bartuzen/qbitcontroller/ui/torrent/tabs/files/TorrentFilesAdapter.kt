@@ -49,10 +49,8 @@ class TorrentFilesAdapter(
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<TorrentFileNode>() {
-        override fun areItemsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) =
-            oldItem.name == newItem.name
+        override fun areItemsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) = oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) =
-            oldItem.name == newItem.name
+        override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) = oldItem.name == newItem.name
     }
 }

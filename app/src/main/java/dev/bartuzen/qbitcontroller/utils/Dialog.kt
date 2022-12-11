@@ -24,10 +24,7 @@ fun <VB : ViewBinding> showDialog(
         .show()
 }
 
-fun showDialog(
-    context: Context,
-    block: MaterialAlertDialogBuilder.() -> Unit
-) {
+fun showDialog(context: Context, block: MaterialAlertDialogBuilder.() -> Unit) {
     MaterialAlertDialogBuilder(context)
         .apply { block() }
         .create()
@@ -41,9 +38,7 @@ fun <VB : ViewBinding> Fragment.showDialog(
     showDialog(bindingInflater, requireContext(), block)
 }
 
-fun Fragment.showDialog(
-    block: MaterialAlertDialogBuilder.() -> Unit
-) {
+fun Fragment.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) {
     showDialog(requireContext(), block)
 }
 
@@ -54,9 +49,7 @@ fun <VB : ViewBinding> Activity.showDialog(
     showDialog(bindingInflater, this, block)
 }
 
-fun Activity.showDialog(
-    block: MaterialAlertDialogBuilder.() -> Unit
-) {
+fun Activity.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) {
     showDialog(this, block)
 }
 

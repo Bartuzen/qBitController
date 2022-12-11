@@ -20,10 +20,7 @@ import retrofit2.http.Query
 interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/auth/login")
-    suspend fun login(
-        @Field("username") username: String,
-        @Field("password") password: String
-    ): Response<String>
+    suspend fun login(@Field("username") username: String, @Field("password") password: String): Response<String>
 
     @GET("api/v2/torrents/info")
     suspend fun getTorrentList(
@@ -37,10 +34,7 @@ interface TorrentService {
 
     @FormUrlEncoded
     @POST("api/v2/torrents/delete")
-    suspend fun deleteTorrents(
-        @Field("hashes") hashes: String,
-        @Field("deleteFiles") deleteFiles: Boolean
-    ): Response<Unit>
+    suspend fun deleteTorrents(@Field("hashes") hashes: String, @Field("deleteFiles") deleteFiles: Boolean): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/pause")
@@ -61,17 +55,11 @@ interface TorrentService {
 
     @FormUrlEncoded
     @POST("api/v2/torrents/addTrackers")
-    suspend fun addTorrentTrackers(
-        @Field("hash") hash: String,
-        @Field("urls") urls: String
-    ): Response<Unit>
+    suspend fun addTorrentTrackers(@Field("hash") hash: String, @Field("urls") urls: String): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/removeTrackers")
-    suspend fun deleteTorrentTrackers(
-        @Field("hash") hash: String,
-        @Field("urls") urls: String
-    ): Response<Unit>
+    suspend fun deleteTorrentTrackers(@Field("hash") hash: String, @Field("urls") urls: String): Response<Unit>
 
     @GET("api/v2/torrents/categories")
     suspend fun getCategories(): Response<Map<String, Category>>
@@ -105,10 +93,7 @@ interface TorrentService {
 
     @FormUrlEncoded
     @POST("api/v2/torrents/createCategory")
-    suspend fun createCategory(
-        @Field("category") name: String,
-        @Field("savePath") savePath: String
-    ): Response<Unit>
+    suspend fun createCategory(@Field("category") name: String, @Field("savePath") savePath: String): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/createTags")
@@ -120,8 +105,7 @@ interface TorrentService {
 
     @FormUrlEncoded
     @POST("api/v2/torrents/toggleFirstLastPiecePrio")
-    suspend fun togglePrioritizeFirstLastPiecesDownload(@Field("hashes") hashes: String):
-            Response<Unit>
+    suspend fun togglePrioritizeFirstLastPiecesDownload(@Field("hashes") hashes: String): Response<Unit>
 
     @Multipart
     @POST("api/v2/torrents/add")
@@ -146,30 +130,23 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/setAutoManagement")
     suspend fun setAutomaticTorrentManagement(
-        @Field("hashes") hashes: String, @Field("enable") enable: Boolean
+        @Field("hashes") hashes: String,
+        @Field("enable") enable: Boolean
     ): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/setDownloadLimit")
-    suspend fun setDownloadSpeedLimit(
-        @Field("hashes") hashes: String, @Field("limit") limit: Int
-    ): Response<Unit>
+    suspend fun setDownloadSpeedLimit(@Field("hashes") hashes: String, @Field("limit") limit: Int): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/setUploadLimit")
-    suspend fun setUploadSpeedLimit(
-        @Field("hashes") hashes: String, @Field("limit") limit: Int
-    ): Response<Unit>
+    suspend fun setUploadSpeedLimit(@Field("hashes") hashes: String, @Field("limit") limit: Int): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/setForceStart")
-    suspend fun setForceStart(
-        @Field("hashes") hashes: String, @Field("value") value: Boolean
-    ): Response<Unit>
+    suspend fun setForceStart(@Field("hashes") hashes: String, @Field("value") value: Boolean): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/setSuperSeeding")
-    suspend fun setSuperSeeding(
-        @Field("hashes") hashes: String, @Field("value") value: Boolean
-    ): Response<Unit>
+    suspend fun setSuperSeeding(@Field("hashes") hashes: String, @Field("value") value: Boolean): Response<Unit>
 }

@@ -22,13 +22,12 @@ fun Int.toPx(context: Context) = ceil(this * context.resources.displayMetrics.de
 
 fun Int.toDp(context: Context) = ceil(this / context.resources.displayMetrics.density).toInt()
 
-inline fun <reified T : Parcelable> Intent.getParcelable(name: String) =
-    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-        getParcelableExtra(name, T::class.java)
-    } else {
-        @Suppress("DEPRECATION")
-        getParcelableExtra(name)
-    }
+inline fun <reified T : Parcelable> Intent.getParcelable(name: String) = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+    getParcelableExtra(name, T::class.java)
+} else {
+    @Suppress("DEPRECATION")
+    getParcelableExtra(name)
+}
 
 inline fun <reified T : Serializable> Bundle.getSerializableCompat(name: String) =
     if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {

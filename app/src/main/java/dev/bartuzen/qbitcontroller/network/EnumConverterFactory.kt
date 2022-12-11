@@ -10,13 +10,12 @@ class EnumConverterFactory : Converter.Factory() {
         type: Type,
         annotations: Array<out Annotation>,
         retrofit: Retrofit
-    ): Converter<Enum<*>, String>? =
-        if (type is Class<*> && type.isEnum) {
-            Converter<Enum<*>, String> { value ->
-                value.javaClass.getField(value.name).getAnnotation(JsonProperty::class.java)?.value
-                    ?: value.name
-            }
-        } else {
-            null
+    ): Converter<Enum<*>, String>? = if (type is Class<*> && type.isEnum) {
+        Converter<Enum<*>, String> { value ->
+            value.javaClass.getField(value.name).getAnnotation(JsonProperty::class.java)?.value
+                ?: value.name
         }
+    } else {
+        null
+    }
 }
