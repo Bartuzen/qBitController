@@ -245,6 +245,14 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         viewModel.categoryList.filterNotNull().launchAndCollectLatestIn(this) { categoryList ->
+            val selectedCategory = binding.chipGroupCategory.checkedChipId.let { id ->
+                if (id != View.NO_ID) {
+                    binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
+                } else {
+                    null
+                }
+            }
+
             binding.chipGroupCategory.removeAllViews()
 
             categoryList.forEach { category ->
@@ -254,11 +262,21 @@ class AddTorrentActivity : AppCompatActivity() {
                 chip.setChipBackgroundColorResource(R.color.torrent_category)
                 chip.ellipsize = TextUtils.TruncateAt.END
                 chip.isCheckable = true
+
+                if (category == selectedCategory) {
+                    chip.isChecked = true
+                }
+
                 binding.chipGroupCategory.addView(chip)
             }
         }
 
         viewModel.tagList.filterNotNull().launchAndCollectLatestIn(this) { tagList ->
+            val selectedTags = mutableListOf<String>()
+            binding.chipGroupTag.checkedChipIds.forEach { id ->
+                selectedTags.add(binding.chipGroupTag.findViewById<Chip>(id).text.toString())
+            }
+
             binding.chipGroupTag.removeAllViews()
 
             tagList.forEach { tag ->
@@ -268,6 +286,11 @@ class AddTorrentActivity : AppCompatActivity() {
                 chip.setChipBackgroundColorResource(R.color.torrent_tag)
                 chip.isCheckable = true
                 chip.ellipsize = TextUtils.TruncateAt.END
+
+                if (selectedTags.contains(tag)) {
+                    chip.isChecked = true
+                }
+
                 binding.chipGroupTag.addView(chip)
             }
         }
