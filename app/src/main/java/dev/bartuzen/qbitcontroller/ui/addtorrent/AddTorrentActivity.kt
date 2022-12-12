@@ -170,9 +170,8 @@ class AddTorrentActivity : AppCompatActivity() {
                             }
                         }
 
-                        val tags = mutableListOf<String>()
-                        binding.chipGroupTag.checkedChipIds.forEach { id ->
-                            tags.add(binding.chipGroupTag.findViewById<Chip>(id).text.toString())
+                        val tags = binding.chipGroupTag.checkedChipIds.map { id ->
+                            binding.chipGroupTag.findViewById<Chip>(id).text.toString()
                         }
 
                         if (config != null) {
@@ -272,9 +271,8 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         viewModel.tagList.filterNotNull().launchAndCollectLatestIn(this) { tagList ->
-            val selectedTags = mutableListOf<String>()
-            binding.chipGroupTag.checkedChipIds.forEach { id ->
-                selectedTags.add(binding.chipGroupTag.findViewById<Chip>(id).text.toString())
+            val selectedTags = binding.chipGroupTag.checkedChipIds.map { id ->
+                binding.chipGroupTag.findViewById<Chip>(id).text.toString()
             }
 
             binding.chipGroupTag.removeAllViews()
