@@ -51,8 +51,9 @@ abstract class MultiSelectAdapter<T, K, VH : MultiSelectAdapter.ViewHolder<T, K>
 
     fun selectAll() {
         currentList.forEachIndexed { index, item ->
-            if (getKey(item) !in selectedItems) {
-                _selectedItems.add(getKey(item))
+            val key = getKey(item)
+            if (key !in selectedItems) {
+                _selectedItems.add(key)
                 notifyItemChanged(index)
             }
         }
@@ -63,8 +64,9 @@ abstract class MultiSelectAdapter<T, K, VH : MultiSelectAdapter.ViewHolder<T, K>
         val inverseList = mutableListOf<K>()
 
         currentList.forEach { item ->
-            if (getKey(item) !in selectedItems) {
-                inverseList.add(getKey(item))
+            val key = getKey(item)
+            if (key !in selectedItems) {
+                inverseList.add(key)
             }
         }
 
