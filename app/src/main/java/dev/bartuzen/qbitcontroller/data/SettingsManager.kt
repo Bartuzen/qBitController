@@ -2,7 +2,6 @@ package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.fasterxml.jackson.annotation.JsonProperty
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
