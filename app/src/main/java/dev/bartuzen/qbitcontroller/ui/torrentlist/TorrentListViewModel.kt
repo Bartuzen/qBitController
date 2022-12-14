@@ -293,12 +293,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun setTorrentSort(torrentSort: TorrentSort) = viewModelScope.launch {
-        settingsManager.sort.setValue(torrentSort)
+    fun setTorrentSort(torrentSort: TorrentSort) {
+        settingsManager.sort.value = torrentSort
     }
 
-    fun changeReverseSorting() = viewModelScope.launch {
-        settingsManager.isReverseSorting.setValue(!isReverseSorting.value)
+    fun changeReverseSorting() {
+        settingsManager.isReverseSorting.value = !isReverseSorting.value
     }
 
     fun setSearchQuery(query: String) {
