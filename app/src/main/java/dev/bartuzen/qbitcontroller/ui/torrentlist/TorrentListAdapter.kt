@@ -69,8 +69,9 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 progressText
             )
 
-            val eta = formatSeconds(context, torrent.eta)
-            binding.textEta.text = if (eta != "inf") eta else null
+            binding.textEta.text = torrent.eta?.let { eta ->
+                formatSeconds(context, eta)
+            }
 
             binding.textState.text = formatTorrentState(context, torrent.state)
 

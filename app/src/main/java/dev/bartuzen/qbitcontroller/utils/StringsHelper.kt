@@ -73,7 +73,7 @@ fun formatSeconds(context: Context, seconds: Int) = when (seconds) {
             context.getString(R.string.eta_days, days)
         }
     }
-    else -> "inf"
+    else -> null
 }
 
 fun formatTorrentState(context: Context, state: TorrentState) = context.getString(
