@@ -37,6 +37,15 @@
     <string name="torrent_sort_dlspeed">Download Speed</string>
     <string name="torrent_sort_upspeed">Upload Speed</string>
     <string name="torrent_sort_priority">Priority</string>
+    <string name="torrent_sort_eta">ETA</string>
+    <string name="torrent_sort_size">Size</string>
+    <string name="torrent_sort_progress">Progress</string>
+    <string name="torrent_sort_connected_seeds">Connected Seeds</string>
+    <string name="torrent_sort_total_seeds">Total Seeds</string>
+    <string name="torrent_sort_connected_leeches">Connected Leeches</string>
+    <string name="torrent_sort_total_leeches">Total Leeches</string>
+    <string name="torrent_sort_addition_date">Addition Date</string>
+    <string name="torrent_sort_completion_date">Completion Date</string>
     <string name="torrent_sort_reverse">Reverse</string>
 
     <string name="torrent_status_error">Error</string>

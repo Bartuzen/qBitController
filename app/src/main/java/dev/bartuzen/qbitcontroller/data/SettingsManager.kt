@@ -32,7 +32,16 @@ enum class TorrentSort {
     HASH,
     DOWNLOAD_SPEED,
     UPLOAD_SPEED,
-    PRIORITY
+    PRIORITY,
+    ETA,
+    SIZE,
+    PROGRESS,
+    CONNECTED_SEEDS,
+    TOTAL_SEEDS,
+    CONNECTED_LEECHES,
+    TOTAL_LEECHES,
+    ADDITION_DATE,
+    COMPLETION_DATE
 }
 
 fun Theme.toDelegate() = when (this) {

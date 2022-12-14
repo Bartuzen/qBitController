@@ -74,6 +74,15 @@ class TorrentListViewModel @Inject constructor(
                         TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
                         TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
                         TorrentSort.PRIORITY -> sortedWith(compareBy({ it.priority }, { it.hash }))
+                        TorrentSort.ETA -> sortedWith(compareBy({ it.eta }, { it.hash }))
+                        TorrentSort.SIZE -> sortedWith(compareBy({ it.size }, { it.hash }))
+                        TorrentSort.PROGRESS -> sortedWith(compareBy({ it.progress }, { it.hash }))
+                        TorrentSort.CONNECTED_SEEDS -> sortedWith(compareBy({ it.connectedSeeds }, { it.hash }))
+                        TorrentSort.TOTAL_SEEDS -> sortedWith(compareBy({ it.totalSeeds }, { it.hash }))
+                        TorrentSort.CONNECTED_LEECHES -> sortedWith(compareBy({ it.connectedLeeches }, { it.hash }))
+                        TorrentSort.TOTAL_LEECHES -> sortedWith(compareBy({ it.totalLeeches }, { it.hash }))
+                        TorrentSort.ADDITION_DATE -> sortedWith(compareBy({ it.additionDate }, { it.hash }))
+                        TorrentSort.COMPLETION_DATE -> sortedWith(compareBy({ it.completionDate }, { it.hash }))
                     }
                 }
                 .run {
