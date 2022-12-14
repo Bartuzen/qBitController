@@ -82,7 +82,9 @@ class TorrentListViewModel @Inject constructor(
                         TorrentSort.CONNECTED_LEECHES -> sortedWith(compareBy({ it.connectedLeeches }, { it.hash }))
                         TorrentSort.TOTAL_LEECHES -> sortedWith(compareBy({ it.totalLeeches }, { it.hash }))
                         TorrentSort.ADDITION_DATE -> sortedWith(compareBy({ it.additionDate }, { it.hash }))
-                        TorrentSort.COMPLETION_DATE -> sortedWith(compareBy({ it.completionDate }, { it.hash }))
+                        TorrentSort.COMPLETION_DATE -> sortedWith(
+                            compareBy<Torrent, Long?>(nullsLast()) { it.completionDate }.thenBy { it.hash }
+                        )
                     }
                 }
                 .run {
