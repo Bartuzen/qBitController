@@ -179,8 +179,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 progressText
             )
 
-            val eta = formatSeconds(requireContext(), torrent.eta)
-            binding.textEta.text = if (eta != "inf") eta else null
+            binding.textEta.text = torrent.eta?.let { eta ->
+                formatSeconds(requireContext(), eta)
+            }
 
             binding.textState.text = formatTorrentState(requireContext(), torrent.state)
 
