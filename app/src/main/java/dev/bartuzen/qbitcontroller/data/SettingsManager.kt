@@ -29,19 +29,10 @@ enum class Theme {
 }
 
 enum class TorrentSort {
-    @JsonProperty("name")
     NAME,
-
-    @JsonProperty("hash")
     HASH,
-
-    @JsonProperty("dlspeed")
     DOWNLOAD_SPEED,
-
-    @JsonProperty("upspeed")
     UPLOAD_SPEED,
-
-    @JsonProperty("priority")
     PRIORITY
 }
 
