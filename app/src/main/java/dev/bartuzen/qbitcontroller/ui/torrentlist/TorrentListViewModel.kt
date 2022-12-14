@@ -74,7 +74,9 @@ class TorrentListViewModel @Inject constructor(
                         TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
                         TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
                         TorrentSort.PRIORITY -> sortedWith(compareBy({ it.priority }, { it.hash }))
-                        TorrentSort.ETA -> sortedWith(compareBy({ it.eta }, { it.hash }))
+                        TorrentSort.ETA -> sortedWith(
+                            compareBy<Torrent, Int?>(nullsLast()) { it.eta }.thenBy { it.hash }
+                        )
                         TorrentSort.SIZE -> sortedWith(compareBy({ it.size }, { it.hash }))
                         TorrentSort.PROGRESS -> sortedWith(compareBy({ it.progress }, { it.hash }))
                         TorrentSort.CONNECTED_SEEDS -> sortedWith(compareBy({ it.connectedSeeds }, { it.hash }))
