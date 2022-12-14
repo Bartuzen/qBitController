@@ -10,6 +10,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,8 +68,8 @@ class TorrentListViewModel @Inject constructor(
                 null
             }
         }.filterNotNull().map { (torrentList, torrentSort, isReverseSorting) ->
-            torrentList
-                .run {
+            withContext(Dispatchers.IO) {
+                torrentList.run {
                     when (torrentSort) {
                         TorrentSort.NAME -> sortedWith(compareBy({ it.name }, { it.hash }))
                         TorrentSort.HASH -> sortedBy { it.hash }
@@ -90,14 +92,14 @@ class TorrentListViewModel @Inject constructor(
                             compareBy<Torrent, Long?>(nullsLast()) { it.completionDate }.thenBy { it.hash }
                         )
                     }
-                }
-                .run {
+                }.run {
                     if (isReverseSorting) {
                         reversed()
                     } else {
                         this
                     }
                 }
+            }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     var isInitialLoadStarted = false
