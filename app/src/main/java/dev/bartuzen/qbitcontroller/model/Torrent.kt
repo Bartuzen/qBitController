@@ -7,6 +7,7 @@ import dev.bartuzen.qbitcontroller.model.deserializers.EtaDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableEpochTimeDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.PriorityDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 
 data class Torrent(
@@ -54,7 +55,8 @@ data class Torrent(
     val progress: Double,
 
     @JsonProperty("priority")
-    val priority: Int,
+    @JsonDeserialize(using = PriorityDeserializer::class)
+    val priority: Int?,
 
     @JsonProperty("num_seeds")
     val connectedSeeds: Int,

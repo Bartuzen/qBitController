@@ -73,7 +73,9 @@ class TorrentListViewModel @Inject constructor(
                         TorrentSort.HASH -> sortedBy { it.hash }
                         TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
                         TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
-                        TorrentSort.PRIORITY -> sortedWith(compareBy({ it.priority }, { it.hash }))
+                        TorrentSort.PRIORITY -> sortedWith(
+                            compareBy<Torrent, Int?>(nullsLast()) { it.priority }.thenBy { it.hash }
+                        )
                         TorrentSort.ETA -> sortedWith(
                             compareBy<Torrent, Int?>(nullsLast()) { it.eta }.thenBy { it.hash }
                         )
