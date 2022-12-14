@@ -17,7 +17,9 @@
 
     <item
         android:id="@+id/menu_sort"
-        android:title="@string/torrent_sort_menu">
+        android:icon="@drawable/ic_sort"
+        android:title="@string/torrent_sort_menu"
+        app:showAsAction="ifRoom">
         <menu>
             <group android:checkableBehavior="single">
                 <item
