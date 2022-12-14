@@ -13,8 +13,13 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,6 +57,33 @@ class TorrentListViewModel @Inject constructor(
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
+
+    val sortedTorrentList =
+        combine(torrentList, torrentSort, isReverseSorting) { torrentList, torrentSort, isReverseSorting ->
+            if (torrentList != null) {
+                Triple(torrentList, torrentSort, isReverseSorting)
+            } else {
+                null
+            }
+        }.filterNotNull().map { (torrentList, torrentSort, isReverseSorting) ->
+            torrentList
+                .run {
+                    when (torrentSort) {
+                        TorrentSort.NAME -> sortedWith(compareBy({ it.name }, { it.hash }))
+                        TorrentSort.HASH -> sortedBy { it.hash }
+                        TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
+                        TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
+                        TorrentSort.PRIORITY -> sortedWith(compareBy({ it.priority }, { it.hash }))
+                    }
+                }
+                .run {
+                    if (isReverseSorting) {
+                        reversed()
+                    } else {
+                        this
+                    }
+                }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     var isInitialLoadStarted = false
 

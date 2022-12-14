@@ -35,8 +35,7 @@ import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
-import dev.bartuzen.qbitcontroller.utils.Six
-import dev.bartuzen.qbitcontroller.utils.combine
+import dev.bartuzen.qbitcontroller.utils.Quadruple
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -338,57 +337,40 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
         combine(
-            viewModel.torrentList,
+            viewModel.sortedTorrentList,
             viewModel.searchQuery,
             viewModel.selectedCategory,
-            viewModel.selectedTag,
-            viewModel.torrentSort,
-            viewModel.isReverseSorting
-        ) { torrentList, searchQuery, selectedCategory, selectedTag, torrentSort, isReverseSorting ->
+            viewModel.selectedTag
+        ) { torrentList, searchQuery, selectedCategory, selectedTag ->
             if (torrentList != null) {
-                Six(torrentList, searchQuery, selectedCategory, selectedTag, torrentSort, isReverseSorting)
+                Quadruple(torrentList, searchQuery, selectedCategory, selectedTag)
             } else {
                 null
             }
-        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) {
-                (torrentList, query, selectedCategory, selectedTag, torrentSort, isReverseSorting) ->
+        }.filterNotNull()
+            .launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query, selectedCategory, selectedTag) ->
+                val list = torrentList
+                    .filter { torrent ->
+                        if (query.isNotEmpty()) {
+                            if (!torrent.name.contains(query, ignoreCase = true)) {
+                                return@filter false
+                            }
+                        }
+                        if (selectedCategory != null) {
+                            if (torrent.category != selectedCategory) {
+                                return@filter false
+                            }
+                        }
+                        if (selectedTag != null) {
+                            if (selectedTag !in torrent.tags) {
+                                return@filter false
+                            }
+                        }
+                        true
+                    }
 
-            val list = torrentList
-                .filter { torrent ->
-                    if (query.isNotEmpty()) {
-                        if (!torrent.name.contains(query, ignoreCase = true)) {
-                            return@filter false
-                        }
-                    }
-                    if (selectedCategory != null) {
-                        if (torrent.category != selectedCategory) {
-                            return@filter false
-                        }
-                    }
-                    if (selectedTag != null) {
-                        if (selectedTag !in torrent.tags) {
-                            return@filter false
-                        }
-                    }
-                    true
-                }.run {
-                    when (torrentSort) {
-                        TorrentSort.NAME -> sortedWith(compareBy({ it.name }, { it.hash }))
-                        TorrentSort.HASH -> sortedBy { it.hash }
-                        TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
-                        TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
-                        TorrentSort.PRIORITY -> sortedWith(compareBy({ it.priority }, { it.hash }))
-                    }
-                }.run {
-                    if (isReverseSorting) {
-                        reversed()
-                    } else {
-                        this
-                    }
-                }
-
-            adapter.submitList(list)
-        }
+                adapter.submitList(list)
+            }
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTorrentListCategoryTags(serverConfig)
