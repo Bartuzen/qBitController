@@ -35,7 +35,8 @@ import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
-import dev.bartuzen.qbitcontroller.utils.Quadruple
+import dev.bartuzen.qbitcontroller.utils.Six
+import dev.bartuzen.qbitcontroller.utils.combine
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -157,39 +158,27 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         true
                     }
                     R.id.menu_sort_name -> {
-                        viewModel.setTorrentSort(TorrentSort.NAME).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
-                        }
+                        viewModel.setTorrentSort(TorrentSort.NAME)
                         true
                     }
                     R.id.menu_sort_hash -> {
-                        viewModel.setTorrentSort(TorrentSort.HASH).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
-                        }
+                        viewModel.setTorrentSort(TorrentSort.HASH)
                         true
                     }
                     R.id.menu_sort_dlspeed -> {
-                        viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
-                        }
+                        viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED)
                         true
                     }
                     R.id.menu_sort_upspeed -> {
-                        viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
-                        }
+                        viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED)
                         true
                     }
                     R.id.menu_sort_priority -> {
-                        viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
-                        }
+                        viewModel.setTorrentSort(TorrentSort.PRIORITY)
                         true
                     }
                     R.id.menu_sort_reverse -> {
-                        viewModel.changeReverseSorting().invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
-                        }
+                        viewModel.changeReverseSorting()
                         true
                     }
                     else -> false
@@ -352,16 +341,20 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             viewModel.torrentList,
             viewModel.searchQuery,
             viewModel.selectedCategory,
-            viewModel.selectedTag
-        ) { torrentList, searchQuery, selectedCategory, selectedTag ->
+            viewModel.selectedTag,
+            viewModel.torrentSort,
+            viewModel.isReverseSorting
+        ) { torrentList, searchQuery, selectedCategory, selectedTag, torrentSort, isReverseSorting ->
             if (torrentList != null) {
-                Quadruple(torrentList, searchQuery, selectedCategory, selectedTag)
+                Six(torrentList, searchQuery, selectedCategory, selectedTag, torrentSort, isReverseSorting)
             } else {
                 null
             }
-        }.filterNotNull()
-            .launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query, selectedCategory, selectedTag) ->
-                val list = torrentList.filter { torrent ->
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) {
+                (torrentList, query, selectedCategory, selectedTag, torrentSort, isReverseSorting) ->
+
+            val list = torrentList
+                .filter { torrent ->
                     if (query.isNotEmpty()) {
                         if (!torrent.name.contains(query, ignoreCase = true)) {
                             return@filter false
@@ -378,10 +371,24 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                         }
                     }
                     true
+                }.run {
+                    when (torrentSort) {
+                        TorrentSort.NAME -> sortedWith(compareBy({ it.name }, { it.hash }))
+                        TorrentSort.HASH -> sortedBy { it.hash }
+                        TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
+                        TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
+                        TorrentSort.PRIORITY -> sortedWith(compareBy({ it.priority }, { it.hash }))
+                    }
+                }.run {
+                    if (isReverseSorting) {
+                        reversed()
+                    } else {
+                        this
+                    }
                 }
 
-                adapter.submitList(list)
-            }
+            adapter.submitList(list)
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTorrentListCategoryTags(serverConfig)

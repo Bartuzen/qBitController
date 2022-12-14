@@ -56,7 +56,7 @@ class TorrentListViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     private fun updateTorrentList(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (val result = repository.getTorrentList(serverConfig, torrentSort.value, isReverseSorting.value)) {
+        when (val result = repository.getTorrentList(serverConfig)) {
             is RequestResult.Success -> {
                 _torrentList.value = result.data
             }

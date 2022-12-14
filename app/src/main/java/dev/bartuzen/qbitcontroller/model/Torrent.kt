@@ -43,6 +43,9 @@ data class Torrent(
     @JsonProperty("progress")
     val progress: Double,
 
+    @JsonProperty("priority")
+    val priority: Int,
+
     @JsonProperty("category")
     @JsonDeserialize(using = NullableStringDeserializer::class)
     val category: String?,
