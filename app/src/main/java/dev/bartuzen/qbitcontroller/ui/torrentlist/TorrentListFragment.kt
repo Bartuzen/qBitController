@@ -106,6 +106,15 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                             TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
                             TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
                             TorrentSort.PRIORITY -> R.id.menu_sort_priority
+                            TorrentSort.ETA -> R.id.menu_sort_eta
+                            TorrentSort.SIZE -> R.id.menu_sort_size
+                            TorrentSort.PROGRESS -> R.id.menu_sort_progress
+                            TorrentSort.CONNECTED_SEEDS -> R.id.menu_sort_connected_seeds
+                            TorrentSort.TOTAL_SEEDS -> R.id.menu_sort_total_seeds
+                            TorrentSort.CONNECTED_LEECHES -> R.id.menu_sort_connected_leeches
+                            TorrentSort.TOTAL_LEECHES -> R.id.menu_sort_total_leeches
+                            TorrentSort.ADDITION_DATE -> R.id.menu_sort_addition_date
+                            TorrentSort.COMPLETION_DATE -> R.id.menu_sort_completion_date
                         }
                         menu.findItem(selectedSort).isChecked = true
                     }
@@ -148,51 +157,62 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
                     })
                 }
 
-                override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
-                    R.id.menu_add -> {
-                        val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
-                            putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_add -> {
+                            val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
+                                putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                            }
+                            startAddTorrentActivity.launch(intent)
                         }
-                        startAddTorrentActivity.launch(intent)
-                        true
-                    }
-                    R.id.menu_sort_name -> {
-                        viewModel.setTorrentSort(TorrentSort.NAME).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
+                        R.id.menu_sort_name -> {
+                            viewModel.setTorrentSort(TorrentSort.NAME)
                         }
-                        true
-                    }
-                    R.id.menu_sort_hash -> {
-                        viewModel.setTorrentSort(TorrentSort.HASH).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
+                        R.id.menu_sort_hash -> {
+                            viewModel.setTorrentSort(TorrentSort.HASH)
                         }
-                        true
-                    }
-                    R.id.menu_sort_dlspeed -> {
-                        viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
+                        R.id.menu_sort_dlspeed -> {
+                            viewModel.setTorrentSort(TorrentSort.DOWNLOAD_SPEED)
                         }
-                        true
-                    }
-                    R.id.menu_sort_upspeed -> {
-                        viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
+                        R.id.menu_sort_upspeed -> {
+                            viewModel.setTorrentSort(TorrentSort.UPLOAD_SPEED)
                         }
-                        true
-                    }
-                    R.id.menu_sort_priority -> {
-                        viewModel.setTorrentSort(TorrentSort.PRIORITY).invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
+                        R.id.menu_sort_eta -> {
+                            viewModel.setTorrentSort(TorrentSort.ETA)
                         }
-                        true
-                    }
-                    R.id.menu_sort_reverse -> {
-                        viewModel.changeReverseSorting().invokeOnCompletion {
-                            viewModel.loadTorrentList(serverConfig)
+                        R.id.menu_sort_size -> {
+                            viewModel.setTorrentSort(TorrentSort.SIZE)
                         }
-                        true
+                        R.id.menu_sort_progress -> {
+                            viewModel.setTorrentSort(TorrentSort.PROGRESS)
+                        }
+                        R.id.menu_sort_connected_seeds -> {
+                            viewModel.setTorrentSort(TorrentSort.CONNECTED_SEEDS)
+                        }
+                        R.id.menu_sort_total_seeds -> {
+                            viewModel.setTorrentSort(TorrentSort.TOTAL_SEEDS)
+                        }
+                        R.id.menu_sort_connected_leeches -> {
+                            viewModel.setTorrentSort(TorrentSort.CONNECTED_LEECHES)
+                        }
+                        R.id.menu_sort_total_leeches -> {
+                            viewModel.setTorrentSort(TorrentSort.TOTAL_LEECHES)
+                        }
+                        R.id.menu_sort_addition_date -> {
+                            viewModel.setTorrentSort(TorrentSort.ADDITION_DATE)
+                        }
+                        R.id.menu_sort_completion_date -> {
+                            viewModel.setTorrentSort(TorrentSort.COMPLETION_DATE)
+                        }
+                        R.id.menu_sort_priority -> {
+                            viewModel.setTorrentSort(TorrentSort.PRIORITY)
+                        }
+                        R.id.menu_sort_reverse -> {
+                            viewModel.changeReverseSorting()
+                        }
+                        else -> return false
                     }
-                    else -> false
+                    return true
                 }
             },
             viewLifecycleOwner
@@ -349,7 +369,7 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
         activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
         combine(
-            viewModel.torrentList,
+            viewModel.sortedTorrentList,
             viewModel.searchQuery,
             viewModel.selectedCategory,
             viewModel.selectedTag
@@ -361,24 +381,25 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
             }
         }.filterNotNull()
             .launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query, selectedCategory, selectedTag) ->
-                val list = torrentList.filter { torrent ->
-                    if (query.isNotEmpty()) {
-                        if (!torrent.name.contains(query, ignoreCase = true)) {
-                            return@filter false
+                val list = torrentList
+                    .filter { torrent ->
+                        if (query.isNotEmpty()) {
+                            if (!torrent.name.contains(query, ignoreCase = true)) {
+                                return@filter false
+                            }
                         }
-                    }
-                    if (selectedCategory != null) {
-                        if (torrent.category != selectedCategory) {
-                            return@filter false
+                        if (selectedCategory != null) {
+                            if (torrent.category != selectedCategory) {
+                                return@filter false
+                            }
                         }
-                    }
-                    if (selectedTag != null) {
-                        if (selectedTag !in torrent.tags) {
-                            return@filter false
+                        if (selectedTag != null) {
+                            if (selectedTag !in torrent.tags) {
+                                return@filter false
+                            }
                         }
+                        true
                     }
-                    true
-                }
 
                 adapter.submitList(list)
             }

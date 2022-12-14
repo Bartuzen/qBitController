@@ -2,7 +2,6 @@ package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
-import com.fasterxml.jackson.annotation.JsonProperty
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
@@ -29,20 +28,20 @@ enum class Theme {
 }
 
 enum class TorrentSort {
-    @JsonProperty("name")
     NAME,
-
-    @JsonProperty("hash")
     HASH,
-
-    @JsonProperty("dlspeed")
     DOWNLOAD_SPEED,
-
-    @JsonProperty("upspeed")
     UPLOAD_SPEED,
-
-    @JsonProperty("priority")
-    PRIORITY
+    PRIORITY,
+    ETA,
+    SIZE,
+    PROGRESS,
+    CONNECTED_SEEDS,
+    TOTAL_SEEDS,
+    CONNECTED_LEECHES,
+    TOTAL_LEECHES,
+    ADDITION_DATE,
+    COMPLETION_DATE
 }
 
 fun Theme.toDelegate() = when (this) {

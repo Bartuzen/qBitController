@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.EtaDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableEpochTimeDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.PriorityDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 
 data class Torrent(
@@ -17,6 +19,13 @@ data class Torrent(
 
     @JsonProperty("state")
     val state: TorrentState,
+
+    @JsonProperty("added_on")
+    val additionDate: Long,
+
+    @JsonProperty("completion_on")
+    @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
+    val completionDate: Long?,
 
     @JsonProperty("completed")
     val completed: Long,
@@ -44,6 +53,22 @@ data class Torrent(
 
     @JsonProperty("progress")
     val progress: Double,
+
+    @JsonProperty("priority")
+    @JsonDeserialize(using = PriorityDeserializer::class)
+    val priority: Int?,
+
+    @JsonProperty("num_seeds")
+    val connectedSeeds: Int,
+
+    @JsonProperty("num_leechs")
+    val connectedLeeches: Int,
+
+    @JsonProperty("num_complete")
+    val totalSeeds: Int,
+
+    @JsonProperty("num_incomplete")
+    val totalLeeches: Int,
 
     @JsonProperty("category")
     @JsonDeserialize(using = NullableStringDeserializer::class)
