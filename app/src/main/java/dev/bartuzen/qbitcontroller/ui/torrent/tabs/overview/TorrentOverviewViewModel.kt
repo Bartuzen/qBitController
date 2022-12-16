@@ -207,12 +207,24 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun recheckTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.recheckTorrent(serverConfig, torrentHash)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentRechecked)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
         object TorrentDeleted : Event()
         object TorrentPaused : Event()
         object TorrentResumed : Event()
+        object TorrentRechecked : Event()
         object SequentialDownloadToggled : Event()
         object PrioritizeFirstLastPiecesToggled : Event()
         data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()

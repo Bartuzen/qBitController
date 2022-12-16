@@ -86,4 +86,8 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.setSuperSeeding(hash, value)
         }
+
+    suspend fun recheckTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+        service.recheckTorrents(hash)
+    }
 }

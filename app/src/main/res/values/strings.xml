@@ -144,6 +144,7 @@
     <string name="torrent_deleted_success">Torrent deleted successfully.</string>
     <string name="torrent_paused_success">Torrent paused successfully.</string>
     <string name="torrent_resumed_success">Torrent resumed successfully.</string>
+    <string name="torrent_recheck_success">Torrent recheck started successfully.</string>
 
     <string name="torrent_menu_sequential_download">Sequential Download</string>
     <string name="torrent_menu_prioritize_first_last_pieces">Prioritize First and Last Pieces</string>
@@ -161,6 +162,7 @@
     <string name="torrent_disable_super_seeding_success">Super seeding disabled successfully.</string>
     <string name="torrent_queueing_is_not_enabled">Torrent queueing is not enabled.</string>
 
+    <string name="torrent_menu_recheck">Force Recheck</string>
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
     <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>

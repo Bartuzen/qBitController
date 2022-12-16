@@ -106,6 +106,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         R.id.menu_delete -> {
                             showDeleteTorrentDialog()
                         }
+                        R.id.menu_recheck -> {
+                            viewModel.recheckTorrent(serverConfig, torrentHash)
+                        }
                         R.id.menu_dlspeed_limit -> {
                             showDownloadSpeedLimitDialog()
                         }
@@ -255,6 +258,14 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
+                        viewModel.loadTorrent(serverConfig, torrentHash)
+                    }
+                }
+                TorrentOverviewViewModel.Event.TorrentRechecked -> {
+                    showSnackbar(R.string.torrent_recheck_success)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent starts rechecking
                         viewModel.loadTorrent(serverConfig, torrentHash)
                     }
                 }
