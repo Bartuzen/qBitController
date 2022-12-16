@@ -64,6 +64,7 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                     viewModel.torrent.launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
                         val resume = menu.findItem(R.id.menu_resume)
                         val pause = menu.findItem(R.id.menu_pause)
+                        val reannounce = menu.findItem(R.id.menu_reannounce)
                         val sequentialDownload = menu.findItem(R.id.menu_sequential_download)
                         val prioritizeFirstLastPieces = menu.findItem(R.id.menu_prioritize_first_last_pieces)
                         val autoTmm = menu.findItem(R.id.menu_automatic_torrent_management)
@@ -75,6 +76,13 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         autoTmm.isEnabled = torrent != null
                         forceStart.isEnabled = torrent != null
                         superSeeding.isEnabled = torrent != null
+
+                        reannounce.isEnabled = torrent != null && when (torrent.state) {
+                            TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP, TorrentState.QUEUED_DL,
+                            TorrentState.ERROR, TorrentState.CHECKING_UP, TorrentState.CHECKING_DL -> false
+
+                            else -> true
+                        }
 
                         if (torrent != null) {
                             val isPaused = when (torrent.state) {
@@ -108,6 +116,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         }
                         R.id.menu_recheck -> {
                             viewModel.recheckTorrent(serverConfig, torrentHash)
+                        }
+                        R.id.menu_reannounce -> {
+                            viewModel.reannounceTorrent(serverConfig, torrentHash)
                         }
                         R.id.menu_dlspeed_limit -> {
                             showDownloadSpeedLimitDialog()
@@ -268,6 +279,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         delay(1000) // wait until qBittorrent starts rechecking
                         viewModel.loadTorrent(serverConfig, torrentHash)
                     }
+                }
+                TorrentOverviewViewModel.Event.TorrentReannounced -> {
+                    showSnackbar(R.string.torrent_reannounce_success)
                 }
                 TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
                     showSnackbar(R.string.torrent_toggle_sequential_download_success)

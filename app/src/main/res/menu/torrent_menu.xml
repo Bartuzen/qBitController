@@ -34,6 +34,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_reannounce"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_reannounce"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_dlspeed_limit"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_dlspeed_limit"

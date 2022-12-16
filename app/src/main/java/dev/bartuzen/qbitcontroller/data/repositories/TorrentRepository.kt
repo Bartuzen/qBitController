@@ -90,4 +90,9 @@ class TorrentRepository @Inject constructor(
     suspend fun recheckTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
         service.recheckTorrents(hash)
     }
+
+    suspend fun reannounceTorrent(serverConfig: ServerConfig, hash: String) =
+        requestManager.request(serverConfig) { service ->
+            service.reannounceTorrents(hash)
+        }
 }

@@ -218,6 +218,17 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun reannounceTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.reannounceTorrent(serverConfig, torrentHash)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentReannounced)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
@@ -225,6 +236,7 @@ class TorrentOverviewViewModel @Inject constructor(
         object TorrentPaused : Event()
         object TorrentResumed : Event()
         object TorrentRechecked : Event()
+        object TorrentReannounced : Event()
         object SequentialDownloadToggled : Event()
         object PrioritizeFirstLastPiecesToggled : Event()
         data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()
