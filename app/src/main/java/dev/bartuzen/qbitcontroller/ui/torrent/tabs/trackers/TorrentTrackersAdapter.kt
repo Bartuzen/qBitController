@@ -60,6 +60,9 @@ class TorrentTrackersAdapter : MultiSelectAdapter<TorrentTracker, String, Torren
     class DiffCallBack : DiffUtil.ItemCallback<TorrentTracker>() {
         override fun areItemsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) = oldItem.url == newItem.url
 
-        override fun areContentsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) =
+            oldItem.url == newItem.url && oldItem.peers == newItem.peers && oldItem.seeds == newItem.seeds &&
+                oldItem.leeches == newItem.leeches && oldItem.downloaded == newItem.downloaded &&
+                oldItem.message == newItem.message
     }
 }

@@ -109,6 +109,10 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
     class DiffCallBack : DiffUtil.ItemCallback<Torrent>() {
         override fun areItemsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem.hash == newItem.hash
 
-        override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) =
+            oldItem.name == newItem.name && oldItem.progress == newItem.progress && oldItem.completed == newItem.completed &&
+                oldItem.size == newItem.size && oldItem.eta == newItem.eta && oldItem.state == newItem.state &&
+                oldItem.uploadSpeed == newItem.uploadSpeed && oldItem.downloadSpeed == newItem.downloadSpeed &&
+                oldItem.category == newItem.category && oldItem.tags == newItem.tags
     }
 }
