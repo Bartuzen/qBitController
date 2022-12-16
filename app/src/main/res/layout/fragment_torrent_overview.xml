@@ -30,7 +30,8 @@
                     android:id="@+id/text_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
                     android:textSize="18sp"
                     tools:text="Torrent Name" />
 
@@ -38,7 +39,8 @@
                     android:id="@+id/card_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="8dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -97,7 +99,8 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp">
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="8dp">
 
                     <androidx.gridlayout.widget.GridLayout
                         android:layout_width="match_parent"
