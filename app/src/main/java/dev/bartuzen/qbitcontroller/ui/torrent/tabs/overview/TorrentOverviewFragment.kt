@@ -38,6 +38,7 @@ import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
@@ -171,6 +172,20 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
             binding.swipeRefresh.isRefreshing = isRefreshing
+        }
+
+        combine(viewModel.torrent, viewModel.torrentProperties) { torrent, properties ->
+            torrent != null && properties != null
+        }.launchAndCollectLatestIn(viewLifecycleOwner) { isVisible ->
+            if (isVisible) {
+                binding.layoutContent.alpha = 0f
+                binding.layoutContent.visibility = View.VISIBLE
+                binding.layoutContent.animate().apply {
+                    alpha(1f)
+                    duration = 120
+                }
+                cancel()
+            }
         }
 
         combine(viewModel.torrent, viewModel.torrentProperties) { torrent, properties ->
