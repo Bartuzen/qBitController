@@ -18,6 +18,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitDownloadBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitUploadBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentRenameBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
@@ -113,6 +114,9 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                         }
                         R.id.menu_delete -> {
                             showDeleteTorrentDialog()
+                        }
+                        R.id.menu_rename -> {
+                            showRenameTorrentDialog()
                         }
                         R.id.menu_recheck -> {
                             viewModel.recheckTorrent(serverConfig, torrentHash)
@@ -283,6 +287,10 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
                 TorrentOverviewViewModel.Event.TorrentReannounced -> {
                     showSnackbar(R.string.torrent_reannounce_success)
                 }
+                TorrentOverviewViewModel.Event.TorrentRenamed -> {
+                    showSnackbar(R.string.torrent_rename_success)
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
                 TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
                     showSnackbar(R.string.torrent_toggle_sequential_download_success)
                     viewModel.loadTorrent(serverConfig, torrentHash)
@@ -347,6 +355,24 @@ class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview)
             setTitle(R.string.torrent_delete)
             setPositiveButton { _, _ ->
                 viewModel.deleteTorrent(serverConfig, torrentHash, binding.checkDeleteFiles.isChecked)
+            }
+            setNegativeButton()
+        }
+    }
+
+    private fun showRenameTorrentDialog() {
+        showDialog(DialogTorrentRenameBinding::inflate) { binding ->
+            val name = viewModel.torrent.value?.name
+            binding.inputLayoutName.setTextWithoutAnimation(name)
+
+            setTitle(R.string.torrent_rename_dialog_title)
+            setPositiveButton { _, _ ->
+                val newName = binding.editName.text.toString()
+                if (newName.isNotBlank()) {
+                    viewModel.renameTorrent(serverConfig, torrentHash, newName)
+                } else {
+                    showSnackbar(R.string.torrent_rename_name_cannot_be_blank)
+                }
             }
             setNegativeButton()
         }

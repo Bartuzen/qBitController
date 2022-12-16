@@ -229,6 +229,21 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun renameTorrent(serverConfig: ServerConfig, torrentHash: String, name: String) = viewModelScope.launch {
+        when (val result = repository.renameTorrent(serverConfig, torrentHash, name)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentRenamed)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
@@ -237,6 +252,7 @@ class TorrentOverviewViewModel @Inject constructor(
         object TorrentResumed : Event()
         object TorrentRechecked : Event()
         object TorrentReannounced : Event()
+        object TorrentRenamed : Event()
         object SequentialDownloadToggled : Event()
         object PrioritizeFirstLastPiecesToggled : Event()
         data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()

@@ -95,4 +95,9 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.reannounceTorrents(hash)
         }
+
+    suspend fun renameTorrent(serverConfig: ServerConfig, hash: String, name: String) =
+        requestManager.request(serverConfig) { service ->
+            service.renameTorrent(hash, name)
+        }
 }

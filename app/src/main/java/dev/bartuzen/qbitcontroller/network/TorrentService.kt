@@ -152,4 +152,8 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/setSuperSeeding")
     suspend fun setSuperSeeding(@Field("hashes") hashes: String, @Field("value") value: Boolean): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/rename")
+    suspend fun renameTorrent(@Field("hash") hash: String, @Field("name") name: String): Response<Unit>
 }
