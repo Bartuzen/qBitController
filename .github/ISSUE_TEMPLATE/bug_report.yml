@@ -25,6 +25,14 @@ body:
       required: true
 
   - type: input
+    id: qbittorrent-version
+    attributes:
+      label: qBittorrent version
+      description: Enter the qBittorrent version you encountered the bug on.
+    validations:
+      required: true
+
+  - type: input
     id: android-version
     attributes:
       label: Android version
