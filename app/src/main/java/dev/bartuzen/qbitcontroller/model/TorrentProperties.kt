@@ -27,7 +27,7 @@ data class TorrentProperties(
     val additionDate: Long,
 
     @JsonProperty("completion_date")
-    @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
+    @JsonDeserialize(using = NullableLongDeserializer::class)
     val completionDate: Long?,
 
     @JsonProperty("creation_date")
