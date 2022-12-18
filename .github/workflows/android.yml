@@ -23,10 +23,11 @@ jobs:
         with:
           distribution: adopt
           java-version: 11
-          cache: gradle
 
       - name: Build with Gradle
-        run: ./gradlew assembleFreeDebug
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: assembleFreeDebug
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -48,7 +49,8 @@ jobs:
         with:
           distribution: adopt
           java-version: 11
-          cache: gradle
 
       - name: Check code style
-        run: ./gradlew lintKotlin
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: lintKotlin
