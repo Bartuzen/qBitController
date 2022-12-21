@@ -1,6 +1,7 @@
 Free and open-source application for controlling qBittorrent on your servers.
 
 Features:
+
 - Add multiple servers
 - Add torrents from magnet link, or file
 - See detailed information about torrents
