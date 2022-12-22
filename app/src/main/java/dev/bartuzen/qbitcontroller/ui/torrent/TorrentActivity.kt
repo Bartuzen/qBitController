@@ -9,10 +9,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragmentBuilder
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragmentBuilder
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragmentBuilder
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragmentBuilder
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
 import dev.bartuzen.qbitcontroller.utils.getParcelable
 
 @AndroidEntryPoint
@@ -50,10 +50,10 @@ class TorrentActivity : AppCompatActivity() {
             override fun getItemCount() = 4
 
             override fun createFragment(position: Int) = when (position) {
-                0 -> TorrentOverviewFragmentBuilder(serverConfig, torrentHash).build()
-                1 -> TorrentFilesFragmentBuilder(serverConfig, torrentHash).build()
-                2 -> TorrentPiecesFragmentBuilder(serverConfig, torrentHash).build()
-                3 -> TorrentTrackersFragmentBuilder(serverConfig, torrentHash).build()
+                0 -> TorrentOverviewFragment(serverConfig, torrentHash)
+                1 -> TorrentFilesFragment(serverConfig, torrentHash)
+                2 -> TorrentPiecesFragment(serverConfig, torrentHash)
+                3 -> TorrentTrackersFragment(serverConfig, torrentHash)
                 else -> Fragment()
             }
         }.apply {

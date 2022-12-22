@@ -7,22 +7,22 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.hannesdorfmann.fragmentargs.annotation.Arg
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTrackersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentTrackersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -32,19 +32,22 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 
-@FragmentWithArgs
 @AndroidEntryPoint
-class TorrentTrackersFragment : ArgsFragment(R.layout.fragment_torrent_trackers) {
+class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
     private val binding by viewBinding(FragmentTorrentTrackersBinding::bind)
     private val activityBinding by viewBinding(ActivityTorrentBinding::bind, viewProvider = { requireActivity().view })
 
     private val viewModel: TorrentTrackersViewModel by viewModels()
 
-    @Arg
-    lateinit var serverConfig: ServerConfig
+    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    @Arg
-    lateinit var torrentHash: String
+    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+        arguments = bundleOf(
+            "serverConfig" to serverConfig,
+            "torrentHash" to torrentHash
+        )
+    }
 
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 

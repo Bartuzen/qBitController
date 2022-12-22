@@ -2,34 +2,37 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.hannesdorfmann.fragmentargs.annotation.Arg
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.flow.combine
 
-@FragmentWithArgs
 @AndroidEntryPoint
-class TorrentFilesFragment : ArgsFragment(R.layout.fragment_torrent_files) {
+class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
     private val binding by viewBinding(FragmentTorrentFilesBinding::bind)
 
     private val viewModel: TorrentFilesViewModel by viewModels()
 
-    @Arg
-    lateinit var serverConfig: ServerConfig
+    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    @Arg
-    lateinit var torrentHash: String
+    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+        arguments = bundleOf(
+            "serverConfig" to serverConfig,
+            "torrentHash" to torrentHash
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = TorrentFilesAdapter(

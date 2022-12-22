@@ -23,7 +23,6 @@ import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.CategoryTagAdapter
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
-import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
@@ -130,8 +129,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } else if (currentFragment?.serverConfig != serverConfig) {
-                val fragment = TorrentListFragmentBuilder(serverConfig)
-                    .build()
+                val fragment = TorrentListFragment(serverConfig)
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
                     replace(R.id.container, fragment)

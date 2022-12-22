@@ -9,7 +9,6 @@ import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragmentBuilder
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -55,9 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 title = serverConfig.name
                 summary = serverConfig.host
                 setOnPreferenceClickListener {
-                    val fragment = AddEditServerFragmentBuilder()
-                        .serverConfig(serverConfig)
-                        .build()
+                    val fragment = AddEditServerFragment(serverConfig)
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
                         setCustomAnimations(
@@ -77,8 +74,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         preference {
             setTitle(R.string.settings_add_new_server)
             setOnPreferenceClickListener {
-                val fragment = AddEditServerFragmentBuilder()
-                    .build()
+                val fragment = AddEditServerFragment()
                 parentFragmentManager.commit {
                     setReorderingAllowed(true)
                     setCustomAnimations(

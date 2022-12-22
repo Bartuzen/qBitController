@@ -29,6 +29,14 @@ inline fun <reified T : Parcelable> Intent.getParcelable(name: String) = if (VER
     getParcelableExtra(name)
 }
 
+inline fun <reified T : Parcelable> Bundle.getParcelableCompat(name: String) =
+    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+        getParcelable(name, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getParcelable(name)
+    }
+
 inline fun <reified T : Serializable> Bundle.getSerializableCompat(name: String) =
     if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
         getSerializable(name, T::class.java)

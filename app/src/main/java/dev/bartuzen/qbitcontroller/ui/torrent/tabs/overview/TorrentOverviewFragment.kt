@@ -7,12 +7,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.hannesdorfmann.fragmentargs.annotation.Arg
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitDownloadBinding
@@ -22,7 +22,6 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentRenameBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
-import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
@@ -31,6 +30,7 @@ import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -44,18 +44,21 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
-@FragmentWithArgs
 @AndroidEntryPoint
-class TorrentOverviewFragment : ArgsFragment(R.layout.fragment_torrent_overview) {
+class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     private val binding by viewBinding(FragmentTorrentOverviewBinding::bind)
 
     private val viewModel: TorrentOverviewViewModel by viewModels()
 
-    @Arg
-    lateinit var serverConfig: ServerConfig
+    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    @Arg
-    lateinit var torrentHash: String
+    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+        arguments = bundleOf(
+            "serverConfig" to serverConfig,
+            "torrentHash" to torrentHash
+        )
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         requireActivity().addMenuProvider(

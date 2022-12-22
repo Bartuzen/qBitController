@@ -6,7 +6,7 @@ import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivitySettingsBinding
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragmentBuilder
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
@@ -46,8 +46,7 @@ class SettingsActivity : AppCompatActivity() {
                         R.anim.slide_in_left,
                         R.anim.slide_out_right
                     )
-                    val fragment = AddEditServerFragmentBuilder()
-                        .build()
+                    val fragment = AddEditServerFragment()
                     replace(R.id.container, fragment)
                     addToBackStack(null)
                 }

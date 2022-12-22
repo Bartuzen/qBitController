@@ -133,9 +133,6 @@ dependencies {
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
-    implementation("com.hannesdorfmann.fragmentargs:annotation:4.0.0-RC1")
-    kapt("com.hannesdorfmann.fragmentargs:processor:4.0.0-RC1")
-
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("com.squareup.retrofit2:converter-jackson:2.9.0")

@@ -13,15 +13,15 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.core.view.iterator
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.hannesdorfmann.fragmentargs.annotation.Arg
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.TorrentSort
@@ -32,11 +32,11 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
-import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.Quadruple
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -50,9 +50,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
-@FragmentWithArgs
 @AndroidEntryPoint
-class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
+class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
     private val binding by viewBinding(FragmentTorrentListBinding::bind)
     private val activityBinding by viewBinding(ActivityMainBinding::bind, viewProvider = { requireActivity().view })
 
@@ -60,8 +59,11 @@ class TorrentListFragment : ArgsFragment(R.layout.fragment_torrent_list) {
 
     private lateinit var categoryTagAdapter: CategoryTagAdapter
 
-    @Arg
-    lateinit var serverConfig: ServerConfig
+    val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+
+    constructor(serverConfig: ServerConfig) : this() {
+        arguments = bundleOf("serverConfig" to serverConfig)
+    }
 
     private lateinit var drawerListener: DrawerListener
 

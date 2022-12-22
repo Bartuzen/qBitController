@@ -10,34 +10,35 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.hannesdorfmann.fragmentargs.annotation.Arg
-import com.hannesdorfmann.fragmentargs.annotation.FragmentWithArgs
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddEditServerBinding
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.ui.base.ArgsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import okhttp3.HttpUrl
 
-@FragmentWithArgs
 @AndroidEntryPoint
-class AddEditServerFragment : ArgsFragment(R.layout.fragment_settings_add_edit_server) {
+class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_server) {
     private val binding by viewBinding(FragmentSettingsAddEditServerBinding::bind)
 
     private val viewModel: AddEditServerViewModel by viewModels()
 
-    @Arg(required = false)
-    var serverConfig: ServerConfig? = null
+    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")
+
+    constructor(serverConfig: ServerConfig?) : this() {
+        arguments = bundleOf("serverConfig" to serverConfig)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         requireAppCompatActivity().supportActionBar?.setTitle(
