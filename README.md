@@ -5,6 +5,7 @@ controlling [qBittorrent](https://github.com/qbittorrent/qBittorrent) from an An
 
 ## Download
 
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height="80">](https://apt.izzysoft.de/fdroid/index/apk/dev.bartuzen.qbitcontroller)
 [<img src="https://user-images.githubusercontent.com/15032958/208871323-c1c5511c-d6bc-47c8-b82b-7ce2f95f244a.png" alt="Get it on GitHub" height="80">](https://github.com/Bartuzen/qBitController/releases)
 
 ## Screenshots
