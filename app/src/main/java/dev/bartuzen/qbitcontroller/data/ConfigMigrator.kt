@@ -23,7 +23,7 @@ class ConfigMigrator @Inject constructor(
         }
 
         if (oldVersion < currentVersion) {
-            startMigration(oldVersion)
+//            startMigration(oldVersion)
 
             sharedPref.edit()
                 .putInt("configVersion", currentVersion)
@@ -31,7 +31,7 @@ class ConfigMigrator @Inject constructor(
         }
     }
 
-    private fun startMigration(oldVersion: Int) {
-        // migrations will be here
-    }
+//    private fun startMigration(oldVersion: Int) {
+//
+//    }
 }
