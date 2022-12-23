@@ -170,7 +170,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
