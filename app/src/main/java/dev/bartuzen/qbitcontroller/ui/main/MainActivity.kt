@@ -10,7 +10,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.commit
@@ -94,11 +93,11 @@ class MainActivity : AppCompatActivity() {
 
         val serverListAdapter = ServerListAdapter(
             onClick = { serverConfig ->
-                binding.layoutDrawer.closeDrawer(GravityCompat.START)
+                binding.layoutDrawer.close()
                 viewModel.setCurrentServer(serverConfig)
             },
             onLongClick = { serverConfig ->
-                binding.layoutDrawer.closeDrawer(GravityCompat.START)
+                binding.layoutDrawer.close()
                 val intent = Intent(this, SettingsActivity::class.java).apply {
                     putExtra(SettingsActivity.Extras.EDIT_SERVER_CONFIG, serverConfig)
                 }
