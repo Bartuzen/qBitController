@@ -108,10 +108,9 @@ fun getErrorMessage(context: Context, error: RequestResult.Error) = context.getS
     }
 )
 
-private val dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-    .withZone(ZoneId.systemDefault())
-
 fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)
     .atZone(ZoneId.systemDefault())
-    .toLocalDateTime()
-    .format(dateTimeFormatter)
+    .format(
+        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            .withZone(ZoneId.systemDefault())
+    )
