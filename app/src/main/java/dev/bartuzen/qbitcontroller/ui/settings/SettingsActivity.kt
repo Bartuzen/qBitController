@@ -9,6 +9,7 @@ import dev.bartuzen.qbitcontroller.databinding.ActivitySettingsBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
 import dev.bartuzen.qbitcontroller.utils.getParcelable
+import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
@@ -45,12 +46,7 @@ class SettingsActivity : AppCompatActivity() {
 
                 supportFragmentManager.commit {
                     setReorderingAllowed(true)
-                    setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    )
+                    setDefaultAnimations()
                     val fragment = AddEditServerFragment()
                     replace(R.id.container, fragment)
                     addToBackStack(null)

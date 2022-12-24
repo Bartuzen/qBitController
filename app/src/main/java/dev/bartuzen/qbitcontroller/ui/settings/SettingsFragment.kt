@@ -12,6 +12,7 @@ import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragme
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
+import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 
 @AndroidEntryPoint
@@ -57,12 +58,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     val fragment = AddEditServerFragment(serverConfig)
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
-                        setCustomAnimations(
-                            R.anim.slide_in_right,
-                            R.anim.slide_out_left,
-                            R.anim.slide_in_left,
-                            R.anim.slide_out_right
-                        )
+                        setDefaultAnimations()
                         replace(R.id.container, fragment)
                         addToBackStack(null)
                     }
@@ -77,12 +73,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 val fragment = AddEditServerFragment()
                 parentFragmentManager.commit {
                     setReorderingAllowed(true)
-                    setCustomAnimations(
-                        R.anim.slide_in_right,
-                        R.anim.slide_out_left,
-                        R.anim.slide_in_left,
-                        R.anim.slide_out_right
-                    )
+                    setDefaultAnimations()
                     replace(R.id.container, fragment)
                     addToBackStack(null)
                 }

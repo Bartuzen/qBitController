@@ -13,6 +13,8 @@ import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import dev.bartuzen.qbitcontroller.R
 import java.io.Serializable
 import kotlin.math.ceil
 
@@ -48,3 +50,12 @@ inline fun <reified T : Serializable> Bundle.getSerializableCompat(name: String)
 val Activity.view: View get() = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
 
 fun Fragment.requireAppCompatActivity() = requireActivity() as AppCompatActivity
+
+fun FragmentTransaction.setDefaultAnimations() {
+    setCustomAnimations(
+        R.anim.slide_in_right,
+        R.anim.slide_out_left,
+        R.anim.slide_in_left,
+        R.anim.slide_out_right
+    )
+}
