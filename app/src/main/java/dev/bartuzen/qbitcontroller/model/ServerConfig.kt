@@ -17,8 +17,12 @@ data class ServerConfig(
 ) : Parcelable {
     @get:JsonIgnore
     val url
+        get() = "${protocol.toString().lowercase()}://$urlWithoutProtocol"
+
+    @get:JsonIgnore
+    val urlWithoutProtocol
         get() = buildString {
-            append("${protocol.toString().lowercase()}://$host")
+            append(host)
             port?.let { port ->
                 append(":$port")
             }

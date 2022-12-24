@@ -23,7 +23,7 @@
             tools:text="Server Name" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_host"
+            android:id="@+id/text_url"
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
