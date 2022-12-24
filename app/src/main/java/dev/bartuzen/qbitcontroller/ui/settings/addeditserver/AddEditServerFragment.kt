@@ -75,7 +75,11 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+
+            // If there are back stack entries, we will pop the fragment when we are done. In this case, an animation will
+            // be played so menu entries should disappear the moment we pop the fragment, and not wait for the animation to
+            // finish. Otherwise we will finish the activity. In this case, we should wait for activity animation to finish.
+            if (parentFragmentManager.backStackEntryCount > 0) Lifecycle.State.RESUMED else Lifecycle.State.STARTED
         )
 
         binding.spinnerProtocol.adapter = ArrayAdapter(
@@ -213,7 +217,11 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
 
     private fun finish(result: Result) {
         setFragmentResult("addEditServerResult", bundleOf("result" to result))
-        parentFragmentManager.popBackStack()
+        if (parentFragmentManager.backStackEntryCount > 0) {
+            parentFragmentManager.popBackStack()
+        } else {
+            requireActivity().finish()
+        }
     }
 
     override fun onStop() {

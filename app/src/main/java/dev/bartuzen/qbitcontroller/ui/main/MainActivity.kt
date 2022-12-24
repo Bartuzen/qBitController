@@ -96,6 +96,13 @@ class MainActivity : AppCompatActivity() {
             onClick = { serverConfig ->
                 binding.layoutDrawer.closeDrawer(GravityCompat.START)
                 viewModel.setCurrentServer(serverConfig)
+            },
+            onLongClick = { serverConfig ->
+                binding.layoutDrawer.closeDrawer(GravityCompat.START)
+                val intent = Intent(this, SettingsActivity::class.java).apply {
+                    putExtra(SettingsActivity.Extras.EDIT_SERVER_CONFIG, serverConfig)
+                }
+                startActivity(intent)
             }
         )
         drawerAdapter.addAdapter(serverListAdapter)

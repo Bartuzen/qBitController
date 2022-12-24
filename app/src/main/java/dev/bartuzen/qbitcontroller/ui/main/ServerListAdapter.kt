@@ -11,7 +11,8 @@ import dev.bartuzen.qbitcontroller.databinding.ItemServerBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 
 class ServerListAdapter(
-    private val onClick: (serverConfig: ServerConfig) -> Unit
+    private val onClick: (serverConfig: ServerConfig) -> Unit,
+    private val onLongClick: (serverConfig: ServerConfig) -> Unit
 ) : ListAdapter<ServerConfig, ServerListAdapter.ViewHolder>(DiffCallBack()) {
     var selectedServerId: Int = -1
 
@@ -43,6 +44,15 @@ class ServerListAdapter(
                         onClick(serverConfig)
                     }
                 }
+            }
+
+            binding.root.setOnLongClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { serverConfig ->
+                        onLongClick(serverConfig)
+                    }
+                }
+                true
             }
         }
 
