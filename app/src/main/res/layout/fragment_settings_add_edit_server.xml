@@ -173,8 +173,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textAlignment="center"
-                android:text="@string/settings_server_test_configuration" />
+                android:text="@string/settings_server_test_configuration"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
