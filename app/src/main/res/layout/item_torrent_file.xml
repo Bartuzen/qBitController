@@ -9,7 +9,7 @@
     android:focusable="true"
     android:orientation="horizontal">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/image_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -17,6 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription"
         tools:src="@drawable/ic_file" />
 
     <com.google.android.material.textview.MaterialTextView
