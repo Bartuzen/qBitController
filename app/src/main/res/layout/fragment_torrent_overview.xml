@@ -116,9 +116,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_total_size"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Total size text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -128,9 +129,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_added_on"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Added on text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -140,9 +142,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_hash"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Hash text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -152,9 +155,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_save_path"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Save Path Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -164,9 +168,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_comment"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Comment Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -176,9 +181,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_pieces"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Pieces Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -188,9 +194,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_completed_on"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Completed On Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -200,9 +207,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_created_by"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Created By Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -212,9 +220,10 @@
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/text_created_on"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            app:layout_gravity="fill_horizontal"
                             tools:text="Created On Text" />
 
                     </androidx.gridlayout.widget.GridLayout>
