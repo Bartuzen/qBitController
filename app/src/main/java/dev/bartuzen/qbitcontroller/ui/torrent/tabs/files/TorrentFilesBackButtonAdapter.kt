@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 
 class TorrentFilesBackButtonAdapter(
@@ -41,6 +42,7 @@ class TorrentFilesBackButtonAdapter(
 
         fun bind() {
             binding.textName.text = "..."
+            binding.imageIcon.setImageResource(R.drawable.ic_arrow_up)
         }
     }
 
