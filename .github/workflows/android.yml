@@ -32,7 +32,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: qBitController-FreeDebug.apk
+          name: Debug APK
           path: app/build/outputs/apk/free/debug/app-free-debug.apk
 
   check-codestyle:
