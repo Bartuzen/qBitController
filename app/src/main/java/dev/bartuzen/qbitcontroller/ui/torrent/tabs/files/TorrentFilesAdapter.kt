@@ -2,7 +2,6 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -40,9 +39,7 @@ class TorrentFilesAdapter(
             binding.textName.text = file.name
 
             val iconId = if (file.isFile) R.drawable.ic_file else R.drawable.ic_folder
-            binding.imageIcon.setImageDrawable(
-                AppCompatResources.getDrawable(binding.root.context, iconId)
-            )
+            binding.imageIcon.setImageResource(iconId)
         }
     }
 
