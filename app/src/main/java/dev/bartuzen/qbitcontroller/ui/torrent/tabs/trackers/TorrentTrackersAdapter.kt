@@ -34,7 +34,7 @@ class TorrentTrackersAdapter : MultiSelectAdapter<TorrentTracker, String, Torren
         fun bind(tracker: TorrentTracker) {
             val context = binding.root.context
 
-            val backgroundColor = if (isItemSelected("${if (tracker.tier == -1) 0 else 1}${tracker.url}")) {
+            val backgroundColor = if (isItemSelected(getKey(tracker))) {
                 context.getColorCompat(R.color.selected_card_background)
             } else {
                 MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT)

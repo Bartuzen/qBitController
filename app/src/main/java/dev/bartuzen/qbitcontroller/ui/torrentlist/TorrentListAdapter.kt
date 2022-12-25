@@ -41,7 +41,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
         fun bind(torrent: Torrent) {
             val context = binding.root.context
 
-            val backgroundColor = if (isItemSelected(torrent.hash)) {
+            val backgroundColor = if (isItemSelected(getKey(torrent))) {
                 context.getColorCompat(R.color.selected_card_background)
             } else {
                 MaterialColors.getColor(
