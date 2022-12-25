@@ -40,7 +40,7 @@ class TorrentFilesViewModel @Inject constructor(
     private fun updateFiles(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getFiles(serverConfig, torrentHash)) {
             is RequestResult.Success -> {
-                _torrentFiles.value = TorrentFileNode.fromFileList(result.data.map { it.name })
+                _torrentFiles.value = TorrentFileNode.fromFileList(result.data)
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {

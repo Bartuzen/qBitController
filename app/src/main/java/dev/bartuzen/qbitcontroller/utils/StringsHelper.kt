@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.utils
 
 import android.content.Context
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import java.time.Instant
@@ -93,6 +94,15 @@ fun formatTorrentState(context: Context, state: TorrentState) = context.getStrin
         TorrentState.FORCED_DL -> R.string.torrent_status_force_downloading
         TorrentState.MOVING -> R.string.torrent_status_moving
         TorrentState.UNKNOWN -> R.string.torrent_status_unknown
+    }
+)
+
+fun formatFilePriority(context: Context, priority: TorrentFilePriority) = context.getString(
+    when (priority) {
+        TorrentFilePriority.DO_NOT_DOWNLOAD -> R.string.torrent_file_priority_do_not_download
+        TorrentFilePriority.NORMAL -> R.string.torrent_file_priority_normal
+        TorrentFilePriority.HIGH -> R.string.torrent_file_priority_high
+        TorrentFilePriority.MAXIMUM -> R.string.torrent_file_priority_maximum
     }
 )
 

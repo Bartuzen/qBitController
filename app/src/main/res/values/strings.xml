@@ -190,6 +190,12 @@
     <string name="torrent_overview_created_on">Created On</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (have %3$d)</string>
 
+    <string name="torrent_file_priority_do_not_download">Do not download</string>
+    <string name="torrent_file_priority_normal">Normal</string>
+    <string name="torrent_file_priority_high">High</string>
+    <string name="torrent_file_priority_maximum">Maximum</string>
+    <string name="torrent_file_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
+
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>
     <string name="torrent_piece_map">PIECE MAP</string>
