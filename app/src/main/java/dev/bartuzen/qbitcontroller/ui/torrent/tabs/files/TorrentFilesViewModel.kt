@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
+import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,6 +72,18 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
+    fun setFilePriority(serverConfig: ServerConfig, hash: String, files: List<TorrentFile>, priority: TorrentFilePriority) =
+        viewModelScope.launch {
+            when (val result = repository.setFilePriority(serverConfig, hash, files.map { it.index }, priority)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.FilePriorityUpdated)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+
     fun goToFolder(node: String) {
         _nodeStack.update { stack ->
             stack.clone().apply {
@@ -89,5 +103,6 @@ class TorrentFilesViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
+        object FilePriorityUpdated : Event()
     }
 }

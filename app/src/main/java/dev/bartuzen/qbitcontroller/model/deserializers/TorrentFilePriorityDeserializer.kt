@@ -7,12 +7,8 @@ import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 
 class TorrentFilePriorityDeserializer : JsonDeserializer<TorrentFilePriority>() {
     override fun deserialize(parser: JsonParser?, context: DeserializationContext?): TorrentFilePriority {
-        return when (val priority = parser?.valueAsInt) {
-            0 -> TorrentFilePriority.DO_NOT_DOWNLOAD
-            1 -> TorrentFilePriority.NORMAL
-            6 -> TorrentFilePriority.HIGH
-            7 -> TorrentFilePriority.MAXIMUM
-            else -> throw IllegalArgumentException("Unknown priority $priority")
-        }
+        val priorityId = parser?.valueAsInt
+        return TorrentFilePriority.values().find { it.id == priorityId }
+            ?: throw IllegalArgumentException("Unknown priority: $priorityId")
     }
 }

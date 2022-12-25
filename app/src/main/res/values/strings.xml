@@ -196,6 +196,17 @@
     <string name="torrent_files_priority_maximum">Maximum</string>
     <string name="torrent_files_priority_mixed">Mixed</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
+    <string name="torrent_files_priority_update_success">Files priority updated successfully.</string>
+
+    <string name="torrent_files_menu_priority">Priority</string>
+    <string name="torrent_files_menu_priority_do_not_download">@string/torrent_files_priority_do_not_download</string>
+    <string name="torrent_files_menu_priority_normal">@string/torrent_files_priority_normal</string>
+    <string name="torrent_files_menu_priority_high">@string/torrent_files_priority_high</string>
+    <string name="torrent_files_menu_priority_maximum">@string/torrent_files_priority_maximum</string>
+    <plurals name="torrent_files_menu_files_selected">
+        <item quantity="one">%1$d file selected</item>
+        <item quantity="other">%1$d files selected</item>
+    </plurals>
 
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>

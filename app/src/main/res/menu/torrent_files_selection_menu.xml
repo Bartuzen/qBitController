@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_sort"
+        android:icon="@drawable/ic_priority"
+        android:title="@string/torrent_files_menu_priority"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/menu_priority_do_not_download"
+                android:title="@string/torrent_files_menu_priority_do_not_download" />
+            <item
+                android:id="@+id/menu_priority_normal"
+                android:title="@string/torrent_files_menu_priority_normal" />
+            <item
+                android:id="@+id/menu_priority_high"
+                android:title="@string/torrent_files_menu_priority_high" />
+            <item
+                android:id="@+id/menu_priority_maximum"
+                android:title="@string/torrent_files_menu_priority_maximum" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_select_all"
+        android:icon="@drawable/ic_select_all"
+        android:title="@string/menu_select_all"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_select_inverse"
+        android:icon="@drawable/ic_select_inverse"
+        android:title="@string/menu_select_inverse"
+        app:showAsAction="ifRoom" />
+
+</menu>

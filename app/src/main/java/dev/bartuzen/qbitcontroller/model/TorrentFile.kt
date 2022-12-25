@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.TorrentFilePriorityDeserializer
 
 data class TorrentFile(
+    @JsonProperty("index")
+    val index: Int,
+
     @JsonProperty("name")
     val name: String,
 
@@ -19,6 +22,6 @@ data class TorrentFile(
     val priority: TorrentFilePriority
 )
 
-enum class TorrentFilePriority {
-    DO_NOT_DOWNLOAD, NORMAL, HIGH, MAXIMUM
+enum class TorrentFilePriority(val id: Int) {
+    DO_NOT_DOWNLOAD(0), NORMAL(1), HIGH(6), MAXIMUM(7)
 }

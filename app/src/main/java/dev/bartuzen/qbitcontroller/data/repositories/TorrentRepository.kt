@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.data.repositories
 
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -99,5 +100,10 @@ class TorrentRepository @Inject constructor(
     suspend fun renameTorrent(serverConfig: ServerConfig, hash: String, name: String) =
         requestManager.request(serverConfig) { service ->
             service.renameTorrent(hash, name)
+        }
+
+    suspend fun setFilePriority(serverConfig: ServerConfig, hash: String, ids: List<Int>, priority: TorrentFilePriority) =
+        requestManager.request(serverConfig) { service ->
+            service.setFilePriority(hash, ids.joinToString("|"), priority.id)
         }
 }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class MultiSelectAdapter<T, K, VH : MultiSelectAdapter.ViewHolder<T, K>>(
     diffCallBack: DiffUtil.ItemCallback<T>,
-    private val getKey: (item: T) -> K
+    val getKey: (item: T) -> K
 ) : ListAdapter<T, VH>(diffCallBack) {
     private val _selectedItems = mutableListOf<K>()
     val selectedItems: List<K> get() = _selectedItems
