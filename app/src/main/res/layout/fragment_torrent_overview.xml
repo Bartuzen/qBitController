@@ -103,11 +103,11 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="8dp">
 
-                    <androidx.gridlayout.widget.GridLayout
+                    <GridLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
-                        app:columnCount="2">
+                        android:columnCount="2">
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Total Size Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -132,7 +132,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Added On Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -145,7 +145,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Hash Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -158,7 +158,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Save Path Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -171,7 +171,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Comment Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -184,7 +184,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Pieces Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -197,7 +197,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Completed On Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -210,7 +210,7 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Created By Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -223,10 +223,10 @@
                             android:layout_width="0dp"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            app:layout_gravity="fill_horizontal"
+                            android:layout_gravity="fill_horizontal"
                             tools:text="Created On Text" />
 
-                    </androidx.gridlayout.widget.GridLayout>
+                    </GridLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 

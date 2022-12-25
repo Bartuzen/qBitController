@@ -115,7 +115,6 @@ dependencies {
     implementation("com.google.android.material:material:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
-    implementation("androidx.gridlayout:gridlayout:1.0.0")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
