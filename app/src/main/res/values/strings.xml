@@ -247,7 +247,7 @@
 
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>
-    <string name="settings_add_new_server">Add New Server</string>
+    <string name="settings_add_new_server">Add new server</string>
     <string name="settings_other">Other</string>
     <string name="settings_connection_timeout">Connection timeout</string>
     <plurals name="settings_connection_timeout_desc">
@@ -269,7 +269,7 @@
     <string-array name="settings_theme_entries">
         <item>Light</item>
         <item>Dark</item>
-        <item>System Default</item>
+        <item>System default</item>
     </string-array>
 
     <string name="settings_server_add_success">Server has been added successfully.</string>
