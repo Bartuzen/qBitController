@@ -120,7 +120,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             app:layout_gravity="fill_horizontal"
-                            tools:text="Total size text" />
+                            tools:text="Total Size Text" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             app:layout_gravity="fill_horizontal"
-                            tools:text="Added on text" />
+                            tools:text="Added On Text" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
@@ -146,7 +146,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             app:layout_gravity="fill_horizontal"
-                            tools:text="Hash text" />
+                            tools:text="Hash Text" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
