@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
@@ -43,6 +44,9 @@ class TorrentFilesBackButtonAdapter(
         fun bind() {
             binding.textName.text = "..."
             binding.imageIcon.setImageResource(R.drawable.ic_arrow_up)
+
+            binding.progressIndicator.visibility = View.GONE
+            binding.textDetails.visibility = View.GONE
         }
     }
 

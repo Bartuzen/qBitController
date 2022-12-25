@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -45,15 +44,13 @@ class TorrentFilesAdapter(
             val iconId = if (fileNode.isFile) R.drawable.ic_file else R.drawable.ic_folder
             binding.imageIcon.setImageResource(iconId)
 
-            fileNode.file?.let { file ->
-                binding.progressIndicator.visibility = View.VISIBLE
-                binding.textDetails.visibility = View.VISIBLE
-
+            val context = binding.root.context
+            val file = fileNode.file
+            if (file != null) {
                 val progress = file.progress * 100
 
                 binding.progressIndicator.progress = progress.toInt()
 
-                val context = binding.root.context
                 val downloadedSize = (file.progress * file.size).toLong()
                 val progressText = if (file.progress < 1) {
                     progress.floorToDecimal(1).toString()
@@ -67,6 +64,33 @@ class TorrentFilesAdapter(
                     formatBytes(context, file.size),
                     progressText
                 )
+            } else {
+                val properties = fileNode.getFolderProperties()
+
+                val progress = properties.progressSum / properties.fileCount
+                val downloadedSize = (progress * properties.size).toLong()
+
+                val progressText = if (progress < 1) {
+                    (progress * 100).floorToDecimal(1).toString()
+                } else {
+                    "100"
+                }
+
+                val priority = properties.priority
+                val priorityText = if (priority != null) {
+                    formatFilePriority(context, priority)
+                } else {
+                    context.getString(R.string.torrent_file_priority_mixed)
+                }
+
+                binding.progressIndicator.progress = (progress * 100).toInt()
+                binding.textDetails.text = context.getString(
+                    R.string.torrent_file_details_format,
+                    priorityText,
+                    formatBytes(context, downloadedSize),
+                    formatBytes(context, properties.size),
+                    progressText
+                )
             }
         }
     }
@@ -76,6 +100,6 @@ class TorrentFilesAdapter(
 
         override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) = oldItem.name == newItem.name &&
             oldItem.file?.priority == newItem.file?.priority && oldItem.file?.progress == newItem.file?.progress &&
-            oldItem.file?.size == newItem.file?.size
+            oldItem.file?.size == newItem.file?.size && oldItem.getFolderProperties() == newItem.getFolderProperties()
     }
 }

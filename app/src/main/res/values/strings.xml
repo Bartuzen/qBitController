@@ -194,6 +194,7 @@
     <string name="torrent_file_priority_normal">Normal</string>
     <string name="torrent_file_priority_high">High</string>
     <string name="torrent_file_priority_maximum">Maximum</string>
+    <string name="torrent_file_priority_mixed">Mixed</string>
     <string name="torrent_file_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
 
     <string name="torrent_pieces">PIECES</string>

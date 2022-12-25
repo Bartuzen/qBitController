@@ -38,18 +38,14 @@
             android:id="@+id/progress_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:layout_margin="4dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:visibility="gone"
-            tools:text="Details Text Here"
-            tools:visibility="visible" />
+            tools:text="Details Text Here" />
 
     </LinearLayout>
 
