@@ -18,9 +18,8 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_name"
             style="@style/TextAppearance.MaterialComponents.Body1"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Torrent Name" />
@@ -36,10 +35,9 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_progress"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
             tools:text="Progress Text" />
@@ -64,10 +62,9 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/text_state"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            app:layout_constraintEnd_toStartOf="@id/text_speed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/progress_torrent"
             tools:text="Torrent State" />
