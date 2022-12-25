@@ -99,10 +99,10 @@ fun formatTorrentState(context: Context, state: TorrentState) = context.getStrin
 
 fun formatFilePriority(context: Context, priority: TorrentFilePriority) = context.getString(
     when (priority) {
-        TorrentFilePriority.DO_NOT_DOWNLOAD -> R.string.torrent_file_priority_do_not_download
-        TorrentFilePriority.NORMAL -> R.string.torrent_file_priority_normal
-        TorrentFilePriority.HIGH -> R.string.torrent_file_priority_high
-        TorrentFilePriority.MAXIMUM -> R.string.torrent_file_priority_maximum
+        TorrentFilePriority.DO_NOT_DOWNLOAD -> R.string.torrent_files_priority_do_not_download
+        TorrentFilePriority.NORMAL -> R.string.torrent_files_priority_normal
+        TorrentFilePriority.HIGH -> R.string.torrent_files_priority_high
+        TorrentFilePriority.MAXIMUM -> R.string.torrent_files_priority_maximum
     }
 )
 

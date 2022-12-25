@@ -58,7 +58,7 @@ class TorrentFilesAdapter(
                     "100"
                 }
                 binding.textDetails.text = context.getString(
-                    R.string.torrent_file_details_format,
+                    R.string.torrent_files_details_format,
                     formatFilePriority(context, file.priority),
                     formatBytes(context, downloadedSize),
                     formatBytes(context, file.size),
@@ -80,12 +80,12 @@ class TorrentFilesAdapter(
                 val priorityText = if (priority != null) {
                     formatFilePriority(context, priority)
                 } else {
-                    context.getString(R.string.torrent_file_priority_mixed)
+                    context.getString(R.string.torrent_files_priority_mixed)
                 }
 
                 binding.progressIndicator.progress = (progress * 100).toInt()
                 binding.textDetails.text = context.getString(
-                    R.string.torrent_file_details_format,
+                    R.string.torrent_files_details_format,
                     priorityText,
                     formatBytes(context, downloadedSize),
                     formatBytes(context, properties.size),
