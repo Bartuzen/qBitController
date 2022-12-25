@@ -249,6 +249,11 @@
     <string name="settings_servers">Servers</string>
     <string name="settings_add_new_server">Add New Server</string>
     <string name="settings_other">Other</string>
+    <string name="settings_connection_timeout">Connection timeout</string>
+    <plurals name="settings_connection_timeout_desc">
+        <item quantity="one">%1$d second</item>
+        <item quantity="other">%1$d seconds</item>
+    </plurals>
     <string name="settings_theme">Theme</string>
 
     <string name="settings_server_title_add">Add Server</string>

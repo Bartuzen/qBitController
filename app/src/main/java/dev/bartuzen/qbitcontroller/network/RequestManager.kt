@@ -19,7 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class RequestManager @Inject constructor(
-    serverManager: ServerManager
+    serverManager: ServerManager,
+    private val timeoutInterceptor: TimeoutInterceptor
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
 
@@ -43,6 +44,7 @@ class RequestManager @Inject constructor(
             .client(
                 OkHttpClient().newBuilder()
                     .cookieJar(SessionCookieJar())
+                    .addInterceptor(timeoutInterceptor)
                     .build()
             )
             .addConverterFactory(ScalarsConverterFactory.create())

@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.network.TimeoutInterceptor
 import dev.bartuzen.qbitcontroller.network.TorrentService
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.create
@@ -25,7 +27,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditServerViewModel @Inject constructor(
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
+    private val timeoutInterceptor: TimeoutInterceptor
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -54,6 +57,11 @@ class AddEditServerViewModel @Inject constructor(
         val job = viewModelScope.launch {
             val service = Retrofit.Builder()
                 .baseUrl(serverConfig.url)
+                .client(
+                    OkHttpClient().newBuilder()
+                        .addInterceptor(timeoutInterceptor)
+                        .build()
+                )
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()
                 .create<TorrentService>()

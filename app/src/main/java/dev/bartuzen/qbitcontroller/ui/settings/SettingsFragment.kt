@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
 import android.os.Bundle
+import android.text.InputType
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -84,6 +85,39 @@ class SettingsFragment : PreferenceFragmentCompat() {
         category {
             setTitle(R.string.settings_other)
             initialExpandedChildrenCount = 1
+        }
+
+        editText {
+            key = ""
+            setTitle(R.string.settings_connection_timeout)
+            setDialogTitle(R.string.settings_connection_timeout)
+            summary = resources.getQuantityString(
+                R.plurals.settings_connection_timeout_desc,
+                viewModel.connectionTimeout,
+                viewModel.connectionTimeout
+            )
+            text = viewModel.connectionTimeout.toString()
+
+            setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.setSelection(editText.text.length)
+            }
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val requestTimeout = newValue.toString().toIntOrNull() ?: -1
+                if (requestTimeout in 1..3600) {
+                    viewModel.connectionTimeout = requestTimeout
+
+                    summary = resources.getQuantityString(
+                        R.plurals.settings_connection_timeout_desc,
+                        requestTimeout,
+                        requestTimeout
+                    )
+                    text = requestTimeout.toString()
+                }
+
+                false
+            }
         }
 
         list {
