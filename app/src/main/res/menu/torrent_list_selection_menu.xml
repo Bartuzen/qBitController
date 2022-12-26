@@ -21,28 +21,33 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/menu_priority_increase"
-        android:icon="@drawable/ic_priority_increase"
-        android:title="@string/menu_priority_increase"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_priority"
+        android:title="@string/menu_priority"
+        app:showAsAction="ifRoom">
 
-    <item
-        android:id="@+id/menu_priority_decrease"
-        android:icon="@drawable/ic_priority_decrease"
-        android:title="@string/menu_priority_decrease"
-        app:showAsAction="ifRoom" />
+        <menu>
+            <item
+                android:id="@+id/menu_priority_increase"
+                android:icon="@drawable/ic_priority_increase"
+                android:title="@string/menu_priority_increase" />
 
-    <item
-        android:id="@+id/menu_priority_maximize"
-        android:icon="@drawable/ic_priority_maximize"
-        android:title="@string/menu_priority_maximize"
-        app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menu_priority_decrease"
+                android:icon="@drawable/ic_priority_decrease"
+                android:title="@string/menu_priority_decrease" />
 
-    <item
-        android:id="@+id/menu_priority_minimize"
-        android:icon="@drawable/ic_priority_minimize"
-        android:title="@string/menu_priority_minimize"
-        app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menu_priority_maximize"
+                android:icon="@drawable/ic_priority_maximize"
+                android:title="@string/menu_priority_maximize" />
+
+            <item
+                android:id="@+id/menu_priority_minimize"
+                android:icon="@drawable/ic_priority_minimize"
+                android:title="@string/menu_priority_minimize" />
+        </menu>
+
+    </item>
 
     <item
         android:id="@+id/menu_select_all"
