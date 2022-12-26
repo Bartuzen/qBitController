@@ -120,7 +120,8 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
     }
 
     class DiffCallBack : DiffUtil.ItemCallback<TorrentFileNode>() {
-        override fun areItemsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) = oldItem.name == newItem.name
+        override fun areItemsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) =
+            oldItem.isFile == newItem.isFile && oldItem.name == newItem.name
 
         override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) = oldItem.name == newItem.name &&
             oldItem.file?.priority == newItem.file?.priority && oldItem.file?.progress == newItem.file?.progress &&
