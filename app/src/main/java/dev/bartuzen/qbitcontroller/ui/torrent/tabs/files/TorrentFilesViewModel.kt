@@ -100,6 +100,12 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
+    fun goToRoot() {
+        _nodeStack.update {
+            ArrayDeque()
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()

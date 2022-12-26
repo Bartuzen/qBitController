@@ -176,6 +176,8 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                     adapter.submitList(fileList) {
                         backButtonAdapter.isVisible = nodeStack.isNotEmpty()
                     }
+                } else {
+                    viewModel.goToRoot()
                 }
             }
         }
