@@ -11,6 +11,7 @@
         <item name="colorOnSecondary">@color/color_on_secondary</item>
 
         <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarTheme">@style/AppTheme.ToolbarOverlay</item>
 
         <item name="android:textAlignment">viewStart</item>
     </style>
