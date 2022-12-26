@@ -8,18 +8,23 @@
         android:title="@string/torrent_files_menu_priority"
         app:showAsAction="ifRoom">
         <menu>
+
             <item
                 android:id="@+id/menu_priority_do_not_download"
                 android:title="@string/torrent_files_menu_priority_do_not_download" />
+
             <item
                 android:id="@+id/menu_priority_normal"
                 android:title="@string/torrent_files_menu_priority_normal" />
+
             <item
                 android:id="@+id/menu_priority_high"
                 android:title="@string/torrent_files_menu_priority_high" />
+
             <item
                 android:id="@+id/menu_priority_maximum"
                 android:title="@string/torrent_files_menu_priority_maximum" />
+
         </menu>
     </item>
 
