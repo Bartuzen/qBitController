@@ -198,7 +198,6 @@
     <string name="torrent_files_priority_maximum">Maximum</string>
     <string name="torrent_files_priority_mixed">Mixed</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
-    <string name="torrent_files_priority_update_success">Files priority updated successfully.</string>
 
     <string name="torrent_files_menu_priority">Priority</string>
     <string name="torrent_files_menu_priority_do_not_download">@string/torrent_files_priority_do_not_download</string>
@@ -217,6 +216,7 @@
     <string name="torrent_files_rename_file_hint">File Name</string>
     <string name="torrent_files_rename_folder_hint">Folder Name</string>
 
+    <string name="torrent_files_priority_update_success">Files priority updated successfully.</string>
     <string name="torrent_files_file_renamed_success">File renamed successfully</string>
     <string name="torrent_files_folder_renamed_success">Folder renamed successfully</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Path is invalid or already in use.</string>
