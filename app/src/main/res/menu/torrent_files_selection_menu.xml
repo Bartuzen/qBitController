@@ -29,6 +29,12 @@
     </item>
 
     <item
+        android:id="@+id/menu_rename"
+        android:icon="@drawable/ic_rename"
+        android:title="@string/torrent_files_menu_rename"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
         android:title="@string/menu_select_all"

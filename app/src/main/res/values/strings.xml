@@ -204,10 +204,21 @@
     <string name="torrent_files_menu_priority_normal">@string/torrent_files_priority_normal</string>
     <string name="torrent_files_menu_priority_high">@string/torrent_files_priority_high</string>
     <string name="torrent_files_menu_priority_maximum">@string/torrent_files_priority_maximum</string>
+    <string name="torrent_files_menu_rename">Rename</string>
+
     <plurals name="torrent_files_menu_files_selected">
         <item quantity="one">%1$d file selected</item>
         <item quantity="other">%1$d files selected</item>
     </plurals>
+
+    <string name="torrent_files_rename_file_dialog_title">Rename File</string>
+    <string name="torrent_files_rename_folder_dialog_title">Rename Folder</string>
+    <string name="torrent_files_rename_file_hint">File Name</string>
+    <string name="torrent_files_rename_folder_hint">Folder Name</string>
+
+    <string name="torrent_files_file_renamed_success">File renamed successfully</string>
+    <string name="torrent_files_folder_renamed_success">Folder renamed successfully</string>
+    <string name="torrent_files_error_path_is_invalid_or_in_use">Path is invalid or already in use.</string>
 
     <string name="torrent_pieces">PIECES</string>
     <string name="torrent_piece_size">PIECE SIZE</string>

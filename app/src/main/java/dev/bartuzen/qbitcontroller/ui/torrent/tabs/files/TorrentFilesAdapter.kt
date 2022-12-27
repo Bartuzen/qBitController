@@ -17,7 +17,7 @@ import dev.bartuzen.qbitcontroller.utils.getColorCompat
 class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentFilesAdapter.ViewHolder>(
     diffCallBack = DiffCallBack(),
     getKey = { fileNode ->
-        "${fileNode.isFile}${fileNode.name}"
+        "${if (fileNode.isFile) 1 else 0}${fileNode.name}"
     }
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(

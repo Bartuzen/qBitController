@@ -14,6 +14,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogRenameFileFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
@@ -21,6 +22,10 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setNegativeButton
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
+import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.flow.combine
@@ -103,6 +108,31 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                                 finishSelection()
                                 actionMode?.finish()
                             }
+                            R.id.menu_rename -> {
+                                val key = selectedItems.first()
+                                val fileName = key.drop(1)
+                                val isFile = key.startsWith("1")
+
+                                val nodeStack = viewModel.nodeStack.value
+                                val root = if (nodeStack.isNotEmpty()) {
+                                    val folderList = mutableListOf<String>()
+                                    for (folder in nodeStack.descendingIterator()) {
+                                        folderList.add(folder)
+                                    }
+                                    folderList.joinToString("/") + "/"
+                                } else {
+                                    ""
+                                }
+
+                                showRenameFileFolderDialog(
+                                    name = "$root$fileName",
+                                    isFile = isFile,
+                                    onSuccess = {
+                                        finishSelection()
+                                        actionMode?.finish()
+                                    }
+                                )
+                            }
                             R.id.menu_select_all -> {
                                 selectAll()
                             }
@@ -131,6 +161,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                         itemCount,
                         itemCount
                     )
+                    actionMode?.menu?.findItem(R.id.menu_rename)?.isEnabled = itemCount == 1
                 }
             }
         }
@@ -190,11 +221,54 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 TorrentFilesViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }
+                TorrentFilesViewModel.Event.PathIsInvalidOrInUse -> {
+                    showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use)
+                }
                 TorrentFilesViewModel.Event.FilePriorityUpdated -> {
                     showSnackbar(R.string.torrent_files_priority_update_success)
                     viewModel.loadFiles(serverConfig, torrentHash)
                 }
+                TorrentFilesViewModel.Event.FileRenamed -> {
+                    showSnackbar(R.string.torrent_files_file_renamed_success)
+                    viewModel.loadFiles(serverConfig, torrentHash)
+                }
+                TorrentFilesViewModel.Event.FolderRenamed -> {
+                    showSnackbar(R.string.torrent_files_folder_renamed_success)
+                    viewModel.loadFiles(serverConfig, torrentHash)
+                }
             }
+        }
+    }
+
+    private fun showRenameFileFolderDialog(name: String, isFile: Boolean, onSuccess: () -> Unit) {
+        showDialog(DialogRenameFileFolderBinding::inflate) { binding ->
+            binding.inputLayoutName.setTextWithoutAnimation(name)
+            binding.inputLayoutName.setHint(
+                if (isFile) {
+                    R.string.torrent_files_rename_file_hint
+                } else {
+                    R.string.torrent_files_rename_folder_hint
+                }
+            )
+
+            setTitle(
+                if (isFile) {
+                    R.string.torrent_files_rename_file_dialog_title
+                } else {
+                    R.string.torrent_files_rename_folder_dialog_title
+                }
+            )
+            setPositiveButton { _, _ ->
+                val newName = binding.editName.text.toString()
+
+                if (isFile) {
+                    viewModel.renameFile(serverConfig, torrentHash, name, newName)
+                } else {
+                    viewModel.renameFolder(serverConfig, torrentHash, name, newName)
+                }
+                onSuccess()
+            }
+            setNegativeButton()
         }
     }
 

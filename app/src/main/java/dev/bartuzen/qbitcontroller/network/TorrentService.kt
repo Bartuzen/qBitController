@@ -164,4 +164,20 @@ interface TorrentService {
         @Field("id") id: String,
         @Field("priority") priority: Int
     ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/renameFile")
+    suspend fun renameFile(
+        @Field("hash") hash: String,
+        @Field("oldPath") oldPath: String,
+        @Field("newPath") newPath: String
+    ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/renameFolder")
+    suspend fun renameFolder(
+        @Field("hash") hash: String,
+        @Field("oldPath") oldPath: String,
+        @Field("newPath") newPath: String
+    ): Response<Unit>
 }

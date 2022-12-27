@@ -106,4 +106,14 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.setFilePriority(hash, ids.joinToString("|"), priority.id)
         }
+
+    suspend fun renameFile(serverConfig: ServerConfig, hash: String, file: String, newName: String) =
+        requestManager.request(serverConfig) { service ->
+            service.renameFile(hash, file, newName)
+        }
+
+    suspend fun renameFolder(serverConfig: ServerConfig, hash: String, folder: String, newName: String) =
+        requestManager.request(serverConfig) { service ->
+            service.renameFolder(hash, folder, newName)
+        }
 }

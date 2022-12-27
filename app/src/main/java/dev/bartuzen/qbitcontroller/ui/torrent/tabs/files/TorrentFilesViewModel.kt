@@ -84,6 +84,36 @@ class TorrentFilesViewModel @Inject constructor(
             }
         }
 
+    fun renameFile(serverConfig: ServerConfig, hash: String, file: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameFile(serverConfig, hash, file, newName)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FileRenamed)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.PathIsInvalidOrInUse)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
+    fun renameFolder(serverConfig: ServerConfig, hash: String, folder: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameFolder(serverConfig, hash, folder, newName)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FolderRenamed)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.PathIsInvalidOrInUse)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
     fun goToFolder(node: String) {
         _nodeStack.update { stack ->
             stack.clone().apply {
@@ -109,6 +139,9 @@ class TorrentFilesViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
+        object PathIsInvalidOrInUse : Event()
         object FilePriorityUpdated : Event()
+        object FileRenamed : Event()
+        object FolderRenamed : Event()
     }
 }
