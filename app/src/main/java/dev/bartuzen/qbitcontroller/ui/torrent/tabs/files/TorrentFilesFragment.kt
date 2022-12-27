@@ -205,7 +205,11 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 )
                 if (fileList != null) {
                     adapter.submitList(fileList) {
-                        backButtonAdapter.isVisible = nodeStack.isNotEmpty()
+                        if (nodeStack.isNotEmpty()) {
+                            backButtonAdapter.currentDirectory = nodeStack.toList().reversed().joinToString("/")
+                        } else {
+                            backButtonAdapter.currentDirectory = null
+                        }
                     }
                 } else {
                     viewModel.goToRoot()

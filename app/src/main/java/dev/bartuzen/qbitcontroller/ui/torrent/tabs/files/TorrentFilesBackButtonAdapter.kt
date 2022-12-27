@@ -1,40 +1,42 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.parseAsHtml
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
+import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFilesBackButtonBinding
 
 class TorrentFilesBackButtonAdapter(
     private val onClick: () -> Unit
 ) : RecyclerView.Adapter<TorrentFilesBackButtonAdapter.ViewHolder>() {
-    var isVisible = false
+    var currentDirectory: String? = null
         set(value) {
-            if (field != value) {
+            if (field == null && value != null) {
                 field = value
-                if (value) {
-                    notifyItemInserted(0)
-                } else {
-                    notifyItemRemoved(0)
-                }
+                notifyItemInserted(0)
+            } else if (field != null && value == null) {
+                field = value
+                notifyItemRemoved(0)
+            } else if (field != value) {
+                field = value
+                notifyItemChanged(0)
             }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ItemTorrentFilesBackButtonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind()
     }
 
-    inner class ViewHolder(private val binding: ItemTorrentFileBinding) :
+    inner class ViewHolder(private val binding: ItemTorrentFilesBackButtonBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.root.setOnClickListener {
+            binding.layoutBackButton.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     onClick()
                 }
@@ -42,13 +44,11 @@ class TorrentFilesBackButtonAdapter(
         }
 
         fun bind() {
-            binding.textName.text = "..."
-            binding.imageIcon.setImageResource(R.drawable.ic_arrow_up)
-
-            binding.progressIndicator.visibility = View.GONE
-            binding.textDetails.visibility = View.GONE
+            val context = binding.root.context
+            binding.textDirectory.text =
+                context.getString(R.string.torrent_files_directory_format, currentDirectory).parseAsHtml()
         }
     }
 
-    override fun getItemCount() = if (isVisible) 1 else 0
+    override fun getItemCount() = if (currentDirectory != null) 1 else 0
 }
