@@ -1,0 +1,8 @@
+- Torrent files tab now shows more information and has more options
+- Added option to change timeout duration
+- Long clicking on a server in server selector will now open it in settings
+- Priority options in torrent list screen are now in a submenu
+- Fixed a crash that affected some users
+- UI now looks much better when using right-to-left layout
+
+Check GitHub release for all changes
