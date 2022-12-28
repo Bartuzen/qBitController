@@ -106,17 +106,18 @@ fun formatFilePriority(context: Context, priority: TorrentFilePriority) = contex
     }
 )
 
-fun getErrorMessage(context: Context, error: RequestResult.Error) = context.getString(
-    when (error) {
-        RequestResult.Error.RequestError.Banned -> R.string.error_banned
-        RequestResult.Error.RequestError.CannotConnect -> R.string.error_cannot_connect
-        RequestResult.Error.RequestError.InvalidCredentials -> R.string.error_invalid_credentials
-        RequestResult.Error.RequestError.Timeout -> R.string.error_timeout
-        RequestResult.Error.RequestError.Unknown -> R.string.error_unknown
-        RequestResult.Error.RequestError.UnknownHost -> R.string.error_unknown_host
-        is RequestResult.Error.ApiError -> R.string.error_unknown
-    }
-)
+fun getErrorMessage(context: Context, error: RequestResult.Error) = when (error) {
+    RequestResult.Error.RequestError.InvalidCredentials -> context.getString(R.string.error_invalid_credentials)
+    RequestResult.Error.RequestError.Banned -> context.getString(R.string.error_banned)
+    RequestResult.Error.RequestError.CannotConnect -> context.getString(R.string.error_cannot_connect)
+    RequestResult.Error.RequestError.UnknownHost -> context.getString(R.string.error_unknown_host)
+    RequestResult.Error.RequestError.Timeout -> context.getString(R.string.error_timeout)
+    RequestResult.Error.RequestError.NoData -> context.getString(R.string.error_no_data)
+    is RequestResult.Error.RequestError.UnknownLoginResponse ->
+        context.getString(R.string.error_unknown_login_response, error.response)
+    is RequestResult.Error.RequestError.Unknown -> context.getString(R.string.error_unknown_with_message, error.message)
+    is RequestResult.Error.ApiError -> context.getString(R.string.error_unknown)
+}
 
 fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)
     .atZone(ZoneId.systemDefault())

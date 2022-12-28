@@ -76,14 +76,14 @@ class RequestManager @Inject constructor(
             } else if (loginResponse.body() == "Fails.") {
                 RequestResult.Error.RequestError.InvalidCredentials
             } else if (loginResponse.body() != "Ok.") {
-                RequestResult.Error.RequestError.Unknown
+                RequestResult.Error.RequestError.UnknownLoginResponse(loginResponse.body())
             } else {
                 val newResponse = block(service)
                 val newBody = newResponse.body()
                 if (newResponse.code() == 200 && newBody != null) {
                     RequestResult.Success(newBody)
                 } else {
-                    RequestResult.Error.RequestError.Unknown
+                    RequestResult.Error.RequestError.NoData
                 }
             }
         } else if (blockResponse.code() == 200 && body != null) {
@@ -107,7 +107,7 @@ class RequestManager @Inject constructor(
         if (e is CancellationException) {
             throw e
         }
-        RequestResult.Error.RequestError.Unknown
+        RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
     }
 }
 
@@ -121,7 +121,9 @@ sealed class RequestResult<out T : Any?> {
             object CannotConnect : RequestError()
             object UnknownHost : RequestError()
             object Timeout : RequestError()
-            object Unknown : RequestError()
+            object NoData : RequestError()
+            data class UnknownLoginResponse(val response: String?) : RequestError()
+            data class Unknown(val message: String?) : RequestError()
         }
 
         data class ApiError(val code: Int) : Error()

@@ -74,7 +74,7 @@ class AddEditServerViewModel @Inject constructor(
                 } else if (response.body() == "Fails.") {
                     RequestResult.Error.RequestError.InvalidCredentials
                 } else if (response.body() != "Ok.") {
-                    RequestResult.Error.RequestError.Unknown
+                    RequestResult.Error.RequestError.UnknownLoginResponse(response.body())
                 } else {
                     null
                 }
@@ -94,7 +94,7 @@ class AddEditServerViewModel @Inject constructor(
                 if (e is CancellationException) {
                     throw e
                 }
-                RequestResult.Error.RequestError.Unknown
+                RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
             }
 
             eventChannel.send(
