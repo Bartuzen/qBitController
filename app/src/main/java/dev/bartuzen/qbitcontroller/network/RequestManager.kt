@@ -101,7 +101,7 @@ class RequestManager @Inject constructor(
         if (e.cause is SocketTimeoutException) {
             RequestResult.Error.RequestError.Timeout
         } else {
-            throw e
+            RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
         }
     } catch (e: Exception) {
         if (e is CancellationException) {
