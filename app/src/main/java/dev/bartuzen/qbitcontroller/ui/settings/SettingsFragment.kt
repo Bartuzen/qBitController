@@ -54,7 +54,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         servers.forEach { (_, serverConfig) ->
             preference {
                 title = serverConfig.name
-                summary = serverConfig.host
+                summary = serverConfig.urlWithoutProtocol
                 setOnPreferenceClickListener {
                     val fragment = AddEditServerFragment(serverConfig)
                     parentFragmentManager.commit {
