@@ -115,8 +115,8 @@ fun getErrorMessage(context: Context, error: RequestResult.Error) = when (error)
     RequestResult.Error.RequestError.NoData -> context.getString(R.string.error_no_data)
     is RequestResult.Error.RequestError.UnknownLoginResponse ->
         context.getString(R.string.error_unknown_login_response, error.response)
-    is RequestResult.Error.RequestError.Unknown -> context.getString(R.string.error_unknown_with_message, error.message)
-    is RequestResult.Error.ApiError -> context.getString(R.string.error_unknown)
+    is RequestResult.Error.RequestError.Unknown -> context.getString(R.string.error_unknown, error.message)
+    is RequestResult.Error.ApiError -> context.getString(R.string.error_api, error.code)
 }
 
 fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)

@@ -89,8 +89,8 @@
     <string name="error_timeout">Connection timed out.</string>
     <string name="error_no_data">Server didn\'t send any data.</string>
     <string name="error_unknown_login_response">Unknown login response: %1$s</string>
-    <string name="error_unknown_with_message">Unknown error: %1$s</string>
-    <string name="error_unknown">An unknown error has occurred.</string>
+    <string name="error_unknown">Unknown error: %1$s</string>
+    <string name="error_api">API returned an error: %1$d</string>
 
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
