@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -19,6 +20,7 @@ class ServerManager @Inject constructor(
     private val sharedPref = context.getSharedPreferences("servers", Context.MODE_PRIVATE)
 
     private val mapper = jacksonObjectMapper()
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
     private fun readServerConfigs() = mapper.readValue<ServerConfigMap>(
         sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
