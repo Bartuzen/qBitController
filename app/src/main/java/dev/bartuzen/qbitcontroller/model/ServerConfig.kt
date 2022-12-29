@@ -16,8 +16,15 @@ data class ServerConfig(
     val password: String
 ) : Parcelable {
     @get:JsonIgnore
-    val url
-        get() = "${protocol.toString().lowercase()}://$urlWithoutProtocol"
+    val url: String
+        get() {
+            val url = "${protocol.toString().lowercase()}://$urlWithoutProtocol"
+            return if (!url.endsWith("/")) {
+                "$url/"
+            } else {
+                url
+            }
+        }
 
     @get:JsonIgnore
     val urlWithoutProtocol
@@ -28,9 +35,6 @@ data class ServerConfig(
             }
             path?.let { path ->
                 append("/$path")
-                if (!path.endsWith("/")) {
-                    append("/")
-                }
             }
         }
 }
