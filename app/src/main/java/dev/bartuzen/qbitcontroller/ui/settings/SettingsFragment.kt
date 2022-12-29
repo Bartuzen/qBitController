@@ -5,10 +5,10 @@ import android.text.InputType
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
@@ -123,10 +123,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
         list {
             key = "theme"
             setTitle(R.string.settings_theme)
-            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            setDialogTitle(R.string.settings_theme)
             entries = resources.getStringArray(R.array.settings_theme_entries)
             entryValues = arrayOf("LIGHT", "DARK", "SYSTEM_DEFAULT")
-            setDefaultValue("SYSTEM_DEFAULT")
+            summary = resources.getStringArray(R.array.settings_theme_entries)[viewModel.theme.ordinal]
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val theme = Theme.valueOf(newValue.toString())
+                viewModel.theme = theme
+
+                summary = resources.getStringArray(R.array.settings_theme_entries)[theme.ordinal]
+                value = newValue.toString()
+                false
+            }
         }
     }
 

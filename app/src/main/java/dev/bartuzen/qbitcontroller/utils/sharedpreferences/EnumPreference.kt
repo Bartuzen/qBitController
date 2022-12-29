@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.utils.sharedpreferences
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,25 +21,18 @@ class EnumPreference<T : Enum<*>>(
             sharedPref.edit()
                 .putString(key, value.name)
                 .apply()
+            flow.value = value
         }
 
+    @SuppressLint("ApplySharedPref")
     suspend fun setValue(value: T) = withContext(Dispatchers.IO) {
         sharedPref.edit()
             .putString(key, value.name)
             .commit()
+        flow.value = value
     }
 
     val flow = MutableStateFlow(value)
-
-    private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == this.key) {
-            flow.value = value
-        }
-    }
-
-    init {
-        sharedPref.registerOnSharedPreferenceChangeListener(listener)
-    }
 }
 
 fun <T : Enum<*>> enumPreference(sharedPref: SharedPreferences, key: String, initialValue: T, factory: (String) -> T) =

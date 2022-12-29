@@ -18,4 +18,10 @@ class SettingsViewModel @Inject constructor(
         set(value) {
             settingsManager.connectionTimeout.value = value
         }
+
+    var theme
+        get() = settingsManager.theme.value
+        set(value) {
+            settingsManager.theme.value = value
+        }
 }

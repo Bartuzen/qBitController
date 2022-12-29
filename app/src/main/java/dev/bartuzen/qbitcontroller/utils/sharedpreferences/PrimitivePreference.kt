@@ -61,23 +61,15 @@ class PrimitivePreference<T : Any>(
         }
         set(value) {
             getEditor(value).apply()
+            flow.value = value
         }
 
     suspend fun setValue(value: T) = withContext(Dispatchers.IO) {
         getEditor(value).commit()
+        flow.value = value
     }
 
     val flow = MutableStateFlow(value)
-
-    private val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == this.key) {
-            flow.value = value
-        }
-    }
-
-    init {
-        sharedPref.registerOnSharedPreferenceChangeListener(listener)
-    }
 }
 
 inline fun <reified T : Any> primitivePreference(sharedPref: SharedPreferences, key: String, initialValue: T) =
