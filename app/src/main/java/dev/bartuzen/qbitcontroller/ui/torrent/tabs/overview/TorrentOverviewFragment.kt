@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitDownloadBinding
@@ -199,6 +201,26 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             }
         }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrent, properties) ->
             binding.textName.text = torrent.name
+
+            binding.chipGroupCategoryAndTag.removeAllViews()
+
+            if (torrent.category != null) {
+                val chip = Chip(context)
+                chip.text = torrent.category
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_category)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                binding.chipGroupCategoryAndTag.addView(chip)
+            }
+
+            torrent.tags.forEach { tag ->
+                val chip = Chip(context)
+                chip.text = tag
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_tag)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                binding.chipGroupCategoryAndTag.addView(chip)
+            }
 
             val progress = torrent.progress * 100
             binding.progressTorrent.progress = progress.toInt()
