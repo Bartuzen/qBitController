@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
@@ -102,6 +104,22 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 chip.setChipBackgroundColorResource(R.color.torrent_tag)
                 chip.ellipsize = TextUtils.TruncateAt.END
                 binding.chipGroupCategoryAndTag.addView(chip)
+            }
+
+            if (torrent.category == null && torrent.tags.isEmpty()) {
+                binding.textProgress.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = binding.textName.id
+                }
+                binding.textEta.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = binding.textName.id
+                }
+            } else {
+                binding.textProgress.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = binding.chipGroupCategoryAndTag.id
+                }
+                binding.textEta.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = binding.chipGroupCategoryAndTag.id
+                }
             }
         }
     }

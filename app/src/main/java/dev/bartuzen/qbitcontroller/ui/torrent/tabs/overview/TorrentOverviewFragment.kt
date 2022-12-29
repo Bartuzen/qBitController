@@ -8,8 +8,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -220,6 +222,22 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 chip.setChipBackgroundColorResource(R.color.torrent_tag)
                 chip.ellipsize = TextUtils.TruncateAt.END
                 binding.chipGroupCategoryAndTag.addView(chip)
+            }
+
+            if (torrent.category == null && torrent.tags.isEmpty()) {
+                binding.textProgress.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+                binding.textEta.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+            } else {
+                binding.textProgress.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = binding.chipGroupCategoryAndTag.id
+                }
+                binding.textEta.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = binding.chipGroupCategoryAndTag.id
+                }
             }
 
             val progress = torrent.progress * 100
