@@ -16,7 +16,7 @@ fun Activity.showSnackbar(@StringRes resId: Int, @BaseTransientBottomBar.Duratio
 
 fun Fragment.showSnackbar(text: String, @BaseTransientBottomBar.Duration length: Int = Snackbar.LENGTH_LONG) {
     view?.let { view ->
-        Snackbar.make(requireContext(), view, text, length).show()
+        Snackbar.make(view, text, length).show()
     }
 }
 
