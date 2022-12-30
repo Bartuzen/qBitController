@@ -26,7 +26,7 @@ class TorrentTagsDialog() : DialogFragment(R.layout.dialog_torrent_tags) {
 
     private val parentFragment get() = (requireParentFragment() as TorrentOverviewFragment)
 
-    constructor(serverConfig: ServerConfig, currentTags: List<String>) : this() {
+    constructor(serverConfig: ServerConfig, currentTags: ArrayList<String>) : this() {
         arguments = bundleOf(
             "serverConfig" to serverConfig,
             "currentTags" to currentTags
