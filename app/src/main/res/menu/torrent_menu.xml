@@ -28,6 +28,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_category"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_category"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_rename"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_rename"

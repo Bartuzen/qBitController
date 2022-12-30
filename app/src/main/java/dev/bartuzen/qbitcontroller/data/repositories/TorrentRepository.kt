@@ -116,4 +116,13 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.renameFolder(hash, folder, newName)
         }
+
+    suspend fun getCategories(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+        service.getCategories()
+    }
+
+    suspend fun setCategory(serverConfig: ServerConfig, hash: String, category: String?) =
+        requestManager.request(serverConfig) { service ->
+            service.setCategory(hash, category ?: "")
+        }
 }

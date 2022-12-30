@@ -244,6 +244,17 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun setCategory(serverConfig: ServerConfig, torrentHash: String, category: String?) = viewModelScope.launch {
+        when (val result = repository.setCategory(serverConfig, torrentHash, category)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.CategoryUpdated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
@@ -260,5 +271,6 @@ class TorrentOverviewViewModel @Inject constructor(
         object UploadSpeedLimitUpdated : Event()
         data class ForceStartChanged(val isEnabled: Boolean) : Event()
         data class SuperSeedingChanged(val isEnabled: Boolean) : Event()
+        object CategoryUpdated : Event()
     }
 }

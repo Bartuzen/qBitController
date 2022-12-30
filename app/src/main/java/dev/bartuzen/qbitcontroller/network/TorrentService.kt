@@ -180,4 +180,8 @@ interface TorrentService {
         @Field("oldPath") oldPath: String,
         @Field("newPath") newPath: String
     ): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/setCategory")
+    suspend fun setCategory(@Field("hashes") hashes: String, @Field("category") category: String): Response<Unit>
 }

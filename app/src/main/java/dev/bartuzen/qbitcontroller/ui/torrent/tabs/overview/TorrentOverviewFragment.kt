@@ -26,7 +26,9 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentRenameBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
+import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category.TorrentCategoryDialog
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -122,6 +124,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         }
                         R.id.menu_delete -> {
                             showDeleteTorrentDialog()
+                        }
+                        R.id.menu_category -> {
+                            TorrentCategoryDialog(serverConfig, viewModel.torrent.value?.category)
+                                .show(childFragmentManager, null)
                         }
                         R.id.menu_rename -> {
                             showRenameTorrentDialog()
@@ -408,6 +414,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         viewModel.loadTorrent(serverConfig, torrentHash)
                     }
                 }
+                TorrentOverviewViewModel.Event.CategoryUpdated -> {
+                    showSnackbar(R.string.torrent_category_update_success)
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
             }
         }
     }
@@ -476,5 +486,13 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             }
             setNegativeButton()
         }
+    }
+
+    fun onSetCategoryDialogResult(selectedCategory: String?) {
+        viewModel.setCategory(serverConfig, torrentHash, selectedCategory)
+    }
+
+    fun onSetCategoryDialogError(error: RequestResult.Error) {
+        showSnackbar(getErrorMessage(requireContext(), error))
     }
 }
