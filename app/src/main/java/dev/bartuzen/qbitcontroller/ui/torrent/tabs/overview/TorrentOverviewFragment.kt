@@ -133,7 +133,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                                 .show(childFragmentManager, null)
                         }
                         R.id.menu_tags -> {
-                            TorrentTagsDialog(serverConfig, ArrayList(viewModel.torrent.value?.tags ?: listOf()))
+                            TorrentTagsDialog(serverConfig, viewModel.torrent.value?.tags ?: listOf())
                                 .show(childFragmentManager, null)
                         }
                         R.id.menu_rename -> {
