@@ -14,10 +14,16 @@
         <item name="actionBarTheme">@style/AppTheme.ToolbarOverlay</item>
 
         <item name="android:textAlignment">viewStart</item>
+
+        <item name="snackbarTextViewStyle">@style/AppTheme.SnackbarTextViewStyle</item>
     </style>
 
     <style name="AppTheme.ToolbarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
+    <style name="AppTheme.SnackbarTextViewStyle" parent="Widget.MaterialComponents.Snackbar.TextView">
+        <item name="android:maxLines">15</item>
+    </style>
 
 </resources>
