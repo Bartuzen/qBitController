@@ -29,6 +29,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category.TorrentCategoryDialog
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.tags.TorrentTagsDialog
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -73,6 +74,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     menuInflater.inflate(R.menu.torrent_menu, menu)
 
                     viewModel.torrent.launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
+                        val tags = menu.findItem(R.id.menu_tags)
                         val resume = menu.findItem(R.id.menu_resume)
                         val pause = menu.findItem(R.id.menu_pause)
                         val reannounce = menu.findItem(R.id.menu_reannounce)
@@ -82,6 +84,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         val forceStart = menu.findItem(R.id.menu_force_start)
                         val superSeeding = menu.findItem(R.id.menu_super_seeding)
 
+                        tags.isEnabled = torrent != null
                         sequentialDownload.isEnabled = torrent != null
                         prioritizeFirstLastPieces.isEnabled = torrent != null
                         autoTmm.isEnabled = torrent != null
@@ -127,6 +130,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         }
                         R.id.menu_category -> {
                             TorrentCategoryDialog(serverConfig, viewModel.torrent.value?.category)
+                                .show(childFragmentManager, null)
+                        }
+                        R.id.menu_tags -> {
+                            TorrentTagsDialog(serverConfig, ArrayList(viewModel.torrent.value?.tags ?: listOf()))
                                 .show(childFragmentManager, null)
                         }
                         R.id.menu_rename -> {
@@ -418,6 +425,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     showSnackbar(R.string.torrent_category_update_success)
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
+                TorrentOverviewViewModel.Event.TagsUpdated -> {
+                    showSnackbar(R.string.torrent_tags_update_success)
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
             }
         }
     }
@@ -493,6 +504,14 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     fun onCategoryDialogError(error: RequestResult.Error) {
+        showSnackbar(getErrorMessage(requireContext(), error))
+    }
+
+    fun onTagsDialogResult(selectedTags: List<String>) {
+        viewModel.setTags(serverConfig, torrentHash, selectedTags)
+    }
+
+    fun onTagsDialogError(error: RequestResult.Error) {
         showSnackbar(getErrorMessage(requireContext(), error))
     }
 }

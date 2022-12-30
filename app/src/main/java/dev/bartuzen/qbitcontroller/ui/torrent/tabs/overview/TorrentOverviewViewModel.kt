@@ -255,6 +255,46 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun setTags(serverConfig: ServerConfig, torrentHash: String, newTags: List<String>) = viewModelScope.launch {
+        val currentTags = torrent.value?.tags ?: emptyList()
+
+        val addedTags = newTags.filter { it !in currentTags }
+        val removedTags = currentTags.filter { it !in newTags }
+
+        val addedTagsDeferred = async {
+            if (addedTags.isNotEmpty()) {
+                when (val result = repository.addTags(serverConfig, torrentHash, addedTags)) {
+                    is RequestResult.Success -> {
+                    }
+                    is RequestResult.Error -> {
+                        eventChannel.send(Event.Error(result))
+                        throw CancellationException()
+                    }
+                }
+            }
+        }
+        val removedTagsDeferred = async {
+            if (removedTags.isNotEmpty()) {
+                when (val result = repository.removeTags(serverConfig, torrentHash, removedTags)) {
+                    is RequestResult.Success -> {
+                    }
+                    is RequestResult.Error -> {
+                        eventChannel.send(Event.Error(result))
+                        throw CancellationException()
+                    }
+                }
+            }
+        }
+
+        try {
+            addedTagsDeferred.await()
+            removedTagsDeferred.await()
+
+            eventChannel.send(Event.TagsUpdated)
+        } catch (_: CancellationException) {
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
@@ -272,5 +312,6 @@ class TorrentOverviewViewModel @Inject constructor(
         data class ForceStartChanged(val isEnabled: Boolean) : Event()
         data class SuperSeedingChanged(val isEnabled: Boolean) : Event()
         object CategoryUpdated : Event()
+        object TagsUpdated : Event()
     }
 }

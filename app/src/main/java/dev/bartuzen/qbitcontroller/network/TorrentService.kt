@@ -184,4 +184,12 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/setCategory")
     suspend fun setCategory(@Field("hashes") hashes: String, @Field("category") category: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/addTags")
+    suspend fun addTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/removeTags")
+    suspend fun removeTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
 }

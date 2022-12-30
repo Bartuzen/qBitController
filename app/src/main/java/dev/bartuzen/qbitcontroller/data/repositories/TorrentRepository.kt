@@ -125,4 +125,18 @@ class TorrentRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.setCategory(hash, category ?: "")
         }
+
+    suspend fun getTags(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+        service.getTags()
+    }
+
+    suspend fun addTags(serverConfig: ServerConfig, hash: String, tags: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.addTags(hash, tags.joinToString(","))
+        }
+
+    suspend fun removeTags(serverConfig: ServerConfig, hash: String, tags: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.removeTags(hash, tags.joinToString(","))
+        }
 }

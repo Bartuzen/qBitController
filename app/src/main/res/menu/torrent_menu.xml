@@ -34,6 +34,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_tags"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_tags"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_rename"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_rename"

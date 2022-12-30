@@ -168,12 +168,14 @@
     <string name="torrent_queueing_is_not_enabled">Torrent queueing is not enabled.</string>
 
     <string name="torrent_menu_category">Category</string>
+    <string name="torrent_menu_tags">Tags</string>
     <string name="torrent_menu_recheck">Force Recheck</string>
     <string name="torrent_menu_reannounce">Force Reannounce</string>
     <string name="torrent_menu_rename">Rename Torrent</string>
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
     <string name="torrent_category_dialog_title">@string/torrent_menu_category</string>
+    <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
     <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
     <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>
     <string name="torrent_upspeed_limit_dialog_title">@string/torrent_menu_upspeed_limit</string>
@@ -181,6 +183,7 @@
     <string name="torrent_dlspeed_limit">Download Speed Limit (KiB/s)</string>
     <string name="torrent_upspeed_limit">Upload Speed Limit (KiB/s)</string>
     <string name="torrent_category_update_success">Category updated successfully.</string>
+    <string name="torrent_tags_update_success">Tags updated successfully.</string>
     <string name="torrent_rename_success">Updated torrent name successfully.</string>
     <string name="torrent_rename_name_cannot_be_blank">Torrent name cannot be blank.</string>
     <string name="torrent_dlspeed_limit_change_success">Changed download speed limit successfully.</string>
