@@ -226,16 +226,20 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
             if (torrent.category == null && torrent.tags.isEmpty()) {
                 binding.textProgress.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = ConstraintLayout.LayoutParams.UNSET
                     topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
                 binding.textEta.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToBottom = ConstraintLayout.LayoutParams.UNSET
                     topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
             } else {
                 binding.textProgress.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToTop = ConstraintLayout.LayoutParams.UNSET
                     topToBottom = binding.chipGroupCategoryAndTag.id
                 }
                 binding.textEta.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    topToTop = ConstraintLayout.LayoutParams.UNSET
                     topToBottom = binding.chipGroupCategoryAndTag.id
                 }
             }
