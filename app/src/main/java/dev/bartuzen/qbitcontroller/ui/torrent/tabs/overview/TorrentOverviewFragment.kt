@@ -488,11 +488,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         }
     }
 
-    fun onSetCategoryDialogResult(selectedCategory: String?) {
+    fun onCategoryDialogResult(selectedCategory: String?) {
         viewModel.setCategory(serverConfig, torrentHash, selectedCategory)
     }
 
-    fun onSetCategoryDialogError(error: RequestResult.Error) {
+    fun onCategoryDialogError(error: RequestResult.Error) {
         showSnackbar(getErrorMessage(requireContext(), error))
     }
 }

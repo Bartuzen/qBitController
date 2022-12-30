@@ -23,14 +23,14 @@ class TorrentCategoryDialog() : DialogFragment(R.layout.dialog_torrent_category)
     private val viewModel: TorrentCategoryViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
-    private val selectedCategory get() = arguments?.getString("selectedCategory")
+    private val currentCategory get() = arguments?.getString("currentCategory")
 
     private val parentFragment get() = (requireParentFragment() as TorrentOverviewFragment)
 
-    constructor(serverConfig: ServerConfig, selectedCategory: String?) : this() {
+    constructor(serverConfig: ServerConfig, currentCategory: String?) : this() {
         arguments = bundleOf(
             "serverConfig" to serverConfig,
-            "selectedCategory" to selectedCategory
+            "currentCategory" to currentCategory
         )
     }
 
@@ -46,7 +46,7 @@ class TorrentCategoryDialog() : DialogFragment(R.layout.dialog_torrent_category)
                     null
                 }
             }
-            parentFragment.onSetCategoryDialogResult(selectedCategory)
+            parentFragment.onCategoryDialogResult(selectedCategory)
         }
         setNegativeButton()
 
@@ -61,7 +61,7 @@ class TorrentCategoryDialog() : DialogFragment(R.layout.dialog_torrent_category)
                 chip.ellipsize = TextUtils.TruncateAt.END
                 chip.isCheckable = true
 
-                if (category == selectedCategory) {
+                if (category == currentCategory) {
                     chip.isChecked = true
                 }
 
@@ -74,7 +74,7 @@ class TorrentCategoryDialog() : DialogFragment(R.layout.dialog_torrent_category)
         viewModel.eventFlow.launchAndCollectLatestIn(this@TorrentCategoryDialog) { event ->
             when (event) {
                 is TorrentCategoryViewModel.Event.Error -> {
-                    parentFragment.onSetCategoryDialogError(event.result)
+                    parentFragment.onCategoryDialogError(event.result)
                     dismiss()
                 }
             }
