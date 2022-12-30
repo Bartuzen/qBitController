@@ -6,6 +6,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer
 
 class EtaDeserializer : JsonDeserializer<Int?>() {
     override fun deserialize(parser: JsonParser?, context: DeserializationContext?): Int? {
-        return parser?.intValue.takeIf { it != 8640000 }
+        return parser?.intValue.takeIf { it != null && (it in 0..8640000) }?.toInt()
     }
 }
