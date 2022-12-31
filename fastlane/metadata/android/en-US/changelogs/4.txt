@@ -1,0 +1,6 @@
+- Added options to set category and tags of a torrent
+- Messages of unknown errors are now more detailed
+- Fixed various crashes
+- Fixed sort option not being applied until app restart on some devices
+
+Check GitHub release for all changes
