@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isEmpty
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
@@ -58,19 +59,21 @@ class TorrentCategoryDialog() : DialogFragment() {
         }
 
         viewModel.categories.filterNotNull().launchAndCollectLatestIn(this@TorrentCategoryDialog) { categories ->
-            categories.forEach { category ->
-                val chip = Chip(requireContext())
-                chip.text = category
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
-                chip.isCheckable = true
+            if (binding.chipGroupCategory.isEmpty()) {
+                categories.forEach { category ->
+                    val chip = Chip(requireContext())
+                    chip.text = category
+                    chip.setEnsureMinTouchTargetSize(false)
+                    chip.setChipBackgroundColorResource(R.color.torrent_category)
+                    chip.ellipsize = TextUtils.TruncateAt.END
+                    chip.isCheckable = true
 
-                if (category == currentCategory) {
-                    chip.isChecked = true
+                    if (category == currentCategory) {
+                        chip.isChecked = true
+                    }
+
+                    binding.chipGroupCategory.addView(chip)
                 }
-
-                binding.chipGroupCategory.addView(chip)
             }
 
             cancel()

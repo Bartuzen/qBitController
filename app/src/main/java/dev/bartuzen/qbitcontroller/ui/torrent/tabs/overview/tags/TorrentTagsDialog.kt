@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.tags
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.core.os.bundleOf
+import androidx.core.view.isEmpty
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
@@ -53,19 +54,21 @@ class TorrentTagsDialog() : DialogFragment() {
         }
 
         viewModel.tags.filterNotNull().launchAndCollectLatestIn(this@TorrentTagsDialog) { tags ->
-            tags.forEach { tag ->
-                val chip = Chip(requireContext())
-                chip.text = tag
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                chip.ellipsize = TextUtils.TruncateAt.END
-                chip.isCheckable = true
+            if (binding.chipGroupTags.isEmpty()) {
+                tags.forEach { tag ->
+                    val chip = Chip(requireContext())
+                    chip.text = tag
+                    chip.setEnsureMinTouchTargetSize(false)
+                    chip.setChipBackgroundColorResource(R.color.torrent_tag)
+                    chip.ellipsize = TextUtils.TruncateAt.END
+                    chip.isCheckable = true
 
-                if (tag in currentTags) {
-                    chip.isChecked = true
+                    if (tag in currentTags) {
+                        chip.isChecked = true
+                    }
+
+                    binding.chipGroupTags.addView(chip)
                 }
-
-                binding.chipGroupTags.addView(chip)
             }
 
             cancel()
