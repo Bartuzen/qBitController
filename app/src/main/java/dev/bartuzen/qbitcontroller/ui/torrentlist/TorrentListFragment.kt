@@ -386,6 +386,20 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             adapter.submitList(torrentList)
         }
 
+        viewModel.torrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
+            val countMap = mutableMapOf<TorrentFilter, Int>()
+
+            torrentList.forEach { torrent ->
+                TorrentFilter.values().forEach { filter ->
+                    if (filter.states == null || torrent.state in filter.states) {
+                        countMap[filter] = (countMap[filter] ?: 0) + 1
+                    }
+                }
+            }
+
+            torrentFilterAdapter.submitCountMap(countMap)
+        }
+
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTorrentListCategoryTags(serverConfig)
         }

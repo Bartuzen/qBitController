@@ -12,6 +12,7 @@ class TorrentFilterAdapter(
     private val onClick: (filter: TorrentFilter) -> Unit
 ) : RecyclerView.Adapter<TorrentFilterAdapter.ViewHolder>() {
     private var filter = TorrentFilter.ALL
+    private var countMap: Map<TorrentFilter, Int> = emptyMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemTorrentFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,18 +24,23 @@ class TorrentFilterAdapter(
 
     override fun getItemCount() = 1
 
-    inner class ViewHolder(binding: ItemTorrentFilterBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val views = mapOf(
-            binding.textAll to TorrentFilter.ALL,
-            binding.textDownloading to TorrentFilter.DOWNLOADING,
-            binding.textSeeding to TorrentFilter.SEEDING,
-            binding.textCompleted to TorrentFilter.COMPLETED,
-            binding.textResumed to TorrentFilter.RESUMED,
-            binding.textPaused to TorrentFilter.PAUSED,
-            binding.textStalled to TorrentFilter.STALLED,
-            binding.textChecking to TorrentFilter.CHECKING,
-            binding.textMoving to TorrentFilter.MOVING,
-            binding.textError to TorrentFilter.ERROR
+    fun submitCountMap(countMap: Map<TorrentFilter, Int>) {
+        this.countMap = countMap
+        notifyItemChanged(0, Unit)
+    }
+
+    inner class ViewHolder(private val binding: ItemTorrentFilterBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val views = listOf(
+            Triple(binding.textAll, TorrentFilter.ALL, R.string.torrent_list_status_all),
+            Triple(binding.textDownloading, TorrentFilter.DOWNLOADING, R.string.torrent_list_status_downloading),
+            Triple(binding.textSeeding, TorrentFilter.SEEDING, R.string.torrent_list_status_seeding),
+            Triple(binding.textCompleted, TorrentFilter.COMPLETED, R.string.torrent_list_status_completed),
+            Triple(binding.textResumed, TorrentFilter.RESUMED, R.string.torrent_list_status_resumed),
+            Triple(binding.textPaused, TorrentFilter.PAUSED, R.string.torrent_list_status_paused),
+            Triple(binding.textStalled, TorrentFilter.STALLED, R.string.torrent_list_status_stalled),
+            Triple(binding.textChecking, TorrentFilter.CHECKING, R.string.torrent_list_status_checking),
+            Triple(binding.textMoving, TorrentFilter.MOVING, R.string.torrent_list_status_moving),
+            Triple(binding.textError, TorrentFilter.ERROR, R.string.torrent_list_status_error)
         )
 
         init {
@@ -50,12 +56,19 @@ class TorrentFilterAdapter(
         }
 
         fun bind() {
-            views.forEach { (view, filter) ->
+            views.forEach { (view, filter, stringId) ->
                 if (this@TorrentFilterAdapter.filter == filter) {
                     view.setBackgroundResource(R.color.torrent_status_selected_background)
                 } else {
                     view.setBackgroundColor(Color.TRANSPARENT)
                 }
+
+                val context = binding.root.context
+                view.text = context.getString(
+                    R.string.torrent_list_status_format,
+                    context.getString(stringId),
+                    countMap[filter] ?: 0
+                )
             }
         }
     }
