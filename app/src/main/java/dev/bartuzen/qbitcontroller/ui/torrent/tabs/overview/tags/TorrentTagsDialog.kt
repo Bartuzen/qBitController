@@ -20,7 +20,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
-class TorrentTagsDialog() : DialogFragment(R.layout.dialog_torrent_tags) {
+class TorrentTagsDialog() : DialogFragment() {
     private val viewModel: TorrentTagsViewModel by viewModels()
 
     private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
