@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
         drawerAdapter.addAdapter(adapter)
     }
 
-    fun removeCategoryTagAdapter(adapter: RecyclerView.Adapter<*>) {
+    fun removeAdapter(adapter: RecyclerView.Adapter<*>) {
         drawerAdapter.removeAdapter(adapter)
         binding.recyclerDrawer.adapter = null
         binding.recyclerDrawer.adapter = drawerAdapter

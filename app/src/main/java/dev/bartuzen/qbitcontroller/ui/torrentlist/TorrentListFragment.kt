@@ -594,6 +594,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         super.onDestroyView()
 
         activityBinding.layoutDrawer.removeDrawerListener(drawerListener)
-        parentActivity.removeCategoryTagAdapter(parentAdapter)
+        parentActivity.removeAdapter(parentAdapter)
     }
 }
