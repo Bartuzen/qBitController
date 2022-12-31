@@ -52,7 +52,10 @@ class TorrentCategoryDialog() : DialogFragment() {
         }
         setNegativeButton()
 
-        viewModel.updateCategories(serverConfig)
+        if (!viewModel.isInitialLoadStarted) {
+            viewModel.isInitialLoadStarted = true
+            viewModel.updateCategories(serverConfig)
+        }
 
         viewModel.categories.filterNotNull().launchAndCollectLatestIn(this@TorrentCategoryDialog) { categories ->
             categories.forEach { category ->

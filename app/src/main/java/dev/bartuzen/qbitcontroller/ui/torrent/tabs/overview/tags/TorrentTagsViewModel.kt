@@ -23,6 +23,8 @@ class TorrentTagsViewModel @Inject constructor(
     private val _tags = MutableStateFlow<List<String>?>(null)
     val tags = _tags.asStateFlow()
 
+    var isInitialLoadStarted = false
+
     fun updateTags(serverConfig: ServerConfig) = viewModelScope.launch {
         when (val result = repository.getTags(serverConfig)) {
             is RequestResult.Success -> {

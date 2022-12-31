@@ -47,7 +47,10 @@ class TorrentTagsDialog() : DialogFragment() {
         }
         setNegativeButton()
 
-        viewModel.updateTags(serverConfig)
+        if (!viewModel.isInitialLoadStarted) {
+            viewModel.isInitialLoadStarted = true
+            viewModel.updateTags(serverConfig)
+        }
 
         viewModel.tags.filterNotNull().launchAndCollectLatestIn(this@TorrentTagsDialog) { tags ->
             tags.forEach { tag ->

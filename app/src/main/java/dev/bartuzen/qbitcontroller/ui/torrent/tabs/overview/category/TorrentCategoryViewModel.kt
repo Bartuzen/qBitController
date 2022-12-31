@@ -23,6 +23,8 @@ class TorrentCategoryViewModel @Inject constructor(
     private val _categories = MutableStateFlow<List<String>?>(null)
     val categories = _categories.asStateFlow()
 
+    var isInitialLoadStarted = false
+
     fun updateCategories(serverConfig: ServerConfig) = viewModelScope.launch {
         when (val result = repository.getCategories(serverConfig)) {
             is RequestResult.Success -> {
