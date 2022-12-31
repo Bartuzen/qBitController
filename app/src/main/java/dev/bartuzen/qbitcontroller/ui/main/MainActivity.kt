@@ -104,7 +104,18 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         )
+
+        val addServerAdapter = AddServerAdapter(
+            onClick = {
+                val intent = Intent(this, SettingsActivity::class.java).apply {
+                    putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
+                }
+                startActivity(intent)
+            }
+        )
+
         drawerAdapter.addAdapter(serverListAdapter)
+        drawerAdapter.addAdapter(addServerAdapter)
 
         binding.recyclerDrawer.adapter = drawerAdapter
 
@@ -119,6 +130,7 @@ class MainActivity : AppCompatActivity() {
             serverListAdapter.submitList(serverList.values.toList())
 
             binding.textClickToAddServer.visibility = if (serverList.isEmpty()) View.VISIBLE else View.GONE
+            addServerAdapter.isVisible = serverList.isEmpty()
         }
 
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
