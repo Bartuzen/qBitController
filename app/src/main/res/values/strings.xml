@@ -180,8 +180,8 @@
     <string name="torrent_disable_super_seeding_success">Super seeding disabled successfully.</string>
     <string name="torrent_queueing_is_not_enabled">Torrent queueing is not enabled.</string>
 
-    <string name="torrent_menu_category">Category</string>
-    <string name="torrent_menu_tags">Tags</string>
+    <string name="torrent_menu_category">Set Category</string>
+    <string name="torrent_menu_tags">Set Tags</string>
     <string name="torrent_menu_recheck">Force Recheck</string>
     <string name="torrent_menu_reannounce">Force Reannounce</string>
     <string name="torrent_menu_rename">Rename Torrent</string>
