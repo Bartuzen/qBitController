@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.tags
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isEmpty
 import androidx.fragment.app.DialogFragment
@@ -71,6 +72,7 @@ class TorrentTagsDialog() : DialogFragment() {
                 }
             }
 
+            binding.progressIndicator.visibility = View.GONE
             cancel()
         }
 

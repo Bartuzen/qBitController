@@ -76,6 +76,7 @@ class TorrentCategoryDialog() : DialogFragment() {
                 }
             }
 
+            binding.progressIndicator.visibility = View.GONE
             cancel()
         }
 
