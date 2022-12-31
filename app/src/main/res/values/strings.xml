@@ -136,6 +136,18 @@
     <string name="torrent_list_create_tag_success">Tag created successfully.</string>
     <string name="torrent_list_create_tag_hint">Tag Name(s)</string>
 
+    <string name="torrent_list_status">Status</string>
+    <string name="torrent_list_status_all">All</string>
+    <string name="torrent_list_status_downloading">Downloading</string>
+    <string name="torrent_list_status_seeding">Seeding</string>
+    <string name="torrent_list_status_completed">Completed</string>
+    <string name="torrent_list_status_resumed">Resumed</string>
+    <string name="torrent_list_status_paused">Paused</string>
+    <string name="torrent_list_status_stalled">Stalled</string>
+    <string name="torrent_list_status_checking">Checking</string>
+    <string name="torrent_list_status_moving">Moving</string>
+    <string name="torrent_list_status_error">Error</string>
+
     <string name="torrent_list_priority_increased_success">Priority increased successfully.</string>
     <string name="torrent_list_priority_decreased_success">Priority decreased successfully.</string>
     <string name="torrent_list_priority_maximized_success">Priority maximized successfully.</string>

@@ -14,13 +14,13 @@ import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.BuildConfig
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
-import dev.bartuzen.qbitcontroller.ui.torrentlist.CategoryTagAdapter
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
@@ -167,11 +167,11 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerDrawer.adapter = null
     }
 
-    fun submitCategoryTagAdapter(adapter: CategoryTagAdapter) {
+    fun submitAdapter(adapter: RecyclerView.Adapter<*>) {
         drawerAdapter.addAdapter(adapter)
     }
 
-    fun removeCategoryTagAdapter(adapter: CategoryTagAdapter) {
+    fun removeCategoryTagAdapter(adapter: RecyclerView.Adapter<*>) {
         drawerAdapter.removeAdapter(adapter)
         binding.recyclerDrawer.adapter = null
         binding.recyclerDrawer.adapter = drawerAdapter

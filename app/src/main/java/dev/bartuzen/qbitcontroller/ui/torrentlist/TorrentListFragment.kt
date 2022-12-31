@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +35,6 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
-import dev.bartuzen.qbitcontroller.utils.Quadruple
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -57,7 +57,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
     private val viewModel: TorrentListViewModel by viewModels()
 
-    private lateinit var categoryTagAdapter: CategoryTagAdapter
+    private lateinit var parentAdapter: RecyclerView.Adapter<*>
+
+    private val parentActivity get() = requireActivity() as MainActivity
 
     val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
 
@@ -332,7 +334,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
         })
 
-        categoryTagAdapter = CategoryTagAdapter(
+        val torrentFilterAdapter = TorrentFilterAdapter(
+            onClick = { filter ->
+                viewModel.setSelectedFilter(filter)
+
+                activityBinding.layoutDrawer.close()
+            }
+        )
+
+        val categoryTagAdapter = CategoryTagAdapter(
             onSelected = { isCategory, name ->
                 if (isCategory) {
                     viewModel.setSelectedCategory(name)
@@ -355,7 +365,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
             }
         )
-        (requireActivity() as MainActivity).submitCategoryTagAdapter(categoryTagAdapter)
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter)
+
+        parentActivity.submitAdapter(parentAdapter)
 
         drawerListener = object : DrawerListener {
             override fun onDrawerStateChanged(newState: Int) {
@@ -370,41 +382,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
         activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
-        combine(
-            viewModel.sortedTorrentList,
-            viewModel.searchQuery,
-            viewModel.selectedCategory,
-            viewModel.selectedTag
-        ) { torrentList, searchQuery, selectedCategory, selectedTag ->
-            if (torrentList != null) {
-                Quadruple(torrentList, searchQuery, selectedCategory, selectedTag)
-            } else {
-                null
-            }
-        }.filterNotNull()
-            .launchAndCollectLatestIn(viewLifecycleOwner) { (torrentList, query, selectedCategory, selectedTag) ->
-                val list = torrentList
-                    .filter { torrent ->
-                        if (query.isNotEmpty()) {
-                            if (!torrent.name.contains(query, ignoreCase = true)) {
-                                return@filter false
-                            }
-                        }
-                        if (selectedCategory != null) {
-                            if (torrent.category != selectedCategory) {
-                                return@filter false
-                            }
-                        }
-                        if (selectedTag != null) {
-                            if (selectedTag !in torrent.tags) {
-                                return@filter false
-                            }
-                        }
-                        true
-                    }
-
-                adapter.submitList(list)
-            }
+        viewModel.filteredTorrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
+            adapter.submitList(torrentList)
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshTorrentListCategoryTags(serverConfig)
@@ -614,6 +594,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         super.onDestroyView()
 
         activityBinding.layoutDrawer.removeDrawerListener(drawerListener)
-        (requireActivity() as MainActivity).removeCategoryTagAdapter(categoryTagAdapter)
+        parentActivity.removeCategoryTagAdapter(parentAdapter)
     }
 }

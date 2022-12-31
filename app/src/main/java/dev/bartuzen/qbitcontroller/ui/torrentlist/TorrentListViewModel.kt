@@ -9,6 +9,7 @@ import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.utils.Quintuple
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -33,20 +34,16 @@ class TorrentListViewModel @Inject constructor(
     private val _torrentList = MutableStateFlow<List<Torrent>?>(null)
     val torrentList = _torrentList.asStateFlow()
 
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery = _searchQuery.asStateFlow()
-
     private val _categoryList = MutableStateFlow<List<String>?>(null)
     val categoryList = _categoryList.asStateFlow()
 
     private val _tagList = MutableStateFlow<List<String>?>(null)
     val tagList = _tagList.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow<String?>(null)
-    val selectedCategory = _selectedCategory.asStateFlow()
-
-    private val _selectedTag = MutableStateFlow<String?>(null)
-    val selectedTag = _selectedTag.asStateFlow()
+    private val searchQuery = MutableStateFlow("")
+    private val selectedCategory = MutableStateFlow<String?>(null)
+    private val selectedTag = MutableStateFlow<String?>(null)
+    private val selectedFilter = MutableStateFlow(TorrentFilter.ALL)
 
     val torrentSort = settingsManager.sort.flow
     val isReverseSorting = settingsManager.isReverseSorting.flow
@@ -60,7 +57,7 @@ class TorrentListViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    val sortedTorrentList =
+    private val sortedTorrentList =
         combine(torrentList, torrentSort, isReverseSorting) { torrentList, torrentSort, isReverseSorting ->
             if (torrentList != null) {
                 Triple(torrentList, torrentSort, isReverseSorting)
@@ -101,6 +98,46 @@ class TorrentListViewModel @Inject constructor(
                 }
             }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    val filteredTorrentList = combine(
+        sortedTorrentList,
+        searchQuery,
+        selectedCategory,
+        selectedTag,
+        selectedFilter
+    ) { torrentList, searchQuery, selectedCategory, selectedTag, selectedFilter ->
+        if (torrentList != null) {
+            Quintuple(torrentList, searchQuery, selectedCategory, selectedTag, selectedFilter)
+        } else {
+            null
+        }
+    }.filterNotNull().map { (torrentList, searchQuery, selectedCategory, selectedTag, selectedFilter) ->
+        withContext(Dispatchers.IO) {
+            torrentList.filter { torrent ->
+                if (searchQuery.isNotEmpty()) {
+                    if (!torrent.name.contains(searchQuery, ignoreCase = true)) {
+                        return@filter false
+                    }
+                }
+                if (selectedCategory != null) {
+                    if (torrent.category != selectedCategory) {
+                        return@filter false
+                    }
+                }
+                if (selectedTag != null) {
+                    if (selectedTag !in torrent.tags) {
+                        return@filter false
+                    }
+                }
+
+                val selectedStates = selectedFilter.states
+                if (selectedStates != null && torrent.state !in selectedStates) {
+                    return@filter false
+                }
+                true
+            }
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
     var isInitialLoadStarted = false
 
@@ -319,15 +356,19 @@ class TorrentListViewModel @Inject constructor(
     }
 
     fun setSearchQuery(query: String) {
-        _searchQuery.value = query
+        searchQuery.value = query
     }
 
     fun setSelectedCategory(name: String?) {
-        _selectedCategory.value = name
+        selectedCategory.value = name
     }
 
     fun setSelectedTag(name: String?) {
-        _selectedTag.value = name
+        selectedTag.value = name
+    }
+
+    fun setSelectedFilter(filter: TorrentFilter) {
+        selectedFilter.value = filter
     }
 
     sealed class Event {

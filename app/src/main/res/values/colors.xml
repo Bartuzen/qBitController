@@ -13,6 +13,7 @@
 
     <color name="server_selected_background">@color/gray</color>
     <color name="category_tag_selected_background">@color/gray</color>
+    <color name="torrent_status_selected_background">@color/gray</color>
 
     <color name="piece_downloaded">@color/color_primary</color>
     <color name="piece_not_downloaded">@color/gray</color>
