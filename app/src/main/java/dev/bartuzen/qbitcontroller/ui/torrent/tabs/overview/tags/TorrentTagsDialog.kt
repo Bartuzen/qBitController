@@ -72,6 +72,7 @@ class TorrentTagsDialog() : DialogFragment() {
                 }
             }
 
+            binding.textNotFound.visibility = if (tags.isEmpty()) View.VISIBLE else View.GONE
             binding.progressIndicator.visibility = View.GONE
             cancel()
         }

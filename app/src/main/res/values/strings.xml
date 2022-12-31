@@ -187,20 +187,26 @@
     <string name="torrent_menu_rename">Rename Torrent</string>
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
+
     <string name="torrent_category_dialog_title">@string/torrent_menu_category</string>
     <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
     <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
     <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>
     <string name="torrent_upspeed_limit_dialog_title">@string/torrent_menu_upspeed_limit</string>
+
     <string name="torrent_name">Name</string>
     <string name="torrent_dlspeed_limit">Download Speed Limit (KiB/s)</string>
     <string name="torrent_upspeed_limit">Upload Speed Limit (KiB/s)</string>
+
     <string name="torrent_category_update_success">Category updated successfully.</string>
     <string name="torrent_tags_update_success">Tags updated successfully.</string>
     <string name="torrent_rename_success">Updated torrent name successfully.</string>
     <string name="torrent_rename_name_cannot_be_blank">Torrent name cannot be blank.</string>
     <string name="torrent_dlspeed_limit_change_success">Changed download speed limit successfully.</string>
     <string name="torrent_upspeed_limit_change_success">Changed upload speed limit successfully.</string>
+
+    <string name="torrent_no_categories">Couldn\'t find any categories.</string>
+    <string name="torrent_no_tags">Couldn\'t find any tags.</string>
 
     <string name="torrent_overview_total_size">Total Size</string>
     <string name="torrent_overview_added_on">Added On</string>

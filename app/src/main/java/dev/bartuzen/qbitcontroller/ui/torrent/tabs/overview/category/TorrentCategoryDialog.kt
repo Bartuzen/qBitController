@@ -76,6 +76,7 @@ class TorrentCategoryDialog() : DialogFragment() {
                 }
             }
 
+            binding.textNotFound.visibility = if (categories.isEmpty()) View.VISIBLE else View.GONE
             binding.progressIndicator.visibility = View.GONE
             cancel()
         }
