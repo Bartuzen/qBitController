@@ -16,6 +16,8 @@ import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class TorrentTagsDialog() : DialogFragment() {
@@ -45,9 +47,25 @@ class TorrentTagsDialog() : DialogFragment() {
         }
         setNegativeButton()
 
-        if (!viewModel.isInitialLoadStarted) {
-            viewModel.updateTags(serverConfig)
-            viewModel.isInitialLoadStarted = true
+        viewModel.updateTags(serverConfig)
+
+        viewModel.tags.filterNotNull().launchAndCollectLatestIn(this@TorrentTagsDialog) { tags ->
+            tags.forEach { tag ->
+                val chip = Chip(requireContext())
+                chip.text = tag
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_tag)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isCheckable = true
+
+                if (tag in currentTags) {
+                    chip.isChecked = true
+                }
+
+                binding.chipGroupTags.addView(chip)
+            }
+
+            cancel()
         }
 
         viewModel.eventFlow.launchAndCollectLatestIn(this@TorrentTagsDialog) { event ->
@@ -55,22 +73,6 @@ class TorrentTagsDialog() : DialogFragment() {
                 is TorrentTagsViewModel.Event.Error -> {
                     parentFragment.onTagsDialogError(event.result)
                     dismiss()
-                }
-                is TorrentTagsViewModel.Event.Success -> {
-                    event.tags.forEach { tag ->
-                        val chip = Chip(requireContext())
-                        chip.text = tag
-                        chip.setEnsureMinTouchTargetSize(false)
-                        chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                        chip.ellipsize = TextUtils.TruncateAt.END
-                        chip.isCheckable = true
-
-                        if (tag in currentTags) {
-                            chip.isChecked = true
-                        }
-
-                        binding.chipGroupTags.addView(chip)
-                    }
                 }
             }
         }

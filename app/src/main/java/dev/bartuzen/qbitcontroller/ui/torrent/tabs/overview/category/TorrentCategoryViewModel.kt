@@ -7,6 +7,8 @@ import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,16 +20,16 @@ class TorrentCategoryViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    var isInitialLoadStarted = false
+    private val _categories = MutableStateFlow<List<String>?>(null)
+    val categories = _categories.asStateFlow()
 
     fun updateCategories(serverConfig: ServerConfig) = viewModelScope.launch {
         when (val result = repository.getCategories(serverConfig)) {
             is RequestResult.Success -> {
-                val categories = result.data.values
+                _categories.value = result.data.values
                     .toList()
                     .map { it.name }
                     .sortedBy { it }
-                eventChannel.send(Event.Success(categories))
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -37,6 +39,5 @@ class TorrentCategoryViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val result: RequestResult.Error) : Event()
-        data class Success(val categories: List<String>) : Event()
     }
 }

@@ -17,6 +17,8 @@ import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class TorrentCategoryDialog() : DialogFragment() {
@@ -50,9 +52,25 @@ class TorrentCategoryDialog() : DialogFragment() {
         }
         setNegativeButton()
 
-        if (!viewModel.isInitialLoadStarted) {
-            viewModel.updateCategories(serverConfig)
-            viewModel.isInitialLoadStarted = true
+        viewModel.updateCategories(serverConfig)
+
+        viewModel.categories.filterNotNull().launchAndCollectLatestIn(this@TorrentCategoryDialog) { categories ->
+            categories.forEach { category ->
+                val chip = Chip(requireContext())
+                chip.text = category
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_category)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isCheckable = true
+
+                if (category == currentCategory) {
+                    chip.isChecked = true
+                }
+
+                binding.chipGroupCategory.addView(chip)
+            }
+
+            cancel()
         }
 
         viewModel.eventFlow.launchAndCollectLatestIn(this@TorrentCategoryDialog) { event ->
@@ -60,22 +78,6 @@ class TorrentCategoryDialog() : DialogFragment() {
                 is TorrentCategoryViewModel.Event.Error -> {
                     parentFragment.onCategoryDialogError(event.result)
                     dismiss()
-                }
-                is TorrentCategoryViewModel.Event.Success -> {
-                    event.categories.forEach { category ->
-                        val chip = Chip(requireContext())
-                        chip.text = category
-                        chip.setEnsureMinTouchTargetSize(false)
-                        chip.setChipBackgroundColorResource(R.color.torrent_category)
-                        chip.ellipsize = TextUtils.TruncateAt.END
-                        chip.isCheckable = true
-
-                        if (category == currentCategory) {
-                            chip.isChecked = true
-                        }
-
-                        binding.chipGroupCategory.addView(chip)
-                    }
                 }
             }
         }
