@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentCategoryBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -19,8 +20,9 @@ import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.filterNotNull
 
+@AndroidEntryPoint
 class TorrentCategoryDialog() : DialogFragment(R.layout.dialog_torrent_category) {
-    private val viewModel: TorrentCategoryViewModel by viewModels(ownerProducer = { requireParentFragment() })
+    private val viewModel: TorrentCategoryViewModel by viewModels()
 
     private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
     private val currentCategory get() = arguments?.getString("currentCategory")
