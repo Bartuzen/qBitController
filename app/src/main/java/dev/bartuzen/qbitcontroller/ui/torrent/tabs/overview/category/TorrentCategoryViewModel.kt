@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
+import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentCategoryRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentCategoryViewModel @Inject constructor(
-    private val repository: TorrentRepository
+    private val repository: TorrentCategoryRepository
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()

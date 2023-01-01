@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.bartuzen.qbitcontroller.data.repositories.TorrentRepository
+import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentFilesRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentFilesViewModel @Inject constructor(
-    private val repository: TorrentRepository
+    private val repository: TorrentFilesRepository
 ) : ViewModel() {
     private val _torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
     val torrentFiles = _torrentFiles.asStateFlow()

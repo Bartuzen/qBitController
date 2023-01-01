@@ -1,25 +1,16 @@
-package dev.bartuzen.qbitcontroller.data.repositories
+package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class TorrentRepository @Inject constructor(
+class TorrentOverviewRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
     suspend fun getTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
         service.getTorrentList(hash)
-    }
-
-    suspend fun getFiles(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
-        service.getFiles(hash)
-    }
-
-    suspend fun getPieces(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
-        service.getTorrentPieces(hash)
     }
 
     suspend fun getProperties(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
@@ -38,20 +29,6 @@ class TorrentRepository @Inject constructor(
     suspend fun resumeTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
         service.resumeTorrents(hash)
     }
-
-    suspend fun getTrackers(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
-        service.getTorrentTrackers(hash)
-    }
-
-    suspend fun addTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
-        requestManager.request(serverConfig) { service ->
-            service.addTorrentTrackers(hash, urls.joinToString("\n"))
-        }
-
-    suspend fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) =
-        requestManager.request(serverConfig) { service ->
-            service.deleteTorrentTrackers(hash, urls.joinToString("|"))
-        }
 
     suspend fun toggleSequentialDownload(serverConfig: ServerConfig, hash: String) =
         requestManager.request(serverConfig) { service ->
@@ -100,21 +77,6 @@ class TorrentRepository @Inject constructor(
     suspend fun renameTorrent(serverConfig: ServerConfig, hash: String, name: String) =
         requestManager.request(serverConfig) { service ->
             service.renameTorrent(hash, name)
-        }
-
-    suspend fun setFilePriority(serverConfig: ServerConfig, hash: String, ids: List<Int>, priority: TorrentFilePriority) =
-        requestManager.request(serverConfig) { service ->
-            service.setFilePriority(hash, ids.joinToString("|"), priority.id)
-        }
-
-    suspend fun renameFile(serverConfig: ServerConfig, hash: String, file: String, newName: String) =
-        requestManager.request(serverConfig) { service ->
-            service.renameFile(hash, file, newName)
-        }
-
-    suspend fun renameFolder(serverConfig: ServerConfig, hash: String, folder: String, newName: String) =
-        requestManager.request(serverConfig) { service ->
-            service.renameFolder(hash, folder, newName)
         }
 
     suspend fun getCategories(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
