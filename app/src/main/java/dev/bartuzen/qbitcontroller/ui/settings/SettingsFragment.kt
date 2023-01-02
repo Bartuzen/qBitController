@@ -120,6 +120,49 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        editText {
+            key = "preferenceAutoRefreshInterval"
+            setTitle(R.string.settings_auto_refresh_interval)
+            setDialogTitle(R.string.settings_auto_refresh_interval)
+
+            summary = if (viewModel.autoRefreshInterval == 0) {
+                getString(R.string.settings_disabled)
+            } else {
+                resources.getQuantityString(
+                    R.plurals.settings_auto_refresh_interval_desc,
+                    viewModel.autoRefreshInterval,
+                    viewModel.autoRefreshInterval
+                )
+            }
+
+            text = viewModel.autoRefreshInterval.toString()
+
+            setOnBindEditTextListener { editText ->
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.setSelection(editText.text.length)
+            }
+
+            setOnPreferenceChangeListener { _, newValue ->
+                val autoRefreshInterval = newValue.toString().toIntOrNull() ?: -1
+                if (autoRefreshInterval in 0..3600) {
+                    viewModel.autoRefreshInterval = autoRefreshInterval
+
+                    summary = if (autoRefreshInterval == 0) {
+                        getString(R.string.settings_disabled)
+                    } else {
+                        resources.getQuantityString(
+                            R.plurals.settings_auto_refresh_interval_desc,
+                            autoRefreshInterval,
+                            autoRefreshInterval
+                        )
+                    }
+                    text = autoRefreshInterval.toString()
+                }
+
+                false
+            }
+        }
+
         list {
             key = "preferenceTheme"
             setTitle(R.string.settings_theme)

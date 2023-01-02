@@ -19,6 +19,12 @@ class SettingsViewModel @Inject constructor(
             settingsManager.connectionTimeout.value = value
         }
 
+    var autoRefreshInterval
+        get() = settingsManager.autoRefreshInterval.value
+        set(value) {
+            settingsManager.autoRefreshInterval.value = value
+        }
+
     var theme
         get() = settingsManager.theme.value
         set(value) {

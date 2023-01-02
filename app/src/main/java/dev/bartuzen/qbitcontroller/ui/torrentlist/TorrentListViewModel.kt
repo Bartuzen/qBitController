@@ -47,6 +47,7 @@ class TorrentListViewModel @Inject constructor(
 
     val torrentSort = settingsManager.sort.flow
     val isReverseSorting = settingsManager.isReverseSorting.flow
+    val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()

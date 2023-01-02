@@ -309,8 +309,14 @@
     <string name="settings_servers">Servers</string>
     <string name="settings_add_new_server">Add new server</string>
     <string name="settings_other">Other</string>
+    <string name="settings_disabled">Disabled</string>
     <string name="settings_connection_timeout">Connection timeout</string>
     <plurals name="settings_connection_timeout_desc">
+        <item quantity="one">%1$d second</item>
+        <item quantity="other">%1$d seconds</item>
+    </plurals>
+    <string name="settings_auto_refresh_interval">Auto refresh interval</string>
+    <plurals name="settings_auto_refresh_interval_desc">
         <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>

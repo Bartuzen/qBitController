@@ -20,6 +20,7 @@ class SettingsManager @Inject constructor(
     val sort = enumPreference(sharedPref, "sort", TorrentSort.NAME, TorrentSort::valueOf)
     val isReverseSorting = primitivePreference(sharedPref, "isReverseSorting", false)
     val connectionTimeout = primitivePreference(sharedPref, "connectionTimeout", 10)
+    val autoRefreshInterval = primitivePreference(sharedPref, "autoRefreshInterval", 0)
 }
 
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>

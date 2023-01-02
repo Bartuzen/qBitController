@@ -48,6 +48,7 @@ import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -426,6 +427,17 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
         }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (categoryList, tagList) ->
             categoryTagAdapter.submitLists(categoryList, tagList)
+        }
+
+        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner) { interval ->
+            if (interval != 0) {
+                while (isActive) {
+                    delay(interval * 1000L)
+                    if (isActive) {
+                        viewModel.loadTorrentList(serverConfig)
+                    }
+                }
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
