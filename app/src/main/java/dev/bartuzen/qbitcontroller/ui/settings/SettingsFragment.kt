@@ -88,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         editText {
-            key = "connectionTimeout"
+            key = "preferenceConnectionTimeout"
             setTitle(R.string.settings_connection_timeout)
             setDialogTitle(R.string.settings_connection_timeout)
             summary = resources.getQuantityString(
@@ -121,11 +121,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         list {
-            key = "theme"
+            key = "preferenceTheme"
             setTitle(R.string.settings_theme)
             setDialogTitle(R.string.settings_theme)
             entries = resources.getStringArray(R.array.settings_theme_entries)
             entryValues = arrayOf("LIGHT", "DARK", "SYSTEM_DEFAULT")
+            value = viewModel.theme.name
             summary = resources.getStringArray(R.array.settings_theme_entries)[viewModel.theme.ordinal]
 
             setOnPreferenceChangeListener { _, newValue ->
