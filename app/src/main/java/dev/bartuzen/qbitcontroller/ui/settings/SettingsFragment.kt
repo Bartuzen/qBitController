@@ -88,7 +88,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         editText {
-            key = ""
+            key = "connectionTimeout"
             setTitle(R.string.settings_connection_timeout)
             setDialogTitle(R.string.settings_connection_timeout)
             summary = resources.getQuantityString(
