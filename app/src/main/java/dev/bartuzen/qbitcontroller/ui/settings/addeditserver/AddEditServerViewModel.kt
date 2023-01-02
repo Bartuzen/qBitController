@@ -9,6 +9,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.network.TimeoutInterceptor
 import dev.bartuzen.qbitcontroller.network.TorrentService
+import dev.bartuzen.qbitcontroller.network.TrustAllX509TrustManager
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -23,12 +24,15 @@ import retrofit2.create
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.security.SecureRandom
 import javax.inject.Inject
+import javax.net.ssl.SSLContext
 
 @HiltViewModel
 class AddEditServerViewModel @Inject constructor(
     private val serverManager: ServerManager,
-    private val timeoutInterceptor: TimeoutInterceptor
+    private val timeoutInterceptor: TimeoutInterceptor,
+    private val trustAllManager: TrustAllX509TrustManager
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -58,9 +62,16 @@ class AddEditServerViewModel @Inject constructor(
             val service = Retrofit.Builder()
                 .baseUrl(serverConfig.url)
                 .client(
-                    OkHttpClient().newBuilder()
-                        .addInterceptor(timeoutInterceptor)
-                        .build()
+                    OkHttpClient().newBuilder().apply {
+                        addInterceptor(timeoutInterceptor)
+
+                        if (serverConfig.trustSelfSignedCertificates) {
+                            val sslContext = SSLContext.getInstance("SSL")
+                            sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+                            sslSocketFactory(sslContext.socketFactory, trustAllManager)
+                            hostnameVerifier { _, _ -> true }
+                        }
+                    }.build()
                 )
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .build()

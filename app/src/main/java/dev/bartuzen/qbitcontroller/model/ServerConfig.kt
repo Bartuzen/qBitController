@@ -13,7 +13,8 @@ data class ServerConfig(
     val port: Int?,
     val path: String?,
     val username: String,
-    val password: String
+    val password: String,
+    val trustSelfSignedCertificates: Boolean
 ) : Parcelable {
     @get:JsonIgnore
     val url: String

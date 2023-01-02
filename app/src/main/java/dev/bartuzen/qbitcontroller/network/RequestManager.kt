@@ -14,13 +14,16 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.security.SecureRandom
 import javax.inject.Inject
 import javax.inject.Singleton
+import javax.net.ssl.SSLContext
 
 @Singleton
 class RequestManager @Inject constructor(
     serverManager: ServerManager,
-    private val timeoutInterceptor: TimeoutInterceptor
+    private val timeoutInterceptor: TimeoutInterceptor,
+    private val trustAllManager: TrustAllX509TrustManager
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
 
@@ -42,10 +45,17 @@ class RequestManager @Inject constructor(
         val retrofit = Retrofit.Builder()
             .baseUrl(serverConfig.url)
             .client(
-                OkHttpClient().newBuilder()
-                    .cookieJar(SessionCookieJar())
-                    .addInterceptor(timeoutInterceptor)
-                    .build()
+                OkHttpClient().newBuilder().apply {
+                    cookieJar(SessionCookieJar())
+                    addInterceptor(timeoutInterceptor)
+
+                    if (serverConfig.trustSelfSignedCertificates) {
+                        val sslContext = SSLContext.getInstance("SSL")
+                        sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+                        sslSocketFactory(sslContext.socketFactory, trustAllManager)
+                        hostnameVerifier { _, _ -> true }
+                    }
+                }.build()
             )
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(

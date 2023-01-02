@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
@@ -88,6 +89,14 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             listOf("HTTP", "HTTPS")
         )
 
+        binding.spinnerProtocol.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                binding.checkboxTrustSelfSigned.isEnabled = position == 1
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
         serverConfig?.let { config ->
             binding.inputLayoutName.setTextWithoutAnimation(config.name)
             binding.spinnerProtocol.setSelection(config.protocol.ordinal)
@@ -96,6 +105,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             binding.inputLayoutPath.setTextWithoutAnimation(config.path)
             binding.inputLayoutUsername.setTextWithoutAnimation(config.username)
             binding.inputLayoutPassword.setTextWithoutAnimation(config.password)
+            binding.checkboxTrustSelfSigned.isChecked = config.trustSelfSignedCertificates
         }
 
         binding.buttonTest.setOnClickListener {
@@ -127,6 +137,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
         val path = binding.editPath.text.toString().trim().ifEmpty { null }
         val username = binding.editUsername.text.toString().ifEmpty { null }
         val password = binding.editPassword.text.toString().ifEmpty { null }
+        val trustSelfSignedCertificates = binding.checkboxTrustSelfSigned.isChecked
 
         var isValid = true
 
@@ -183,7 +194,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             port = port,
             path = path,
             username = username,
-            password = password
+            password = password,
+            trustSelfSignedCertificates = trustSelfSignedCertificates
         )
 
         if (HttpUrl.parse(config.url) == null) {

@@ -324,6 +324,7 @@
     <string name="settings_server_path">Path</string>
     <string name="settings_server_username">Username</string>
     <string name="settings_server_password">Password</string>
+    <string name="settings_trust_self_signed_certificates">Trust self-signed certificates</string>
     <string name="settings_server_test_configuration">Test Configuration</string>
 
     <string-array name="settings_theme_entries">
