@@ -43,5 +43,29 @@ data class TorrentProperties(
 
     @JsonProperty("comment")
     @JsonDeserialize(using = NullableStringDeserializer::class)
-    val comment: String?
+    val comment: String?,
+
+    @JsonProperty("reannounce")
+    val nextReannounce: Long,
+
+    @JsonProperty("nb_connections")
+    val connections: Int,
+
+    @JsonProperty("nb_connections_limit")
+    val connectionsLimit: Int,
+
+    @JsonProperty("seeds")
+    val seeds: Int,
+
+    @JsonProperty("seeds_total")
+    val seedsTotal: Int,
+
+    @JsonProperty("peers")
+    val peers: Int,
+
+    @JsonProperty("peers_total")
+    val peersTotal: Int,
+
+    @JsonProperty("wasted")
+    val wasted: Long
 )

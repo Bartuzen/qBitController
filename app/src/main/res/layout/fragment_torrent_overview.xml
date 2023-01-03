@@ -121,7 +121,15 @@
                         android:padding="12dp">
 
                         <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_columnSpan="2"
+                            android:text="@string/torrent_overview_information"
+                            android:textAlignment="center" />
+
+                        <com.google.android.material.textview.MaterialTextView
                             android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_total_size" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -129,6 +137,7 @@
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
                             tools:text="Total Size Text" />
 
                         <com.google.android.material.textview.MaterialTextView
@@ -234,6 +243,172 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             tools:text="Created On Text" />
+
+                    </GridLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <GridLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="2"
+                        android:padding="12dp">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_columnSpan="2"
+                            android:text="@string/torrent_overview_transfer"
+                            android:textAlignment="center" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_time_active" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_time_active"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Time Active Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_downloaded" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_downloaded"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Downloaded Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_uploaded" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_uploaded"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Uploaded Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_ratio" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_ratio"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Ratio Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_reannounce_in" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_reannounce_in"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Reannounce In Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_last_activity" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_last_activity"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Last Activity Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_last_seen_complete" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_last_seen_complete"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Last Seen Complete Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_connections" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_connections"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Connections Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_seeds" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_seeds"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Seeds Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_peers" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_peers"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Peers Text" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_wasted" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/text_wasted"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Wasted Text" />
 
                     </GridLayout>
 

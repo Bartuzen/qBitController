@@ -91,7 +91,32 @@ data class Torrent(
     val isForceStartEnabled: Boolean,
 
     @JsonProperty("super_seeding")
-    val isSuperSeedingEnabled: Boolean
+    val isSuperSeedingEnabled: Boolean,
+
+    @JsonProperty("time_active")
+    val timeActive: Long,
+
+    @JsonProperty("downloaded")
+    val downloaded: Long,
+
+    @JsonProperty("downloaded_session")
+    val downloadedSession: Long,
+
+    @JsonProperty("uploaded")
+    val uploaded: Long,
+
+    @JsonProperty("uploaded_session")
+    val uploadedSession: Long,
+
+    @JsonProperty("ratio")
+    val ratio: Double,
+
+    @JsonProperty("last_activity")
+    val lastActivity: Long,
+
+    @JsonProperty("seen_complete")
+    @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
+    val lastSeenComplete: Long?
 )
 
 enum class TorrentState {

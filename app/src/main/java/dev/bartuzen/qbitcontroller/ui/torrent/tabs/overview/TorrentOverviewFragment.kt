@@ -273,7 +273,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
-                formatSeconds(requireContext(), eta)
+                if (eta < 8640000) {
+                    formatSeconds(requireContext(), eta)
+                } else {
+                    null
+                }
             }
 
             binding.textState.text = formatTorrentState(requireContext(), torrent.state)
@@ -296,17 +300,16 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.textHash.text = torrent.hash
             binding.textSavePath.text = properties.savePath
             binding.textComment.text = properties.comment ?: "-"
-            binding.textPieces.text =
-                if (properties.piecesCount != null && properties.pieceSize != null) {
-                    getString(
-                        R.string.torrent_overview_pieces_format,
-                        properties.piecesCount,
-                        formatBytes(requireContext(), properties.pieceSize),
-                        properties.piecesHave
-                    )
-                } else {
-                    "-"
-                }
+            binding.textPieces.text = if (properties.piecesCount != null && properties.pieceSize != null) {
+                getString(
+                    R.string.torrent_overview_pieces_format,
+                    properties.piecesCount,
+                    formatBytes(requireContext(), properties.pieceSize),
+                    properties.piecesHave
+                )
+            } else {
+                "-"
+            }
             binding.textCompletedOn.text = if (properties.completionDate != null) {
                 formatDate(properties.completionDate)
             } else {
@@ -318,6 +321,42 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             } else {
                 "-"
             }
+
+            binding.textTimeActive.text = formatSeconds(requireContext(), torrent.timeActive)
+            binding.textDownloaded.text = getString(
+                R.string.torrent_overview_downloaded_format,
+                formatBytes(requireContext(), torrent.downloaded),
+                formatBytes(requireContext(), torrent.downloadedSession)
+            )
+            binding.textUploaded.text = getString(
+                R.string.torrent_overview_uploaded_format,
+                formatBytes(requireContext(), torrent.uploaded),
+                formatBytes(requireContext(), torrent.uploadedSession)
+            )
+            binding.textRatio.text = torrent.ratio.floorToDecimal(2).toString()
+            binding.textReannounceIn.text = formatSeconds(requireContext(), properties.nextReannounce)
+            binding.textLastActivity.text = formatDate(torrent.lastActivity)
+            binding.textLastSeenComplete.text = if (torrent.lastSeenComplete != null) {
+                formatDate(torrent.lastSeenComplete)
+            } else {
+                "-"
+            }
+            binding.textConnections.text = getString(
+                R.string.torrent_overview_connections_format,
+                properties.connections,
+                properties.connectionsLimit
+            )
+            binding.textSeeds.text = getString(
+                R.string.torrent_overview_seeds_format,
+                properties.seeds,
+                properties.seedsTotal
+            )
+            binding.textPeers.text = getString(
+                R.string.torrent_overview_peers_format,
+                properties.peers,
+                properties.peersTotal
+            )
+            binding.textWasted.text = formatBytes(requireContext(), properties.wasted)
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->

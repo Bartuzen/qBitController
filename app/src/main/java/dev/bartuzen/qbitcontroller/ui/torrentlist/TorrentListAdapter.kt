@@ -72,7 +72,11 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
-                formatSeconds(context, eta)
+                if (eta < 8640000) {
+                    formatSeconds(context, eta)
+                } else {
+                    null
+                }
             }
 
             binding.textState.text = formatTorrentState(context, torrent.state)

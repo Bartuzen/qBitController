@@ -9,7 +9,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 fun formatBytes(context: Context, byte: Long) = when (byte) {
     in 0 until 1024 -> context.getString(R.string.size_bytes, byte.toString())
@@ -43,39 +43,40 @@ fun formatBytesPerSecond(context: Context, byte: Long) = when (byte) {
     }
 }
 
-fun formatSeconds(context: Context, seconds: Int) = when (seconds) {
+fun formatSeconds(context: Context, seconds: Long) = when (seconds) {
     in 0 until 60 -> {
         context.getString(R.string.eta_seconds, seconds.toString())
     }
     in 60 until 60 * 60 -> {
         val remainder = seconds % 60
         val minutes = (seconds / 60).toString()
-        if (remainder != 0) {
+        if (remainder != 0L) {
             context.getString(R.string.eta_minutes_seconds, minutes, remainder.toString())
         } else {
             context.getString(R.string.eta_minutes, minutes)
         }
     }
     in 60 * 60 until 60 * 60 * 60 -> {
-        val remainder = ((seconds % (60 * 60)) / 60.0).roundToInt()
+        val remainder = ((seconds % (60 * 60)) / 60.0).roundToLong()
         val hours = (seconds / (60 * 60)).toString()
-        if (remainder != 0) {
+        if (remainder != 0L) {
             context.getString(R.string.eta_hours_minutes, hours, remainder.toString())
         } else {
             context.getString(R.string.eta_hours, hours)
         }
     }
-    in 60 * 60 * 60 until 8640000 -> {
-        val remainder = ((seconds % (24 * 60 * 60)) / (60.0 * 60)).roundToInt()
+    else -> {
+        val remainder = ((seconds % (24 * 60 * 60)) / (60.0 * 60)).roundToLong()
         val days = (seconds / (24 * 60 * 60)).toString()
-        if (remainder != 0) {
+        if (remainder != 0L) {
             context.getString(R.string.eta_days_hours, days, remainder.toString())
         } else {
             context.getString(R.string.eta_days, days)
         }
     }
-    else -> null
 }
+
+fun formatSeconds(context: Context, seconds: Int) = formatSeconds(context, seconds.toLong())
 
 fun formatTorrentState(context: Context, state: TorrentState) = context.getString(
     when (state) {

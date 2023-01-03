@@ -209,16 +209,35 @@
     <string name="torrent_no_categories">Couldn\'t find any categories.</string>
     <string name="torrent_no_tags">Couldn\'t find any tags.</string>
 
+    <string name="torrent_overview_information">Information</string>
     <string name="torrent_overview_total_size">Total Size</string>
     <string name="torrent_overview_added_on">Added On</string>
     <string name="torrent_overview_hash">Hash</string>
     <string name="torrent_overview_save_path">Save Path</string>
     <string name="torrent_overview_comment">Comment</string>
     <string name="torrent_overview_pieces">Pieces</string>
+    <string name="torrent_overview_pieces_format">%1$d x %2$s (have %3$d)</string>
     <string name="torrent_overview_completed_on">Completed On</string>
     <string name="torrent_overview_created_by">Created By</string>
     <string name="torrent_overview_created_on">Created On</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (have %3$d)</string>
+
+    <string name="torrent_overview_transfer">Transfer</string>
+    <string name="torrent_overview_time_active">Time Active</string>
+    <string name="torrent_overview_downloaded">Downloaded</string>
+    <string name="torrent_overview_downloaded_format">%1$s (%2$s this session)</string>
+    <string name="torrent_overview_uploaded">Uploaded</string>
+    <string name="torrent_overview_uploaded_format">@string/torrent_overview_downloaded_format</string>
+    <string name="torrent_overview_ratio">Ratio</string>
+    <string name="torrent_overview_reannounce_in">Reannounce In</string>
+    <string name="torrent_overview_last_activity">Last Activity</string>
+    <string name="torrent_overview_last_seen_complete">Last Seen Complete</string>
+    <string name="torrent_overview_connections">Connections</string>
+    <string name="torrent_overview_connections_format">%1$d (%2$d max)</string>
+    <string name="torrent_overview_seeds">Seeds</string>
+    <string name="torrent_overview_seeds_format">%1$d (%2$d total)</string>
+    <string name="torrent_overview_peers">Peers</string>
+    <string name="torrent_overview_peers_format">@string/torrent_overview_seeds_format</string>
+    <string name="torrent_overview_wasted">Wasted</string>
 
     <string name="torrent_files_directory_format"><![CDATA[<b>Directory: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">Do Not Download</string>
