@@ -1,6 +1,6 @@
 <network-security-config xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="AcceptsUserCertificates">
-    <base-config>
+    tools:ignore="AcceptsUserCertificates,InsecureBaseConfiguration">
+    <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
             <certificates src="user" />
