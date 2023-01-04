@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.CancellationException
 import okhttp3.OkHttpClient
@@ -49,11 +50,14 @@ class RequestManager @Inject constructor(
                     cookieJar(SessionCookieJar())
                     addInterceptor(timeoutInterceptor)
 
-                    if (serverConfig.trustSelfSignedCertificates) {
-                        val sslContext = SSLContext.getInstance("SSL")
-                        sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-                        sslSocketFactory(sslContext.socketFactory, trustAllManager)
+                    if (serverConfig.protocol == Protocol.HTTPS) {
                         hostnameVerifier { _, _ -> true }
+
+                        if (serverConfig.trustSelfSignedCertificates) {
+                            val sslContext = SSLContext.getInstance("SSL")
+                            sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+                            sslSocketFactory(sslContext.socketFactory, trustAllManager)
+                        }
                     }
                 }.build()
             )
