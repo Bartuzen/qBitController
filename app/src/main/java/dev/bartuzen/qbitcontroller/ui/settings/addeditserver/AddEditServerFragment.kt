@@ -160,8 +160,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             binding.inputLayoutUsername.error = getString(R.string.settings_server_required_field)
             isValid = false
         } else if (username.length < 3) {
-            binding.inputLayoutUsername.error =
-                getString(R.string.settings_server_username_min_character)
+            binding.inputLayoutUsername.error = getString(R.string.settings_server_username_min_character)
             isValid = false
         } else {
             binding.inputLayoutUsername.isErrorEnabled = false
@@ -171,8 +170,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             binding.inputLayoutPassword.error = getString(R.string.settings_server_required_field)
             isValid = false
         } else if (password.length < 6) {
-            binding.inputLayoutPassword.error =
-                getString(R.string.settings_server_password_min_character)
+            binding.inputLayoutPassword.error = getString(R.string.settings_server_password_min_character)
             isValid = false
         } else {
             binding.inputLayoutPassword.isErrorEnabled = false
