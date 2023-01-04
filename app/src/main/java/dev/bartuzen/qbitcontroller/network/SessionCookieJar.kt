@@ -14,7 +14,7 @@ class SessionCookieJar : CookieJar {
     }
 
     override fun loadForRequest(url: HttpUrl) = if (!url.encodedPath().endsWith("login")) {
-        cookies?.toList() ?: emptyList()
+        cookies ?: emptyList()
     } else {
         emptyList()
     }
