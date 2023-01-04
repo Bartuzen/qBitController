@@ -159,7 +159,14 @@ class CategoryTagAdapter(
             }
             binding.root.setBackgroundColor(backgroundColor)
 
-            binding.root.text = name ?: context.getString(R.string.torrent_list_category_tag_all)
+            val icon = if (isCategory) {
+                R.drawable.ic_folder
+            } else {
+                R.drawable.ic_tag
+            }
+            binding.textCategoryTag.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
+
+            binding.textCategoryTag.text = name ?: context.getString(R.string.torrent_list_category_tag_all)
         }
     }
 
