@@ -12,8 +12,8 @@ data class ServerConfig(
     val host: String,
     val port: Int?,
     val path: String?,
-    val username: String,
-    val password: String,
+    val username: String?,
+    val password: String?,
     val trustSelfSignedCertificates: Boolean
 ) : Parcelable {
     @get:JsonIgnore

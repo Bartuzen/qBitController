@@ -156,20 +156,14 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             binding.inputLayoutPort.isErrorEnabled = false
         }
 
-        if (username == null) {
-            binding.inputLayoutUsername.error = getString(R.string.settings_server_required_field)
-            isValid = false
-        } else if (username.length < 3) {
+        if (username != null && username.length < 3) {
             binding.inputLayoutUsername.error = getString(R.string.settings_server_username_min_character)
             isValid = false
         } else {
             binding.inputLayoutUsername.isErrorEnabled = false
         }
 
-        if (password == null) {
-            binding.inputLayoutPassword.error = getString(R.string.settings_server_required_field)
-            isValid = false
-        } else if (password.length < 6) {
+        if (password != null && password.length < 6) {
             binding.inputLayoutPassword.error = getString(R.string.settings_server_password_min_character)
             isValid = false
         } else {
@@ -180,15 +174,11 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             return null
         }
 
-        requireNotNull(host)
-        requireNotNull(username)
-        requireNotNull(password)
-
         val config = ServerConfig(
             id = serverConfig?.id ?: -1,
             name = name,
             protocol = protocol,
-            host = host,
+            host = requireNotNull(host),
             port = port,
             path = path,
             username = username,

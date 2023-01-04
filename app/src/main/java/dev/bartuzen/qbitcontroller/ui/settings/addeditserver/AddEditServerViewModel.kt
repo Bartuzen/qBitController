@@ -78,7 +78,7 @@ class AddEditServerViewModel @Inject constructor(
                 .create<TorrentService>()
 
             val error = try {
-                val response = service.login(serverConfig.username, serverConfig.password)
+                val response = service.login(serverConfig.username ?: "", serverConfig.password ?: "")
 
                 if (response.code() == 403) {
                     RequestResult.Error.RequestError.Banned

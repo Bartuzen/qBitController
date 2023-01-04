@@ -83,22 +83,26 @@ class RequestManager @Inject constructor(
         val body = blockResponse.body()
 
         if (blockResponse.message() == "Forbidden") {
-            val loginResponse = service.login(serverConfig.username, serverConfig.password)
+            if (serverConfig.username != null && serverConfig.password != null) {
+                val loginResponse = service.login(serverConfig.username, serverConfig.password)
 
-            if (loginResponse.code() == 403) {
-                RequestResult.Error.RequestError.Banned
-            } else if (loginResponse.body() == "Fails.") {
-                RequestResult.Error.RequestError.InvalidCredentials
-            } else if (loginResponse.body() != "Ok.") {
-                RequestResult.Error.RequestError.UnknownLoginResponse(loginResponse.body())
-            } else {
-                val newResponse = block(service)
-                val newBody = newResponse.body()
-                if (newResponse.code() == 200 && newBody != null) {
-                    RequestResult.Success(newBody)
+                if (loginResponse.code() == 403) {
+                    RequestResult.Error.RequestError.Banned
+                } else if (loginResponse.body() == "Fails.") {
+                    RequestResult.Error.RequestError.InvalidCredentials
+                } else if (loginResponse.body() != "Ok.") {
+                    RequestResult.Error.RequestError.UnknownLoginResponse(loginResponse.body())
                 } else {
-                    RequestResult.Error.RequestError.NoData
+                    val newResponse = block(service)
+                    val newBody = newResponse.body()
+                    if (newResponse.code() == 200 && newBody != null) {
+                        RequestResult.Success(newBody)
+                    } else {
+                        RequestResult.Error.RequestError.NoData
+                    }
                 }
+            } else {
+                RequestResult.Error.RequestError.InvalidCredentials
             }
         } else if (blockResponse.code() == 200 && body != null) {
             RequestResult.Success(body)
