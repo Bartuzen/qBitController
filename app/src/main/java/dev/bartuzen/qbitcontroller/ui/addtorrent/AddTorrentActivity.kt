@@ -72,7 +72,7 @@ class AddTorrentActivity : AppCompatActivity() {
                 binding.spinnerServers.adapter = ArrayAdapter(
                     this,
                     android.R.layout.simple_spinner_dropdown_item,
-                    servers.map { server -> server.name ?: server.host }
+                    servers.map { server -> server.name ?: server.urlWithoutProtocol }
                 )
                 binding.spinnerServers.onItemSelectedListener =
                     object : AdapterView.OnItemSelectedListener {
