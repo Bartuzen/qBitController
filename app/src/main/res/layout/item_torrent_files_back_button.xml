@@ -21,7 +21,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="UnusedAttribute,UseCompoundDrawables">
 
         <ImageView
             android:layout_width="48dp"

@@ -94,7 +94,7 @@ class AddTorrentActivity : AppCompatActivity() {
                     null
                 }
                 "content", "file" -> {
-                    binding.layoutFileName.visibility = View.VISIBLE
+                    binding.textFileName.visibility = View.VISIBLE
                     binding.inputLayoutTorrentLink.visibility = View.GONE
 
                     lifecycleScope.launch {
