@@ -29,7 +29,7 @@
                 android:visibility="gone"
                 tools:visibility="visible">
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/text_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_progress"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                             app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
                             tools:text="Progress Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_eta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/text_progress" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_state"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                             app:layout_constraintTop_toBottomOf="@id/progress_torrent"
                             tools:text="Torrent State" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_speed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -120,19 +120,19 @@
                         android:columnCount="2"
                         android:padding="12dp">
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_columnSpan="2"
                             android:text="@string/torrent_overview_information"
                             android:textAlignment="center" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_total_size" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_total_size"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -140,12 +140,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Total Size Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_added_on" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_added_on"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -153,12 +153,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Added On Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_hash" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_hash"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -166,12 +166,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Hash Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_save_path" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_save_path"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -179,12 +179,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Save Path Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_comment" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_comment"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -192,12 +192,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Comment Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_pieces" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_pieces"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -205,12 +205,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Pieces Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_completed_on" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_completed_on"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -218,12 +218,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Completed On Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_created_by" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_created_by"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -231,12 +231,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Created By Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_created_on" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_created_on"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -260,19 +260,19 @@
                         android:columnCount="2"
                         android:padding="12dp">
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_columnSpan="2"
                             android:text="@string/torrent_overview_transfer"
                             android:textAlignment="center" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_time_active" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_time_active"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -280,12 +280,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Time Active Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_downloaded" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_downloaded"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -293,12 +293,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Downloaded Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_uploaded" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_uploaded"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -306,12 +306,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Uploaded Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_ratio" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_ratio"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -319,12 +319,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Ratio Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_reannounce_in" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_reannounce_in"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -332,12 +332,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Reannounce In Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_last_activity" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_last_activity"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -345,12 +345,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Last Activity Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_last_seen_complete" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_last_seen_complete"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -358,12 +358,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Last Seen Complete Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_connections" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_connections"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -371,12 +371,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Connections Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_seeds" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_seeds"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -384,12 +384,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Seeds Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_peers" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_peers"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
@@ -397,12 +397,12 @@
                             android:layout_marginTop="8dp"
                             tools:text="Peers Text" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_wasted" />
 
-                        <com.google.android.material.textview.MaterialTextView
+                        <TextView
                             android:id="@+id/text_wasted"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"

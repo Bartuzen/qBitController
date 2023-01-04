@@ -15,7 +15,7 @@
         android:paddingHorizontal="8dp"
         android:paddingVertical="12dp">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_name"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_name" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
             tools:text="Progress Text" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_eta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_progress" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toBottomOf="@id/progress_torrent"
             tools:text="Torrent State" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

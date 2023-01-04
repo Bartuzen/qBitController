@@ -15,14 +15,14 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_name"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Server Name" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_url"
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="wrap_content"

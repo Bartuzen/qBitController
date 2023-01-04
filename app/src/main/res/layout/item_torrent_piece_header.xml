@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingBottom="4dp">
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/text_pieces_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/text_pieces"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toBottomOf="@id/text_pieces_title"
         tools:text="Pieces Text" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/text_piece_size_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/text_piece_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_pieces" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/text_piece_map_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

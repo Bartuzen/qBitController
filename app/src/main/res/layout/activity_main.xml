@@ -39,7 +39,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:layout="@layout/fragment_torrent_list" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_click_to_add_server"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

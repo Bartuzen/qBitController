@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/text_not_found"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

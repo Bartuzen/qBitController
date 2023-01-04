@@ -13,7 +13,7 @@
         android:src="@mipmap/ic_launcher_round"
         tools:ignore="ContentDescription" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,14 +21,14 @@
         android:layout_marginTop="8dp"
         android:text="@string/app_name" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/text_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         tools:text="1.0" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
