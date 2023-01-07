@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">qBitController</string>
 
+    <string name="language_code">en</string>
+
     <string name="share_add_torrent">Add Torrent</string>
 
     <string name="menu_settings">Settings</string>
@@ -25,6 +27,7 @@
     <string name="tab_torrent_files">Files</string>
     <string name="tab_torrent_pieces">Pieces</string>
     <string name="tab_torrent_trackers">Trackers</string>
+    <string name="tab_torrent_peers">Peers</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -295,6 +298,11 @@
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
     <string name="torrent_trackers_cannot_delete_default">You can\'t delete default trackers.</string>
+
+    <string name="torrent_peers_ip_format">%1$s:%2$d</string>
+    <string name="torrent_peers_country">Country: %1$s</string>
+    <string name="torrent_peers_connection">Connection: %1$s</string>
+    <string name="torrent_peers_flags">Flags: %1$s</string>
 
     <string name="torrent_error_not_found">Torrent not found.</string>
 
