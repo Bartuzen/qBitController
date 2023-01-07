@@ -4,9 +4,9 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     kotlin("android")
-    kotlin("kapt")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
+    kotlin("kapt")
 }
 
 android {
