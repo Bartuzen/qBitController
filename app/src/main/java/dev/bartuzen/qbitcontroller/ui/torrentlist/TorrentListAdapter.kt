@@ -46,11 +46,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
             val backgroundColor = if (isItemSelected(getKey(torrent))) {
                 context.getColorCompat(R.color.selected_card_background)
             } else {
-                MaterialColors.getColor(
-                    context,
-                    com.google.android.material.R.attr.colorSurface,
-                    Color.TRANSPARENT
-                )
+                MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT)
             }
             binding.root.setCardBackgroundColor(backgroundColor)
 
