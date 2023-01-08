@@ -61,6 +61,21 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
+    fun addPeers(serverConfig: ServerConfig, torrentHash: String, peers: List<String>) = viewModelScope.launch {
+        when (val result = repository.addPeers(serverConfig, torrentHash, peers)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.PeersAdded)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 400) {
+                    eventChannel.send(Event.PeersInvalid)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
     fun banPeers(serverConfig: ServerConfig, peers: List<String>) = viewModelScope.launch {
         when (val result = repository.banPeers(serverConfig, peers)) {
             is RequestResult.Success -> {
@@ -74,6 +89,8 @@ class TorrentPeersViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object PeersInvalid : Event()
+        object PeersAdded : Event()
         object PeersBanned : Event()
     }
 }

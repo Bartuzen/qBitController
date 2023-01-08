@@ -198,6 +198,10 @@ interface TorrentService {
     suspend fun getPeers(@Query("hash") hash: String): Response<TorrentPeers>
 
     @FormUrlEncoded
+    @POST("api/v2/torrents/addPeers")
+    suspend fun addPeers(@Field("hashes") hashes: String, @Field("peers") peers: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/transfer/banPeers")
     suspend fun banPeers(@Field("peers") peers: String): Response<Unit>
 }

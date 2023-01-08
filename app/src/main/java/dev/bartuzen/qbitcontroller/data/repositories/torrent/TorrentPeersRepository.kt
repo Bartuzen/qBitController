@@ -13,6 +13,11 @@ class TorrentPeersRepository @Inject constructor(
         service.getPeers(hash)
     }
 
+    suspend fun addPeers(serverConfig: ServerConfig, hash: String, peers: List<String>) =
+        requestManager.request(serverConfig) { service ->
+            service.addPeers(hash, peers.joinToString("|"))
+        }
+
     suspend fun banPeers(serverConfig: ServerConfig, peers: List<String>) = requestManager.request(serverConfig) { service ->
         service.banPeers(peers.joinToString("|"))
     }

@@ -303,7 +303,10 @@
     <string name="torrent_peers_country">Country: %1$s</string>
     <string name="torrent_peers_connection">Connection: %1$s</string>
     <string name="torrent_peers_flags">Flags: %1$s</string>
+    <string name="torrent_peers_menu_add">Add Peers</string>
     <string name="torrent_peers_menu_ban">Ban Peers</string>
+    <string name="torrent_peers_add_dialog_title">@string/torrent_peers_menu_add</string>
+    <string name="torrent_peers_add_hint">Peers</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="one">Ban %1$d Peer</item>
         <item quantity="other">Ban %1$d Peers</item>
@@ -316,7 +319,9 @@
         <item quantity="one">%1$d peer selected</item>
         <item quantity="other">%1$d peers selected</item>
     </plurals>
+    <string name="torrent_peers_added">Peers added successfully.</string>
     <string name="torrent_peers_banned">Peers banned successfully.</string>
+    <string name="torrent_peers_invalid">Entered peers are not valid.</string>
 
     <string name="torrent_error_not_found">Torrent not found.</string>
 

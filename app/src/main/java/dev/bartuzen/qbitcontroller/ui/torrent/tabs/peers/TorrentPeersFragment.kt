@@ -4,17 +4,22 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.ActionMode
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorentPeersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -27,7 +32,9 @@ import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
@@ -49,6 +56,27 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.torrent_peers_menu, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_add -> {
+                            showAddPeersDialog()
+                        }
+                        else -> return false
+                    }
+
+                    return true
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
+
         var actionMode: ActionMode? = null
         val adapter = TorrentPeersAdapter().apply {
             onSelectionModeStart {
@@ -149,11 +177,36 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 is TorrentPeersViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+                TorrentPeersViewModel.Event.PeersInvalid -> {
+                    showSnackbar(R.string.torrent_peers_invalid)
+                }
                 TorrentPeersViewModel.Event.PeersBanned -> {
                     showSnackbar(R.string.torrent_peers_banned)
                     viewModel.loadPeers(serverConfig, torrentHash)
                 }
+                TorrentPeersViewModel.Event.PeersAdded -> {
+                    showSnackbar(R.string.torrent_peers_added)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000) // wait until qBittorrent adds the peers
+                        viewModel.loadPeers(serverConfig, torrentHash)
+                    }
+                }
             }
+        }
+    }
+
+    private fun showAddPeersDialog() {
+        showDialog(DialogTorentPeersAddBinding::inflate) { binding ->
+            setTitle(R.string.torrent_peers_add_dialog_title)
+            setPositiveButton { _, _ ->
+                viewModel.addPeers(
+                    serverConfig,
+                    torrentHash,
+                    binding.editPeers.text.toString().split("\n")
+                )
+            }
+            setNegativeButton()
         }
     }
 
