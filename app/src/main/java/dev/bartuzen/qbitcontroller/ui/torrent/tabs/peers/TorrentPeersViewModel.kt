@@ -61,7 +61,19 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
+    fun banPeers(serverConfig: ServerConfig, peers: List<String>) = viewModelScope.launch {
+        when (val result = repository.banPeers(serverConfig, peers)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.PeersBanned)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object PeersBanned : Event()
     }
 }

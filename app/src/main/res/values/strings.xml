@@ -303,6 +303,20 @@
     <string name="torrent_peers_country">Country: %1$s</string>
     <string name="torrent_peers_connection">Connection: %1$s</string>
     <string name="torrent_peers_flags">Flags: %1$s</string>
+    <string name="torrent_peers_menu_ban">Ban Peers</string>
+    <plurals name="torrent_peers_ban_title">
+        <item quantity="one">Ban %1$d Peer</item>
+        <item quantity="other">Ban %1$d Peers</item>
+    </plurals>
+    <plurals name="torrent_peers_ban_desc">
+        <item quantity="one">Are you sure you want to ban %1$d peer?</item>
+        <item quantity="other">Are you sure you want to ban %1$d peers?</item>
+    </plurals>
+    <plurals name="torrent_peers_selected">
+        <item quantity="one">%1$d peer selected</item>
+        <item quantity="other">%1$d peers selected</item>
+    </plurals>
+    <string name="torrent_peers_banned">Peers banned successfully.</string>
 
     <string name="torrent_error_not_found">Torrent not found.</string>
 
