@@ -19,7 +19,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogTorentPeersAddBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -197,7 +197,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
     }
 
     private fun showAddPeersDialog() {
-        showDialog(DialogTorentPeersAddBinding::inflate) { binding ->
+        showDialog(DialogTorrentPeersAddBinding::inflate) { binding ->
             setTitle(R.string.torrent_peers_add_dialog_title)
             setPositiveButton { _, _ ->
                 viewModel.addPeers(
