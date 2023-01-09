@@ -31,6 +31,8 @@ import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 
 @AndroidEntryPoint
 class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
@@ -177,14 +179,27 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
             adapter.submitList(trackers)
         }
 
+        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->
+            if (interval != 0) {
+                while (isActive) {
+                    delay(interval * 1000L)
+                    if (isActive) {
+                        viewModel.loadTrackers(serverConfig, torrentHash)
+                    }
+                }
+            }
+        }
+
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentTrackersViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+
                 TorrentTrackersViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }
+
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
                     showSnackbar(R.string.torrent_trackers_added)
 

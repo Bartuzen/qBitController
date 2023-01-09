@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,9 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toDp
 import dev.bartuzen.qbitcontroller.utils.toPx
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.isActive
 
 @AndroidEntryPoint
 class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
@@ -103,11 +106,23 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
             adapter.submitPieces(pieces)
         }
 
+        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->
+            if (interval != 0) {
+                while (isActive) {
+                    delay(interval * 1000L)
+                    if (isActive) {
+                        viewModel.loadPieces(serverConfig, torrentHash)
+                    }
+                }
+            }
+        }
+
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentPiecesViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+
                 TorrentPiecesViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }

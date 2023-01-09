@@ -21,9 +21,12 @@ class TorrentPiecesHeaderAdapter : RecyclerView.Adapter<TorrentPiecesHeaderAdapt
     override fun getItemCount() = 1
 
     fun submitHeaderData(pieceCount: Int?, pieceSize: Long?) {
-        this.pieceCount = pieceCount
-        this.pieceSize = pieceSize
-        notifyItemChanged(0)
+        val isChanged = this.pieceCount != pieceCount || this.pieceSize != pieceSize
+        if (isChanged) {
+            this.pieceCount = pieceCount
+            this.pieceSize = pieceSize
+            notifyItemChanged(0)
+        }
     }
 
     inner class ViewHolder(private val binding: ItemTorrentPieceHeaderBinding) :

@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentOverviewViewModel @Inject constructor(
+    settingsManager: SettingsManager,
     private val repository: TorrentOverviewRepository
 ) : ViewModel() {
     private val _torrent = MutableStateFlow<Torrent?>(null)
@@ -37,6 +39,8 @@ class TorrentOverviewViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     var isInitialLoadStarted = false
+
+    val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
     private fun updateTorrent(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         val torrentDeferred = async {

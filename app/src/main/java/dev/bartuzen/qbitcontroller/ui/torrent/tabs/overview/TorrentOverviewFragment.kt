@@ -14,6 +14,7 @@ import androidx.core.view.MenuProvider
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.chip.Chip
@@ -49,6 +50,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -359,14 +361,27 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.textWasted.text = formatBytes(requireContext(), properties.wasted)
         }
 
+        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->
+            if (interval != 0) {
+                while (isActive) {
+                    delay(interval * 1000L)
+                    if (isActive) {
+                        viewModel.loadTorrent(serverConfig, torrentHash)
+                    }
+                }
+            }
+        }
+
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentOverviewViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+
                 TorrentOverviewViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }
+
                 TorrentOverviewViewModel.Event.TorrentDeleted -> {
                     val intent = Intent().apply {
                         putExtra(TorrentActivity.Extras.TORRENT_DELETED, true)

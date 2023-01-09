@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTrackersRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentTrackersViewModel @Inject constructor(
+    settingsManager: SettingsManager,
     private val repository: TorrentTrackersRepository
 ) : ViewModel() {
     private val _torrentTrackers = MutableStateFlow<List<TorrentTracker>?>(null)
@@ -32,11 +34,14 @@ class TorrentTrackersViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
+    val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+
     private fun updateTrackers(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getTrackers(serverConfig, torrentHash)) {
             is RequestResult.Success -> {
                 _torrentTrackers.value = result.data
             }
+
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
                     eventChannel.send(Event.TorrentNotFound)

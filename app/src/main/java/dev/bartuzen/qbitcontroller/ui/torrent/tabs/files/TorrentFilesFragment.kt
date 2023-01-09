@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -28,7 +29,9 @@ import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.isActive
 
 @AndroidEntryPoint
 class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
@@ -217,14 +220,27 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
             }
         }
 
+        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->
+            if (interval != 0) {
+                while (isActive) {
+                    delay(interval * 1000L)
+                    if (isActive) {
+                        viewModel.loadFiles(serverConfig, torrentHash)
+                    }
+                }
+            }
+        }
+
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentFilesViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+
                 TorrentFilesViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }
+
                 TorrentFilesViewModel.Event.PathIsInvalidOrInUse -> {
                     showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use)
                 }

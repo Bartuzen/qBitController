@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPiecesRepository
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentPiecesViewModel @Inject constructor(
+    settingsManager: SettingsManager,
     private val repository: TorrentPiecesRepository
 ) : ViewModel() {
     private val _torrentPieces = MutableStateFlow<List<PieceState>?>(null)
@@ -38,12 +40,15 @@ class TorrentPiecesViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
+    val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+
     private fun updatePieces(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         val piecesDeferred = async {
             when (val result = repository.getPieces(serverConfig, torrentHash)) {
                 is RequestResult.Success -> {
                     result.data
                 }
+
                 is RequestResult.Error -> {
                     if (result is RequestResult.Error.ApiError && result.code == 404) {
                         eventChannel.send(Event.TorrentNotFound)
