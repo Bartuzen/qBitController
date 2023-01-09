@@ -195,19 +195,15 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 is TorrentTrackersViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
-
                 TorrentTrackersViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }
-
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
                     showSnackbar(R.string.torrent_trackers_added)
-
                     viewModel.loadTrackers(serverConfig, torrentHash)
                 }
                 TorrentTrackersViewModel.Event.TrackersDeleted -> {
                     showSnackbar(R.string.torrent_trackers_deleted)
-
                     viewModel.loadTrackers(serverConfig, torrentHash)
                 }
             }

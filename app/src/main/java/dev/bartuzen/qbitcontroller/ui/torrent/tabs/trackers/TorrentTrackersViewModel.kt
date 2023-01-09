@@ -41,7 +41,6 @@ class TorrentTrackersViewModel @Inject constructor(
             is RequestResult.Success -> {
                 _torrentTrackers.value = result.data
             }
-
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
                     eventChannel.send(Event.TorrentNotFound)

@@ -377,11 +377,9 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 is TorrentOverviewViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
-
                 TorrentOverviewViewModel.Event.TorrentNotFound -> {
                     showSnackbar(R.string.torrent_error_not_found)
                 }
-
                 TorrentOverviewViewModel.Event.TorrentDeleted -> {
                     val intent = Intent().apply {
                         putExtra(TorrentActivity.Extras.TORRENT_DELETED, true)
