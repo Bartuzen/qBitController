@@ -1,7 +1,7 @@
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-    id("org.jmailen.kotlinter") version "3.12.0"
+    id("org.jmailen.kotlinter") version "3.13.0"
 }
 
 subprojects {
