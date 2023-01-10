@@ -310,10 +310,10 @@ class AddTorrentActivity : AppCompatActivity() {
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
             when (event) {
                 is AddTorrentViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(this@AddTorrentActivity, event.error))
+                    showSnackbar(getErrorMessage(this@AddTorrentActivity, event.error), view = binding.layoutCoordinator)
                 }
                 AddTorrentViewModel.Event.FileNotFound -> {
-                    showSnackbar(R.string.torrent_add_file_not_found)
+                    showSnackbar(R.string.torrent_add_file_not_found, view = binding.layoutCoordinator)
                 }
                 AddTorrentViewModel.Event.TorrentCreated -> {
                     if (intent.data == null) {

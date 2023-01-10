@@ -40,8 +40,7 @@
 
         <activity
             android:name=".ui.addtorrent.AddTorrentActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
