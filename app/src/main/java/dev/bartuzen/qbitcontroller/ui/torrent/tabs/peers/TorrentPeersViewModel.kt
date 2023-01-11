@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPeersRepository
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentPeersViewModel @Inject constructor(
+    settingsManager: SettingsManager,
     private val repository: TorrentPeersRepository
 ) : ViewModel() {
     private val _torrentPeers = MutableStateFlow<List<TorrentPeer>?>(null)
@@ -31,6 +33,8 @@ class TorrentPeersViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     var isInitialLoadStarted = false
+
+    val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
     private fun updatePeers(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getPeers(serverConfig, torrentHash)) {

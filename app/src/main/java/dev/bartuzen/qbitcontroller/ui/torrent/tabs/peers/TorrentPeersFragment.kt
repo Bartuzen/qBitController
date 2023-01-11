@@ -2,11 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.ActionMode
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -22,18 +18,10 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
-import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
-import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
-import dev.bartuzen.qbitcontroller.utils.setNegativeButton
-import dev.bartuzen.qbitcontroller.utils.setPositiveButton
-import dev.bartuzen.qbitcontroller.utils.showDialog
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import dev.bartuzen.qbitcontroller.utils.toPx
-import dev.bartuzen.qbitcontroller.utils.view
+import dev.bartuzen.qbitcontroller.utils.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -170,6 +158,17 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
         viewModel.torrentPeers.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { peers ->
             adapter.submitList(peers)
+        }
+
+        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->
+            if (interval != 0) {
+                while (isActive) {
+                    delay(interval * 1000L)
+                    if (isActive) {
+                        viewModel.loadPeers(serverConfig, torrentHash)
+                    }
+                }
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
