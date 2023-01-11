@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/text_category_tag"
     android:foreground="?attr/selectableItemBackground"
-    android:drawablePadding="4dp"
+    android:drawablePadding="8dp"
     android:paddingHorizontal="16dp"
     android:paddingVertical="12dp"
     android:gravity="center_vertical"
