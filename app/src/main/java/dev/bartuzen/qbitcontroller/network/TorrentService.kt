@@ -4,6 +4,7 @@ import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
+import dev.bartuzen.qbitcontroller.model.TorrentPeers
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import okhttp3.MultipartBody
@@ -192,4 +193,15 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/removeTags")
     suspend fun removeTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
+
+    @GET("api/v2/sync/torrentPeers")
+    suspend fun getPeers(@Query("hash") hash: String): Response<TorrentPeers>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/addPeers")
+    suspend fun addPeers(@Field("hashes") hashes: String, @Field("peers") peers: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/transfer/banPeers")
+    suspend fun banPeers(@Field("peers") peers: String): Response<Unit>
 }

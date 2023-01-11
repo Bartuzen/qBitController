@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">qBitController</string>
 
+    <string name="language_code">en</string>
+
     <string name="share_add_torrent">Add Torrent</string>
 
     <string name="menu_settings">Settings</string>
@@ -25,6 +27,7 @@
     <string name="tab_torrent_files">Files</string>
     <string name="tab_torrent_pieces">Pieces</string>
     <string name="tab_torrent_trackers">Trackers</string>
+    <string name="tab_torrent_peers">Peers</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -295,6 +298,30 @@
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
     <string name="torrent_trackers_cannot_delete_default">You can\'t delete default trackers.</string>
+
+    <string name="torrent_peers_ip_format">%1$s:%2$d</string>
+    <string name="torrent_peers_country">Country: %1$s</string>
+    <string name="torrent_peers_connection">Connection: %1$s</string>
+    <string name="torrent_peers_flags">Flags: %1$s</string>
+    <string name="torrent_peers_menu_add">Add Peers</string>
+    <string name="torrent_peers_menu_ban">Ban Peers</string>
+    <string name="torrent_peers_add_dialog_title">@string/torrent_peers_menu_add</string>
+    <string name="torrent_peers_add_hint">Peers</string>
+    <plurals name="torrent_peers_ban_title">
+        <item quantity="one">Ban %1$d Peer</item>
+        <item quantity="other">Ban %1$d Peers</item>
+    </plurals>
+    <plurals name="torrent_peers_ban_desc">
+        <item quantity="one">Are you sure you want to ban %1$d peer?</item>
+        <item quantity="other">Are you sure you want to ban %1$d peers?</item>
+    </plurals>
+    <plurals name="torrent_peers_selected">
+        <item quantity="one">%1$d peer selected</item>
+        <item quantity="other">%1$d peers selected</item>
+    </plurals>
+    <string name="torrent_peers_added">Peers added successfully.</string>
+    <string name="torrent_peers_banned">Peers banned successfully.</string>
+    <string name="torrent_peers_invalid">Entered peers are not valid.</string>
 
     <string name="torrent_error_not_found">Torrent not found.</string>
 

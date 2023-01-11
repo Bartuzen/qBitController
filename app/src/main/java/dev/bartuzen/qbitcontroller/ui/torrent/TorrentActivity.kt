@@ -11,6 +11,7 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
 import dev.bartuzen.qbitcontroller.utils.getParcelable
@@ -47,13 +48,14 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 4
+            override fun getItemCount() = 5
 
             override fun createFragment(position: Int) = when (position) {
                 0 -> TorrentOverviewFragment(serverConfig, torrentHash)
                 1 -> TorrentFilesFragment(serverConfig, torrentHash)
                 2 -> TorrentPiecesFragment(serverConfig, torrentHash)
                 3 -> TorrentTrackersFragment(serverConfig, torrentHash)
+                4 -> TorrentPeersFragment(serverConfig, torrentHash)
                 else -> Fragment()
             }
         }.apply {
@@ -66,6 +68,7 @@ class TorrentActivity : AppCompatActivity() {
                 1 -> R.string.tab_torrent_files
                 2 -> R.string.tab_torrent_pieces
                 3 -> R.string.tab_torrent_trackers
+                4 -> R.string.tab_torrent_peers
                 else -> return@TabLayoutMediator
             }
 
