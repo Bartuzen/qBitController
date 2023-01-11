@@ -69,7 +69,7 @@ class TorrentListViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 torrentList.run {
                     when (torrentSort) {
-                        TorrentSort.NAME -> sortedWith(compareBy({ it.name }, { it.hash }))
+                        TorrentSort.NAME -> sortedWith(compareBy({ it.name.lowercase() }, { it.hash }))
                         TorrentSort.HASH -> sortedBy { it.hash }
                         TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
                         TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
