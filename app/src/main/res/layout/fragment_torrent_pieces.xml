@@ -25,6 +25,7 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
             android:orientation="vertical"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +33,8 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="20"
             tools:listitem="@layout/item_torrent_piece"
-            tools:spanCount="20" />
+            tools:spanCount="20"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

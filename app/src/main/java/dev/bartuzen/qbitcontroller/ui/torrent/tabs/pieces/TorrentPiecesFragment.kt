@@ -22,7 +22,9 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toDp
 import dev.bartuzen.qbitcontroller.utils.toPx
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.isActive
 
@@ -96,6 +98,20 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
             binding.swipeRefresh.isRefreshing = isRefreshing
+        }
+
+        combine(viewModel.torrentProperties, viewModel.torrentPieces) { properties, pieces ->
+            properties != null && pieces != null
+        }.launchAndCollectLatestIn(viewLifecycleOwner) { isVisible ->
+            if (isVisible) {
+                binding.recyclerPieces.alpha = 0f
+                binding.recyclerPieces.visibility = View.VISIBLE
+                binding.recyclerPieces.animate().apply {
+                    alpha(1f)
+                    duration = 120
+                }
+                cancel()
+            }
         }
 
         viewModel.torrentProperties.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { properties ->
