@@ -177,7 +177,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             if (interval != 0) {
                 while (isActive) {
                     delay(interval * 1000L)
-                    if (isActive) {
+                    if (isActive && actionMode == null) {
                         viewModel.loadPeers(serverConfig, torrentHash)
                     }
                 }

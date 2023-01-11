@@ -224,7 +224,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
             if (interval != 0) {
                 while (isActive) {
                     delay(interval * 1000L)
-                    if (isActive) {
+                    if (isActive && actionMode == null) {
                         viewModel.loadFiles(serverConfig, torrentHash)
                     }
                 }

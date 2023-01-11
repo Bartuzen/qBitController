@@ -433,7 +433,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             if (interval != 0) {
                 while (isActive) {
                     delay(interval * 1000L)
-                    if (isActive) {
+                    if (isActive && actionMode == null) {
                         viewModel.loadTorrentList(serverConfig)
                     }
                 }
