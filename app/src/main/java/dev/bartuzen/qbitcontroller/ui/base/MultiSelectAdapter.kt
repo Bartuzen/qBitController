@@ -86,22 +86,25 @@ abstract class MultiSelectAdapter<T, K, VH : MultiSelectAdapter.ViewHolder<T, K>
 
     // if an item is removed after list changed, remove its key from selected list
     override fun onCurrentListChanged(previousList: MutableList<T>, currentList: MutableList<T>) {
-        val updatedList = selectedItems.filter { key ->
+        val oldList = selectedItems
+
+        val newList = oldList.filter { key ->
             currentList.find { item ->
                 getKey(item) == key
             } != null
         }
 
-        val isOldListEmpty = selectedItems.isEmpty()
+        val isUpdateSelection = oldList != newList
+        val isSelectionModeEnd = oldList.isNotEmpty() && newList.isEmpty()
 
         _selectedItems.clear()
-        _selectedItems.addAll(updatedList)
+        _selectedItems.addAll(newList)
 
-        if (updatedList.size != selectedItemCount) {
+        if (isUpdateSelection) {
             onUpdateSelection?.invoke()
         }
 
-        if (!isOldListEmpty && updatedList.isEmpty()) {
+        if (isSelectionModeEnd) {
             onSelectionModeEnd?.invoke()
         }
     }
