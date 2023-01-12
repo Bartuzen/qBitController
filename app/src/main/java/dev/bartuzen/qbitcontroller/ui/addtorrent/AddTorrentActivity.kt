@@ -226,7 +226,7 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
-            binding.progressIndicator.visibility = if (isCreating) View.VISIBLE else View.INVISIBLE
+            binding.progressIndicator.visibility = if (isCreating) View.VISIBLE else View.GONE
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(this) { isLoading ->
