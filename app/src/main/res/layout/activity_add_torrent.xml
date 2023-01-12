@@ -36,14 +36,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.core.widget.NestedScrollView
+            <ScrollView
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="8dp">
@@ -281,7 +282,7 @@
 
                 </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
+            </ScrollView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
