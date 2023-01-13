@@ -37,3 +37,15 @@ allprojects {
 task<Delete>("clean") {
     delete(buildDir)
 }
+
+// Workaround until AGP 8.0
+// https://issuetracker.google.com/issues/247906487
+if (com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.startsWith("7.")) {
+    val loggerFactory = org.slf4j.LoggerFactory.getILoggerFactory()
+    val addNoOpLogger = loggerFactory.javaClass.getDeclaredMethod("addNoOpLogger", String::class.java)
+    addNoOpLogger.isAccessible = true
+    addNoOpLogger.invoke(loggerFactory, "com.android.build.api.component.impl.MutableListBackedUpWithListProperty")
+    addNoOpLogger.invoke(loggerFactory, "com.android.build.api.component.impl.MutableMapBackedUpWithMapProperty")
+} else {
+    error("AGP major version changed, remove the workaround.")
+}
