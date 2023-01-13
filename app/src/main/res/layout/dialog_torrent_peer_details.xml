@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp">
+
+    <TextView
+        android:id="@+id/text_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Country Text" />
+
+    <TextView
+        android:id="@+id/text_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Connection Text" />
+
+    <TextView
+        android:id="@+id/text_flags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Flags Text" />
+
+    <TextView
+        android:id="@+id/text_flags_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/text_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Client Text" />
+
+    <TextView
+        android:id="@+id/text_peer_id_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Peer ID Client Text" />
+
+    <TextView
+        android:id="@+id/text_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Progress Text" />
+
+    <TextView
+        android:id="@+id/text_download_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Download Speed Text" />
+
+    <TextView
+        android:id="@+id/text_upload_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Upload Speed Text" />
+
+    <TextView
+        android:id="@+id/text_downloaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Downloaded Text" />
+
+    <TextView
+        android:id="@+id/text_uploaded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Uploaded Text" />
+
+    <TextView
+        android:id="@+id/text_relevance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Relevance Text" />
+
+    <TextView
+        android:id="@+id/text_files"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Files Text" />
+
+    <TextView
+        android:id="@+id/text_files_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:visibility="gone" />
+
+</LinearLayout>

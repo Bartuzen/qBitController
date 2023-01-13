@@ -2,6 +2,8 @@ package dev.bartuzen.qbitcontroller.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.PeerFilesDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.PeerFlagDeserializer
 
 data class TorrentPeer(
@@ -19,7 +21,37 @@ data class TorrentPeer(
 
     @JsonProperty("flags")
     @JsonDeserialize(using = PeerFlagDeserializer::class)
-    val flags: List<PeerFlag>
+    val flags: List<PeerFlag>,
+
+    @JsonProperty("client")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val client: String?,
+
+    @JsonProperty("peer_id_client")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val peerIdClient: String?,
+
+    @JsonProperty("dl_speed")
+    val downloadSpeed: Int,
+
+    @JsonProperty("up_speed")
+    val uploadSpeed: Int,
+
+    @JsonProperty("downloaded")
+    val downloaded: Long,
+
+    @JsonProperty("uploaded")
+    val uploaded: Long,
+
+    @JsonProperty("progress")
+    val progress: Double,
+
+    @JsonProperty("relevance")
+    val relevance: Double,
+
+    @JsonProperty("files")
+    @JsonDeserialize(using = PeerFilesDeserializer::class)
+    val files: List<String>
 )
 
 enum class PeerFlag(val flag: String) {

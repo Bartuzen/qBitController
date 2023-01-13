@@ -323,6 +323,36 @@
     <string name="torrent_peers_banned">Peers banned successfully.</string>
     <string name="torrent_peers_invalid">Entered peers are not valid.</string>
 
+    <string name="torrent_peers_details_country">@string/torrent_peers_country</string>
+    <string name="torrent_peers_details_connection">@string/torrent_peers_connection</string>
+    <string name="torrent_peers_details_flags">@string/torrent_peers_flags</string>
+    <string name="torrent_peers_details_client">Client: %1$s</string>
+    <string name="torrent_peers_details_peer_id_client">Peer ID Client: %1$s</string>
+    <string name="torrent_peers_details_progress">Progress: %1$s%%</string>
+    <string name="torrent_peers_details_download_speed">Download Speed: %1$s</string>
+    <string name="torrent_peers_details_upload_speed">Upload Speed: %1$s</string>
+    <string name="torrent_peers_details_downloaded">Downloaded: %1$s</string>
+    <string name="torrent_peers_details_uploaded">Uploaded: %1$s</string>
+    <string name="torrent_peers_details_relevance">Relevance: %1$s%%</string>
+    <string name="torrent_peers_details_files">Files: %1$s</string>
+
+    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
+    <string name="torrent_peers_flag_interested_local_choked_peer">Interested (local) and choked (peer)</string>
+    <string name="torrent_peers_flag_interested_local_unchoked_peer">Interested (local) and unchoked (peer)</string>
+    <string name="torrent_peers_flag_interested_peer_choked_local">Interested (peer) and choked (local)</string>
+    <string name="torrent_peers_flag_interested_peer_unchoked_local">Interested (peer) and unchoked (local)</string>
+    <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Not interested (local) and unchoked (peer)</string>
+    <string name="torrent_peers_flag_not_interested_peer_unchoked_local">Not interested (peer) and unchoked (local)</string>
+    <string name="torrent_peers_flag_optimistic_unchoke">Optimistic unchoke</string>
+    <string name="torrent_peers_flag_peer_snubbed">Peer snubbed</string>
+    <string name="torrent_peers_flag_incoming_connection">Incoming connection</string>
+    <string name="torrent_peers_flag_peer_from_dht">Peer from DHT</string>
+    <string name="torrent_peers_flag_peer_from_pex">Peer from PEX</string>
+    <string name="torrent_peers_flag_peer_from_lsd">Peer from LSD</string>
+    <string name="torrent_peers_flag_encrypted_traffic">Encrypted traffic</string>
+    <string name="torrent_peers_flag_encrypted_handshake">Encrypted handshake</string>
+    <string name="torrent_peers_flag_utp">µTP</string>
+
     <string name="torrent_error_not_found">Torrent not found.</string>
 
     <string name="torrent_add_menu_add_torrent">Add Torrent</string>

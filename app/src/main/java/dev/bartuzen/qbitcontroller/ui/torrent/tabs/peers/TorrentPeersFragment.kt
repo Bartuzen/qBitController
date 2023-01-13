@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
+import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.ActionMode
@@ -19,9 +20,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeerDetailsBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
+import dev.bartuzen.qbitcontroller.model.PeerFlag
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.model.TorrentPeer
+import dev.bartuzen.qbitcontroller.utils.formatBytes
+import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -36,6 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
 class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
@@ -80,6 +87,9 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
         var actionMode: ActionMode? = null
         val adapter = TorrentPeersAdapter().apply {
+            onClick { peer ->
+                showPeerDetailsDialog(peer)
+            }
             onSelectionModeStart {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
@@ -204,6 +214,87 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                         viewModel.loadPeers(serverConfig, torrentHash)
                     }
                 }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showPeerDetailsDialog(peer: TorrentPeer) {
+        showDialog(DialogTorrentPeerDetailsBinding::inflate) { binding ->
+            setTitle(getString(R.string.torrent_peers_ip_format, peer.ip, peer.port))
+            setPositiveButton()
+
+            val countryName = Locale("", peer.countryCode).getDisplayCountry(
+                Locale(context.getString(R.string.language_code))
+            )
+
+            val progress = peer.progress.let { progress ->
+                if (progress < 1) {
+                    (progress * 100).toString()
+                } else {
+                    "100"
+                }
+            }
+
+            val relevance = peer.relevance.let { relevance ->
+                if (relevance < 1) {
+                    (relevance * 100).toString()
+                } else {
+                    "100"
+                }
+            }
+
+            val downloadSpeed = formatBytesPerSecond(requireContext(), peer.downloadSpeed.toLong())
+            val uploadSpeed = formatBytesPerSecond(requireContext(), peer.uploadSpeed.toLong())
+            val downloaded = formatBytes(requireContext(), peer.downloaded)
+            val uploaded = formatBytes(requireContext(), peer.uploaded)
+
+            val flagsText = if (peer.flags.isNotEmpty()) "" else "-"
+            val filesText = if (peer.files.isNotEmpty()) "" else "-"
+
+            binding.textCountry.text = getString(R.string.torrent_peers_details_country, countryName)
+            binding.textConnection.text = getString(R.string.torrent_peers_details_connection, peer.connection)
+            binding.textFlags.text = getString(R.string.torrent_peers_details_flags, flagsText)
+            binding.textClient.text = getString(R.string.torrent_peers_details_client, peer.client ?: "-")
+            binding.textPeerIdClient.text =
+                getString(R.string.torrent_peers_details_peer_id_client, peer.peerIdClient ?: "-")
+            binding.textProgress.text = getString(R.string.torrent_peers_details_progress, progress)
+            binding.textDownloadSpeed.text = getString(R.string.torrent_peers_details_download_speed, downloadSpeed)
+            binding.textUploadSpeed.text = getString(R.string.torrent_peers_details_upload_speed, uploadSpeed)
+            binding.textDownloaded.text = getString(R.string.torrent_peers_details_downloaded, downloaded)
+            binding.textUploaded.text = getString(R.string.torrent_peers_details_uploaded, uploaded)
+            binding.textRelevance.text = getString(R.string.torrent_peers_details_relevance, relevance)
+            binding.textFiles.text = getString(R.string.torrent_peers_details_files, filesText)
+
+            if (peer.flags.isNotEmpty()) {
+                binding.textFlagsDesc.visibility = View.VISIBLE
+                binding.textFlagsDesc.text = peer.flags.joinToString("\n") { flag ->
+                    val resId = when (flag) {
+                        PeerFlag.INTERESTED_LOCAL_CHOKED_PEER -> R.string.torrent_peers_flag_interested_local_choked_peer
+                        PeerFlag.INTERESTED_LOCAL_UNCHOKED_PEER -> R.string.torrent_peers_flag_interested_local_unchoked_peer
+                        PeerFlag.INTERESTED_PEER_CHOKED_LOCAL -> R.string.torrent_peers_flag_interested_peer_choked_local
+                        PeerFlag.INTERESTED_PEER_UNCHOKED_LOCAL -> R.string.torrent_peers_flag_interested_peer_unchoked_local
+                        PeerFlag.NOT_INTERESTED_LOCAL_UNCHOKED_PEER ->
+                            R.string.torrent_peers_flag_not_interested_local_unchoked_peer
+                        PeerFlag.NOT_INTERESTED_PEER_UNCHOKED_LOCAL ->
+                            R.string.torrent_peers_flag_not_interested_peer_unchoked_local
+                        PeerFlag.OPTIMISTIC_UNCHOKE -> R.string.torrent_peers_flag_optimistic_unchoke
+                        PeerFlag.PEER_SNUBBED -> R.string.torrent_peers_flag_peer_snubbed
+                        PeerFlag.INCOMING_CONNECTION -> R.string.torrent_peers_flag_incoming_connection
+                        PeerFlag.PEER_FROM_DHT -> R.string.torrent_peers_flag_peer_from_dht
+                        PeerFlag.PEER_FROM_PEX -> R.string.torrent_peers_flag_peer_from_pex
+                        PeerFlag.PEER_FROM_LSD -> R.string.torrent_peers_flag_peer_from_lsd
+                        PeerFlag.ENCRYPTED_TRAFFIC -> R.string.torrent_peers_flag_encrypted_traffic
+                        PeerFlag.ENCRYPTED_HANDSHAKE -> R.string.torrent_peers_flag_encrypted_handshake
+                        PeerFlag.UTP -> R.string.torrent_peers_flag_utp
+                    }
+                    getString(R.string.torrent_peers_flag_format, flag.flag, getString(resId))
+                }
+            }
+
+            if (peer.files.isNotEmpty()) {
+                binding.textFilesDesc.visibility = View.VISIBLE
+                binding.textFilesDesc.text = peer.files.joinToString("\n")
             }
         }
     }
