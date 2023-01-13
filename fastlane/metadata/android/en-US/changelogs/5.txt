@@ -1,0 +1,7 @@
+- Added support for self-signed certificates.
+- Added option to update torrent and torrent list periodically.
+- Added more information to torrent overview screen.
+- Added torrent peers tab to torrent screen.
+- Fixed sorting torrents by name not working properly.
+
+Check GitHub release for all changes.

@@ -17,8 +17,8 @@ android {
         applicationId = "dev.bartuzen.qbitcontroller"
         minSdk = 21
         targetSdk = 33
-        versionCode = 4
-        versionName = "0.3.0"
+        versionCode = 5
+        versionName = "0.4.0"
     }
 
     buildTypes {
