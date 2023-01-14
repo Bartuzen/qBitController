@@ -107,6 +107,7 @@ class MainActivity : AppCompatActivity() {
 
         val addServerAdapter = AddServerAdapter(
             onClick = {
+                binding.layoutDrawer.close()
                 val intent = Intent(this, SettingsActivity::class.java).apply {
                     putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
                 }
