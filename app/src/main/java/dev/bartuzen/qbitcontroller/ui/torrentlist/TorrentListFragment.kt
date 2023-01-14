@@ -445,7 +445,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 is TorrentListViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
-                is TorrentListViewModel.Event.QueueingNotEnabled -> {
+                TorrentListViewModel.Event.QueueingNotEnabled -> {
                     showSnackbar(R.string.torrent_queueing_is_not_enabled)
                 }
                 is TorrentListViewModel.Event.TorrentsDeleted -> {
