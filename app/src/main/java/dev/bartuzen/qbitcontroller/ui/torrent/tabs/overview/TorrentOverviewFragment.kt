@@ -32,6 +32,7 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category.TorrentCategoryDialog
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.tags.TorrentTagsDialog
+import dev.bartuzen.qbitcontroller.utils.copyToClipboard
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -87,6 +88,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         val autoTmm = menu.findItem(R.id.menu_automatic_torrent_management)
                         val forceStart = menu.findItem(R.id.menu_force_start)
                         val superSeeding = menu.findItem(R.id.menu_super_seeding)
+                        val copyName = menu.findItem(R.id.menu_copy_name)
+                        val copyMagnet = menu.findItem(R.id.menu_copy_magnet)
 
                         tags.isEnabled = torrent != null
                         shareLimit.isEnabled = torrent != null
@@ -95,6 +98,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         autoTmm.isEnabled = torrent != null
                         forceStart.isEnabled = torrent != null
                         superSeeding.isEnabled = torrent != null
+                        copyName.isEnabled = torrent != null
+                        copyMagnet.isEnabled = torrent != null
 
                         reannounce.isEnabled = torrent != null && when (torrent.state) {
                             TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP, TorrentState.QUEUED_DL,
@@ -176,6 +181,21 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         R.id.menu_super_seeding -> {
                             val isEnabled = viewModel.torrent.value?.isSuperSeedingEnabled ?: return true
                             viewModel.setSuperSeeding(serverConfig, torrentHash, !isEnabled)
+                        }
+                        R.id.menu_copy_name -> {
+                            val torrent = viewModel.torrent.value
+                            if (torrent != null) {
+                                requireContext().copyToClipboard(torrent.name)
+                            }
+                        }
+                        R.id.menu_copy_hash -> {
+                            requireContext().copyToClipboard(torrentHash)
+                        }
+                        R.id.menu_copy_magnet -> {
+                            val torrent = viewModel.torrent.value
+                            if (torrent != null) {
+                                requireContext().copyToClipboard(torrent.magnetUri)
+                            }
                         }
                         else -> return false
                     }

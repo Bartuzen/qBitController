@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.utils
 
 import android.app.Activity
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build.VERSION
@@ -58,4 +59,10 @@ fun FragmentTransaction.setDefaultAnimations() {
         R.anim.slide_in_left,
         R.anim.slide_out_right
     )
+}
+
+fun Context.copyToClipboard(text: String, label: String? = null) {
+    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = android.content.ClipData.newPlainText(label, text)
+    clipboard.setPrimaryClip(clip)
 }

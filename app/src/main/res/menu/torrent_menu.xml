@@ -110,4 +110,27 @@
         android:title="@string/torrent_menu_super_seeding"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_move_storage"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_copy"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/menu_copy_name"
+                android:title="@string/torrent_menu_copy_name"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/menu_copy_hash"
+                android:title="@string/torrent_menu_copy_hash"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/menu_copy_magnet"
+                android:title="@string/torrent_menu_copy_magnet_uri"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
 </menu>

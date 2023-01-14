@@ -176,6 +176,10 @@
     <string name="torrent_menu_automatic_torrent_management">Automatic Torrent Management</string>
     <string name="torrent_menu_force_start">Force Start</string>
     <string name="torrent_menu_super_seeding">Super Seeding</string>
+    <string name="torrent_menu_copy">Copy</string>
+    <string name="torrent_menu_copy_name">Name</string>
+    <string name="torrent_menu_copy_hash">Hash</string>
+    <string name="torrent_menu_copy_magnet_uri">Magnet URI</string>
 
     <string name="torrent_toggle_sequential_download_success">Sequential download toggled successfully.</string>
     <string name="torrent_toggle_prioritize_first_last_pieces">Prioritizing first and last pieces toggled successfully.</string>

@@ -93,6 +93,9 @@ data class Torrent(
     @JsonProperty("super_seeding")
     val isSuperSeedingEnabled: Boolean,
 
+    @JsonProperty("magnet_uri")
+    val magnetUri: String,
+
     @JsonProperty("time_active")
     val timeActive: Long,
 
