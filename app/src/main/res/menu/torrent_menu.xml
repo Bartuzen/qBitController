@@ -40,6 +40,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_share_limit"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_share_limit"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_rename"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_rename"

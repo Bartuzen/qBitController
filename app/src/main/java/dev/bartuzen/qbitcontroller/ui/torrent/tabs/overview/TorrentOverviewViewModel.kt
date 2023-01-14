@@ -299,6 +299,18 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun setShareLimit(serverConfig: ServerConfig, torrentHash: String, ratioLimit: Double, seedingTimeLimit: Int) =
+        viewModelScope.launch {
+            when (val result = repository.setShareLimit(serverConfig, torrentHash, ratioLimit, seedingTimeLimit)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.ShareLimitUpdated)
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
@@ -317,5 +329,6 @@ class TorrentOverviewViewModel @Inject constructor(
         data class SuperSeedingChanged(val isEnabled: Boolean) : Event()
         object CategoryUpdated : Event()
         object TagsUpdated : Event()
+        object ShareLimitUpdated : Event()
     }
 }

@@ -189,6 +189,7 @@
 
     <string name="torrent_menu_category">Set Category</string>
     <string name="torrent_menu_tags">Set Tags</string>
+    <string name="torrent_menu_share_limit">Share Limit</string>
     <string name="torrent_menu_recheck">Force Recheck</string>
     <string name="torrent_menu_reannounce">Force Reannounce</string>
     <string name="torrent_menu_rename">Rename Torrent</string>
@@ -197,6 +198,7 @@
 
     <string name="torrent_category_dialog_title">@string/torrent_menu_category</string>
     <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
+    <string name="torrent_share_limit_dialog_title">@string/torrent_menu_share_limit</string>
     <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
     <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>
     <string name="torrent_upspeed_limit_dialog_title">@string/torrent_menu_upspeed_limit</string>
@@ -207,10 +209,17 @@
 
     <string name="torrent_category_update_success">Category updated successfully.</string>
     <string name="torrent_tags_update_success">Tags updated successfully.</string>
+    <string name="torrent_share_limit_update_success">Share limit updated successfully.</string>
     <string name="torrent_rename_success">Updated torrent name successfully.</string>
     <string name="torrent_rename_name_cannot_be_blank">Torrent name cannot be blank.</string>
     <string name="torrent_dlspeed_limit_change_success">Changed download speed limit successfully.</string>
     <string name="torrent_upspeed_limit_change_success">Changed upload speed limit successfully.</string>
+
+    <string name="torrent_share_limit_global">Use global share limit</string>
+    <string name="torrent_share_limit_disable">Disable share limit</string>
+    <string name="torrent_share_limit_custom">Set custom share limit</string>
+    <string name="torrent_share_limit_hint_ratio">Ratio</string>
+    <string name="torrent_share_limit_hint_time">Minutes</string>
 
     <string name="torrent_no_categories">Couldn\'t find any categories.</string>
     <string name="torrent_no_tags">Couldn\'t find any tags.</string>

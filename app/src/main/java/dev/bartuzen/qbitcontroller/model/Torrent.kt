@@ -116,7 +116,13 @@ data class Torrent(
 
     @JsonProperty("seen_complete")
     @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
-    val lastSeenComplete: Long?
+    val lastSeenComplete: Long?,
+
+    @JsonProperty("ratio_limit")
+    val ratioLimit: Double,
+
+    @JsonProperty("seeding_time_limit")
+    val seedingTimeLimit: Int
 )
 
 enum class TorrentState {

@@ -108,6 +108,14 @@ interface TorrentService {
     suspend fun createTags(@Field("tags") names: String): Response<Unit>
 
     @FormUrlEncoded
+    @POST("api/v2/torrents/setShareLimits")
+    suspend fun setShareLimit(
+        @Field("hashes") hashes: String,
+        @Field("ratioLimit") ratioLimit: Double,
+        @Field("seedingTimeLimit") seedingTimeLimit: Int
+    ): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/torrents/toggleSequentialDownload")
     suspend fun toggleSequentialDownload(@Field("hashes") hashes: String): Response<Unit>
 
