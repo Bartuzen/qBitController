@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
+import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -34,7 +35,7 @@ class TorrentListViewModel @Inject constructor(
     private val _torrentList = MutableStateFlow<List<Torrent>?>(null)
     val torrentList = _torrentList.asStateFlow()
 
-    private val _categoryList = MutableStateFlow<List<String>?>(null)
+    private val _categoryList = MutableStateFlow<List<Category>?>(null)
     val categoryList = _categoryList.asStateFlow()
 
     private val _tagList = MutableStateFlow<List<String>?>(null)
@@ -159,8 +160,7 @@ class TorrentListViewModel @Inject constructor(
                 is RequestResult.Success -> {
                     result.data.values
                         .toList()
-                        .map { it.name }
-                        .sortedBy { it }
+                        .sortedBy { it.name.lowercase() }
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
@@ -337,6 +337,21 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
+    fun editCategory(serverConfig: ServerConfig, name: String, savePath: String) = viewModelScope.launch {
+        when (val result = repository.editCategory(serverConfig, name, savePath)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.CategoryEdited)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.CategoryEditingFailed)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
     fun createTags(serverConfig: ServerConfig, names: List<String>) = viewModelScope.launch {
         when (val result = repository.createTags(serverConfig, names)) {
             is RequestResult.Success -> {
@@ -375,6 +390,7 @@ class TorrentListViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object QueueingNotEnabled : Event()
+        object CategoryEditingFailed : Event()
         data class TorrentsDeleted(val count: Int) : Event()
         data class TorrentsPaused(val count: Int) : Event()
         data class TorrentsResumed(val count: Int) : Event()
@@ -385,6 +401,7 @@ class TorrentListViewModel @Inject constructor(
         object TorrentsPriorityMaximized : Event()
         object TorrentsPriorityMinimized : Event()
         object CategoryCreated : Event()
+        object CategoryEdited : Event()
         object TagCreated : Event()
     }
 }

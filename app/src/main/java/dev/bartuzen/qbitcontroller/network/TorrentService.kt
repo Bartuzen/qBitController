@@ -100,6 +100,10 @@ interface TorrentService {
     suspend fun createCategory(@Field("category") name: String, @Field("savePath") savePath: String): Response<Unit>
 
     @FormUrlEncoded
+    @POST("api/v2/torrents/editCategory")
+    suspend fun editCategory(@Field("category") name: String, @Field("savePath") savePath: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/torrents/createTags")
     suspend fun createTags(@Field("tags") names: String): Response<Unit>
 

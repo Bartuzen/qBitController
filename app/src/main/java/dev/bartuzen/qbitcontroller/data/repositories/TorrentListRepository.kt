@@ -70,6 +70,11 @@ class TorrentListRepository @Inject constructor(
             service.createCategory(name, savePath)
         }
 
+    suspend fun editCategory(serverConfig: ServerConfig, name: String, savePath: String) =
+        requestManager.request(serverConfig) { service ->
+            service.editCategory(name, savePath)
+        }
+
     suspend fun createTags(serverConfig: ServerConfig, names: List<String>) =
         requestManager.request(serverConfig) { service ->
             service.createTags(names.joinToString(","))

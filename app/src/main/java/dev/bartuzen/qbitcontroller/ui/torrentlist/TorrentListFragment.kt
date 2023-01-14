@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.text.InputType
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
@@ -41,6 +42,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
@@ -355,7 +357,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             },
             onLongClick = { isCategory, name ->
                 activityBinding.layoutDrawer.close()
-                showDeleteCategoryTagDialog(isCategory, name)
+
+                if (isCategory) {
+                    showCategoryLongClickDialog(name)
+                } else {
+                    showDeleteCategoryTagDialog(false, name)
+                }
             },
             onCreateClick = { isCategory ->
                 activityBinding.layoutDrawer.close()
@@ -426,7 +433,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 null
             }
         }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (categoryList, tagList) ->
-            categoryTagAdapter.submitLists(categoryList, tagList)
+            categoryTagAdapter.submitLists(categoryList.map { it.name }, tagList)
         }
 
         viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner) { interval ->
@@ -447,6 +454,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
                 TorrentListViewModel.Event.QueueingNotEnabled -> {
                     showSnackbar(R.string.torrent_queueing_is_not_enabled)
+                }
+                TorrentListViewModel.Event.CategoryEditingFailed -> {
+                    showSnackbar(R.string.torrent_list_edit_category_fail)
                 }
                 is TorrentListViewModel.Event.TorrentsDeleted -> {
                     showSnackbar(
@@ -533,6 +543,10 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     showSnackbar(R.string.torrent_list_create_category_success)
                     viewModel.updateCategoryAndTags(serverConfig)
                 }
+                TorrentListViewModel.Event.CategoryEdited -> {
+                    showSnackbar(R.string.torrent_list_edit_category_success)
+                    viewModel.updateCategoryAndTags(serverConfig)
+                }
                 TorrentListViewModel.Event.TagCreated -> {
                     showSnackbar(R.string.torrent_list_create_tag_success)
                     viewModel.updateCategoryAndTags(serverConfig)
@@ -554,6 +568,50 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 viewModel.deleteTorrents(serverConfig, adapter.selectedItems.toList(), binding.checkDeleteFiles.isChecked)
                 adapter.finishSelection()
                 actionMode?.finish()
+            }
+            setNegativeButton()
+        }
+    }
+
+    private fun showCategoryLongClickDialog(name: String) {
+        showDialog {
+            setTitle(name)
+            setItems(
+                arrayOf(
+                    getString(R.string.torrent_list_edit_category_title),
+                    getString(R.string.torrent_list_delete_category_title)
+                )
+            ) { _, which ->
+                when (which) {
+                    0 -> {
+                        showRenameCategoryDialog(name)
+                    }
+                    1 -> {
+                        showDeleteCategoryTagDialog(true, name)
+                    }
+                }
+            }
+            setNegativeButton()
+        }
+    }
+
+    private fun showRenameCategoryDialog(name: String) {
+        showDialog(DialogCreateCategoryBinding::inflate) { binding ->
+            val savePath = viewModel.categoryList.value?.find { it.name == name }?.savePath ?: return@showDialog
+
+            binding.editName.isEnabled = false
+            binding.editName.inputType = InputType.TYPE_NULL
+
+            binding.inputLayoutName.setTextWithoutAnimation(name)
+            binding.inputLayoutSavePath.setTextWithoutAnimation(savePath)
+
+            setTitle(R.string.torrent_list_edit_category_title)
+            setPositiveButton { _, _ ->
+                viewModel.editCategory(
+                    serverConfig,
+                    name,
+                    binding.editSavePath.text.toString()
+                )
             }
             setNegativeButton()
         }

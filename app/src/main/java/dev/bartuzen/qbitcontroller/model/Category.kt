@@ -4,5 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class Category(
     @JsonProperty("name")
-    val name: String
+    val name: String,
+
+    @JsonProperty("savePath")
+    val savePath: String
 )

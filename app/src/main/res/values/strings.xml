@@ -125,10 +125,13 @@
 
     <string name="torrent_list_categories">Categories</string>
     <string name="torrent_list_create_category_title">Create Category</string>
+    <string name="torrent_list_edit_category_title">Edit Category</string>
     <string name="torrent_list_delete_category_title">Delete Category</string>
     <string name="torrent_list_delete_category_desc">Are you sure you want to delete category %1$s?</string>
     <string name="torrent_list_delete_category_success">Category %1$s deleted successfully.</string>
     <string name="torrent_list_create_category_success">Category created successfully.</string>
+    <string name="torrent_list_edit_category_success">Category edited successfully.</string>
+    <string name="torrent_list_edit_category_fail">Category editing failed.</string>
     <string name="torrent_list_create_category_hint">Category Name</string>
     <string name="torrent_list_create_category_save_path_hint">Save Path (Optional)</string>
 
