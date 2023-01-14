@@ -1,7 +1,21 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
     id("org.jmailen.kotlinter") version "3.13.0"
+    id("com.github.ben-manes.versions") version "0.44.0"
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    gradleReleaseChannel = "current"
+
+    rejectVersionIf {
+        val version = candidate.version
+        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        val isStable = stableKeyword || regex.matches(version)
+        !isStable
+    }
 }
 
 subprojects {
