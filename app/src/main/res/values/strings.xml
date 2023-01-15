@@ -60,9 +60,11 @@
     <string name="torrent_status_queued">Queued</string>
     <string name="torrent_status_stalled">Stalled</string>
     <string name="torrent_status_checking">Checking</string>
+    <string name="torrent_status_completed">Completed</string>
     <string name="torrent_status_force_seeding">[F] Seeding</string>
     <string name="torrent_status_allocating_space">Allocating Space</string>
     <string name="torrent_status_downloading">Downloading</string>
+    <string name="torrent_status_checking_resume_data">Checking Resume Data</string>
     <string name="torrent_status_downloading_metadata">Downloading Metadata</string>
     <string name="torrent_status_force_downloading">[F] Downloading</string>
     <string name="torrent_status_moving">Moving</string>

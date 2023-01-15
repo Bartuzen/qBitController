@@ -82,12 +82,13 @@ fun formatTorrentState(context: Context, state: TorrentState) = context.getStrin
     when (state) {
         TorrentState.ERROR -> R.string.torrent_status_error
         TorrentState.MISSING_FILES -> R.string.torrent_status_missing_files
-        TorrentState.UPLOADING -> R.string.torrent_status_seeding
-        TorrentState.PAUSED_UP, TorrentState.PAUSED_DL -> R.string.torrent_status_paused
+        TorrentState.UPLOADING, TorrentState.STALLED_UP -> R.string.torrent_status_seeding
+        TorrentState.PAUSED_UP -> R.string.torrent_status_completed
+        TorrentState.PAUSED_DL -> R.string.torrent_status_paused
         TorrentState.QUEUED_UP, TorrentState.QUEUED_DL -> R.string.torrent_status_queued
-        TorrentState.STALLED_UP, TorrentState.STALLED_DL -> R.string.torrent_status_stalled
-        TorrentState.CHECKING_UP, TorrentState.CHECKING_DL, TorrentState.CHECKING_RESUME_DATA ->
-            R.string.torrent_status_checking
+        TorrentState.STALLED_DL -> R.string.torrent_status_stalled
+        TorrentState.CHECKING_UP, TorrentState.CHECKING_DL -> R.string.torrent_status_checking
+        TorrentState.CHECKING_RESUME_DATA -> R.string.torrent_status_checking_resume_data
         TorrentState.FORCED_UP -> R.string.torrent_status_force_seeding
         TorrentState.ALLOCATING -> R.string.torrent_status_allocating_space
         TorrentState.DOWNLOADING -> R.string.torrent_status_downloading
