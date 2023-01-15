@@ -109,7 +109,6 @@
                             android:layout_height="wrap_content"
                             android:gravity="top|start"
                             android:hint="@string/torrent_add_link_hint"
-                            android:importantForAutofill="no"
                             android:inputType="textMultiLine"
                             android:lines="4" />
 
@@ -185,7 +184,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/torrent_add_save_path"
-                            android:importantForAutofill="no"
                             android:inputType="none" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -201,7 +199,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/torrent_add_name"
-                            android:importantForAutofill="no"
                             android:inputType="text" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -217,7 +214,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/torrent_add_ratio_limit"
-                            android:importantForAutofill="no"
                             android:inputType="numberDecimal" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -233,7 +229,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/torrent_add_seeding_time_limit"
-                            android:importantForAutofill="no"
                             android:inputType="number" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -249,7 +244,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/torrent_add_dlspeed_limit"
-                            android:importantForAutofill="no"
                             android:inputType="numberDecimal" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -265,7 +259,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/torrent_add_upspeed_limit"
-                            android:importantForAutofill="no"
                             android:inputType="numberDecimal" />
 
                     </com.google.android.material.textfield.TextInputLayout>

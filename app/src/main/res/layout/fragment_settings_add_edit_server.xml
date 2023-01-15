@@ -43,7 +43,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/settings_server_name"
-                    android:importantForAutofill="no"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -73,7 +72,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/settings_server_host"
-                        android:importantForAutofill="no"
                         android:inputType="textUri" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -100,7 +98,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/settings_server_port"
-                        android:importantForAutofill="no"
                         android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -120,7 +117,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/settings_server_path"
-                        android:importantForAutofill="no"
                         android:inputType="textUri" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -142,7 +138,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/settings_server_username"
-                    android:importantForAutofill="no"
                     android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -163,7 +158,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/settings_server_password"
-                    android:importantForAutofill="no"
                     android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
