@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.view.LayoutInflater
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -14,44 +15,40 @@ fun <VB : ViewBinding> showDialog(
     bindingInflater: (LayoutInflater) -> VB,
     context: Context,
     block: MaterialAlertDialogBuilder.(binding: VB) -> Unit
-) {
+): AlertDialog {
     val binding = bindingInflater(LayoutInflater.from(context))
 
-    MaterialAlertDialogBuilder(context)
+    val dialog = MaterialAlertDialogBuilder(context)
         .setView(binding.root)
         .apply { block(binding) }
         .create()
-        .show()
+
+    dialog.show()
+    return dialog
 }
 
-fun showDialog(context: Context, block: MaterialAlertDialogBuilder.() -> Unit) {
-    MaterialAlertDialogBuilder(context)
+fun showDialog(context: Context, block: MaterialAlertDialogBuilder.() -> Unit): AlertDialog {
+    val dialog = MaterialAlertDialogBuilder(context)
         .apply { block() }
         .create()
-        .show()
+
+    dialog.show()
+    return dialog
 }
 
 fun <VB : ViewBinding> Fragment.showDialog(
     bindingInflater: (LayoutInflater) -> VB,
     block: MaterialAlertDialogBuilder.(binding: VB) -> Unit
-) {
-    showDialog(bindingInflater, requireContext(), block)
-}
+) = showDialog(bindingInflater, requireContext(), block)
 
-fun Fragment.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) {
-    showDialog(requireContext(), block)
-}
+fun Fragment.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) = showDialog(requireContext(), block)
 
 fun <VB : ViewBinding> Activity.showDialog(
     bindingInflater: (LayoutInflater) -> VB,
     block: MaterialAlertDialogBuilder.(binding: VB) -> Unit
-) {
-    showDialog(bindingInflater, this, block)
-}
+) = showDialog(bindingInflater, this, block)
 
-fun Activity.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) {
-    showDialog(this, block)
-}
+fun Activity.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) = showDialog(this, block)
 
 fun MaterialAlertDialogBuilder.setPositiveButton(
     @StringRes textId: Int = R.string.dialog_ok,
