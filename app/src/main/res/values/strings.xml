@@ -197,6 +197,7 @@
     <string name="torrent_menu_recheck">Force Recheck</string>
     <string name="torrent_menu_reannounce">Force Reannounce</string>
     <string name="torrent_menu_rename">Rename Torrent</string>
+    <string name="torrent_menu_location">Set Location</string>
     <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
     <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
 
@@ -204,6 +205,7 @@
     <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
     <string name="torrent_share_limit_dialog_title">@string/torrent_menu_share_limit</string>
     <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
+    <string name="torrent_location_dialog_title">@string/torrent_menu_location</string>
     <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>
     <string name="torrent_upspeed_limit_dialog_title">@string/torrent_menu_upspeed_limit</string>
 
@@ -215,7 +217,9 @@
     <string name="torrent_tags_update_success">Tags updated successfully.</string>
     <string name="torrent_share_limit_update_success">Share limit updated successfully.</string>
     <string name="torrent_rename_success">Updated torrent name successfully.</string>
+    <string name="torrent_location_update_success">Changed torrent location successfully.</string>
     <string name="torrent_rename_name_cannot_be_blank">Torrent name cannot be blank.</string>
+    <string name="torrent_location_cannot_be_blank">Location cannot be blank.</string>
     <string name="torrent_dlspeed_limit_change_success">Changed download speed limit successfully.</string>
     <string name="torrent_upspeed_limit_change_success">Changed upload speed limit successfully.</string>
 

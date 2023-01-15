@@ -24,6 +24,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitDownloadBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitUploadBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentRenameBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentShareLimitBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
@@ -152,6 +153,9 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         }
                         R.id.menu_rename -> {
                             showRenameTorrentDialog()
+                        }
+                        R.id.menu_location -> {
+                            showLocationDialog()
                         }
                         R.id.menu_recheck -> {
                             viewModel.recheckTorrent(serverConfig, torrentHash)
@@ -445,6 +449,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     showSnackbar(R.string.torrent_rename_success)
                     viewModel.loadTorrent(serverConfig, torrentHash)
                 }
+                TorrentOverviewViewModel.Event.LocationUpdated -> {
+                    showSnackbar(R.string.torrent_location_update_success)
+                    viewModel.loadTorrent(serverConfig, torrentHash)
+                }
                 TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
                     showSnackbar(R.string.torrent_toggle_sequential_download_success)
                     viewModel.loadTorrent(serverConfig, torrentHash)
@@ -602,6 +610,31 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 dialog.dismiss()
             } else {
                 dialogBinding.inputLayoutName.error = getString(R.string.torrent_rename_name_cannot_be_blank)
+            }
+        }
+    }
+
+    private fun showLocationDialog() {
+        lateinit var dialogBinding: DialogTorrentLocationBinding
+
+        val dialog = showDialog(DialogTorrentLocationBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            val name = viewModel.torrentProperties.value?.savePath
+            binding.inputLayoutLocation.setTextWithoutAnimation(name)
+
+            setTitle(R.string.torrent_location_dialog_title)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newLocation = dialogBinding.editLocation.text.toString()
+            if (newLocation.isNotBlank()) {
+                viewModel.setLocation(serverConfig, torrentHash, newLocation)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutLocation.error = getString(R.string.torrent_location_cannot_be_blank)
             }
         }
     }

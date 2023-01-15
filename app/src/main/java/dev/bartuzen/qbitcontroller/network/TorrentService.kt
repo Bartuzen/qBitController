@@ -171,6 +171,10 @@ interface TorrentService {
     suspend fun renameTorrent(@Field("hash") hash: String, @Field("name") name: String): Response<Unit>
 
     @FormUrlEncoded
+    @POST("api/v2/torrents/setLocation")
+    suspend fun setLocation(@Field("hashes") hashes: String, @Field("location") location: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/torrents/filePrio")
     suspend fun setFilePriority(
         @Field("hash") hash: String,

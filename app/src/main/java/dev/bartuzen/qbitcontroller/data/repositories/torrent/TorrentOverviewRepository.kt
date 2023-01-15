@@ -79,6 +79,11 @@ class TorrentOverviewRepository @Inject constructor(
             service.renameTorrent(hash, name)
         }
 
+    suspend fun setLocation(serverConfig: ServerConfig, hash: String, location: String) =
+        requestManager.request(serverConfig) { service ->
+            service.setLocation(hash, location)
+        }
+
     suspend fun setCategory(serverConfig: ServerConfig, hash: String, category: String?) =
         requestManager.request(serverConfig) { service ->
             service.setCategory(hash, category ?: "")

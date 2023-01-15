@@ -248,6 +248,17 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun setLocation(serverConfig: ServerConfig, torrentHash: String, location: String) = viewModelScope.launch {
+        when (val result = repository.setLocation(serverConfig, torrentHash, location)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.LocationUpdated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun setCategory(serverConfig: ServerConfig, torrentHash: String, category: String?) = viewModelScope.launch {
         when (val result = repository.setCategory(serverConfig, torrentHash, category)) {
             is RequestResult.Success -> {
@@ -320,6 +331,7 @@ class TorrentOverviewViewModel @Inject constructor(
         object TorrentRechecked : Event()
         object TorrentReannounced : Event()
         object TorrentRenamed : Event()
+        object LocationUpdated : Event()
         object SequentialDownloadToggled : Event()
         object PrioritizeFirstLastPiecesToggled : Event()
         data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()

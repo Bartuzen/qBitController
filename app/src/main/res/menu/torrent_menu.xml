@@ -52,6 +52,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_location"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_location"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_recheck"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_recheck"
