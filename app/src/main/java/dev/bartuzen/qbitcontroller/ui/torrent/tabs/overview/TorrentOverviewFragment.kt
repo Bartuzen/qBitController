@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
@@ -581,20 +582,27 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     private fun showRenameTorrentDialog() {
-        showDialog(DialogTorrentRenameBinding::inflate) { binding ->
+        lateinit var dialogBinding: DialogTorrentRenameBinding
+
+        val dialog = showDialog(DialogTorrentRenameBinding::inflate) { binding ->
+            dialogBinding = binding
+
             val name = viewModel.torrent.value?.name
             binding.inputLayoutName.setTextWithoutAnimation(name)
 
             setTitle(R.string.torrent_rename_dialog_title)
-            setPositiveButton { _, _ ->
-                val newName = binding.editName.text.toString()
-                if (newName.isNotBlank()) {
-                    viewModel.renameTorrent(serverConfig, torrentHash, newName)
-                } else {
-                    showSnackbar(R.string.torrent_rename_name_cannot_be_blank)
-                }
-            }
+            setPositiveButton()
             setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newName = dialogBinding.editName.text.toString()
+            if (newName.isNotBlank()) {
+                viewModel.renameTorrent(serverConfig, torrentHash, newName)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutName.error = getString(R.string.torrent_rename_name_cannot_be_blank)
+            }
         }
     }
 
