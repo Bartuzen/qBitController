@@ -9,6 +9,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_edit"
+        android:icon="@drawable/ic_rename"
+        android:title="@string/torrent_trackers_menu_edit"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
         android:title="@string/menu_select_all"

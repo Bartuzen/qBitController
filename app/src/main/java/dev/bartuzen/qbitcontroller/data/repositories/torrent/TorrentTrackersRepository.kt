@@ -22,4 +22,9 @@ class TorrentTrackersRepository @Inject constructor(
         requestManager.request(serverConfig) { service ->
             service.deleteTorrentTrackers(hash, urls.joinToString("|"))
         }
+
+    suspend fun editTrackers(serverConfig: ServerConfig, hash: String, tracker: String, newUrl: String) =
+        requestManager.request(serverConfig) { service ->
+            service.editTorrentTrackers(hash, tracker, newUrl)
+        }
 }

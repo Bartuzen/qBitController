@@ -99,10 +99,26 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
+    fun editTracker(serverConfig: ServerConfig, hash: String, tracker: String, newUrl: String) = viewModelScope.launch {
+        when (val result = repository.editTrackers(serverConfig, hash, tracker, newUrl)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TrackerEdited)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
         object TrackersAdded : Event()
         object TrackersDeleted : Event()
+        object TrackerEdited : Event()
     }
 }

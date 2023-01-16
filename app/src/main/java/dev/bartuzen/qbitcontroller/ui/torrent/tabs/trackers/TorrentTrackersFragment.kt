@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogEditTrackerBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTrackersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentTrackersBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -27,6 +29,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
@@ -106,6 +109,23 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                             }
                             true
                         }
+                        R.id.menu_edit -> {
+                            val selectedItem = selectedItems.first()
+                            if (selectedItem.first() == '1') {
+                                val tracker = selectedItem.substring(1)
+                                showEditTrackerDialog(
+                                    tracker = tracker,
+                                    onSuccess = { newUrl ->
+                                        viewModel.editTracker(serverConfig, torrentHash, tracker, newUrl)
+                                    }
+                                )
+                            } else {
+                                showSnackbar(R.string.torrent_trackers_cannot_edit_default)
+                                finishSelection()
+                                actionMode?.finish()
+                            }
+                            true
+                        }
                         R.id.menu_select_all -> {
                             selectAll()
                             true
@@ -135,6 +155,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                         itemCount
                     )
                 }
+                actionMode?.menu?.findItem(R.id.menu_edit)?.isEnabled = itemCount == 1
             }
         }
         binding.recyclerTrackers.adapter = adapter
@@ -206,6 +227,10 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                     showSnackbar(R.string.torrent_trackers_deleted)
                     viewModel.loadTrackers(serverConfig, torrentHash)
                 }
+                TorrentTrackersViewModel.Event.TrackerEdited -> {
+                    showSnackbar(R.string.torrent_trackers_edited)
+                    viewModel.loadTrackers(serverConfig, torrentHash)
+                }
             }
         }
     }
@@ -245,6 +270,30 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 onDelete()
             }
             setNegativeButton()
+        }
+    }
+
+    private fun showEditTrackerDialog(tracker: String, onSuccess: (newUrl: String) -> Unit) {
+        lateinit var dialogBinding: DialogEditTrackerBinding
+
+        val dialog = showDialog(DialogEditTrackerBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            binding.inputLayoutTrackerUrl.setTextWithoutAnimation(tracker)
+
+            setTitle(R.string.torrent_trackers_dialog_title_edit)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newUrl = dialogBinding.editTracker.text.toString()
+            if (newUrl.isNotBlank()) {
+                onSuccess(newUrl)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutTrackerUrl.error = getString(R.string.torrent_trackers_url_cannot_be_empty)
+            }
         }
     }
 

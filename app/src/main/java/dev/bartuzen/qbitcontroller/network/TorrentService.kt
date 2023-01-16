@@ -65,6 +65,14 @@ interface TorrentService {
     @POST("api/v2/torrents/removeTrackers")
     suspend fun deleteTorrentTrackers(@Field("hash") hash: String, @Field("urls") urls: String): Response<Unit>
 
+    @FormUrlEncoded
+    @POST("api/v2/torrents/editTracker")
+    suspend fun editTorrentTrackers(
+        @Field("hash") hash: String,
+        @Field("origUrl") tracker: String,
+        @Field("newUrl") newUrl: String
+    ): Response<Unit>
+
     @GET("api/v2/torrents/categories")
     suspend fun getCategories(): Response<Map<String, Category>>
 
