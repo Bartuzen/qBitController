@@ -124,6 +124,8 @@
     <string name="torrent_list_search_torrents">Search torrents…</string>
 
     <string name="torrent_list_category_tag_all">All</string>
+    <string name="torrent_list_uncategorized">Uncategorized</string>
+    <string name="torrent_list_untagged">Untagged</string>
 
     <string name="torrent_list_categories">Categories</string>
     <string name="torrent_list_create_category_title">Create Category</string>

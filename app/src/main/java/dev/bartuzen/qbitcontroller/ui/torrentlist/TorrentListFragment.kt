@@ -366,11 +366,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         )
 
         val categoryTagAdapter = CategoryTagAdapter(
-            onSelected = { isCategory, name ->
-                if (isCategory) {
-                    viewModel.setSelectedCategory(name)
-                } else {
-                    viewModel.setSelectedTag(name)
+            onSelected = { categoryTag ->
+                when (categoryTag) {
+                    is CategoryTag.ICategory -> {
+                        viewModel.setSelectedCategory(categoryTag)
+                    }
+                    is CategoryTag.ITag -> {
+                        viewModel.setSelectedTag(categoryTag)
+                    }
                 }
 
                 activityBinding.layoutDrawer.close()

@@ -42,8 +42,8 @@ class TorrentListViewModel @Inject constructor(
     val tagList = _tagList.asStateFlow()
 
     private val searchQuery = MutableStateFlow("")
-    private val selectedCategory = MutableStateFlow<String?>(null)
-    private val selectedTag = MutableStateFlow<String?>(null)
+    private val selectedCategory = MutableStateFlow<CategoryTag.ICategory>(CategoryTag.AllCategories)
+    private val selectedTag = MutableStateFlow<CategoryTag.ITag>(CategoryTag.AllTags)
     private val selectedFilter = MutableStateFlow(TorrentFilter.ALL)
 
     val torrentSort = settingsManager.sort.flow
@@ -121,14 +121,32 @@ class TorrentListViewModel @Inject constructor(
                         return@filter false
                     }
                 }
-                if (selectedCategory != null) {
-                    if (torrent.category != selectedCategory) {
-                        return@filter false
+
+                when (selectedCategory) {
+                    CategoryTag.AllCategories -> {}
+                    CategoryTag.Uncategorized -> {
+                        if (torrent.category != null) {
+                            return@filter false
+                        }
+                    }
+                    is CategoryTag.Category -> {
+                        if (torrent.category != selectedCategory.name) {
+                            return@filter false
+                        }
                     }
                 }
-                if (selectedTag != null) {
-                    if (selectedTag !in torrent.tags) {
-                        return@filter false
+
+                when (selectedTag) {
+                    CategoryTag.AllTags -> {}
+                    CategoryTag.Untagged -> {
+                        if (torrent.tags.isNotEmpty()) {
+                            return@filter false
+                        }
+                    }
+                    is CategoryTag.Tag -> {
+                        if (selectedTag.name !in torrent.tags) {
+                            return@filter false
+                        }
                     }
                 }
 
@@ -386,12 +404,12 @@ class TorrentListViewModel @Inject constructor(
         searchQuery.value = query
     }
 
-    fun setSelectedCategory(name: String?) {
-        selectedCategory.value = name
+    fun setSelectedCategory(category: CategoryTag.ICategory) {
+        selectedCategory.value = category
     }
 
-    fun setSelectedTag(name: String?) {
-        selectedTag.value = name
+    fun setSelectedTag(tag: CategoryTag.ITag) {
+        selectedTag.value = tag
     }
 
     fun setSelectedFilter(filter: TorrentFilter) {
