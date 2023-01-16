@@ -50,6 +50,11 @@
     </item>
 
     <item
+        android:id="@+id/menu_location"
+        android:title="@string/torrent_menu_location"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
         android:title="@string/menu_select_all"

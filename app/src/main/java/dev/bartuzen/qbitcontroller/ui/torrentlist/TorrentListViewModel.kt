@@ -326,6 +326,17 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
+    fun setLocation(serverConfig: ServerConfig, hashes: List<String>, location: String) = viewModelScope.launch {
+        when (val result = repository.setLocation(serverConfig, hashes, location)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.LocationUpdated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun createCategory(serverConfig: ServerConfig, name: String, savePath: String) = viewModelScope.launch {
         when (val result = repository.createCategory(serverConfig, name, savePath)) {
             is RequestResult.Success -> {
@@ -400,6 +411,7 @@ class TorrentListViewModel @Inject constructor(
         object TorrentsPriorityDecreased : Event()
         object TorrentsPriorityMaximized : Event()
         object TorrentsPriorityMinimized : Event()
+        object LocationUpdated : Event()
         object CategoryCreated : Event()
         object CategoryEdited : Event()
         object TagCreated : Event()

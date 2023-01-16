@@ -70,6 +70,9 @@ data class Torrent(
     @JsonProperty("num_incomplete")
     val totalLeeches: Int,
 
+    @JsonProperty("save_path")
+    val savePath: String?,
+
     @JsonProperty("category")
     @JsonDeserialize(using = NullableStringDeserializer::class)
     val category: String?,

@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.MenuItem.OnActionExpandListener
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.os.bundleOf
@@ -31,6 +32,7 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateCategoryBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
@@ -292,6 +294,24 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             actionMode?.finish()
                             true
                         }
+                        R.id.menu_location -> {
+                            val selectedItems = selectedItems.toList()
+
+                            val currentLocation =
+                                viewModel.torrentList.value
+                                    ?.filter { torrent -> torrent.hash in selectedItems }
+                                    ?.distinctBy { torrent -> torrent.savePath }
+                                    ?.let { list ->
+                                        if (list.size == 1) list.first().savePath else null
+                                    }
+                            showLocationDialog(
+                                currentLocation = currentLocation,
+                                onSuccess = { newLocation ->
+                                    viewModel.setLocation(serverConfig, selectedItems, newLocation)
+                                }
+                            )
+                            true
+                        }
                         R.id.menu_select_all -> {
                             selectAll()
                             true
@@ -539,6 +559,10 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         viewModel.loadTorrentList(serverConfig)
                     }
                 }
+                TorrentListViewModel.Event.LocationUpdated -> {
+                    showSnackbar(R.string.torrent_location_update_success)
+                    viewModel.loadTorrentList(serverConfig)
+                }
                 TorrentListViewModel.Event.CategoryCreated -> {
                     showSnackbar(R.string.torrent_list_create_category_success)
                     viewModel.updateCategoryAndTags(serverConfig)
@@ -570,6 +594,30 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 actionMode?.finish()
             }
             setNegativeButton()
+        }
+    }
+
+    private fun showLocationDialog(currentLocation: String?, onSuccess: (newLocation: String) -> Unit) {
+        lateinit var dialogBinding: DialogTorrentLocationBinding
+
+        val dialog = showDialog(DialogTorrentLocationBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            binding.inputLayoutLocation.setTextWithoutAnimation(currentLocation)
+
+            setTitle(R.string.torrent_location_dialog_title)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newLocation = dialogBinding.editLocation.text.toString()
+            if (newLocation.isNotBlank()) {
+                onSuccess(newLocation)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutLocation.error = getString(R.string.torrent_location_cannot_be_blank)
+            }
         }
     }
 
