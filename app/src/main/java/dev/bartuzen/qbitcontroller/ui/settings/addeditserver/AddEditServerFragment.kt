@@ -23,6 +23,7 @@ import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -117,7 +118,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             binding.progressIndicator.visibility = if (isTesting) View.VISIBLE else View.GONE
         }
 
-        viewModel.eventFlow.launchAndCollectLatestIn(viewLifecycleOwner) { event ->
+        viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is AddEditServerViewModel.Event.TestFailure -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))

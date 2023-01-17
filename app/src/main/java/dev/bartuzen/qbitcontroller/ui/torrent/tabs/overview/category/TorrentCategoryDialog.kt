@@ -15,6 +15,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentCategoryBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
@@ -81,7 +82,7 @@ class TorrentCategoryDialog() : DialogFragment() {
             cancel()
         }
 
-        viewModel.eventFlow.launchAndCollectLatestIn(this@TorrentCategoryDialog) { event ->
+        viewModel.eventFlow.launchAndCollectIn(this@TorrentCategoryDialog) { event ->
             when (event) {
                 is TorrentCategoryViewModel.Event.Error -> {
                     parentFragment.onCategoryDialogError(event.result)

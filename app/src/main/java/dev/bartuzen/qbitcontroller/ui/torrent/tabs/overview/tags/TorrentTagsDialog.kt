@@ -15,6 +15,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTagsBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
@@ -77,7 +78,7 @@ class TorrentTagsDialog() : DialogFragment() {
             cancel()
         }
 
-        viewModel.eventFlow.launchAndCollectLatestIn(this@TorrentTagsDialog) { event ->
+        viewModel.eventFlow.launchAndCollectIn(this@TorrentTagsDialog) { event ->
             when (event) {
                 is TorrentTagsViewModel.Event.Error -> {
                     parentFragment.onTagsDialogError(event.result)
