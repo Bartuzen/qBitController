@@ -228,4 +228,7 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/transfer/banPeers")
     suspend fun banPeers(@Field("peers") peers: String): Response<Unit>
+
+    @GET("api/v2/rss/items")
+    suspend fun getRssFeeds(@Query("withData") withData: Boolean): Response<String>
 }

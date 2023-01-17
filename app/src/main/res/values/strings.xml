@@ -11,6 +11,7 @@
     <string name="menu_resume">Resume</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
+    <string name="menu_rss">RSS</string>
     <string name="menu_select_all">Select All</string>
     <string name="menu_select_inverse">Select Inverse</string>
 
@@ -411,6 +412,8 @@
     <string name="torrent_add_link_cannot_be_empty">Link cannot be empty.</string>
     <string name="torrent_add_file_not_found">Torrent file is not found.</string>
     <string name="torrent_add_success">Torrent added successfully.</string>
+
+    <string name="rss_title">RSS</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>

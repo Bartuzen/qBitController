@@ -16,6 +16,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_rss"
+        android:icon="@drawable/ic_rss"
+        android:title="@string/menu_rss"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/torrent_sort_menu"
