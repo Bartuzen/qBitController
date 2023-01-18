@@ -231,4 +231,8 @@ interface TorrentService {
 
     @GET("api/v2/rss/items")
     suspend fun getRssFeeds(@Query("withData") withData: Boolean): Response<String>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/refreshItem")
+    suspend fun refreshItem(@Field("itemPath") itemPath: String): Response<Unit>
 }

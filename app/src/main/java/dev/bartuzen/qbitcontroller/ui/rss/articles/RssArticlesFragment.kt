@@ -6,11 +6,17 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +33,9 @@ import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
@@ -60,6 +68,26 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         requireAppCompatActivity().supportActionBar?.title = feedPath.last()
+
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.torrent_rss_articles_menu, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_refresh -> {
+                            viewModel.refreshFeed(serverConfig, feedPath)
+                        }
+                        else -> return false
+                    }
+                    return true
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
@@ -117,6 +145,14 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 }
                 RssArticlesViewModel.Event.RssFeedNotFound -> {
                     showSnackbar(R.string.rss_error_feed_not_found)
+                }
+                RssArticlesViewModel.Event.FeedRefreshed -> {
+                    showSnackbar(R.string.rss_success_feed_refresh)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        viewModel.loadRssFeed(serverConfig, feedPath)
+                    }
                 }
             }
         }

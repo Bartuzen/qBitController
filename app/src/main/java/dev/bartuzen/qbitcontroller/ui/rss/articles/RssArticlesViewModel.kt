@@ -67,8 +67,20 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
+    fun refreshFeed(serverConfig: ServerConfig, feedPath: List<String>) = viewModelScope.launch {
+        when (val result = repository.refreshItem(serverConfig, feedPath)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FeedRefreshed)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object RssFeedNotFound : Event()
+        object FeedRefreshed : Event()
     }
 }
