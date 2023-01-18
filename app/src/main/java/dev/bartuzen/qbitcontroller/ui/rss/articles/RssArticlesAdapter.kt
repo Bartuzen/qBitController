@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemRssArticleBinding
 import dev.bartuzen.qbitcontroller.model.Article
+import dev.bartuzen.qbitcontroller.utils.formatDate
 
 class RssArticlesAdapter : ListAdapter<Article, RssArticlesAdapter.ViewHolder>(DiffCallback()) {
 
@@ -22,7 +24,10 @@ class RssArticlesAdapter : ListAdapter<Article, RssArticlesAdapter.ViewHolder>(D
 
     inner class ViewHolder(private val binding: ItemRssArticleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(article: Article) {
+            val context = binding.root.context
+
             binding.textName.text = article.title
+            binding.textDate.text = context.getString(R.string.rss_date, formatDate(article.date))
         }
     }
 
