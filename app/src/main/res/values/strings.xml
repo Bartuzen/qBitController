@@ -415,6 +415,7 @@
 
     <string name="rss_title">RSS</string>
     <string name="rss_date">Date: %1$s</string>
+    <string name="rss_download">Download</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
 
     <string name="settings_title">Settings</string>

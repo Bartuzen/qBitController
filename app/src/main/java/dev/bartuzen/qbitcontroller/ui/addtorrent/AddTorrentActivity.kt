@@ -26,6 +26,7 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelable
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.showToast
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,7 @@ import kotlin.math.roundToInt
 class AddTorrentActivity : AppCompatActivity() {
     object Extras {
         const val SERVER_CONFIG = "dev.bartuzen.qbitcontroller.SERVER_CONFIG"
+        const val TORRENT_URL = "dev.bartuzen.qbitcontroller.TORRENT_URL"
 
         const val IS_ADDED = "dev.bartuzen.qbitcontroller.IS_ADDED"
     }
@@ -86,8 +88,12 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         }
 
+        val torrentUrl = intent.getStringExtra(Extras.TORRENT_URL)
         val uri = intent.data
-        val fileUri = if (uri != null) {
+        val fileUri = if (torrentUrl != null) {
+            binding.inputLayoutTorrentLink.setTextWithoutAnimation(torrentUrl)
+            null
+        } else if (uri != null) {
             when (uri.scheme) {
                 "http", "https", "magnet" -> {
                     binding.editTorrentLink.setText(uri.toString())

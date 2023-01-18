@@ -10,7 +10,9 @@ import dev.bartuzen.qbitcontroller.databinding.ItemRssArticleBinding
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.utils.formatDate
 
-class RssArticlesAdapter : ListAdapter<Article, RssArticlesAdapter.ViewHolder>(DiffCallback()) {
+class RssArticlesAdapter(
+    private val onClick: (article: Article) -> Unit
+) : ListAdapter<Article, RssArticlesAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemRssArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,6 +25,16 @@ class RssArticlesAdapter : ListAdapter<Article, RssArticlesAdapter.ViewHolder>(D
     }
 
     inner class ViewHolder(private val binding: ItemRssArticleBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { article ->
+                        onClick(article)
+                    }
+                }
+            }
+        }
+
         fun bind(article: Article) {
             val context = binding.root.context
 
