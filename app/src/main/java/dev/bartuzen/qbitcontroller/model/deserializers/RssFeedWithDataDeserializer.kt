@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.model.RssFeedWithData
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -42,7 +41,7 @@ private fun parseArticles(node: JsonNode): List<Article> {
 
     for (article in node.iterator()) {
         val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
-        val date = LocalDateTime.parse(article["date"].asText(), dateFormatter).toEpochSecond(ZoneOffset.UTC)
+        val date = ZonedDateTime.parse(article["date"].asText(), dateFormatter).toEpochSecond()
 
         articles += Article(
             id = article["id"].asText(),
