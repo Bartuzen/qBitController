@@ -18,6 +18,7 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
@@ -89,5 +90,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireAppCompatActivity().supportActionBar?.setTitle(R.string.rss_title)
     }
 }

@@ -16,6 +16,7 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.flow.filterNotNull
@@ -37,6 +38,8 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireAppCompatActivity().supportActionBar?.title = feedPath.last()
+
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
             viewModel.loadRssFeed(serverConfig, feedPath)
