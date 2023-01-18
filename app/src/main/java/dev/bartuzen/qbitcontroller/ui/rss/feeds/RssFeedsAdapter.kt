@@ -27,8 +27,8 @@ class RssFeedsAdapter : ListAdapter<RssFeed, RssFeedsAdapter.ViewHolder>(DiffCal
     }
 
     class DiffCallback : DiffUtil.ItemCallback<RssFeed>() {
-
         override fun areItemsTheSame(oldItem: RssFeed, newItem: RssFeed) = oldItem.uid == newItem.uid
+
         override fun areContentsTheSame(oldItem: RssFeed, newItem: RssFeed) =
             oldItem.name == newItem.name && oldItem.path == newItem.path
     }
