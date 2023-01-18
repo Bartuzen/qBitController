@@ -81,6 +81,9 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 is RssArticlesViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+                RssArticlesViewModel.Event.RssFeedNotFound -> {
+                    showSnackbar(R.string.rss_error_feed_not_found)
+                }
             }
         }
     }

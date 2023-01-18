@@ -36,7 +36,12 @@ class RssArticlesViewModel @Inject constructor(
     private fun updateRssFeed(serverConfig: ServerConfig, feedPath: List<String>) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverConfig)) {
             is RequestResult.Success -> {
-                _rssFeed.value = parseRssFeedWithData(result.data, feedPath)
+                val feed = parseRssFeedWithData(result.data, feedPath)
+                if (feed != null) {
+                    _rssFeed.value = feed
+                } else {
+                    eventChannel.send(Event.RssFeedNotFound)
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -64,5 +69,6 @@ class RssArticlesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object RssFeedNotFound : Event()
     }
 }
