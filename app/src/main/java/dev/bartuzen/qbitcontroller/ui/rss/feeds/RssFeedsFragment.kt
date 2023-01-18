@@ -18,6 +18,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
+import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
 class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
@@ -64,7 +65,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        viewModel.rssFeeds.launchAndCollectLatestIn(viewLifecycleOwner) { feeds ->
+        viewModel.rssFeeds.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { feeds ->
             adapter.submitList(feeds)
         }
 
