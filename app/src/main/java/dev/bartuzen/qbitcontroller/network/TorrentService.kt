@@ -146,7 +146,7 @@ interface TorrentService {
         @Part("seedingTimeLimit") seedingTimeLimit: Int?,
         @Part("paused") isPaused: Boolean,
         @Part("skip_checking") skipHashChecking: Boolean,
-        @Part("autoTMM") isAutoTorrentManagementEnabled: Boolean,
+        @Part("autoTMM") isAutoTorrentManagementEnabled: Boolean?,
         @Part("sequentialDownload") isSequentialDownloadEnabled: Boolean,
         @Part("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean
     ): Response<Unit>

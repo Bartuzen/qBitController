@@ -393,6 +393,7 @@
     <string name="torrent_add_category">Category</string>
     <string name="torrent_add_tags">Tags</string>
     <string name="torrent_add_tmm">Torrent Management Mode</string>
+    <string name="torrent_add_tmm_default">Default</string>
     <string name="torrent_add_tmm_manual">Manual</string>
     <string name="torrent_add_tmm_auto">Automatic</string>
     <string name="torrent_add_save_path">Save Path</string>

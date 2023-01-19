@@ -27,7 +27,7 @@ class AddTorrentRepository @Inject constructor(
         seedingTimeLimit: Int?,
         isPaused: Boolean,
         skipHashChecking: Boolean,
-        isAutoTorrentManagementEnabled: Boolean,
+        isAutoTorrentManagementEnabled: Boolean?,
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean
     ): RequestResult<Unit> {
@@ -45,7 +45,7 @@ class AddTorrentRepository @Inject constructor(
             service.addTorrent(
                 links?.joinToString("\n"),
                 filePart,
-                if (!isAutoTorrentManagementEnabled) savePath else null,
+                if (isAutoTorrentManagementEnabled == true) savePath else null,
                 category,
                 tags.joinToString(",").ifEmpty { null },
                 torrentName,

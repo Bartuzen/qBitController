@@ -67,7 +67,7 @@ class AddTorrentViewModel @Inject constructor(
         seedingTimeLimit: Int?,
         isPaused: Boolean,
         skipHashChecking: Boolean,
-        isAutoTorrentManagementEnabled: Boolean,
+        isAutoTorrentManagementEnabled: Boolean?,
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean
     ) = viewModelScope.launch {

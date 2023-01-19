@@ -174,6 +174,12 @@ class AddTorrentActivity : AppCompatActivity() {
                             binding.chipGroupTag.findViewById<Chip>(id).text.toString()
                         }
 
+                        val autoTmm = when (binding.spinnerTmm.selectedItemPosition) {
+                            1 -> false
+                            2 -> true
+                            else -> null
+                        }
+
                         if (config != null) {
                             viewModel.createTorrent(
                                 serverConfig = config,
@@ -189,7 +195,7 @@ class AddTorrentActivity : AppCompatActivity() {
                                 seedingTimeLimit = binding.editSeedingTimeLimit.text.toString().toIntOrNull(),
                                 isPaused = !binding.checkStartTorrent.isChecked,
                                 skipHashChecking = binding.checkSkipChecking.isChecked,
-                                isAutoTorrentManagementEnabled = binding.spinnerTmm.selectedItemPosition == 1,
+                                isAutoTorrentManagementEnabled = autoTmm,
                                 isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
                                 isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
                             )
@@ -296,7 +302,11 @@ class AddTorrentActivity : AppCompatActivity() {
         binding.spinnerTmm.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
-            listOf(getString(R.string.torrent_add_tmm_manual), getString(R.string.torrent_add_tmm_auto))
+            listOf(
+                getString(R.string.torrent_add_tmm_default),
+                getString(R.string.torrent_add_tmm_manual),
+                getString(R.string.torrent_add_tmm_auto)
+            )
         )
 
         binding.spinnerTmm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
