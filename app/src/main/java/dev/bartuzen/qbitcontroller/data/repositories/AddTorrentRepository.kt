@@ -45,7 +45,7 @@ class AddTorrentRepository @Inject constructor(
             service.addTorrent(
                 links?.joinToString("\n"),
                 filePart,
-                if (isAutoTorrentManagementEnabled == true) savePath else null,
+                savePath,
                 category,
                 tags.joinToString(",").ifEmpty { null },
                 torrentName,

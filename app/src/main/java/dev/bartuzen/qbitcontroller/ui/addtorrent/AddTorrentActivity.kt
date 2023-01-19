@@ -311,7 +311,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         binding.spinnerTmm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.inputLayoutSavePath.isEnabled = position == 0
+                binding.inputLayoutSavePath.isEnabled = position != 2
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
