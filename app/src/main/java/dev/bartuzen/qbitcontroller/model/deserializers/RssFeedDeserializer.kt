@@ -3,27 +3,36 @@ package dev.bartuzen.qbitcontroller.model.deserializers
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.RssFeed
+import dev.bartuzen.qbitcontroller.model.RssFeedNode
 
-fun parseRssFeeds(feeds: String): List<RssFeed> {
+fun parseRssFeeds(feeds: String): RssFeedNode {
     val mapper = jacksonObjectMapper()
     val node = mapper.readTree(feeds)
-    return parseRssFeeds(node, emptyList())
+    val feedNode = RssFeedNode("", null, mutableListOf())
+
+    parseRssFeeds(node, feedNode)
+    return feedNode
 }
 
-private fun parseRssFeeds(node: JsonNode, path: List<String>): List<RssFeed> {
-    val feeds = mutableListOf<RssFeed>()
-
-    val fields = node.fields()
-
-    for ((key, value) in fields) {
+private fun parseRssFeeds(node: JsonNode, feedNode: RssFeedNode) {
+    for ((key, value) in node.fields()) {
         if (isFeed(value)) {
-            feeds.add(RssFeed(key, path, value["uid"].asText()))
+            feedNode.children!!.add(
+                RssFeedNode(
+                    name = key,
+                    feed = RssFeed(
+                        name = key,
+                        uid = value["uid"].asText()
+                    ),
+                    children = null
+                )
+            )
         } else {
-            feeds += parseRssFeeds(value, path + key)
+            val childNode = RssFeedNode(key, null, mutableListOf())
+            feedNode.children!!.add(childNode)
+            parseRssFeeds(value, childNode)
         }
     }
-
-    return feeds
 }
 
 private fun isFeed(node: JsonNode): Boolean {

@@ -7,6 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,6 +23,7 @@ import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
@@ -43,17 +45,27 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         }
 
         val adapter = RssFeedsAdapter(
-            onClick = { feed ->
-                parentFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    setDefaultAnimations()
-                    val fragment = RssArticlesFragment(serverConfig, feed.path + feed.name)
-                    replace(R.id.container, fragment)
-                    addToBackStack(null)
+            onClick = { feedNode ->
+                if (feedNode.isFeed) {
+                    val feedPath = viewModel.currentDirectory.value.toList().reversed() + feedNode.name
+                    parentFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        setDefaultAnimations()
+                        val fragment = RssArticlesFragment(serverConfig, feedPath)
+                        replace(R.id.container, fragment)
+                        addToBackStack(null)
+                    }
+                } else {
+                    viewModel.goToFolder(feedNode.name)
                 }
             }
         )
-        binding.recyclerFeeds.adapter = adapter
+        val backButtonAdapter = RssFeedsBackButtonAdapter(
+            onClick = {
+                viewModel.goBack()
+            }
+        )
+        binding.recyclerFeeds.adapter = ConcatAdapter(backButtonAdapter, adapter)
         binding.recyclerFeeds.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 val verticalPx = 8.toPx(requireContext())
@@ -79,8 +91,25 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        viewModel.rssFeeds.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { feeds ->
-            adapter.submitList(feeds)
+        combine(viewModel.rssFeeds, viewModel.currentDirectory) { feedNode, currentDirectory ->
+            if (feedNode != null) {
+                feedNode to currentDirectory
+            } else {
+                null
+            }
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (feedNode, currentDirectory) ->
+            val currentNode = feedNode.findFolder(currentDirectory)?.children?.sortedBy { it.name }
+            if (currentNode != null) {
+                adapter.submitList(currentNode) {
+                    if (currentDirectory.isNotEmpty()) {
+                        backButtonAdapter.currentDirectory = currentDirectory.reversed().joinToString("/")
+                    } else {
+                        backButtonAdapter.currentDirectory = null
+                    }
+                }
+            } else {
+                viewModel.goToRoot()
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->

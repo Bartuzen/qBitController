@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.databinding.ItemRssFeedBinding
-import dev.bartuzen.qbitcontroller.model.RssFeed
+import dev.bartuzen.qbitcontroller.model.RssFeedNode
 
 class RssFeedsAdapter(
-    private val onClick: (feed: RssFeed) -> Unit
-) : ListAdapter<RssFeed, RssFeedsAdapter.ViewHolder>(DiffCallback()) {
+    private val onClick: (feed: RssFeedNode) -> Unit
+) : ListAdapter<RssFeedNode, RssFeedsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemRssFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,15 +33,16 @@ class RssFeedsAdapter(
             }
         }
 
-        fun bind(feed: RssFeed) {
+        fun bind(feed: RssFeedNode) {
             binding.textName.text = feed.name
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<RssFeed>() {
-        override fun areItemsTheSame(oldItem: RssFeed, newItem: RssFeed) = oldItem.uid == newItem.uid
+    class DiffCallback : DiffUtil.ItemCallback<RssFeedNode>() {
+        override fun areItemsTheSame(oldItem: RssFeedNode, newItem: RssFeedNode) =
+            oldItem.isFeed == newItem.isFeed && oldItem.name == newItem.name
 
-        override fun areContentsTheSame(oldItem: RssFeed, newItem: RssFeed) =
-            oldItem.name == newItem.name && oldItem.path == newItem.path
+        override fun areContentsTheSame(oldItem: RssFeedNode, newItem: RssFeedNode) =
+            oldItem.name == newItem.name && oldItem.feed?.uid == newItem.feed?.uid
     }
 }

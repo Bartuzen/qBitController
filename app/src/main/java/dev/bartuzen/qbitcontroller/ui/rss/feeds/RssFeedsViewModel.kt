@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssFeedRepository
-import dev.bartuzen.qbitcontroller.model.RssFeed
+import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -12,15 +12,20 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.ArrayDeque
 import javax.inject.Inject
 
 @HiltViewModel
 class RssFeedsViewModel @Inject constructor(
     private val repository: RssFeedRepository
 ) : ViewModel() {
-    private val _rssFeeds = MutableStateFlow<List<RssFeed>?>(null)
+    private val _rssFeeds = MutableStateFlow<RssFeedNode?>(null)
     val rssFeeds = _rssFeeds.asStateFlow()
+
+    private val _currentDirectory = MutableStateFlow(ArrayDeque<String>())
+    val currentDirectory = _currentDirectory.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -59,6 +64,28 @@ class RssFeedsViewModel @Inject constructor(
             updateRssFeeds(serverConfig).invokeOnCompletion {
                 _isRefreshing.value = false
             }
+        }
+    }
+
+    fun goToFolder(node: String) {
+        _currentDirectory.update { stack ->
+            stack.clone().apply {
+                push(node)
+            }
+        }
+    }
+
+    fun goBack() {
+        _currentDirectory.update { stack ->
+            stack.clone().apply {
+                pop()
+            }
+        }
+    }
+
+    fun goToRoot() {
+        _currentDirectory.update {
+            ArrayDeque()
         }
     }
 
