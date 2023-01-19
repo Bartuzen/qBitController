@@ -74,14 +74,13 @@ class AddTorrentActivity : AppCompatActivity() {
                     android.R.layout.simple_spinner_dropdown_item,
                     servers.map { server -> server.name ?: server.urlWithoutProtocol }
                 )
-                binding.spinnerServers.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                            serverConfig.value = servers[position]
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>?) {}
+                binding.spinnerServers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        serverConfig.value = servers[position]
                     }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {}
+                }
                 binding.layoutServerSelector.visibility = View.VISIBLE
             }
         }
