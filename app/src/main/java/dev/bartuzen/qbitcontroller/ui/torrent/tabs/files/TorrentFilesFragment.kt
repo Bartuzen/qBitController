@@ -31,6 +31,7 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.isActive
 
 @AndroidEntryPoint
@@ -200,23 +201,25 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
         }
 
         combine(viewModel.nodeStack, viewModel.torrentFiles) { nodeStack, torrentFiles ->
-            nodeStack to torrentFiles
-        }.launchAndCollectLatestIn(viewLifecycleOwner) { (nodeStack, torrentFiles) ->
             if (torrentFiles != null) {
-                val fileList = torrentFiles.findChildNode(nodeStack)?.children?.sortedWith(
-                    compareBy({ it.isFile }, { it.name.lowercase() })
-                )
-                if (fileList != null) {
-                    adapter.submitList(fileList) {
-                        if (nodeStack.isNotEmpty()) {
-                            backButtonAdapter.currentDirectory = nodeStack.reversed().joinToString("/")
-                        } else {
-                            backButtonAdapter.currentDirectory = null
-                        }
+                nodeStack to torrentFiles
+            } else {
+                null
+            }
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (nodeStack, torrentFiles) ->
+            val fileList = torrentFiles.findChildNode(nodeStack)?.children?.sortedWith(
+                compareBy({ it.isFile }, { it.name.lowercase() })
+            )
+            if (fileList != null) {
+                adapter.submitList(fileList) {
+                    if (nodeStack.isNotEmpty()) {
+                        backButtonAdapter.currentDirectory = nodeStack.reversed().joinToString("/")
+                    } else {
+                        backButtonAdapter.currentDirectory = null
                     }
-                } else {
-                    viewModel.goToRoot()
                 }
+            } else {
+                viewModel.goToRoot()
             }
         }
 
