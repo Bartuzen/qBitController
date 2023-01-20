@@ -82,7 +82,7 @@ class RequestManager @Inject constructor(
         val blockResponse = block(service)
         val body = blockResponse.body()
 
-        if (blockResponse.message() == "Forbidden") {
+        if (blockResponse.code() == 403) {
             if (serverConfig.username != null && serverConfig.password != null) {
                 val loginResponse = service.login(serverConfig.username, serverConfig.password)
 
