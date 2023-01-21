@@ -67,6 +67,28 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
+    fun addRssFeed(serverConfig: ServerConfig, url: String, path: String) = viewModelScope.launch {
+        when (val result = repository.addRssFeed(serverConfig, url, path)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FeedAdded)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
+    fun addRssFolder(serverConfig: ServerConfig, path: String) = viewModelScope.launch {
+        when (val result = repository.addRssFolder(serverConfig, path)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FolderAdded)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun goToFolder(node: String) {
         _currentDirectory.update { stack ->
             stack.clone().apply {
@@ -91,5 +113,7 @@ class RssFeedsViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object FeedAdded : Event()
+        object FolderAdded : Event()
     }
 }

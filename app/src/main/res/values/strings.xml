@@ -417,8 +417,17 @@
     <string name="rss_date">Date: %1$s</string>
     <string name="rss_download">Download</string>
 
+    <string name="rss_menu_add">Add</string>
+    <string name="rss_menu_add_feed">Add Feed</string>
+    <string name="rss_menu_add_folder">Add Folder</string>
     <string name="rss_menu_refresh">Refresh</string>
 
+    <string name="rss_hint_feed_url">Feed URL</string>
+    <string name="rss_hint_feed_name">Name (Optional)</string>
+    <string name="rss_hint_folder_name">Folder Name</string>
+
+    <string name="rss_success_feed_add">Feed added successfully.</string>
+    <string name="rss_success_folder_add">Folder added successfully.</string>
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
 

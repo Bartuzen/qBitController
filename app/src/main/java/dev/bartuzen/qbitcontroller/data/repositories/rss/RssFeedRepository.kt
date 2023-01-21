@@ -12,4 +12,13 @@ class RssFeedRepository @Inject constructor(
     suspend fun getRssFeeds(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
         service.getRssFeeds(false)
     }
+
+    suspend fun addRssFeed(serverConfig: ServerConfig, url: String, path: String) =
+        requestManager.request(serverConfig) { service ->
+            service.addRssFeed(url, path)
+        }
+
+    suspend fun addRssFolder(serverConfig: ServerConfig, path: String) = requestManager.request(serverConfig) { service ->
+        service.addRssFolder(path)
+    }
 }
