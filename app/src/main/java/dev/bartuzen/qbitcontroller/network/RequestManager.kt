@@ -24,6 +24,7 @@ import javax.net.ssl.SSLContext
 class RequestManager @Inject constructor(
     serverManager: ServerManager,
     private val timeoutInterceptor: TimeoutInterceptor,
+    private val userAgentInterceptor: UserAgentInterceptor,
     private val trustAllManager: TrustAllX509TrustManager
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
@@ -49,6 +50,7 @@ class RequestManager @Inject constructor(
                 OkHttpClient().newBuilder().apply {
                     cookieJar(SessionCookieJar())
                     addInterceptor(timeoutInterceptor)
+                    addInterceptor(userAgentInterceptor)
 
                     if (serverConfig.protocol == Protocol.HTTPS) {
                         hostnameVerifier { _, _ -> true }
