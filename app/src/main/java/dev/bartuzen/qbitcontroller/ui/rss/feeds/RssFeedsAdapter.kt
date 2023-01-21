@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemRssFeedBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 
@@ -35,6 +36,9 @@ class RssFeedsAdapter(
 
         fun bind(feed: RssFeedNode) {
             binding.textName.text = feed.name
+
+            val iconId = if (feed.isFeed) R.drawable.ic_rss else R.drawable.ic_folder
+            binding.imageIcon.setImageResource(iconId)
         }
     }
 

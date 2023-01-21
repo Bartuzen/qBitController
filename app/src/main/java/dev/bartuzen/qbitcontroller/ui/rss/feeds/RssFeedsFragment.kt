@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.rss.feeds
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
@@ -8,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -22,7 +20,6 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -66,18 +63,6 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             }
         )
         binding.recyclerFeeds.adapter = ConcatAdapter(backButtonAdapter, adapter)
-        binding.recyclerFeeds.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                val verticalPx = 8.toPx(requireContext())
-                val horizontalPx = 8.toPx(requireContext())
-                if (parent.getChildAdapterPosition(view) == 0) {
-                    outRect.top = verticalPx
-                }
-                outRect.bottom = verticalPx
-                outRect.left = horizontalPx
-                outRect.right = horizontalPx
-            }
-        })
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshRssFeeds(serverConfig)
