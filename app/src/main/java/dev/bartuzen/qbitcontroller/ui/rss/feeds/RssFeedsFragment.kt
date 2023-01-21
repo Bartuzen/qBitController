@@ -83,7 +83,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 null
             }
         }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (feedNode, currentDirectory) ->
-            val currentNode = feedNode.findFolder(currentDirectory)?.children?.sortedBy { it.name }
+            val currentNode = feedNode.findFolder(currentDirectory)?.children?.sortedBy { it.name.lowercase() }
             if (currentNode != null) {
                 adapter.submitList(currentNode) {
                     if (currentDirectory.isNotEmpty()) {
