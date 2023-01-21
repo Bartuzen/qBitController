@@ -87,7 +87,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             if (currentNode != null) {
                 adapter.submitList(currentNode) {
                     if (currentDirectory.isNotEmpty()) {
-                        backButtonAdapter.currentDirectory = currentDirectory.reversed().joinToString("/")
+                        backButtonAdapter.currentDirectory = currentDirectory.reversed().joinToString("\\")
                     } else {
                         backButtonAdapter.currentDirectory = null
                     }
