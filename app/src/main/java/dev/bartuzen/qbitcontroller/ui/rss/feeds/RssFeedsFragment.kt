@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFeedBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFolderBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogRssMoveFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssRenameFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
@@ -156,24 +157,32 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     showSnackbar(R.string.rss_success_feed_add)
                     viewModel.loadRssFeeds(serverConfig)
                 }
-                RssFeedsViewModel.Event.FeedDeleted -> {
-                    showSnackbar(R.string.rss_success_delete_feed)
-                    viewModel.loadRssFeeds(serverConfig)
-                }
                 RssFeedsViewModel.Event.FeedRenamed -> {
                     showSnackbar(R.string.rss_success_rename_feed)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FeedMoved -> {
+                    showSnackbar(R.string.rss_success_move_feed)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FeedDeleted -> {
+                    showSnackbar(R.string.rss_success_delete_feed)
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FolderAdded -> {
                     showSnackbar(R.string.rss_success_folder_add)
                     viewModel.loadRssFeeds(serverConfig)
                 }
-                RssFeedsViewModel.Event.FolderDeleted -> {
-                    showSnackbar(R.string.rss_success_delete_folder)
-                    viewModel.loadRssFeeds(serverConfig)
-                }
                 RssFeedsViewModel.Event.FolderRenamed -> {
                     showSnackbar(R.string.rss_success_rename_folder)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FolderMoved -> {
+                    showSnackbar(R.string.rss_success_move_folder)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FolderDeleted -> {
+                    showSnackbar(R.string.rss_success_delete_folder)
                     viewModel.loadRssFeeds(serverConfig)
                 }
             }
@@ -234,11 +243,13 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 if (feedNode.isFeed) {
                     arrayOf(
                         getString(R.string.rss_menu_rename_feed),
+                        getString(R.string.rss_menu_move_feed),
                         getString(R.string.rss_menu_delete_feed)
                     )
                 } else {
                     arrayOf(
                         getString(R.string.rss_menu_rename_folder),
+                        getString(R.string.rss_menu_move_folder),
                         getString(R.string.rss_menu_delete_folder)
                     )
                 }
@@ -254,6 +265,15 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                         )
                     }
                     1 -> {
+                        showMoveFeedFolderDialog(
+                            name = feedNode.name,
+                            isFeed = feedNode.isFeed,
+                            onMove = { from, to ->
+                                viewModel.moveItem(serverConfig, from, to, feedNode.isFeed)
+                            }
+                        )
+                    }
+                    2 -> {
                         val feedPath = (viewModel.currentDirectory.value.reversed() + feedNode.name).joinToString("\\")
                         showDeleteFeedFolderDialog(
                             name = feedNode.name,
@@ -265,6 +285,29 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     }
                 }
             }
+        }
+    }
+
+    private fun showMoveFeedFolderDialog(name: String, isFeed: Boolean, onMove: (from: String, to: String) -> Unit) {
+        showDialog(DialogRssMoveFeedFolderBinding::inflate) { binding ->
+            val currentDirectory = viewModel.currentDirectory.value.reversed()
+            binding.inputLayoutName.setTextWithoutAnimation(currentDirectory.joinToString("\\"))
+
+            if (isFeed) {
+                setTitle(R.string.rss_menu_move_feed)
+            } else {
+                setTitle(R.string.rss_menu_move_folder)
+            }
+
+            setPositiveButton { _, _ ->
+                val from = (currentDirectory.toList() + name).joinToString("\\")
+                val to = binding.editName.text.toString().let { to ->
+                    if (to.isBlank()) name else "$to\\$name"
+                }
+
+                onMove(from, to)
+            }
+            setNegativeButton()
         }
     }
 
