@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFeedBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFolderBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogRssRenameFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -28,6 +29,7 @@ import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.flow.combine
@@ -154,16 +156,24 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     showSnackbar(R.string.rss_success_feed_add)
                     viewModel.loadRssFeeds(serverConfig)
                 }
-                RssFeedsViewModel.Event.FolderAdded -> {
-                    showSnackbar(R.string.rss_success_folder_add)
-                    viewModel.loadRssFeeds(serverConfig)
-                }
                 RssFeedsViewModel.Event.FeedDeleted -> {
                     showSnackbar(R.string.rss_success_delete_feed)
                     viewModel.loadRssFeeds(serverConfig)
                 }
+                RssFeedsViewModel.Event.FeedRenamed -> {
+                    showSnackbar(R.string.rss_success_rename_feed)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FolderAdded -> {
+                    showSnackbar(R.string.rss_success_folder_add)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
                 RssFeedsViewModel.Event.FolderDeleted -> {
                     showSnackbar(R.string.rss_success_delete_folder)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FolderRenamed -> {
+                    showSnackbar(R.string.rss_success_rename_folder)
                     viewModel.loadRssFeeds(serverConfig)
                 }
             }
@@ -222,13 +232,28 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         showDialog {
             setItems(
                 if (feedNode.isFeed) {
-                    arrayOf(getString(R.string.rss_menu_delete_feed))
+                    arrayOf(
+                        getString(R.string.rss_menu_rename_feed),
+                        getString(R.string.rss_menu_delete_feed)
+                    )
                 } else {
-                    arrayOf(getString(R.string.rss_menu_delete_folder))
+                    arrayOf(
+                        getString(R.string.rss_menu_rename_folder),
+                        getString(R.string.rss_menu_delete_folder)
+                    )
                 }
             ) { _, which ->
                 when (which) {
                     0 -> {
+                        showRenameFeedFolderDialog(
+                            name = feedNode.name,
+                            isFeed = feedNode.isFeed,
+                            onRename = { from, to ->
+                                viewModel.renameItem(serverConfig, from, to, feedNode.isFeed)
+                            }
+                        )
+                    }
+                    1 -> {
                         val feedPath = (viewModel.currentDirectory.value.reversed() + feedNode.name).joinToString("\\")
                         showDeleteFeedFolderDialog(
                             name = feedNode.name,
@@ -240,6 +265,29 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     }
                 }
             }
+        }
+    }
+
+    private fun showRenameFeedFolderDialog(name: String, isFeed: Boolean, onRename: (from: String, to: String) -> Unit) {
+        showDialog(DialogRssRenameFeedFolderBinding::inflate) { binding ->
+            binding.inputLayoutName.setTextWithoutAnimation(name)
+
+            if (isFeed) {
+                setTitle(R.string.rss_menu_rename_feed)
+                binding.inputLayoutName.setHint(R.string.rss_hint_feed_rename)
+            } else {
+                setTitle(R.string.rss_menu_rename_folder)
+                binding.inputLayoutName.setHint(R.string.rss_hint_folder_rename)
+            }
+
+            setPositiveButton { _, _ ->
+                val currentDirectory = viewModel.currentDirectory.value.reversed()
+                val from = (currentDirectory.toList() + name).joinToString("\\")
+                val to = (currentDirectory.toList() + binding.editName.text.toString()).joinToString("\\")
+
+                onRename(from, to)
+            }
+            setNegativeButton()
         }
     }
 

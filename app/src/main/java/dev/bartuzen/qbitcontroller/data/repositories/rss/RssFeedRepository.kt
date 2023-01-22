@@ -25,4 +25,9 @@ class RssFeedRepository @Inject constructor(
     suspend fun removeItem(serverConfig: ServerConfig, path: String) = requestManager.request(serverConfig) { service ->
         service.removeItem(path)
     }
+
+    suspend fun moveItem(serverConfig: ServerConfig, from: String, to: String) =
+        requestManager.request(serverConfig) { service ->
+            service.moveItem(from, to)
+        }
 }
