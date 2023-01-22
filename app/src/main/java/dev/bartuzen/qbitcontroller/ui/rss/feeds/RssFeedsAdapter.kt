@@ -10,7 +10,8 @@ import dev.bartuzen.qbitcontroller.databinding.ItemRssFeedBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 
 class RssFeedsAdapter(
-    private val onClick: (feed: RssFeedNode) -> Unit
+    private val onClick: (feed: RssFeedNode) -> Unit,
+    private val onLongClick: (feed: RssFeedNode) -> Unit
 ) : ListAdapter<RssFeedNode, RssFeedsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -31,6 +32,15 @@ class RssFeedsAdapter(
                         onClick(feed)
                     }
                 }
+            }
+
+            binding.root.setOnLongClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { feed ->
+                        onLongClick(feed)
+                    }
+                }
+                true
             }
         }
 

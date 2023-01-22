@@ -243,4 +243,8 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/rss/addFolder")
     suspend fun addRssFolder(@Field("path") path: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/removeItem")
+    suspend fun removeItem(@Field("path") path: String): Response<Unit>
 }

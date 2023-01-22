@@ -21,4 +21,8 @@ class RssFeedRepository @Inject constructor(
     suspend fun addRssFolder(serverConfig: ServerConfig, path: String) = requestManager.request(serverConfig) { service ->
         service.addRssFolder(path)
     }
+
+    suspend fun removeItem(serverConfig: ServerConfig, path: String) = requestManager.request(serverConfig) { service ->
+        service.removeItem(path)
+    }
 }

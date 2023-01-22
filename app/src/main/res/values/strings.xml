@@ -420,15 +420,22 @@
     <string name="rss_menu_add">Add</string>
     <string name="rss_menu_add_feed">Add Feed</string>
     <string name="rss_menu_add_folder">Add Folder</string>
+    <string name="rss_menu_delete_feed">Delete Feed</string>
+    <string name="rss_menu_delete_folder">Delete Folder</string>
     <string name="rss_menu_refresh">Refresh</string>
 
     <string name="rss_hint_feed_url">Feed URL</string>
     <string name="rss_hint_feed_name">Name (Optional)</string>
     <string name="rss_hint_folder_name">Folder Name</string>
 
+    <string name="rss_confirm_delete_feed">Are you sure you want to delete feed %1$s?</string>
+    <string name="rss_confirm_delete_folder">Are you sure you want to delete folder %1$s?</string>
+
     <string name="rss_success_feed_add">Feed added successfully.</string>
     <string name="rss_success_folder_add">Folder added successfully.</string>
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
+    <string name="rss_success_delete_feed">Feed deleted successfully.</string>
+    <string name="rss_success_delete_folder">Folder deleted successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
 
     <string name="settings_title">Settings</string>

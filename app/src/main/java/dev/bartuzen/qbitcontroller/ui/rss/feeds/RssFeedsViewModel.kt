@@ -89,6 +89,21 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
+    fun deleteItem(serverConfig: ServerConfig, path: String, isFeed: Boolean) = viewModelScope.launch {
+        when (val result = repository.removeItem(serverConfig, path)) {
+            is RequestResult.Success -> {
+                if (isFeed) {
+                    eventChannel.send(Event.FeedDeleted)
+                } else {
+                    eventChannel.send(Event.FolderDeleted)
+                }
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun goToFolder(node: String) {
         _currentDirectory.update { stack ->
             stack.clone().apply {
@@ -115,5 +130,7 @@ class RssFeedsViewModel @Inject constructor(
         data class Error(val error: RequestResult.Error) : Event()
         object FeedAdded : Event()
         object FolderAdded : Event()
+        object FeedDeleted : Event()
+        object FolderDeleted : Event()
     }
 }

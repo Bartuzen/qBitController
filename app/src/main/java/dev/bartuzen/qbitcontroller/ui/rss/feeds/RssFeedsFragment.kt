@@ -17,6 +17,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFeedBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
+import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -99,6 +100,9 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 } else {
                     viewModel.goToFolder(feedNode.name)
                 }
+            },
+            onLongClick = { feedNode ->
+                showLongClickDialog(feedNode)
             }
         )
         val backButtonAdapter = RssFeedsBackButtonAdapter(
@@ -154,6 +158,14 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     showSnackbar(R.string.rss_success_folder_add)
                     viewModel.loadRssFeeds(serverConfig)
                 }
+                RssFeedsViewModel.Event.FeedDeleted -> {
+                    showSnackbar(R.string.rss_success_delete_feed)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
+                RssFeedsViewModel.Event.FolderDeleted -> {
+                    showSnackbar(R.string.rss_success_delete_folder)
+                    viewModel.loadRssFeeds(serverConfig)
+                }
             }
         }
     }
@@ -201,6 +213,47 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 }
 
                 viewModel.addRssFolder(serverConfig, fullPath)
+            }
+            setNegativeButton()
+        }
+    }
+
+    private fun showLongClickDialog(feedNode: RssFeedNode) {
+        showDialog {
+            setItems(
+                if (feedNode.isFeed) {
+                    arrayOf(getString(R.string.rss_menu_delete_feed))
+                } else {
+                    arrayOf(getString(R.string.rss_menu_delete_folder))
+                }
+            ) { _, which ->
+                when (which) {
+                    0 -> {
+                        val feedPath = (viewModel.currentDirectory.value.reversed() + feedNode.name).joinToString("\\")
+                        showDeleteFeedFolderDialog(
+                            name = feedNode.name,
+                            isFeed = feedNode.isFeed,
+                            onDelete = {
+                                viewModel.deleteItem(serverConfig, feedPath, feedNode.isFeed)
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showDeleteFeedFolderDialog(name: String, isFeed: Boolean, onDelete: () -> Unit) {
+        showDialog {
+            if (isFeed) {
+                setTitle(R.string.rss_menu_delete_feed)
+                setMessage(getString(R.string.rss_confirm_delete_feed, name))
+            } else {
+                setTitle(R.string.rss_menu_delete_folder)
+                setMessage(getString(R.string.rss_confirm_delete_folder, name))
+            }
+            setPositiveButton { _, _ ->
+                onDelete()
             }
             setNegativeButton()
         }
