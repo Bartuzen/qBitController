@@ -156,25 +156,25 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 RssFeedsViewModel.Event.FeedAddError -> {
                     showSnackbar(R.string.rss_error_feed_add)
                 }
-                RssFeedsViewModel.Event.FeedDeleteError -> {
+                RssFeedsViewModel.Event.FeedRenameError -> {
                     showSnackbar(R.string.rss_error_feed_rename)
                 }
                 RssFeedsViewModel.Event.FeedMoveError -> {
                     showSnackbar(R.string.rss_error_feed_move)
                 }
-                RssFeedsViewModel.Event.FeedRenameError -> {
+                RssFeedsViewModel.Event.FeedDeleteError -> {
                     showSnackbar(R.string.rss_error_feed_delete)
                 }
                 RssFeedsViewModel.Event.FolderAddError -> {
                     showSnackbar(R.string.rss_error_folder_add)
                 }
-                RssFeedsViewModel.Event.FolderDeleteError -> {
+                RssFeedsViewModel.Event.FolderRenameError -> {
                     showSnackbar(R.string.rss_error_folder_rename)
                 }
                 RssFeedsViewModel.Event.FolderMoveError -> {
                     showSnackbar(R.string.rss_error_folder_move)
                 }
-                RssFeedsViewModel.Event.FolderRenameError -> {
+                RssFeedsViewModel.Event.FolderDeleteError -> {
                     showSnackbar(R.string.rss_error_folder_delete)
                 }
                 RssFeedsViewModel.Event.FeedAdded -> {
