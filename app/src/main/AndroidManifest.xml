@@ -145,6 +145,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.rss.RssActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

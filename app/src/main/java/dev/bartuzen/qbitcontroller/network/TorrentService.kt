@@ -228,4 +228,27 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/transfer/banPeers")
     suspend fun banPeers(@Field("peers") peers: String): Response<Unit>
+
+    @GET("api/v2/rss/items")
+    suspend fun getRssFeeds(@Query("withData") withData: Boolean): Response<String>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/refreshItem")
+    suspend fun refreshItem(@Field("itemPath") itemPath: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/addFeed")
+    suspend fun addRssFeed(@Field("url") url: String, @Field("path") path: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/addFolder")
+    suspend fun addRssFolder(@Field("path") path: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/moveItem")
+    suspend fun moveItem(@Field("itemPath") from: String, @Field("destPath") to: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/rss/removeItem")
+    suspend fun removeItem(@Field("path") path: String): Response<Unit>
 }
