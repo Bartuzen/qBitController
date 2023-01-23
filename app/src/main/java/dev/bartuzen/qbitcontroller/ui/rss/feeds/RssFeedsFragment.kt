@@ -158,15 +158,15 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FeedRenamed -> {
-                    showSnackbar(R.string.rss_success_rename_feed)
+                    showSnackbar(R.string.rss_success_feed_rename)
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FeedMoved -> {
-                    showSnackbar(R.string.rss_success_move_feed)
+                    showSnackbar(R.string.rss_success_feed_move)
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FeedDeleted -> {
-                    showSnackbar(R.string.rss_success_delete_feed)
+                    showSnackbar(R.string.rss_success_feed_delete)
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FolderAdded -> {
@@ -174,15 +174,15 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FolderRenamed -> {
-                    showSnackbar(R.string.rss_success_rename_folder)
+                    showSnackbar(R.string.rss_success_folder_rename)
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FolderMoved -> {
-                    showSnackbar(R.string.rss_success_move_folder)
+                    showSnackbar(R.string.rss_success_folder_move)
                     viewModel.loadRssFeeds(serverConfig)
                 }
                 RssFeedsViewModel.Event.FolderDeleted -> {
-                    showSnackbar(R.string.rss_success_delete_folder)
+                    showSnackbar(R.string.rss_success_folder_delete)
                     viewModel.loadRssFeeds(serverConfig)
                 }
             }
@@ -317,10 +317,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
             if (isFeed) {
                 setTitle(R.string.rss_menu_rename_feed)
-                binding.inputLayoutName.setHint(R.string.rss_hint_feed_rename)
+                binding.inputLayoutName.setHint(R.string.rss_hint_feed_name)
             } else {
                 setTitle(R.string.rss_menu_rename_folder)
-                binding.inputLayoutName.setHint(R.string.rss_hint_folder_rename)
+                binding.inputLayoutName.setHint(R.string.rss_hint_folder_name)
             }
 
             setPositiveButton { _, _ ->
