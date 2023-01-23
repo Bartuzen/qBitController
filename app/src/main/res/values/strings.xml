@@ -434,6 +434,8 @@
     <string name="rss_hint_folder_name">Folder Name</string>
     <string name="rss_hint_move_path">Path</string>
 
+    <string name="rss_field_required">This field is required.</string>
+
     <string name="rss_confirm_delete_feed">Are you sure you want to delete feed %1$s?</string>
     <string name="rss_confirm_delete_folder">Are you sure you want to delete folder %1$s?</string>
 

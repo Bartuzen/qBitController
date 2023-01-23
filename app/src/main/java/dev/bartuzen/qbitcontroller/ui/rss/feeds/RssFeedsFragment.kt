@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -214,11 +215,20 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     }
 
     private fun showAddFeedDialog() {
-        showDialog(DialogRssAddFeedBinding::inflate) { binding ->
+        lateinit var dialogBinding: DialogRssAddFeedBinding
+
+        val dialog = showDialog(DialogRssAddFeedBinding::inflate) { binding ->
+            dialogBinding = binding
+
             setTitle(R.string.rss_menu_add_feed)
-            setPositiveButton { _, _ ->
-                val feedUrl = binding.editFeedUrl.text.toString()
-                val name = binding.editName.text.toString().ifBlank { null }
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val feedUrl = dialogBinding.editFeedUrl.text.toString()
+            if (feedUrl.isNotBlank()) {
+                val name = dialogBinding.editName.text.toString().ifBlank { null }
                 val currentDirectory = viewModel.currentDirectory.value.reversed().joinToString("\\").ifEmpty { null }
 
                 val fullPath = when {
@@ -237,16 +247,27 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 }
 
                 viewModel.addRssFeed(serverConfig, feedUrl, fullPath)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutFeedUrl.error = getString(R.string.rss_field_required)
             }
-            setNegativeButton()
         }
     }
 
     private fun showAddFolderDialog() {
-        showDialog(DialogRssAddFolderBinding::inflate) { binding ->
+        lateinit var dialogBinding: DialogRssAddFolderBinding
+
+        val dialog = showDialog(DialogRssAddFolderBinding::inflate) { binding ->
+            dialogBinding = binding
+
             setTitle(R.string.rss_menu_add_folder)
-            setPositiveButton { _, _ ->
-                val path = binding.editName.text.toString()
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val path = dialogBinding.editName.text.toString()
+            if (path.isNotBlank()) {
                 val currentDirectory = viewModel.currentDirectory.value.reversed().joinToString("\\").ifEmpty { null }
 
                 val fullPath = if (currentDirectory != null) {
@@ -256,8 +277,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 }
 
                 viewModel.addRssFolder(serverConfig, fullPath)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutName.error = getString(R.string.rss_field_required)
             }
-            setNegativeButton()
         }
     }
 
@@ -336,7 +359,11 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     }
 
     private fun showRenameFeedFolderDialog(name: String, isFeed: Boolean, onRename: (from: String, to: String) -> Unit) {
-        showDialog(DialogRssRenameFeedFolderBinding::inflate) { binding ->
+        lateinit var dialogBinding: DialogRssRenameFeedFolderBinding
+
+        val dialog = showDialog(DialogRssRenameFeedFolderBinding::inflate) { binding ->
+            dialogBinding = binding
+
             binding.inputLayoutName.setTextWithoutAnimation(name)
 
             if (isFeed) {
@@ -347,14 +374,22 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 binding.inputLayoutName.setHint(R.string.rss_hint_folder_name)
             }
 
-            setPositiveButton { _, _ ->
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newName = dialogBinding.editName.text.toString()
+            if (newName.isNotBlank()) {
                 val currentDirectory = viewModel.currentDirectory.value.reversed()
                 val from = (currentDirectory.toList() + name).joinToString("\\")
-                val to = (currentDirectory.toList() + binding.editName.text.toString()).joinToString("\\")
+                val to = (currentDirectory.toList() + newName).joinToString("\\")
 
                 onRename(from, to)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutName.error = getString(R.string.rss_field_required)
             }
-            setNegativeButton()
         }
     }
 
