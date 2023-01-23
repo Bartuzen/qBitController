@@ -445,6 +445,14 @@
     <string name="rss_success_folder_rename">Folder renamed successfully.</string>
     <string name="rss_success_folder_move">Folder moved successfully.</string>
     <string name="rss_success_folder_delete">Folder deleted successfully.</string>
+    <string name="rss_error_feed_add">Couldn\'t add feed.</string>
+    <string name="rss_error_feed_rename">Couldn\'t rename feed.</string>
+    <string name="rss_error_feed_move">Couldn\'t move feed.</string>
+    <string name="rss_error_feed_delete">Couldn\'t delete feed.</string>
+    <string name="rss_error_folder_add">Couldn\'t add folder.</string>
+    <string name="rss_error_folder_rename">Couldn\'t rename folder.</string>
+    <string name="rss_error_folder_move">Couldn\'t move folder.</string>
+    <string name="rss_error_folder_delete">Couldn\'t delete folder.</string>
 
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>

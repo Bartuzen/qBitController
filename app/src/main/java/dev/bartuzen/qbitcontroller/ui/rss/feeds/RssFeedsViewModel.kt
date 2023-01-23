@@ -73,7 +73,11 @@ class RssFeedsViewModel @Inject constructor(
                 eventChannel.send(Event.FeedAdded)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.FeedAddError)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
             }
         }
     }
@@ -84,7 +88,11 @@ class RssFeedsViewModel @Inject constructor(
                 eventChannel.send(Event.FolderAdded)
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.FolderAddError)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
             }
         }
     }
@@ -99,7 +107,15 @@ class RssFeedsViewModel @Inject constructor(
                 }
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    if (isFeed) {
+                        eventChannel.send(Event.FeedRenameError)
+                    } else {
+                        eventChannel.send(Event.FolderRenameError)
+                    }
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
             }
         }
     }
@@ -114,7 +130,15 @@ class RssFeedsViewModel @Inject constructor(
                 }
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    if (isFeed) {
+                        eventChannel.send(Event.FeedMoveError)
+                    } else {
+                        eventChannel.send(Event.FolderMoveError)
+                    }
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
             }
         }
     }
@@ -129,7 +153,15 @@ class RssFeedsViewModel @Inject constructor(
                 }
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    if (isFeed) {
+                        eventChannel.send(Event.FeedDeleteError)
+                    } else {
+                        eventChannel.send(Event.FolderDeleteError)
+                    }
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
             }
         }
     }
@@ -158,6 +190,14 @@ class RssFeedsViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object FeedAddError : Event()
+        object FeedRenameError : Event()
+        object FeedMoveError : Event()
+        object FeedDeleteError : Event()
+        object FolderAddError : Event()
+        object FolderRenameError : Event()
+        object FolderMoveError : Event()
+        object FolderDeleteError : Event()
         object FeedAdded : Event()
         object FeedRenamed : Event()
         object FeedMoved : Event()
