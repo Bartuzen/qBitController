@@ -22,7 +22,6 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddEditServerBind
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -36,15 +35,15 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
 
     private val viewModel: AddEditServerViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }
 
-    constructor(serverConfig: ServerConfig?) : this() {
-        arguments = bundleOf("serverConfig" to serverConfig)
+    constructor(serverId: Int?) : this() {
+        arguments = bundleOf("serverId" to serverId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         requireAppCompatActivity().supportActionBar?.setTitle(
-            if (serverConfig == null) {
+            if (serverId == null) {
                 R.string.settings_server_title_add
             } else {
                 R.string.settings_server_title_edit
@@ -71,7 +70,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                 }
 
                 override fun onPrepareMenu(menu: Menu) {
-                    if (serverConfig == null) {
+                    if (serverId == null) {
                         menu.findItem(R.id.menu_delete).isVisible = false
                     }
                 }
@@ -98,15 +97,16 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        serverConfig?.let { config ->
-            binding.inputLayoutName.setTextWithoutAnimation(config.name)
-            binding.spinnerProtocol.setSelection(config.protocol.ordinal)
-            binding.inputLayoutHost.setTextWithoutAnimation(config.host)
-            binding.inputLayoutPort.setTextWithoutAnimation(config.port?.toString())
-            binding.inputLayoutPath.setTextWithoutAnimation(config.path)
-            binding.inputLayoutUsername.setTextWithoutAnimation(config.username)
-            binding.inputLayoutPassword.setTextWithoutAnimation(config.password)
-            binding.checkboxTrustSelfSigned.isChecked = config.trustSelfSignedCertificates
+        serverId?.let { id ->
+            val serverConfig = viewModel.getServerConfig(id)
+            binding.inputLayoutName.setTextWithoutAnimation(serverConfig.name)
+            binding.spinnerProtocol.setSelection(serverConfig.protocol.ordinal)
+            binding.inputLayoutHost.setTextWithoutAnimation(serverConfig.host)
+            binding.inputLayoutPort.setTextWithoutAnimation(serverConfig.port?.toString())
+            binding.inputLayoutPath.setTextWithoutAnimation(serverConfig.path)
+            binding.inputLayoutUsername.setTextWithoutAnimation(serverConfig.username)
+            binding.inputLayoutPassword.setTextWithoutAnimation(serverConfig.password)
+            binding.checkboxTrustSelfSigned.isChecked = serverConfig.trustSelfSignedCertificates
         }
 
         binding.buttonTest.setOnClickListener {
@@ -176,7 +176,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
         }
 
         val config = ServerConfig(
-            id = serverConfig?.id ?: -1,
+            id = serverId ?: -1,
             name = name,
             protocol = protocol,
             host = requireNotNull(host),
@@ -210,8 +210,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     }
 
     private fun deleteServerConfig() {
-        val serverConfig = serverConfig ?: return
-        viewModel.removeServer(serverConfig).invokeOnCompletion {
+        val serverId = serverId ?: return
+        viewModel.removeServer(serverId).invokeOnCompletion {
             finish(Result.DELETED)
         }
     }

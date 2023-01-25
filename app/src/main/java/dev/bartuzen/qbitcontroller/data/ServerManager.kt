@@ -66,9 +66,10 @@ class ServerManager @Inject constructor(
         }
     }
 
-    suspend fun removeServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
+    suspend fun removeServer(serverId: Int) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
-        serverConfigs.remove(serverConfig.id)
+        val serverConfig = serverConfigs[serverId] ?: return@withContext
+        serverConfigs.remove(serverId)
 
         val isSuccess = sharedPref.edit()
             .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))

@@ -42,6 +42,8 @@ class AddEditServerViewModel @Inject constructor(
 
     private var testJob: Job? = null
 
+    fun getServerConfig(serverId: Int) = serverManager.getServer(serverId)
+
     fun addServer(serverConfig: ServerConfig) = viewModelScope.launch {
         serverManager.addServer(serverConfig)
     }
@@ -50,8 +52,8 @@ class AddEditServerViewModel @Inject constructor(
         serverManager.editServer(serverConfig)
     }
 
-    fun removeServer(serverConfig: ServerConfig) = viewModelScope.launch {
-        serverManager.removeServer(serverConfig)
+    fun removeServer(serverId: Int) = viewModelScope.launch {
+        serverManager.removeServer(serverId)
     }
 
     fun testConnection(serverConfig: ServerConfig) {

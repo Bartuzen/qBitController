@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             onLongClick = { serverConfig ->
                 binding.layoutDrawer.close()
                 val intent = Intent(this, SettingsActivity::class.java).apply {
-                    putExtra(SettingsActivity.Extras.EDIT_SERVER_CONFIG, serverConfig)
+                    putExtra(SettingsActivity.Extras.EDIT_SERVER_ID, serverConfig.id)
                 }
                 startActivity(intent)
             }

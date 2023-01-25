@@ -56,7 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 title = serverConfig.name
                 summary = serverConfig.visibleUrl
                 setOnPreferenceClickListener {
-                    val fragment = AddEditServerFragment(serverConfig)
+                    val fragment = AddEditServerFragment(serverConfig.id)
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
                         setDefaultAnimations()
