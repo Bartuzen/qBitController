@@ -26,6 +26,7 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
 import dev.bartuzen.qbitcontroller.model.PeerFlag
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
+import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -230,7 +231,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
             val progress = peer.progress.let { progress ->
                 if (progress < 1) {
-                    (progress * 100).toString()
+                    (progress * 100).floorToDecimal(1).toString()
                 } else {
                     "100"
                 }
@@ -238,7 +239,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
             val relevance = peer.relevance.let { relevance ->
                 if (relevance < 1) {
-                    (relevance * 100).toString()
+                    (relevance * 100).floorToDecimal(1).toString()
                 } else {
                     "100"
                 }
