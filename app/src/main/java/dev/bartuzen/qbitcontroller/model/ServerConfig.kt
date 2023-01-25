@@ -19,7 +19,7 @@ data class ServerConfig(
     @get:JsonIgnore
     val url: String
         get() {
-            val url = "${protocol.toString().lowercase()}://$urlWithoutProtocol"
+            val url = "${protocol.toString().lowercase()}://$visibleUrl"
             return if (!url.endsWith("/")) {
                 "$url/"
             } else {
@@ -28,7 +28,7 @@ data class ServerConfig(
         }
 
     @get:JsonIgnore
-    val urlWithoutProtocol
+    val visibleUrl
         get() = buildString {
             append(host)
             port?.let { port ->

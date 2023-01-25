@@ -70,7 +70,7 @@ class ServerListAdapter(
             } else {
                 binding.textName.visibility = View.GONE
             }
-            binding.textUrl.text = serverConfig.urlWithoutProtocol
+            binding.textUrl.text = serverConfig.visibleUrl
         }
     }
 
@@ -78,6 +78,6 @@ class ServerListAdapter(
         override fun areItemsTheSame(oldItem: ServerConfig, newItem: ServerConfig) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: ServerConfig, newItem: ServerConfig) =
-            oldItem.name == newItem.name && oldItem.urlWithoutProtocol == newItem.urlWithoutProtocol
+            oldItem.name == newItem.name && oldItem.visibleUrl == newItem.visibleUrl
     }
 }
