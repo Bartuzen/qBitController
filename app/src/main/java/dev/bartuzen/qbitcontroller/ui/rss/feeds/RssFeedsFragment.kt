@@ -21,10 +21,8 @@ import dev.bartuzen.qbitcontroller.databinding.DialogRssMoveFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssRenameFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -43,10 +41,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
     private val viewModel: RssFeedsViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
 
-    constructor(serverConfig: ServerConfig) : this() {
-        arguments = bundleOf("serverConfig" to serverConfig)
+    constructor(serverId: Int) : this() {
+        arguments = bundleOf("serverId" to serverId)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -87,7 +85,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadRssFeeds(serverConfig)
+            viewModel.loadRssFeeds(serverId)
         }
 
         val adapter = RssFeedsAdapter(
@@ -97,7 +95,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
                         setDefaultAnimations()
-                        val fragment = RssArticlesFragment(serverConfig, feedPath)
+                        val fragment = RssArticlesFragment(serverId, feedPath)
                         replace(R.id.container, fragment)
                         addToBackStack(null)
                     }
@@ -117,7 +115,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         binding.recyclerFeeds.adapter = ConcatAdapter(backButtonAdapter, adapter)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshRssFeeds(serverConfig)
+            viewModel.refreshRssFeeds(serverId)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -180,35 +178,35 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 }
                 RssFeedsViewModel.Event.FeedAdded -> {
                     showSnackbar(R.string.rss_success_feed_add)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FeedRenamed -> {
                     showSnackbar(R.string.rss_success_feed_rename)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FeedMoved -> {
                     showSnackbar(R.string.rss_success_feed_move)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FeedDeleted -> {
                     showSnackbar(R.string.rss_success_feed_delete)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FolderAdded -> {
                     showSnackbar(R.string.rss_success_folder_add)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FolderRenamed -> {
                     showSnackbar(R.string.rss_success_folder_rename)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FolderMoved -> {
                     showSnackbar(R.string.rss_success_folder_move)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FolderDeleted -> {
                     showSnackbar(R.string.rss_success_folder_delete)
-                    viewModel.loadRssFeeds(serverConfig)
+                    viewModel.loadRssFeeds(serverId)
                 }
             }
         }
@@ -246,7 +244,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     }
                 }
 
-                viewModel.addRssFeed(serverConfig, feedUrl, fullPath)
+                viewModel.addRssFeed(serverId, feedUrl, fullPath)
                 dialog.dismiss()
             } else {
                 dialogBinding.inputLayoutFeedUrl.error = getString(R.string.rss_field_required)
@@ -276,7 +274,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     path
                 }
 
-                viewModel.addRssFolder(serverConfig, fullPath)
+                viewModel.addRssFolder(serverId, fullPath)
                 dialog.dismiss()
             } else {
                 dialogBinding.inputLayoutName.error = getString(R.string.rss_field_required)
@@ -307,7 +305,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                             name = feedNode.name,
                             isFeed = feedNode.isFeed,
                             onRename = { from, to ->
-                                viewModel.renameItem(serverConfig, from, to, feedNode.isFeed)
+                                viewModel.renameItem(serverId, from, to, feedNode.isFeed)
                             }
                         )
                     }
@@ -316,7 +314,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                             name = feedNode.name,
                             isFeed = feedNode.isFeed,
                             onMove = { from, to ->
-                                viewModel.moveItem(serverConfig, from, to, feedNode.isFeed)
+                                viewModel.moveItem(serverId, from, to, feedNode.isFeed)
                             }
                         )
                     }
@@ -326,7 +324,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                             name = feedNode.name,
                             isFeed = feedNode.isFeed,
                             onDelete = {
-                                viewModel.deleteItem(serverConfig, feedPath, feedNode.isFeed)
+                                viewModel.deleteItem(serverId, feedPath, feedNode.isFeed)
                             }
                         )
                     }

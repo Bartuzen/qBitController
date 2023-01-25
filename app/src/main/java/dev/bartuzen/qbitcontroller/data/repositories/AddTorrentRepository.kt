@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.data.repositories
 
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import okhttp3.MediaType
@@ -14,7 +13,7 @@ class AddTorrentRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
     suspend fun createTorrent(
-        serverConfig: ServerConfig,
+        serverId: Int,
         links: List<String>?,
         fileBytes: ByteArray?,
         savePath: String?,
@@ -41,7 +40,7 @@ class AddTorrentRepository @Inject constructor(
             null
         }
 
-        return requestManager.request(serverConfig) { service ->
+        return requestManager.request(serverId) { service ->
             service.addTorrent(
                 links?.joinToString("\n"),
                 filePart,
@@ -62,11 +61,11 @@ class AddTorrentRepository @Inject constructor(
         }
     }
 
-    suspend fun getCategories(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+    suspend fun getCategories(serverId: Int) = requestManager.request(serverId) { service ->
         service.getCategories()
     }
 
-    suspend fun getTags(serverConfig: ServerConfig) = requestManager.request(serverConfig) { service ->
+    suspend fun getTags(serverId: Int) = requestManager.request(serverId) { service ->
         service.getTags()
     }
 }

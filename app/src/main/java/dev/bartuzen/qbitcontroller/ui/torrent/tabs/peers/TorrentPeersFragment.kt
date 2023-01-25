@@ -24,13 +24,11 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeerDetailsBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
 import dev.bartuzen.qbitcontroller.model.PeerFlag
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -52,12 +50,12 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
     private val viewModel: TorrentPeersViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+    constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "torrentHash" to torrentHash
         )
     }
@@ -164,12 +162,12 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
         activityBinding.viewPager.registerOnPageChangeCallback(onPageChange)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshPeers(serverConfig, torrentHash)
+            viewModel.refreshPeers(serverId, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadPeers(serverConfig, torrentHash)
+            viewModel.loadPeers(serverId, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -189,7 +187,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive && actionMode == null) {
-                        viewModel.loadPeers(serverConfig, torrentHash)
+                        viewModel.loadPeers(serverId, torrentHash)
                     }
                 }
             }
@@ -205,14 +203,14 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 }
                 TorrentPeersViewModel.Event.PeersBanned -> {
                     showSnackbar(R.string.torrent_peers_banned)
-                    viewModel.loadPeers(serverConfig, torrentHash)
+                    viewModel.loadPeers(serverId, torrentHash)
                 }
                 TorrentPeersViewModel.Event.PeersAdded -> {
                     showSnackbar(R.string.torrent_peers_added)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent adds the peers
-                        viewModel.loadPeers(serverConfig, torrentHash)
+                        viewModel.loadPeers(serverId, torrentHash)
                     }
                 }
             }
@@ -305,7 +303,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             setTitle(R.string.torrent_peers_add_dialog_title)
             setPositiveButton { _, _ ->
                 viewModel.addPeers(
-                    serverConfig,
+                    serverId,
                     torrentHash,
                     binding.editPeers.text.toString().split("\n")
                 )
@@ -331,7 +329,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 )
             )
             setPositiveButton { _, _ ->
-                viewModel.banPeers(serverConfig, peers)
+                viewModel.banPeers(serverId, peers)
                 onBan()
             }
             setNegativeButton()

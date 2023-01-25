@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentFilesRepository
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
@@ -43,8 +42,8 @@ class TorrentFilesViewModel @Inject constructor(
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updateFiles(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.getFiles(serverConfig, torrentHash)) {
+    private fun updateFiles(serverId: Int, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.getFiles(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 _torrentFiles.value = TorrentFileNode.fromFileList(result.data)
             }
@@ -58,27 +57,27 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
-    fun loadFiles(serverConfig: ServerConfig, torrentHash: String) {
+    fun loadFiles(serverId: Int, torrentHash: String) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateFiles(serverConfig, torrentHash).invokeOnCompletion {
+            updateFiles(serverId, torrentHash).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshFiles(serverConfig: ServerConfig, torrentHash: String) {
+    fun refreshFiles(serverId: Int, torrentHash: String) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateFiles(serverConfig, torrentHash).invokeOnCompletion {
+            updateFiles(serverId, torrentHash).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
     }
 
-    fun setFilePriority(serverConfig: ServerConfig, hash: String, files: List<TorrentFile>, priority: TorrentFilePriority) =
+    fun setFilePriority(serverId: Int, hash: String, files: List<TorrentFile>, priority: TorrentFilePriority) =
         viewModelScope.launch {
-            when (val result = repository.setFilePriority(serverConfig, hash, files.map { it.index }, priority)) {
+            when (val result = repository.setFilePriority(serverId, hash, files.map { it.index }, priority)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.FilePriorityUpdated)
                 }
@@ -88,8 +87,8 @@ class TorrentFilesViewModel @Inject constructor(
             }
         }
 
-    fun renameFile(serverConfig: ServerConfig, hash: String, file: String, newName: String) = viewModelScope.launch {
-        when (val result = repository.renameFile(serverConfig, hash, file, newName)) {
+    fun renameFile(serverId: Int, hash: String, file: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameFile(serverId, hash, file, newName)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FileRenamed)
             }
@@ -103,8 +102,8 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
-    fun renameFolder(serverConfig: ServerConfig, hash: String, folder: String, newName: String) = viewModelScope.launch {
-        when (val result = repository.renameFolder(serverConfig, hash, folder, newName)) {
+    fun renameFolder(serverId: Int, hash: String, folder: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameFolder(serverId, hash, folder, newName)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FolderRenamed)
             }

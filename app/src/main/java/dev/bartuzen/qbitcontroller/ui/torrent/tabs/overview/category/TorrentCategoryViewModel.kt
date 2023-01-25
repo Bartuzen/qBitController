@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentCategoryRepository
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +24,8 @@ class TorrentCategoryViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    fun updateCategories(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (val result = repository.getCategories(serverConfig)) {
+    fun updateCategories(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.getCategories(serverId)) {
             is RequestResult.Success -> {
                 _categories.value = result.data.values
                     .toList()

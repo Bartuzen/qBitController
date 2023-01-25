@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.Category
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.Quintuple
@@ -161,8 +160,8 @@ class TorrentListViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateTorrentList(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (val result = repository.getTorrentList(serverConfig)) {
+    private fun updateTorrentList(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.getTorrentList(serverId)) {
             is RequestResult.Success -> {
                 _torrentList.value = result.data
             }
@@ -172,9 +171,9 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun updateCategoryAndTags(serverConfig: ServerConfig) = viewModelScope.launch {
+    fun updateCategoryAndTags(serverId: Int) = viewModelScope.launch {
         val categoriesDeferred = async {
-            when (val result = repository.getCategories(serverConfig)) {
+            when (val result = repository.getCategories(serverId)) {
                 is RequestResult.Success -> {
                     result.data.values
                         .toList()
@@ -187,7 +186,7 @@ class TorrentListViewModel @Inject constructor(
             }
         }
         val tagsDeferred = async {
-            when (val result = repository.getTags(serverConfig)) {
+            when (val result = repository.getTags(serverId)) {
                 is RequestResult.Success -> {
                     result.data.sortedBy { it }
                 }
@@ -205,21 +204,21 @@ class TorrentListViewModel @Inject constructor(
         _tagList.value = tags
     }
 
-    fun loadTorrentList(serverConfig: ServerConfig) {
+    fun loadTorrentList(serverId: Int) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateTorrentList(serverConfig).invokeOnCompletion {
+            updateTorrentList(serverId).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshTorrentListCategoryTags(serverConfig: ServerConfig) {
+    fun refreshTorrentListCategoryTags(serverId: Int) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             viewModelScope.launch {
-                val torrentListJob = updateTorrentList(serverConfig)
-                val categoryTagJob = updateCategoryAndTags(serverConfig)
+                val torrentListJob = updateTorrentList(serverId)
+                val categoryTagJob = updateCategoryAndTags(serverId)
 
                 torrentListJob.join()
                 categoryTagJob.join()
@@ -229,8 +228,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteTorrents(serverConfig: ServerConfig, hashes: List<String>, deleteFiles: Boolean) = viewModelScope.launch {
-        when (val result = repository.deleteTorrents(serverConfig, hashes, deleteFiles)) {
+    fun deleteTorrents(serverId: Int, hashes: List<String>, deleteFiles: Boolean) = viewModelScope.launch {
+        when (val result = repository.deleteTorrents(serverId, hashes, deleteFiles)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsDeleted(hashes.size))
             }
@@ -240,8 +239,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun pauseTorrents(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
-        when (val result = repository.pauseTorrents(serverConfig, hashes)) {
+    fun pauseTorrents(serverId: Int, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.pauseTorrents(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPaused(hashes.size))
             }
@@ -251,8 +250,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun resumeTorrents(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
-        when (val result = repository.resumeTorrents(serverConfig, hashes)) {
+    fun resumeTorrents(serverId: Int, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.resumeTorrents(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsResumed(hashes.size))
             }
@@ -262,8 +261,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteCategory(serverConfig: ServerConfig, category: String) = viewModelScope.launch {
-        when (val result = repository.deleteCategory(serverConfig, category)) {
+    fun deleteCategory(serverId: Int, category: String) = viewModelScope.launch {
+        when (val result = repository.deleteCategory(serverId, category)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.CategoryDeleted(category))
             }
@@ -273,8 +272,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteTag(serverConfig: ServerConfig, tag: String) = viewModelScope.launch {
-        when (val result = repository.deleteTag(serverConfig, tag)) {
+    fun deleteTag(serverId: Int, tag: String) = viewModelScope.launch {
+        when (val result = repository.deleteTag(serverId, tag)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TagDeleted(tag))
             }
@@ -284,8 +283,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun increaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
-        when (val result = repository.increaseTorrentPriority(serverConfig, hashes)) {
+    fun increaseTorrentPriority(serverId: Int, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.increaseTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityIncreased)
             }
@@ -299,8 +298,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun decreaseTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
-        when (val result = repository.decreaseTorrentPriority(serverConfig, hashes)) {
+    fun decreaseTorrentPriority(serverId: Int, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.decreaseTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityDecreased)
             }
@@ -314,8 +313,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun maximizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
-        when (val result = repository.maximizeTorrentPriority(serverConfig, hashes)) {
+    fun maximizeTorrentPriority(serverId: Int, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.maximizeTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityMaximized)
             }
@@ -329,8 +328,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun minimizeTorrentPriority(serverConfig: ServerConfig, hashes: List<String>) = viewModelScope.launch {
-        when (val result = repository.minimizeTorrentPriority(serverConfig, hashes)) {
+    fun minimizeTorrentPriority(serverId: Int, hashes: List<String>) = viewModelScope.launch {
+        when (val result = repository.minimizeTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityMinimized)
             }
@@ -344,8 +343,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun setLocation(serverConfig: ServerConfig, hashes: List<String>, location: String) = viewModelScope.launch {
-        when (val result = repository.setLocation(serverConfig, hashes, location)) {
+    fun setLocation(serverId: Int, hashes: List<String>, location: String) = viewModelScope.launch {
+        when (val result = repository.setLocation(serverId, hashes, location)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.LocationUpdated)
             }
@@ -355,8 +354,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun createCategory(serverConfig: ServerConfig, name: String, savePath: String) = viewModelScope.launch {
-        when (val result = repository.createCategory(serverConfig, name, savePath)) {
+    fun createCategory(serverId: Int, name: String, savePath: String) = viewModelScope.launch {
+        when (val result = repository.createCategory(serverId, name, savePath)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.CategoryCreated)
             }
@@ -366,8 +365,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun editCategory(serverConfig: ServerConfig, name: String, savePath: String) = viewModelScope.launch {
-        when (val result = repository.editCategory(serverConfig, name, savePath)) {
+    fun editCategory(serverId: Int, name: String, savePath: String) = viewModelScope.launch {
+        when (val result = repository.editCategory(serverId, name, savePath)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.CategoryEdited)
             }
@@ -381,8 +380,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun createTags(serverConfig: ServerConfig, names: List<String>) = viewModelScope.launch {
-        when (val result = repository.createTags(serverConfig, names)) {
+    fun createTags(serverId: Int, names: List<String>) = viewModelScope.launch {
+        when (val result = repository.createTags(serverId, names)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TagCreated)
             }

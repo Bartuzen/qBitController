@@ -7,25 +7,28 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
-import dev.bartuzen.qbitcontroller.utils.getParcelable
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TorrentActivity : AppCompatActivity() {
     object Extras {
         const val TORRENT_HASH = "dev.bartuzen.qbitcontroller.TORRENT_HASH"
-        const val SERVER_CONFIG = "dev.bartuzen.qbitcontroller.SERVER_CONFIG"
+        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
 
         const val TORRENT_DELETED = "dev.bartuzen.qbitcontroller.TORRENT_DELETED"
     }
 
     private lateinit var binding: ActivityTorrentBinding
+
+    @Inject
+    lateinit var serverManager: ServerManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +36,15 @@ class TorrentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)
-        val serverConfig = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
+        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
 
-        if (serverConfig == null || torrentHash == null) {
+        if (serverId == -1 || torrentHash == null) {
             finish()
             return
         }
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = serverConfig.name ?: getString(R.string.app_name)
+        supportActionBar?.title = serverManager.getServer(serverId).name ?: getString(R.string.app_name)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             finish()
@@ -51,11 +54,11 @@ class TorrentActivity : AppCompatActivity() {
             override fun getItemCount() = 5
 
             override fun createFragment(position: Int) = when (position) {
-                0 -> TorrentOverviewFragment(serverConfig, torrentHash)
-                1 -> TorrentFilesFragment(serverConfig, torrentHash)
-                2 -> TorrentPiecesFragment(serverConfig, torrentHash)
-                3 -> TorrentTrackersFragment(serverConfig, torrentHash)
-                4 -> TorrentPeersFragment(serverConfig, torrentHash)
+                0 -> TorrentOverviewFragment(serverId, torrentHash)
+                1 -> TorrentFilesFragment(serverId, torrentHash)
+                2 -> TorrentPiecesFragment(serverId, torrentHash)
+                3 -> TorrentTrackersFragment(serverId, torrentHash)
+                4 -> TorrentPeersFragment(serverId, torrentHash)
                 else -> Fragment()
             }
         }.apply {

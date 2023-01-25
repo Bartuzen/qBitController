@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssFeedRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -38,8 +37,8 @@ class RssFeedsViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateRssFeeds(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (val result = repository.getRssFeeds(serverConfig)) {
+    private fun updateRssFeeds(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
                 _rssFeeds.value = parseRssFeeds(result.data)
             }
@@ -49,26 +48,26 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun loadRssFeeds(serverConfig: ServerConfig) {
+    fun loadRssFeeds(serverId: Int) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateRssFeeds(serverConfig).invokeOnCompletion {
+            updateRssFeeds(serverId).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssFeeds(serverConfig: ServerConfig) {
+    fun refreshRssFeeds(serverId: Int) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateRssFeeds(serverConfig).invokeOnCompletion {
+            updateRssFeeds(serverId).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
     }
 
-    fun addRssFeed(serverConfig: ServerConfig, url: String, path: String) = viewModelScope.launch {
-        when (val result = repository.addRssFeed(serverConfig, url, path)) {
+    fun addRssFeed(serverId: Int, url: String, path: String) = viewModelScope.launch {
+        when (val result = repository.addRssFeed(serverId, url, path)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FeedAdded)
             }
@@ -82,8 +81,8 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun addRssFolder(serverConfig: ServerConfig, path: String) = viewModelScope.launch {
-        when (val result = repository.addRssFolder(serverConfig, path)) {
+    fun addRssFolder(serverId: Int, path: String) = viewModelScope.launch {
+        when (val result = repository.addRssFolder(serverId, path)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FolderAdded)
             }
@@ -97,8 +96,8 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun renameItem(serverConfig: ServerConfig, from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
-        when (val result = repository.moveItem(serverConfig, from, to)) {
+    fun renameItem(serverId: Int, from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
+        when (val result = repository.moveItem(serverId, from, to)) {
             is RequestResult.Success -> {
                 if (isFeed) {
                     eventChannel.send(Event.FeedRenamed)
@@ -120,8 +119,8 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun moveItem(serverConfig: ServerConfig, from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
-        when (val result = repository.moveItem(serverConfig, from, to)) {
+    fun moveItem(serverId: Int, from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
+        when (val result = repository.moveItem(serverId, from, to)) {
             is RequestResult.Success -> {
                 if (isFeed) {
                     eventChannel.send(Event.FeedMoved)
@@ -143,8 +142,8 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun deleteItem(serverConfig: ServerConfig, path: String, isFeed: Boolean) = viewModelScope.launch {
-        when (val result = repository.removeItem(serverConfig, path)) {
+    fun deleteItem(serverId: Int, path: String, isFeed: Boolean) = viewModelScope.launch {
+        when (val result = repository.removeItem(serverId, path)) {
             is RequestResult.Success -> {
                 if (isFeed) {
                     eventChannel.send(Event.FeedDeleted)

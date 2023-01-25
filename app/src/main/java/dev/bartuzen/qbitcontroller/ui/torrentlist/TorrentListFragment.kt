@@ -34,13 +34,11 @@ import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -67,10 +65,10 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
     private val parentActivity get() = requireActivity() as MainActivity
 
-    val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
 
-    constructor(serverConfig: ServerConfig) : this() {
-        arguments = bundleOf("serverConfig" to serverConfig)
+    constructor(serverId: Int) : this() {
+        arguments = bundleOf("serverId" to serverId)
     }
 
     private lateinit var drawerListener: DrawerListener
@@ -83,7 +81,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     false
                 ) ?: false
                 if (isTorrentDeleted) {
-                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.loadTorrentList(serverId)
                     showSnackbar(R.string.torrent_deleted_success)
                 }
             }
@@ -97,7 +95,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     false
                 ) ?: false
                 if (isAdded) {
-                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.loadTorrentList(serverId)
                     showSnackbar(R.string.torrent_add_success)
                 }
             }
@@ -171,13 +169,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     when (menuItem.itemId) {
                         R.id.menu_add -> {
                             val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
-                                putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                                putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
                             }
                             startAddTorrentActivity.launch(intent)
                         }
                         R.id.menu_rss -> {
                             val intent = Intent(requireActivity(), RssActivity::class.java).apply {
-                                putExtra(RssActivity.Extras.SERVER_CONFIG, serverConfig)
+                                putExtra(RssActivity.Extras.SERVER_ID, serverId)
                             }
                             startActivity(intent)
                         }
@@ -239,7 +237,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onClick { torrent ->
                 val intent = Intent(context, TorrentActivity::class.java).apply {
                     putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
-                    putExtra(TorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                    putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
                 }
                 startTorrentActivity.launch(intent)
             }
@@ -258,20 +256,20 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             true
                         }
                         R.id.menu_pause -> {
-                            viewModel.pauseTorrents(serverConfig, selectedItems.toList())
+                            viewModel.pauseTorrents(serverId, selectedItems.toList())
                             finishSelection()
                             actionMode?.finish()
                             true
                         }
                         R.id.menu_resume -> {
-                            viewModel.resumeTorrents(serverConfig, selectedItems.toList())
+                            viewModel.resumeTorrents(serverId, selectedItems.toList())
                             finishSelection()
                             actionMode?.finish()
                             true
                         }
                         R.id.menu_priority_increase -> {
                             viewModel.increaseTorrentPriority(
-                                serverConfig,
+                                serverId,
                                 selectedItems.toList()
                             )
                             actionMode?.finish()
@@ -279,7 +277,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_priority_decrease -> {
                             viewModel.decreaseTorrentPriority(
-                                serverConfig,
+                                serverId,
                                 selectedItems.toList()
                             )
                             actionMode?.finish()
@@ -287,7 +285,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_priority_maximize -> {
                             viewModel.maximizeTorrentPriority(
-                                serverConfig,
+                                serverId,
                                 selectedItems.toList()
                             )
                             actionMode?.finish()
@@ -295,7 +293,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_priority_minimize -> {
                             viewModel.minimizeTorrentPriority(
-                                serverConfig,
+                                serverId,
                                 selectedItems.toList()
                             )
                             actionMode?.finish()
@@ -314,7 +312,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             showLocationDialog(
                                 currentLocation = currentLocation,
                                 onSuccess = { newLocation ->
-                                    viewModel.setLocation(serverConfig, selectedItems, newLocation)
+                                    viewModel.setLocation(serverId, selectedItems, newLocation)
                                 }
                             )
                             true
@@ -439,13 +437,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshTorrentListCategoryTags(serverConfig)
+            viewModel.refreshTorrentListCategoryTags(serverId)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadTorrentList(serverConfig)
-            viewModel.updateCategoryAndTags(serverConfig)
+            viewModel.loadTorrentList(serverId)
+            viewModel.updateCategoryAndTags(serverId)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -471,7 +469,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive && actionMode == null) {
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
             }
@@ -497,7 +495,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         )
                     )
 
-                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.loadTorrentList(serverId)
                 }
                 is TorrentListViewModel.Event.TorrentsPaused -> {
                     showSnackbar(
@@ -510,7 +508,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent pauses the torrent
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
                 is TorrentListViewModel.Event.TorrentsResumed -> {
@@ -524,66 +522,66 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
                 is TorrentListViewModel.Event.CategoryDeleted -> {
                     showSnackbar(
                         getString(R.string.torrent_list_delete_category_success, event.name)
                     )
-                    viewModel.loadTorrentList(serverConfig)
-                    viewModel.updateCategoryAndTags(serverConfig)
+                    viewModel.loadTorrentList(serverId)
+                    viewModel.updateCategoryAndTags(serverId)
                 }
                 is TorrentListViewModel.Event.TagDeleted -> {
                     showSnackbar(
                         getString(R.string.torrent_list_delete_tag_success, event.name)
                     )
-                    viewModel.loadTorrentList(serverConfig)
-                    viewModel.updateCategoryAndTags(serverConfig)
+                    viewModel.loadTorrentList(serverId)
+                    viewModel.updateCategoryAndTags(serverId)
                 }
                 TorrentListViewModel.Event.TorrentsPriorityDecreased -> {
                     showSnackbar(R.string.torrent_list_priority_decreased_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityIncreased -> {
                     showSnackbar(R.string.torrent_list_priority_increased_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityMaximized -> {
                     showSnackbar(R.string.torrent_list_priority_maximized_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityMinimized -> {
                     showSnackbar(R.string.torrent_list_priority_minimized_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverConfig)
+                        viewModel.loadTorrentList(serverId)
                     }
                 }
                 TorrentListViewModel.Event.LocationUpdated -> {
                     showSnackbar(R.string.torrent_location_update_success)
-                    viewModel.loadTorrentList(serverConfig)
+                    viewModel.loadTorrentList(serverId)
                 }
                 TorrentListViewModel.Event.CategoryCreated -> {
                     showSnackbar(R.string.torrent_list_create_category_success)
-                    viewModel.updateCategoryAndTags(serverConfig)
+                    viewModel.updateCategoryAndTags(serverId)
                 }
                 TorrentListViewModel.Event.CategoryEdited -> {
                     showSnackbar(R.string.torrent_list_edit_category_success)
-                    viewModel.updateCategoryAndTags(serverConfig)
+                    viewModel.updateCategoryAndTags(serverId)
                 }
                 TorrentListViewModel.Event.TagCreated -> {
                     showSnackbar(R.string.torrent_list_create_tag_success)
-                    viewModel.updateCategoryAndTags(serverConfig)
+                    viewModel.updateCategoryAndTags(serverId)
                 }
             }
         }
@@ -599,7 +597,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 )
             )
             setPositiveButton { _, _ ->
-                viewModel.deleteTorrents(serverConfig, adapter.selectedItems.toList(), binding.checkDeleteFiles.isChecked)
+                viewModel.deleteTorrents(serverId, adapter.selectedItems.toList(), binding.checkDeleteFiles.isChecked)
                 adapter.finishSelection()
                 actionMode?.finish()
             }
@@ -666,7 +664,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             setTitle(R.string.torrent_list_edit_category_title)
             setPositiveButton { _, _ ->
                 viewModel.editCategory(
-                    serverConfig,
+                    serverId,
                     name,
                     binding.editSavePath.text.toString()
                 )
@@ -696,9 +694,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             )
             setPositiveButton { _, _ ->
                 if (isCategory) {
-                    viewModel.deleteCategory(serverConfig, name)
+                    viewModel.deleteCategory(serverId, name)
                 } else {
-                    viewModel.deleteTag(serverConfig, name)
+                    viewModel.deleteTag(serverId, name)
                 }
             }
             setNegativeButton()
@@ -710,7 +708,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             setTitle(R.string.torrent_list_create_category_title)
             setPositiveButton { _, _ ->
                 viewModel.createCategory(
-                    serverConfig,
+                    serverId,
                     binding.editName.text.toString(),
                     binding.editSavePath.text.toString()
                 )
@@ -724,7 +722,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             setTitle(R.string.torrent_list_create_tag_title)
             setPositiveButton { _, _ ->
                 viewModel.createTags(
-                    serverConfig,
+                    serverId,
                     binding.editName.text.toString().split("\n")
                 )
             }

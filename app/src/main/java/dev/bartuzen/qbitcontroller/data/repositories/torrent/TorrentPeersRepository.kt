@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,16 +8,15 @@ import javax.inject.Singleton
 class TorrentPeersRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
-    suspend fun getPeers(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+    suspend fun getPeers(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.getPeers(hash)
     }
 
-    suspend fun addPeers(serverConfig: ServerConfig, hash: String, peers: List<String>) =
-        requestManager.request(serverConfig) { service ->
-            service.addPeers(hash, peers.joinToString("|"))
-        }
+    suspend fun addPeers(serverId: Int, hash: String, peers: List<String>) = requestManager.request(serverId) { service ->
+        service.addPeers(hash, peers.joinToString("|"))
+    }
 
-    suspend fun banPeers(serverConfig: ServerConfig, peers: List<String>) = requestManager.request(serverConfig) { service ->
+    suspend fun banPeers(serverId: Int, peers: List<String>) = requestManager.request(serverId) { service ->
         service.banPeers(peers.joinToString("|"))
     }
 }

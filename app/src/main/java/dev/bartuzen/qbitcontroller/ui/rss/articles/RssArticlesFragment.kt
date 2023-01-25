@@ -23,10 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssArticlesBinding
 import dev.bartuzen.qbitcontroller.model.Article
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -43,7 +41,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
     private val viewModel: RssArticlesViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val feedPath get() = arguments?.getStringArrayList("feedPath")!!
 
     private val startAddTorrentActivity =
@@ -59,9 +57,9 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
             }
         }
 
-    constructor(serverConfig: ServerConfig, feedPath: List<String>) : this() {
+    constructor(serverId: Int, feedPath: List<String>) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "feedPath" to ArrayList(feedPath)
         )
     }
@@ -78,7 +76,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
                         R.id.menu_refresh -> {
-                            viewModel.refreshFeed(serverConfig, feedPath)
+                            viewModel.refreshFeed(serverId, feedPath)
                         }
                         else -> return false
                     }
@@ -91,7 +89,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadRssFeed(serverConfig, feedPath)
+            viewModel.loadRssFeed(serverId, feedPath)
         }
 
         val adapter = RssArticlesAdapter(
@@ -100,7 +98,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                     article = article,
                     onDownload = {
                         val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
-                            putExtra(AddTorrentActivity.Extras.SERVER_CONFIG, serverConfig)
+                            putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
                             putExtra(AddTorrentActivity.Extras.TORRENT_URL, article.torrentUrl)
                         }
                         startAddTorrentActivity.launch(intent)
@@ -123,7 +121,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshRssFeed(serverConfig, feedPath)
+            viewModel.refreshRssFeed(serverId, feedPath)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -151,7 +149,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000)
-                        viewModel.loadRssFeed(serverConfig, feedPath)
+                        viewModel.loadRssFeed(serverId, feedPath)
                     }
                 }
             }

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTrackersRepository
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -36,8 +35,8 @@ class TorrentTrackersViewModel @Inject constructor(
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updateTrackers(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.getTrackers(serverConfig, torrentHash)) {
+    private fun updateTrackers(serverId: Int, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.getTrackers(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 _torrentTrackers.value = result.data
             }
@@ -51,26 +50,26 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun loadTrackers(serverConfig: ServerConfig, torrentHash: String) {
+    fun loadTrackers(serverId: Int, torrentHash: String) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
+            updateTrackers(serverId, torrentHash).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshTrackers(serverConfig: ServerConfig, torrentHash: String) {
+    fun refreshTrackers(serverId: Int, torrentHash: String) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateTrackers(serverConfig, torrentHash).invokeOnCompletion {
+            updateTrackers(serverId, torrentHash).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
     }
 
-    fun addTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) = viewModelScope.launch {
-        when (val result = repository.addTrackers(serverConfig, hash, urls)) {
+    fun addTrackers(serverId: Int, hash: String, urls: List<String>) = viewModelScope.launch {
+        when (val result = repository.addTrackers(serverId, hash, urls)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TrackersAdded)
             }
@@ -84,8 +83,8 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun deleteTrackers(serverConfig: ServerConfig, hash: String, urls: List<String>) = viewModelScope.launch {
-        when (val result = repository.deleteTrackers(serverConfig, hash, urls)) {
+    fun deleteTrackers(serverId: Int, hash: String, urls: List<String>) = viewModelScope.launch {
+        when (val result = repository.deleteTrackers(serverId, hash, urls)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TrackersDeleted)
             }
@@ -99,8 +98,8 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun editTracker(serverConfig: ServerConfig, hash: String, tracker: String, newUrl: String) = viewModelScope.launch {
-        when (val result = repository.editTrackers(serverConfig, hash, tracker, newUrl)) {
+    fun editTracker(serverId: Int, hash: String, tracker: String, newUrl: String) = viewModelScope.launch {
+        when (val result = repository.editTrackers(serverId, hash, tracker, newUrl)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TrackerEdited)
             }

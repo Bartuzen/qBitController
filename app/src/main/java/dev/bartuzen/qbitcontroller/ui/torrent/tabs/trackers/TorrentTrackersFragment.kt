@@ -22,9 +22,7 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogEditTrackerBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTrackersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentTrackersBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -44,12 +42,12 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
 
     private val viewModel: TorrentTrackersViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+    constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "torrentHash" to torrentHash
         )
     }
@@ -116,7 +114,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                                 showEditTrackerDialog(
                                     tracker = tracker,
                                     onSuccess = { newUrl ->
-                                        viewModel.editTracker(serverConfig, torrentHash, tracker, newUrl)
+                                        viewModel.editTracker(serverId, torrentHash, tracker, newUrl)
                                     }
                                 )
                             } else {
@@ -180,12 +178,12 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
         activityBinding.viewPager.registerOnPageChangeCallback(onPageChange)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshTrackers(serverConfig, torrentHash)
+            viewModel.refreshTrackers(serverId, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadTrackers(serverConfig, torrentHash)
+            viewModel.loadTrackers(serverId, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -205,7 +203,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive && actionMode == null) {
-                        viewModel.loadTrackers(serverConfig, torrentHash)
+                        viewModel.loadTrackers(serverId, torrentHash)
                     }
                 }
             }
@@ -221,15 +219,15 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 }
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
                     showSnackbar(R.string.torrent_trackers_added)
-                    viewModel.loadTrackers(serverConfig, torrentHash)
+                    viewModel.loadTrackers(serverId, torrentHash)
                 }
                 TorrentTrackersViewModel.Event.TrackersDeleted -> {
                     showSnackbar(R.string.torrent_trackers_deleted)
-                    viewModel.loadTrackers(serverConfig, torrentHash)
+                    viewModel.loadTrackers(serverId, torrentHash)
                 }
                 TorrentTrackersViewModel.Event.TrackerEdited -> {
                     showSnackbar(R.string.torrent_trackers_edited)
-                    viewModel.loadTrackers(serverConfig, torrentHash)
+                    viewModel.loadTrackers(serverId, torrentHash)
                 }
             }
         }
@@ -240,7 +238,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
             setTitle(R.string.torrent_trackers_add)
             setPositiveButton { _, _ ->
                 viewModel.addTrackers(
-                    serverConfig,
+                    serverId,
                     torrentHash,
                     binding.editTrackers.text.toString().split("\n")
                 )
@@ -266,7 +264,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 )
             )
             setPositiveButton { _, _ ->
-                viewModel.deleteTrackers(serverConfig, torrentHash, trackerKeys)
+                viewModel.deleteTrackers(serverId, torrentHash, trackerKeys)
                 onDelete()
             }
             setNegativeButton()

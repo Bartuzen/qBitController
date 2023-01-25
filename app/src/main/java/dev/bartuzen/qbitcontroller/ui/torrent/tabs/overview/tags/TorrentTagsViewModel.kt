@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTagsRepository
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,8 +24,8 @@ class TorrentTagsViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    fun updateTags(serverConfig: ServerConfig) = viewModelScope.launch {
-        when (val result = repository.getTags(serverConfig)) {
+    fun updateTags(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.getTags(serverId)) {
             is RequestResult.Success -> {
                 _tags.value = result.data
                     .sortedBy { it }

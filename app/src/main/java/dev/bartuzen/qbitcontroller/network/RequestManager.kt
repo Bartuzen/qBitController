@@ -22,7 +22,7 @@ import javax.net.ssl.SSLContext
 
 @Singleton
 class RequestManager @Inject constructor(
-    serverManager: ServerManager,
+    private val serverManager: ServerManager,
     private val timeoutInterceptor: TimeoutInterceptor,
     private val userAgentInterceptor: UserAgentInterceptor,
     private val trustAllManager: TrustAllX509TrustManager
@@ -43,7 +43,8 @@ class RequestManager @Inject constructor(
         })
     }
 
-    private fun getTorrentService(serverConfig: ServerConfig) = torrentServiceMap.getOrPut(serverConfig.id) {
+    private fun getTorrentService(serverId: Int) = torrentServiceMap.getOrPut(serverId) {
+        val serverConfig = serverManager.getServer(serverId)
         val retrofit = Retrofit.Builder()
             .baseUrl(serverConfig.url)
             .client(
@@ -76,59 +77,58 @@ class RequestManager @Inject constructor(
         retrofit.create(TorrentService::class.java)
     }
 
-    suspend fun <T : Any> request(
-        serverConfig: ServerConfig,
-        block: suspend (service: TorrentService) -> Response<T>
-    ): RequestResult<T> = try {
-        val service = getTorrentService(serverConfig)
-        val blockResponse = block(service)
-        val body = blockResponse.body()
+    suspend fun <T : Any> request(serverId: Int, block: suspend (service: TorrentService) -> Response<T>): RequestResult<T> =
+        try {
+            val service = getTorrentService(serverId)
+            val blockResponse = block(service)
+            val body = blockResponse.body()
 
-        if (blockResponse.code() == 403) {
-            if (serverConfig.username != null && serverConfig.password != null) {
-                val loginResponse = service.login(serverConfig.username, serverConfig.password)
+            if (blockResponse.code() == 403) {
+                val serverConfig = serverManager.getServer(serverId)
+                if (serverConfig.username != null && serverConfig.password != null) {
+                    val loginResponse = service.login(serverConfig.username, serverConfig.password)
 
-                if (loginResponse.code() == 403) {
-                    RequestResult.Error.RequestError.Banned
-                } else if (loginResponse.body() == "Fails.") {
-                    RequestResult.Error.RequestError.InvalidCredentials
-                } else if (loginResponse.body() != "Ok.") {
-                    RequestResult.Error.RequestError.UnknownLoginResponse(loginResponse.body())
-                } else {
-                    val newResponse = block(service)
-                    val newBody = newResponse.body()
-                    if (newResponse.code() == 200 && newBody != null) {
-                        RequestResult.Success(newBody)
+                    if (loginResponse.code() == 403) {
+                        RequestResult.Error.RequestError.Banned
+                    } else if (loginResponse.body() == "Fails.") {
+                        RequestResult.Error.RequestError.InvalidCredentials
+                    } else if (loginResponse.body() != "Ok.") {
+                        RequestResult.Error.RequestError.UnknownLoginResponse(loginResponse.body())
                     } else {
-                        RequestResult.Error.RequestError.NoData
+                        val newResponse = block(service)
+                        val newBody = newResponse.body()
+                        if (newResponse.code() == 200 && newBody != null) {
+                            RequestResult.Success(newBody)
+                        } else {
+                            RequestResult.Error.RequestError.NoData
+                        }
                     }
+                } else {
+                    RequestResult.Error.RequestError.InvalidCredentials
                 }
+            } else if (blockResponse.code() == 200 && body != null) {
+                RequestResult.Success(body)
             } else {
-                RequestResult.Error.RequestError.InvalidCredentials
+                RequestResult.Error.ApiError(blockResponse.code())
             }
-        } else if (blockResponse.code() == 200 && body != null) {
-            RequestResult.Success(body)
-        } else {
-            RequestResult.Error.ApiError(blockResponse.code())
-        }
-    } catch (e: ConnectException) {
-        RequestResult.Error.RequestError.CannotConnect
-    } catch (e: SocketTimeoutException) {
-        RequestResult.Error.RequestError.Timeout
-    } catch (e: UnknownHostException) {
-        RequestResult.Error.RequestError.UnknownHost
-    } catch (e: JsonMappingException) {
-        if (e.cause is SocketTimeoutException) {
+        } catch (e: ConnectException) {
+            RequestResult.Error.RequestError.CannotConnect
+        } catch (e: SocketTimeoutException) {
             RequestResult.Error.RequestError.Timeout
-        } else {
+        } catch (e: UnknownHostException) {
+            RequestResult.Error.RequestError.UnknownHost
+        } catch (e: JsonMappingException) {
+            if (e.cause is SocketTimeoutException) {
+                RequestResult.Error.RequestError.Timeout
+            } else {
+                RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
+            }
+        } catch (e: Exception) {
+            if (e is CancellationException) {
+                throw e
+            }
             RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
         }
-    } catch (e: Exception) {
-        if (e is CancellationException) {
-            throw e
-        }
-        RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
-    }
 }
 
 sealed class RequestResult<out T : Any?> {

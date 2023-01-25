@@ -17,10 +17,8 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRenameFileFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -41,12 +39,12 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
 
     private val viewModel: TorrentFilesViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+    constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "torrentHash" to torrentHash
         )
     }
@@ -74,7 +72,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                         when (item.itemId) {
                             R.id.menu_priority_do_not_download -> {
                                 viewModel.setFilePriority(
-                                    serverConfig = serverConfig,
+                                    serverId = serverId,
                                     hash = torrentHash,
                                     files = getSelectedFiles(),
                                     priority = TorrentFilePriority.DO_NOT_DOWNLOAD
@@ -84,7 +82,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                             }
                             R.id.menu_priority_normal -> {
                                 viewModel.setFilePriority(
-                                    serverConfig = serverConfig,
+                                    serverId = serverId,
                                     hash = torrentHash,
                                     files = getSelectedFiles(),
                                     priority = TorrentFilePriority.NORMAL
@@ -94,7 +92,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                             }
                             R.id.menu_priority_high -> {
                                 viewModel.setFilePriority(
-                                    serverConfig = serverConfig,
+                                    serverId = serverId,
                                     hash = torrentHash,
                                     files = getSelectedFiles(),
                                     priority = TorrentFilePriority.HIGH
@@ -104,7 +102,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                             }
                             R.id.menu_priority_maximum -> {
                                 viewModel.setFilePriority(
-                                    serverConfig = serverConfig,
+                                    serverId = serverId,
                                     hash = torrentHash,
                                     files = getSelectedFiles(),
                                     priority = TorrentFilePriority.MAXIMUM
@@ -184,12 +182,12 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
         activityBinding.viewPager.registerOnPageChangeCallback(onPageChange)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshFiles(serverConfig, torrentHash)
+            viewModel.refreshFiles(serverId, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadFiles(serverConfig, torrentHash)
+            viewModel.loadFiles(serverId, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -228,7 +226,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive && actionMode == null) {
-                        viewModel.loadFiles(serverConfig, torrentHash)
+                        viewModel.loadFiles(serverId, torrentHash)
                     }
                 }
             }
@@ -247,15 +245,15 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 }
                 TorrentFilesViewModel.Event.FilePriorityUpdated -> {
                     showSnackbar(R.string.torrent_files_priority_update_success)
-                    viewModel.loadFiles(serverConfig, torrentHash)
+                    viewModel.loadFiles(serverId, torrentHash)
                 }
                 TorrentFilesViewModel.Event.FileRenamed -> {
                     showSnackbar(R.string.torrent_files_file_renamed_success)
-                    viewModel.loadFiles(serverConfig, torrentHash)
+                    viewModel.loadFiles(serverId, torrentHash)
                 }
                 TorrentFilesViewModel.Event.FolderRenamed -> {
                     showSnackbar(R.string.torrent_files_folder_renamed_success)
-                    viewModel.loadFiles(serverConfig, torrentHash)
+                    viewModel.loadFiles(serverId, torrentHash)
                 }
             }
         }
@@ -283,9 +281,9 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 val newName = binding.editName.text.toString()
 
                 if (isFile) {
-                    viewModel.renameFile(serverConfig, torrentHash, name, newName)
+                    viewModel.renameFile(serverId, torrentHash, name, newName)
                 } else {
-                    viewModel.renameFolder(serverConfig, torrentHash, name, newName)
+                    viewModel.renameFolder(serverId, torrentHash, name, newName)
                 }
                 onSuccess()
             }

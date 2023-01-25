@@ -28,7 +28,6 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentRenameBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentShareLimitBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
@@ -42,7 +41,6 @@ import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -63,12 +61,12 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
     private val viewModel: TorrentOverviewViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+    constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "torrentHash" to torrentHash
         )
     }
@@ -132,20 +130,20 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
                         R.id.menu_pause -> {
-                            viewModel.pauseTorrent(serverConfig, torrentHash)
+                            viewModel.pauseTorrent(serverId, torrentHash)
                         }
                         R.id.menu_resume -> {
-                            viewModel.resumeTorrent(serverConfig, torrentHash)
+                            viewModel.resumeTorrent(serverId, torrentHash)
                         }
                         R.id.menu_delete -> {
                             showDeleteTorrentDialog()
                         }
                         R.id.menu_category -> {
-                            TorrentCategoryDialog(serverConfig, viewModel.torrent.value?.category)
+                            TorrentCategoryDialog(serverId, viewModel.torrent.value?.category)
                                 .show(childFragmentManager, null)
                         }
                         R.id.menu_tags -> {
-                            TorrentTagsDialog(serverConfig, viewModel.torrent.value?.tags ?: listOf())
+                            TorrentTagsDialog(serverId, viewModel.torrent.value?.tags ?: listOf())
                                 .show(childFragmentManager, null)
                         }
                         R.id.menu_share_limit -> {
@@ -158,10 +156,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             showLocationDialog()
                         }
                         R.id.menu_recheck -> {
-                            viewModel.recheckTorrent(serverConfig, torrentHash)
+                            viewModel.recheckTorrent(serverId, torrentHash)
                         }
                         R.id.menu_reannounce -> {
-                            viewModel.reannounceTorrent(serverConfig, torrentHash)
+                            viewModel.reannounceTorrent(serverId, torrentHash)
                         }
                         R.id.menu_dlspeed_limit -> {
                             showDownloadSpeedLimitDialog()
@@ -170,22 +168,22 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             showUploadSpeedLimitDialog()
                         }
                         R.id.menu_sequential_download -> {
-                            viewModel.toggleSequentialDownload(serverConfig, torrentHash)
+                            viewModel.toggleSequentialDownload(serverId, torrentHash)
                         }
                         R.id.menu_prioritize_first_last_pieces -> {
-                            viewModel.togglePrioritizeFirstLastPiecesDownload(serverConfig, torrentHash)
+                            viewModel.togglePrioritizeFirstLastPiecesDownload(serverId, torrentHash)
                         }
                         R.id.menu_automatic_torrent_management -> {
                             val isEnabled = viewModel.torrent.value?.isAutomaticTorrentManagementEnabled ?: return true
-                            viewModel.setAutomaticTorrentManagement(serverConfig, torrentHash, !isEnabled)
+                            viewModel.setAutomaticTorrentManagement(serverId, torrentHash, !isEnabled)
                         }
                         R.id.menu_force_start -> {
                             val isEnabled = viewModel.torrent.value?.isForceStartEnabled ?: return true
-                            viewModel.setForceStart(serverConfig, torrentHash, !isEnabled)
+                            viewModel.setForceStart(serverId, torrentHash, !isEnabled)
                         }
                         R.id.menu_super_seeding -> {
                             val isEnabled = viewModel.torrent.value?.isSuperSeedingEnabled ?: return true
-                            viewModel.setSuperSeeding(serverConfig, torrentHash, !isEnabled)
+                            viewModel.setSuperSeeding(serverId, torrentHash, !isEnabled)
                         }
                         R.id.menu_copy_name -> {
                             val torrent = viewModel.torrent.value
@@ -211,12 +209,12 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         )
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshTorrent(serverConfig, torrentHash)
+            viewModel.refreshTorrent(serverId, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadTorrent(serverConfig, torrentHash)
+            viewModel.loadTorrent(serverId, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -397,7 +395,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive) {
-                        viewModel.loadTorrent(serverConfig, torrentHash)
+                        viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
             }
@@ -423,7 +421,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent pauses the torrent
-                        viewModel.loadTorrent(serverConfig, torrentHash)
+                        viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
                 TorrentOverviewViewModel.Event.TorrentResumed -> {
@@ -431,7 +429,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
-                        viewModel.loadTorrent(serverConfig, torrentHash)
+                        viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
                 TorrentOverviewViewModel.Event.TorrentRechecked -> {
@@ -439,7 +437,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent starts rechecking
-                        viewModel.loadTorrent(serverConfig, torrentHash)
+                        viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
                 TorrentOverviewViewModel.Event.TorrentReannounced -> {
@@ -447,19 +445,19 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 }
                 TorrentOverviewViewModel.Event.TorrentRenamed -> {
                     showSnackbar(R.string.torrent_rename_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.LocationUpdated -> {
                     showSnackbar(R.string.torrent_location_update_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
                     showSnackbar(R.string.torrent_toggle_sequential_download_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.PrioritizeFirstLastPiecesToggled -> {
                     showSnackbar(R.string.torrent_toggle_prioritize_first_last_pieces)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 is TorrentOverviewViewModel.Event.AutomaticTorrentManagementChanged -> {
                     showSnackbar(
@@ -470,15 +468,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         }
                     )
 
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.DownloadSpeedLimitUpdated -> {
                     showSnackbar(R.string.torrent_dlspeed_limit_change_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.UploadSpeedLimitUpdated -> {
                     showSnackbar(R.string.torrent_upspeed_limit_change_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 is TorrentOverviewViewModel.Event.ForceStartChanged -> {
                     showSnackbar(
@@ -491,7 +489,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent sets the value
-                        viewModel.loadTorrent(serverConfig, torrentHash)
+                        viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
                 is TorrentOverviewViewModel.Event.SuperSeedingChanged -> {
@@ -505,20 +503,20 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent sets the value
-                        viewModel.loadTorrent(serverConfig, torrentHash)
+                        viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
                 TorrentOverviewViewModel.Event.CategoryUpdated -> {
                     showSnackbar(R.string.torrent_category_update_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.TagsUpdated -> {
                     showSnackbar(R.string.torrent_tags_update_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.ShareLimitUpdated -> {
                     showSnackbar(R.string.torrent_share_limit_update_success)
-                    viewModel.loadTorrent(serverConfig, torrentHash)
+                    viewModel.loadTorrent(serverId, torrentHash)
                 }
             }
         }
@@ -528,7 +526,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         showDialog(DialogTorrentDeleteBinding::inflate) { binding ->
             setTitle(R.string.torrent_delete)
             setPositiveButton { _, _ ->
-                viewModel.deleteTorrent(serverConfig, torrentHash, binding.checkDeleteFiles.isChecked)
+                viewModel.deleteTorrent(serverId, torrentHash, binding.checkDeleteFiles.isChecked)
             }
             setNegativeButton()
         }
@@ -572,16 +570,16 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             setPositiveButton { _, _ ->
                 when (binding.radioGroupLimit.checkedRadioButtonId) {
                     R.id.radio_limit_global -> {
-                        viewModel.setShareLimit(serverConfig, torrentHash, -2.0, -2)
+                        viewModel.setShareLimit(serverId, torrentHash, -2.0, -2)
                     }
                     R.id.radio_limit_disable -> {
-                        viewModel.setShareLimit(serverConfig, torrentHash, -1.0, -1)
+                        viewModel.setShareLimit(serverId, torrentHash, -1.0, -1)
                     }
                     R.id.radio_limit_custom -> {
                         val ratioLimit = binding.editRatio.text.toString().toDoubleOrNull() ?: -1.0
                         val timeLimit = binding.editTime.text.toString().toIntOrNull() ?: -1
 
-                        viewModel.setShareLimit(serverConfig, torrentHash, ratioLimit, timeLimit)
+                        viewModel.setShareLimit(serverId, torrentHash, ratioLimit, timeLimit)
                     }
                 }
             }
@@ -606,7 +604,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val newName = dialogBinding.editName.text.toString()
             if (newName.isNotBlank()) {
-                viewModel.renameTorrent(serverConfig, torrentHash, newName)
+                viewModel.renameTorrent(serverId, torrentHash, newName)
                 dialog.dismiss()
             } else {
                 dialogBinding.inputLayoutName.error = getString(R.string.torrent_rename_name_cannot_be_blank)
@@ -631,7 +629,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val newLocation = dialogBinding.editLocation.text.toString()
             if (newLocation.isNotBlank()) {
-                viewModel.setLocation(serverConfig, torrentHash, newLocation)
+                viewModel.setLocation(serverId, torrentHash, newLocation)
                 dialog.dismiss()
             } else {
                 dialogBinding.inputLayoutLocation.error = getString(R.string.torrent_location_cannot_be_blank)
@@ -652,7 +650,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     speed * 1024
                 } ?: 0
 
-                viewModel.setDownloadSpeedLimit(serverConfig, torrentHash, limit)
+                viewModel.setDownloadSpeedLimit(serverId, torrentHash, limit)
             }
             setNegativeButton()
         }
@@ -671,14 +669,14 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     speed * 1024
                 } ?: 0
 
-                viewModel.setUploadSpeedLimit(serverConfig, torrentHash, limit)
+                viewModel.setUploadSpeedLimit(serverId, torrentHash, limit)
             }
             setNegativeButton()
         }
     }
 
     fun onCategoryDialogResult(selectedCategory: String?) {
-        viewModel.setCategory(serverConfig, torrentHash, selectedCategory)
+        viewModel.setCategory(serverId, torrentHash, selectedCategory)
     }
 
     fun onCategoryDialogError(error: RequestResult.Error) {
@@ -686,7 +684,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     fun onTagsDialogResult(selectedTags: List<String>) {
-        viewModel.setTags(serverConfig, torrentHash, selectedTags)
+        viewModel.setTags(serverId, torrentHash, selectedTags)
     }
 
     fun onTagsDialogError(error: RequestResult.Error) {

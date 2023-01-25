@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPeersRepository
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -36,8 +35,8 @@ class TorrentPeersViewModel @Inject constructor(
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updatePeers(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.getPeers(serverConfig, torrentHash)) {
+    private fun updatePeers(serverId: Int, torrentHash: String) = viewModelScope.launch {
+        when (val result = repository.getPeers(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 _torrentPeers.value = result.data.peers.values.toList()
             }
@@ -47,26 +46,26 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
-    fun loadPeers(serverConfig: ServerConfig, torrentHash: String) {
+    fun loadPeers(serverId: Int, torrentHash: String) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updatePeers(serverConfig, torrentHash).invokeOnCompletion {
+            updatePeers(serverId, torrentHash).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshPeers(serverConfig: ServerConfig, torrentHash: String) {
+    fun refreshPeers(serverId: Int, torrentHash: String) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updatePeers(serverConfig, torrentHash).invokeOnCompletion {
+            updatePeers(serverId, torrentHash).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
     }
 
-    fun addPeers(serverConfig: ServerConfig, torrentHash: String, peers: List<String>) = viewModelScope.launch {
-        when (val result = repository.addPeers(serverConfig, torrentHash, peers)) {
+    fun addPeers(serverId: Int, torrentHash: String, peers: List<String>) = viewModelScope.launch {
+        when (val result = repository.addPeers(serverId, torrentHash, peers)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.PeersAdded)
             }
@@ -80,8 +79,8 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
-    fun banPeers(serverConfig: ServerConfig, peers: List<String>) = viewModelScope.launch {
-        when (val result = repository.banPeers(serverConfig, peers)) {
+    fun banPeers(serverId: Int, peers: List<String>) = viewModelScope.launch {
+        when (val result = repository.banPeers(serverId, peers)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.PeersBanned)
             }

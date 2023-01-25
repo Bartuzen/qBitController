@@ -14,9 +14,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPiecesBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
@@ -34,12 +32,12 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
 
     private val viewModel: TorrentPiecesViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
 
-    constructor(serverConfig: ServerConfig, torrentHash: String) : this() {
+    constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "torrentHash" to torrentHash
         )
     }
@@ -84,12 +82,12 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshPieces(serverConfig, torrentHash)
+            viewModel.refreshPieces(serverId, torrentHash)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadPieces(serverConfig, torrentHash)
+            viewModel.loadPieces(serverId, torrentHash)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -127,7 +125,7 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive) {
-                        viewModel.loadPieces(serverConfig, torrentHash)
+                        viewModel.loadPieces(serverId, torrentHash)
                     }
                 }
             }

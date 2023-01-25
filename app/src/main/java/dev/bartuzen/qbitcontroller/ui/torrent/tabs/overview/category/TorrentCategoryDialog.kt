@@ -12,9 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentCategoryBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
@@ -26,14 +24,14 @@ import kotlinx.coroutines.flow.filterNotNull
 class TorrentCategoryDialog() : DialogFragment() {
     private val viewModel: TorrentCategoryViewModel by viewModels()
 
-    private val serverConfig get() = arguments?.getParcelableCompat<ServerConfig>("serverConfig")!!
+    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val currentCategory get() = arguments?.getString("currentCategory")
 
     private val parentFragment get() = (requireParentFragment() as TorrentOverviewFragment)
 
-    constructor(serverConfig: ServerConfig, currentCategory: String?) : this() {
+    constructor(serverId: Int, currentCategory: String?) : this() {
         arguments = bundleOf(
-            "serverConfig" to serverConfig,
+            "serverId" to serverId,
             "currentCategory" to currentCategory
         )
     }
@@ -56,7 +54,7 @@ class TorrentCategoryDialog() : DialogFragment() {
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.updateCategories(serverConfig)
+            viewModel.updateCategories(serverId)
         }
 
         viewModel.categories.filterNotNull().launchAndCollectLatestIn(this@TorrentCategoryDialog) { categories ->

@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +53,7 @@ class AddTorrentViewModel @Inject constructor(
     fun getServers() = serverManager.serversFlow.value.values.toList()
 
     fun createTorrent(
-        serverConfig: ServerConfig,
+        serverId: Int,
         links: List<String>?,
         fileUri: Uri?,
         savePath: String?,
@@ -92,7 +91,7 @@ class AddTorrentViewModel @Inject constructor(
 
             when (
                 val result = repository.createTorrent(
-                    serverConfig,
+                    serverId,
                     links,
                     fileBytes,
                     savePath,
@@ -121,9 +120,9 @@ class AddTorrentViewModel @Inject constructor(
         }
     }
 
-    private fun updateCategoryAndTags(serverConfig: ServerConfig) = viewModelScope.launch {
+    private fun updateCategoryAndTags(serverId: Int) = viewModelScope.launch {
         val categoriesDeferred = async {
-            when (val result = repository.getCategories(serverConfig)) {
+            when (val result = repository.getCategories(serverId)) {
                 is RequestResult.Success -> {
                     result.data.values
                         .toList()
@@ -137,7 +136,7 @@ class AddTorrentViewModel @Inject constructor(
             }
         }
         val tagsDeferred = async {
-            when (val result = repository.getTags(serverConfig)) {
+            when (val result = repository.getTags(serverId)) {
                 is RequestResult.Success -> {
                     result.data.sortedBy { it }
                 }
@@ -162,11 +161,11 @@ class AddTorrentViewModel @Inject constructor(
         _tagList.value = null
     }
 
-    fun loadCategoryAndTags(serverConfig: ServerConfig) {
+    fun loadCategoryAndTags(serverId: Int) {
         loadCategoryTagJob?.cancel()
 
         _isLoading.value = true
-        val job = updateCategoryAndTags(serverConfig)
+        val job = updateCategoryAndTags(serverId)
         job.invokeOnCompletion { e ->
             if (e !is CancellationException) {
                 _isLoading.value = false
@@ -176,10 +175,10 @@ class AddTorrentViewModel @Inject constructor(
         loadCategoryTagJob = job
     }
 
-    fun refreshCategoryAndTags(serverConfig: ServerConfig) {
+    fun refreshCategoryAndTags(serverId: Int) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateCategoryAndTags(serverConfig).invokeOnCompletion {
+            updateCategoryAndTags(serverId).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }

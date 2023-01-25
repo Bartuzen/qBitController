@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedWithData
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeedWithData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -33,8 +32,8 @@ class RssArticlesViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateRssFeed(serverConfig: ServerConfig, feedPath: List<String>) = viewModelScope.launch {
-        when (val result = repository.getRssFeeds(serverConfig)) {
+    private fun updateRssFeed(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
+        when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
                 val feed = parseRssFeedWithData(result.data, feedPath)
                 if (feed != null) {
@@ -49,26 +48,26 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun loadRssFeed(serverConfig: ServerConfig, feedPath: List<String>) {
+    fun loadRssFeed(serverId: Int, feedPath: List<String>) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateRssFeed(serverConfig, feedPath).invokeOnCompletion {
+            updateRssFeed(serverId, feedPath).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssFeed(serverConfig: ServerConfig, feedPath: List<String>) {
+    fun refreshRssFeed(serverId: Int, feedPath: List<String>) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateRssFeed(serverConfig, feedPath).invokeOnCompletion {
+            updateRssFeed(serverId, feedPath).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
     }
 
-    fun refreshFeed(serverConfig: ServerConfig, feedPath: List<String>) = viewModelScope.launch {
-        when (val result = repository.refreshItem(serverConfig, feedPath)) {
+    fun refreshFeed(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
+        when (val result = repository.refreshItem(serverId, feedPath)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FeedRefreshed)
             }

@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,98 +8,88 @@ import javax.inject.Singleton
 class TorrentOverviewRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
-    suspend fun getTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+    suspend fun getTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.getTorrentList(hash)
     }
 
-    suspend fun getProperties(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+    suspend fun getProperties(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.getTorrentProperties(hash)
     }
 
-    suspend fun deleteTorrent(serverConfig: ServerConfig, hash: String, deleteFiles: Boolean) =
-        requestManager.request(serverConfig) { service ->
+    suspend fun deleteTorrent(serverId: Int, hash: String, deleteFiles: Boolean) =
+        requestManager.request(serverId) { service ->
             service.deleteTorrents(hash, deleteFiles)
         }
 
-    suspend fun pauseTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+    suspend fun pauseTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.pauseTorrents(hash)
     }
 
-    suspend fun resumeTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+    suspend fun resumeTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.resumeTorrents(hash)
     }
 
-    suspend fun toggleSequentialDownload(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.toggleSequentialDownload(hash)
-        }
+    suspend fun toggleSequentialDownload(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
+        service.toggleSequentialDownload(hash)
+    }
 
-    suspend fun togglePrioritizeFirstLastPiecesDownload(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
+    suspend fun togglePrioritizeFirstLastPiecesDownload(serverId: Int, hash: String) =
+        requestManager.request(serverId) { service ->
             service.togglePrioritizeFirstLastPiecesDownload(hash)
         }
 
-    suspend fun setAutomaticTorrentManagement(serverConfig: ServerConfig, hash: String, enable: Boolean) =
-        requestManager.request(serverConfig) { service ->
+    suspend fun setAutomaticTorrentManagement(serverId: Int, hash: String, enable: Boolean) =
+        requestManager.request(serverId) { service ->
             service.setAutomaticTorrentManagement(hash, enable)
         }
 
-    suspend fun setDownloadSpeedLimit(serverConfig: ServerConfig, hash: String, limit: Int) =
-        requestManager.request(serverConfig) { service ->
+    suspend fun setDownloadSpeedLimit(serverId: Int, hash: String, limit: Int) =
+        requestManager.request(serverId) { service ->
             service.setDownloadSpeedLimit(hash, limit)
         }
 
-    suspend fun setUploadSpeedLimit(serverConfig: ServerConfig, hash: String, limit: Int) =
-        requestManager.request(serverConfig) { service ->
-            service.setUploadSpeedLimit(hash, limit)
-        }
+    suspend fun setUploadSpeedLimit(serverId: Int, hash: String, limit: Int) = requestManager.request(serverId) { service ->
+        service.setUploadSpeedLimit(hash, limit)
+    }
 
-    suspend fun setForceStart(serverConfig: ServerConfig, hash: String, value: Boolean) =
-        requestManager.request(serverConfig) { service ->
-            service.setForceStart(hash, value)
-        }
+    suspend fun setForceStart(serverId: Int, hash: String, value: Boolean) = requestManager.request(serverId) { service ->
+        service.setForceStart(hash, value)
+    }
 
-    suspend fun setSuperSeeding(serverConfig: ServerConfig, hash: String, value: Boolean) =
-        requestManager.request(serverConfig) { service ->
-            service.setSuperSeeding(hash, value)
-        }
+    suspend fun setSuperSeeding(serverId: Int, hash: String, value: Boolean) = requestManager.request(serverId) { service ->
+        service.setSuperSeeding(hash, value)
+    }
 
-    suspend fun recheckTorrent(serverConfig: ServerConfig, hash: String) = requestManager.request(serverConfig) { service ->
+    suspend fun recheckTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.recheckTorrents(hash)
     }
 
-    suspend fun reannounceTorrent(serverConfig: ServerConfig, hash: String) =
-        requestManager.request(serverConfig) { service ->
-            service.reannounceTorrents(hash)
-        }
+    suspend fun reannounceTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
+        service.reannounceTorrents(hash)
+    }
 
-    suspend fun renameTorrent(serverConfig: ServerConfig, hash: String, name: String) =
-        requestManager.request(serverConfig) { service ->
-            service.renameTorrent(hash, name)
-        }
+    suspend fun renameTorrent(serverId: Int, hash: String, name: String) = requestManager.request(serverId) { service ->
+        service.renameTorrent(hash, name)
+    }
 
-    suspend fun setLocation(serverConfig: ServerConfig, hash: String, location: String) =
-        requestManager.request(serverConfig) { service ->
-            service.setLocation(hash, location)
-        }
+    suspend fun setLocation(serverId: Int, hash: String, location: String) = requestManager.request(serverId) { service ->
+        service.setLocation(hash, location)
+    }
 
-    suspend fun setCategory(serverConfig: ServerConfig, hash: String, category: String?) =
-        requestManager.request(serverConfig) { service ->
-            service.setCategory(hash, category ?: "")
-        }
+    suspend fun setCategory(serverId: Int, hash: String, category: String?) = requestManager.request(serverId) { service ->
+        service.setCategory(hash, category ?: "")
+    }
 
-    suspend fun addTags(serverConfig: ServerConfig, hash: String, tags: List<String>) =
-        requestManager.request(serverConfig) { service ->
-            service.addTags(hash, tags.joinToString(","))
-        }
+    suspend fun addTags(serverId: Int, hash: String, tags: List<String>) = requestManager.request(serverId) { service ->
+        service.addTags(hash, tags.joinToString(","))
+    }
 
-    suspend fun removeTags(serverConfig: ServerConfig, hash: String, tags: List<String>) =
-        requestManager.request(serverConfig) { service ->
-            service.removeTags(hash, tags.joinToString(","))
-        }
+    suspend fun removeTags(serverId: Int, hash: String, tags: List<String>) = requestManager.request(serverId) { service ->
+        service.removeTags(hash, tags.joinToString(","))
+    }
 
-    suspend fun setShareLimit(serverConfig: ServerConfig, hash: String, ratioLimit: Double, seedingTimeLimit: Int) =
-        requestManager.request(serverConfig) { service ->
+    suspend fun setShareLimit(serverId: Int, hash: String, ratioLimit: Double, seedingTimeLimit: Int) =
+        requestManager.request(serverId) { service ->
             service.setShareLimit(hash, ratioLimit, seedingTimeLimit)
         }
 }

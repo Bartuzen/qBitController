@@ -29,6 +29,9 @@ class ServerManager @Inject constructor(
     private val _serversFlow = MutableStateFlow(readServerConfigs())
     val serversFlow = _serversFlow.asStateFlow()
 
+    fun getServer(serverId: Int) =
+        serversFlow.value[serverId] ?: throw IllegalStateException("Couldn't find server with id $serverId")
+
     suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
         val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1

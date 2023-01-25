@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -21,9 +22,7 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelable
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -39,7 +38,7 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class AddTorrentActivity : AppCompatActivity() {
     object Extras {
-        const val SERVER_CONFIG = "dev.bartuzen.qbitcontroller.SERVER_CONFIG"
+        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
         const val TORRENT_URL = "dev.bartuzen.qbitcontroller.TORRENT_URL"
 
         const val IS_ADDED = "dev.bartuzen.qbitcontroller.IS_ADDED"
@@ -55,11 +54,11 @@ class AddTorrentActivity : AppCompatActivity() {
         binding = ActivityAddTorrentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val serverConfig = MutableStateFlow<ServerConfig?>(
-            intent.getParcelable(Extras.SERVER_CONFIG)
+        val serverId = MutableStateFlow(
+            intent.getIntExtra(Extras.SERVER_ID, -1).takeIf { it != -1 }
         )
 
-        if (serverConfig.value == null) {
+        if (serverId.value == null) {
             val servers = viewModel.getServers()
 
             if (servers.isEmpty()) {
@@ -69,7 +68,7 @@ class AddTorrentActivity : AppCompatActivity() {
             }
 
             if (servers.size == 1) {
-                serverConfig.value = servers.first()
+                serverId.value = servers.first().id
             } else {
                 binding.spinnerServers.adapter = ArrayAdapter(
                     this,
@@ -78,7 +77,7 @@ class AddTorrentActivity : AppCompatActivity() {
                 )
                 binding.spinnerServers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        serverConfig.value = servers[position]
+                        serverId.value = servers[position].id
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -146,71 +145,17 @@ class AddTorrentActivity : AppCompatActivity() {
                 menuInflater.inflate(R.menu.add_torrent_menu, menu)
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
-                R.id.menu_add -> {
-                    val links = binding.editTorrentLink.text.toString()
-                    val downloadSpeedLimit = binding.editDlspeedLimit.text.toString().toDoubleOrNull().let { limit ->
-                        if (limit != null) {
-                            (limit * 1024).roundToInt()
-                        } else {
-                            null
-                        }
-                    }
-                    val uploadSpeedLimit = binding.editUpspeedLimit.text.toString().toDoubleOrNull().let { limit ->
-                        if (limit != null) {
-                            (limit * 1024).roundToInt()
-                        } else {
-                            null
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_add -> {
+                        serverId.value?.let { id ->
+                            tryAddTorrent(id, fileUri)
                         }
                     }
 
-                    if (links.isNotBlank() || fileUri != null) {
-                        val config = serverConfig.value
-
-                        val category = binding.chipGroupCategory.checkedChipId.let { id ->
-                            if (id != View.NO_ID) {
-                                binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
-                            } else {
-                                null
-                            }
-                        }
-
-                        val tags = binding.chipGroupTag.checkedChipIds.map { id ->
-                            binding.chipGroupTag.findViewById<Chip>(id).text.toString()
-                        }
-
-                        val autoTmm = when (binding.spinnerTmm.selectedItemPosition) {
-                            1 -> false
-                            2 -> true
-                            else -> null
-                        }
-
-                        if (config != null) {
-                            viewModel.createTorrent(
-                                serverConfig = config,
-                                links = if (fileUri == null) links.split("\n") else null,
-                                fileUri = fileUri,
-                                savePath = binding.editSavePath.text.toString().ifBlank { null },
-                                category = category,
-                                tags = tags,
-                                torrentName = binding.editTorrentName.text.toString().ifBlank { null },
-                                downloadSpeedLimit = downloadSpeedLimit,
-                                uploadSpeedLimit = uploadSpeedLimit,
-                                ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
-                                seedingTimeLimit = binding.editSeedingTimeLimit.text.toString().toIntOrNull(),
-                                isPaused = !binding.checkStartTorrent.isChecked,
-                                skipHashChecking = binding.checkSkipChecking.isChecked,
-                                isAutoTorrentManagementEnabled = autoTmm,
-                                isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
-                                isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
-                            )
-                        }
-                    } else {
-                        binding.inputLayoutTorrentLink.error = getString(R.string.torrent_add_link_cannot_be_empty)
-                    }
-                    true
+                    else -> return false
                 }
-                else -> false
+                return true
             }
         })
 
@@ -223,17 +168,17 @@ class AddTorrentActivity : AppCompatActivity() {
         )
 
         binding.swipeRefresh.setOnRefreshListener {
-            serverConfig.value?.let { config ->
-                viewModel.refreshCategoryAndTags(config)
+            serverId.value?.let { id ->
+                viewModel.refreshCategoryAndTags(id)
             }
         }
 
-        serverConfig.filterNotNull().launchAndCollectLatestIn(this) { config ->
+        serverId.filterNotNull().launchAndCollectLatestIn(this) { id ->
             binding.chipGroupCategory.removeAllViews()
             binding.chipGroupTag.removeAllViews()
             viewModel.removeCategoriesAndTags()
 
-            viewModel.loadCategoryAndTags(config)
+            viewModel.loadCategoryAndTags(id)
         }
 
         viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
@@ -343,5 +288,66 @@ class AddTorrentActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun tryAddTorrent(serverId: Int, fileUri: Uri?) {
+        val links = binding.editTorrentLink.text.toString()
+
+        if (links.isBlank() && fileUri == null) {
+            binding.inputLayoutTorrentLink.error = getString(R.string.torrent_add_link_cannot_be_empty)
+            return
+        }
+
+        val downloadSpeedLimit = binding.editDlspeedLimit.text.toString().toDoubleOrNull().let { limit ->
+            if (limit != null) {
+                (limit * 1024).roundToInt()
+            } else {
+                null
+            }
+        }
+        val uploadSpeedLimit = binding.editUpspeedLimit.text.toString().toDoubleOrNull().let { limit ->
+            if (limit != null) {
+                (limit * 1024).roundToInt()
+            } else {
+                null
+            }
+        }
+
+        val category = binding.chipGroupCategory.checkedChipId.let { id ->
+            if (id != View.NO_ID) {
+                binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
+            } else {
+                null
+            }
+        }
+
+        val tags = binding.chipGroupTag.checkedChipIds.map { id ->
+            binding.chipGroupTag.findViewById<Chip>(id).text.toString()
+        }
+
+        val autoTmm = when (binding.spinnerTmm.selectedItemPosition) {
+            1 -> false
+            2 -> true
+            else -> null
+        }
+
+        viewModel.createTorrent(
+            serverId = serverId,
+            links = if (fileUri == null) links.split("\n") else null,
+            fileUri = fileUri,
+            savePath = binding.editSavePath.text.toString().ifBlank { null },
+            category = category,
+            tags = tags,
+            torrentName = binding.editTorrentName.text.toString().ifBlank { null },
+            downloadSpeedLimit = downloadSpeedLimit,
+            uploadSpeedLimit = uploadSpeedLimit,
+            ratioLimit = binding.editRatioLimit.text.toString().toDoubleOrNull(),
+            seedingTimeLimit = binding.editSeedingTimeLimit.text.toString().toIntOrNull(),
+            isPaused = !binding.checkStartTorrent.isChecked,
+            skipHashChecking = binding.checkSkipChecking.isChecked,
+            isAutoTorrentManagementEnabled = autoTmm,
+            isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
+            isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
+        )
     }
 }

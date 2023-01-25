@@ -20,6 +20,7 @@ import dev.bartuzen.qbitcontroller.BuildConfig
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
+import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -134,25 +135,29 @@ class MainActivity : AppCompatActivity() {
             addServerAdapter.isVisible = serverList.isEmpty()
         }
 
+        var currentServerConfig: ServerConfig? = null
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
             serverListAdapter.selectedServerId = serverConfig?.id ?: -1
-            val currentFragment = supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
 
             supportActionBar?.title = serverConfig?.name ?: getString(R.string.app_name)
 
-            if (serverConfig == null) {
-                if (currentFragment != null) {
+            if (currentServerConfig != serverConfig) {
+                if (serverConfig != null) {
                     supportFragmentManager.commit {
                         setReorderingAllowed(true)
-                        remove(currentFragment)
+                        val fragment = TorrentListFragment(serverConfig.id)
+                        replace(R.id.container, fragment)
+                    }
+                } else {
+                    val currentFragment = supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
+                    if (currentFragment != null) {
+                        supportFragmentManager.commit {
+                            setReorderingAllowed(true)
+                            remove(currentFragment)
+                        }
                     }
                 }
-            } else if (currentFragment?.serverConfig != serverConfig) {
-                val fragment = TorrentListFragment(serverConfig)
-                supportFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    replace(R.id.container, fragment)
-                }
+                currentServerConfig = serverConfig
             }
         }
     }

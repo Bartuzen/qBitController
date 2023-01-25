@@ -6,7 +6,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPiecesRepository
 import dev.bartuzen.qbitcontroller.model.PieceState
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
@@ -42,9 +41,9 @@ class TorrentPiecesViewModel @Inject constructor(
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updatePieces(serverConfig: ServerConfig, torrentHash: String) = viewModelScope.launch {
+    private fun updatePieces(serverId: Int, torrentHash: String) = viewModelScope.launch {
         val piecesDeferred = async {
-            when (val result = repository.getPieces(serverConfig, torrentHash)) {
+            when (val result = repository.getPieces(serverId, torrentHash)) {
                 is RequestResult.Success -> {
                     result.data
                 }
@@ -59,7 +58,7 @@ class TorrentPiecesViewModel @Inject constructor(
             }
         }
         val propertiesDeferred = async {
-            when (val result = repository.getProperties(serverConfig, torrentHash)) {
+            when (val result = repository.getProperties(serverId, torrentHash)) {
                 is RequestResult.Success -> {
                     result.data
                 }
@@ -81,19 +80,19 @@ class TorrentPiecesViewModel @Inject constructor(
         _torrentProperties.value = properties
     }
 
-    fun loadPieces(serverConfig: ServerConfig, torrentHash: String) {
+    fun loadPieces(serverId: Int, torrentHash: String) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updatePieces(serverConfig, torrentHash).invokeOnCompletion {
+            updatePieces(serverId, torrentHash).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshPieces(serverConfig: ServerConfig, torrentHash: String) {
+    fun refreshPieces(serverId: Int, torrentHash: String) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updatePieces(serverConfig, torrentHash).invokeOnCompletion {
+            updatePieces(serverId, torrentHash).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }

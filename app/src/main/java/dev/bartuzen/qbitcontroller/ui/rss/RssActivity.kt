@@ -6,14 +6,12 @@ import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityRssBinding
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.rss.feeds.RssFeedsFragment
-import dev.bartuzen.qbitcontroller.utils.getParcelable
 
 @AndroidEntryPoint
 class RssActivity : AppCompatActivity() {
     object Extras {
-        const val SERVER_CONFIG = "dev.bartuzen.qbitcontroller.SERVER_CONFIG"
+        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
     }
 
     private lateinit var binding: ActivityRssBinding
@@ -23,9 +21,9 @@ class RssActivity : AppCompatActivity() {
         binding = ActivityRssBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val serverConfig = intent.getParcelable<ServerConfig>(Extras.SERVER_CONFIG)
+        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
 
-        if (serverConfig == null) {
+        if (serverId == -1) {
             finish()
             return
         }
@@ -42,7 +40,7 @@ class RssActivity : AppCompatActivity() {
 
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            replace(R.id.container, RssFeedsFragment(serverConfig))
+            replace(R.id.container, RssFeedsFragment(serverId))
         }
     }
 }
