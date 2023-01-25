@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
-import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.ActionMode
@@ -217,7 +216,6 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun showPeerDetailsDialog(peer: TorrentPeer) {
         showDialog(DialogTorrentPeerDetailsBinding::inflate) { binding ->
             setTitle(getString(R.string.torrent_peers_ip_format, peer.ip, peer.port))
