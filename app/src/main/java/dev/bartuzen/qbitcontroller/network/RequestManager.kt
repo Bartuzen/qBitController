@@ -53,6 +53,11 @@ class RequestManager @Inject constructor(
                     addInterceptor(timeoutInterceptor)
                     addInterceptor(userAgentInterceptor)
 
+                    val basicAuth = serverConfig.basicAuth
+                    if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
+                        addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
+                    }
+
                     if (serverConfig.protocol == Protocol.HTTPS) {
                         hostnameVerifier { _, _ -> true }
 

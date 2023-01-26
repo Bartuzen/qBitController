@@ -12,19 +12,25 @@ import android.widget.ArrayAdapter
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddEditServerBinding
+import dev.bartuzen.qbitcontroller.model.BasicAuth
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
+import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import okhttp3.HttpUrl
@@ -36,6 +42,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     private val viewModel: AddEditServerViewModel by viewModels()
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }
+
+    private var basicAuth = BasicAuth(false, null, null)
 
     constructor(serverId: Int?) : this() {
         arguments = bundleOf("serverId" to serverId)
@@ -64,6 +72,14 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                         R.id.menu_delete -> {
                             deleteServerConfig()
                         }
+                        R.id.menu_advanced -> {
+                            parentFragmentManager.commit {
+                                setReorderingAllowed(true)
+                                setDefaultAnimations()
+                                replace(R.id.container, AdvancedServerSettingsFragment(basicAuth))
+                                addToBackStack(null)
+                            }
+                        }
                         else -> return false
                     }
                     return true
@@ -83,6 +99,10 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             if (parentFragmentManager.backStackEntryCount > 0) Lifecycle.State.RESUMED else Lifecycle.State.STARTED
         )
 
+        setFragmentResultListener("advancedServerSettingsResult") { _, bundle ->
+            basicAuth = bundle.getParcelableCompat("basicAuth")!!
+        }
+
         binding.spinnerProtocol.adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
@@ -99,6 +119,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
 
         serverId?.let { id ->
             val serverConfig = viewModel.getServerConfig(id)
+            basicAuth = serverConfig.basicAuth
+
             binding.inputLayoutName.setTextWithoutAnimation(serverConfig.name)
             binding.spinnerProtocol.setSelection(serverConfig.protocol.ordinal)
             binding.inputLayoutHost.setTextWithoutAnimation(serverConfig.host)
@@ -184,7 +206,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             path = path,
             username = username,
             password = password,
-            trustSelfSignedCertificates = trustSelfSignedCertificates
+            trustSelfSignedCertificates = trustSelfSignedCertificates,
+            basicAuth = basicAuth
         )
 
         if (HttpUrl.parse(config.url) == null) {

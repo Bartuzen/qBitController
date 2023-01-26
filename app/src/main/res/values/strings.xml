@@ -17,6 +17,7 @@
 
     <string name="menu_add_edit_server_delete">Delete</string>
     <string name="menu_add_edit_server_save">Save</string>
+    <string name="menu_add_edit_server_advanced_settings">Advanced Settings</string>
 
     <string name="menu_priority">Priority</string>
     <string name="menu_priority_increase">Increase Priority</string>
@@ -487,6 +488,11 @@
     <string name="settings_server_password">Password</string>
     <string name="settings_trust_self_signed_certificates">Trust self-signed certificates</string>
     <string name="settings_server_test_configuration">Test Configuration</string>
+
+    <string name="settings_server_basic_auth">Basic Authentication</string>
+    <string name="settings_server_basic_auth_enabled">Enabled</string>
+    <string name="settings_server_basic_auth_username">@string/settings_server_username</string>
+    <string name="settings_server_basic_auth_password">@string/settings_server_password</string>
 
     <string-array name="settings_theme_entries">
         <item>Light</item>
