@@ -32,8 +32,8 @@ class TorrentFilesViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _isNaturalLoading = MutableStateFlow<Boolean?>(null)
+    val isNaturalLoading = _isNaturalLoading.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -41,6 +41,7 @@ class TorrentFilesViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private fun updateFiles(serverId: Int, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getFiles(serverId, torrentHash)) {
@@ -57,11 +58,11 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
-    fun loadFiles(serverId: Int, torrentHash: String) {
-        if (!isLoading.value) {
-            _isLoading.value = true
+    fun loadFiles(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+        if (isNaturalLoading.value == null) {
+            _isNaturalLoading.value = !autoRefresh
             updateFiles(serverId, torrentHash).invokeOnCompletion {
-                _isLoading.value = false
+                _isNaturalLoading.value = null
             }
         }
     }

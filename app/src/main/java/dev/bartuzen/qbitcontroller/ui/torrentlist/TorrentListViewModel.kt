@@ -48,12 +48,13 @@ class TorrentListViewModel @Inject constructor(
     val torrentSort = settingsManager.sort.flow
     val isReverseSorting = settingsManager.isReverseSorting.flow
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _isNaturalLoading = MutableStateFlow<Boolean?>(null)
+    val isNaturalLoading = _isNaturalLoading.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -204,11 +205,11 @@ class TorrentListViewModel @Inject constructor(
         _tagList.value = tags
     }
 
-    fun loadTorrentList(serverId: Int) {
-        if (!isLoading.value) {
-            _isLoading.value = true
+    fun loadTorrentList(serverId: Int, autoRefresh: Boolean = false) {
+        if (isNaturalLoading.value == null) {
+            _isNaturalLoading.value = !autoRefresh
             updateTorrentList(serverId).invokeOnCompletion {
-                _isLoading.value = false
+                _isNaturalLoading.value = null
             }
         }
     }

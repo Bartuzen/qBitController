@@ -25,8 +25,8 @@ class TorrentTrackersViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _isNaturalLoading = MutableStateFlow<Boolean?>(null)
+    val isNaturalLoading = _isNaturalLoading.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -34,6 +34,7 @@ class TorrentTrackersViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private fun updateTrackers(serverId: Int, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getTrackers(serverId, torrentHash)) {
@@ -50,11 +51,11 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun loadTrackers(serverId: Int, torrentHash: String) {
-        if (!isLoading.value) {
-            _isLoading.value = true
+    fun loadTrackers(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+        if (isNaturalLoading.value == null) {
+            _isNaturalLoading.value = !autoRefresh
             updateTrackers(serverId, torrentHash).invokeOnCompletion {
-                _isLoading.value = false
+                _isNaturalLoading.value = null
             }
         }
     }

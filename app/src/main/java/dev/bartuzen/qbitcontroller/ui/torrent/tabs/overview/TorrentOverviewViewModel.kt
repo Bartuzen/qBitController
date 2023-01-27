@@ -31,8 +31,8 @@ class TorrentOverviewViewModel @Inject constructor(
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _isNaturalLoading = MutableStateFlow<Boolean?>(null)
+    val isNaturalLoading = _isNaturalLoading.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
@@ -40,6 +40,7 @@ class TorrentOverviewViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private fun updateTorrent(serverId: Int, torrentHash: String) = viewModelScope.launch {
         val torrentDeferred = async {
@@ -81,11 +82,11 @@ class TorrentOverviewViewModel @Inject constructor(
         _torrentProperties.value = properties
     }
 
-    fun loadTorrent(serverId: Int, torrentHash: String) {
-        if (!isLoading.value) {
-            _isLoading.value = true
+    fun loadTorrent(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+        if (isNaturalLoading.value == null) {
+            _isNaturalLoading.value = !autoRefresh
             updateTorrent(serverId, torrentHash).invokeOnCompletion {
-                _isLoading.value = false
+                _isNaturalLoading.value = null
             }
         }
     }

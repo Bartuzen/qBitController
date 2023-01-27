@@ -190,8 +190,14 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
             viewModel.loadFiles(serverId, torrentHash)
         }
 
-        viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
+            val autoRefreshLoadingBar = viewModel.autoRefreshHideLoadingBar.value
+            binding.progressIndicator.visibility =
+                if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
@@ -226,7 +232,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive && actionMode == null) {
-                        viewModel.loadFiles(serverId, torrentHash)
+                        viewModel.loadFiles(serverId, torrentHash, autoRefresh = true)
                     }
                 }
             }

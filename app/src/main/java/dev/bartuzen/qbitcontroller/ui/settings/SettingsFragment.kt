@@ -12,6 +12,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
@@ -55,6 +56,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
                             viewModel.theme = Theme.valueOf(value)
                         }
                     }
+                }
+            }
+
+            override fun getBoolean(key: String, defValue: Boolean): Boolean {
+                return when (key) {
+                    "autoRefreshHideLoadingBar" -> viewModel.autoRefreshHideLoadingBar
+                    else -> defValue
+                }
+            }
+
+            override fun putBoolean(key: String, value: Boolean) {
+                when (key) {
+                    "autoRefreshHideLoadingBar" -> viewModel.autoRefreshHideLoadingBar = value
                 }
             }
         }
@@ -165,6 +179,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
                 editText.setText(text)
                 editText.setSelection(text.length)
+            }
+        }
+
+        switch {
+            key = "autoRefreshHideLoadingBar"
+            setTitle(R.string.settings_auto_refresh_hide_loading_bar)
+            setSummary(R.string.settings_auto_refresh_hide_loading_bar_desc)
+
+            viewModel.autoRefreshIntervalFlow.launchAndCollectLatestIn(this@SettingsFragment) { autoRefreshInterval ->
+                isEnabled = autoRefreshInterval != 0
             }
         }
 
