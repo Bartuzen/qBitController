@@ -5,6 +5,7 @@ import android.text.InputType
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -21,7 +22,43 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: SettingsViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        preferenceManager.sharedPreferencesName = "settings"
+        preferenceManager.preferenceDataStore = object : PreferenceDataStore() {
+            override fun getString(key: String, defValue: String?): String? {
+                return when (key) {
+                    "connectionTimeout" -> viewModel.connectionTimeout.toString()
+                    "autoRefreshInterval" -> viewModel.autoRefreshInterval.toString()
+                    "theme" -> viewModel.theme.toString()
+                    else -> defValue
+                }
+            }
+
+            override fun putString(key: String, value: String?) {
+                when (key) {
+                    "connectionTimeout" -> {
+                        val num = value?.toIntOrNull() ?: return
+                        viewModel.connectionTimeout = when {
+                            num > 3600 -> 3600
+                            num < 1 -> 1
+                            else -> num
+                        }
+                    }
+                    "autoRefreshInterval" -> {
+                        val num = value?.toIntOrNull() ?: return
+                        viewModel.autoRefreshInterval = when {
+                            num > 3600 -> 3600
+                            num < 0 -> 0
+                            else -> num
+                        }
+                    }
+                    "theme" -> {
+                        if (value != null) {
+                            viewModel.theme = Theme.valueOf(value)
+                        }
+                    }
+                }
+            }
+        }
+
         initSettings()
 
         setFragmentResultListener("addEditServerResult") { _, bundle ->
@@ -48,7 +85,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         category {
             setTitle(R.string.settings_servers)
-            initialExpandedChildrenCount = servers.size + 1
         }
 
         servers.forEach { (_, serverConfig) ->
@@ -84,101 +120,63 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         category {
             setTitle(R.string.settings_other)
-            initialExpandedChildrenCount = 1
         }
 
         editText {
-            key = "preferenceConnectionTimeout"
+            key = "connectionTimeout"
             setTitle(R.string.settings_connection_timeout)
             setDialogTitle(R.string.settings_connection_timeout)
-            summary = resources.getQuantityString(
-                R.plurals.settings_connection_timeout_desc,
-                viewModel.connectionTimeout,
-                viewModel.connectionTimeout
-            )
-            text = viewModel.connectionTimeout.toString()
 
-            setOnBindEditTextListener { editText ->
-                editText.inputType = InputType.TYPE_CLASS_NUMBER
-                editText.setSelection(editText.text.length)
-            }
-
-            setOnPreferenceChangeListener { _, newValue ->
-                val requestTimeout = newValue.toString().toIntOrNull() ?: -1
-                if (requestTimeout in 1..3600) {
-                    viewModel.connectionTimeout = requestTimeout
-
-                    summary = resources.getQuantityString(
-                        R.plurals.settings_connection_timeout_desc,
-                        requestTimeout,
-                        requestTimeout
-                    )
-                    text = requestTimeout.toString()
-                }
-
-                false
-            }
-        }
-
-        editText {
-            key = "preferenceAutoRefreshInterval"
-            setTitle(R.string.settings_auto_refresh_interval)
-            setDialogTitle(R.string.settings_auto_refresh_interval)
-
-            summary = if (viewModel.autoRefreshInterval == 0) {
-                getString(R.string.settings_disabled)
-            } else {
+            setSummaryProvider {
                 resources.getQuantityString(
-                    R.plurals.settings_auto_refresh_interval_desc,
-                    viewModel.autoRefreshInterval,
-                    viewModel.autoRefreshInterval
+                    R.plurals.settings_connection_timeout_desc,
+                    viewModel.connectionTimeout,
+                    viewModel.connectionTimeout
                 )
             }
 
-            text = viewModel.autoRefreshInterval.toString()
-
             setOnBindEditTextListener { editText ->
+                val text = viewModel.connectionTimeout.toString()
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
-                editText.setSelection(editText.text.length)
+                editText.setText(text)
+                editText.setSelection(text.length)
+            }
+        }
+
+        editText {
+            key = "autoRefreshInterval"
+            setTitle(R.string.settings_auto_refresh_interval)
+            setDialogTitle(R.string.settings_auto_refresh_interval)
+
+            setSummaryProvider {
+                if (viewModel.autoRefreshInterval == 0) {
+                    getString(R.string.settings_disabled)
+                } else {
+                    resources.getQuantityString(
+                        R.plurals.settings_auto_refresh_interval_desc,
+                        viewModel.autoRefreshInterval,
+                        viewModel.autoRefreshInterval
+                    )
+                }
             }
 
-            setOnPreferenceChangeListener { _, newValue ->
-                val autoRefreshInterval = newValue.toString().toIntOrNull() ?: -1
-                if (autoRefreshInterval in 0..3600) {
-                    viewModel.autoRefreshInterval = autoRefreshInterval
-
-                    summary = if (autoRefreshInterval == 0) {
-                        getString(R.string.settings_disabled)
-                    } else {
-                        resources.getQuantityString(
-                            R.plurals.settings_auto_refresh_interval_desc,
-                            autoRefreshInterval,
-                            autoRefreshInterval
-                        )
-                    }
-                    text = autoRefreshInterval.toString()
-                }
-
-                false
+            setOnBindEditTextListener { editText ->
+                val text = viewModel.autoRefreshInterval.toString()
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.setText(text)
+                editText.setSelection(text.length)
             }
         }
 
         list {
-            key = "preferenceTheme"
+            key = "theme"
             setTitle(R.string.settings_theme)
             setDialogTitle(R.string.settings_theme)
             entries = resources.getStringArray(R.array.settings_theme_entries)
             entryValues = arrayOf("LIGHT", "DARK", "SYSTEM_DEFAULT")
-            value = viewModel.theme.name
-            summary = resources.getStringArray(R.array.settings_theme_entries)[viewModel.theme.ordinal]
 
-            setOnPreferenceChangeListener { _, newValue ->
-                val theme = Theme.valueOf(newValue.toString())
-                viewModel.theme = theme
-
-                summary = resources.getStringArray(R.array.settings_theme_entries)[theme.ordinal]
-                value = newValue.toString()
-                false
+            setSummaryProvider {
+                resources.getStringArray(R.array.settings_theme_entries)[viewModel.theme.ordinal]
             }
         }
     }
