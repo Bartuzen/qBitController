@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
@@ -42,6 +43,12 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     private val viewModel: RssFeedsViewModel by viewModels()
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            viewModel.goBack()
+        }
+    }
 
     constructor(serverId: Int) : this() {
         arguments = bundleOf("serverId" to serverId)
@@ -126,6 +133,8 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+
         combine(viewModel.rssFeeds, viewModel.currentDirectory) { feedNode, currentDirectory ->
             if (feedNode != null) {
                 feedNode to currentDirectory
@@ -145,6 +154,8 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             } else {
                 viewModel.goToRoot()
             }
+
+            onBackPressedCallback.isEnabled = currentDirectory.isNotEmpty()
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
