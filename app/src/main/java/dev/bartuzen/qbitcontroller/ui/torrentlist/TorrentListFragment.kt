@@ -267,6 +267,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             actionMode?.finish()
                             true
                         }
+                        R.id.menu_priority_maximize -> {
+                            viewModel.maximizeTorrentPriority(
+                                serverId,
+                                selectedItems.toList()
+                            )
+                            actionMode?.finish()
+                            true
+                        }
                         R.id.menu_priority_increase -> {
                             viewModel.increaseTorrentPriority(
                                 serverId,
@@ -277,14 +285,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_priority_decrease -> {
                             viewModel.decreaseTorrentPriority(
-                                serverId,
-                                selectedItems.toList()
-                            )
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_priority_maximize -> {
-                            viewModel.maximizeTorrentPriority(
                                 serverId,
                                 selectedItems.toList()
                             )

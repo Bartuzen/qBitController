@@ -27,6 +27,11 @@
 
         <menu>
             <item
+                android:id="@+id/menu_priority_maximize"
+                android:icon="@drawable/ic_priority_maximize"
+                android:title="@string/menu_priority_maximize" />
+
+            <item
                 android:id="@+id/menu_priority_increase"
                 android:icon="@drawable/ic_priority_increase"
                 android:title="@string/menu_priority_increase" />
@@ -35,11 +40,6 @@
                 android:id="@+id/menu_priority_decrease"
                 android:icon="@drawable/ic_priority_decrease"
                 android:title="@string/menu_priority_decrease" />
-
-            <item
-                android:id="@+id/menu_priority_maximize"
-                android:icon="@drawable/ic_priority_maximize"
-                android:title="@string/menu_priority_maximize" />
 
             <item
                 android:id="@+id/menu_priority_minimize"
