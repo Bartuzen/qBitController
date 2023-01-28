@@ -265,26 +265,26 @@
 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/check_start_torrent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="@string/torrent_add_start_torrent" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/check_skip_checking"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/torrent_add_skip_hash_checking" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/check_sequential_download"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/torrent_add_sequential_download" />
 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/check_prioritize_first_last_piece"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/torrent_add_prioritize_first_last_piece" />
 

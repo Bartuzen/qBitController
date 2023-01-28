@@ -164,7 +164,7 @@
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/checkbox_trust_self_signed"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/settings_trust_self_signed_certificates" />
