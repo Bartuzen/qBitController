@@ -7,6 +7,9 @@ import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -28,6 +31,8 @@ class RequestManager @Inject constructor(
     private val trustAllManager: TrustAllX509TrustManager
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
+    private val loggedInServerIds = mutableListOf<Int>()
+    private val initialLoginLock = Mutex()
 
     init {
         serverManager.addServerListener(object : ServerManager.ServerListener {
@@ -35,10 +40,12 @@ class RequestManager @Inject constructor(
 
             override fun onServerRemovedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
+                loggedInServerIds.remove(serverConfig.id)
             }
 
             override fun onServerChangedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
+                loggedInServerIds.remove(serverConfig.id)
             }
         })
     }
@@ -82,58 +89,97 @@ class RequestManager @Inject constructor(
         retrofit.create(TorrentService::class.java)
     }
 
-    suspend fun <T : Any> request(serverId: Int, block: suspend (service: TorrentService) -> Response<T>): RequestResult<T> =
-        try {
-            val service = getTorrentService(serverId)
-            val blockResponse = block(service)
-            val body = blockResponse.body()
+    private suspend fun tryLogin(serverId: Int): RequestResult<Unit> {
+        val service = getTorrentService(serverId)
+        val serverConfig = serverManager.getServer(serverId)
 
-            if (blockResponse.code() == 403) {
-                val serverConfig = serverManager.getServer(serverId)
-                if (serverConfig.username != null && serverConfig.password != null) {
-                    val loginResponse = service.login(serverConfig.username, serverConfig.password)
+        return if (serverConfig.username != null && serverConfig.password != null) {
+            val loginResponse = service.login(serverConfig.username, serverConfig.password)
+            val code = loginResponse.code()
+            val body = loginResponse.body()
 
-                    if (loginResponse.code() == 403) {
-                        RequestResult.Error.RequestError.Banned
-                    } else if (loginResponse.body() == "Fails.") {
-                        RequestResult.Error.RequestError.InvalidCredentials
-                    } else if (loginResponse.body() != "Ok.") {
-                        RequestResult.Error.RequestError.UnknownLoginResponse(loginResponse.body())
-                    } else {
-                        val newResponse = block(service)
-                        val newBody = newResponse.body()
-                        if (newResponse.code() == 200 && newBody != null) {
-                            RequestResult.Success(newBody)
-                        } else {
-                            RequestResult.Error.RequestError.NoData
-                        }
-                    }
+            when {
+                code == 403 -> RequestResult.Error.RequestError.Banned
+                body == "Fails." -> RequestResult.Error.RequestError.InvalidCredentials
+                body != "Ok." -> RequestResult.Error.RequestError.UnknownLoginResponse(body)
+                else -> RequestResult.Success(Unit)
+            }
+        } else {
+            RequestResult.Success(Unit)
+        }
+    }
+
+    private suspend fun <T : Any> tryRequest(
+        serverId: Int,
+        block: suspend (service: TorrentService) -> Response<T>
+    ): RequestResult<T> {
+        val service = getTorrentService(serverId)
+
+        val blockResponse = block(service)
+        val code = blockResponse.code()
+        val body = blockResponse.body()
+
+        return if (code == 200 && body != null) {
+            RequestResult.Success(body)
+        } else if (code == 403) {
+            RequestResult.Error.RequestError.InvalidCredentials
+        } else {
+            RequestResult.Error.ApiError(code)
+        }
+    }
+
+    suspend fun <T : Any> request(serverId: Int, block: suspend (service: TorrentService) -> Response<T>) = try {
+        initialLoginLock.lock()
+        if (serverId !in loggedInServerIds) {
+            val loginResponse = tryLogin(serverId)
+            if (loginResponse is RequestResult.Success) {
+                loggedInServerIds.add(serverId)
+                initialLoginLock.unlock()
+
+                tryRequest(serverId, block)
+            } else {
+                loginResponse as RequestResult.Error
+            }
+        } else {
+            initialLoginLock.unlock()
+            val response = tryRequest(serverId, block)
+
+            if (response is RequestResult.Error.ApiError && response.code == 403) {
+                val loginResponse = tryLogin(serverId)
+
+                if (loginResponse is RequestResult.Success) {
+                    tryRequest(serverId, block)
                 } else {
-                    RequestResult.Error.RequestError.InvalidCredentials
+                    loginResponse as RequestResult.Error
                 }
-            } else if (blockResponse.code() == 200 && body != null) {
-                RequestResult.Success(body)
             } else {
-                RequestResult.Error.ApiError(blockResponse.code())
+                response
             }
-        } catch (e: ConnectException) {
-            RequestResult.Error.RequestError.CannotConnect
-        } catch (e: SocketTimeoutException) {
+        }
+    } catch (e: ConnectException) {
+        RequestResult.Error.RequestError.CannotConnect
+    } catch (e: SocketTimeoutException) {
+        RequestResult.Error.RequestError.Timeout
+    } catch (e: UnknownHostException) {
+        RequestResult.Error.RequestError.UnknownHost
+    } catch (e: JsonMappingException) {
+        if (e.cause is SocketTimeoutException) {
             RequestResult.Error.RequestError.Timeout
-        } catch (e: UnknownHostException) {
-            RequestResult.Error.RequestError.UnknownHost
-        } catch (e: JsonMappingException) {
-            if (e.cause is SocketTimeoutException) {
-                RequestResult.Error.RequestError.Timeout
-            } else {
-                RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
-            }
-        } catch (e: Exception) {
-            if (e is CancellationException) {
-                throw e
-            }
+        } else {
             RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
         }
+    } catch (e: Exception) {
+        if (e is CancellationException) {
+            throw e
+        }
+        RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
+    } finally {
+        withContext(NonCancellable) {
+            if (initialLoginLock.isLocked) {
+                initialLoginLock.unlock()
+            }
+        }
+    }
 }
 
 sealed class RequestResult<out T : Any?> {
