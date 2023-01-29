@@ -132,8 +132,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:visibility="gone"
                         app:chipSpacing="8dp"
                         app:singleSelection="true" />
+
+                    <TextView
+                        android:id="@+id/text_no_categories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/torrent_no_categories"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -153,7 +162,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:visibility="gone"
                         app:chipSpacing="8dp" />
+
+                    <TextView
+                        android:id="@+id/text_no_tags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/torrent_no_tags"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -224,6 +224,14 @@ class AddTorrentActivity : AppCompatActivity() {
 
                 binding.chipGroupCategory.addView(chip)
             }
+
+            if (categoryList.isEmpty()) {
+                binding.chipGroupCategory.visibility = View.GONE
+                binding.textNoCategories.visibility = View.VISIBLE
+            } else {
+                binding.chipGroupCategory.visibility = View.VISIBLE
+                binding.textNoCategories.visibility = View.GONE
+            }
         }
 
         viewModel.tagList.filterNotNull().launchAndCollectLatestIn(this) { tagList ->
@@ -246,6 +254,14 @@ class AddTorrentActivity : AppCompatActivity() {
                 }
 
                 binding.chipGroupTag.addView(chip)
+            }
+
+            if (tagList.isEmpty()) {
+                binding.chipGroupTag.visibility = View.GONE
+                binding.textNoTags.visibility = View.VISIBLE
+            } else {
+                binding.chipGroupTag.visibility = View.VISIBLE
+                binding.textNoTags.visibility = View.GONE
             }
         }
 
