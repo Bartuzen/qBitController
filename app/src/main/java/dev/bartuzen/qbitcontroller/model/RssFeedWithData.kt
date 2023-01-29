@@ -12,5 +12,6 @@ data class Article(
     val title: String,
     val description: String,
     val torrentUrl: String,
+    val isRead: Boolean,
     val date: Long
 )

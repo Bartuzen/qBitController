@@ -1,14 +1,17 @@
 package dev.bartuzen.qbitcontroller.ui.rss.articles
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemRssArticleBinding
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.utils.formatDate
+import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
 class RssArticlesAdapter(
     private val onClick: (article: Article) -> Unit
@@ -37,6 +40,13 @@ class RssArticlesAdapter(
 
         fun bind(article: Article) {
             val context = binding.root.context
+
+            val backgroundColor = if (article.isRead) {
+                MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT)
+            } else {
+                context.getColorCompat(R.color.rss_read_article_background)
+            }
+            binding.root.setCardBackgroundColor(backgroundColor)
 
             binding.textName.text = article.title
             binding.textDate.text = context.getString(R.string.rss_date, formatDate(article.date))
