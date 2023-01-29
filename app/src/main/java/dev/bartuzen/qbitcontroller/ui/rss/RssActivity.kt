@@ -38,9 +38,11 @@ class RssActivity : AppCompatActivity() {
             }
         }
 
-        supportFragmentManager.commit {
-            setReorderingAllowed(true)
-            replace(R.id.container, RssFeedsFragment(serverId))
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                setReorderingAllowed(true)
+                replace(R.id.container, RssFeedsFragment(serverId))
+            }
         }
     }
 }
