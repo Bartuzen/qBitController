@@ -418,6 +418,7 @@
     <string name="rss_title">RSS</string>
     <string name="rss_date">Date: %1$s</string>
     <string name="rss_download">Download</string>
+    <string name="rss_mark_as_read">Mark as Read</string>
 
     <string name="rss_menu_add">Add</string>
     <string name="rss_menu_add_feed">Add Feed</string>
@@ -458,6 +459,7 @@
     <string name="rss_error_folder_move">Couldn\'t move folder.</string>
     <string name="rss_error_folder_delete">Couldn\'t delete folder.</string>
 
+    <string name="rss_success_article_mark_as_read">Article marked as read successfully.</string>
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
 

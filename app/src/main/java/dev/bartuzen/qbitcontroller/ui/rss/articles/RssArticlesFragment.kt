@@ -102,6 +102,9 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                             putExtra(AddTorrentActivity.Extras.TORRENT_URL, article.torrentUrl)
                         }
                         startAddTorrentActivity.launch(intent)
+                    },
+                    onMarkAsRead = {
+                        viewModel.markAsRead(serverId, feedPath, article.id)
                     }
                 )
             }
@@ -144,6 +147,10 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 RssArticlesViewModel.Event.RssFeedNotFound -> {
                     showSnackbar(R.string.rss_error_feed_not_found)
                 }
+                RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
+                    showSnackbar(R.string.rss_success_article_mark_as_read)
+                    viewModel.loadRssFeed(serverId, feedPath)
+                }
                 RssArticlesViewModel.Event.FeedRefreshed -> {
                     showSnackbar(R.string.rss_success_feed_refresh)
 
@@ -156,7 +163,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         }
     }
 
-    private fun showArticleDialog(article: Article, onDownload: () -> Unit) {
+    private fun showArticleDialog(article: Article, onDownload: () -> Unit, onMarkAsRead: () -> Unit) {
         showDialog {
             setTitle(article.title)
 
@@ -170,6 +177,9 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
             setPositiveButton(R.string.rss_download) { _, _ ->
                 onDownload()
+            }
+            setNeutralButton(R.string.rss_mark_as_read) { _, _ ->
+                onMarkAsRead()
             }
         }
     }

@@ -12,6 +12,11 @@ class RssArticlesRepository @Inject constructor(
         service.getRssFeeds(true)
     }
 
+    suspend fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?) =
+        requestManager.request(serverId) { service ->
+            service.markAsRead(feedPath.joinToString("\\"), articleId)
+        }
+
     suspend fun refreshItem(serverId: Int, feedPath: List<String>) = requestManager.request(serverId) { service ->
         service.refreshItem(feedPath.joinToString("\\"))
     }

@@ -57,6 +57,7 @@ class RssArticlesAdapter(
         override fun areItemsTheSame(oldItem: Article, newItem: Article) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Article, newItem: Article) =
-            oldItem.title == newItem.title && oldItem.description == newItem.description && oldItem.date == newItem.date
+            oldItem.title == newItem.title && oldItem.description == newItem.description &&
+                oldItem.isRead == newItem.isRead && oldItem.date == newItem.date
     }
 }
