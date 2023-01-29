@@ -22,5 +22,5 @@
     <color name="torrent_tag">@color/color_secondary</color>
 
     <color name="selected_card_background">@color/gray</color>
-    <color name="rss_read_article_background">#353535</color>
+    <color name="rss_read_article_background">#E5E5E5</color>
 </resources>
