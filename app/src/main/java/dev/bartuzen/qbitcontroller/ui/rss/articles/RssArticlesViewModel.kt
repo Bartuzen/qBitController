@@ -69,7 +69,11 @@ class RssArticlesViewModel @Inject constructor(
     fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?) = viewModelScope.launch {
         when (val result = repository.markAsRead(serverId, feedPath, articleId)) {
             is RequestResult.Success -> {
-                eventChannel.send(Event.ArticleMarkedAsRead)
+                if (articleId == null) {
+                    eventChannel.send(Event.AllArticlesMarkedAsRead)
+                } else {
+                    eventChannel.send(Event.ArticleMarkedAsRead)
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -92,6 +96,7 @@ class RssArticlesViewModel @Inject constructor(
         data class Error(val error: RequestResult.Error) : Event()
         object RssFeedNotFound : Event()
         object ArticleMarkedAsRead : Event()
+        object AllArticlesMarkedAsRead : Event()
         object FeedRefreshed : Event()
     }
 }

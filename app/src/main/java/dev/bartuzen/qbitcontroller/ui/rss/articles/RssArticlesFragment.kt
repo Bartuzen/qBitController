@@ -75,6 +75,9 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
+                        R.id.menu_mark_all_as_read -> {
+                            viewModel.markAsRead(serverId, feedPath, null)
+                        }
                         R.id.menu_refresh -> {
                             viewModel.refreshFeed(serverId, feedPath)
                         }
@@ -149,6 +152,10 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 }
                 RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
                     showSnackbar(R.string.rss_success_article_mark_as_read)
+                    viewModel.loadRssFeed(serverId, feedPath)
+                }
+                RssArticlesViewModel.Event.AllArticlesMarkedAsRead -> {
+                    showSnackbar(R.string.rss_success_all_articles_mark_as_read)
                     viewModel.loadRssFeed(serverId, feedPath)
                 }
                 RssArticlesViewModel.Event.FeedRefreshed -> {
