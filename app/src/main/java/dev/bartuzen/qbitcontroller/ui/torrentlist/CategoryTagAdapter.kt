@@ -100,13 +100,13 @@ class CategoryTagAdapter(
         val selectedCategory = selectedCategory
         if (selectedCategory is CategoryTag.Category && selectedCategory.name !in categoryList) {
             this.selectedCategory = CategoryTag.AllCategories
-            onSelected(selectedCategory)
+            onSelected(CategoryTag.AllCategories)
         }
 
         val selectedTag = selectedTag
         if (selectedTag is CategoryTag.Tag && selectedTag.name !in tagList) {
             this.selectedTag = CategoryTag.AllTags
-            onSelected(selectedTag)
+            onSelected(CategoryTag.AllTags)
         }
 
         notifyDataSetChanged()
