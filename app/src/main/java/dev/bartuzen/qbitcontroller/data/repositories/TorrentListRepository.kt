@@ -8,8 +8,8 @@ import javax.inject.Singleton
 class TorrentListRepository @Inject constructor(
     private val requestManager: RequestManager
 ) {
-    suspend fun getTorrentList(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getTorrentList()
+    suspend fun getMainData(serverId: Int) = requestManager.request(serverId) { service ->
+        service.getMainData()
     }
 
     suspend fun deleteTorrents(serverId: Int, hashes: List<String>, deleteFiles: Boolean) =
@@ -23,14 +23,6 @@ class TorrentListRepository @Inject constructor(
 
     suspend fun resumeTorrents(serverId: Int, hashes: List<String>) = requestManager.request(serverId) { service ->
         service.resumeTorrents(hashes.joinToString("|"))
-    }
-
-    suspend fun getCategories(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getCategories()
-    }
-
-    suspend fun getTags(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getTags()
     }
 
     suspend fun deleteCategory(serverId: Int, category: String) = requestManager.request(serverId) { service ->

@@ -22,6 +22,9 @@ interface TorrentService {
     @POST("api/v2/auth/login")
     suspend fun login(@Field("username") username: String, @Field("password") password: String): Response<String>
 
+    @GET("api/v2/sync/maindata")
+    suspend fun getMainData(): Response<String>
+
     @GET("api/v2/torrents/info")
     suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
 

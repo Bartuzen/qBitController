@@ -49,7 +49,6 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -81,7 +80,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     false
                 ) ?: false
                 if (isTorrentDeleted) {
-                    viewModel.loadTorrentList(serverId)
+                    viewModel.loadMainData(serverId)
                     showSnackbar(R.string.torrent_deleted_success)
                 }
             }
@@ -95,7 +94,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     false
                 ) ?: false
                 if (isAdded) {
-                    viewModel.loadTorrentList(serverId)
+                    viewModel.loadMainData(serverId)
                     showSnackbar(R.string.torrent_add_success)
                 }
             }
@@ -303,7 +302,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             val selectedItems = selectedItems.toList()
 
                             val currentLocation =
-                                viewModel.torrentList.value
+                                viewModel.mainData.value?.torrents
                                     ?.filter { torrent -> torrent.hash in selectedItems }
                                     ?.distinctBy { torrent -> torrent.savePath }
                                     ?.let { list ->
@@ -422,10 +421,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             adapter.submitList(torrentList)
         }
 
-        viewModel.torrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
+        viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
+            categoryTagAdapter.submitLists(mainData.categories.map { it.name }, mainData.tags)
+
             val countMap = mutableMapOf<TorrentFilter, Int>()
 
-            torrentList.forEach { torrent ->
+            mainData.torrents.forEach { torrent ->
                 TorrentFilter.values().forEach { filter ->
                     if (filter.states == null || torrent.state in filter.states) {
                         countMap[filter] = (countMap[filter] ?: 0) + 1
@@ -437,13 +438,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshTorrentListCategoryTags(serverId)
+            viewModel.refreshMainData(serverId)
         }
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadTorrentList(serverId)
-            viewModel.updateCategoryAndTags(serverId)
+            viewModel.loadMainData(serverId)
         }
 
         viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
@@ -460,22 +460,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        combine(viewModel.categoryList, viewModel.tagList) { categoryList, tagList ->
-            if (categoryList != null && tagList != null) {
-                categoryList to tagList
-            } else {
-                null
-            }
-        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (categoryList, tagList) ->
-            categoryTagAdapter.submitLists(categoryList.map { it.name }, tagList)
-        }
-
         viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner) { interval ->
             if (interval != 0) {
                 while (isActive) {
                     delay(interval * 1000L)
                     if (isActive && actionMode == null) {
-                        viewModel.loadTorrentList(serverId, autoRefresh = true)
+                        viewModel.loadMainData(serverId, autoRefresh = true)
                     }
                 }
             }
@@ -500,8 +490,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             event.count
                         )
                     )
-
-                    viewModel.loadTorrentList(serverId)
+                    viewModel.loadMainData(serverId)
                 }
                 is TorrentListViewModel.Event.TorrentsPaused -> {
                     showSnackbar(
@@ -514,7 +503,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent pauses the torrent
-                        viewModel.loadTorrentList(serverId)
+                        viewModel.loadMainData(serverId)
                     }
                 }
                 is TorrentListViewModel.Event.TorrentsResumed -> {
@@ -528,66 +517,64 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
-                        viewModel.loadTorrentList(serverId)
+                        viewModel.loadMainData(serverId)
                     }
                 }
                 is TorrentListViewModel.Event.CategoryDeleted -> {
                     showSnackbar(
                         getString(R.string.torrent_list_delete_category_success, event.name)
                     )
-                    viewModel.loadTorrentList(serverId)
-                    viewModel.updateCategoryAndTags(serverId)
+                    viewModel.loadMainData(serverId)
                 }
                 is TorrentListViewModel.Event.TagDeleted -> {
                     showSnackbar(
                         getString(R.string.torrent_list_delete_tag_success, event.name)
                     )
-                    viewModel.loadTorrentList(serverId)
-                    viewModel.updateCategoryAndTags(serverId)
+                    viewModel.loadMainData(serverId)
                 }
                 TorrentListViewModel.Event.TorrentsPriorityDecreased -> {
                     showSnackbar(R.string.torrent_list_priority_decreased_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverId)
+                        viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityIncreased -> {
                     showSnackbar(R.string.torrent_list_priority_increased_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverId)
+                        viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityMaximized -> {
                     showSnackbar(R.string.torrent_list_priority_maximized_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverId)
+                        viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityMinimized -> {
                     showSnackbar(R.string.torrent_list_priority_minimized_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
-                        viewModel.loadTorrentList(serverId)
+                        viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.LocationUpdated -> {
                     showSnackbar(R.string.torrent_location_update_success)
-                    viewModel.loadTorrentList(serverId)
+                    viewModel.loadMainData(serverId)
                 }
                 TorrentListViewModel.Event.CategoryCreated -> {
                     showSnackbar(R.string.torrent_list_create_category_success)
-                    viewModel.updateCategoryAndTags(serverId)
+                    viewModel.loadMainData(serverId)
                 }
                 TorrentListViewModel.Event.CategoryEdited -> {
                     showSnackbar(R.string.torrent_list_edit_category_success)
-                    viewModel.updateCategoryAndTags(serverId)
+                    viewModel.loadMainData(serverId)
                 }
                 TorrentListViewModel.Event.TagCreated -> {
                     showSnackbar(R.string.torrent_list_create_tag_success)
-                    viewModel.updateCategoryAndTags(serverId)
+                    viewModel.loadMainData(serverId)
                 }
             }
         }
@@ -659,7 +646,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
     private fun showRenameCategoryDialog(name: String) {
         showDialog(DialogCreateCategoryBinding::inflate) { binding ->
-            val savePath = viewModel.categoryList.value?.find { it.name == name }?.savePath ?: return@showDialog
+            val savePath = viewModel.mainData.value?.categories?.find { it.name == name }?.savePath ?: return@showDialog
 
             binding.editName.isEnabled = false
             binding.editName.inputType = InputType.TYPE_NULL

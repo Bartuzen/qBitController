@@ -6,13 +6,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
-import dev.bartuzen.qbitcontroller.model.Category
+import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.Torrent
+import dev.bartuzen.qbitcontroller.model.deserializers.parseMainData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.Quintuple
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,14 +30,8 @@ class TorrentListViewModel @Inject constructor(
     private val repository: TorrentListRepository,
     private val settingsManager: SettingsManager
 ) : ViewModel() {
-    private val _torrentList = MutableStateFlow<List<Torrent>?>(null)
-    val torrentList = _torrentList.asStateFlow()
-
-    private val _categoryList = MutableStateFlow<List<Category>?>(null)
-    val categoryList = _categoryList.asStateFlow()
-
-    private val _tagList = MutableStateFlow<List<String>?>(null)
-    val tagList = _tagList.asStateFlow()
+    private val _mainData = MutableStateFlow<MainData?>(null)
+    val mainData = _mainData.asStateFlow()
 
     private val searchQuery = MutableStateFlow("")
     private val selectedCategory = MutableStateFlow<CategoryTag.ICategory>(CategoryTag.AllCategories)
@@ -60,9 +53,9 @@ class TorrentListViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     private val sortedTorrentList =
-        combine(torrentList, torrentSort, isReverseSorting) { torrentList, torrentSort, isReverseSorting ->
-            if (torrentList != null) {
-                Triple(torrentList, torrentSort, isReverseSorting)
+        combine(mainData, torrentSort, isReverseSorting) { mainData, torrentSort, isReverseSorting ->
+            if (mainData != null) {
+                Triple(mainData.torrents, torrentSort, isReverseSorting)
             } else {
                 null
             }
@@ -161,10 +154,10 @@ class TorrentListViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateTorrentList(serverId: Int) = viewModelScope.launch {
-        when (val result = repository.getTorrentList(serverId)) {
+    private fun updateMainData(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.getMainData(serverId)) {
             is RequestResult.Success -> {
-                _torrentList.value = result.data
+                _mainData.value = parseMainData(result.data)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -172,58 +165,19 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun updateCategoryAndTags(serverId: Int) = viewModelScope.launch {
-        val categoriesDeferred = async {
-            when (val result = repository.getCategories(serverId)) {
-                is RequestResult.Success -> {
-                    result.data.values
-                        .toList()
-                        .sortedBy { it.name.lowercase() }
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                    throw CancellationException()
-                }
-            }
-        }
-        val tagsDeferred = async {
-            when (val result = repository.getTags(serverId)) {
-                is RequestResult.Success -> {
-                    result.data.sortedBy { it }
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                    throw CancellationException()
-                }
-            }
-        }
-
-        val categories = categoriesDeferred.await()
-        val tags = tagsDeferred.await()
-
-        _categoryList.value = categories
-        _tagList.value = tags
-    }
-
-    fun loadTorrentList(serverId: Int, autoRefresh: Boolean = false) {
+    fun loadMainData(serverId: Int, autoRefresh: Boolean = false) {
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updateTorrentList(serverId).invokeOnCompletion {
+            updateMainData(serverId).invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
     }
 
-    fun refreshTorrentListCategoryTags(serverId: Int) {
+    fun refreshMainData(serverId: Int) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            viewModelScope.launch {
-                val torrentListJob = updateTorrentList(serverId)
-                val categoryTagJob = updateCategoryAndTags(serverId)
-
-                torrentListJob.join()
-                categoryTagJob.join()
-
+            updateMainData(serverId).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
