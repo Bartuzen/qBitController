@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.MainData
+import dev.bartuzen.qbitcontroller.model.ServerState
 import dev.bartuzen.qbitcontroller.model.Torrent
 
 fun parseMainData(mainData: String): MainData {
     val mapper = jacksonObjectMapper()
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     val mainDataNode = mapper.readTree(mainData)
+
+    val serverState = mapper.treeToValue(mainDataNode["server_state"], ServerState::class.java)
 
     val torrents = mainDataNode["torrents"].map { node ->
         (node as ObjectNode).put("hash", node["infohash_v1"].asText())
@@ -29,6 +32,7 @@ fun parseMainData(mainData: String): MainData {
     }.sortedBy { it.lowercase() }
 
     return MainData(
+        serverState = serverState,
         torrents = torrents,
         categories = categories,
         tags = tags

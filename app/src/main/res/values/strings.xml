@@ -149,6 +149,10 @@
     <string name="torrent_list_create_tag_success">Tag created successfully.</string>
     <string name="torrent_list_create_tag_hint">Tag Name(s)</string>
 
+    <string name="torrent_list_menu_alternative_speed_limits">Alternative Speed Limits</string>
+    <string name="torrent_list_switch_speed_limit_alternative_success">Switched to alternative speed limits.</string>
+    <string name="torrent_list_switch_speed_limit_regular_success">Switched to regular speed limits.</string>
+
     <string name="torrent_list_status">Status</string>
     <string name="torrent_list_status_format">%1$s (%2$d)</string>
     <string name="torrent_list_status_all">All</string>

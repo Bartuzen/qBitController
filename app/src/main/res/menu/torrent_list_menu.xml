@@ -78,4 +78,10 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/menu_speed_limit_mode"
+        android:checkable="true"
+        android:title="@string/torrent_list_menu_alternative_speed_limits"
+        app:showAsAction="never" />
+
 </menu>

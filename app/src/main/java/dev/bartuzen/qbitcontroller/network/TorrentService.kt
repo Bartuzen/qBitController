@@ -25,6 +25,9 @@ interface TorrentService {
     @GET("api/v2/sync/maindata")
     suspend fun getMainData(): Response<String>
 
+    @POST("api/v2/transfer/toggleSpeedLimitsMode")
+    suspend fun toggleSpeedLimitsMode(): Response<Unit>
+
     @GET("api/v2/torrents/info")
     suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
 

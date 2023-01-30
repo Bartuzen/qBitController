@@ -346,6 +346,17 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
+    fun toggleSpeedLimitsMode(serverId: Int, isCurrentLimitAlternative: Boolean) = viewModelScope.launch {
+        when (val result = repository.toggleSpeedLimitsMode(serverId)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.SpeedLimitsToggled(!isCurrentLimitAlternative))
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun setTorrentSort(torrentSort: TorrentSort) {
         settingsManager.sort.value = torrentSort
     }
@@ -387,5 +398,6 @@ class TorrentListViewModel @Inject constructor(
         object CategoryCreated : Event()
         object CategoryEdited : Event()
         object TagCreated : Event()
+        data class SpeedLimitsToggled(val switchedToAlternativeLimit: Boolean) : Event()
     }
 }

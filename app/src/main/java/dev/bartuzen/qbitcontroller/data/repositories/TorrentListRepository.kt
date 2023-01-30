@@ -65,4 +65,8 @@ class TorrentListRepository @Inject constructor(
     suspend fun createTags(serverId: Int, names: List<String>) = requestManager.request(serverId) { service ->
         service.createTags(names.joinToString(","))
     }
+
+    suspend fun toggleSpeedLimitsMode(serverId: Int) = requestManager.request(serverId) { service ->
+        service.toggleSpeedLimitsMode()
+    }
 }

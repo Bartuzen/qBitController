@@ -130,6 +130,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         menu.findItem(R.id.menu_sort_reverse).isChecked = isReverseSorting
                     }
 
+                    viewModel.mainData.launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
+                        val item = menu.findItem(R.id.menu_speed_limit_mode)
+
+                        item.isEnabled = mainData != null
+                        item.isChecked = mainData?.serverState?.useAlternativeSpeedLimits == true
+                    }
+
                     val searchItem = menu.findItem(R.id.menu_search)
 
                     val searchView = searchItem.actionView as SearchView
@@ -222,6 +229,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_sort_reverse -> {
                             viewModel.changeReverseSorting()
+                        }
+                        R.id.menu_speed_limit_mode -> {
+                            val isCurrentLimitAlternative =
+                                viewModel.mainData.value?.serverState?.useAlternativeSpeedLimits == true
+                            viewModel.toggleSpeedLimitsMode(serverId, isCurrentLimitAlternative)
                         }
                         else -> return false
                     }
@@ -574,6 +586,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
                 TorrentListViewModel.Event.TagCreated -> {
                     showSnackbar(R.string.torrent_list_create_tag_success)
+                    viewModel.loadMainData(serverId)
+                }
+                is TorrentListViewModel.Event.SpeedLimitsToggled -> {
+                    if (event.switchedToAlternativeLimit) {
+                        showSnackbar(R.string.torrent_list_switch_speed_limit_alternative_success)
+                    } else {
+                        showSnackbar(R.string.torrent_list_switch_speed_limit_regular_success)
+                    }
                     viewModel.loadMainData(serverId)
                 }
             }
