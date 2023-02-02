@@ -172,6 +172,7 @@
     <string name="torrent_list_priority_minimized_success">Priority minimized successfully.</string>
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
+    <string name="torrent_list_speed_format">↑ %1$s (%2$s) ↓ %3$s (%4$s)</string>
 
     <string name="torrent_delete">Delete Torrent</string>
     <string name="torrent_delete_files">Also delete the files on the hard disk</string>

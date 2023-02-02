@@ -38,6 +38,8 @@ import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import dev.bartuzen.qbitcontroller.utils.formatBytes
+import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -435,6 +437,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
             categoryTagAdapter.submitLists(mainData.categories.map { it.name }, mainData.tags)
+
+            binding.textSpeed.text = getString(
+                R.string.torrent_list_speed_format,
+                formatBytesPerSecond(requireContext(), mainData.serverState.uploadSpeed.toLong()),
+                formatBytes(requireContext(), mainData.serverState.uploadSession),
+                formatBytesPerSecond(requireContext(), mainData.serverState.downloadSpeed.toLong()),
+                formatBytes(requireContext(), mainData.serverState.downloadSession)
+            )
 
             val countMap = mutableMapOf<TorrentFilter, Int>()
 
