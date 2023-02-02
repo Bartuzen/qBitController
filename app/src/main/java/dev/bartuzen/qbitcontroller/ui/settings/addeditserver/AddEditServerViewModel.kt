@@ -10,6 +10,7 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.network.TimeoutInterceptor
 import dev.bartuzen.qbitcontroller.network.TorrentService
 import dev.bartuzen.qbitcontroller.network.TrustAllX509TrustManager
+import dev.bartuzen.qbitcontroller.network.UserAgentInterceptor
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -32,6 +33,7 @@ import javax.net.ssl.SSLContext
 class AddEditServerViewModel @Inject constructor(
     private val serverManager: ServerManager,
     private val timeoutInterceptor: TimeoutInterceptor,
+    private val userAgentInterceptor: UserAgentInterceptor,
     private val trustAllManager: TrustAllX509TrustManager
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
@@ -66,6 +68,7 @@ class AddEditServerViewModel @Inject constructor(
                 .client(
                     OkHttpClient().newBuilder().apply {
                         addInterceptor(timeoutInterceptor)
+                        addInterceptor(userAgentInterceptor)
 
                         if (serverConfig.trustSelfSignedCertificates) {
                             val sslContext = SSLContext.getInstance("SSL")
