@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.network.BasicAuthInterceptor
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.network.TimeoutInterceptor
 import dev.bartuzen.qbitcontroller.network.TorrentService
@@ -69,6 +70,11 @@ class AddEditServerViewModel @Inject constructor(
                     OkHttpClient().newBuilder().apply {
                         addInterceptor(timeoutInterceptor)
                         addInterceptor(userAgentInterceptor)
+
+                        val basicAuth = serverConfig.basicAuth
+                        if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
+                            addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
+                        }
 
                         if (serverConfig.trustSelfSignedCertificates) {
                             val sslContext = SSLContext.getInstance("SSL")
