@@ -189,7 +189,8 @@
     <string name="torrent_menu_super_seeding">Super Seeding</string>
     <string name="torrent_menu_copy">Copy</string>
     <string name="torrent_menu_copy_name">Name</string>
-    <string name="torrent_menu_copy_hash">Hash</string>
+    <string name="torrent_menu_copy_hash_v1">Hash v1</string>
+    <string name="torrent_menu_copy_hash_v2">Hash v2</string>
     <string name="torrent_menu_copy_magnet_uri">Magnet URI</string>
 
     <string name="torrent_toggle_sequential_download_success">Sequential download toggled successfully.</string>

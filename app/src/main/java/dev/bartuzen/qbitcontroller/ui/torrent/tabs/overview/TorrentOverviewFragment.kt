@@ -88,8 +88,9 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         val autoTmm = menu.findItem(R.id.menu_automatic_torrent_management)
                         val forceStart = menu.findItem(R.id.menu_force_start)
                         val superSeeding = menu.findItem(R.id.menu_super_seeding)
-                        val copyName = menu.findItem(R.id.menu_copy_name)
-                        val copyMagnet = menu.findItem(R.id.menu_copy_magnet)
+                        val copy = menu.findItem(R.id.menu_copy)
+                        val copyHashV1 = menu.findItem(R.id.menu_copy_hash_v1)
+                        val copyHashV2 = menu.findItem(R.id.menu_copy_hash_v2)
 
                         tags.isEnabled = torrent != null
                         shareLimit.isEnabled = torrent != null
@@ -98,8 +99,9 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         autoTmm.isEnabled = torrent != null
                         forceStart.isEnabled = torrent != null
                         superSeeding.isEnabled = torrent != null
-                        copyName.isEnabled = torrent != null
-                        copyMagnet.isEnabled = torrent != null
+                        copy.isEnabled = torrent != null
+                        copyHashV1.isEnabled = torrent?.hashV1 != null
+                        copyHashV2.isEnabled = torrent?.hashV2 != null
 
                         reannounce.isEnabled = torrent != null && when (torrent.state) {
                             TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP, TorrentState.QUEUED_DL,
@@ -191,8 +193,17 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                                 requireContext().copyToClipboard(torrent.name)
                             }
                         }
-                        R.id.menu_copy_hash -> {
-                            requireContext().copyToClipboard(torrentHash)
+                        R.id.menu_copy_hash_v1 -> {
+                            val torrent = viewModel.torrent.value
+                            if (torrent?.hashV1 != null) {
+                                requireContext().copyToClipboard(torrent.hashV1)
+                            }
+                        }
+                        R.id.menu_copy_hash_v2 -> {
+                            val torrent = viewModel.torrent.value
+                            if (torrent?.hashV2 != null) {
+                                requireContext().copyToClipboard(torrent.hashV2)
+                            }
                         }
                         R.id.menu_copy_magnet -> {
                             val torrent = viewModel.torrent.value

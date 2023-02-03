@@ -117,7 +117,7 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_move_storage"
+        android:id="@+id/menu_copy"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_copy"
         app:showAsAction="never">
@@ -128,8 +128,13 @@
                 app:showAsAction="never" />
 
             <item
-                android:id="@+id/menu_copy_hash"
-                android:title="@string/torrent_menu_copy_hash"
+                android:id="@+id/menu_copy_hash_v1"
+                android:title="@string/torrent_menu_copy_hash_v1"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/menu_copy_hash_v2"
+                android:title="@string/torrent_menu_copy_hash_v2"
                 app:showAsAction="never" />
 
             <item
