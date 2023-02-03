@@ -21,6 +21,7 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_priority"
         android:icon="@drawable/ic_priority"
         android:title="@string/menu_priority"
         app:showAsAction="ifRoom">

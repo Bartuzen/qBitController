@@ -261,7 +261,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         return true
                     }
 
-                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+                        val isQueueingEnabled = viewModel.mainData.value?.serverState?.isQueueingEnabled == true
+                        menu.findItem(R.id.menu_priority).isEnabled = isQueueingEnabled
+
+                        return true
+                    }
 
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
                         R.id.menu_delete -> {
@@ -457,6 +462,8 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
 
             torrentFilterAdapter.submitCountMap(countMap)
+
+            actionMode?.invalidate()
         }
 
         binding.swipeRefresh.setOnRefreshListener {

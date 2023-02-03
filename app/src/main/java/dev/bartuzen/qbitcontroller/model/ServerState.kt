@@ -16,5 +16,8 @@ data class ServerState(
     val uploadSpeed: Long,
 
     @JsonProperty("use_alt_speed_limits")
-    val useAlternativeSpeedLimits: Boolean
+    val useAlternativeSpeedLimits: Boolean,
+
+    @JsonProperty("queueing")
+    val isQueueingEnabled: Boolean
 )
