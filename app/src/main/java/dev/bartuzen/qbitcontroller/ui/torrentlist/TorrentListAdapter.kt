@@ -31,8 +31,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        currentItem?.let { torrent ->
+        getItem(position)?.let { torrent ->
             holder.bind(torrent)
         }
     }

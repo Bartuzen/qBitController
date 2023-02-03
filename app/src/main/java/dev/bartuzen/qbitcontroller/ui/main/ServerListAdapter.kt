@@ -21,8 +21,7 @@ class ServerListAdapter(
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = getItem(position)
-        currentItem?.let { serverConfig ->
+        getItem(position)?.let { serverConfig ->
             holder.bind(serverConfig)
         }
     }
