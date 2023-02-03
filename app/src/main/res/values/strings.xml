@@ -246,7 +246,8 @@
     <string name="torrent_overview_information">Information</string>
     <string name="torrent_overview_total_size">Total Size</string>
     <string name="torrent_overview_added_on">Added On</string>
-    <string name="torrent_overview_hash">Hash</string>
+    <string name="torrent_overview_hash_v1">Hash v1</string>
+    <string name="torrent_overview_hash_v2">Hash v2</string>
     <string name="torrent_overview_save_path">Save Path</string>
     <string name="torrent_overview_comment">Comment</string>
     <string name="torrent_overview_pieces">Pieces</string>

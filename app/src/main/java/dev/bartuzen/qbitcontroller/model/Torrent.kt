@@ -14,6 +14,14 @@ data class Torrent(
     @JsonProperty("hash")
     val hash: String,
 
+    @JsonProperty("infohash_v1")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val hashV1: String?,
+
+    @JsonProperty("infohash_v2")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val hashV2: String?,
+
     @JsonProperty("name")
     val name: String,
 

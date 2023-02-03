@@ -156,15 +156,28 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="@string/torrent_overview_hash" />
+                            android:text="@string/torrent_overview_hash_v1" />
 
                         <TextView
-                            android:id="@+id/text_hash"
+                            android:id="@+id/text_hash_v1"
                             android:layout_width="0dp"
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            tools:text="Hash Text" />
+                            tools:text="V1 Hash Text" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_hash_v2" />
+
+                        <TextView
+                            android:id="@+id/text_hash_v2"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="V2 Hash Text" />
 
                         <TextView
                             android:layout_width="wrap_content"

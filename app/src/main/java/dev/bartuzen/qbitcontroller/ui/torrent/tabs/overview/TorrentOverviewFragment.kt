@@ -334,7 +334,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 "-"
             }
             binding.textAddedOn.text = formatDate(properties.additionDate)
-            binding.textHash.text = torrent.hash
+            binding.textHashV1.text = torrent.hashV1 ?: "-"
+            binding.textHashV2.text = torrent.hashV2 ?: "-"
             binding.textSavePath.text = properties.savePath
             binding.textComment.text = properties.comment ?: "-"
             binding.textPieces.text = if (properties.piecesCount != null && properties.pieceSize != null) {
