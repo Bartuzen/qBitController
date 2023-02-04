@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:text="@string/stats_category_user_statistics"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_all_time_upload" />
+
+        <TextView
+            android:id="@+id/text_all_time_upload"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="All-Time Upload Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_all_time_download" />
+
+        <TextView
+            android:id="@+id/text_all_time_download"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="All-Time Download Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_all_time_share_ratio" />
+
+        <TextView
+            android:id="@+id/text_all_time_share_ratio"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="All-Time Share Ratio Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_session_waste" />
+
+        <TextView
+            android:id="@+id/text_session_waste"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Session Waste Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_connected_peers" />
+
+        <TextView
+            android:id="@+id/text_connected_peers"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Connected Peers Text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_marginTop="16dp"
+            android:text="@string/stats_category_cache_statistics"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_total_buffer_size" />
+
+        <TextView
+            android:id="@+id/text_total_buffer_size"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Total Buffer Size Text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_marginTop="16dp"
+            android:text="@string/stats_category_performance_statistics"
+            android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_write_cache_overload" />
+
+        <TextView
+            android:id="@+id/text_write_cache_overload"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Write Cache Overload Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_read_cache_overload" />
+
+        <TextView
+            android:id="@+id/text_read_cache_overload"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Read Cache Overload Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_queued_io_jobs" />
+
+        <TextView
+            android:id="@+id/text_queued_io_jobs"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Queued I/O Jobs Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_average_time_in_queue" />
+
+        <TextView
+            android:id="@+id/text_average_time_in_queue"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Average Time In Queue Text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stats_total_queued_size" />
+
+        <TextView
+            android:id="@+id/text_total_queued_size"
+            android:layout_width="0dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:textAlignment="viewEnd"
+            tools:ignore="RtlCompat"
+            tools:text="Total Queued Size Text" />
+
+    </GridLayout>
+
+</ScrollView>

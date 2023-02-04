@@ -174,6 +174,26 @@
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
     <string name="torrent_list_speed_format">↑ %1$s (%2$s) ↓ %3$s (%4$s)</string>
 
+    <string name="stats_menu_title">Statistics</string>
+    <string name="stats_dialog_title">@string/stats_menu_title</string>
+    <string name="stats_category_user_statistics">User Statistics</string>
+    <string name="stats_category_cache_statistics">Cache Statistics</string>
+    <string name="stats_category_performance_statistics">Cache Statistics</string>
+    <string name="stats_all_time_upload">All-Time Upload</string>
+    <string name="stats_all_time_download">All-Time Download</string>
+    <string name="stats_all_time_share_ratio">All-Time Share Ratio</string>
+    <string name="stats_session_waste">Session Waste</string>
+    <string name="stats_connected_peers">Connected Peers</string>
+    <string name="stats_total_buffer_size">Total Buffer Size</string>
+    <string name="stats_write_cache_overload">Write Cache Overload</string>
+    <string name="stats_read_cache_overload">Read Cache Overload</string>
+    <string name="stats_queued_io_jobs">Queued I/O Jobs</string>
+    <string name="stats_average_time_in_queue">Average Time In Queue</string>
+    <string name="stats_total_queued_size">Total Queued Size</string>
+
+    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="stats_ms_format">%1$d ms</string>
+
     <string name="torrent_delete">Delete Torrent</string>
     <string name="torrent_delete_files">Also delete the files on the hard disk</string>
     <string name="torrent_deleted_success">Torrent deleted successfully.</string>

@@ -31,6 +31,7 @@ import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateCategoryBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogServerStatsBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
@@ -133,10 +134,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     }
 
                     viewModel.mainData.launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
-                        val item = menu.findItem(R.id.menu_speed_limit_mode)
+                        val speedLimitMode = menu.findItem(R.id.menu_speed_limit_mode)
+                        val stats = menu.findItem(R.id.menu_stats)
 
-                        item.isEnabled = mainData != null
-                        item.isChecked = mainData?.serverState?.useAlternativeSpeedLimits == true
+                        speedLimitMode.isEnabled = mainData != null
+                        speedLimitMode.isChecked = mainData?.serverState?.useAlternativeSpeedLimits == true
+
+                        stats.isEnabled = mainData != null
                     }
 
                     val searchItem = menu.findItem(R.id.menu_search)
@@ -236,6 +240,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             val isCurrentLimitAlternative =
                                 viewModel.mainData.value?.serverState?.useAlternativeSpeedLimits == true
                             viewModel.toggleSpeedLimitsMode(serverId, isCurrentLimitAlternative)
+                        }
+                        R.id.menu_stats -> {
+                            showStatsDialog()
                         }
                         else -> return false
                     }
@@ -757,6 +764,26 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 )
             }
             setNegativeButton()
+        }
+    }
+
+    private fun showStatsDialog() {
+        val serverState = viewModel.mainData.value?.serverState ?: return
+        showDialog(DialogServerStatsBinding::inflate) { binding ->
+            setTitle(R.string.stats_dialog_title)
+            setPositiveButton()
+
+            binding.textAllTimeUpload.text = formatBytes(requireContext(), serverState.allTimeUpload)
+            binding.textAllTimeDownload.text = formatBytes(requireContext(), serverState.allTimeDownload)
+            binding.textAllTimeShareRatio.text = serverState.globalRatio
+            binding.textSessionWaste.text = formatBytes(requireContext(), serverState.sessionWaste)
+            binding.textConnectedPeers.text = serverState.connectedPeers.toString()
+            binding.textTotalBufferSize.text = formatBytes(requireContext(), serverState.bufferSize)
+            binding.textWriteCacheOverload.text = getString(R.string.stats_percentage_format, serverState.writeCacheOverload)
+            binding.textReadCacheOverload.text = getString(R.string.stats_percentage_format, serverState.readCacheOverload)
+            binding.textQueuedIoJobs.text = serverState.queuedIOJobs
+            binding.textAverageTimeInQueue.text = getString(R.string.stats_ms_format, serverState.averageTimeInQueue)
+            binding.textTotalQueuedSize.text = formatBytes(requireContext(), serverState.queuedSize)
         }
     }
 

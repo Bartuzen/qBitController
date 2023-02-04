@@ -3,6 +3,39 @@ package dev.bartuzen.qbitcontroller.model
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class ServerState(
+    @JsonProperty("alltime_ul")
+    val allTimeUpload: Long,
+
+    @JsonProperty("alltime_dl")
+    val allTimeDownload: Long,
+
+    @JsonProperty("global_ratio")
+    val globalRatio: String,
+
+    @JsonProperty("total_wasted_session")
+    val sessionWaste: Long,
+
+    @JsonProperty("total_peer_connections")
+    val connectedPeers: Long,
+
+    @JsonProperty("total_buffers_size")
+    val bufferSize: Long,
+
+    @JsonProperty("write_cache_overload")
+    val writeCacheOverload: String,
+
+    @JsonProperty("read_cache_overload")
+    val readCacheOverload: String,
+
+    @JsonProperty("queued_io_jobs")
+    val queuedIOJobs: String,
+
+    @JsonProperty("average_time_queue")
+    val averageTimeInQueue: Long,
+
+    @JsonProperty("total_queued_size")
+    val queuedSize: Long,
+
     @JsonProperty("dl_info_data")
     val downloadSession: Long,
 
