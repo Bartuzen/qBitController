@@ -84,6 +84,7 @@
     <string name="size_kibibytes">%1$s KiB</string>
     <string name="size_mebibytes">%1$s MiB</string>
     <string name="size_gibibytes">%1$s GiB</string>
+    <string name="size_tebibytes">%1$s TiB</string>
 
     <string name="speed_bytes_per_second">%1$s B/s</string>
     <string name="speed_kibibytes_per_second">%1$s KiB/s</string>
