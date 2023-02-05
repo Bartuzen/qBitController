@@ -5,6 +5,7 @@ import java.util.ArrayDeque
 data class TorrentFileNode(
     val name: String,
     val file: TorrentFile?,
+    val separator: String,
     val children: MutableList<TorrentFileNode>?
 ) {
     val isFile get() = children == null
@@ -65,18 +66,20 @@ data class TorrentFileNode(
 
     companion object {
         fun fromFileList(fileList: Collection<TorrentFile>): TorrentFileNode {
-            val node = TorrentFileNode("", null, mutableListOf())
+            val separator = if (fileList.any { it.name.contains("\\") }) "\\" else "/"
+
+            val node = TorrentFileNode("", null, separator, mutableListOf())
 
             fileList.forEach { file ->
-                val pathList = file.name.split("/")
+                val pathList = file.name.split(separator)
                 var currentNode = node
 
                 for ((i, pathItem) in pathList.withIndex()) {
                     if (i == pathList.lastIndex) {
-                        currentNode.children?.add(TorrentFileNode(pathItem, file, null))
+                        currentNode.children?.add(TorrentFileNode(pathItem, file, separator, null))
                     } else {
                         currentNode = currentNode.children?.find { it.name == pathItem } ?: currentNode.children.let {
-                            val newFile = TorrentFileNode(pathItem, null, mutableListOf())
+                            val newFile = TorrentFileNode(pathItem, null, separator, mutableListOf())
                             it?.add(newFile)
                             newFile
                         }

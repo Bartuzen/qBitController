@@ -116,12 +116,14 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                                 val isFile = key.startsWith("1")
 
                                 val nodeStack = viewModel.nodeStack.value
+                                val separator = viewModel.torrentFiles.value?.separator ?: return false
+
                                 val root = if (nodeStack.isNotEmpty()) {
                                     val folderList = mutableListOf<String>()
                                     for (folder in nodeStack.descendingIterator()) {
                                         folderList.add(folder)
                                     }
-                                    folderList.joinToString("/") + "/"
+                                    folderList.joinToString(separator) + separator
                                 } else {
                                     ""
                                 }
@@ -217,7 +219,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
             if (fileList != null) {
                 adapter.submitList(fileList) {
                     if (nodeStack.isNotEmpty()) {
-                        backButtonAdapter.currentDirectory = nodeStack.reversed().joinToString("/")
+                        backButtonAdapter.currentDirectory = nodeStack.reversed().joinToString(torrentFiles.separator)
                     } else {
                         backButtonAdapter.currentDirectory = null
                     }
