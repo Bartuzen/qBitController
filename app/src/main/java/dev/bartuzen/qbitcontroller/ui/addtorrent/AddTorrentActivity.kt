@@ -265,22 +265,15 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         }
 
-        binding.spinnerTmm.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
+        binding.textAutoTmm.setItems(
             listOf(
-                getString(R.string.torrent_add_tmm_default),
-                getString(R.string.torrent_add_tmm_manual),
-                getString(R.string.torrent_add_tmm_auto)
+                R.string.torrent_add_tmm_default,
+                R.string.torrent_add_tmm_manual,
+                R.string.torrent_add_tmm_auto
             )
         )
-
-        binding.spinnerTmm.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                binding.inputLayoutSavePath.isEnabled = position != 2
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        binding.textAutoTmm.onItemChangeListener = { position ->
+            binding.inputLayoutSavePath.isEnabled = position != 2
         }
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
@@ -341,7 +334,7 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.chipGroupTag.findViewById<Chip>(id).text.toString()
         }
 
-        val autoTmm = when (binding.spinnerTmm.selectedItemPosition) {
+        val autoTmm = when (binding.textAutoTmm.position) {
             1 -> false
             2 -> true
             else -> null
