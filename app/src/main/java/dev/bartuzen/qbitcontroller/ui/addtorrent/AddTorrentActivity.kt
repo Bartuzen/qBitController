@@ -276,6 +276,14 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.inputLayoutSavePath.isEnabled = position != 2
         }
 
+        binding.dropdownStopCondition.setItems(
+            listOf(
+                R.string.torrent_add_stop_condition_none,
+                R.string.torrent_add_stop_condition_metadata_received,
+                R.string.torrent_add_stop_condition_files_checked
+            )
+        )
+
         binding.dropdownContentLayout.setItems(
             listOf(
                 R.string.torrent_add_content_layout_original,
@@ -348,6 +356,12 @@ class AddTorrentActivity : AppCompatActivity() {
             else -> null
         }
 
+        val stopCondition = when (binding.dropdownStopCondition.position) {
+            1 -> "MetadataReceived"
+            2 -> "FilesChecked"
+            else -> "None"
+        }
+
         val contentLayout = when (binding.dropdownContentLayout.position) {
             1 -> "Subfolder"
             2 -> "NoSubfolder"
@@ -361,6 +375,7 @@ class AddTorrentActivity : AppCompatActivity() {
             savePath = binding.editSavePath.text.toString().ifBlank { null },
             category = category,
             tags = tags,
+            stopCondition = stopCondition,
             contentLayout = contentLayout,
             torrentName = binding.editTorrentName.text.toString().ifBlank { null },
             downloadSpeedLimit = downloadSpeedLimit,

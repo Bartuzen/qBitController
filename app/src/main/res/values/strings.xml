@@ -426,6 +426,10 @@
     <string name="torrent_add_tmm_default">Default</string>
     <string name="torrent_add_tmm_manual">Manual</string>
     <string name="torrent_add_tmm_auto">Automatic</string>
+    <string name="torrent_add_stop_condition">Stop Condition</string>
+    <string name="torrent_add_stop_condition_none">None</string>
+    <string name="torrent_add_stop_condition_metadata_received">Metadata received</string>
+    <string name="torrent_add_stop_condition_files_checked">Files checked</string>
     <string name="torrent_add_content_layout">Content Layout</string>
     <string name="torrent_add_content_layout_original">Original</string>
     <string name="torrent_add_content_layout_subfolder">Create subfolder</string>
