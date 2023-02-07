@@ -66,7 +66,7 @@ data class TorrentFileNode(
 
     companion object {
         fun fromFileList(fileList: Collection<TorrentFile>): TorrentFileNode {
-            val separator = if (fileList.any { it.name.contains("\\") }) "\\" else "/"
+            val separator = if (fileList.any { it.name.contains("/") }) "/" else "\\"
 
             val node = TorrentFileNode("", null, separator, mutableListOf())
 
