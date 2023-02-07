@@ -422,6 +422,10 @@
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
     <string name="torrent_add_category">Category</string>
     <string name="torrent_add_tags">Tags</string>
+    <string name="torrent_add_start_torrent">Start torrent</string>
+    <string name="torrent_add_skip_hash_checking">Skip hash checking</string>
+    <string name="torrent_add_sequential_download">Download in sequential order</string>
+    <string name="torrent_add_prioritize_first_last_piece">Download first and last piece first</string>
     <string name="torrent_add_tmm">Torrent Management Mode</string>
     <string name="torrent_add_tmm_default">Default</string>
     <string name="torrent_add_tmm_manual">Manual</string>
@@ -440,10 +444,6 @@
     <string name="torrent_add_seeding_time_limit">Seeding Time Limit (Minutes)</string>
     <string name="torrent_add_dlspeed_limit">@string/torrent_dlspeed_limit</string>
     <string name="torrent_add_upspeed_limit">@string/torrent_upspeed_limit</string>
-    <string name="torrent_add_start_torrent">Start torrent</string>
-    <string name="torrent_add_skip_hash_checking">Skip hash checking</string>
-    <string name="torrent_add_sequential_download">Download in sequential order</string>
-    <string name="torrent_add_prioritize_first_last_piece">Download first and last piece first</string>
 
     <string name="torrent_add_select_server">Server</string>
     <string name="torrent_add_no_server">No servers found.</string>
