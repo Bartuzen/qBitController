@@ -276,6 +276,14 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.inputLayoutSavePath.isEnabled = position != 2
         }
 
+        binding.textContentLayout.setItems(
+            listOf(
+                R.string.torrent_add_content_layout_original,
+                R.string.torrent_add_content_layout_subfolder,
+                R.string.torrent_add_content_layout_no_subfolder
+            )
+        )
+
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
             when (event) {
                 is AddTorrentViewModel.Event.Error -> {
@@ -340,6 +348,12 @@ class AddTorrentActivity : AppCompatActivity() {
             else -> null
         }
 
+        val contentLayout = when (binding.textContentLayout.position) {
+            1 -> "Subfolder"
+            2 -> "NoSubfolder"
+            else -> "Original"
+        }
+
         viewModel.createTorrent(
             serverId = serverId,
             links = if (fileUri == null) links.split("\n") else null,
@@ -347,6 +361,7 @@ class AddTorrentActivity : AppCompatActivity() {
             savePath = binding.editSavePath.text.toString().ifBlank { null },
             category = category,
             tags = tags,
+            contentLayout = contentLayout,
             torrentName = binding.editTorrentName.text.toString().ifBlank { null },
             downloadSpeedLimit = downloadSpeedLimit,
             uploadSpeedLimit = uploadSpeedLimit,

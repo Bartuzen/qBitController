@@ -422,6 +422,10 @@
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
     <string name="torrent_add_category">Category</string>
     <string name="torrent_add_tags">Tags</string>
+    <string name="torrent_add_content_layout">Content Layout</string>
+    <string name="torrent_add_content_layout_original">Original</string>
+    <string name="torrent_add_content_layout_subfolder">Create subfolder</string>
+    <string name="torrent_add_content_layout_no_subfolder">Don\'t create subfolder</string>
     <string name="torrent_add_tmm">Torrent Management Mode</string>
     <string name="torrent_add_tmm_default">Default</string>
     <string name="torrent_add_tmm_manual">Manual</string>

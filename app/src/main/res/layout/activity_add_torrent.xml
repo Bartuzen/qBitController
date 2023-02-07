@@ -188,6 +188,20 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/torrent_add_content_layout">
+
+                        <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
+                            android:id="@+id/text_content_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/input_layout_save_path"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"

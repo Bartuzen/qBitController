@@ -145,6 +145,7 @@ interface TorrentService {
         @Part("savepath") savePath: String?,
         @Part("category") category: String?,
         @Part("tags") tags: String?,
+        @Part("contentLayout") contentLayout: String,
         @Part("rename") torrentName: String?,
         @Part("dlLimit") downloadSpeedLimit: Int?,
         @Part("upLimit") uploadSpeedLimit: Int?,
