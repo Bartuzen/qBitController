@@ -265,18 +265,18 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         }
 
-        binding.textAutoTmm.setItems(
+        binding.dropdownAutoTmm.setItems(
             listOf(
                 R.string.torrent_add_tmm_default,
                 R.string.torrent_add_tmm_manual,
                 R.string.torrent_add_tmm_auto
             )
         )
-        binding.textAutoTmm.onItemChangeListener = { position ->
+        binding.dropdownAutoTmm.onItemChangeListener = { position ->
             binding.inputLayoutSavePath.isEnabled = position != 2
         }
 
-        binding.textContentLayout.setItems(
+        binding.dropdownContentLayout.setItems(
             listOf(
                 R.string.torrent_add_content_layout_original,
                 R.string.torrent_add_content_layout_subfolder,
@@ -342,13 +342,13 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.chipGroupTag.findViewById<Chip>(id).text.toString()
         }
 
-        val autoTmm = when (binding.textAutoTmm.position) {
+        val autoTmm = when (binding.dropdownAutoTmm.position) {
             1 -> false
             2 -> true
             else -> null
         }
 
-        val contentLayout = when (binding.textContentLayout.position) {
+        val contentLayout = when (binding.dropdownContentLayout.position) {
             1 -> "Subfolder"
             2 -> "NoSubfolder"
             else -> "Original"
