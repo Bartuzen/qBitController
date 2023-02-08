@@ -1,0 +1,10 @@
+- Added RSS support
+- Added transfer info to main screen
+- Added ability to switch between regular and alternative speed limits
+- Added uncategorized and untagged filtering options
+- Added ability to view qBittorrent stats
+- Added option to hide loading bar when screen contents are auto refreshing
+- Fixed torrent files not showing properly if qBittorrent is install on Windows
+- Fixed authentication with qBittorrent not working for some users
+
+Check GitHub release for all changes.
