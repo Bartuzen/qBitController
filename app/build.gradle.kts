@@ -131,7 +131,7 @@ dependencies {
 
     implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6")
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
     val firebaseImplementation by configurations
     firebaseImplementation(platform("com.google.firebase:firebase-bom:31.2.0"))
