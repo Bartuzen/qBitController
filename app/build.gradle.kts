@@ -129,7 +129,7 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.6")
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.8")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
