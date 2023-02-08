@@ -25,9 +25,17 @@ fun formatBytes(context: Context, byte: Long) = when (byte) {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
         context.getString(R.string.size_gibibytes, text)
     }
-    else -> {
+    in 1024L * 1024 * 1024 * 1024 until 1024L * 1024 * 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024L * 1024 * 1024 * 1024)).floorToDecimal(3).toString()
         context.getString(R.string.size_tebibytes, text)
+    }
+    in 1024L * 1024 * 1024 * 1024 * 1024 until 1024L * 1024 * 1024 * 1024 * 1024 * 1024 -> {
+        val text = (byte.toDouble() / (1024L * 1024 * 1024 * 1024 * 1024)).floorToDecimal(3).toString()
+        context.getString(R.string.size_pebibytes, text)
+    }
+    else -> {
+        val text = (byte.toDouble() / (1024L * 1024 * 1024 * 1024 * 1024 * 1024)).floorToDecimal(3).toString()
+        context.getString(R.string.size_exbibytes, text)
     }
 }
 
