@@ -4,7 +4,7 @@
 - Added uncategorized and untagged filtering options
 - Added ability to view qBittorrent stats
 - Added option to hide loading bar when screen contents are auto refreshing
-- Fixed torrent files not showing properly if qBittorrent is install on Windows
+- Fixed torrent files not showing properly if qBittorrent is installed on Windows
 - Fixed authentication with qBittorrent not working for some users
 
 Check GitHub release for all changes.
