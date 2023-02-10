@@ -116,8 +116,8 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
 
-    implementation("com.google.dagger:hilt-android:2.44.2")
-    kapt("com.google.dagger:hilt-compiler:2.44.2")
+    implementation("com.google.dagger:hilt-android:2.45")
+    kapt("com.google.dagger:hilt-compiler:2.45")
 
     implementation("androidx.preference:preference-ktx:1.2.0")
 
