@@ -19,6 +19,8 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
+import dev.bartuzen.qbitcontroller.utils.setColor
 
 class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapter.ViewHolder>(
     diffCallBack = DiffCallBack(),
@@ -121,6 +123,8 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                     topToBottom = binding.chipGroupCategoryAndTag.id
                 }
             }
+
+            binding.progressTorrent.setColor(getTorrentStateColor(context, torrent.state))
         }
     }
 

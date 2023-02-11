@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -15,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.progressindicator.BaseProgressIndicator
+import com.google.android.material.progressindicator.BaseProgressIndicatorSpec
 import dev.bartuzen.qbitcontroller.R
 import java.io.Serializable
 import kotlin.math.ceil
@@ -65,4 +69,14 @@ fun Context.copyToClipboard(text: String, label: String? = null) {
     val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
     val clip = android.content.ClipData.newPlainText(label, text)
     clipboard.setPrimaryClip(clip)
+}
+
+fun <T : BaseProgressIndicatorSpec> BaseProgressIndicator<T>.setColor(color: Int) {
+    setIndicatorColor(color)
+    trackColor = Color.argb(
+        (MaterialColors.ALPHA_DISABLED * 255).toInt(),
+        Color.red(color),
+        Color.green(color),
+        Color.blue(color)
+    )
 }
