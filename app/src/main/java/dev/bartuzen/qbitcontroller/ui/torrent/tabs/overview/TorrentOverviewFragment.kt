@@ -314,7 +314,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 "100"
             }
             binding.textProgress.text = requireContext().getString(
-                R.string.torrent_item_progress,
+                R.string.torrent_overview_progress,
                 formatBytes(requireContext(), torrent.completed),
                 formatBytes(requireContext(), torrent.size),
                 progressText

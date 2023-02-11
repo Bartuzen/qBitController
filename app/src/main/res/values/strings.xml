@@ -174,7 +174,7 @@
     <string name="torrent_list_priority_maximized_success">Priority maximized successfully.</string>
     <string name="torrent_list_priority_minimized_success">Priority minimized successfully.</string>
 
-    <string name="torrent_item_progress">%1$s / %2$s • %3$s%%</string>
+    <string name="torrent_item_progress">%1$s / %2$s • %3$s%% • %4$s</string>
     <string name="torrent_list_speed_format">↑ %1$s (%2$s) ↓ %3$s (%4$s)</string>
 
     <string name="stats_menu_title">Statistics</string>
@@ -267,6 +267,7 @@
     <string name="torrent_no_categories">Couldn\'t find any categories.</string>
     <string name="torrent_no_tags">Couldn\'t find any tags.</string>
 
+    <string name="torrent_overview_progress">%1$s / %2$s • %3$s%%</string>
     <string name="torrent_overview_information">Information</string>
     <string name="torrent_overview_total_size">Total Size</string>
     <string name="torrent_overview_added_on">Added On</string>

@@ -63,7 +63,8 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 R.string.torrent_item_progress,
                 formatBytes(context, torrent.completed),
                 formatBytes(context, torrent.size),
-                progressText
+                progressText,
+                torrent.ratio.floorToDecimal(2).toString()
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
