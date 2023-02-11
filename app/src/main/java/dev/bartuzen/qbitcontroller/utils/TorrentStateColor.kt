@@ -14,32 +14,32 @@ fun getTorrentStateColor(context: Context, state: TorrentState) = context.getCol
         TorrentState.CHECKING_RESUME_DATA,
         TorrentState.MOVING,
         TorrentState.ALLOCATING -> {
-            R.color.torrent_state_1
+            R.color.torrent_state_downloading
         }
         TorrentState.STALLED_DL -> {
-            R.color.torrent_state_2
+            R.color.torrent_state_stalled_downloading
         }
         TorrentState.STALLED_UP -> {
-            R.color.torrent_state_3
+            R.color.torrent_state_stalled_uploading
         }
         TorrentState.UPLOADING,
         TorrentState.FORCED_UP -> {
-            R.color.torrent_state_4
+            R.color.torrent_state_uploading
         }
         TorrentState.PAUSED_DL -> {
-            R.color.torrent_state_5
+            R.color.torrent_state_paused_downloading
         }
         TorrentState.PAUSED_UP -> {
-            R.color.torrent_state_6
+            R.color.torrent_state_paused_uploading
         }
         TorrentState.QUEUED_DL,
         TorrentState.QUEUED_UP -> {
-            R.color.torrent_state_7
+            R.color.torrent_state_queued
         }
         TorrentState.ERROR,
         TorrentState.MISSING_FILES,
         TorrentState.UNKNOWN -> {
-            R.color.torrent_state_8
+            R.color.torrent_state_error
         }
     }
 )

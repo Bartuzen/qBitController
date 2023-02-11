@@ -24,12 +24,12 @@
     <color name="selected_card_background">@color/gray</color>
     <color name="rss_read_article_background">#E5E5E5</color>
 
-    <color name="torrent_state_1">#1A7F37</color>
-    <color name="torrent_state_2">#2DA44E</color>
-    <color name="torrent_state_3">#0969DA</color>
-    <color name="torrent_state_4">#0969DA</color>
-    <color name="torrent_state_5">#57606A</color>
-    <color name="torrent_state_6">#218BFF</color>
-    <color name="torrent_state_7">#7D4E00</color>
-    <color name="torrent_state_8">#CF222E</color>
+    <color name="torrent_state_downloading">#1A7F37</color>
+    <color name="torrent_state_stalled_downloading">#2DA44E</color>
+    <color name="torrent_state_stalled_uploading">#0969DA</color>
+    <color name="torrent_state_uploading">#0969DA</color>
+    <color name="torrent_state_paused_downloading">#57606A</color>
+    <color name="torrent_state_paused_uploading">#218BFF</color>
+    <color name="torrent_state_queued">#7D4E00</color>
+    <color name="torrent_state_error">#CF222E</color>
 </resources>
