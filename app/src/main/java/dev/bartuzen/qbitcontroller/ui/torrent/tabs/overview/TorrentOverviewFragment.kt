@@ -41,8 +41,10 @@ import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setColor
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -263,6 +265,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 null
             }
         }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrent, properties) ->
+            binding.progressTorrent.setColor(getTorrentStateColor(requireContext(), torrent.state))
+
             binding.textName.text = torrent.name
 
             binding.chipGroupCategoryAndTag.removeAllViews()
