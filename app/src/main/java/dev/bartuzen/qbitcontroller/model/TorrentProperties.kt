@@ -66,6 +66,6 @@ data class TorrentProperties(
     @JsonProperty("peers_total")
     val peersTotal: Int,
 
-    @JsonProperty("wasted")
+    @JsonProperty("total_wasted")
     val wasted: Long
 )
