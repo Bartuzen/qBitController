@@ -374,6 +374,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
         }
         binding.recyclerTorrentList.adapter = adapter
+        binding.recyclerTorrentList.itemAnimator?.changeDuration = 0
         binding.recyclerTorrentList.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 val verticalPx = 8.toPx(requireContext())
