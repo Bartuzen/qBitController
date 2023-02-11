@@ -3,7 +3,6 @@ package dev.bartuzen.qbitcontroller.utils
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -24,13 +23,6 @@ fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)
 fun Int.toPx(context: Context) = ceil(this * context.resources.displayMetrics.density).toInt()
 
 fun Int.toDp(context: Context) = ceil(this / context.resources.displayMetrics.density).toInt()
-
-inline fun <reified T : Parcelable> Intent.getParcelable(name: String) = if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
-    getParcelableExtra(name, T::class.java)
-} else {
-    @Suppress("DEPRECATION")
-    getParcelableExtra(name)
-}
 
 inline fun <reified T : Parcelable> Bundle.getParcelableCompat(name: String) =
     if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
