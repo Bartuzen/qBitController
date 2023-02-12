@@ -21,16 +21,16 @@ fun parseMainData(mainData: String): MainData {
         torrents.add(mapper.treeToValue(torrentNode, Torrent::class.java))
     }
 
-    val categories = mainDataNode["categories"].map { node ->
+    val categories = mainDataNode["categories"]?.map { node ->
         Category(
             name = node["name"].asText(),
             savePath = node["savePath"].asText()
         )
-    }.sortedBy { it.name.lowercase() }
+    }?.sortedBy { it.name.lowercase() } ?: emptyList()
 
-    val tags = mainDataNode["tags"].map { node ->
+    val tags = mainDataNode["tags"]?.map { node ->
         node.asText()
-    }.sortedBy { it.lowercase() }
+    }?.sortedBy { it.lowercase() } ?: emptyList()
 
     return MainData(
         serverState = serverState,
