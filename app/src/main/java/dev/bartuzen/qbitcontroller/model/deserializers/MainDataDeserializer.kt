@@ -16,7 +16,7 @@ fun parseMainData(mainData: String): MainData {
     val serverState = mapper.treeToValue(mainDataNode["server_state"], ServerState::class.java)
 
     val torrents = mutableListOf<Torrent>()
-    mainDataNode["torrents"].fields().forEach { (hash, torrentNode) ->
+    mainDataNode["torrents"]?.fields()?.forEach { (hash, torrentNode) ->
         (torrentNode as ObjectNode).put("hash", hash)
         torrents.add(mapper.treeToValue(torrentNode, Torrent::class.java))
     }
