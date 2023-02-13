@@ -8,11 +8,13 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFileBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
+import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatFilePriority
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.setColor
 
 class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentFilesAdapter.ViewHolder>(
     diffCallBack = DiffCallBack(),
@@ -73,6 +75,13 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
             if (file != null) {
                 val progress = file.progress * 100
 
+                val progressColorId = when (file.priority) {
+                    TorrentFilePriority.DO_NOT_DOWNLOAD -> R.color.file_priority_do_not_download
+                    TorrentFilePriority.NORMAL -> R.color.file_priority_normal
+                    TorrentFilePriority.HIGH -> R.color.file_priority_high
+                    TorrentFilePriority.MAXIMUM -> R.color.file_priority_maximum
+                }
+                binding.progressIndicator.setColor(context.getColorCompat(progressColorId))
                 binding.progressIndicator.progress = progress.toInt()
 
                 val downloadedSize = (file.progress * file.size).toLong()
@@ -107,7 +116,16 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
                     context.getString(R.string.torrent_files_priority_mixed)
                 }
 
+                val progressColorId = when (properties.priority) {
+                    TorrentFilePriority.DO_NOT_DOWNLOAD -> R.color.file_priority_do_not_download
+                    TorrentFilePriority.NORMAL -> R.color.file_priority_normal
+                    TorrentFilePriority.HIGH -> R.color.file_priority_high
+                    TorrentFilePriority.MAXIMUM -> R.color.file_priority_maximum
+                    null -> R.color.file_priority_mixed
+                }
+                binding.progressIndicator.setColor(context.getColorCompat(progressColorId))
                 binding.progressIndicator.progress = (progress * 100).toInt()
+
                 binding.textDetails.text = context.getString(
                     R.string.torrent_files_details_format,
                     priorityText,
