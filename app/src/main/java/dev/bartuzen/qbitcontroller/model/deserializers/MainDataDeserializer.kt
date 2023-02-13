@@ -16,21 +16,21 @@ fun parseMainData(mainData: String): MainData {
     val serverState = mapper.treeToValue(mainDataNode["server_state"], ServerState::class.java)
 
     val torrents = mutableListOf<Torrent>()
-    mainDataNode["torrents"].fields().forEach { (hash, torrentNode) ->
+    mainDataNode["torrents"]?.fields()?.forEach { (hash, torrentNode) ->
         (torrentNode as ObjectNode).put("hash", hash)
         torrents.add(mapper.treeToValue(torrentNode, Torrent::class.java))
     }
 
-    val categories = mainDataNode["categories"].map { node ->
+    val categories = mainDataNode["categories"]?.map { node ->
         Category(
             name = node["name"].asText(),
             savePath = node["savePath"].asText()
         )
-    }.sortedBy { it.name.lowercase() }
+    }?.sortedBy { it.name.lowercase() } ?: emptyList()
 
-    val tags = mainDataNode["tags"].map { node ->
+    val tags = mainDataNode["tags"]?.map { node ->
         node.asText()
-    }.sortedBy { it.lowercase() }
+    }?.sortedBy { it.lowercase() } ?: emptyList()
 
     return MainData(
         serverState = serverState,
