@@ -10,6 +10,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 
 fun parseMainData(mainData: String): MainData {
     val mapper = jacksonObjectMapper()
+        .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     val mainDataNode = mapper.readTree(mainData)
 
