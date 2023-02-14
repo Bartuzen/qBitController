@@ -83,7 +83,8 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
             TorrentState.STALLED_DL,
             TorrentState.FORCED_DL,
             TorrentState.QUEUED_DL,
-            TorrentState.META_DL
+            TorrentState.META_DL,
+            TorrentState.FORCED_META_DL
         )
     ),
     SEEDING(
@@ -112,6 +113,7 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
             TorrentState.STALLED_DL,
             TorrentState.QUEUED_DL,
             TorrentState.META_DL,
+            TorrentState.FORCED_META_DL,
             TorrentState.FORCED_DL,
             TorrentState.UPLOADING,
             TorrentState.CHECKING_UP,
