@@ -1,0 +1,6 @@
+- Added ratio information to torrents on main screen
+- Color of torrents' progress bar now change according to their state
+- Color of files' progress bar now change according to their priority
+- Fixed some app crashes that occur when torrents load
+
+Check GitHub release for all changes.
