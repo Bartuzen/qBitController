@@ -173,6 +173,9 @@ enum class TorrentState {
     @JsonProperty("metaDL")
     META_DL,
 
+    @JsonProperty("forcedMetaDL")
+    FORCED_META_DL,
+
     @JsonProperty("pausedDL")
     PAUSED_DL,
 

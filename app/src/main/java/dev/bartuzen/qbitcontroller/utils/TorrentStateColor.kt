@@ -9,6 +9,7 @@ fun getTorrentStateColor(context: Context, state: TorrentState) = context.getCol
         TorrentState.DOWNLOADING,
         TorrentState.FORCED_DL,
         TorrentState.META_DL,
+        TorrentState.FORCED_META_DL,
         TorrentState.CHECKING_DL,
         TorrentState.CHECKING_UP,
         TorrentState.CHECKING_RESUME_DATA,
