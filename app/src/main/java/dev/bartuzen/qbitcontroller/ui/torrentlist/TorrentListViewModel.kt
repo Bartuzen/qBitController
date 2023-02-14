@@ -62,28 +62,76 @@ class TorrentListViewModel @Inject constructor(
         }.filterNotNull().map { (torrentList, torrentSort, isReverseSorting) ->
             withContext(Dispatchers.IO) {
                 torrentList.run {
-                    when (torrentSort) {
-                        TorrentSort.NAME -> sortedWith(compareBy({ it.name.lowercase() }, { it.hash }))
-                        TorrentSort.HASH -> sortedBy { it.hash }
-                        TorrentSort.DOWNLOAD_SPEED -> sortedWith(compareBy({ it.downloadSpeed }, { it.hash }))
-                        TorrentSort.UPLOAD_SPEED -> sortedWith(compareBy({ it.uploadSpeed }, { it.hash }))
-                        TorrentSort.PRIORITY -> sortedWith(
-                            compareBy<Torrent, Int?>(nullsLast()) { it.priority }.thenBy { it.hash }
-                        )
-                        TorrentSort.ETA -> sortedWith(
-                            compareBy<Torrent, Int?>(nullsLast()) { it.eta }.thenBy { it.hash }
-                        )
-                        TorrentSort.SIZE -> sortedWith(compareBy({ it.size }, { it.hash }))
-                        TorrentSort.PROGRESS -> sortedWith(compareBy({ it.progress }, { it.hash }))
-                        TorrentSort.CONNECTED_SEEDS -> sortedWith(compareBy({ it.connectedSeeds }, { it.hash }))
-                        TorrentSort.TOTAL_SEEDS -> sortedWith(compareBy({ it.totalSeeds }, { it.hash }))
-                        TorrentSort.CONNECTED_LEECHES -> sortedWith(compareBy({ it.connectedLeeches }, { it.hash }))
-                        TorrentSort.TOTAL_LEECHES -> sortedWith(compareBy({ it.totalLeeches }, { it.hash }))
-                        TorrentSort.ADDITION_DATE -> sortedWith(compareBy({ it.additionDate }, { it.hash }))
-                        TorrentSort.COMPLETION_DATE -> sortedWith(
-                            compareBy<Torrent, Long?>(nullsLast()) { it.completionDate }.thenBy { it.hash }
-                        )
+                    val comparator = when (torrentSort) {
+                        TorrentSort.NAME -> {
+                            compareBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.HASH -> {
+                            compareBy(Torrent::hash)
+                        }
+                        TorrentSort.DOWNLOAD_SPEED -> {
+                            compareBy(Torrent::downloadSpeed)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.UPLOAD_SPEED -> {
+                            compareBy(Torrent::uploadSpeed)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.PRIORITY -> {
+                            compareBy(nullsLast(), Torrent::priority)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.ETA -> {
+                            compareBy(nullsLast(), Torrent::eta)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.SIZE -> {
+                            compareBy(Torrent::size)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.PROGRESS -> {
+                            compareBy(Torrent::progress)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.CONNECTED_SEEDS -> {
+                            compareBy(Torrent::connectedSeeds)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.TOTAL_SEEDS -> {
+                            compareBy(Torrent::totalSeeds)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.CONNECTED_LEECHES -> {
+                            compareBy(Torrent::connectedLeeches)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.TOTAL_LEECHES -> {
+                            compareBy(Torrent::totalLeeches)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.ADDITION_DATE -> {
+                            compareBy(Torrent::additionDate)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.COMPLETION_DATE -> {
+                            compareBy(nullsLast(), Torrent::completionDate)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
                     }
+                    sortedWith(comparator)
                 }.run {
                     if (isReverseSorting) {
                         reversed()

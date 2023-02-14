@@ -27,11 +27,11 @@ fun parseMainData(mainData: String): MainData {
             name = node["name"].asText(),
             savePath = node["savePath"].asText()
         )
-    }?.sortedBy { it.name.lowercase() } ?: emptyList()
+    }?.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.name }) ?: emptyList()
 
     val tags = mainDataNode["tags"]?.map { node ->
         node.asText()
-    }?.sortedBy { it.lowercase() } ?: emptyList()
+    }?.sortedWith(String.CASE_INSENSITIVE_ORDER) ?: emptyList()
 
     return MainData(
         serverState = serverState,

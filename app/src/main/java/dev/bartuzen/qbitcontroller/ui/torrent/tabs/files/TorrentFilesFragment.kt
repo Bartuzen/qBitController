@@ -17,6 +17,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRenameFileFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
+import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -214,7 +215,8 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
             }
         }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (nodeStack, torrentFiles) ->
             val fileList = torrentFiles.findChildNode(nodeStack)?.children?.sortedWith(
-                compareBy({ it.isFile }, { it.name.lowercase() })
+                compareBy<TorrentFileNode> { it.isFile }
+                    .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
             )
             if (fileList != null) {
                 adapter.submitList(fileList) {
