@@ -144,7 +144,7 @@ class RequestManager @Inject constructor(
             initialLoginLock.unlock()
             val response = tryRequest(serverId, block)
 
-            if (response is RequestResult.Error.ApiError && response.code == 403) {
+            if (response is RequestResult.Error.RequestError.InvalidCredentials) {
                 val loginResponse = tryLogin(serverId)
 
                 if (loginResponse is RequestResult.Success) {
