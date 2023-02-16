@@ -22,6 +22,24 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_stats"
+        android:icon="@drawable/ic_stats"
+        android:title="@string/stats_menu_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_log"
+        android:icon="@drawable/ic_log"
+        android:title="@string/menu_log"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_speed_limit_mode"
+        android:checkable="true"
+        android:title="@string/torrent_list_menu_alternative_speed_limits"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/torrent_sort_menu"
@@ -77,23 +95,5 @@
                 android:title="@string/torrent_sort_reverse" />
         </menu>
     </item>
-
-    <item
-        android:id="@+id/menu_speed_limit_mode"
-        android:checkable="true"
-        android:title="@string/torrent_list_menu_alternative_speed_limits"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_stats"
-        android:icon="@drawable/ic_stats"
-        android:title="@string/stats_menu_title"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/menu_log"
-        android:icon="@drawable/ic_log"
-        android:title="@string/menu_log"
-        app:showAsAction="ifRoom" />
 
 </menu>
