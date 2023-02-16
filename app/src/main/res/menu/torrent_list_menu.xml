@@ -89,4 +89,10 @@
         android:title="@string/stats_menu_title"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_log"
+        android:icon="@drawable/ic_rss"
+        android:title="@string/menu_log"
+        app:showAsAction="ifRoom" />
+
 </menu>

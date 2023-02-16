@@ -36,6 +36,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
+import dev.bartuzen.qbitcontroller.ui.log.LogActivity
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
@@ -188,6 +189,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         R.id.menu_rss -> {
                             val intent = Intent(requireActivity(), RssActivity::class.java).apply {
                                 putExtra(RssActivity.Extras.SERVER_ID, serverId)
+                            }
+                            startActivity(intent)
+                        }
+                        R.id.menu_log -> {
+                            val intent = Intent(requireActivity(), LogActivity::class.java).apply {
+                                putExtra(LogActivity.Extras.SERVER_ID, serverId)
                             }
                             startActivity(intent)
                         }

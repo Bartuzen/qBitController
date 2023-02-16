@@ -149,6 +149,10 @@
             android:name=".ui.rss.RssActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.log.LogActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

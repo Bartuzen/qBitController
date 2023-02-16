@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.network
 
 import dev.bartuzen.qbitcontroller.model.Category
+import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
@@ -21,6 +22,9 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/auth/login")
     suspend fun login(@Field("username") username: String, @Field("password") password: String): Response<String>
+
+    @GET("api/v2/log/main")
+    suspend fun getLog(): Response<List<Log>>
 
     @GET("api/v2/sync/maindata")
     suspend fun getMainData(): Response<String>

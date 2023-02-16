@@ -38,4 +38,9 @@
     <color name="file_priority_high">#FF5722</color>
     <color name="file_priority_maximum">#CF222E</color>
     <color name="file_priority_mixed">#03A9F4</color>
+
+    <color name="log_timestamp">#6E7781</color>
+    <color name="log_info">#0969DA</color>
+    <color name="log_warning">#BC4C00</color>
+    <color name="log_critical">#CF222E</color>
 </resources>
