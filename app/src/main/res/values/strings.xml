@@ -166,6 +166,8 @@
     <string name="torrent_list_status_completed">Completed</string>
     <string name="torrent_list_status_resumed">Resumed</string>
     <string name="torrent_list_status_paused">Paused</string>
+    <string name="torrent_list_status_active">Active</string>
+    <string name="torrent_list_status_inactive">Inactive</string>
     <string name="torrent_list_status_stalled">Stalled</string>
     <string name="torrent_list_status_checking">Checking</string>
     <string name="torrent_list_status_moving">Moving</string>

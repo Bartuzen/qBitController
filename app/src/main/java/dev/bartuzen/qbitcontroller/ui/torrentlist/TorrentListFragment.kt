@@ -467,8 +467,22 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             mainData.torrents.forEach { torrent ->
                 TorrentFilter.values().forEach { filter ->
-                    if (filter.states == null || torrent.state in filter.states) {
-                        countMap[filter] = (countMap[filter] ?: 0) + 1
+                    when (filter) {
+                        TorrentFilter.ACTIVE -> {
+                            if (torrent.downloadSpeed != 0L || torrent.uploadSpeed != 0L) {
+                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                            }
+                        }
+                        TorrentFilter.INACTIVE -> {
+                            if (torrent.downloadSpeed == 0L && torrent.uploadSpeed == 0L) {
+                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                            }
+                        }
+                        else -> {
+                            if (filter.states == null || torrent.state in filter.states) {
+                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                            }
+                        }
                     }
                 }
             }

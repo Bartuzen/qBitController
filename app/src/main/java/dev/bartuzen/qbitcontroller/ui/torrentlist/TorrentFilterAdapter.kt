@@ -37,6 +37,8 @@ class TorrentFilterAdapter(
             Triple(binding.textCompleted, TorrentFilter.COMPLETED, R.string.torrent_list_status_completed),
             Triple(binding.textResumed, TorrentFilter.RESUMED, R.string.torrent_list_status_resumed),
             Triple(binding.textPaused, TorrentFilter.PAUSED, R.string.torrent_list_status_paused),
+            Triple(binding.textActive, TorrentFilter.ACTIVE, R.string.torrent_list_status_active),
+            Triple(binding.textInactive, TorrentFilter.INACTIVE, R.string.torrent_list_status_inactive),
             Triple(binding.textStalled, TorrentFilter.STALLED, R.string.torrent_list_status_stalled),
             Triple(binding.textChecking, TorrentFilter.CHECKING, R.string.torrent_list_status_checking),
             Triple(binding.textMoving, TorrentFilter.MOVING, R.string.torrent_list_status_moving),
@@ -123,6 +125,8 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
         )
     ),
     PAUSED(listOf(TorrentState.PAUSED_DL, TorrentState.PAUSED_UP)),
+    ACTIVE(null),
+    INACTIVE(null),
     STALLED(listOf(TorrentState.STALLED_DL, TorrentState.STALLED_UP)),
     CHECKING(listOf(TorrentState.CHECKING_DL, TorrentState.CHECKING_UP, TorrentState.CHECKING_RESUME_DATA)),
     MOVING(listOf(TorrentState.MOVING)),

@@ -191,10 +191,25 @@ class TorrentListViewModel @Inject constructor(
                     }
                 }
 
-                val selectedStates = selectedFilter.states
-                if (selectedStates != null && torrent.state !in selectedStates) {
-                    return@filter false
+                when (selectedFilter) {
+                    TorrentFilter.ACTIVE -> {
+                        if (torrent.downloadSpeed == 0L && torrent.uploadSpeed == 0L) {
+                            return@filter false
+                        }
+                    }
+                    TorrentFilter.INACTIVE -> {
+                        if (torrent.downloadSpeed != 0L || torrent.uploadSpeed != 0L) {
+                            return@filter false
+                        }
+                    }
+                    else -> {
+                        val selectedStates = selectedFilter.states
+                        if (selectedStates != null && torrent.state !in selectedStates) {
+                            return@filter false
+                        }
+                    }
                 }
+
                 true
             }
         }
