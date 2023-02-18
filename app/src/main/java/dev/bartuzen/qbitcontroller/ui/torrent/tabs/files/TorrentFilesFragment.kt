@@ -63,7 +63,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
             onSelectionModeStart {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.torrent_files_selection_menu, menu)
+                        mode.menuInflater.inflate(R.menu.torrent_files_selection, menu)
                         return true
                     }
 

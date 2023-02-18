@@ -77,7 +77,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.torrent_menu, menu)
+                    menuInflater.inflate(R.menu.torrent, menu)
 
                     viewModel.torrent.launchAndCollectLatestIn(this@TorrentOverviewFragment) { torrent ->
                         val tags = menu.findItem(R.id.menu_tags)

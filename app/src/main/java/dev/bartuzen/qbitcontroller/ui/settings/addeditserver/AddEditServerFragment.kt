@@ -61,7 +61,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.add_edit_server_menu, menu)
+                    menuInflater.inflate(R.menu.add_edit_server, menu)
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

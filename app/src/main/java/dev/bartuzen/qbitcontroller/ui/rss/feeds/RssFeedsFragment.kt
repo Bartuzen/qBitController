@@ -58,7 +58,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.rss_feeds_menu, menu)
+                    menuInflater.inflate(R.menu.rss_feeds, menu)
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

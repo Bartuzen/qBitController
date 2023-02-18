@@ -108,7 +108,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.torrent_list_menu, menu)
+                    menuInflater.inflate(R.menu.torrent_list, menu)
 
                     viewModel.torrentSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
                         val selectedSort = when (sort) {
@@ -271,7 +271,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onSelectionModeStart {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.torrent_list_selection_menu, menu)
+                        mode.menuInflater.inflate(R.menu.torrent_list_selection, menu)
                         return true
                     }
 

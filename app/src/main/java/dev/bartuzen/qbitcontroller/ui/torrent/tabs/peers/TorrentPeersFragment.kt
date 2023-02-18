@@ -65,7 +65,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.torrent_peers_menu, menu)
+                    menuInflater.inflate(R.menu.torrent_peers, menu)
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -91,7 +91,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             onSelectionModeStart {
                 actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.torrent_peers_selection_menu, menu)
+                        mode.menuInflater.inflate(R.menu.torrent_peers_selection, menu)
                         return true
                     }
 

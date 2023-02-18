@@ -142,7 +142,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.add_torrent_menu, menu)
+                menuInflater.inflate(R.menu.add_torrent, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
