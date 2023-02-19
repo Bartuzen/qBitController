@@ -185,7 +185,7 @@
     <string name="stats_dialog_title">@string/stats_menu_title</string>
     <string name="stats_category_user_statistics">User Statistics</string>
     <string name="stats_category_cache_statistics">Cache Statistics</string>
-    <string name="stats_category_performance_statistics">Cache Statistics</string>
+    <string name="stats_category_performance_statistics">Performance Statistics</string>
     <string name="stats_all_time_upload">All-Time Upload</string>
     <string name="stats_all_time_download">All-Time Download</string>
     <string name="stats_all_time_share_ratio">All-Time Share Ratio</string>
