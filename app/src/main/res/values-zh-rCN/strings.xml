@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">qBitController</string>
 
-    <string name="language_code">zh_CN</string>
+    <string name="language_code">zh</string>
 
     <string name="share_add_torrent">添加种子</string>
 
