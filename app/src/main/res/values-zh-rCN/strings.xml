@@ -207,7 +207,7 @@
     <string name="torrent_paused_success">已成功暂停该 Torrent。</string>
     <string name="torrent_resumed_success">已成功恢复该 Torrent。</string>
     <string name="torrent_recheck_success">已成功重新校验该 Torrent。</string>
-    <string name="torrent_reannounce_success">已成功重命名该 Torrent。</string>
+    <string name="torrent_reannounce_success">已成功重新汇报该 Torrent。</string>
 
     <string name="torrent_menu_sequential_download">顺序下载</string>
     <string name="torrent_menu_prioritize_first_last_pieces">优先处理首尾文件块</string>
