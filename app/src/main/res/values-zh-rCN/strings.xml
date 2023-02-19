@@ -298,7 +298,7 @@
     <string name="torrent_overview_peers_format">@string/torrent_overview_seeds_format</string>
     <string name="torrent_overview_wasted">已丢弃</string>
 
-    <string name="torrent_files_directory_format"><![CDATA[<b>Directory: </b>]]> %1$s</string>
+    <string name="torrent_files_directory_format"><![CDATA[<b>目录： </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">不下载</string>
     <string name="torrent_files_priority_normal">正常</string>
     <string name="torrent_files_priority_high">高</string>
