@@ -1,0 +1,13 @@
+免费开源的远程控制 qBittorrent 服务器应用。
+
+功能：
+
+- 可配置管理多服务器
+- 可从磁力链接或文件中添加 Torrent
+- 可查看 Torrent 的详细信息
+- 可批量暂停、恢复、删除以及管理 Torrent
+- 可根据名称、大小、进度、上传/下载速度等排序 Torrent
+- 可根据分类以及标签过滤 Torrent
+- 可创建和删除分类以及标签
+
+https://github.com/Bartuzen/qBitController
