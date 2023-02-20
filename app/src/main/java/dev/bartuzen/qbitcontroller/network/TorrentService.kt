@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.network
 
 import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.Log
+import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
@@ -27,7 +28,7 @@ interface TorrentService {
     suspend fun getLog(): Response<List<Log>>
 
     @GET("api/v2/sync/maindata")
-    suspend fun getMainData(): Response<String>
+    suspend fun getMainData(): Response<MainData>
 
     @POST("api/v2/transfer/toggleSpeedLimitsMode")
     suspend fun toggleSpeedLimitsMode(): Response<Unit>

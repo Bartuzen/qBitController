@@ -8,7 +8,6 @@ import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.Torrent
-import dev.bartuzen.qbitcontroller.model.deserializers.parseMainData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.Quintuple
 import kotlinx.coroutines.Dispatchers
@@ -220,7 +219,7 @@ class TorrentListViewModel @Inject constructor(
     private fun updateMainData(serverId: Int) = viewModelScope.launch {
         when (val result = repository.getMainData(serverId)) {
             is RequestResult.Success -> {
-                _mainData.value = parseMainData(result.data)
+                _mainData.value = result.data
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
