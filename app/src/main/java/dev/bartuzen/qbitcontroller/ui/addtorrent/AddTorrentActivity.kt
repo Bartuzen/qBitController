@@ -267,7 +267,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         binding.dropdownAutoTmm.setItems(
             listOf(
-                R.string.torrent_add_tmm_default,
+                R.string.torrent_add_default,
                 R.string.torrent_add_tmm_manual,
                 R.string.torrent_add_tmm_auto
             )
@@ -278,6 +278,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         binding.dropdownStopCondition.setItems(
             listOf(
+                R.string.torrent_add_default,
                 R.string.torrent_add_stop_condition_none,
                 R.string.torrent_add_stop_condition_metadata_received,
                 R.string.torrent_add_stop_condition_files_checked
@@ -286,6 +287,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         binding.dropdownContentLayout.setItems(
             listOf(
+                R.string.torrent_add_default,
                 R.string.torrent_add_content_layout_original,
                 R.string.torrent_add_content_layout_subfolder,
                 R.string.torrent_add_content_layout_no_subfolder
@@ -357,15 +359,17 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         val stopCondition = when (binding.dropdownStopCondition.position) {
-            1 -> "MetadataReceived"
-            2 -> "FilesChecked"
-            else -> "None"
+            1 -> "None"
+            2 -> "MetadataReceived"
+            3 -> "FilesChecked"
+            else -> null
         }
 
         val contentLayout = when (binding.dropdownContentLayout.position) {
-            1 -> "Subfolder"
-            2 -> "NoSubfolder"
-            else -> "Original"
+            1 -> "Original"
+            2 -> "Subfolder"
+            3 -> "NoSubfolder"
+            else -> null
         }
 
         viewModel.createTorrent(

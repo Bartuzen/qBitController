@@ -433,8 +433,8 @@
     <string name="torrent_add_skip_hash_checking">Skip hash checking</string>
     <string name="torrent_add_sequential_download">Download in sequential order</string>
     <string name="torrent_add_prioritize_first_last_piece">Download first and last piece first</string>
+    <string name="torrent_add_default">Default</string>
     <string name="torrent_add_tmm">Torrent Management Mode</string>
-    <string name="torrent_add_tmm_default">Default</string>
     <string name="torrent_add_tmm_manual">Manual</string>
     <string name="torrent_add_tmm_auto">Automatic</string>
     <string name="torrent_add_stop_condition">Stop Condition</string>

@@ -421,8 +421,8 @@
     <string name="torrent_add_skip_hash_checking">跳过哈希校验</string>
     <string name="torrent_add_sequential_download">按顺序下载</string>
     <string name="torrent_add_prioritize_first_last_piece">先下载首尾文件块</string>
+    <string name="torrent_add_default">默认</string>
     <string name="torrent_add_tmm">Torrent 管理模式</string>
-    <string name="torrent_add_tmm_default">默认</string>
     <string name="torrent_add_tmm_manual">手动</string>
     <string name="torrent_add_tmm_auto">自动</string>
     <string name="torrent_add_stop_condition">停止条件</string>
