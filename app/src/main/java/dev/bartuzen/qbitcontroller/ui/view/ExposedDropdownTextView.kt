@@ -58,6 +58,7 @@ class ExposedDropdownTextView(context: Context, attrs: AttributeSet?) : Material
             position = state.getInt("position")
             super.onRestoreInstanceState(state.getParcelableCompat("superState"))
 
+            setText(adapter.getItem(position))
             onItemChangeListener?.invoke(position)
         } else {
             super.onRestoreInstanceState(state)
