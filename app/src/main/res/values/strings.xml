@@ -159,7 +159,7 @@
     <string name="torrent_list_delete_tag_desc">Are you sure you want to delete tag %1$s?</string>
     <string name="torrent_list_delete_tag_success">Tag %1$s deleted successfully.</string>
     <string name="torrent_list_create_tag_success">Tag created successfully.</string>
-    <string name="torrent_list_create_tag_hint">Tag Name(s)</string>
+    <string name="torrent_list_create_tag_hint">Tag Name</string>
 
     <string name="torrent_list_menu_alternative_speed_limits">Alternative Speed Limits</string>
     <string name="torrent_list_switch_speed_limit_alternative_success">Switched to alternative speed limits.</string>
