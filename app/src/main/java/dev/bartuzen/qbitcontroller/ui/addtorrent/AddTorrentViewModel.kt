@@ -115,7 +115,7 @@ class AddTorrentViewModel @Inject constructor(
             ) {
                 is RequestResult.Success -> {
                     if (result.data == "Ok.") {
-                        eventChannel.send(Event.TorrentCreated)
+                        eventChannel.send(Event.TorrentAdded)
                     } else {
                         eventChannel.send(Event.TorrentAddError)
                     }
@@ -196,6 +196,6 @@ class AddTorrentViewModel @Inject constructor(
         data class Error(val error: RequestResult.Error) : Event()
         object FileNotFound : Event()
         object TorrentAddError : Event()
-        object TorrentCreated : Event()
+        object TorrentAdded : Event()
     }
 }

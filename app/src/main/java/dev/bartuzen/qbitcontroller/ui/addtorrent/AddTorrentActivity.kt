@@ -322,7 +322,7 @@ class AddTorrentActivity : AppCompatActivity() {
                 AddTorrentViewModel.Event.TorrentAddError -> {
                     showSnackbar(R.string.torrent_add_error, view = binding.layoutCoordinator)
                 }
-                AddTorrentViewModel.Event.TorrentCreated -> {
+                AddTorrentViewModel.Event.TorrentAdded -> {
                     if (intent.data == null) {
                         val intent = Intent().apply {
                             putExtra(Extras.IS_ADDED, true)
