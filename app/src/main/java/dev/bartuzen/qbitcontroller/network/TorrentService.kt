@@ -116,11 +116,21 @@ interface TorrentService {
 
     @FormUrlEncoded
     @POST("api/v2/torrents/createCategory")
-    suspend fun createCategory(@Field("category") name: String, @Field("savePath") savePath: String): Response<Unit>
+    suspend fun createCategory(
+        @Field("category") name: String,
+        @Field("savePath") savePath: String,
+        @Field("downloadPathEnabled") downloadPathEnabled: Boolean?,
+        @Field("downloadPath") downloadPath: String
+    ): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/editCategory")
-    suspend fun editCategory(@Field("category") name: String, @Field("savePath") savePath: String): Response<Unit>
+    suspend fun editCategory(
+        @Field("category") name: String,
+        @Field("savePath") savePath: String,
+        @Field("downloadPathEnabled") downloadPathEnabled: Boolean?,
+        @Field("downloadPath") downloadPath: String
+    ): Response<Unit>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/createTags")

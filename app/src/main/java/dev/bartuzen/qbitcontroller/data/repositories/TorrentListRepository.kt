@@ -49,8 +49,14 @@ class TorrentListRepository @Inject constructor(
         service.minimizeTorrentPriority(hashes.joinToString("|"))
     }
 
-    suspend fun createCategory(serverId: Int, name: String, savePath: String) = requestManager.request(serverId) { service ->
-        service.createCategory(name, savePath)
+    suspend fun createCategory(
+        serverId: Int,
+        name: String,
+        savePath: String,
+        downloadPathEnabled: Boolean?,
+        downloadPath: String
+    ) = requestManager.request(serverId) { service ->
+        service.createCategory(name, savePath, downloadPathEnabled, downloadPath)
     }
 
     suspend fun setLocation(serverId: Int, hashes: List<String>, location: String) =
@@ -58,8 +64,14 @@ class TorrentListRepository @Inject constructor(
             service.setLocation(hashes.joinToString("|"), location)
         }
 
-    suspend fun editCategory(serverId: Int, name: String, savePath: String) = requestManager.request(serverId) { service ->
-        service.editCategory(name, savePath)
+    suspend fun editCategory(
+        serverId: Int,
+        name: String,
+        savePath: String,
+        downloadPathEnabled: Boolean?,
+        downloadPath: String
+    ) = requestManager.request(serverId) { service ->
+        service.editCategory(name, savePath, downloadPathEnabled, downloadPath)
     }
 
     suspend fun createTags(serverId: Int, names: List<String>) = requestManager.request(serverId) { service ->

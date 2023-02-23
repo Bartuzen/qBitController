@@ -146,7 +146,12 @@
     <string name="torrent_list_edit_category_success">Category edited successfully.</string>
     <string name="torrent_list_edit_category_fail">Category editing failed.</string>
     <string name="torrent_list_create_category_hint">Category Name</string>
-    <string name="torrent_list_create_category_save_path_hint">Save Path (Optional)</string>
+    <string name="torrent_list_create_category_save_path_hint">Save Path</string>
+    <string name="torrent_list_create_category_enable_download_path_hint">Enable Download Path</string>
+    <string name="torrent_list_create_category_download_path_hint">Download Path</string>
+    <string name="torrent_list_create_category_download_path_default">Default</string>
+    <string name="torrent_list_create_category_download_path_yes">Yes</string>
+    <string name="torrent_list_create_category_download_path_no">No</string>
 
     <string name="torrent_list_tags">Tags</string>
     <string name="torrent_list_create_tag_title">Create Tag</string>

@@ -141,7 +141,7 @@
     <string name="torrent_list_edit_category_success">已成功编辑分类。</string>
     <string name="torrent_list_edit_category_fail">编辑分类失败。</string>
     <string name="torrent_list_create_category_hint">分类名称</string>
-    <string name="torrent_list_create_category_save_path_hint">保存路径（可选）</string>
+    <string name="torrent_list_create_category_save_path_hint">保存路径</string>
 
     <string name="torrent_list_tags">标签</string>
     <string name="torrent_list_create_tag_title">创建标签</string>

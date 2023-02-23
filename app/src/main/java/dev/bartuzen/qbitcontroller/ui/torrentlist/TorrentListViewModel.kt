@@ -371,31 +371,33 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun createCategory(serverId: Int, name: String, savePath: String) = viewModelScope.launch {
-        when (val result = repository.createCategory(serverId, name, savePath)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.CategoryCreated)
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
-        }
-    }
-
-    fun editCategory(serverId: Int, name: String, savePath: String) = viewModelScope.launch {
-        when (val result = repository.editCategory(serverId, name, savePath)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.CategoryEdited)
-            }
-            is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.CategoryEditingFailed)
-                } else {
+    fun createCategory(serverId: Int, name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
+        viewModelScope.launch {
+            when (val result = repository.createCategory(serverId, name, savePath, downloadPathEnabled, downloadPath)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.CategoryCreated)
+                }
+                is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
                 }
             }
         }
-    }
+
+    fun editCategory(serverId: Int, name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
+        viewModelScope.launch {
+            when (val result = repository.editCategory(serverId, name, savePath, downloadPathEnabled, downloadPath)) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.CategoryEdited)
+                }
+                is RequestResult.Error -> {
+                    if (result is RequestResult.Error.ApiError && result.code == 409) {
+                        eventChannel.send(Event.CategoryEditingFailed)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
+                }
+            }
+        }
 
     fun createTags(serverId: Int, names: List<String>) = viewModelScope.launch {
         when (val result = repository.createTags(serverId, names)) {
