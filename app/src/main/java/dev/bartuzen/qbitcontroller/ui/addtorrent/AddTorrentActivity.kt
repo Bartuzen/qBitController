@@ -386,18 +386,18 @@ class AddTorrentActivity : AppCompatActivity() {
             convertSpeedToBytes(binding.editDlspeedLimit.text.toString(), binding.dropdownDlspeedLimitUnit.position)
         if (!isDownloadSpeedValid) {
             isValid = false
-            binding.textInputDlspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
+            binding.inputLayoutDlspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
         } else {
-            binding.textInputDlspeedLimit.isErrorEnabled = false
+            binding.inputLayoutDlspeedLimit.isErrorEnabled = false
         }
 
         val (uploadSpeedLimit, isUploadSpeedValid) =
             convertSpeedToBytes(binding.editUpspeedLimit.text.toString(), binding.dropdownUpspeedLimitUnit.position)
         if (!isUploadSpeedValid) {
             isValid = false
-            binding.textInputUpspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
+            binding.inputLayoutUpspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
         } else {
-            binding.textInputUpspeedLimit.isErrorEnabled = false
+            binding.inputLayoutUpspeedLimit.isErrorEnabled = false
         }
 
         if (!isValid) {
