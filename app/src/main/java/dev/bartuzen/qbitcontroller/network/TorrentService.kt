@@ -162,7 +162,7 @@ interface TorrentService {
         @Part("autoTMM") isAutoTorrentManagementEnabled: Boolean?,
         @Part("sequentialDownload") isSequentialDownloadEnabled: Boolean,
         @Part("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean
-    ): Response<Unit>
+    ): Response<String>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/setAutoManagement")

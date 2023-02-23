@@ -319,6 +319,9 @@ class AddTorrentActivity : AppCompatActivity() {
                 AddTorrentViewModel.Event.FileNotFound -> {
                     showSnackbar(R.string.torrent_add_file_not_found, view = binding.layoutCoordinator)
                 }
+                AddTorrentViewModel.Event.TorrentAddError -> {
+                    showSnackbar(R.string.torrent_add_error, view = binding.layoutCoordinator)
+                }
                 AddTorrentViewModel.Event.TorrentCreated -> {
                     if (intent.data == null) {
                         val intent = Intent().apply {

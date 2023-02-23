@@ -31,7 +31,7 @@ class AddTorrentRepository @Inject constructor(
         isAutoTorrentManagementEnabled: Boolean?,
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean
-    ): RequestResult<Unit> {
+    ): RequestResult<String> {
         val filePart = if (fileBytes != null) {
             MultipartBody.Part.createFormData(
                 "filename",
