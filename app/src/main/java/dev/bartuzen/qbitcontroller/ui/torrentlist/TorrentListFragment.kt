@@ -787,22 +787,29 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
     }
 
     private fun showStatsDialog() {
-        val serverState = viewModel.mainData.value?.serverState ?: return
         showDialog(DialogServerStatsBinding::inflate) { binding ->
             setTitle(R.string.stats_dialog_title)
             setPositiveButton()
 
-            binding.textAllTimeUpload.text = formatBytes(requireContext(), serverState.allTimeUpload)
-            binding.textAllTimeDownload.text = formatBytes(requireContext(), serverState.allTimeDownload)
-            binding.textAllTimeShareRatio.text = serverState.globalRatio
-            binding.textSessionWaste.text = formatBytes(requireContext(), serverState.sessionWaste)
-            binding.textConnectedPeers.text = serverState.connectedPeers.toString()
-            binding.textTotalBufferSize.text = formatBytes(requireContext(), serverState.bufferSize)
-            binding.textWriteCacheOverload.text = getString(R.string.stats_percentage_format, serverState.writeCacheOverload)
-            binding.textReadCacheOverload.text = getString(R.string.stats_percentage_format, serverState.readCacheOverload)
-            binding.textQueuedIoJobs.text = serverState.queuedIOJobs
-            binding.textAverageTimeInQueue.text = getString(R.string.stats_ms_format, serverState.averageTimeInQueue)
-            binding.textTotalQueuedSize.text = formatBytes(requireContext(), serverState.queuedSize)
+            val mainDataJob = viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
+                val state = mainData.serverState
+
+                binding.textAllTimeUpload.text = formatBytes(requireContext(), state.allTimeUpload)
+                binding.textAllTimeDownload.text = formatBytes(requireContext(), state.allTimeDownload)
+                binding.textAllTimeShareRatio.text = state.globalRatio
+                binding.textSessionWaste.text = formatBytes(requireContext(), state.sessionWaste)
+                binding.textConnectedPeers.text = state.connectedPeers.toString()
+                binding.textTotalBufferSize.text = formatBytes(requireContext(), state.bufferSize)
+                binding.textWriteCacheOverload.text = getString(R.string.stats_percentage_format, state.writeCacheOverload)
+                binding.textReadCacheOverload.text = getString(R.string.stats_percentage_format, state.readCacheOverload)
+                binding.textQueuedIoJobs.text = state.queuedIOJobs
+                binding.textAverageTimeInQueue.text = getString(R.string.stats_ms_format, state.averageTimeInQueue)
+                binding.textTotalQueuedSize.text = formatBytes(requireContext(), state.queuedSize)
+            }
+
+            setOnDismissListener {
+                mainDataJob.cancel()
+            }
         }
     }
 
