@@ -29,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogCreateCategoryBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogCreateEditCategoryBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogServerStatsBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
@@ -426,7 +426,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onCreateClick = { isCategory ->
                 activityBinding.layoutDrawer.close()
                 if (isCategory) {
-                    showCreateCategoryDialog()
+                    showCreateEditCategoryDialog(null)
                 } else {
                     showCreateTagDialog()
                 }
@@ -697,7 +697,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             ) { _, which ->
                 when (which) {
                     0 -> {
-                        showEditCategoryDialog(name)
+                        showCreateEditCategoryDialog(name)
                     }
                     1 -> {
                         showDeleteCategoryTagDialog(true, name)
@@ -708,12 +708,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
     }
 
-    private fun showEditCategoryDialog(name: String) {
-        showDialog(DialogCreateCategoryBinding::inflate) { binding ->
-            val category = viewModel.mainData.value?.categories?.find { it.name == name } ?: return@showDialog
+    private fun showCreateEditCategoryDialog(name: String?) {
+        showDialog(DialogCreateEditCategoryBinding::inflate) { binding ->
+            val category = if (name != null) {
+                viewModel.mainData.value?.categories?.find { it.name == name } ?: return@showDialog
+            } else {
+                null
+            }
 
-            binding.editName.isEnabled = false
-            binding.editName.inputType = InputType.TYPE_NULL
             binding.dropdownDownloadPath.setItems(
                 listOf(
                     getString(R.string.torrent_list_create_category_download_path_default),
@@ -721,9 +723,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     getString(R.string.torrent_list_create_category_download_path_no)
                 )
             )
-
-            binding.inputLayoutName.setTextWithoutAnimation(name)
-            binding.inputLayoutSavePath.setTextWithoutAnimation(category.savePath)
 
             binding.dropdownDownloadPath.onItemChangeListener = { position ->
                 if (position == 1) {
@@ -735,20 +734,31 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
             }
 
-            when (category.downloadPath) {
-                Category.DownloadPath.Default -> {
-                    binding.dropdownDownloadPath.setPosition(0)
+            if (category == null) {
+                setTitle(R.string.torrent_list_create_category_title)
+            } else {
+                binding.editName.isEnabled = false
+                binding.editName.inputType = InputType.TYPE_NULL
+
+                binding.inputLayoutName.setTextWithoutAnimation(name)
+                binding.inputLayoutSavePath.setTextWithoutAnimation(category.savePath)
+
+                when (category.downloadPath) {
+                    Category.DownloadPath.Default -> {
+                        binding.dropdownDownloadPath.setPosition(0)
+                    }
+                    is Category.DownloadPath.Yes -> {
+                        binding.dropdownDownloadPath.setPosition(1)
+                        binding.inputLayoutDownloadPath.setTextWithoutAnimation(category.downloadPath.path)
+                    }
+                    Category.DownloadPath.No -> {
+                        binding.dropdownDownloadPath.setPosition(2)
+                    }
                 }
-                is Category.DownloadPath.Yes -> {
-                    binding.dropdownDownloadPath.setPosition(1)
-                    binding.inputLayoutDownloadPath.setTextWithoutAnimation(category.downloadPath.path)
-                }
-                Category.DownloadPath.No -> {
-                    binding.dropdownDownloadPath.setPosition(2)
-                }
+
+                setTitle(R.string.torrent_list_edit_category_title)
             }
 
-            setTitle(R.string.torrent_list_edit_category_title)
             setPositiveButton { _, _ ->
                 val downloadPathEnabled = when (binding.dropdownDownloadPath.position) {
                     1 -> true
@@ -756,14 +766,25 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     else -> null
                 }
 
-                viewModel.editCategory(
-                    serverId = serverId,
-                    name = name,
-                    savePath = binding.editSavePath.text.toString(),
-                    downloadPathEnabled = downloadPathEnabled,
-                    downloadPath = binding.editDownloadPath.text.toString()
-                )
+                if (category == null) {
+                    viewModel.createCategory(
+                        serverId = serverId,
+                        name = binding.editName.text.toString(),
+                        savePath = binding.editSavePath.text.toString(),
+                        downloadPathEnabled = downloadPathEnabled,
+                        downloadPath = binding.editDownloadPath.text.toString()
+                    )
+                } else {
+                    viewModel.editCategory(
+                        serverId = serverId,
+                        name = category.name,
+                        savePath = binding.editSavePath.text.toString(),
+                        downloadPathEnabled = downloadPathEnabled,
+                        downloadPath = binding.editDownloadPath.text.toString()
+                    )
+                }
             }
+
             setNegativeButton()
         }
     }
@@ -784,46 +805,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
             }
 
-            setNegativeButton()
-        }
-    }
-
-    private fun showCreateCategoryDialog() {
-        showDialog(DialogCreateCategoryBinding::inflate) { binding ->
-            binding.dropdownDownloadPath.setItems(
-                listOf(
-                    getString(R.string.torrent_list_create_category_download_path_default),
-                    getString(R.string.torrent_list_create_category_download_path_yes),
-                    getString(R.string.torrent_list_create_category_download_path_no)
-                )
-            )
-
-            binding.dropdownDownloadPath.onItemChangeListener = { position ->
-                if (position == 1) {
-                    binding.editDownloadPath.isEnabled = true
-                    binding.editDownloadPath.inputType = InputType.TYPE_CLASS_TEXT
-                } else {
-                    binding.editDownloadPath.isEnabled = false
-                    binding.editDownloadPath.inputType = InputType.TYPE_NULL
-                }
-            }
-
-            setTitle(R.string.torrent_list_create_category_title)
-            setPositiveButton { _, _ ->
-                val downloadPathEnabled = when (binding.dropdownDownloadPath.position) {
-                    1 -> true
-                    0 -> false
-                    else -> null
-                }
-
-                viewModel.createCategory(
-                    serverId = serverId,
-                    name = binding.editName.text.toString(),
-                    savePath = binding.editSavePath.text.toString(),
-                    downloadPathEnabled = downloadPathEnabled,
-                    downloadPath = binding.editDownloadPath.text.toString()
-                )
-            }
             setNegativeButton()
         }
     }
