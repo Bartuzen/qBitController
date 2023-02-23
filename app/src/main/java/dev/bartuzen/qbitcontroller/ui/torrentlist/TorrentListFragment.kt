@@ -731,30 +731,20 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
     private fun showDeleteCategoryTagDialog(isCategory: Boolean, name: String) {
         showDialog {
-            setTitle(
-                if (isCategory) {
-                    R.string.torrent_list_delete_category_title
-                } else {
-                    R.string.torrent_list_delete_tag_title
-                }
-            )
-            setMessage(
-                getString(
-                    if (isCategory) {
-                        R.string.torrent_list_delete_category_desc
-                    } else {
-                        R.string.torrent_list_delete_tag_desc
-                    },
-                    name
-                )
-            )
-            setPositiveButton { _, _ ->
-                if (isCategory) {
+            if (isCategory) {
+                setTitle(R.string.torrent_list_delete_category_title)
+                setMessage(getString(R.string.torrent_list_delete_category_desc, name))
+                setPositiveButton { _, _ ->
                     viewModel.deleteCategory(serverId, name)
-                } else {
+                }
+            } else {
+                setTitle(R.string.torrent_list_delete_tag_title)
+                setMessage(getString(R.string.torrent_list_delete_tag_desc, name))
+                setPositiveButton { _, _ ->
                     viewModel.deleteTag(serverId, name)
                 }
             }
+
             setNegativeButton()
         }
     }
