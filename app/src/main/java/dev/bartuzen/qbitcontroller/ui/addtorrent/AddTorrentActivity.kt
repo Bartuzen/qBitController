@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class AddTorrentActivity : AppCompatActivity() {
@@ -166,6 +165,24 @@ class AddTorrentActivity : AppCompatActivity() {
                 }
             }
         )
+
+        binding.dropdownDlspeedLimitUnit.setItems(
+            listOf(
+                getString(R.string.speed_bytes_per_second),
+                getString(R.string.speed_kibibytes_per_second),
+                getString(R.string.speed_mebibytes_per_second)
+            )
+        )
+        binding.dropdownDlspeedLimitUnit.setPosition(2)
+
+        binding.dropdownUpspeedLimitUnit.setItems(
+            listOf(
+                getString(R.string.speed_bytes_per_second),
+                getString(R.string.speed_kibibytes_per_second),
+                getString(R.string.speed_mebibytes_per_second)
+            )
+        )
+        binding.dropdownUpspeedLimitUnit.setPosition(2)
 
         binding.swipeRefresh.setOnRefreshListener {
             serverId.value?.let { id ->
@@ -317,27 +334,71 @@ class AddTorrentActivity : AppCompatActivity() {
         }
     }
 
+    private fun convertSpeedToBytes(speed: String, unit: Int): Pair<Int?, Boolean> {
+        if (speed.length > 10) {
+            return null to false
+        }
+
+        val limit = speed.toLongOrNull() ?: return null to true
+        return when (unit) {
+            0 -> {
+                // Limit is 2,000,000 KiB
+                if (limit > 2_000_000 * 1024) {
+                    null to false
+                } else {
+                    limit.toInt() to true
+                }
+            }
+            1 -> {
+                if (limit > 2_000_000) {
+                    null to false
+                } else {
+                    limit.toInt() * 1024 to true
+                }
+            }
+            2 -> {
+                if (limit > 2_000_000 / 1024) {
+                    null to false
+                } else {
+                    limit.toInt() * 1024 * 1024 to true
+                }
+            }
+            else -> null to true
+        }
+    }
+
     private fun tryAddTorrent(serverId: Int, fileUri: Uri?) {
+        var isValid = true
+
         val links = binding.editTorrentLink.text.toString()
 
         if (links.isBlank() && fileUri == null) {
+            isValid = false
             binding.inputLayoutTorrentLink.error = getString(R.string.torrent_add_link_cannot_be_empty)
-            return
+        } else {
+            binding.inputLayoutTorrentLink.isErrorEnabled = false
         }
 
-        val downloadSpeedLimit = binding.editDlspeedLimit.text.toString().toDoubleOrNull().let { limit ->
-            if (limit != null) {
-                (limit * 1024).roundToInt()
-            } else {
-                null
-            }
+        val (downloadSpeedLimit, isDownloadSpeedValid) =
+            convertSpeedToBytes(binding.editDlspeedLimit.text.toString(), binding.dropdownDlspeedLimitUnit.position)
+        if (!isDownloadSpeedValid) {
+            isValid = false
+            binding.textInputDlspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
+        } else {
+            binding.textInputDlspeedLimit.isErrorEnabled = false
         }
-        val uploadSpeedLimit = binding.editUpspeedLimit.text.toString().toDoubleOrNull().let { limit ->
-            if (limit != null) {
-                (limit * 1024).roundToInt()
-            } else {
-                null
-            }
+
+        val (uploadSpeedLimit, isUploadSpeedValid) =
+            convertSpeedToBytes(binding.editUpspeedLimit.text.toString(), binding.dropdownUpspeedLimitUnit.position)
+        if (!isUploadSpeedValid) {
+            isValid = false
+            binding.textInputUpspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
+        } else {
+            binding.textInputUpspeedLimit.isErrorEnabled = false
+        }
+
+        if (!isValid) {
+            return
         }
 
         val category = binding.chipGroupCategory.checkedChipId.let { id ->

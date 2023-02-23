@@ -12,46 +12,50 @@ import java.time.format.FormatStyle
 import kotlin.math.roundToLong
 
 fun formatBytes(context: Context, byte: Long) = when (byte) {
-    in 0 until 1024 -> context.getString(R.string.size_bytes, byte.toString())
+    in 0 until 1024 -> {
+        context.getString(R.string.size_format, byte.toString(), context.getString(R.string.size_bytes))
+    }
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
-        context.getString(R.string.size_kibibytes, text)
+        context.getString(R.string.size_format, text, context.getString(R.string.size_kibibytes))
     }
     in 1024 * 1024 until 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024)).floorToDecimal(1).toString()
-        context.getString(R.string.size_mebibytes, text)
+        context.getString(R.string.size_format, text, context.getString(R.string.size_mebibytes))
     }
     in 1024 * 1024 * 1024 until 1024L * 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
-        context.getString(R.string.size_gibibytes, text)
+        context.getString(R.string.size_format, text, context.getString(R.string.size_gibibytes))
     }
     in 1024L * 1024 * 1024 * 1024 until 1024L * 1024 * 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024L * 1024 * 1024 * 1024)).floorToDecimal(3).toString()
-        context.getString(R.string.size_tebibytes, text)
+        context.getString(R.string.size_format, text, context.getString(R.string.size_tebibytes))
     }
     in 1024L * 1024 * 1024 * 1024 * 1024 until 1024L * 1024 * 1024 * 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024L * 1024 * 1024 * 1024 * 1024)).floorToDecimal(3).toString()
-        context.getString(R.string.size_pebibytes, text)
+        context.getString(R.string.size_format, text, context.getString(R.string.size_pebibytes))
     }
     else -> {
         val text = (byte.toDouble() / (1024L * 1024 * 1024 * 1024 * 1024 * 1024)).floorToDecimal(3).toString()
-        context.getString(R.string.size_exbibytes, text)
+        context.getString(R.string.size_format, text, context.getString(R.string.size_exbibytes))
     }
 }
 
 fun formatBytesPerSecond(context: Context, byte: Long) = when (byte) {
-    in 0 until 1024 -> context.getString(R.string.speed_bytes_per_second, byte.toString())
+    in 0 until 1024 -> {
+        context.getString(R.string.speed_format, byte.toString(), context.getString(R.string.speed_bytes_per_second))
+    }
     in 1024 until 1024 * 1024 -> {
         val text = (byte.toDouble() / 1024).floorToDecimal(1).toString()
-        context.getString(R.string.speed_kibibytes_per_second, text)
+        context.getString(R.string.speed_format, text, context.getString(R.string.speed_kibibytes_per_second))
     }
     in 1024 * 1024 until 1024 * 1024 * 1024 -> {
         val text = (byte.toDouble() / (1024 * 1024)).floorToDecimal(1).toString()
-        context.getString(R.string.speed_mebibytes_per_second, text)
+        context.getString(R.string.speed_format, text, context.getString(R.string.speed_mebibytes_per_second))
     }
     else -> {
         val text = (byte.toDouble() / (1024 * 1024 * 1024)).floorToDecimal(2).toString()
-        context.getString(R.string.speed_gibibytes_per_second, text)
+        context.getString(R.string.speed_format, text, context.getString(R.string.speed_gibibytes_per_second))
     }
 }
 

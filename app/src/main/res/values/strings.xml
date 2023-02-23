@@ -82,18 +82,20 @@
     <string name="eta_days_hours">%1$sd %2$sh</string>
     <string name="eta_days">%1$sd</string>
 
-    <string name="size_bytes">%1$s B</string>
-    <string name="size_kibibytes">%1$s KiB</string>
-    <string name="size_mebibytes">%1$s MiB</string>
-    <string name="size_gibibytes">%1$s GiB</string>
-    <string name="size_tebibytes">%1$s TiB</string>
-    <string name="size_pebibytes">%1$s PiB</string>
-    <string name="size_exbibytes">%1$s EiB</string>
+    <string name="size_format">%1$s %2$s</string>
+    <string name="size_bytes">B</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_mebibytes">MiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="size_exbibytes">EiB</string>
 
-    <string name="speed_bytes_per_second">%1$s B/s</string>
-    <string name="speed_kibibytes_per_second">%1$s KiB/s</string>
-    <string name="speed_mebibytes_per_second">%1$s MiB/s</string>
-    <string name="speed_gibibytes_per_second">%1$s GiB/s</string>
+    <string name="speed_format">%1$s %2$s</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
 
     <string name="error_invalid_credentials">Invalid username or password.</string>
     <string name="error_banned">You have been banned because of too many failed login attempts.</string>
@@ -449,13 +451,14 @@
     <string name="torrent_add_name">Torrent Name</string>
     <string name="torrent_add_ratio_limit">Ratio Limit</string>
     <string name="torrent_add_seeding_time_limit">Seeding Time Limit (Minutes)</string>
-    <string name="torrent_add_dlspeed_limit">@string/torrent_dlspeed_limit</string>
-    <string name="torrent_add_upspeed_limit">@string/torrent_upspeed_limit</string>
+    <string name="torrent_add_dlspeed_limit">Download Speed Limit</string>
+    <string name="torrent_add_upspeed_limit">Upload Speed Limit</string>
 
     <string name="torrent_add_select_server">Server</string>
     <string name="torrent_add_no_server">No servers found.</string>
     <string name="torrent_add_link_cannot_be_empty">Link cannot be empty.</string>
     <string name="torrent_add_file_not_found">Torrent file is not found.</string>
+    <string name="torrent_add_speed_limit_too_big">Speed limit is too big.</string>
     <string name="torrent_add_success">Torrent added successfully.</string>
 
     <string name="rss_title">RSS</string>

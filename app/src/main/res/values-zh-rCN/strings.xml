@@ -82,18 +82,20 @@
     <string name="eta_days_hours">%1$s天 %2$s时</string>
     <string name="eta_days">%1$s天</string>
 
-    <string name="size_bytes">%1$s B</string>
-    <string name="size_kibibytes">%1$s KiB</string>
-    <string name="size_mebibytes">%1$s MiB</string>
-    <string name="size_gibibytes">%1$s GiB</string>
-    <string name="size_tebibytes">%1$s TiB</string>
-    <string name="size_pebibytes">%1$s PiB</string>
-    <string name="size_exbibytes">%1$s EiB</string>
+    <string name="size_format">%1$s %2$s</string>
+    <string name="size_bytes">B</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_mebibytes">MiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="size_exbibytes">EiB</string>
 
-    <string name="speed_bytes_per_second">%1$s B/s</string>
-    <string name="speed_kibibytes_per_second">%1$s KiB/s</string>
-    <string name="speed_mebibytes_per_second">%1$s MiB/s</string>
-    <string name="speed_gibibytes_per_second">%1$s GiB/s</string>
+    <string name="speed_format">%1$s %2$s</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
 
     <string name="error_invalid_credentials">无效的用户名或密码。</string>
     <string name="error_banned">登录失败次数过多，您已被封禁。</string>
@@ -437,8 +439,8 @@
     <string name="torrent_add_name">重命名 Torrent</string>
     <string name="torrent_add_ratio_limit">分享率</string>
     <string name="torrent_add_seeding_time_limit">做种时间限制（分钟）</string>
-    <string name="torrent_add_dlspeed_limit">@string/torrent_dlspeed_limit</string>
-    <string name="torrent_add_upspeed_limit">@string/torrent_upspeed_limit</string>
+    <string name="torrent_add_dlspeed_limit">下载速度限制</string>
+    <string name="torrent_add_upspeed_limit">上传速度限制</string>
 
     <string name="torrent_add_select_server">服务器</string>
     <string name="torrent_add_no_server">未找到服务器。</string>

@@ -42,6 +42,12 @@ class ExposedDropdownTextView(context: Context, attrs: AttributeSet?) : Material
         setItems(itemIds.map { context.getString(it) })
     }
 
+    fun setPosition(position: Int) {
+        this.position = position
+        setText(adapter.getItem(position))
+        onItemChangeListener?.invoke(position)
+    }
+
     private lateinit var adapter: NonFilterArrayAdapter<String>
 
     var onItemChangeListener: ((position: Int) -> Unit)? = null
