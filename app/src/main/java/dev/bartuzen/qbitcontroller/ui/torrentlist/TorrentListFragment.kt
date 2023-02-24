@@ -827,7 +827,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
     }
 
     private fun showCreateTagDialog() {
-        showDialog(DialogCreateTagBinding::inflate) { binding ->
+        lateinit var dialogBinding: DialogCreateTagBinding
+
+        val dialog = showDialog(DialogCreateTagBinding::inflate) { binding ->
+            dialogBinding = binding
+
             setTitle(R.string.torrent_list_create_tag_title)
             setPositiveButton { _, _ ->
                 viewModel.createTags(
@@ -836,6 +840,22 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 )
             }
             setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val text = dialogBinding.editName.text.toString()
+            if (text.isBlank()) {
+                dialogBinding.inputLayoutName.error = getString(R.string.torrent_list_create_tag_name_cannot_be_empty)
+                return@setOnClickListener
+            } else {
+                dialogBinding.inputLayoutName.isErrorEnabled = false
+            }
+
+            viewModel.createTags(
+                serverId = serverId,
+                names = text.split("\n")
+            )
+            dialog.dismiss()
         }
     }
 
