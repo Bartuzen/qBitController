@@ -709,12 +709,16 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
     }
 
     private fun showCreateEditCategoryDialog(name: String?) {
-        showDialog(DialogCreateEditCategoryBinding::inflate) { binding ->
-            val category = if (name != null) {
-                viewModel.mainData.value?.categories?.find { it.name == name } ?: return@showDialog
-            } else {
-                null
-            }
+        val category = if (name != null) {
+            viewModel.mainData.value?.categories?.find { it.name == name } ?: return
+        } else {
+            null
+        }
+
+        lateinit var dialogBinding: DialogCreateEditCategoryBinding
+
+        val dialog = showDialog(DialogCreateEditCategoryBinding::inflate) { binding ->
+            dialogBinding = binding
 
             binding.dropdownDownloadPath.setItems(
                 listOf(
@@ -759,33 +763,46 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 setTitle(R.string.torrent_list_edit_category_title)
             }
 
-            setPositiveButton { _, _ ->
-                val downloadPathEnabled = when (binding.dropdownDownloadPath.position) {
-                    1 -> true
-                    2 -> false
-                    else -> null
-                }
+            setPositiveButton()
+            setNegativeButton()
+        }
 
-                if (category == null) {
-                    viewModel.createCategory(
-                        serverId = serverId,
-                        name = binding.editName.text.toString(),
-                        savePath = binding.editSavePath.text.toString(),
-                        downloadPathEnabled = downloadPathEnabled,
-                        downloadPath = binding.editDownloadPath.text.toString()
-                    )
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            if (category == null) {
+                if (dialogBinding.editName.text.toString().isEmpty()) {
+                    dialogBinding.inputLayoutName.error =
+                        getString(R.string.torrent_list_create_category_name_cannot_be_empty)
+                    return@setOnClickListener
                 } else {
-                    viewModel.editCategory(
-                        serverId = serverId,
-                        name = category.name,
-                        savePath = binding.editSavePath.text.toString(),
-                        downloadPathEnabled = downloadPathEnabled,
-                        downloadPath = binding.editDownloadPath.text.toString()
-                    )
+                    dialogBinding.inputLayoutName.isErrorEnabled = false
                 }
             }
 
-            setNegativeButton()
+            val downloadPathEnabled = when (dialogBinding.dropdownDownloadPath.position) {
+                1 -> true
+                2 -> false
+                else -> null
+            }
+
+            if (category == null) {
+                viewModel.createCategory(
+                    serverId = serverId,
+                    name = dialogBinding.editName.text.toString(),
+                    savePath = dialogBinding.editSavePath.text.toString(),
+                    downloadPathEnabled = downloadPathEnabled,
+                    downloadPath = dialogBinding.editDownloadPath.text.toString()
+                )
+            } else {
+                viewModel.editCategory(
+                    serverId = serverId,
+                    name = category.name,
+                    savePath = dialogBinding.editSavePath.text.toString(),
+                    downloadPathEnabled = downloadPathEnabled,
+                    downloadPath = dialogBinding.editDownloadPath.text.toString()
+                )
+            }
+
+            dialog.dismiss()
         }
     }
 
