@@ -707,16 +707,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             dialogBinding = binding
 
             binding.dropdownDlspeedLimitUnit.setItems(
-                listOf(
-                    R.string.speed_kibibytes_per_second,
-                    R.string.speed_mebibytes_per_second
-                )
+                R.string.speed_kibibytes_per_second,
+                R.string.speed_mebibytes_per_second
             )
             binding.dropdownUpspeedLimitUnit.setItems(
-                listOf(
-                    R.string.speed_kibibytes_per_second,
-                    R.string.speed_mebibytes_per_second
-                )
+                R.string.speed_kibibytes_per_second,
+                R.string.speed_mebibytes_per_second
             )
 
             binding.inputLayoutDownload.setTextWithoutAnimation((downloadSpeedLimit / 1024).toString())
@@ -823,11 +819,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             dialogBinding = binding
 
             binding.dropdownDownloadPath.setItems(
-                listOf(
-                    getString(R.string.torrent_list_create_category_download_path_default),
-                    getString(R.string.torrent_list_create_category_download_path_yes),
-                    getString(R.string.torrent_list_create_category_download_path_no)
-                )
+                R.string.torrent_list_create_category_download_path_default,
+                R.string.torrent_list_create_category_download_path_yes,
+                R.string.torrent_list_create_category_download_path_no
             )
 
             binding.dropdownDownloadPath.onItemChangeListener = { position ->

@@ -167,20 +167,16 @@ class AddTorrentActivity : AppCompatActivity() {
         )
 
         binding.dropdownDlspeedLimitUnit.setItems(
-            listOf(
-                getString(R.string.speed_bytes_per_second),
-                getString(R.string.speed_kibibytes_per_second),
-                getString(R.string.speed_mebibytes_per_second)
-            )
+            R.string.speed_bytes_per_second,
+            R.string.speed_kibibytes_per_second,
+            R.string.speed_mebibytes_per_second
         )
         binding.dropdownDlspeedLimitUnit.setPosition(2)
 
         binding.dropdownUpspeedLimitUnit.setItems(
-            listOf(
-                getString(R.string.speed_bytes_per_second),
-                getString(R.string.speed_kibibytes_per_second),
-                getString(R.string.speed_mebibytes_per_second)
-            )
+            R.string.speed_bytes_per_second,
+            R.string.speed_kibibytes_per_second,
+            R.string.speed_mebibytes_per_second
         )
         binding.dropdownUpspeedLimitUnit.setPosition(2)
 
@@ -283,32 +279,26 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         binding.dropdownAutoTmm.setItems(
-            listOf(
-                R.string.torrent_add_default,
-                R.string.torrent_add_tmm_manual,
-                R.string.torrent_add_tmm_auto
-            )
+            R.string.torrent_add_default,
+            R.string.torrent_add_tmm_manual,
+            R.string.torrent_add_tmm_auto
         )
         binding.dropdownAutoTmm.onItemChangeListener = { position ->
             binding.inputLayoutSavePath.isEnabled = position != 2
         }
 
         binding.dropdownStopCondition.setItems(
-            listOf(
-                R.string.torrent_add_default,
-                R.string.torrent_add_stop_condition_none,
-                R.string.torrent_add_stop_condition_metadata_received,
-                R.string.torrent_add_stop_condition_files_checked
-            )
+            R.string.torrent_add_default,
+            R.string.torrent_add_stop_condition_none,
+            R.string.torrent_add_stop_condition_metadata_received,
+            R.string.torrent_add_stop_condition_files_checked
         )
 
         binding.dropdownContentLayout.setItems(
-            listOf(
-                R.string.torrent_add_default,
-                R.string.torrent_add_content_layout_original,
-                R.string.torrent_add_content_layout_subfolder,
-                R.string.torrent_add_content_layout_no_subfolder
-            )
+            R.string.torrent_add_default,
+            R.string.torrent_add_content_layout_original,
+            R.string.torrent_add_content_layout_subfolder,
+            R.string.torrent_add_content_layout_no_subfolder
         )
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->

@@ -37,9 +37,17 @@ class ExposedDropdownTextView(context: Context, attrs: AttributeSet?) : Material
         setText(items.firstOrNull())
     }
 
+    fun setItems(vararg items: String) {
+        setItems(items.toList())
+    }
+
     @JvmName("setItemIds")
     fun setItems(itemIds: List<Int>) {
         setItems(itemIds.map { context.getString(it) })
+    }
+
+    fun setItems(vararg itemIds: Int) {
+        setItems(itemIds.toList())
     }
 
     fun setPosition(position: Int) {
