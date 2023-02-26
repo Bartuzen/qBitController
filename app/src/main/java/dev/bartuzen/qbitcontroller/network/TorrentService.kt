@@ -33,6 +33,14 @@ interface TorrentService {
     @POST("api/v2/transfer/toggleSpeedLimitsMode")
     suspend fun toggleSpeedLimitsMode(): Response<Unit>
 
+    @FormUrlEncoded
+    @POST("api/v2/transfer/setDownloadLimit")
+    suspend fun setDownloadSpeedLimit(@Field("limit") limit: Int): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/transfer/setUploadLimit")
+    suspend fun setUploadSpeedLimit(@Field("limit") limit: Int): Response<Unit>
+
     @GET("api/v2/torrents/info")
     suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
 

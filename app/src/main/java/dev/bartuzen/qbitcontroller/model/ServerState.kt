@@ -42,11 +42,17 @@ data class ServerState(
     @JsonProperty("dl_info_speed")
     val downloadSpeed: Long,
 
+    @JsonProperty("dl_rate_limit")
+    val downloadSpeedLimit: Int,
+
     @JsonProperty("up_info_data")
     val uploadSession: Long,
 
     @JsonProperty("up_info_speed")
     val uploadSpeed: Long,
+
+    @JsonProperty("up_rate_limit")
+    val uploadSpeedLimit: Int,
 
     @JsonProperty("use_alt_speed_limits")
     val useAlternativeSpeedLimits: Boolean,

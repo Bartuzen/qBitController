@@ -154,6 +154,11 @@
     <string name="torrent_list_create_category_download_path_no">No</string>
     <string name="torrent_list_create_category_name_cannot_be_empty">Category name cannot be empty.</string>
 
+    <string name="torrent_speed_limits_title">Speed Limits</string>
+    <string name="torrent_speed_download_limit">@string/torrent_add_dlspeed_limit</string>
+    <string name="torrent_speed_upload_limit">@string/torrent_add_upspeed_limit</string>
+    <string name="torrent_speed_update_success">Speed limits updated successfully.</string>
+
     <string name="torrent_list_tags">Tags</string>
     <string name="torrent_list_create_tag_title">Create Tag</string>
     <string name="torrent_list_delete_tag_title">Delete Tag</string>

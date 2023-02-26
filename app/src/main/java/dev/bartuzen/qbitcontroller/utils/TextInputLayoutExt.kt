@@ -15,3 +15,9 @@ fun TextInputLayout.setTextWithoutAnimation(text: String?, putCursorToEnd: Boole
 fun TextInputLayout.setTextWithoutAnimation(@StringRes id: Int, putCursorToEnd: Boolean = true) {
     setTextWithoutAnimation(context.getString(id), putCursorToEnd)
 }
+
+var TextInputLayout.text
+    get() = editText!!.text.toString()
+    set(value) {
+        editText?.setText(value)
+    }

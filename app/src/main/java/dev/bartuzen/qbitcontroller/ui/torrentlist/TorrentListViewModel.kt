@@ -11,6 +11,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.Quintuple
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.yield
 import javax.inject.Inject
 
 @HiltViewModel
@@ -445,6 +447,46 @@ class TorrentListViewModel @Inject constructor(
         selectedFilter.value = filter
     }
 
+    fun setSpeedLimits(serverId: Int, download: Int?, upload: Int?) {
+        val job = Job()
+
+        viewModelScope.launch(job) {
+            val downloadDeferred = launch download@{
+                if (download == null) {
+                    return@download
+                }
+
+                when (val result = repository.setDownloadSpeedLimit(serverId, download)) {
+                    is RequestResult.Success -> {}
+                    is RequestResult.Error -> {
+                        yield()
+                        eventChannel.send(Event.Error(result))
+                        job.cancel()
+                    }
+                }
+            }
+            val uploadDeferred = launch upload@{
+                if (upload == null) {
+                    return@upload
+                }
+
+                when (val result = repository.setUploadSpeedLimit(serverId, upload)) {
+                    is RequestResult.Success -> {}
+                    is RequestResult.Error -> {
+                        yield()
+                        eventChannel.send(Event.Error(result))
+                        job.cancel()
+                    }
+                }
+            }
+
+            downloadDeferred.join()
+            uploadDeferred.join()
+
+            eventChannel.send(Event.SpeedLimitsUpdated)
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object QueueingNotEnabled : Event()
@@ -463,5 +505,6 @@ class TorrentListViewModel @Inject constructor(
         object CategoryEdited : Event()
         object TagCreated : Event()
         data class SpeedLimitsToggled(val switchedToAlternativeLimit: Boolean) : Event()
+        object SpeedLimitsUpdated : Event()
     }
 }

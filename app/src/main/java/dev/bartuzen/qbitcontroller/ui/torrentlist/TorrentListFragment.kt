@@ -32,6 +32,7 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateEditCategoryBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogServerStatsBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
@@ -51,6 +52,7 @@ import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.text
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
@@ -449,6 +451,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
         activityBinding.layoutDrawer.addDrawerListener(drawerListener)
 
+        binding.textSpeed.setOnClickListener {
+            viewModel.mainData.value?.serverState?.let { serverState ->
+                showSpeedLimitsDialog(serverState.downloadSpeedLimit, serverState.uploadSpeedLimit)
+            }
+        }
+
         viewModel.filteredTorrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
             adapter.submitList(torrentList)
         }
@@ -491,6 +499,8 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             torrentFilterAdapter.submitCountMap(countMap)
 
             actionMode?.invalidate()
+
+            binding.textSpeed.visibility = View.VISIBLE
         }
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -640,6 +650,10 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     }
                     viewModel.loadMainData(serverId)
                 }
+                TorrentListViewModel.Event.SpeedLimitsUpdated -> {
+                    showSnackbar(R.string.torrent_speed_update_success)
+                    viewModel.loadMainData(serverId)
+                }
             }
         }
     }
@@ -682,6 +696,94 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 dialog.dismiss()
             } else {
                 dialogBinding.inputLayoutLocation.error = getString(R.string.torrent_location_cannot_be_blank)
+            }
+        }
+    }
+
+    private fun showSpeedLimitsDialog(downloadSpeedLimit: Int, uploadSpeedLimit: Int) {
+        lateinit var dialogBinding: DialogSpeedLimitBinding
+
+        val dialog = showDialog(DialogSpeedLimitBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            binding.dropdownDlspeedLimitUnit.setItems(
+                listOf(
+                    R.string.speed_kibibytes_per_second,
+                    R.string.speed_mebibytes_per_second
+                )
+            )
+            binding.dropdownUpspeedLimitUnit.setItems(
+                listOf(
+                    R.string.speed_kibibytes_per_second,
+                    R.string.speed_mebibytes_per_second
+                )
+            )
+
+            binding.inputLayoutDownload.setTextWithoutAnimation((downloadSpeedLimit / 1024).toString())
+            binding.inputLayoutUpload.setTextWithoutAnimation((uploadSpeedLimit / 1024).toString())
+
+            setTitle(R.string.torrent_speed_limits_title)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            fun convertSpeedToBytes(speed: String, unit: Int): Int? {
+                if (speed.isEmpty()) {
+                    return 0
+                }
+
+                val limit = speed.toIntOrNull() ?: return null
+                return when (unit) {
+                    0 -> {
+                        if (limit > 2_000_000) {
+                            null
+                        } else {
+                            limit * 1024
+                        }
+                    }
+                    1 -> {
+                        if (limit > 2_000_000 / 1024) {
+                            null
+                        } else {
+                            limit * 1024 * 1024
+                        }
+                    }
+                    else -> null
+                }
+            }
+
+            val download = convertSpeedToBytes(
+                speed = dialogBinding.inputLayoutDownload.text,
+                unit = dialogBinding.dropdownDlspeedLimitUnit.position
+            )
+            val upload = convertSpeedToBytes(
+                speed = dialogBinding.inputLayoutUpload.text,
+                unit = dialogBinding.dropdownUpspeedLimitUnit.position
+            )
+
+            if (download == null) {
+                dialogBinding.inputLayoutDownload.error = getString(R.string.torrent_add_speed_limit_too_big)
+            } else {
+                dialogBinding.inputLayoutDownload.isErrorEnabled = false
+            }
+
+            if (upload == null) {
+                dialogBinding.inputLayoutUpload.error = getString(R.string.torrent_add_speed_limit_too_big)
+            } else {
+                dialogBinding.inputLayoutUpload.isErrorEnabled = false
+            }
+
+            if (download != null && upload != null) {
+                if (downloadSpeedLimit != download || uploadSpeedLimit != upload) {
+                    viewModel.setSpeedLimits(
+                        serverId = serverId,
+                        download = if (downloadSpeedLimit != download) download else null,
+                        upload = if (uploadSpeedLimit != upload) upload else null
+                    )
+                }
+
+                dialog.dismiss()
             }
         }
     }
