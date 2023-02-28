@@ -578,4 +578,7 @@
     <string name="about_menu_title">About</string>
     <string name="about_dialog_title">@string/about_menu_title</string>
     <string name="about_description">qBitController allows you to control qBittorrent from an Android device.\n\nFor more detailed information and source code: https://github.com/Bartuzen/qBitController</string>
+
+    <string name="notification_channel_download_completed">Download completed</string>
+    <string name="notification_torrent_downloaded">%1$s has finished downloading.</string>
 </resources>
