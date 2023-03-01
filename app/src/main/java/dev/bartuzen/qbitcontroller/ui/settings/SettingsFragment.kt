@@ -1,7 +1,10 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -21,6 +24,8 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: SettingsViewModel by viewModels()
+
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = object : PreferenceDataStore() {
@@ -80,6 +85,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 AddEditServerFragment.Result.ADDED -> {
                     showSnackbar(R.string.settings_server_add_success)
                     initSettings()
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
                 }
                 AddEditServerFragment.Result.EDITED -> {
                     showSnackbar(R.string.settings_server_edit_success)
