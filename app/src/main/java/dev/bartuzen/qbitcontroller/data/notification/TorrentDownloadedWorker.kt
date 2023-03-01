@@ -2,7 +2,9 @@ package dev.bartuzen.qbitcontroller.data.notification
 
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
@@ -47,6 +49,9 @@ class TorrentDownloadedWorker @AssistedInject constructor(
         TorrentState.STALLED_DL
     )
 
+    private val notificationManager =
+        applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
     override suspend fun doWork(): Result {
         while (true) {
             checkCompleted()
@@ -55,7 +60,15 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     }
 
     private suspend fun checkCompleted() {
+        if (!areNotificationsEnabled()) {
+            return
+        }
+
         serverManager.serversFlow.value.forEach { (serverId, serverConfig) ->
+            if (!isNotificationChannelEnabled("channel_server_${serverId}_downloaded")) {
+                return@forEach
+            }
+
             val result = requestManager.request(serverId) { service ->
                 service.getTorrentList()
             }
@@ -92,7 +105,14 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             .setSortKey(torrent.name.lowercase())
             .build()
 
-        val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify("torrent_downloaded_${serverConfig.id}_${torrent.hash}", 0, notification)
+    }
+
+    private fun areNotificationsEnabled() = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
+
+    private fun isNotificationChannelEnabled(name: String) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        notificationManager.getNotificationChannel(name).importance != NotificationManager.IMPORTANCE_NONE
+    } else {
+        true
     }
 }
