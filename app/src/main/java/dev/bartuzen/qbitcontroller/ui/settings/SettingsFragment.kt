@@ -33,6 +33,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 return when (key) {
                     "connectionTimeout" -> viewModel.connectionTimeout.toString()
                     "autoRefreshInterval" -> viewModel.autoRefreshInterval.toString()
+                    "notificationCheckInterval" -> viewModel.notificationCheckInterval.toString()
                     "theme" -> viewModel.theme.toString()
                     else -> defValue
                 }
@@ -53,6 +54,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         viewModel.autoRefreshInterval = when {
                             num > 3600 -> 3600
                             num < 0 -> 0
+                            else -> num
+                        }
+                    }
+                    "notificationCheckInterval" -> {
+                        val num = value?.toIntOrNull() ?: return
+                        viewModel.notificationCheckInterval = when {
+                            num > 24 * 60 -> 24 * 60
+                            num < 1 -> 1
                             else -> num
                         }
                     }
@@ -198,6 +207,27 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             viewModel.autoRefreshIntervalFlow.launchAndCollectLatestIn(this@SettingsFragment) { autoRefreshInterval ->
                 isEnabled = autoRefreshInterval != 0
+            }
+        }
+
+        editText {
+            key = "notificationCheckInterval"
+            setTitle(R.string.settings_notification_check_interval)
+            setDialogTitle(R.string.settings_notification_check_interval)
+
+            setSummaryProvider {
+                resources.getQuantityString(
+                    R.plurals.settings_notification_check_interval_desc,
+                    viewModel.notificationCheckInterval,
+                    viewModel.notificationCheckInterval
+                )
+            }
+
+            setOnBindEditTextListener { editText ->
+                val text = viewModel.notificationCheckInterval.toString()
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.setText(text)
+                editText.setSelection(text.length)
             }
         }
 

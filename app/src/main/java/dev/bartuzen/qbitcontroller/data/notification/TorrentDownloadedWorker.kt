@@ -12,19 +12,23 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlin.time.Duration.Companion.minutes
 
 @HiltWorker
 class TorrentDownloadedWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workParams: WorkerParameters,
     private val requestManager: RequestManager,
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
+    private val settingsManager: SettingsManager
 ) : CoroutineWorker(appContext, workParams) {
 
     private val torrents: MutableMap<Int, List<Torrent>> = mutableMapOf()
@@ -53,10 +57,13 @@ class TorrentDownloadedWorker @AssistedInject constructor(
         applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     override suspend fun doWork(): Result {
-        while (true) {
-            checkCompleted()
-            delay(15 * 60 * 1000)
+        settingsManager.notificationCheckInterval.flow.collectLatest { interval ->
+            while (true) {
+                checkCompleted()
+                delay(interval.minutes)
+            }
         }
+        return Result.success()
     }
 
     private suspend fun checkCompleted() {

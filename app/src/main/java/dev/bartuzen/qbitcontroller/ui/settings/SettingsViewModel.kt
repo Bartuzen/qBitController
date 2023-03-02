@@ -33,6 +33,12 @@ class SettingsViewModel @Inject constructor(
             settingsManager.autoRefreshHideLoadingBar.value = value
         }
 
+    var notificationCheckInterval
+        get() = settingsManager.notificationCheckInterval.value
+        set(value) {
+            settingsManager.notificationCheckInterval.value = value
+        }
+
     var theme
         get() = settingsManager.theme.value
         set(value) {
