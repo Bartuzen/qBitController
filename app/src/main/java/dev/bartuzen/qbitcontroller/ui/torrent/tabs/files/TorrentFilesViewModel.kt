@@ -46,7 +46,18 @@ class TorrentFilesViewModel @Inject constructor(
     private fun updateFiles(serverId: Int, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getFiles(serverId, torrentHash)) {
             is RequestResult.Success -> {
-                _torrentFiles.value = TorrentFileNode.fromFileList(result.data)
+                // Older API versions do not return file index, so we are creating them manually
+                val files = result.data.let { files ->
+                    if (files.size > 1 && files[1].index == 0) {
+                        files.mapIndexed { index, file ->
+                            file.copy(index = index)
+                        }
+                    } else {
+                        files
+                    }
+                }
+
+                _torrentFiles.value = TorrentFileNode.fromFileList(files)
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
