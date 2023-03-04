@@ -167,18 +167,14 @@ class AddTorrentActivity : AppCompatActivity() {
         )
 
         binding.dropdownDlspeedLimitUnit.setItems(
-            R.string.speed_bytes_per_second,
             R.string.speed_kibibytes_per_second,
             R.string.speed_mebibytes_per_second
         )
-        binding.dropdownDlspeedLimitUnit.setPosition(2)
 
         binding.dropdownUpspeedLimitUnit.setItems(
-            R.string.speed_bytes_per_second,
             R.string.speed_kibibytes_per_second,
             R.string.speed_mebibytes_per_second
         )
-        binding.dropdownUpspeedLimitUnit.setPosition(2)
 
         binding.swipeRefresh.setOnRefreshListener {
             serverId.value?.let { id ->
@@ -335,21 +331,13 @@ class AddTorrentActivity : AppCompatActivity() {
         val limit = speed.toLongOrNull() ?: return null to true
         return when (unit) {
             0 -> {
-                // Limit is 2,000,000 KiB
-                if (limit > 2_000_000 * 1024) {
-                    null to false
-                } else {
-                    limit.toInt() to true
-                }
-            }
-            1 -> {
                 if (limit > 2_000_000) {
                     null to false
                 } else {
                     limit.toInt() * 1024 to true
                 }
             }
-            2 -> {
+            1 -> {
                 if (limit > 2_000_000 / 1024) {
                     null to false
                 } else {
