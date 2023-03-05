@@ -1,0 +1,8 @@
+- Added Chinese translation
+- Added execution log screen
+- Added active and inactive torrent filters
+- Added ability to set global speed limits
+- Fixed authentication failing after a while
+- Fixed changing file priority not working on older qBittorrent versions
+
+Check GitHub release for all changes.
