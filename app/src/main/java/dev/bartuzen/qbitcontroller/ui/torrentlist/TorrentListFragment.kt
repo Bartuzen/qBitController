@@ -47,6 +47,7 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -501,6 +502,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             actionMode?.invalidate()
 
             binding.textSpeed.visibility = View.VISIBLE
+
+            requireAppCompatActivity().supportActionBar?.subtitle = getString(
+                R.string.torrent_list_free_space,
+                formatBytes(requireContext(), mainData.serverState.freeSpace)
+            )
         }
 
         binding.swipeRefresh.setOnRefreshListener {

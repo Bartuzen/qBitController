@@ -143,6 +143,8 @@ class MainActivity : AppCompatActivity() {
 
             if (currentServerConfig != serverConfig) {
                 if (serverConfig != null) {
+                    supportActionBar?.subtitle = null
+
                     supportFragmentManager.commit {
                         setReorderingAllowed(true)
                         val fragment = TorrentListFragment(serverConfig.id)
@@ -151,6 +153,8 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     val currentFragment = supportFragmentManager.findFragmentById(R.id.container) as? TorrentListFragment?
                     if (currentFragment != null) {
+                        supportActionBar?.subtitle = null
+
                         supportFragmentManager.commit {
                             setReorderingAllowed(true)
                             remove(currentFragment)
