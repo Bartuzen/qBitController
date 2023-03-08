@@ -143,62 +143,62 @@ data class Torrent(
 )
 
 enum class TorrentState {
-    @JsonProperty("error")
-    ERROR,
-
-    @JsonProperty("missingFiles")
-    MISSING_FILES,
-
-    @JsonProperty("uploading")
-    UPLOADING,
-
-    @JsonProperty("pausedUP")
-    PAUSED_UP,
-
-    @JsonProperty("queuedUP")
-    QUEUED_UP,
-
-    @JsonProperty("stalledUP")
-    STALLED_UP,
-
-    @JsonProperty("checkingUP")
-    CHECKING_UP,
-
-    @JsonProperty("forcedUP")
-    FORCED_UP,
-
-    @JsonProperty("allocating")
-    ALLOCATING,
+    @JsonProperty("forcedDL")
+    FORCED_DL,
 
     @JsonProperty("downloading")
     DOWNLOADING,
 
-    @JsonProperty("metaDL")
-    META_DL,
-
     @JsonProperty("forcedMetaDL")
     FORCED_META_DL,
 
-    @JsonProperty("pausedDL")
-    PAUSED_DL,
+    @JsonProperty("metaDL")
+    META_DL,
 
-    @JsonProperty("queuedDL")
-    QUEUED_DL,
+    @JsonProperty("allocating")
+    ALLOCATING,
 
     @JsonProperty("stalledDL")
     STALLED_DL,
 
-    @JsonProperty("checkingDL")
-    CHECKING_DL,
+    @JsonProperty("forcedUP")
+    FORCED_UP,
 
-    @JsonProperty("forcedDL")
-    FORCED_DL,
+    @JsonProperty("uploading")
+    UPLOADING,
+
+    @JsonProperty("stalledUP")
+    STALLED_UP,
 
     @JsonProperty("checkingResumeData")
     CHECKING_RESUME_DATA,
 
+    @JsonProperty("queuedDL")
+    QUEUED_DL,
+
+    @JsonProperty("queuedUP")
+    QUEUED_UP,
+
+    @JsonProperty("checkingUP")
+    CHECKING_UP,
+
+    @JsonProperty("checkingDL")
+    CHECKING_DL,
+
+    @JsonProperty("pausedDL")
+    PAUSED_DL,
+
+    @JsonProperty("pausedUP")
+    PAUSED_UP,
+
     @JsonProperty("moving")
     MOVING,
+
+    @JsonProperty("missingFiles")
+    MISSING_FILES,
+
+    @JsonProperty("error")
+    ERROR,
 
     @JsonProperty("unknown")
     @JsonEnumDefaultValue

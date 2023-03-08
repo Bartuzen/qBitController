@@ -50,6 +50,9 @@
                     android:id="@+id/menu_sort_name"
                     android:title="@string/torrent_sort_name" />
                 <item
+                    android:id="@+id/menu_sort_status"
+                    android:title="@string/torrent_sort_status" />
+                <item
                     android:id="@+id/menu_sort_hash"
                     android:title="@string/torrent_sort_hash" />
                 <item

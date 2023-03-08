@@ -32,6 +32,7 @@ enum class Theme {
 
 enum class TorrentSort {
     NAME,
+    STATUS,
     HASH,
     DOWNLOAD_SPEED,
     UPLOAD_SPEED,

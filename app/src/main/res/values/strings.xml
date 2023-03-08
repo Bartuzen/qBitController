@@ -41,6 +41,7 @@
 
     <string name="torrent_sort_menu">Sort</string>
     <string name="torrent_sort_name">Name</string>
+    <string name="torrent_sort_status">Status</string>
     <string name="torrent_sort_hash">Hash</string>
     <string name="torrent_sort_dlspeed">Download Speed</string>
     <string name="torrent_sort_upspeed">Upload Speed</string>

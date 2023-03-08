@@ -118,6 +118,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         val selectedSort = when (sort) {
                             TorrentSort.HASH -> R.id.menu_sort_hash
                             TorrentSort.NAME -> R.id.menu_sort_name
+                            TorrentSort.STATUS -> R.id.menu_sort_status
                             TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
                             TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
                             TorrentSort.PRIORITY -> R.id.menu_sort_priority
@@ -204,6 +205,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_sort_name -> {
                             viewModel.setTorrentSort(TorrentSort.NAME)
+                        }
+                        R.id.menu_sort_status -> {
+                            viewModel.setTorrentSort(TorrentSort.STATUS)
                         }
                         R.id.menu_sort_hash -> {
                             viewModel.setTorrentSort(TorrentSort.HASH)
