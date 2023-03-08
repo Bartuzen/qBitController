@@ -8,5 +8,6 @@ data class MainData(
     val serverState: ServerState,
     val torrents: List<Torrent>,
     val categories: List<Category>,
-    val tags: List<String>
+    val tags: List<String>,
+    val trackers: Map<String, List<String>>
 )

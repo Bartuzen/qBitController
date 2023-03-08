@@ -136,7 +136,10 @@ data class Torrent(
     val ratioLimit: Double,
 
     @JsonProperty("seeding_time_limit")
-    val seedingTimeLimit: Int
+    val seedingTimeLimit: Int,
+
+    @JsonProperty("trackers_count")
+    val trackerCount: Int
 )
 
 enum class TorrentState {

@@ -435,7 +435,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
             }
         )
-        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter)
+
+        val trackerAdapter = TrackerAdapter(
+            onSelected = { tracker ->
+                viewModel.setSelectedTracker(tracker)
+                activityBinding.layoutDrawer.close()
+            }
+        )
+
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter, trackerAdapter)
 
         parentActivity.submitAdapter(parentAdapter)
 
@@ -464,6 +472,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
             categoryTagAdapter.submitLists(mainData.categories.map { it.name }, mainData.tags)
+            trackerAdapter.submitTrackers(
+                trackers = mainData.trackers,
+                allCount = mainData.torrents.size,
+                trackerlessCount = mainData.torrents.count { it.trackerCount == 0 }
+            )
 
             binding.textSpeed.text = getString(
                 R.string.torrent_list_speed_format,
