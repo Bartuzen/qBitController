@@ -134,14 +134,14 @@ class RequestManager @Inject constructor(
             val loginResponse = tryLogin(serverId)
             if (loginResponse is RequestResult.Success) {
                 loggedInServerIds.add(serverId)
-                initialLoginLock.unlock()
+                initialLoginLock.tryUnlock()
 
                 tryRequest(serverId, block)
             } else {
                 loginResponse as RequestResult.Error
             }
         } else {
-            initialLoginLock.unlock()
+            initialLoginLock.tryUnlock()
             val response = tryRequest(serverId, block)
 
             if (response is RequestResult.Error.RequestError.InvalidCredentials) {
@@ -176,8 +176,15 @@ class RequestManager @Inject constructor(
     } finally {
         withContext(NonCancellable) {
             if (initialLoginLock.isLocked) {
-                initialLoginLock.unlock()
+                initialLoginLock.tryUnlock()
             }
+        }
+    }
+
+    private fun Mutex.tryUnlock() {
+        try {
+            unlock()
+        } catch (_: IllegalStateException) {
         }
     }
 }
