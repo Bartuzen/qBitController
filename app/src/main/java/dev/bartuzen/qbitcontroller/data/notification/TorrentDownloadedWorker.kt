@@ -134,7 +134,7 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             )
             .build()
 
-        notificationManager.notify("torrent_downloaded_${serverConfig.id}_${torrent.hash}", 0, notification)
+        notificationManager.notify("torrent_downloaded_${serverId}_${torrent.hash}", 0, notification)
     }
 
     private fun areNotificationsEnabled() = NotificationManagerCompat.from(applicationContext).areNotificationsEnabled()
