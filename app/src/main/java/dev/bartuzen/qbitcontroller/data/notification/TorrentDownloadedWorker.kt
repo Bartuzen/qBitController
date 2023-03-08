@@ -20,6 +20,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -107,6 +108,17 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     private fun sendNotification(serverConfig: ServerConfig, torrent: Torrent) {
         val serverId = serverConfig.id
 
+        val mainIntent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+
+        val mainPendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            mainIntent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        )
+
         val torrentIntent = Intent(applicationContext, TorrentActivity::class.java).apply {
             putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
             putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
@@ -127,11 +139,13 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             .setSubText(serverConfig.name ?: serverConfig.visibleUrl)
             .setGroup("torrent_downloaded_$serverId")
             .setSortKey(torrent.name.lowercase())
+            .setContentIntent(mainPendingIntent)
             .addAction(
                 R.drawable.ic_notification,
                 applicationContext.getString(R.string.notification_view_torrent),
                 torrentPendingIntent
             )
+            .setAutoCancel(true)
             .build()
 
         notificationManager.notify("torrent_downloaded_${serverId}_${torrent.hash}", 0, notification)
