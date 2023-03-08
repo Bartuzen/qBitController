@@ -1,7 +1,9 @@
 package dev.bartuzen.qbitcontroller.data.notification
 
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -18,6 +20,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlin.time.Duration.Companion.minutes
@@ -104,12 +107,31 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     private fun sendNotification(serverConfig: ServerConfig, torrent: Torrent) {
         val serverId = serverConfig.id
 
+        val torrentIntent = Intent(applicationContext, TorrentActivity::class.java).apply {
+            putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
+            putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
+
+            action = torrent.hash
+        }
+
+        val torrentPendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            torrentIntent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        )
+
         val notification = NotificationCompat.Builder(applicationContext, "channel_server_${serverId}_downloaded")
             .setSmallIcon(R.drawable.ic_notification)
             .setContentText(applicationContext.getString(R.string.notification_torrent_downloaded, torrent.name))
             .setSubText(serverConfig.name ?: serverConfig.visibleUrl)
             .setGroup("torrent_downloaded_$serverId")
             .setSortKey(torrent.name.lowercase())
+            .addAction(
+                R.drawable.ic_notification,
+                applicationContext.getString(R.string.notification_view_torrent),
+                torrentPendingIntent
+            )
             .build()
 
         notificationManager.notify("torrent_downloaded_${serverConfig.id}_${torrent.hash}", 0, notification)

@@ -586,4 +586,5 @@
 
     <string name="notification_channel_download_completed">Download completed</string>
     <string name="notification_torrent_downloaded">%1$s has finished downloading.</string>
+    <string name="notification_view_torrent">View torrent</string>
 </resources>
