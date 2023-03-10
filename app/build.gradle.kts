@@ -19,8 +19,8 @@ android {
         applicationId = "dev.bartuzen.qbitcontroller"
         minSdk = 21
         targetSdk = 33
-        versionCode = 7
-        versionName = "0.5.1"
+        versionCode = 8
+        versionName = "0.6.0"
     }
 
     buildTypes {
@@ -109,7 +109,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.recyclerview:recyclerview:1.3.0")
 
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.10")
 
@@ -118,7 +118,7 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.5.5")
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
 
     implementation("androidx.work:work-runtime-ktx:2.8.0")
     implementation("androidx.hilt:hilt-work:1.0.0")
@@ -142,7 +142,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
 
     val firebaseImplementation by configurations
-    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.2.2"))
+    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.2.3"))
     firebaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
     firebaseImplementation("com.google.firebase:firebase-analytics-ktx")
 }

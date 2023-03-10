@@ -167,18 +167,14 @@ class AddTorrentActivity : AppCompatActivity() {
         )
 
         binding.dropdownDlspeedLimitUnit.setItems(
-            R.string.speed_bytes_per_second,
             R.string.speed_kibibytes_per_second,
             R.string.speed_mebibytes_per_second
         )
-        binding.dropdownDlspeedLimitUnit.setPosition(2)
 
         binding.dropdownUpspeedLimitUnit.setItems(
-            R.string.speed_bytes_per_second,
             R.string.speed_kibibytes_per_second,
             R.string.speed_mebibytes_per_second
         )
-        binding.dropdownUpspeedLimitUnit.setPosition(2)
 
         binding.swipeRefresh.setOnRefreshListener {
             serverId.value?.let { id ->
@@ -327,36 +323,28 @@ class AddTorrentActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertSpeedToBytes(speed: String, unit: Int): Pair<Int?, Boolean> {
-        if (speed.length > 10) {
-            return null to false
+    private fun convertSpeedToBytes(speed: String, unit: Int): Int? {
+        if (speed.isEmpty()) {
+            return 0
         }
 
-        val limit = speed.toLongOrNull() ?: return null to true
+        val limit = speed.toIntOrNull() ?: return null
         return when (unit) {
             0 -> {
-                // Limit is 2,000,000 KiB
-                if (limit > 2_000_000 * 1024) {
-                    null to false
+                if (limit > 2_000_000) {
+                    null
                 } else {
-                    limit.toInt() to true
+                    limit * 1024
                 }
             }
             1 -> {
-                if (limit > 2_000_000) {
-                    null to false
-                } else {
-                    limit.toInt() * 1024 to true
-                }
-            }
-            2 -> {
                 if (limit > 2_000_000 / 1024) {
-                    null to false
+                    null
                 } else {
-                    limit.toInt() * 1024 * 1024 to true
+                    limit * 1024 * 1024
                 }
             }
-            else -> null to true
+            else -> null
         }
     }
 
@@ -372,18 +360,18 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.inputLayoutTorrentLink.isErrorEnabled = false
         }
 
-        val (downloadSpeedLimit, isDownloadSpeedValid) =
+        val downloadSpeedLimit =
             convertSpeedToBytes(binding.editDlspeedLimit.text.toString(), binding.dropdownDlspeedLimitUnit.position)
-        if (!isDownloadSpeedValid) {
+        if (downloadSpeedLimit == null) {
             isValid = false
             binding.inputLayoutDlspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
         } else {
             binding.inputLayoutDlspeedLimit.isErrorEnabled = false
         }
 
-        val (uploadSpeedLimit, isUploadSpeedValid) =
+        val uploadSpeedLimit =
             convertSpeedToBytes(binding.editUpspeedLimit.text.toString(), binding.dropdownUpspeedLimitUnit.position)
-        if (!isUploadSpeedValid) {
+        if (uploadSpeedLimit == null) {
             isValid = false
             binding.inputLayoutUpspeedLimit.error = getString(R.string.torrent_add_speed_limit_too_big)
         } else {

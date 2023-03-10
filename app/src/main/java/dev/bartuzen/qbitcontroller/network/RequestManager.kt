@@ -32,7 +32,7 @@ class RequestManager @Inject constructor(
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
     private val loggedInServerIds = mutableListOf<Int>()
-    private val initialLoginLock = Mutex()
+    private val initialLoginLocks = mutableMapOf<Int, Mutex>()
 
     init {
         serverManager.addServerListener(object : ServerManager.ServerListener {
@@ -41,11 +41,13 @@ class RequestManager @Inject constructor(
             override fun onServerRemovedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
+                initialLoginLocks.remove(serverConfig.id)
             }
 
             override fun onServerChangedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
+                initialLoginLocks.remove(serverConfig.id)
             }
         })
     }
@@ -89,6 +91,8 @@ class RequestManager @Inject constructor(
         retrofit.create(TorrentService::class.java)
     }
 
+    private fun getInitialLoginLock(serverId: Int) = initialLoginLocks.getOrPut(serverId) { Mutex() }
+
     private suspend fun tryLogin(serverId: Int): RequestResult<Unit> {
         val service = getTorrentService(serverId)
         val serverConfig = serverManager.getServer(serverId)
@@ -129,19 +133,21 @@ class RequestManager @Inject constructor(
     }
 
     suspend fun <T : Any> request(serverId: Int, block: suspend (service: TorrentService) -> Response<T>) = try {
+        val initialLoginLock = getInitialLoginLock(serverId)
+
         initialLoginLock.lock()
         if (serverId !in loggedInServerIds) {
             val loginResponse = tryLogin(serverId)
             if (loginResponse is RequestResult.Success) {
                 loggedInServerIds.add(serverId)
-                initialLoginLock.unlock()
+                initialLoginLock.tryUnlock()
 
                 tryRequest(serverId, block)
             } else {
                 loginResponse as RequestResult.Error
             }
         } else {
-            initialLoginLock.unlock()
+            initialLoginLock.tryUnlock()
             val response = tryRequest(serverId, block)
 
             if (response is RequestResult.Error.RequestError.InvalidCredentials) {
@@ -175,9 +181,18 @@ class RequestManager @Inject constructor(
         RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
     } finally {
         withContext(NonCancellable) {
+            val initialLoginLock = getInitialLoginLock(serverId)
+
             if (initialLoginLock.isLocked) {
-                initialLoginLock.unlock()
+                initialLoginLock.tryUnlock()
             }
+        }
+    }
+
+    private fun Mutex.tryUnlock() {
+        try {
+            unlock()
+        } catch (_: IllegalStateException) {
         }
     }
 }

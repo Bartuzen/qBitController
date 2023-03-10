@@ -47,6 +47,7 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -117,6 +118,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         val selectedSort = when (sort) {
                             TorrentSort.HASH -> R.id.menu_sort_hash
                             TorrentSort.NAME -> R.id.menu_sort_name
+                            TorrentSort.STATUS -> R.id.menu_sort_status
                             TorrentSort.DOWNLOAD_SPEED -> R.id.menu_sort_dlspeed
                             TorrentSort.UPLOAD_SPEED -> R.id.menu_sort_upspeed
                             TorrentSort.PRIORITY -> R.id.menu_sort_priority
@@ -203,6 +205,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_sort_name -> {
                             viewModel.setTorrentSort(TorrentSort.NAME)
+                        }
+                        R.id.menu_sort_status -> {
+                            viewModel.setTorrentSort(TorrentSort.STATUS)
                         }
                         R.id.menu_sort_hash -> {
                             viewModel.setTorrentSort(TorrentSort.HASH)
@@ -434,7 +439,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
             }
         )
-        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter)
+
+        val trackerAdapter = TrackerAdapter(
+            onSelected = { tracker ->
+                viewModel.setSelectedTracker(tracker)
+                activityBinding.layoutDrawer.close()
+            }
+        )
+
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter, trackerAdapter)
 
         parentActivity.submitAdapter(parentAdapter)
 
@@ -463,6 +476,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
             categoryTagAdapter.submitLists(mainData.categories.map { it.name }, mainData.tags)
+            trackerAdapter.submitTrackers(
+                trackers = mainData.trackers,
+                allCount = mainData.torrents.size,
+                trackerlessCount = mainData.torrents.count { it.trackerCount == 0 }
+            )
 
             binding.textSpeed.text = getString(
                 R.string.torrent_list_speed_format,
@@ -501,6 +519,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             actionMode?.invalidate()
 
             binding.textSpeed.visibility = View.VISIBLE
+
+            requireAppCompatActivity().supportActionBar?.subtitle = getString(
+                R.string.torrent_list_free_space,
+                formatBytes(requireContext(), mainData.serverState.freeSpace)
+            )
         }
 
         binding.swipeRefresh.setOnRefreshListener {

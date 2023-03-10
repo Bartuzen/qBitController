@@ -9,7 +9,6 @@ import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import dev.bartuzen.qbitcontroller.utils.Quintuple
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -38,6 +37,7 @@ class TorrentListViewModel @Inject constructor(
     private val selectedCategory = MutableStateFlow<CategoryTag.ICategory>(CategoryTag.AllCategories)
     private val selectedTag = MutableStateFlow<CategoryTag.ITag>(CategoryTag.AllTags)
     private val selectedFilter = MutableStateFlow(TorrentFilter.ALL)
+    private val selectedTracker = MutableStateFlow<Tracker>(Tracker.All)
 
     val torrentSort = settingsManager.sort.flow
     val isReverseSorting = settingsManager.isReverseSorting.flow
@@ -66,6 +66,11 @@ class TorrentListViewModel @Inject constructor(
                     val comparator = when (torrentSort) {
                         TorrentSort.NAME -> {
                             compareBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.STATUS -> {
+                            compareBy(Torrent::state)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
                                 .thenBy(Torrent::hash)
                         }
                         TorrentSort.HASH -> {
@@ -148,14 +153,23 @@ class TorrentListViewModel @Inject constructor(
         searchQuery,
         selectedCategory,
         selectedTag,
-        selectedFilter
-    ) { torrentList, searchQuery, selectedCategory, selectedTag, selectedFilter ->
-        if (torrentList != null) {
-            Quintuple(torrentList, searchQuery, selectedCategory, selectedTag, selectedFilter)
+        selectedFilter,
+        selectedTracker
+    ) { filters ->
+        if (filters[0] != null) {
+            filters
         } else {
             null
         }
-    }.filterNotNull().map { (torrentList, searchQuery, selectedCategory, selectedTag, selectedFilter) ->
+    }.filterNotNull().map { filters ->
+        @Suppress("UNCHECKED_CAST")
+        val torrentList = filters[0] as List<Torrent>
+        val searchQuery = filters[1] as String
+        val selectedCategory = filters[2] as CategoryTag.ICategory
+        val selectedTag = filters[3] as CategoryTag.ITag
+        val selectedFilter = filters[4] as TorrentFilter
+        val selectedTracker = filters[5] as Tracker
+
         withContext(Dispatchers.IO) {
             torrentList.filter { torrent ->
                 if (searchQuery.isNotEmpty()) {
@@ -206,6 +220,20 @@ class TorrentListViewModel @Inject constructor(
                     else -> {
                         val selectedStates = selectedFilter.states
                         if (selectedStates != null && torrent.state !in selectedStates) {
+                            return@filter false
+                        }
+                    }
+                }
+
+                when (selectedTracker) {
+                    Tracker.All -> {}
+                    Tracker.Trackerless -> {
+                        if (torrent.trackerCount != 0) {
+                            return@filter false
+                        }
+                    }
+                    is Tracker.Named -> {
+                        if (torrent.hash !in selectedTracker.torrentHashes) {
                             return@filter false
                         }
                     }
@@ -445,6 +473,10 @@ class TorrentListViewModel @Inject constructor(
 
     fun setSelectedFilter(filter: TorrentFilter) {
         selectedFilter.value = filter
+    }
+
+    fun setSelectedTracker(tracker: Tracker) {
+        selectedTracker.value = tracker
     }
 
     fun setSpeedLimits(serverId: Int, download: Int?, upload: Int?) {

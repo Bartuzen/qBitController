@@ -41,6 +41,7 @@
 
     <string name="torrent_sort_menu">Sort</string>
     <string name="torrent_sort_name">Name</string>
+    <string name="torrent_sort_status">Status</string>
     <string name="torrent_sort_hash">Hash</string>
     <string name="torrent_sort_dlspeed">Download Speed</string>
     <string name="torrent_sort_upspeed">Upload Speed</string>
@@ -136,6 +137,7 @@
     <string name="torrent_list_uncategorized">Uncategorized</string>
     <string name="torrent_list_untagged">Untagged</string>
 
+    <string name="torrent_list_free_space">Free space: %1$s</string>
     <string name="torrent_list_categories">Categories</string>
     <string name="torrent_list_create_category_title">Create Category</string>
     <string name="torrent_list_edit_category_title">Edit Category</string>
@@ -153,6 +155,11 @@
     <string name="torrent_list_create_category_download_path_yes">Yes</string>
     <string name="torrent_list_create_category_download_path_no">No</string>
     <string name="torrent_list_create_category_name_cannot_be_empty">Category name cannot be empty.</string>
+
+    <string name="torrent_list_trackers_title">Trackers</string>
+    <string name="torrent_list_trackers_all">All</string>
+    <string name="torrent_list_trackers_trackerless">Trackerless</string>
+    <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
 
     <string name="torrent_speed_limits_title">Speed Limits</string>
     <string name="torrent_speed_download_limit">@string/torrent_add_dlspeed_limit</string>

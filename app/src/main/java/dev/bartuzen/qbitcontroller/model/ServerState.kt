@@ -58,5 +58,8 @@ data class ServerState(
     val useAlternativeSpeedLimits: Boolean,
 
     @JsonProperty("queueing")
-    val isQueueingEnabled: Boolean
+    val isQueueingEnabled: Boolean,
+
+    @JsonProperty("free_space_on_disk")
+    val freeSpace: Long
 )
