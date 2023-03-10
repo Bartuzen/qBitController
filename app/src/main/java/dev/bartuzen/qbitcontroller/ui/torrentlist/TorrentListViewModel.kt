@@ -162,6 +162,7 @@ class TorrentListViewModel @Inject constructor(
             null
         }
     }.filterNotNull().map { filters ->
+        @Suppress("UNCHECKED_CAST")
         val torrentList = filters[0] as List<Torrent>
         val searchQuery = filters[1] as String
         val selectedCategory = filters[2] as CategoryTag.ICategory
