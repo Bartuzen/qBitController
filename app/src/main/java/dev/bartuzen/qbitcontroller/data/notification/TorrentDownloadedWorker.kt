@@ -7,9 +7,12 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.bartuzen.qbitcontroller.R
@@ -35,7 +38,9 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     private val settingsManager: SettingsManager
 ) : CoroutineWorker(appContext, workParams) {
 
-    private val torrents: MutableMap<Int, List<Torrent>> = mutableMapOf()
+    private val mapper = jacksonObjectMapper()
+
+    private val sharedPref = appContext.getSharedPreferences("torrents", Context.MODE_PRIVATE)
 
     private val completedStates = listOf(
         TorrentState.UPLOADING,
@@ -85,19 +90,19 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             }
 
             if (result is RequestResult.Success) {
-                val oldTorrents = torrents[serverId]
+                val oldTorrents = getTorrents(serverId)
                 val newTorrents = result.data
 
-                torrents[serverId] = newTorrents
+                setTorrents(serverId, newTorrents.associate { it.hash to it.state })
 
                 if (oldTorrents == null) {
                     return@forEach
                 }
 
                 newTorrents.forEach { torrent ->
-                    val oldTorrent = oldTorrents.find { it.hash == torrent.hash }
+                    val newState = oldTorrents[torrent.hash]
 
-                    if (torrent.state in completedStates && (oldTorrent == null || oldTorrent.state in downloadingStates)) {
+                    if (torrent.state in completedStates && (newState == null || newState in downloadingStates)) {
                         sendNotification(serverConfig, torrent)
                     }
                 }
@@ -157,5 +162,17 @@ class TorrentDownloadedWorker @AssistedInject constructor(
         notificationManager.getNotificationChannel(name).importance != NotificationManager.IMPORTANCE_NONE
     } else {
         true
+    }
+
+    private fun getTorrents(serverId: Int): Map<String, TorrentState>? {
+        val json = sharedPref.getString("server_$serverId", null)
+        return if (json != null) mapper.readValue(json) else null
+    }
+
+    private fun setTorrents(serverId: Int, torrents: Map<String, TorrentState>) {
+        val json = mapper.writeValueAsString(torrents)
+        sharedPref.edit {
+            putString("server_$serverId", json)
+        }
     }
 }
