@@ -77,11 +77,21 @@ class TorrentDownloadedWorker @AssistedInject constructor(
 
     private suspend fun checkCompleted() {
         if (!areNotificationsEnabled()) {
+            clearSharedPref()
             return
         }
 
-        serverManager.serversFlow.value.forEach { (serverId, serverConfig) ->
+        val servers = serverManager.serversFlow.value
+
+        getSavedServers().forEach { serverId ->
+            if (serverId !in servers) {
+                removeServerFromSharedPref(serverId)
+            }
+        }
+
+        servers.forEach { (serverId, serverConfig) ->
             if (!isNotificationChannelEnabled("channel_server_${serverId}_downloaded")) {
+                removeServerFromSharedPref(serverId)
                 return@forEach
             }
 
@@ -173,6 +183,22 @@ class TorrentDownloadedWorker @AssistedInject constructor(
         val json = mapper.writeValueAsString(torrents)
         sharedPref.edit {
             putString("server_$serverId", json)
+        }
+    }
+
+    private fun getSavedServers() = sharedPref.all.map { (key, _) ->
+        key.replace("server_", "").toIntOrNull()
+    }.filterNotNull()
+
+    private fun clearSharedPref() {
+        sharedPref.edit {
+            clear()
+        }
+    }
+
+    private fun removeServerFromSharedPref(serverId: Int) {
+        sharedPref.edit {
+            remove("server_$serverId")
         }
     }
 }
