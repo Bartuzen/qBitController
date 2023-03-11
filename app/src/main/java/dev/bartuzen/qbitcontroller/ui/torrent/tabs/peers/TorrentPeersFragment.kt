@@ -203,6 +203,9 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 is TorrentPeersViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+                TorrentPeersViewModel.Event.TorrentNotFound -> {
+                    showSnackbar(R.string.torrent_error_not_found)
+                }
                 TorrentPeersViewModel.Event.PeersInvalid -> {
                     showSnackbar(R.string.torrent_peers_invalid)
                 }
