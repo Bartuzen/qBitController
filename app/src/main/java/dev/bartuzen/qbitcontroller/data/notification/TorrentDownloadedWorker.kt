@@ -137,6 +137,7 @@ class TorrentDownloadedWorker @AssistedInject constructor(
         val torrentIntent = Intent(applicationContext, TorrentActivity::class.java).apply {
             putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
             putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
+            putExtra(TorrentActivity.Extras.DISMISS_NOTIFICATION, true)
 
             action = torrent.hash
         }
