@@ -80,11 +80,11 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
             binding.textState.text = formatTorrentState(context, torrent.state)
 
             val speedList = mutableListOf<String>()
-            if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${formatBytesPerSecond(context, torrent.uploadSpeed)}")
-            }
             if (torrent.downloadSpeed > 0) {
                 speedList.add("↓ ${formatBytesPerSecond(context, torrent.downloadSpeed)}")
+            }
+            if (torrent.uploadSpeed > 0) {
+                speedList.add("↑ ${formatBytesPerSecond(context, torrent.uploadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
 

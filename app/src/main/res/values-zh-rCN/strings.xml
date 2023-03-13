@@ -176,7 +176,7 @@
     <string name="torrent_list_priority_minimized_success">已成功将优先级降低至最小值。</string>
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↑ %1$s (%2$s) ↓ %3$s (%4$s)</string>
+    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
 
     <string name="stats_menu_title">统计</string>
     <string name="stats_dialog_title">@string/stats_menu_title</string>

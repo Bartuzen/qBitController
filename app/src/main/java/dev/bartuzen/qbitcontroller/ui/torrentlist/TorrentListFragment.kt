@@ -490,10 +490,10 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             binding.textSpeed.text = getString(
                 R.string.torrent_list_speed_format,
-                formatBytesPerSecond(requireContext(), mainData.serverState.uploadSpeed),
-                formatBytes(requireContext(), mainData.serverState.uploadSession),
                 formatBytesPerSecond(requireContext(), mainData.serverState.downloadSpeed),
-                formatBytes(requireContext(), mainData.serverState.downloadSession)
+                formatBytes(requireContext(), mainData.serverState.downloadSession),
+                formatBytesPerSecond(requireContext(), mainData.serverState.uploadSpeed),
+                formatBytes(requireContext(), mainData.serverState.uploadSession)
             )
 
             val countMap = mutableMapOf<TorrentFilter, Int>()

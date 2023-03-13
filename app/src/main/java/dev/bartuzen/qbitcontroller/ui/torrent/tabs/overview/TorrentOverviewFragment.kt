@@ -335,11 +335,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.textState.text = formatTorrentState(requireContext(), torrent.state)
 
             val speedList = mutableListOf<String>()
-            if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${formatBytesPerSecond(requireContext(), torrent.uploadSpeed)}")
-            }
             if (torrent.downloadSpeed > 0) {
                 speedList.add("↓ ${formatBytesPerSecond(requireContext(), torrent.downloadSpeed)}")
+            }
+            if (torrent.uploadSpeed > 0) {
+                speedList.add("↑ ${formatBytesPerSecond(requireContext(), torrent.uploadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
 

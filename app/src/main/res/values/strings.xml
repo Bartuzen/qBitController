@@ -200,7 +200,7 @@
     <string name="torrent_list_priority_minimized_success">Priority minimized successfully.</string>
 
     <string name="torrent_item_progress">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↑ %1$s (%2$s) ↓ %3$s (%4$s)</string>
+    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
 
     <string name="stats_menu_title">Statistics</string>
     <string name="stats_dialog_title">@string/stats_menu_title</string>
