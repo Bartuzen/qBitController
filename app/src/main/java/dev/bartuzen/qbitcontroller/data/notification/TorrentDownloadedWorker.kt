@@ -165,10 +165,10 @@ class TorrentDownloadedWorker @AssistedInject constructor(
 
         notificationManager.notify("torrent_downloaded_${serverId}_${torrent.hash}", 0, notification)
 
-        sendSummaryNotification(serverConfig)
+        sendSummaryNotification(serverConfig, mainPendingIntent)
     }
 
-    private fun sendSummaryNotification(serverConfig: ServerConfig) {
+    private fun sendSummaryNotification(serverConfig: ServerConfig, contentIntent: PendingIntent) {
         val serverId = serverConfig.id
 
         val summaryNotification = NotificationCompat.Builder(applicationContext, "channel_server_${serverId}_downloaded")
@@ -176,6 +176,7 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             .setSubText(serverConfig.name ?: serverConfig.visibleUrl)
             .setGroup("torrent_downloaded_$serverId")
             .setGroupSummary(true)
+            .setContentIntent(contentIntent)
             .build()
 
         notificationManager.notify("torrent_downloaded_summary_$serverId", 0, summaryNotification)
