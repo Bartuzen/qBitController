@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -471,7 +472,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         viewModel.filteredTorrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
-            adapter.submitList(torrentList)
+            val layoutManager = binding.recyclerTorrentList.layoutManager as LinearLayoutManager
+
+            val scrollOffset = layoutManager.findFirstVisibleItemPosition()
+            adapter.submitList(torrentList) {
+                layoutManager.scrollToPositionWithOffset(scrollOffset, 0)
+            }
         }
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
