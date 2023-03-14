@@ -409,35 +409,35 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
         )
 
-        val categoryTagAdapter = CategoryTagAdapter(
-            onSelected = { categoryTag ->
-                when (categoryTag) {
-                    is CategoryTag.ICategory -> {
-                        viewModel.setSelectedCategory(categoryTag)
-                    }
-                    is CategoryTag.ITag -> {
-                        viewModel.setSelectedTag(categoryTag)
-                    }
-                }
-
+        val categoryAdapter = CategoryTagAdapter(
+            isCategory = true,
+            onSelected = { category ->
+                viewModel.setSelectedCategory(category)
                 activityBinding.layoutDrawer.close()
             },
-            onLongClick = { isCategory, name ->
+            onLongClick = { name ->
+                showCategoryLongClickDialog(name)
                 activityBinding.layoutDrawer.close()
-
-                if (isCategory) {
-                    showCategoryLongClickDialog(name)
-                } else {
-                    showDeleteCategoryTagDialog(false, name)
-                }
             },
-            onCreateClick = { isCategory ->
+            onCreateClick = {
+                showCreateEditCategoryDialog(null)
                 activityBinding.layoutDrawer.close()
-                if (isCategory) {
-                    showCreateEditCategoryDialog(null)
-                } else {
-                    showCreateTagDialog()
-                }
+            }
+        )
+
+        val tagAdapter = CategoryTagAdapter(
+            isCategory = false,
+            onSelected = { tag ->
+                viewModel.setSelectedTag(tag)
+                activityBinding.layoutDrawer.close()
+            },
+            onLongClick = { name ->
+                showDeleteCategoryTagDialog(false, name)
+                activityBinding.layoutDrawer.close()
+            },
+            onCreateClick = {
+                showCreateTagDialog()
+                activityBinding.layoutDrawer.close()
             }
         )
 
@@ -448,7 +448,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
         )
 
-        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter, trackerAdapter)
+        val dividerAdapter = DividerAdapter()
+
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryAdapter, dividerAdapter, tagAdapter, trackerAdapter)
 
         parentActivity.submitAdapter(parentAdapter)
 
@@ -481,7 +483,8 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
-            categoryTagAdapter.submitLists(mainData.categories.map { it.name }, mainData.tags)
+            categoryAdapter.submitList(mainData.categories.map { it.name })
+            tagAdapter.submitList(mainData.tags)
             trackerAdapter.submitTrackers(
                 trackers = mainData.trackers,
                 allCount = mainData.torrents.size,
