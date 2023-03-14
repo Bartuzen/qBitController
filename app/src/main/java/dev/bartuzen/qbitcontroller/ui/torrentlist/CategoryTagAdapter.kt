@@ -141,14 +141,16 @@ class CategoryTagAdapter(
     }
 
     inner class TitleViewHolder(private val binding: ItemCategoryTagTitleBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.imageCreate.setOnClickListener {
+                onCreateClick()
+            }
+        }
+
         fun bind(isCategory: Boolean) {
             binding.textTitle.text = binding.root.context.getString(
                 if (isCategory) R.string.torrent_list_categories else R.string.torrent_list_tags
             )
-
-            binding.imageCreate.setOnClickListener {
-                onCreateClick()
-            }
         }
     }
 }
