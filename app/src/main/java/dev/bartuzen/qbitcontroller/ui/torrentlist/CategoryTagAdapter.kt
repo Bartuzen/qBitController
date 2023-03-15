@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrentlist
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
@@ -173,8 +174,10 @@ class CategoryTagAdapter(
 
             if (isCollapsed) {
                 binding.imageCollapse.setImageResource(R.drawable.ic_expand)
+                binding.imageCreate.visibility = View.GONE
             } else {
                 binding.imageCollapse.setImageResource(R.drawable.ic_collapse)
+                binding.imageCreate.visibility = View.VISIBLE
             }
         }
     }
