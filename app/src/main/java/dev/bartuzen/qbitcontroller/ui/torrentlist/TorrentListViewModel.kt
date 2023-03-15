@@ -46,6 +46,7 @@ class TorrentListViewModel @Inject constructor(
 
     val areCategoriesCollapsed = settingsManager.areCategoriesCollapsed
     val areTagsCollapsed = settingsManager.areTagsCollapsed
+    val areTrackersCollapsed = settingsManager.areTrackersCollapsed
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()

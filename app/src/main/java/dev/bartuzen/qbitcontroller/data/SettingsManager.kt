@@ -25,6 +25,7 @@ class SettingsManager @Inject constructor(
 
     val areCategoriesCollapsed = primitivePreference(sharedPref, "areCategoriesCollapsed", false)
     val areTagsCollapsed = primitivePreference(sharedPref, "areTagsCollapsed", false)
+    val areTrackersCollapsed = primitivePreference(sharedPref, "areTrackersCollapsed", false)
 }
 
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>

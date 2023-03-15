@@ -450,9 +450,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         )
 
         val trackerAdapter = TrackerAdapter(
+            isCollapsed = viewModel.areTrackersCollapsed.value,
             onSelected = { tracker ->
                 viewModel.setSelectedTracker(tracker)
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areTrackersCollapsed.value = isCollapsed
             }
         )
 
