@@ -402,15 +402,20 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         })
 
         val torrentFilterAdapter = TorrentFilterAdapter(
+            isCollapsed = viewModel.areStatesCollapsed.value,
             onClick = { filter ->
                 viewModel.setSelectedFilter(filter)
 
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areStatesCollapsed.value = isCollapsed
             }
         )
 
         val categoryAdapter = CategoryTagAdapter(
             isCategory = true,
+            isCollapsed = viewModel.areCategoriesCollapsed.value,
             onSelected = { category ->
                 viewModel.setSelectedCategory(category)
                 activityBinding.layoutDrawer.close()
@@ -422,11 +427,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onCreateClick = {
                 showCreateEditCategoryDialog(null)
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areCategoriesCollapsed.value = isCollapsed
             }
         )
 
         val tagAdapter = CategoryTagAdapter(
             isCategory = false,
+            isCollapsed = viewModel.areTagsCollapsed.value,
             onSelected = { tag ->
                 viewModel.setSelectedTag(tag)
                 activityBinding.layoutDrawer.close()
@@ -438,19 +447,24 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onCreateClick = {
                 showCreateTagDialog()
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areTagsCollapsed.value = isCollapsed
             }
         )
 
         val trackerAdapter = TrackerAdapter(
+            isCollapsed = viewModel.areTrackersCollapsed.value,
             onSelected = { tracker ->
                 viewModel.setSelectedTracker(tracker)
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areTrackersCollapsed.value = isCollapsed
             }
         )
 
-        val dividerAdapter = DividerAdapter()
-
-        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryAdapter, dividerAdapter, tagAdapter, trackerAdapter)
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryAdapter, tagAdapter, trackerAdapter)
 
         parentActivity.submitAdapter(parentAdapter)
 

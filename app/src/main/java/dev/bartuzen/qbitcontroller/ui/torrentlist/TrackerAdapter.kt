@@ -11,7 +11,9 @@ import dev.bartuzen.qbitcontroller.databinding.ItemTrackerTitleBinding
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
 class TrackerAdapter(
-    private val onSelected: (tracker: Tracker) -> Unit
+    isCollapsed: Boolean,
+    private val onSelected: (tracker: Tracker) -> Unit,
+    private val onCollapse: (isCollapsed: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var trackers: List<Tracker> = emptyList()
@@ -20,6 +22,20 @@ class TrackerAdapter(
 
     private var allCount = 0
     private var trackerlessCount = 0
+
+    private var isCollapsed = isCollapsed
+        set(value) {
+            if (field != value) {
+                notifyItemChanged(0, Unit)
+                if (value) {
+                    notifyItemRangeRemoved(1, trackers.size + 2)
+                } else {
+                    notifyItemRangeInserted(1, trackers.size + 2)
+                }
+                onCollapse(value)
+                field = value
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_tracker_title -> {
@@ -38,18 +54,23 @@ class TrackerAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder) {
-            val tracker = when (position) {
-                1 -> Tracker.All
-                2 -> Tracker.Trackerless
-                else -> trackers[position - 3]
-            }
+        when (holder) {
+            is ViewHolder -> {
+                val tracker = when (position) {
+                    1 -> Tracker.All
+                    2 -> Tracker.Trackerless
+                    else -> trackers[position - 3]
+                }
 
-            holder.bind(tracker)
+                holder.bind(tracker)
+            }
+            is TitleViewHolder -> {
+                holder.bind()
+            }
         }
     }
 
-    override fun getItemCount() = trackers.size + 3
+    override fun getItemCount() = if (!isCollapsed) trackers.size + 3 else 1
 
     override fun getItemViewType(position: Int) = if (position == 0) R.layout.item_tracker_title else R.layout.item_tracker
 
@@ -71,7 +92,21 @@ class TrackerAdapter(
         notifyDataSetChanged()
     }
 
-    inner class TitleViewHolder(binding: ItemTrackerTitleBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class TitleViewHolder(private val binding: ItemTrackerTitleBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.imageCollapse.setOnClickListener {
+                isCollapsed = !isCollapsed
+            }
+        }
+
+        fun bind() {
+            if (isCollapsed) {
+                binding.imageCollapse.setImageResource(R.drawable.ic_expand)
+            } else {
+                binding.imageCollapse.setImageResource(R.drawable.ic_collapse)
+            }
+        }
+    }
 
     inner class ViewHolder(private val binding: ItemTrackerBinding) : RecyclerView.ViewHolder(binding.root) {
         var tracker: Tracker? = null

@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrentlist
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
@@ -12,13 +13,28 @@ import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
 class CategoryTagAdapter(
     private val isCategory: Boolean,
+    isCollapsed: Boolean,
     private val onSelected: (categoryTag: CategoryTag) -> Unit,
     private val onLongClick: (name: String) -> Unit,
-    private val onCreateClick: () -> Unit
+    private val onCreateClick: () -> Unit,
+    private val onCollapse: (isCollapsed: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<String> = emptyList()
     private var selectedItem: CategoryTag = CategoryTag.All
+    private var isCollapsed = isCollapsed
+        set(value) {
+            if (field != value) {
+                notifyItemChanged(0, Unit)
+                if (value) {
+                    notifyItemRangeRemoved(1, items.size + 2)
+                } else {
+                    notifyItemRangeInserted(1, items.size + 2)
+                }
+                onCollapse(value)
+                field = value
+            }
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_category_tag -> {
@@ -55,7 +71,7 @@ class CategoryTagAdapter(
         }
     }
 
-    override fun getItemCount() = items.size + 3
+    override fun getItemCount() = if (!isCollapsed) items.size + 3 else 1
 
     override fun getItemViewType(position: Int) = if (position == 0) {
         R.layout.item_category_tag_title
@@ -142,6 +158,10 @@ class CategoryTagAdapter(
 
     inner class TitleViewHolder(private val binding: ItemCategoryTagTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
+            binding.imageCollapse.setOnClickListener {
+                isCollapsed = !isCollapsed
+            }
+
             binding.imageCreate.setOnClickListener {
                 onCreateClick()
             }
@@ -151,6 +171,14 @@ class CategoryTagAdapter(
             binding.textTitle.text = binding.root.context.getString(
                 if (isCategory) R.string.torrent_list_categories else R.string.torrent_list_tags
             )
+
+            if (isCollapsed) {
+                binding.imageCollapse.setImageResource(R.drawable.ic_expand)
+                binding.imageCreate.visibility = View.GONE
+            } else {
+                binding.imageCollapse.setImageResource(R.drawable.ic_collapse)
+                binding.imageCreate.visibility = View.VISIBLE
+            }
         }
     }
 }
