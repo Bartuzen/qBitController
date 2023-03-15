@@ -460,9 +460,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
         )
 
-        val dividerAdapter = DividerAdapter()
-
-        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryAdapter, dividerAdapter, tagAdapter, trackerAdapter)
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryAdapter, tagAdapter, trackerAdapter)
 
         parentActivity.submitAdapter(parentAdapter)
 

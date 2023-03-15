@@ -158,9 +158,4 @@
         android:text="@string/torrent_list_status_error"
         app:drawableStartCompat="@drawable/ic_errored" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/listDivider" />
-
 </LinearLayout>
