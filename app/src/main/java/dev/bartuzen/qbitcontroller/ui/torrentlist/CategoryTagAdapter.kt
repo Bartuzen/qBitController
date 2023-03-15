@@ -24,7 +24,7 @@ class CategoryTagAdapter(
     private var isCollapsed = isCollapsed
         set(value) {
             if (field != value) {
-                notifyItemChanged(0)
+                notifyItemChanged(0, Unit)
                 if (value) {
                     notifyItemRangeRemoved(1, items.size + 2)
                 } else {
