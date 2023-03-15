@@ -6,23 +6,61 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFilterBinding
+import dev.bartuzen.qbitcontroller.databinding.ItemTorrentStatusTitleBinding
 import dev.bartuzen.qbitcontroller.model.TorrentState
 
 class TorrentFilterAdapter(
-    private val onClick: (filter: TorrentFilter) -> Unit
-) : RecyclerView.Adapter<TorrentFilterAdapter.ViewHolder>() {
+    isCollapsed: Boolean,
+    private val onClick: (filter: TorrentFilter) -> Unit,
+    private val onCollapse: (isCollapsed: Boolean) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var filter = TorrentFilter.ALL
     private var countMap: Map<TorrentFilter, Int> = emptyMap()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    private var isCollapsed = isCollapsed
+        set(value) {
+            if (field != value) {
+                notifyItemChanged(0, Unit)
+                if (value) {
+                    notifyItemRemoved(1)
+                } else {
+                    notifyItemInserted(1)
+                }
+                onCollapse(value)
+                field = value
+            }
+        }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        R.layout.item_torrent_filter -> {
+            ViewHolder(
+                ItemTorrentFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+        R.layout.item_torrent_status_title -> {
+            TitleViewHolder(
+                ItemTorrentStatusTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+        else -> {
+            throw IllegalStateException("Unknown viewType: $viewType")
+        }
     }
 
-    override fun getItemCount() = 1
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ViewHolder -> holder.bind()
+            is TitleViewHolder -> holder.bind()
+        }
+    }
+
+    override fun getItemCount() = if (!isCollapsed) 2 else 1
+
+    override fun getItemViewType(position: Int) = if (position == 0) {
+        R.layout.item_torrent_status_title
+    } else {
+        R.layout.item_torrent_filter
+    }
 
     fun submitCountMap(countMap: Map<TorrentFilter, Int>) {
         this.countMap = countMap
@@ -71,6 +109,22 @@ class TorrentFilterAdapter(
                     context.getString(stringId),
                     countMap[filter] ?: 0
                 )
+            }
+        }
+    }
+
+    inner class TitleViewHolder(private val binding: ItemTorrentStatusTitleBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.imageCollapse.setOnClickListener {
+                isCollapsed = !isCollapsed
+            }
+        }
+
+        fun bind() {
+            if (isCollapsed) {
+                binding.imageCollapse.setImageResource(R.drawable.ic_expand)
+            } else {
+                binding.imageCollapse.setImageResource(R.drawable.ic_collapse)
             }
         }
     }

@@ -402,10 +402,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         })
 
         val torrentFilterAdapter = TorrentFilterAdapter(
+            isCollapsed = viewModel.areStatesCollapsed.value,
             onClick = { filter ->
                 viewModel.setSelectedFilter(filter)
 
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areStatesCollapsed.value = isCollapsed
             }
         )
 
