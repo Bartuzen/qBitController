@@ -411,6 +411,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         val categoryAdapter = CategoryTagAdapter(
             isCategory = true,
+            isCollapsed = viewModel.areCategoriesCollapsed.value,
             onSelected = { category ->
                 viewModel.setSelectedCategory(category)
                 activityBinding.layoutDrawer.close()
@@ -422,11 +423,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onCreateClick = {
                 showCreateEditCategoryDialog(null)
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areCategoriesCollapsed.value = isCollapsed
             }
         )
 
         val tagAdapter = CategoryTagAdapter(
             isCategory = false,
+            isCollapsed = viewModel.areTagsCollapsed.value,
             onSelected = { tag ->
                 viewModel.setSelectedTag(tag)
                 activityBinding.layoutDrawer.close()
@@ -438,6 +443,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             onCreateClick = {
                 showCreateTagDialog()
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areTagsCollapsed.value = isCollapsed
             }
         )
 

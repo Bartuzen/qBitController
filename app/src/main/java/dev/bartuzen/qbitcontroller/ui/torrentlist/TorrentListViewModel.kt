@@ -44,6 +44,9 @@ class TorrentListViewModel @Inject constructor(
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
     val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
+    val areCategoriesCollapsed = settingsManager.areCategoriesCollapsed
+    val areTagsCollapsed = settingsManager.areTagsCollapsed
+
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 

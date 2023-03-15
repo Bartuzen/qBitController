@@ -12,14 +12,16 @@ import dev.bartuzen.qbitcontroller.utils.getColorCompat
 
 class CategoryTagAdapter(
     private val isCategory: Boolean,
+    isCollapsed: Boolean,
     private val onSelected: (categoryTag: CategoryTag) -> Unit,
     private val onLongClick: (name: String) -> Unit,
-    private val onCreateClick: () -> Unit
+    private val onCreateClick: () -> Unit,
+    private val onCollapse: (isCollapsed: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<String> = emptyList()
     private var selectedItem: CategoryTag = CategoryTag.All
-    private var isCollapsed = false
+    private var isCollapsed = isCollapsed
         set(value) {
             if (field != value) {
                 notifyItemChanged(0)
@@ -28,9 +30,9 @@ class CategoryTagAdapter(
                 } else {
                     notifyItemRangeInserted(1, items.size + 2)
                 }
+                onCollapse(value)
+                field = value
             }
-
-            field = value
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {

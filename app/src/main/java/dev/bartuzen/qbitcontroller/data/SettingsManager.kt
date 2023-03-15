@@ -22,6 +22,9 @@ class SettingsManager @Inject constructor(
     val connectionTimeout = primitivePreference(sharedPref, "connectionTimeout", 10)
     val autoRefreshInterval = primitivePreference(sharedPref, "autoRefreshInterval", 0)
     val autoRefreshHideLoadingBar = primitivePreference(sharedPref, "autoRefreshHideLoadingBar", false)
+
+    val areCategoriesCollapsed = primitivePreference(sharedPref, "areCategoriesCollapsed", false)
+    val areTagsCollapsed = primitivePreference(sharedPref, "areTagsCollapsed", false)
 }
 
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>
