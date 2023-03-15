@@ -8,10 +8,19 @@
     android:padding="8dp"
     tools:ignore="UseCompoundDrawables">
 
+    <ImageView
+        android:id="@+id/image_collapse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_collapse" />
+
     <TextView
         android:id="@+id/text_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_weight="1"
         tools:text="Category/Tag" />
 

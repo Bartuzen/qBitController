@@ -19,6 +19,19 @@ class CategoryTagAdapter(
 
     private var items: List<String> = emptyList()
     private var selectedItem: CategoryTag = CategoryTag.All
+    private var isCollapsed = false
+        set(value) {
+            if (field != value) {
+                notifyItemChanged(0)
+                if (value) {
+                    notifyItemRangeRemoved(1, items.size + 2)
+                } else {
+                    notifyItemRangeInserted(1, items.size + 2)
+                }
+            }
+
+            field = value
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_category_tag -> {
@@ -55,7 +68,7 @@ class CategoryTagAdapter(
         }
     }
 
-    override fun getItemCount() = items.size + 3
+    override fun getItemCount() = if (!isCollapsed) items.size + 3 else 1
 
     override fun getItemViewType(position: Int) = if (position == 0) {
         R.layout.item_category_tag_title
@@ -142,6 +155,10 @@ class CategoryTagAdapter(
 
     inner class TitleViewHolder(private val binding: ItemCategoryTagTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
+            binding.imageCollapse.setOnClickListener {
+                isCollapsed = !isCollapsed
+            }
+
             binding.imageCreate.setOnClickListener {
                 onCreateClick()
             }
@@ -151,6 +168,12 @@ class CategoryTagAdapter(
             binding.textTitle.text = binding.root.context.getString(
                 if (isCategory) R.string.torrent_list_categories else R.string.torrent_list_tags
             )
+
+            if (isCollapsed) {
+                binding.imageCollapse.setImageResource(R.drawable.ic_expand)
+            } else {
+                binding.imageCollapse.setImageResource(R.drawable.ic_collapse)
+            }
         }
     }
 }
