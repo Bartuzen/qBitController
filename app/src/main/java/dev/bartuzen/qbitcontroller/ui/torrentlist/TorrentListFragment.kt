@@ -497,8 +497,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
-            categoryAdapter.submitList(mainData.categories.map { it.name })
-            tagAdapter.submitList(mainData.tags)
             trackerAdapter.submitTrackers(
                 trackers = mainData.trackers,
                 allCount = mainData.torrents.size,
@@ -513,31 +511,61 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 formatBytes(requireContext(), mainData.serverState.uploadSession)
             )
 
-            val countMap = mutableMapOf<TorrentFilter, Int>()
+            val stateCountMap = mutableMapOf<TorrentFilter, Int>()
+            val categoryMap = mainData.categories.associateBy({ it.name }, { 0 }).toMutableMap()
+            val tagMap = mainData.tags.associateBy({ it }, { 0 }).toMutableMap()
+
+            var uncategorizedCount = 0
+            var untaggedCount = 0
 
             mainData.torrents.forEach { torrent ->
                 TorrentFilter.values().forEach { filter ->
                     when (filter) {
                         TorrentFilter.ACTIVE -> {
                             if (torrent.downloadSpeed != 0L || torrent.uploadSpeed != 0L) {
-                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                                stateCountMap[filter] = (stateCountMap[filter] ?: 0) + 1
                             }
                         }
                         TorrentFilter.INACTIVE -> {
                             if (torrent.downloadSpeed == 0L && torrent.uploadSpeed == 0L) {
-                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                                stateCountMap[filter] = (stateCountMap[filter] ?: 0) + 1
                             }
                         }
                         else -> {
                             if (filter.states == null || torrent.state in filter.states) {
-                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                                stateCountMap[filter] = (stateCountMap[filter] ?: 0) + 1
                             }
                         }
                     }
                 }
+
+                if (torrent.category != null) {
+                    categoryMap[torrent.category] = (categoryMap[torrent.category] ?: 0) + 1
+                } else {
+                    uncategorizedCount++
+                }
+
+                if (torrent.tags.isNotEmpty()) {
+                    torrent.tags.forEach { tag ->
+                        tagMap[tag] = (tagMap[tag] ?: 0) + 1
+                    }
+                } else {
+                    untaggedCount++
+                }
             }
 
-            torrentFilterAdapter.submitCountMap(countMap)
+            categoryAdapter.submitList(
+                items = categoryMap,
+                allCount = mainData.torrents.size,
+                uncategorizedCount = uncategorizedCount
+            )
+            tagAdapter.submitList(
+                items = tagMap,
+                allCount = mainData.torrents.size,
+                uncategorizedCount = untaggedCount
+            )
+
+            torrentFilterAdapter.submitCountMap(stateCountMap)
 
             actionMode?.invalidate()
 

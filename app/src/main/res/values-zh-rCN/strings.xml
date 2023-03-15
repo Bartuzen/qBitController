@@ -130,6 +130,7 @@
     <string name="torrent_list_category_tag_all">全部</string>
     <string name="torrent_list_uncategorized">未分类</string>
     <string name="torrent_list_untagged">无标签</string>
+    <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
 
     <string name="torrent_list_categories">分类</string>
     <string name="torrent_list_create_category_title">创建分类</string>

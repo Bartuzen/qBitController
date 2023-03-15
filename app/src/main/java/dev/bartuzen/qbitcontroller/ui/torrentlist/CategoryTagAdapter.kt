@@ -20,8 +20,12 @@ class CategoryTagAdapter(
     private val onCollapse: (isCollapsed: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: List<String> = emptyList()
+    private var items: List<Pair<String, Int>> = emptyList()
     private var selectedItem: CategoryTag = CategoryTag.All
+
+    private var allCount = 0
+    private var uncategorizedCount = 0
+
     private var isCollapsed = isCollapsed
         set(value) {
             if (field != value) {
@@ -51,19 +55,20 @@ class CategoryTagAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                val categoryTag = when (position) {
+                val (categoryTag, count) = when (position) {
                     1 -> {
-                        CategoryTag.All
+                        CategoryTag.All to allCount
                     }
                     2 -> {
-                        CategoryTag.Uncategorized
+                        CategoryTag.Uncategorized to uncategorizedCount
                     }
                     else -> {
-                        CategoryTag.Item(items[position - 3])
+                        val item = items[position - 3]
+                        CategoryTag.Item(item.first) to item.second
                     }
                 }
 
-                holder.bind(categoryTag)
+                holder.bind(categoryTag, count)
             }
             is TitleViewHolder -> {
                 holder.bind()
@@ -80,8 +85,10 @@ class CategoryTagAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(items: List<String>) {
-        this.items = items
+    fun submitList(items: Map<String, Int>, allCount: Int, uncategorizedCount: Int) {
+        this.items = items.toSortedMap().toList()
+        this.allCount = allCount
+        this.uncategorizedCount = uncategorizedCount
 
         val selectedItem = selectedItem
         if (selectedItem is CategoryTag.Item && selectedItem.name !in items) {
@@ -100,7 +107,7 @@ class CategoryTagAdapter(
                 val oldPosition = when (val selectedItem = selectedItem) {
                     CategoryTag.All -> 1
                     CategoryTag.Uncategorized -> 2
-                    is CategoryTag.Item -> items.indexOf(selectedItem.name) + 3
+                    is CategoryTag.Item -> items.indexOfFirst { (name, _) -> name == selectedItem.name } + 3
                 }
 
                 this@CategoryTagAdapter.selectedItem = categoryTag
@@ -122,7 +129,7 @@ class CategoryTagAdapter(
             }
         }
 
-        fun bind(categoryTag: CategoryTag) {
+        fun bind(categoryTag: CategoryTag, count: Int) {
             this.categoryTag = categoryTag
 
             val context = binding.root.context
@@ -138,7 +145,7 @@ class CategoryTagAdapter(
 
             binding.textCategoryTag.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
 
-            binding.textCategoryTag.text = when (categoryTag) {
+            val name = when (categoryTag) {
                 is CategoryTag.All -> {
                     context.getString(R.string.torrent_list_category_tag_all)
                 }
@@ -153,6 +160,8 @@ class CategoryTagAdapter(
                     categoryTag.name
                 }
             }
+
+            binding.textCategoryTag.text = context.getString(R.string.torrent_list_category_tag_format, name, count)
         }
     }
 
