@@ -50,7 +50,7 @@ class CategoryTagAdapter(
                 holder.bind(categoryTag)
             }
             is TitleViewHolder -> {
-                holder.bind(position == 0)
+                holder.bind()
             }
         }
     }
@@ -147,7 +147,7 @@ class CategoryTagAdapter(
             }
         }
 
-        fun bind(isCategory: Boolean) {
+        fun bind() {
             binding.textTitle.text = binding.root.context.getString(
                 if (isCategory) R.string.torrent_list_categories else R.string.torrent_list_tags
             )
