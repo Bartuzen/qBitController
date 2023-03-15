@@ -64,7 +64,7 @@ class TorrentFilterAdapter(
 
     fun submitCountMap(countMap: Map<TorrentFilter, Int>) {
         this.countMap = countMap
-        notifyItemChanged(0, Unit)
+        notifyItemChanged(1, Unit)
     }
 
     inner class ViewHolder(private val binding: ItemTorrentFilterBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -88,7 +88,7 @@ class TorrentFilterAdapter(
                 view.setOnClickListener {
                     if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                         this@TorrentFilterAdapter.filter = filter
-                        notifyItemChanged(0, Unit)
+                        notifyItemChanged(1, Unit)
                         onClick(filter)
                     }
                 }
