@@ -274,6 +274,12 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.defaultSavePath.filterNotNull().launchAndCollectLatestIn(this) { defaultSavePath ->
+            if (binding.editSavePath.text.isNullOrBlank()) {
+                binding.inputLayoutSavePath.setTextWithoutAnimation(defaultSavePath)
+            }
+        }
+
         binding.dropdownAutoTmm.setItems(
             R.string.torrent_add_default,
             R.string.torrent_add_tmm_manual,

@@ -39,6 +39,9 @@ class AddTorrentViewModel @Inject constructor(
     private val _tagList = MutableStateFlow<List<String>?>(null)
     val tagList = _tagList.asStateFlow()
 
+    private val _defaultSavePath = MutableStateFlow<String?>(null)
+    val defaultSavePath = _defaultSavePath.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
@@ -154,12 +157,26 @@ class AddTorrentViewModel @Inject constructor(
                 }
             }
         }
+        val defaultSavePathDeferred = async {
+            when (val result = repository.getDefaultSavePath(serverId)) {
+                is RequestResult.Success -> {
+                    result.data
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                    throw CancellationException()
+                }
+            }
+        }
+
         try {
             val categories = categoriesDeferred.await()
             val tags = tagsDeferred.await()
+            val defaultSavePath = defaultSavePathDeferred.await()
 
             _categoryList.value = categories
             _tagList.value = tags
+            _defaultSavePath.value = defaultSavePath
         } catch (_: CancellationException) {
         }
     }
