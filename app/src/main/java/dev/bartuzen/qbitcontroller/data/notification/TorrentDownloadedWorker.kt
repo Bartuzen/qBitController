@@ -123,17 +123,6 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     private fun sendNotification(serverConfig: ServerConfig, torrent: Torrent) {
         val serverId = serverConfig.id
 
-        val mainIntent = Intent(applicationContext, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
-
-        val mainPendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            0,
-            mainIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
-        )
-
         val torrentIntent = Intent(applicationContext, TorrentActivity::class.java).apply {
             putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
             putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
@@ -155,29 +144,35 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             .setContentText(applicationContext.getString(R.string.notification_torrent_downloaded))
             .setGroup("torrent_downloaded_$serverId")
             .setSortKey(torrent.name.lowercase())
-            .setContentIntent(mainPendingIntent)
-            .addAction(
-                R.drawable.ic_notification,
-                applicationContext.getString(R.string.notification_view_torrent),
-                torrentPendingIntent
-            )
+            .setContentIntent(torrentPendingIntent)
             .setAutoCancel(true)
             .build()
 
         notificationManager.notify("torrent_downloaded_${serverId}_${torrent.hash}", 0, notification)
 
-        sendSummaryNotification(serverConfig, mainPendingIntent)
+        sendSummaryNotification(serverConfig)
     }
 
-    private fun sendSummaryNotification(serverConfig: ServerConfig, contentIntent: PendingIntent) {
+    private fun sendSummaryNotification(serverConfig: ServerConfig) {
         val serverId = serverConfig.id
+
+        val mainIntent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+
+        val mainPendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            mainIntent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        )
 
         val summaryNotification = NotificationCompat.Builder(applicationContext, "channel_server_${serverId}_downloaded")
             .setSmallIcon(R.drawable.ic_notification)
             .setSubText(serverConfig.name ?: serverConfig.visibleUrl)
             .setGroup("torrent_downloaded_$serverId")
             .setGroupSummary(true)
-            .setContentIntent(contentIntent)
+            .setContentIntent(mainPendingIntent)
             .build()
 
         notificationManager.notify("torrent_downloaded_summary_$serverId", 0, summaryNotification)
