@@ -20,6 +20,10 @@ class MainViewModel @Inject constructor(
         state["current_server"] = serverConfig
     }
 
+    fun setCurrentServer(serverId: Int?) {
+        setCurrentServer(serverId?.let { serverManager.getServerOrNull(it) })
+    }
+
     private val serverListener = object : ServerManager.ServerListener {
         override fun onServerAddedListener(serverConfig: ServerConfig) {
             if (serversFlow.value.size == 1) {

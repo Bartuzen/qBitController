@@ -29,6 +29,10 @@ import dev.bartuzen.qbitcontroller.utils.showDialog
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    object Extras {
+        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
+    }
+
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel: MainViewModel by viewModels()
@@ -135,6 +139,13 @@ class MainActivity : AppCompatActivity() {
             addServerAdapter.isVisible = serverList.isEmpty()
         }
 
+        if (savedInstanceState == null) {
+            val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
+            if (serverId != -1) {
+                viewModel.setCurrentServer(serverId)
+            }
+        }
+
         var currentServerConfig: ServerConfig? = null
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
             serverListAdapter.selectedServerId = serverConfig?.id ?: -1
@@ -187,6 +198,16 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
 
         binding.recyclerDrawer.adapter = null
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
+        if (serverId != -1) {
+            viewModel.setCurrentServer(serverId)
+        }
     }
 
     fun submitAdapter(adapter: RecyclerView.Adapter<*>) {

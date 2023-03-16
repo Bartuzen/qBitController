@@ -156,14 +156,20 @@ class TorrentDownloadedWorker @AssistedInject constructor(
         val serverId = serverConfig.id
 
         val mainIntent = Intent(applicationContext, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            putExtra(MainActivity.Extras.SERVER_ID, serverId)
+
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
 
         val mainPendingIntent = PendingIntent.getActivity(
             applicationContext,
             0,
             mainIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            } else {
+                PendingIntent.FLAG_UPDATE_CURRENT
+            }
         )
 
         val summaryNotification = NotificationCompat.Builder(applicationContext, "channel_server_${serverId}_downloaded")
