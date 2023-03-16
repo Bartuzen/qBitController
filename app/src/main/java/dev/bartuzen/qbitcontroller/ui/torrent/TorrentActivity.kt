@@ -43,8 +43,14 @@ class TorrentActivity : AppCompatActivity() {
             return
         }
 
+        val serverConfig = serverManager.getServerOrNull(serverId)
+        if (serverConfig == null) {
+            finish()
+            return
+        }
+
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = serverManager.getServer(serverId).name ?: getString(R.string.app_name)
+        supportActionBar?.title = serverConfig.name ?: getString(R.string.app_name)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             finish()
