@@ -174,11 +174,13 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         showDialog {
             setTitle(article.title)
 
+            val descriptionText = article.description ?: "<i>${context.getString(R.string.rss_no_desc)}</i>"
+
             val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Html.fromHtml(article.description, Html.FROM_HTML_MODE_COMPACT)
+                Html.fromHtml(descriptionText, Html.FROM_HTML_MODE_COMPACT)
             } else {
                 @Suppress("DEPRECATION")
-                Html.fromHtml(article.description)
+                Html.fromHtml(descriptionText)
             }
             setMessage(description)
 

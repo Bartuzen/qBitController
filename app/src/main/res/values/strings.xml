@@ -486,6 +486,7 @@
     <string name="rss_date">Date: %1$s</string>
     <string name="rss_download">Download</string>
     <string name="rss_mark_as_read">Mark as Read</string>
+    <string name="rss_no_desc">No description found</string>
 
     <string name="rss_menu_add">Add</string>
     <string name="rss_menu_add_feed">Add Feed</string>
