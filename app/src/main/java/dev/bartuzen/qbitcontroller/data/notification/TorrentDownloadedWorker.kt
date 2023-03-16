@@ -151,7 +151,8 @@ class TorrentDownloadedWorker @AssistedInject constructor(
 
         val notification = NotificationCompat.Builder(applicationContext, "channel_server_${serverId}_downloaded")
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentText(applicationContext.getString(R.string.notification_torrent_downloaded, torrent.name))
+            .setContentTitle(torrent.name)
+            .setContentText(applicationContext.getString(R.string.notification_torrent_downloaded))
             .setGroup("torrent_downloaded_$serverId")
             .setSortKey(torrent.name.lowercase())
             .setContentIntent(mainPendingIntent)
