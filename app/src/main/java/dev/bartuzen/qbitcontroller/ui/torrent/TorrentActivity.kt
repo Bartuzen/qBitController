@@ -1,9 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent
 
-import android.app.NotificationManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -25,7 +23,6 @@ class TorrentActivity : AppCompatActivity() {
         const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
 
         const val TORRENT_DELETED = "dev.bartuzen.qbitcontroller.TORRENT_DELETED"
-        const val DISMISS_NOTIFICATION = "dev.bartuzen.qbitcontroller.DISMISS_NOTIFICATION"
     }
 
     private lateinit var binding: ActivityTorrentBinding
@@ -45,8 +42,6 @@ class TorrentActivity : AppCompatActivity() {
             finish()
             return
         }
-
-        handleNotification(serverId, torrentHash)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.title = serverManager.getServer(serverId).name ?: getString(R.string.app_name)
@@ -82,14 +77,5 @@ class TorrentActivity : AppCompatActivity() {
 
             tab.text = getString(resId)
         }.attach()
-    }
-
-    private fun handleNotification(serverId: Int, torrentHash: String) {
-        val dismissNotification = intent.getBooleanExtra(Extras.DISMISS_NOTIFICATION, false)
-
-        if (dismissNotification) {
-            val notificationManager = getSystemService<NotificationManager>()!!
-            notificationManager.cancel("torrent_downloaded_${serverId}_$torrentHash", 0)
-        }
     }
 }
