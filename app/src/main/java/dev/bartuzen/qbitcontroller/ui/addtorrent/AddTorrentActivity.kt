@@ -46,6 +46,8 @@ class AddTorrentActivity : AppCompatActivity() {
         const val IS_ADDED = "dev.bartuzen.qbitcontroller.IS_ADDED"
 
         const val FILE_URI = "dev.bartuzen.qbitcontroller.FILE_URI"
+        const val SELECTED_CATEGORY = "dev.bartuzen.qbitcontroller.SELECTED_CATEGORY"
+        const val SELECTED_TAGS = "dev.bartuzen.qbitcontroller.SELECTED_TAGS"
     }
 
     private lateinit var binding: ActivityAddTorrentBinding
@@ -236,12 +238,12 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         viewModel.categoryList.filterNotNull().launchAndCollectLatestIn(this) { categoryList ->
-            val selectedCategory = binding.chipGroupCategory.checkedChipId.let { id ->
-                if (id != View.NO_ID) {
-                    binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
-                } else {
-                    null
-                }
+            val selectedCategory = if (savedInstanceState?.containsKey(Extras.SELECTED_CATEGORY) == true) {
+                val category = savedInstanceState.getString(Extras.SELECTED_CATEGORY)
+                savedInstanceState.remove(Extras.SELECTED_CATEGORY)
+                category
+            } else {
+                getSelectedCategory()
             }
 
             binding.chipGroupCategory.removeAllViews()
@@ -271,8 +273,12 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         viewModel.tagList.filterNotNull().launchAndCollectLatestIn(this) { tagList ->
-            val selectedTags = binding.chipGroupTag.checkedChipIds.map { id ->
-                binding.chipGroupTag.findViewById<Chip>(id).text.toString()
+            val selectedTags = if (savedInstanceState?.containsKey(Extras.SELECTED_TAGS) == true) {
+                val tags = savedInstanceState.getStringArrayList(Extras.SELECTED_TAGS) ?: emptyList<String>()
+                savedInstanceState.remove(Extras.SELECTED_TAGS)
+                tags
+            } else {
+                getSelectedTags()
             }
 
             binding.chipGroupTag.removeAllViews()
@@ -359,6 +365,20 @@ class AddTorrentActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(Extras.FILE_URI, torrentFileUri)
+        outState.putString(Extras.SELECTED_CATEGORY, getSelectedCategory())
+        outState.putStringArrayList(Extras.SELECTED_TAGS, ArrayList(getSelectedTags()))
+    }
+
+    private fun getSelectedCategory() = binding.chipGroupCategory.checkedChipId.let { id ->
+        if (id != View.NO_ID) {
+            binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
+        } else {
+            null
+        }
+    }
+
+    private fun getSelectedTags() = binding.chipGroupTag.checkedChipIds.map { id ->
+        binding.chipGroupTag.findViewById<Chip>(id).text.toString()
     }
 
     private fun updateFileName() {
@@ -451,17 +471,8 @@ class AddTorrentActivity : AppCompatActivity() {
             return
         }
 
-        val category = binding.chipGroupCategory.checkedChipId.let { id ->
-            if (id != View.NO_ID) {
-                binding.chipGroupCategory.findViewById<Chip>(id).text.toString()
-            } else {
-                null
-            }
-        }
-
-        val tags = binding.chipGroupTag.checkedChipIds.map { id ->
-            binding.chipGroupTag.findViewById<Chip>(id).text.toString()
-        }
+        val category = getSelectedCategory()
+        val tags = getSelectedTags()
 
         val autoTmm = when (binding.dropdownAutoTmm.position) {
             1 -> false
