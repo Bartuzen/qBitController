@@ -85,11 +85,37 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_url"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:text="@string/torrent_add_button_url"
+                            android:textAlignment="center" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/button_file"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:text="@string/torrent_add_button_file"
+                            android:textAlignment="center" />
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/text_file_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:background="?attr/selectableItemBackground"
                         android:drawablePadding="4dp"
                         android:gravity="center_vertical"
                         android:visibility="gone"

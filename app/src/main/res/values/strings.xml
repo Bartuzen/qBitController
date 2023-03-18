@@ -448,7 +448,10 @@
     <string name="torrent_add_menu_add_torrent">Add Torrent</string>
 
     <string name="torrent_add_title">@string/torrent_add_menu_add_torrent</string>
+    <string name="torrent_add_button_url">URL</string>
+    <string name="torrent_add_button_file">File</string>
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
+    <string name="torrent_add_click_to_select_file">Click to select a file</string>
     <string name="torrent_add_category">Category</string>
     <string name="torrent_add_tags">Tags</string>
     <string name="torrent_add_start_torrent">Start torrent</string>
