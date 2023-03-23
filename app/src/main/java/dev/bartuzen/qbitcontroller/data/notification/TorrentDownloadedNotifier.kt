@@ -127,6 +127,7 @@ class TorrentDownloadedNotifier @Inject constructor(
             .setGroup("torrent_downloaded_$serverId")
             .setSortKey(torrent.name.lowercase())
             .setContentIntent(torrentPendingIntent)
+            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
             .setAutoCancel(true)
             .build()
 
