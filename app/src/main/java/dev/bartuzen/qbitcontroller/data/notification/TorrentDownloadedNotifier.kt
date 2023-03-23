@@ -80,6 +80,31 @@ class TorrentDownloadedNotifier @Inject constructor(
         }
     }
 
+    fun checkCompleted(serverId: Int, torrent: Torrent) {
+        if (!areNotificationsEnabled()) {
+            clearSharedPref()
+            return
+        }
+
+        if (!isNotificationChannelEnabled("channel_server_${serverId}_downloaded")) {
+            removeServerFromSharedPref(serverId)
+            return
+        }
+
+        val oldTorrents = getTorrents(serverId)
+
+        setTorrent(serverId, torrent)
+
+        if (oldTorrents == null) {
+            return
+        }
+
+        val oldState = oldTorrents[torrent.hash]
+        if (torrent.state in completedStates && (oldState == null || oldState in downloadingStates)) {
+            sendNotification(serverId, torrent)
+        }
+    }
+
     private fun sendNotification(serverId: Int, torrent: Torrent) {
         val torrentIntent = Intent(context, TorrentActivity::class.java).apply {
             putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
@@ -159,6 +184,15 @@ class TorrentDownloadedNotifier @Inject constructor(
         sharedPref.edit {
             putString("server_$serverId", json)
         }
+    }
+
+    private fun setTorrent(serverId: Int, torrent: Torrent) {
+        val torrents = getTorrents(serverId).let { torrents ->
+            torrents?.toMutableMap()?.also { mutableTorrent ->
+                mutableTorrent[torrent.hash] = torrent.state
+            } ?: mapOf(torrent.hash to torrent.state)
+        }
+        setTorrents(serverId, torrents)
     }
 
     private fun getSavedServers() = sharedPref.all.map { (key, _) ->
