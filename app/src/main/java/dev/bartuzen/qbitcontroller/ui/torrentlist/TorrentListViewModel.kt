@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
+import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.Torrent
@@ -28,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TorrentListViewModel @Inject constructor(
     private val repository: TorrentListRepository,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
+    private val notifier: TorrentDownloadedNotifier
 ) : ViewModel() {
     private val _mainData = MutableStateFlow<MainData?>(null)
     val mainData = _mainData.asStateFlow()
@@ -250,6 +252,7 @@ class TorrentListViewModel @Inject constructor(
         when (val result = repository.getMainData(serverId)) {
             is RequestResult.Success -> {
                 _mainData.value = result.data
+                notifier.checkCompleted(serverId, result.data.torrents)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
