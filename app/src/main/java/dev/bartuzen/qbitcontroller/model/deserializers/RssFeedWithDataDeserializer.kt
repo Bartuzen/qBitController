@@ -46,7 +46,7 @@ private fun parseArticles(node: JsonNode): List<Article> {
         articles += Article(
             id = article["id"].asText(),
             title = article["title"].asText(),
-            description = article["description"].asText(),
+            description = article["description"]?.asText(),
             torrentUrl = article["torrentURL"].asText(),
             isRead = article["isRead"]?.asBoolean() ?: false,
             date = date

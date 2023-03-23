@@ -36,8 +36,8 @@ class TorrentListViewModel @Inject constructor(
     val mainData = _mainData.asStateFlow()
 
     private val searchQuery = MutableStateFlow("")
-    private val selectedCategory = MutableStateFlow<CategoryTag.ICategory>(CategoryTag.AllCategories)
-    private val selectedTag = MutableStateFlow<CategoryTag.ITag>(CategoryTag.AllTags)
+    private val selectedCategory = MutableStateFlow<CategoryTag>(CategoryTag.All)
+    private val selectedTag = MutableStateFlow<CategoryTag>(CategoryTag.All)
     private val selectedFilter = MutableStateFlow(TorrentFilter.ALL)
     private val selectedTracker = MutableStateFlow<Tracker>(Tracker.All)
 
@@ -45,6 +45,11 @@ class TorrentListViewModel @Inject constructor(
     val isReverseSorting = settingsManager.isReverseSorting.flow
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
     val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
+
+    val areStatesCollapsed = settingsManager.areStatesCollapsed
+    val areCategoriesCollapsed = settingsManager.areCategoriesCollapsed
+    val areTagsCollapsed = settingsManager.areTagsCollapsed
+    val areTrackersCollapsed = settingsManager.areTrackersCollapsed
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -167,8 +172,8 @@ class TorrentListViewModel @Inject constructor(
         @Suppress("UNCHECKED_CAST")
         val torrentList = filters[0] as List<Torrent>
         val searchQuery = filters[1] as String
-        val selectedCategory = filters[2] as CategoryTag.ICategory
-        val selectedTag = filters[3] as CategoryTag.ITag
+        val selectedCategory = filters[2] as CategoryTag
+        val selectedTag = filters[3] as CategoryTag
         val selectedFilter = filters[4] as TorrentFilter
         val selectedTracker = filters[5] as Tracker
 
@@ -181,13 +186,13 @@ class TorrentListViewModel @Inject constructor(
                 }
 
                 when (selectedCategory) {
-                    CategoryTag.AllCategories -> {}
+                    CategoryTag.All -> {}
                     CategoryTag.Uncategorized -> {
                         if (torrent.category != null) {
                             return@filter false
                         }
                     }
-                    is CategoryTag.Category -> {
+                    is CategoryTag.Item -> {
                         if (torrent.category != selectedCategory.name) {
                             return@filter false
                         }
@@ -195,13 +200,13 @@ class TorrentListViewModel @Inject constructor(
                 }
 
                 when (selectedTag) {
-                    CategoryTag.AllTags -> {}
-                    CategoryTag.Untagged -> {
+                    CategoryTag.All -> {}
+                    CategoryTag.Uncategorized -> {
                         if (torrent.tags.isNotEmpty()) {
                             return@filter false
                         }
                     }
-                    is CategoryTag.Tag -> {
+                    is CategoryTag.Item -> {
                         if (selectedTag.name !in torrent.tags) {
                             return@filter false
                         }
@@ -466,11 +471,11 @@ class TorrentListViewModel @Inject constructor(
         searchQuery.value = query
     }
 
-    fun setSelectedCategory(category: CategoryTag.ICategory) {
+    fun setSelectedCategory(category: CategoryTag) {
         selectedCategory.value = category
     }
 
-    fun setSelectedTag(tag: CategoryTag.ITag) {
+    fun setSelectedTag(tag: CategoryTag) {
         selectedTag.value = tag
     }
 

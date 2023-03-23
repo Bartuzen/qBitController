@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +29,8 @@ import javax.inject.Inject
 class AddTorrentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: AddTorrentRepository,
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
+    private val state: SavedStateHandle
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -39,6 +41,9 @@ class AddTorrentViewModel @Inject constructor(
     private val _tagList = MutableStateFlow<List<String>?>(null)
     val tagList = _tagList.asStateFlow()
 
+    private val _defaultSavePath = MutableStateFlow<String?>(null)
+    val defaultSavePath = _defaultSavePath.asStateFlow()
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
@@ -47,6 +52,8 @@ class AddTorrentViewModel @Inject constructor(
 
     private val _isCreating = MutableStateFlow(false)
     val isCreating = _isCreating.asStateFlow()
+
+    val isUrlMode = state.getStateFlow("isUrlMode", true)
 
     private var loadCategoryTagJob: Job? = null
 
@@ -154,12 +161,26 @@ class AddTorrentViewModel @Inject constructor(
                 }
             }
         }
+        val defaultSavePathDeferred = async {
+            when (val result = repository.getDefaultSavePath(serverId)) {
+                is RequestResult.Success -> {
+                    result.data
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                    throw CancellationException()
+                }
+            }
+        }
+
         try {
             val categories = categoriesDeferred.await()
             val tags = tagsDeferred.await()
+            val defaultSavePath = defaultSavePathDeferred.await()
 
             _categoryList.value = categories
             _tagList.value = tags
+            _defaultSavePath.value = defaultSavePath
         } catch (_: CancellationException) {
         }
     }
@@ -190,6 +211,10 @@ class AddTorrentViewModel @Inject constructor(
                 _isRefreshing.value = false
             }
         }
+    }
+
+    fun setUrlMode(isUrlMode: Boolean) {
+        state["isUrlMode"] = isUrlMode
     }
 
     sealed class Event {

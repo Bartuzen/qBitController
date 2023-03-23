@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -401,53 +402,69 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         })
 
         val torrentFilterAdapter = TorrentFilterAdapter(
+            isCollapsed = viewModel.areStatesCollapsed.value,
             onClick = { filter ->
                 viewModel.setSelectedFilter(filter)
 
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areStatesCollapsed.value = isCollapsed
             }
         )
 
-        val categoryTagAdapter = CategoryTagAdapter(
-            onSelected = { categoryTag ->
-                when (categoryTag) {
-                    is CategoryTag.ICategory -> {
-                        viewModel.setSelectedCategory(categoryTag)
-                    }
-                    is CategoryTag.ITag -> {
-                        viewModel.setSelectedTag(categoryTag)
-                    }
-                }
-
+        val categoryAdapter = CategoryTagAdapter(
+            isCategory = true,
+            isCollapsed = viewModel.areCategoriesCollapsed.value,
+            onSelected = { category ->
+                viewModel.setSelectedCategory(category)
                 activityBinding.layoutDrawer.close()
             },
-            onLongClick = { isCategory, name ->
+            onLongClick = { name ->
+                showCategoryLongClickDialog(name)
                 activityBinding.layoutDrawer.close()
-
-                if (isCategory) {
-                    showCategoryLongClickDialog(name)
-                } else {
-                    showDeleteCategoryTagDialog(false, name)
-                }
             },
-            onCreateClick = { isCategory ->
+            onCreateClick = {
+                showCreateEditCategoryDialog(null)
                 activityBinding.layoutDrawer.close()
-                if (isCategory) {
-                    showCreateEditCategoryDialog(null)
-                } else {
-                    showCreateTagDialog()
-                }
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areCategoriesCollapsed.value = isCollapsed
+            }
+        )
+
+        val tagAdapter = CategoryTagAdapter(
+            isCategory = false,
+            isCollapsed = viewModel.areTagsCollapsed.value,
+            onSelected = { tag ->
+                viewModel.setSelectedTag(tag)
+                activityBinding.layoutDrawer.close()
+            },
+            onLongClick = { name ->
+                showDeleteCategoryTagDialog(false, name)
+                activityBinding.layoutDrawer.close()
+            },
+            onCreateClick = {
+                showCreateTagDialog()
+                activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areTagsCollapsed.value = isCollapsed
             }
         )
 
         val trackerAdapter = TrackerAdapter(
+            isCollapsed = viewModel.areTrackersCollapsed.value,
             onSelected = { tracker ->
                 viewModel.setSelectedTracker(tracker)
                 activityBinding.layoutDrawer.close()
+            },
+            onCollapse = { isCollapsed ->
+                viewModel.areTrackersCollapsed.value = isCollapsed
             }
         )
 
-        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryTagAdapter, trackerAdapter)
+        parentAdapter = ConcatAdapter(torrentFilterAdapter, categoryAdapter, tagAdapter, trackerAdapter)
 
         parentActivity.submitAdapter(parentAdapter)
 
@@ -471,11 +488,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         viewModel.filteredTorrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
-            adapter.submitList(torrentList)
+            val layoutManager = binding.recyclerTorrentList.layoutManager as LinearLayoutManager
+
+            val scrollOffset = layoutManager.findFirstVisibleItemPosition()
+            adapter.submitList(torrentList) {
+                layoutManager.scrollToPositionWithOffset(scrollOffset, 0)
+            }
         }
 
         viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
-            categoryTagAdapter.submitLists(mainData.categories.map { it.name }, mainData.tags)
             trackerAdapter.submitTrackers(
                 trackers = mainData.trackers,
                 allCount = mainData.torrents.size,
@@ -484,37 +505,67 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             binding.textSpeed.text = getString(
                 R.string.torrent_list_speed_format,
-                formatBytesPerSecond(requireContext(), mainData.serverState.uploadSpeed),
-                formatBytes(requireContext(), mainData.serverState.uploadSession),
                 formatBytesPerSecond(requireContext(), mainData.serverState.downloadSpeed),
-                formatBytes(requireContext(), mainData.serverState.downloadSession)
+                formatBytes(requireContext(), mainData.serverState.downloadSession),
+                formatBytesPerSecond(requireContext(), mainData.serverState.uploadSpeed),
+                formatBytes(requireContext(), mainData.serverState.uploadSession)
             )
 
-            val countMap = mutableMapOf<TorrentFilter, Int>()
+            val stateCountMap = mutableMapOf<TorrentFilter, Int>()
+            val categoryMap = mainData.categories.associateBy({ it.name }, { 0 }).toMutableMap()
+            val tagMap = mainData.tags.associateBy({ it }, { 0 }).toMutableMap()
+
+            var uncategorizedCount = 0
+            var untaggedCount = 0
 
             mainData.torrents.forEach { torrent ->
                 TorrentFilter.values().forEach { filter ->
                     when (filter) {
                         TorrentFilter.ACTIVE -> {
                             if (torrent.downloadSpeed != 0L || torrent.uploadSpeed != 0L) {
-                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                                stateCountMap[filter] = (stateCountMap[filter] ?: 0) + 1
                             }
                         }
                         TorrentFilter.INACTIVE -> {
                             if (torrent.downloadSpeed == 0L && torrent.uploadSpeed == 0L) {
-                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                                stateCountMap[filter] = (stateCountMap[filter] ?: 0) + 1
                             }
                         }
                         else -> {
                             if (filter.states == null || torrent.state in filter.states) {
-                                countMap[filter] = (countMap[filter] ?: 0) + 1
+                                stateCountMap[filter] = (stateCountMap[filter] ?: 0) + 1
                             }
                         }
                     }
                 }
+
+                if (torrent.category != null) {
+                    categoryMap[torrent.category] = (categoryMap[torrent.category] ?: 0) + 1
+                } else {
+                    uncategorizedCount++
+                }
+
+                if (torrent.tags.isNotEmpty()) {
+                    torrent.tags.forEach { tag ->
+                        tagMap[tag] = (tagMap[tag] ?: 0) + 1
+                    }
+                } else {
+                    untaggedCount++
+                }
             }
 
-            torrentFilterAdapter.submitCountMap(countMap)
+            categoryAdapter.submitList(
+                items = categoryMap,
+                allCount = mainData.torrents.size,
+                uncategorizedCount = uncategorizedCount
+            )
+            tagAdapter.submitList(
+                items = tagMap,
+                allCount = mainData.torrents.size,
+                uncategorizedCount = untaggedCount
+            )
+
+            torrentFilterAdapter.submitCountMap(stateCountMap)
 
             actionMode?.invalidate()
 

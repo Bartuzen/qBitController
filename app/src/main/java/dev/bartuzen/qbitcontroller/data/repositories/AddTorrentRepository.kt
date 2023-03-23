@@ -72,4 +72,8 @@ class AddTorrentRepository @Inject constructor(
     suspend fun getTags(serverId: Int) = requestManager.request(serverId) { service ->
         service.getTags()
     }
+
+    suspend fun getDefaultSavePath(serverId: Int) = requestManager.request(serverId) { service ->
+        service.getDefaultSavePath()
+    }
 }

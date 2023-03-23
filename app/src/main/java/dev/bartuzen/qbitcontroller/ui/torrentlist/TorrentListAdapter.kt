@@ -80,11 +80,11 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
             binding.textState.text = formatTorrentState(context, torrent.state)
 
             val speedList = mutableListOf<String>()
-            if (torrent.uploadSpeed > 0) {
-                speedList.add("↑ ${formatBytesPerSecond(context, torrent.uploadSpeed)}")
-            }
             if (torrent.downloadSpeed > 0) {
                 speedList.add("↓ ${formatBytesPerSecond(context, torrent.downloadSpeed)}")
+            }
+            if (torrent.uploadSpeed > 0) {
+                speedList.add("↑ ${formatBytesPerSecond(context, torrent.uploadSpeed)}")
             }
             binding.textSpeed.text = speedList.joinToString(" ")
 
@@ -132,9 +132,10 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
         override fun areItemsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem.hash == newItem.hash
 
         override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) =
-            oldItem.name == newItem.name && oldItem.progress == newItem.progress && oldItem.completed == newItem.completed &&
-                oldItem.size == newItem.size && oldItem.eta == newItem.eta && oldItem.state == newItem.state &&
-                oldItem.uploadSpeed == newItem.uploadSpeed && oldItem.downloadSpeed == newItem.downloadSpeed &&
-                oldItem.category == newItem.category && oldItem.tags == newItem.tags
+            oldItem.name == newItem.name && oldItem.progress.floorToDecimal(1) == newItem.progress.floorToDecimal(1) &&
+                oldItem.completed == newItem.completed && oldItem.size == newItem.size && oldItem.eta == newItem.eta &&
+                oldItem.state == newItem.state && oldItem.uploadSpeed == newItem.uploadSpeed &&
+                oldItem.downloadSpeed == newItem.downloadSpeed && oldItem.category == newItem.category &&
+                oldItem.tags == newItem.tags && oldItem.ratio.floorToDecimal(2) == newItem.ratio.floorToDecimal(2)
     }
 }

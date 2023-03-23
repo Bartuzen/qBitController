@@ -42,7 +42,11 @@ class TorrentPeersViewModel @Inject constructor(
                 _torrentPeers.value = result.data.peers.values.toList()
             }
             is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
+                if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
             }
         }
     }
@@ -93,6 +97,7 @@ class TorrentPeersViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object TorrentNotFound : Event()
         object PeersInvalid : Event()
         object PeersAdded : Event()
         object PeersBanned : Event()

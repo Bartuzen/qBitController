@@ -10,7 +10,7 @@ data class RssFeedWithData(
 data class Article(
     val id: String,
     val title: String,
-    val description: String,
+    val description: String?,
     val torrentUrl: String,
     val isRead: Boolean,
     val date: Long
