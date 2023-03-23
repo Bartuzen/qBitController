@@ -5,11 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.get
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.Theme
@@ -215,6 +218,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             setTitle(R.string.settings_notification_check_interval)
             setDialogTitle(R.string.settings_notification_check_interval)
 
+            isEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+
             setSummaryProvider {
                 resources.getQuantityString(
                     R.plurals.settings_notification_check_interval_desc,
@@ -247,5 +252,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         requireAppCompatActivity().supportActionBar?.setTitle(R.string.settings_title)
+
+        preferenceScreen.get<EditTextPreference>("notificationCheckInterval")?.isEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
     }
 }
