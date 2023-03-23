@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.BuildConfig
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -26,12 +27,20 @@ import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    object Extras {
+        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
+    }
+
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var notificationManager: AppNotificationManager
 
     private val drawerAdapter = ConcatAdapter()
 
@@ -135,6 +144,13 @@ class MainActivity : AppCompatActivity() {
             addServerAdapter.isVisible = serverList.isEmpty()
         }
 
+        if (savedInstanceState == null) {
+            val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
+            if (serverId != -1) {
+                viewModel.setCurrentServer(serverId)
+            }
+        }
+
         var currentServerConfig: ServerConfig? = null
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
             serverListAdapter.selectedServerId = serverConfig?.id ?: -1
@@ -183,10 +199,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        notificationManager.startWorker()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
         binding.recyclerDrawer.adapter = null
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+
+        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
+        if (serverId != -1) {
+            viewModel.setCurrentServer(serverId)
+        }
     }
 
     fun submitAdapter(adapter: RecyclerView.Adapter<*>) {

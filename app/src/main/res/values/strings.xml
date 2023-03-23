@@ -553,6 +553,11 @@
     </plurals>
     <string name="settings_auto_refresh_hide_loading_bar">Hide loading bar</string>
     <string name="settings_auto_refresh_hide_loading_bar_desc">Don\'t show loading bar when auto refreshing</string>
+    <string name="settings_notification_check_interval">Notification check interval</string>
+    <plurals name="settings_notification_check_interval_desc">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
     <string name="settings_theme">Theme</string>
 
     <string name="settings_server_title_add">Add Server</string>
@@ -590,4 +595,8 @@
     <string name="about_menu_title">About</string>
     <string name="about_dialog_title">@string/about_menu_title</string>
     <string name="about_description">qBitController allows you to control qBittorrent from an Android device.\n\nFor more detailed information and source code: https://github.com/Bartuzen/qBitController</string>
+
+    <string name="notification_channel_download_completed">Download completed</string>
+    <string name="notification_torrent_downloaded">has finished downloading.</string>
+    <string name="notification_view_torrent">View torrent</string>
 </resources>

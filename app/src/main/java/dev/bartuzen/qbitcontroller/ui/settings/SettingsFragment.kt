@@ -1,12 +1,18 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.get
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.Theme
@@ -22,12 +28,15 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 class SettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: SettingsViewModel by viewModels()
 
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = object : PreferenceDataStore() {
             override fun getString(key: String, defValue: String?): String? {
                 return when (key) {
                     "connectionTimeout" -> viewModel.connectionTimeout.toString()
                     "autoRefreshInterval" -> viewModel.autoRefreshInterval.toString()
+                    "notificationCheckInterval" -> viewModel.notificationCheckInterval.toString()
                     "theme" -> viewModel.theme.toString()
                     else -> defValue
                 }
@@ -48,6 +57,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         viewModel.autoRefreshInterval = when {
                             num > 3600 -> 3600
                             num < 0 -> 0
+                            else -> num
+                        }
+                    }
+                    "notificationCheckInterval" -> {
+                        val num = value?.toIntOrNull() ?: return
+                        viewModel.notificationCheckInterval = when {
+                            num > 24 * 60 -> 24 * 60
+                            num < 1 -> 1
                             else -> num
                         }
                     }
@@ -80,6 +97,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 AddEditServerFragment.Result.ADDED -> {
                     showSnackbar(R.string.settings_server_add_success)
                     initSettings()
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
                 }
                 AddEditServerFragment.Result.EDITED -> {
                     showSnackbar(R.string.settings_server_edit_success)
@@ -192,6 +213,29 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        editText {
+            key = "notificationCheckInterval"
+            setTitle(R.string.settings_notification_check_interval)
+            setDialogTitle(R.string.settings_notification_check_interval)
+
+            isEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+
+            setSummaryProvider {
+                resources.getQuantityString(
+                    R.plurals.settings_notification_check_interval_desc,
+                    viewModel.notificationCheckInterval,
+                    viewModel.notificationCheckInterval
+                )
+            }
+
+            setOnBindEditTextListener { editText ->
+                val text = viewModel.notificationCheckInterval.toString()
+                editText.inputType = InputType.TYPE_CLASS_NUMBER
+                editText.setText(text)
+                editText.setSelection(text.length)
+            }
+        }
+
         list {
             key = "theme"
             setTitle(R.string.settings_theme)
@@ -208,5 +252,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
         requireAppCompatActivity().supportActionBar?.setTitle(R.string.settings_title)
+
+        preferenceScreen.get<EditTextPreference>("notificationCheckInterval")?.isEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
     }
 }
