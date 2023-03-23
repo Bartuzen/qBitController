@@ -91,7 +91,7 @@ class AppNotificationManager @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun removeUnusedChannels() {
         notificationManager.notificationChannelGroups
-            .filter { it.name.startsWith("group_server_") }
+            .filter { it.id.startsWith("group_server_") }
             .forEach { group ->
                 val serverId = group.id.replace("group_server_", "").toInt()
 
