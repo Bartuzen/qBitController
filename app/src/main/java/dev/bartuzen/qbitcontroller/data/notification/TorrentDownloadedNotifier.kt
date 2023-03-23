@@ -72,9 +72,9 @@ class TorrentDownloadedNotifier @Inject constructor(
         }
 
         torrentList.forEach { torrent ->
-            val newState = oldTorrents[torrent.hash]
+            val oldState = oldTorrents[torrent.hash]
 
-            if (torrent.state in completedStates && (newState == null || newState in downloadingStates)) {
+            if (torrent.state in completedStates && (oldState == null || oldState in downloadingStates)) {
                 sendNotification(serverId, torrent)
             }
         }
