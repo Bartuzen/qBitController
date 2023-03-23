@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationManagerCompat
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
@@ -42,6 +43,11 @@ class AppNotificationManager @Inject constructor(
     }
 
     fun startWorker() {
+        val areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+        if (!areNotificationsEnabled) {
+            return
+        }
+
         val workManager = WorkManager.getInstance(context)
 
         val work = OneTimeWorkRequestBuilder<TorrentDownloadedWorker>()
