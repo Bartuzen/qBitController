@@ -46,7 +46,8 @@ class TorrentDownloadedNotifier @Inject constructor(
         TorrentState.META_DL,
         TorrentState.FORCED_DL,
         TorrentState.PAUSED_DL,
-        TorrentState.STALLED_DL
+        TorrentState.STALLED_DL,
+        TorrentState.ALLOCATING
     )
 
     private val notificationManager =
