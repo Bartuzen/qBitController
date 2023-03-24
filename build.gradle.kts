@@ -1,8 +1,7 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import org.jmailen.gradle.kotlinter.KotlinterExtension
 
 plugins {
-    id("org.jmailen.kotlinter") version "3.13.0"
+    id("org.jmailen.kotlinter") version "3.14.0"
     id("com.github.ben-manes.versions") version "0.45.0"
 }
 
@@ -20,10 +19,6 @@ tasks.withType<DependencyUpdatesTask> {
 
 subprojects {
     apply(plugin = "org.jmailen.kotlinter")
-
-    configure<KotlinterExtension> {
-        experimentalRules = true
-    }
 }
 
 buildscript {

@@ -5,3 +5,6 @@ max_line_length = 125
 indent_size = 4
 insert_final_newline = true
 ij_kotlin_line_break_after_multiline_when_entry = false
+ij_kotlin_allow_trailing_comma = false
+ij_kotlin_allow_trailing_comma_on_call_site = false
+ktlint_experimental = enabled

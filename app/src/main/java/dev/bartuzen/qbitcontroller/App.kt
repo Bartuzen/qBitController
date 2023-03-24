@@ -22,6 +22,7 @@ class App : Application(), Configuration.Provider {
     lateinit var workerFactory: HiltWorkerFactory
 
     @Inject
+    @Suppress("ktlint:experimental:property-naming")
     lateinit var _settingsManager: Lazy<SettingsManager>
     private val settingsManager: SettingsManager get() = _settingsManager.get()
 
