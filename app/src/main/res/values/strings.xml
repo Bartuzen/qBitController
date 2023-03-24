@@ -231,9 +231,7 @@
     <string name="torrent_recheck_success">Torrent recheck started successfully.</string>
     <string name="torrent_reannounce_success">Torrent reannounced successfully.</string>
 
-    <string name="torrent_menu_sequential_download">Sequential Download</string>
-    <string name="torrent_menu_prioritize_first_last_pieces">Prioritize First and Last Pieces</string>
-    <string name="torrent_menu_automatic_torrent_management">Automatic Torrent Management</string>
+    <string name="torrent_menu_options">Torrent Options</string>
     <string name="torrent_menu_force_start">Force Start</string>
     <string name="torrent_menu_super_seeding">Super Seeding</string>
     <string name="torrent_menu_copy">Copy</string>
@@ -242,10 +240,6 @@
     <string name="torrent_menu_copy_hash_v2">Hash v2</string>
     <string name="torrent_menu_copy_magnet_uri">Magnet URI</string>
 
-    <string name="torrent_toggle_sequential_download_success">Sequential download toggled successfully.</string>
-    <string name="torrent_toggle_prioritize_first_last_pieces">Prioritizing first and last pieces toggled successfully.</string>
-    <string name="torrent_enable_automatic_torrent_management_success">Automatic Torrent Management enabled successfully.</string>
-    <string name="torrent_disable_automatic_torrent_management_success">Automatic Torrent Management disabled successfully.</string>
     <string name="torrent_enable_force_start_success">Force start enabled successfully.</string>
     <string name="torrent_disable_force_start_success">Force start disabled successfully.</string>
     <string name="torrent_enable_super_seeding_success">Super seeding enabled successfully.</string>
@@ -254,35 +248,30 @@
 
     <string name="torrent_menu_category">Set Category</string>
     <string name="torrent_menu_tags">Set Tags</string>
-    <string name="torrent_menu_share_limit">Share Limit</string>
     <string name="torrent_menu_recheck">Force Recheck</string>
     <string name="torrent_menu_reannounce">Force Reannounce</string>
     <string name="torrent_menu_rename">Rename Torrent</string>
     <string name="torrent_menu_location">Set Location</string>
-    <string name="torrent_menu_dlspeed_limit">Download Speed Limit</string>
-    <string name="torrent_menu_upspeed_limit">Upload Speed Limit</string>
 
     <string name="torrent_category_dialog_title">@string/torrent_menu_category</string>
     <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
-    <string name="torrent_share_limit_dialog_title">@string/torrent_menu_share_limit</string>
     <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
     <string name="torrent_location_dialog_title">@string/torrent_menu_location</string>
-    <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>
-    <string name="torrent_upspeed_limit_dialog_title">@string/torrent_menu_upspeed_limit</string>
 
     <string name="torrent_name">Name</string>
     <string name="torrent_dlspeed_limit">Download Speed Limit (KiB/s)</string>
     <string name="torrent_upspeed_limit">Upload Speed Limit (KiB/s)</string>
+    <string name="torrent_auto_tmm">Automatic Torrent Management</string>
+    <string name="torrent_option_speed_limit">Torrent speed limits</string>
+    <string name="torrent_option_share_limit">Torrent share limits</string>
 
     <string name="torrent_category_update_success">Category updated successfully.</string>
     <string name="torrent_tags_update_success">Tags updated successfully.</string>
-    <string name="torrent_share_limit_update_success">Share limit updated successfully.</string>
     <string name="torrent_rename_success">Updated torrent name successfully.</string>
     <string name="torrent_location_update_success">Changed torrent location successfully.</string>
     <string name="torrent_rename_name_cannot_be_blank">Torrent name cannot be blank.</string>
     <string name="torrent_location_cannot_be_blank">Location cannot be blank.</string>
-    <string name="torrent_dlspeed_limit_change_success">Changed download speed limit successfully.</string>
-    <string name="torrent_upspeed_limit_change_success">Changed upload speed limit successfully.</string>
+    <string name="torrent_option_update_success">Torrent options updated successfully.</string>
 
     <string name="torrent_share_limit_global">Use global share limit</string>
     <string name="torrent_share_limit_disable">Disable share limit</string>
@@ -457,7 +446,7 @@
     <string name="torrent_add_start_torrent">Start torrent</string>
     <string name="torrent_add_skip_hash_checking">Skip hash checking</string>
     <string name="torrent_add_sequential_download">Download in sequential order</string>
-    <string name="torrent_add_prioritize_first_last_piece">Download first and last piece first</string>
+    <string name="torrent_add_prioritize_first_last_piece">Download first and last pieces first</string>
     <string name="torrent_add_default">Default</string>
     <string name="torrent_add_tmm">Torrent Management Mode</string>
     <string name="torrent_add_tmm_manual">Manual</string>

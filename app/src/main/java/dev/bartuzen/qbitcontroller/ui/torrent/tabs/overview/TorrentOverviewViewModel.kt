@@ -15,6 +15,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -137,59 +138,60 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun toggleSequentialDownload(serverId: Int, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.toggleSequentialDownload(serverId, torrentHash)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.SequentialDownloadToggled)
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
-        }
-    }
+    fun setTorrentOptions(
+        serverId: Int,
+        torrentHash: String,
+        autoTmm: Boolean?,
+        savePath: String?,
+        toggleSequentialDownload: Boolean,
+        togglePrioritizeFirstLastPiece: Boolean,
+        uploadSpeedLimit: Int?,
+        downloadSpeedLimit: Int?,
+        ratioLimit: Double?,
+        seedingTimeLimit: Int?
+    ) = viewModelScope.launch {
+        val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 
-    fun togglePrioritizeFirstLastPiecesDownload(serverId: Int, torrentHash: String) = viewModelScope.launch {
-        when (val result = repository.togglePrioritizeFirstLastPiecesDownload(serverId, torrentHash)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.PrioritizeFirstLastPiecesToggled)
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
+        if (autoTmm != null) {
+            requests.add { repository.setAutomaticTorrentManagement(serverId, torrentHash, autoTmm) }
         }
-    }
+        if (savePath != null) {
+            requests.add { repository.setLocation(serverId, torrentHash, savePath) }
+        }
+        if (toggleSequentialDownload) {
+            requests.add { repository.toggleSequentialDownload(serverId, torrentHash) }
+        }
+        if (togglePrioritizeFirstLastPiece) {
+            requests.add { repository.togglePrioritizeFirstLastPiecesDownload(serverId, torrentHash) }
+        }
+        if (uploadSpeedLimit != null) {
+            requests.add { repository.setUploadSpeedLimit(serverId, torrentHash, uploadSpeedLimit) }
+        }
+        if (downloadSpeedLimit != null) {
+            requests.add { repository.setDownloadSpeedLimit(serverId, torrentHash, downloadSpeedLimit) }
+        }
+        if (ratioLimit != null && seedingTimeLimit != null) {
+            requests.add { repository.setShareLimit(serverId, torrentHash, ratioLimit, seedingTimeLimit) }
+        }
 
-    fun setAutomaticTorrentManagement(serverId: Int, torrentHash: String, enable: Boolean) = viewModelScope.launch {
-        when (val result = repository.setAutomaticTorrentManagement(serverId, torrentHash, enable)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.AutomaticTorrentManagementChanged(enable))
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
+        if (requests.isEmpty()) {
+            return@launch
         }
-    }
+        try {
+            requests.map { request ->
+                launch {
+                    val result = request()
+                    if (result is RequestResult.Error) {
+                        eventChannel.send(Event.Error(result))
+                        throw CancellationException()
+                    }
+                }
+            }.joinAll()
+        } catch (_: CancellationException) {
+            return@launch
+        }
 
-    fun setDownloadSpeedLimit(serverId: Int, torrentHash: String, limit: Int) = viewModelScope.launch {
-        when (val result = repository.setDownloadSpeedLimit(serverId, torrentHash, limit)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.DownloadSpeedLimitUpdated)
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
-        }
-    }
-
-    fun setUploadSpeedLimit(serverId: Int, torrentHash: String, limit: Int) = viewModelScope.launch {
-        when (val result = repository.setUploadSpeedLimit(serverId, torrentHash, limit)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.DownloadSpeedLimitUpdated)
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
-        }
+        eventChannel.send(Event.OptionsUpdated)
     }
 
     fun setForceStart(serverId: Int, torrentHash: String, value: Boolean) = viewModelScope.launch {
@@ -251,17 +253,6 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun setLocation(serverId: Int, torrentHash: String, location: String) = viewModelScope.launch {
-        when (val result = repository.setLocation(serverId, torrentHash, location)) {
-            is RequestResult.Success -> {
-                eventChannel.send(Event.LocationUpdated)
-            }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
-        }
-    }
-
     fun setCategory(serverId: Int, torrentHash: String, category: String?) = viewModelScope.launch {
         when (val result = repository.setCategory(serverId, torrentHash, category)) {
             is RequestResult.Success -> {
@@ -313,37 +304,19 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun setShareLimit(serverId: Int, torrentHash: String, ratioLimit: Double, seedingTimeLimit: Int) =
-        viewModelScope.launch {
-            when (val result = repository.setShareLimit(serverId, torrentHash, ratioLimit, seedingTimeLimit)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.ShareLimitUpdated)
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                }
-            }
-        }
-
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
         object TorrentDeleted : Event()
         object TorrentPaused : Event()
         object TorrentResumed : Event()
+        object OptionsUpdated : Event()
         object TorrentRechecked : Event()
         object TorrentReannounced : Event()
         object TorrentRenamed : Event()
-        object LocationUpdated : Event()
-        object SequentialDownloadToggled : Event()
-        object PrioritizeFirstLastPiecesToggled : Event()
-        data class AutomaticTorrentManagementChanged(val isEnabled: Boolean) : Event()
-        object DownloadSpeedLimitUpdated : Event()
-        object UploadSpeedLimitUpdated : Event()
         data class ForceStartChanged(val isEnabled: Boolean) : Event()
         data class SuperSeedingChanged(val isEnabled: Boolean) : Event()
         object CategoryUpdated : Event()
         object TagsUpdated : Event()
-        object ShareLimitUpdated : Event()
     }
 }

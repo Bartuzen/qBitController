@@ -207,9 +207,6 @@
     <string name="torrent_recheck_success">已成功重新校验该 Torrent。</string>
     <string name="torrent_reannounce_success">已成功重新汇报该 Torrent。</string>
 
-    <string name="torrent_menu_sequential_download">顺序下载</string>
-    <string name="torrent_menu_prioritize_first_last_pieces">优先处理首尾文件块</string>
-    <string name="torrent_menu_automatic_torrent_management">自动 Torrent 管理</string>
     <string name="torrent_menu_force_start">强制开始</string>
     <string name="torrent_menu_super_seeding">超级做种</string>
     <string name="torrent_menu_copy">复制</string>
@@ -218,10 +215,6 @@
     <string name="torrent_menu_copy_hash_v2">哈希值 v2</string>
     <string name="torrent_menu_copy_magnet_uri">磁力链接</string>
 
-    <string name="torrent_toggle_sequential_download_success">已成功切换至顺序下载。</string>
-    <string name="torrent_toggle_prioritize_first_last_pieces">已成功切换至优先处理首尾文件块。</string>
-    <string name="torrent_enable_automatic_torrent_management_success">已成功启用自动 Torrent 管理。</string>
-    <string name="torrent_disable_automatic_torrent_management_success">已成功禁用自动 Torrent 管理。</string>
     <string name="torrent_enable_force_start_success">已成功启用强制开始。</string>
     <string name="torrent_disable_force_start_success">已成功禁用强制开始。</string>
     <string name="torrent_enable_super_seeding_success">已成功启用超级做种。</string>
@@ -230,35 +223,27 @@
 
     <string name="torrent_menu_category">设置分类</string>
     <string name="torrent_menu_tags">设置标签</string>
-    <string name="torrent_menu_share_limit">分享限制</string>
     <string name="torrent_menu_recheck">强制重新校验</string>
     <string name="torrent_menu_reannounce">强制重新汇报</string>
     <string name="torrent_menu_rename">重命名 Torrent</string>
     <string name="torrent_menu_location">设置保存位置</string>
-    <string name="torrent_menu_dlspeed_limit">限制下载速度</string>
-    <string name="torrent_menu_upspeed_limit">限制上传速度</string>
 
     <string name="torrent_category_dialog_title">@string/torrent_menu_category</string>
     <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
-    <string name="torrent_share_limit_dialog_title">@string/torrent_menu_share_limit</string>
     <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
     <string name="torrent_location_dialog_title">@string/torrent_menu_location</string>
-    <string name="torrent_dlspeed_limit_dialog_title">@string/torrent_menu_dlspeed_limit</string>
-    <string name="torrent_upspeed_limit_dialog_title">@string/torrent_menu_upspeed_limit</string>
 
     <string name="torrent_name">名称</string>
     <string name="torrent_dlspeed_limit">下载速度限制 (KiB/s)</string>
     <string name="torrent_upspeed_limit">上传速度限制 (KiB/s)</string>
+    <string name="torrent_auto_tmm">自动 Torrent 管理</string>
 
     <string name="torrent_category_update_success">已成功更新分类。</string>
     <string name="torrent_tags_update_success">已成功更新标签。</string>
-    <string name="torrent_share_limit_update_success">已成功更新分享限制。</string>
     <string name="torrent_rename_success">已成功重命名 Torrent 名称。</string>
     <string name="torrent_location_update_success">已成功更改 Torrent 的保存位置。</string>
     <string name="torrent_rename_name_cannot_be_blank">Torrent 名称不得为空。</string>
     <string name="torrent_location_cannot_be_blank">路径不得为空。</string>
-    <string name="torrent_dlspeed_limit_change_success">已成功更改下载速度限制。</string>
-    <string name="torrent_upspeed_limit_change_success">已成功更改上传速度限制。</string>
 
     <string name="torrent_share_limit_global">使用全局分享限制</string>
     <string name="torrent_share_limit_disable">禁用分享限制</string>

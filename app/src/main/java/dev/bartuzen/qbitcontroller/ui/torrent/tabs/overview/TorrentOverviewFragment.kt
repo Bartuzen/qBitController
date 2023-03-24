@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
@@ -18,15 +19,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitDownloadBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitUploadBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentOptionsBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentRenameBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogTorrentShareLimitBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentOverviewBinding
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -50,6 +49,7 @@ import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.text
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -83,11 +83,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         val tags = menu.findItem(R.id.menu_tags)
                         val resume = menu.findItem(R.id.menu_resume)
                         val pause = menu.findItem(R.id.menu_pause)
-                        val shareLimit = menu.findItem(R.id.menu_share_limit)
+                        val torrentOptions = menu.findItem(R.id.menu_options)
                         val reannounce = menu.findItem(R.id.menu_reannounce)
-                        val sequentialDownload = menu.findItem(R.id.menu_sequential_download)
-                        val prioritizeFirstLastPieces = menu.findItem(R.id.menu_prioritize_first_last_pieces)
-                        val autoTmm = menu.findItem(R.id.menu_automatic_torrent_management)
                         val forceStart = menu.findItem(R.id.menu_force_start)
                         val superSeeding = menu.findItem(R.id.menu_super_seeding)
                         val copy = menu.findItem(R.id.menu_copy)
@@ -95,10 +92,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         val copyHashV2 = menu.findItem(R.id.menu_copy_hash_v2)
 
                         tags.isEnabled = torrent != null
-                        shareLimit.isEnabled = torrent != null
-                        sequentialDownload.isEnabled = torrent != null
-                        prioritizeFirstLastPieces.isEnabled = torrent != null
-                        autoTmm.isEnabled = torrent != null
+                        torrentOptions.isEnabled = torrent != null
                         forceStart.isEnabled = torrent != null
                         superSeeding.isEnabled = torrent != null
                         copy.isEnabled = torrent != null
@@ -122,9 +116,6 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             resume.isVisible = isPaused
                             pause.isVisible = !isPaused
 
-                            sequentialDownload.isChecked = torrent.isSequentialDownloadEnabled
-                            prioritizeFirstLastPieces.isChecked = torrent.isFirstLastPiecesPrioritized
-                            autoTmm.isChecked = torrent.isAutomaticTorrentManagementEnabled
                             forceStart.isChecked = torrent.isForceStartEnabled
                             superSeeding.isChecked = torrent.isSuperSeedingEnabled
                         }
@@ -142,6 +133,9 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         R.id.menu_delete -> {
                             showDeleteTorrentDialog()
                         }
+                        R.id.menu_options -> {
+                            showTorrentOptionsDialog()
+                        }
                         R.id.menu_category -> {
                             TorrentCategoryDialog(serverId, viewModel.torrent.value?.category)
                                 .show(childFragmentManager, null)
@@ -150,36 +144,14 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             TorrentTagsDialog(serverId, viewModel.torrent.value?.tags ?: listOf())
                                 .show(childFragmentManager, null)
                         }
-                        R.id.menu_share_limit -> {
-                            showShareLimitDialog()
-                        }
                         R.id.menu_rename -> {
                             showRenameTorrentDialog()
-                        }
-                        R.id.menu_location -> {
-                            showLocationDialog()
                         }
                         R.id.menu_recheck -> {
                             viewModel.recheckTorrent(serverId, torrentHash)
                         }
                         R.id.menu_reannounce -> {
                             viewModel.reannounceTorrent(serverId, torrentHash)
-                        }
-                        R.id.menu_dlspeed_limit -> {
-                            showDownloadSpeedLimitDialog()
-                        }
-                        R.id.menu_upspeed_limit -> {
-                            showUploadSpeedLimitDialog()
-                        }
-                        R.id.menu_sequential_download -> {
-                            viewModel.toggleSequentialDownload(serverId, torrentHash)
-                        }
-                        R.id.menu_prioritize_first_last_pieces -> {
-                            viewModel.togglePrioritizeFirstLastPiecesDownload(serverId, torrentHash)
-                        }
-                        R.id.menu_automatic_torrent_management -> {
-                            val isEnabled = viewModel.torrent.value?.isAutomaticTorrentManagementEnabled ?: return true
-                            viewModel.setAutomaticTorrentManagement(serverId, torrentHash, !isEnabled)
                         }
                         R.id.menu_force_start -> {
                             val isEnabled = viewModel.torrent.value?.isForceStartEnabled ?: return true
@@ -454,6 +426,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         viewModel.loadTorrent(serverId, torrentHash)
                     }
                 }
+                TorrentOverviewViewModel.Event.OptionsUpdated -> {
+                    showSnackbar(R.string.torrent_option_update_success)
+                    viewModel.loadTorrent(serverId, torrentHash)
+                }
                 TorrentOverviewViewModel.Event.TorrentRechecked -> {
                     showSnackbar(R.string.torrent_recheck_success)
 
@@ -467,37 +443,6 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 }
                 TorrentOverviewViewModel.Event.TorrentRenamed -> {
                     showSnackbar(R.string.torrent_rename_success)
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
-                TorrentOverviewViewModel.Event.LocationUpdated -> {
-                    showSnackbar(R.string.torrent_location_update_success)
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
-                TorrentOverviewViewModel.Event.SequentialDownloadToggled -> {
-                    showSnackbar(R.string.torrent_toggle_sequential_download_success)
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
-                TorrentOverviewViewModel.Event.PrioritizeFirstLastPiecesToggled -> {
-                    showSnackbar(R.string.torrent_toggle_prioritize_first_last_pieces)
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
-                is TorrentOverviewViewModel.Event.AutomaticTorrentManagementChanged -> {
-                    showSnackbar(
-                        if (event.isEnabled) {
-                            R.string.torrent_enable_automatic_torrent_management_success
-                        } else {
-                            R.string.torrent_disable_automatic_torrent_management_success
-                        }
-                    )
-
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
-                TorrentOverviewViewModel.Event.DownloadSpeedLimitUpdated -> {
-                    showSnackbar(R.string.torrent_dlspeed_limit_change_success)
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
-                TorrentOverviewViewModel.Event.UploadSpeedLimitUpdated -> {
-                    showSnackbar(R.string.torrent_upspeed_limit_change_success)
                     viewModel.loadTorrent(serverId, torrentHash)
                 }
                 is TorrentOverviewViewModel.Event.ForceStartChanged -> {
@@ -536,10 +481,6 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     showSnackbar(R.string.torrent_tags_update_success)
                     viewModel.loadTorrent(serverId, torrentHash)
                 }
-                TorrentOverviewViewModel.Event.ShareLimitUpdated -> {
-                    showSnackbar(R.string.torrent_share_limit_update_success)
-                    viewModel.loadTorrent(serverId, torrentHash)
-                }
             }
         }
     }
@@ -554,9 +495,16 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         }
     }
 
-    private fun showShareLimitDialog() {
-        showDialog(DialogTorrentShareLimitBinding::inflate) { binding ->
+    private fun showTorrentOptionsDialog() {
+        val dialog = showDialog(DialogTorrentOptionsBinding::inflate) { binding ->
             val torrent = viewModel.torrent.value ?: return@showDialog
+
+            binding.checkboxAutoTmm.isChecked = torrent.isAutomaticTorrentManagementEnabled
+            binding.checkboxSequentialDownload.isChecked = torrent.isSequentialDownloadEnabled
+            binding.checkboxPrioritizeFirstLastPieces.isChecked = torrent.isFirstLastPiecesPrioritized
+            binding.inputLayoutSavePath.setTextWithoutAnimation(torrent.savePath)
+            binding.inputLayoutUpSpeedLimit.setTextWithoutAnimation((torrent.uploadSpeedLimit / 1024).toString())
+            binding.inputLayoutDlSpeedLimit.setTextWithoutAnimation((torrent.downloadSpeedLimit / 1024).toString())
 
             when {
                 torrent.seedingTimeLimit == -2 && torrent.ratioLimit == -2.0 -> {
@@ -583,30 +531,98 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 }
             }
 
+            binding.inputLayoutSavePath.isEnabled = !torrent.isAutomaticTorrentManagementEnabled
+            binding.checkboxAutoTmm.addOnCheckedStateChangedListener { _, state ->
+                binding.inputLayoutSavePath.isEnabled = state != MaterialCheckBox.STATE_CHECKED
+            }
+
             binding.radioLimitCustom.setOnCheckedChangeListener { _, isChecked ->
                 binding.inputLayoutRatio.isEnabled = isChecked
                 binding.inputLayoutTime.isEnabled = isChecked
             }
 
-            setTitle(R.string.torrent_share_limit_dialog_title)
+            setTitle(R.string.torrent_menu_options)
             setPositiveButton { _, _ ->
-                when (binding.radioGroupLimit.checkedRadioButtonId) {
-                    R.id.radio_limit_global -> {
-                        viewModel.setShareLimit(serverId, torrentHash, -2.0, -2)
-                    }
-                    R.id.radio_limit_disable -> {
-                        viewModel.setShareLimit(serverId, torrentHash, -1.0, -1)
-                    }
-                    R.id.radio_limit_custom -> {
-                        val ratioLimit = binding.editRatio.text.toString().toDoubleOrNull() ?: -1.0
-                        val timeLimit = binding.editTime.text.toString().toIntOrNull() ?: -1
-
-                        viewModel.setShareLimit(serverId, torrentHash, ratioLimit, timeLimit)
+                val autoTmm = if (torrent.isAutomaticTorrentManagementEnabled != binding.checkboxAutoTmm.isChecked) {
+                    binding.checkboxAutoTmm.isChecked
+                } else {
+                    null
+                }
+                val savePath = binding.inputLayoutSavePath.text.let { savePath ->
+                    if (savePath.isNotBlank() && torrent.savePath != savePath) {
+                        savePath
+                    } else {
+                        null
                     }
                 }
+                val toggleSequentialDownload =
+                    torrent.isSequentialDownloadEnabled != binding.checkboxSequentialDownload.isChecked
+                val togglePrioritizeFirstLastPiece =
+                    torrent.isFirstLastPiecesPrioritized != binding.checkboxPrioritizeFirstLastPieces.isChecked
+                val uploadSpeedLimit = binding.inputLayoutUpSpeedLimit.text.toIntOrNull().let { limit ->
+                    val uploadSpeedLimit = limit ?: 0
+                    if (uploadSpeedLimit != torrent.uploadSpeedLimit) {
+                        uploadSpeedLimit * 1024
+                    } else {
+                        null
+                    }
+                }
+                val downloadSpeedLimit = binding.inputLayoutDlSpeedLimit.text.toIntOrNull().let { limit ->
+                    val downloadSpeedLimit = limit ?: 0
+                    if (downloadSpeedLimit != torrent.downloadSpeedLimit) {
+                        downloadSpeedLimit * 1024
+                    } else {
+                        null
+                    }
+                }
+                val (ratioLimit, seedingTimeLimit) = when (binding.radioGroupLimit.checkedRadioButtonId) {
+                    R.id.radio_limit_global -> {
+                        -2.0 to -2
+                    }
+                    R.id.radio_limit_disable -> {
+                        -1.0 to -1
+                    }
+                    R.id.radio_limit_custom -> {
+                        val ratioLimit = binding.inputLayoutRatio.text.toDoubleOrNull() ?: -1.0
+                        val seedingTimeLimit = binding.inputLayoutTime.text.toIntOrNull() ?: -1
+
+                        if (ratioLimit != -1.0 || seedingTimeLimit != -1) {
+                            ratioLimit to seedingTimeLimit
+                        } else {
+                            null to null
+                        }
+                    }
+                    else -> {
+                        null to null
+                    }
+                }.let { (ratioLimit, seedingTimeLimit) ->
+                    if (ratioLimit == null || seedingTimeLimit == null) {
+                        null to null
+                    } else if (ratioLimit != torrent.ratioLimit || seedingTimeLimit != torrent.seedingTimeLimit) {
+                        ratioLimit to seedingTimeLimit
+                    } else {
+                        null to null
+                    }
+                }
+
+                viewModel.setTorrentOptions(
+                    serverId = serverId,
+                    torrentHash = torrentHash,
+                    autoTmm = autoTmm,
+                    savePath = savePath,
+                    toggleSequentialDownload = toggleSequentialDownload,
+                    togglePrioritizeFirstLastPiece = togglePrioritizeFirstLastPiece,
+                    uploadSpeedLimit = uploadSpeedLimit,
+                    downloadSpeedLimit = downloadSpeedLimit,
+                    ratioLimit = ratioLimit,
+                    seedingTimeLimit = seedingTimeLimit
+                )
             }
             setNegativeButton()
         }
+
+        @Suppress("DEPRECATION")
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
     }
 
     private fun showRenameTorrentDialog() {
@@ -631,69 +647,6 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             } else {
                 dialogBinding.inputLayoutName.error = getString(R.string.torrent_rename_name_cannot_be_blank)
             }
-        }
-    }
-
-    private fun showLocationDialog() {
-        lateinit var dialogBinding: DialogTorrentLocationBinding
-
-        val dialog = showDialog(DialogTorrentLocationBinding::inflate) { binding ->
-            dialogBinding = binding
-
-            val name = viewModel.torrentProperties.value?.savePath
-            binding.inputLayoutLocation.setTextWithoutAnimation(name)
-
-            setTitle(R.string.torrent_location_dialog_title)
-            setPositiveButton()
-            setNegativeButton()
-        }
-
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val newLocation = dialogBinding.editLocation.text.toString()
-            if (newLocation.isNotBlank()) {
-                viewModel.setLocation(serverId, torrentHash, newLocation)
-                dialog.dismiss()
-            } else {
-                dialogBinding.inputLayoutLocation.error = getString(R.string.torrent_location_cannot_be_blank)
-            }
-        }
-    }
-
-    private fun showDownloadSpeedLimitDialog() {
-        showDialog(DialogSpeedLimitDownloadBinding::inflate) { binding ->
-            val currentLimit = viewModel.torrent.value?.downloadSpeedLimit?.let { speed ->
-                speed / 1024
-            }
-            binding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
-
-            setTitle(R.string.torrent_dlspeed_limit_dialog_title)
-            setPositiveButton { _, _ ->
-                val limit = binding.editLimit.text.toString().toIntOrNull()?.let { speed ->
-                    speed * 1024
-                } ?: 0
-
-                viewModel.setDownloadSpeedLimit(serverId, torrentHash, limit)
-            }
-            setNegativeButton()
-        }
-    }
-
-    private fun showUploadSpeedLimitDialog() {
-        showDialog(DialogSpeedLimitUploadBinding::inflate) { binding ->
-            val currentLimit = viewModel.torrent.value?.uploadSpeedLimit?.let { speed ->
-                speed / 1024
-            }
-            binding.inputLayoutLimit.setTextWithoutAnimation(currentLimit?.toString())
-
-            setTitle(R.string.torrent_upspeed_limit_dialog_title)
-            setPositiveButton { _, _ ->
-                val limit = binding.editLimit.text.toString().toIntOrNull()?.let { speed ->
-                    speed * 1024
-                } ?: 0
-
-                viewModel.setUploadSpeedLimit(serverId, torrentHash, limit)
-            }
-            setNegativeButton()
         }
     }
 

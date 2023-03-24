@@ -24,6 +24,8 @@
     <color name="selected_card_background">@color/gray</color>
     <color name="rss_read_article_background">#E5E5E5</color>
 
+    <color name="card_border">@color/gray</color>
+
     <color name="torrent_state_downloading">#1A7F37</color>
     <color name="torrent_state_stalled_downloading">#2DA44E</color>
     <color name="torrent_state_stalled_uploading">#0969DA</color>

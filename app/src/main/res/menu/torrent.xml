@@ -28,6 +28,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_options"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_options"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_category"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_category"
@@ -40,21 +46,9 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/menu_share_limit"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_share_limit"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/menu_rename"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_rename"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_location"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_location"
         app:showAsAction="never" />
 
     <item
@@ -67,39 +61,6 @@
         android:id="@+id/menu_reannounce"
         android:orderInCategory="1"
         android:title="@string/torrent_menu_reannounce"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_dlspeed_limit"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_dlspeed_limit"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_upspeed_limit"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_upspeed_limit"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_sequential_download"
-        android:checkable="true"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_sequential_download"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_prioritize_first_last_pieces"
-        android:checkable="true"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_prioritize_first_last_pieces"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/menu_automatic_torrent_management"
-        android:checkable="true"
-        android:orderInCategory="1"
-        android:title="@string/torrent_menu_automatic_torrent_management"
         app:showAsAction="never" />
 
     <item
