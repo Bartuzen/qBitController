@@ -1,8 +1,12 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
@@ -10,6 +14,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,11 +22,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
+@SuppressLint("StaticFieldLeak")
 class TorrentOverviewViewModel @Inject constructor(
     settingsManager: SettingsManager,
+    @ApplicationContext private val context: Context,
     private val repository: TorrentOverviewRepository,
     private val notifier: TorrentDownloadedNotifier
 ) : ViewModel() {
@@ -304,6 +312,32 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
+    fun exportTorrent(serverId: Int, torrentHash: String, fileUri: Uri) = viewModelScope.launch {
+        when (val result = repository.exportTorrent(serverId, torrentHash)) {
+            is RequestResult.Success -> {
+                withContext(Dispatchers.IO) {
+                    context.contentResolver.openOutputStream(fileUri).use { outputStream ->
+                        if (outputStream != null) {
+                            result.data.byteStream().use { inputStream ->
+                                inputStream.copyTo(outputStream)
+                            }
+                        }
+                    }
+                }
+                eventChannel.send(Event.TorrentExported)
+            }
+            is RequestResult.Error -> {
+                if (result is RequestResult.Error.ApiError && result.code == 409) {
+                    eventChannel.send(Event.TorrentExportError)
+                } else if (result is RequestResult.Error.ApiError && result.code == 404) {
+                    eventChannel.send(Event.TorrentNotFound)
+                } else {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object TorrentNotFound : Event()
@@ -318,5 +352,7 @@ class TorrentOverviewViewModel @Inject constructor(
         data class SuperSeedingChanged(val isEnabled: Boolean) : Event()
         object CategoryUpdated : Event()
         object TagsUpdated : Event()
+        object TorrentExported : Event()
+        object TorrentExportError : Event()
     }
 }

@@ -239,6 +239,7 @@
     <string name="torrent_menu_copy_hash_v1">Hash v1</string>
     <string name="torrent_menu_copy_hash_v2">Hash v2</string>
     <string name="torrent_menu_copy_magnet_uri">Magnet URI</string>
+    <string name="torrent_menu_export">Export .torrent</string>
 
     <string name="torrent_enable_force_start_success">Force start enabled successfully.</string>
     <string name="torrent_disable_force_start_success">Force start disabled successfully.</string>
@@ -272,6 +273,8 @@
     <string name="torrent_rename_name_cannot_be_blank">Torrent name cannot be blank.</string>
     <string name="torrent_location_cannot_be_blank">Location cannot be blank.</string>
     <string name="torrent_option_update_success">Torrent options updated successfully.</string>
+    <string name="torrent_export_success">Torrent exported successfully.</string>
+    <string name="torrent_export_error">Couldn\'t export torrent.</string>
 
     <string name="torrent_share_limit_global">Use global share limit</string>
     <string name="torrent_share_limit_disable">Disable share limit</string>

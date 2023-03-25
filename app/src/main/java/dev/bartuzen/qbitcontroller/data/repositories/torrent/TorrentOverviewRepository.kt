@@ -92,4 +92,8 @@ class TorrentOverviewRepository @Inject constructor(
         requestManager.request(serverId) { service ->
             service.setShareLimit(hash, ratioLimit, seedingTimeLimit)
         }
+
+    suspend fun exportTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
+        service.exportTorrent(hash)
+    }
 }

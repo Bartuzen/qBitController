@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
@@ -65,6 +66,13 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
+
+    val exportActivity =
+        registerForActivityResult(ActivityResultContracts.CreateDocument("application/x-bittorrent")) { uri ->
+            if (uri != null) {
+                viewModel.exportTorrent(serverId, torrentHash, uri)
+            }
+        }
 
     constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
@@ -184,6 +192,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             if (torrent != null) {
                                 requireContext().copyToClipboard(torrent.magnetUri)
                             }
+                        }
+                        R.id.menu_export -> {
+                            val torrentName = viewModel.torrent.value?.name ?: return true
+                            exportActivity.launch("$torrentName.torrent")
                         }
                         else -> return false
                     }
@@ -480,6 +492,12 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 TorrentOverviewViewModel.Event.TagsUpdated -> {
                     showSnackbar(R.string.torrent_tags_update_success)
                     viewModel.loadTorrent(serverId, torrentHash)
+                }
+                TorrentOverviewViewModel.Event.TorrentExported -> {
+                    showSnackbar(R.string.torrent_export_success)
+                }
+                TorrentOverviewViewModel.Event.TorrentExportError -> {
+                    showSnackbar(R.string.torrent_export_error)
                 }
             }
         }

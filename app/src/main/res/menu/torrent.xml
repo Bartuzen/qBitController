@@ -105,4 +105,10 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/menu_export"
+        android:orderInCategory="1"
+        android:title="@string/torrent_menu_export"
+        app:showAsAction="never" />
+
 </menu>

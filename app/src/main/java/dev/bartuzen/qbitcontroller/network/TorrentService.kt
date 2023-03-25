@@ -10,6 +10,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentPeers
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -18,6 +19,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Query
+import retrofit2.http.Streaming
 
 interface TorrentService {
     @FormUrlEncoded
@@ -251,6 +253,10 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/removeTags")
     suspend fun removeTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
+
+    @Streaming
+    @GET("api/v2/torrents/export")
+    suspend fun exportTorrent(@Query("hash") hash: String): Response<ResponseBody>
 
     @GET("api/v2/sync/torrentPeers")
     suspend fun getPeers(@Query("hash") hash: String): Response<TorrentPeers>
