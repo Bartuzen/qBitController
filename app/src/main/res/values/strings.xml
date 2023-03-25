@@ -476,6 +476,7 @@
     <string name="torrent_add_speed_limit_too_big">Speed limit is too big.</string>
     <string name="torrent_add_success">Torrent added successfully.</string>
     <string name="torrent_add_error">Couldn\'t add torrent.</string>
+    <string name="torrent_add_invalid_file">Torrent file is invalid.</string>
 
     <string name="rss_title">RSS</string>
     <string name="rss_date">Date: %1$s</string>

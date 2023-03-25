@@ -128,7 +128,11 @@ class AddTorrentViewModel @Inject constructor(
                     }
                 }
                 is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+                    if (result is RequestResult.Error.ApiError && result.code == 415) {
+                        eventChannel.send(Event.InvalidTorrentFile)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
                 }
             }
             _isCreating.value = false
@@ -220,6 +224,7 @@ class AddTorrentViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object FileNotFound : Event()
+        object InvalidTorrentFile : Event()
         object TorrentAddError : Event()
         object TorrentAdded : Event()
     }
