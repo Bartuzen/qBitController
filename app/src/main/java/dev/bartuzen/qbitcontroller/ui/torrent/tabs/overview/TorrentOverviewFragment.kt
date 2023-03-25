@@ -567,7 +567,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     null
                 }
                 val savePath = binding.inputLayoutSavePath.text.let { savePath ->
-                    if (savePath.isNotBlank() && torrent.savePath != savePath) {
+                    if (!binding.checkboxAutoTmm.isChecked && savePath.isNotBlank() && torrent.savePath != savePath) {
                         savePath
                     } else {
                         null
