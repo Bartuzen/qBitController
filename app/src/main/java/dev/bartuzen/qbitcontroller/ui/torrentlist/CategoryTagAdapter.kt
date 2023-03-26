@@ -143,7 +143,7 @@ class CategoryTagAdapter(
 
             val icon = if (isCategory) R.drawable.ic_folder else R.drawable.ic_tag
 
-            binding.textCategoryTag.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
+            binding.textCategoryTag.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0)
 
             val name = when (categoryTag) {
                 is CategoryTag.All -> {
