@@ -3,35 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        tools:layout_height="1dp" />
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:id="@+id/text_title"
         android:padding="8dp"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:id="@+id/image_collapse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_collapse" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/torrent_list_trackers_title" />
-
-    </LinearLayout>
+        android:drawablePadding="8dp"
+        android:text="@string/torrent_list_trackers_title"
+        tools:drawableStart="@drawable/ic_collapse" />
 
 </LinearLayout>

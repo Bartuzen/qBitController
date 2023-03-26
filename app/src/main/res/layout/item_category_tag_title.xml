@@ -3,34 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:listDivider" />
+        android:background="?android:listDivider"
+        tools:layout_height="1dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/image_collapse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_collapse" />
+        android:padding="8dp"
+        tools:ignore="UseCompoundDrawables">
 
         <TextView
             android:id="@+id/text_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_weight="1"
+            android:drawablePadding="8dp"
+            tools:drawableStartCompat="@drawable/ic_collapse"
             tools:text="Category/Tag" />
 
         <ImageView

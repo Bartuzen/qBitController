@@ -115,16 +115,16 @@ class TorrentFilterAdapter(
 
     inner class TitleViewHolder(private val binding: ItemTorrentStatusTitleBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.imageCollapse.setOnClickListener {
+            binding.root.setOnClickListener {
                 isCollapsed = !isCollapsed
             }
         }
 
         fun bind() {
             if (isCollapsed) {
-                binding.imageCollapse.setImageResource(R.drawable.ic_expand)
+                binding.textTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_expand, 0, 0, 0)
             } else {
-                binding.imageCollapse.setImageResource(R.drawable.ic_collapse)
+                binding.textTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_collapse, 0, 0, 0)
             }
         }
     }

@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/text_title"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:drawablePadding="8dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="8dp"
-    tools:ignore="UseCompoundDrawables">
-
-    <ImageView
-        android:id="@+id/image_collapse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/ic_collapse" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/torrent_list_status" />
-
-</LinearLayout>
+    android:text="@string/torrent_list_status"
+    tools:drawableStart="@drawable/ic_collapse" />
