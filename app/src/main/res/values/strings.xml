@@ -265,6 +265,8 @@
     <string name="torrent_auto_tmm">Automatic Torrent Management</string>
     <string name="torrent_option_speed_limit">Torrent speed limits</string>
     <string name="torrent_option_share_limit">Torrent share limits</string>
+    <string name="torrent_option_download_path_enable">Use another path for incomplete torrent</string>
+    <string name="torrent_option_download_path">Download Path</string>
 
     <string name="torrent_category_update_success">Category updated successfully.</string>
     <string name="torrent_tags_update_success">Tags updated successfully.</string>

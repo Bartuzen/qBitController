@@ -151,6 +151,7 @@ class TorrentOverviewViewModel @Inject constructor(
         torrentHash: String,
         autoTmm: Boolean?,
         savePath: String?,
+        downloadPath: String?,
         toggleSequentialDownload: Boolean,
         togglePrioritizeFirstLastPiece: Boolean,
         uploadSpeedLimit: Int?,
@@ -162,6 +163,9 @@ class TorrentOverviewViewModel @Inject constructor(
 
         if (autoTmm != null) {
             requests.add { repository.setAutomaticTorrentManagement(serverId, torrentHash, autoTmm) }
+        }
+        if (downloadPath != null) {
+            requests.add { repository.setDownloadPath(serverId, torrentHash, downloadPath) }
         }
         if (savePath != null) {
             requests.add { repository.setLocation(serverId, torrentHash, savePath) }
@@ -185,8 +189,14 @@ class TorrentOverviewViewModel @Inject constructor(
         if (requests.isEmpty()) {
             return@launch
         }
+
+        // setting download path when auto TMM is enabled has no effect, so we need to set auto TMM first
+        val delayDownloadPathRequest = autoTmm != null && downloadPath != null
+
         try {
-            requests.map { request ->
+            requests.filterIndexed { index, _ ->
+                !delayDownloadPathRequest || index != -1
+            }.map { request ->
                 launch {
                     val result = request()
                     if (result is RequestResult.Error) {
@@ -195,6 +205,15 @@ class TorrentOverviewViewModel @Inject constructor(
                     }
                 }
             }.joinAll()
+            if (delayDownloadPathRequest) {
+                launch {
+                    val result = requests[1]()
+                    if (result is RequestResult.Error) {
+                        eventChannel.send(Event.Error(result))
+                        throw CancellationException()
+                    }
+                }
+            }
         } catch (_: CancellationException) {
             return@launch
         }

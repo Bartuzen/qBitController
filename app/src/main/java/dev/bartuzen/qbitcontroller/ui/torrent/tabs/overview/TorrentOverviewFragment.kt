@@ -518,9 +518,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             val torrent = viewModel.torrent.value ?: return@showDialog
 
             binding.checkboxAutoTmm.isChecked = torrent.isAutomaticTorrentManagementEnabled
+            binding.checkboxDownloadPath.isChecked = torrent.downloadPath != null
             binding.checkboxSequentialDownload.isChecked = torrent.isSequentialDownloadEnabled
             binding.checkboxPrioritizeFirstLastPieces.isChecked = torrent.isFirstLastPiecesPrioritized
             binding.inputLayoutSavePath.setTextWithoutAnimation(torrent.savePath)
+            binding.inputLayoutDownloadPath.setTextWithoutAnimation(torrent.downloadPath)
             binding.inputLayoutUpSpeedLimit.setTextWithoutAnimation((torrent.uploadSpeedLimit / 1024).toString())
             binding.inputLayoutDlSpeedLimit.setTextWithoutAnimation((torrent.downloadSpeedLimit / 1024).toString())
 
@@ -550,8 +552,17 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             }
 
             binding.inputLayoutSavePath.isEnabled = !torrent.isAutomaticTorrentManagementEnabled
+            binding.checkboxDownloadPath.isEnabled = !torrent.isAutomaticTorrentManagementEnabled
             binding.checkboxAutoTmm.addOnCheckedStateChangedListener { _, state ->
+                binding.checkboxDownloadPath.isEnabled = state != MaterialCheckBox.STATE_CHECKED
                 binding.inputLayoutSavePath.isEnabled = state != MaterialCheckBox.STATE_CHECKED
+                binding.inputLayoutDownloadPath.isEnabled =
+                    state != MaterialCheckBox.STATE_CHECKED && binding.checkboxDownloadPath.isChecked
+            }
+
+            binding.inputLayoutDownloadPath.isEnabled = torrent.downloadPath != null
+            binding.checkboxDownloadPath.addOnCheckedStateChangedListener { _, state ->
+                binding.inputLayoutDownloadPath.isEnabled = state == MaterialCheckBox.STATE_CHECKED
             }
 
             binding.radioLimitCustom.setOnCheckedChangeListener { _, isChecked ->
@@ -569,6 +580,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 val savePath = binding.inputLayoutSavePath.text.let { savePath ->
                     if (!binding.checkboxAutoTmm.isChecked && savePath.isNotBlank() && torrent.savePath != savePath) {
                         savePath
+                    } else {
+                        null
+                    }
+                }
+                val downloadPath = binding.inputLayoutDownloadPath.text.let { downloadPath ->
+                    val oldPath = torrent.downloadPath ?: ""
+                    val newPath = if (binding.checkboxDownloadPath.isChecked) downloadPath else ""
+                    if (!binding.checkboxAutoTmm.isChecked && oldPath != newPath) {
+                        newPath
                     } else {
                         null
                     }
@@ -628,6 +648,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     torrentHash = torrentHash,
                     autoTmm = autoTmm,
                     savePath = savePath,
+                    downloadPath = downloadPath,
                     toggleSequentialDownload = toggleSequentialDownload,
                     togglePrioritizeFirstLastPiece = togglePrioritizeFirstLastPiece,
                     uploadSpeedLimit = uploadSpeedLimit,

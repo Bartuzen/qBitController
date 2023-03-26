@@ -76,6 +76,10 @@ class TorrentOverviewRepository @Inject constructor(
         service.setLocation(hash, location)
     }
 
+    suspend fun setDownloadPath(serverId: Int, hash: String, path: String) = requestManager.request(serverId) { service ->
+        service.setDownloadPath(hash, path)
+    }
+
     suspend fun setCategory(serverId: Int, hash: String, category: String?) = requestManager.request(serverId) { service ->
         service.setCategory(hash, category ?: "")
     }

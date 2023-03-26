@@ -78,6 +78,10 @@ data class Torrent(
     @JsonProperty("save_path")
     val savePath: String?,
 
+    @JsonProperty("download_path")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
+    val downloadPath: String?,
+
     @JsonProperty("category")
     @JsonDeserialize(using = NullableStringDeserializer::class)
     val category: String?,
