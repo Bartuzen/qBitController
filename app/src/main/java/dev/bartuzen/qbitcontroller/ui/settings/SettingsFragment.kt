@@ -99,7 +99,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     initSettings()
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        if (!shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
                     }
                 }
                 AddEditServerFragment.Result.EDITED -> {
