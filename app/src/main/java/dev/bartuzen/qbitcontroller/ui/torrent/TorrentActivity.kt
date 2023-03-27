@@ -14,6 +14,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragm
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
+import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -57,7 +58,7 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 5
+            override fun getItemCount() = 6
 
             override fun createFragment(position: Int) = when (position) {
                 0 -> TorrentOverviewFragment(serverId, torrentHash)
@@ -65,6 +66,7 @@ class TorrentActivity : AppCompatActivity() {
                 2 -> TorrentPiecesFragment(serverId, torrentHash)
                 3 -> TorrentTrackersFragment(serverId, torrentHash)
                 4 -> TorrentPeersFragment(serverId, torrentHash)
+                5 -> TorrentWebSeedsFragment(serverId, torrentHash)
                 else -> Fragment()
             }
         }.apply {
@@ -78,6 +80,7 @@ class TorrentActivity : AppCompatActivity() {
                 2 -> R.string.tab_torrent_pieces
                 3 -> R.string.tab_torrent_trackers
                 4 -> R.string.tab_torrent_peers
+                5 -> R.string.tab_torrent_web_seeds
                 else -> return@TabLayoutMediator
             }
 

@@ -9,6 +9,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentPeers
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
+import dev.bartuzen.qbitcontroller.model.TorrentWebSeed
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -80,6 +81,9 @@ interface TorrentService {
 
     @GET("api/v2/torrents/trackers")
     suspend fun getTorrentTrackers(@Query("hash") hash: String): Response<List<TorrentTracker>>
+
+    @GET("api/v2/torrents/webseeds")
+    suspend fun getWebSeeds(@Query("hash") hash: String): Response<List<TorrentWebSeed>>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/addTrackers")

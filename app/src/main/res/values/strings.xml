@@ -31,6 +31,7 @@
     <string name="tab_torrent_pieces">Pieces</string>
     <string name="tab_torrent_trackers">Trackers</string>
     <string name="tab_torrent_peers">Peers</string>
+    <string name="tab_torrent_web_seeds">HTTP Sources</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
