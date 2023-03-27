@@ -44,13 +44,9 @@ class MainDataDeserializer : JsonDeserializer<MainData>() {
 
         val formattedTrackers = mutableMapOf<String, MutableList<String>>()
         trackers.forEach { (tracker, hashes) ->
-            val formattedTracker = try {
-                PublicSuffixDatabase.get().getEffectiveTldPlusOne(
-                    URI.create(tracker).host ?: throw IllegalStateException()
-                )
-            } catch (_: IllegalStateException) {
-                tracker
-            }
+            val formattedTracker = URI.create(tracker).host?.let { host ->
+                PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
+            } ?: tracker
 
             val list = formattedTrackers.getOrPut(formattedTracker) { mutableListOf() }
             list.addAll(hashes)
