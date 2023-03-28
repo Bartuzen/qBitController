@@ -51,6 +51,7 @@ import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
+import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -410,10 +411,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentOverviewViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error), view = requireActivity().view)
                 }
                 TorrentOverviewViewModel.Event.TorrentNotFound -> {
-                    showSnackbar(R.string.torrent_error_not_found)
+                    showSnackbar(R.string.torrent_error_not_found, view = requireActivity().view)
                 }
                 TorrentOverviewViewModel.Event.TorrentDeleted -> {
                     val intent = Intent().apply {
@@ -423,7 +424,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     requireActivity().finish()
                 }
                 TorrentOverviewViewModel.Event.TorrentPaused -> {
-                    showSnackbar(R.string.torrent_paused_success)
+                    showSnackbar(R.string.torrent_paused_success, view = requireActivity().view)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent pauses the torrent
@@ -431,7 +432,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     }
                 }
                 TorrentOverviewViewModel.Event.TorrentResumed -> {
-                    showSnackbar(R.string.torrent_resumed_success)
+                    showSnackbar(R.string.torrent_resumed_success, view = requireActivity().view)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent resumes the torrent
@@ -439,11 +440,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     }
                 }
                 TorrentOverviewViewModel.Event.OptionsUpdated -> {
-                    showSnackbar(R.string.torrent_option_update_success)
+                    showSnackbar(R.string.torrent_option_update_success, view = requireActivity().view)
                     viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.TorrentRechecked -> {
-                    showSnackbar(R.string.torrent_recheck_success)
+                    showSnackbar(R.string.torrent_recheck_success, view = requireActivity().view)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent starts rechecking
@@ -451,10 +452,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     }
                 }
                 TorrentOverviewViewModel.Event.TorrentReannounced -> {
-                    showSnackbar(R.string.torrent_reannounce_success)
+                    showSnackbar(R.string.torrent_reannounce_success, view = requireActivity().view)
                 }
                 TorrentOverviewViewModel.Event.TorrentRenamed -> {
-                    showSnackbar(R.string.torrent_rename_success)
+                    showSnackbar(R.string.torrent_rename_success, view = requireActivity().view)
                     viewModel.loadTorrent(serverId, torrentHash)
                 }
                 is TorrentOverviewViewModel.Event.ForceStartChanged -> {
@@ -463,7 +464,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             R.string.torrent_enable_force_start_success
                         } else {
                             R.string.torrent_disable_force_start_success
-                        }
+                        },
+                        view = requireActivity().view
                     )
 
                     viewLifecycleOwner.lifecycleScope.launch {
@@ -477,7 +479,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             R.string.torrent_enable_super_seeding_success
                         } else {
                             R.string.torrent_disable_super_seeding_success
-                        }
+                        },
+                        view = requireActivity().view
                     )
 
                     viewLifecycleOwner.lifecycleScope.launch {
@@ -486,18 +489,18 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     }
                 }
                 TorrentOverviewViewModel.Event.CategoryUpdated -> {
-                    showSnackbar(R.string.torrent_category_update_success)
+                    showSnackbar(R.string.torrent_category_update_success, view = requireActivity().view)
                     viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.TagsUpdated -> {
-                    showSnackbar(R.string.torrent_tags_update_success)
+                    showSnackbar(R.string.torrent_tags_update_success, view = requireActivity().view)
                     viewModel.loadTorrent(serverId, torrentHash)
                 }
                 TorrentOverviewViewModel.Event.TorrentExported -> {
-                    showSnackbar(R.string.torrent_export_success)
+                    showSnackbar(R.string.torrent_export_success, view = requireActivity().view)
                 }
                 TorrentOverviewViewModel.Event.TorrentExportError -> {
-                    showSnackbar(R.string.torrent_export_error)
+                    showSnackbar(R.string.torrent_export_error, view = requireActivity().view)
                 }
             }
         }
@@ -694,7 +697,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     fun onCategoryDialogError(error: RequestResult.Error) {
-        showSnackbar(getErrorMessage(requireContext(), error))
+        showSnackbar(getErrorMessage(requireContext(), error), view = requireActivity().view)
     }
 
     fun onTagsDialogResult(selectedTags: List<String>) {
@@ -702,6 +705,6 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     fun onTagsDialogError(error: RequestResult.Error) {
-        showSnackbar(getErrorMessage(requireContext(), error))
+        showSnackbar(getErrorMessage(requireContext(), error), view = requireActivity().view)
     }
 }

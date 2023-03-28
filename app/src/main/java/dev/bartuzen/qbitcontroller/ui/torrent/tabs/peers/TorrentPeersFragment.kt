@@ -201,20 +201,20 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentPeersViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error), view = requireActivity().view)
                 }
                 TorrentPeersViewModel.Event.TorrentNotFound -> {
-                    showSnackbar(R.string.torrent_error_not_found)
+                    showSnackbar(R.string.torrent_error_not_found, view = requireActivity().view)
                 }
                 TorrentPeersViewModel.Event.PeersInvalid -> {
-                    showSnackbar(R.string.torrent_peers_invalid)
+                    showSnackbar(R.string.torrent_peers_invalid, view = requireActivity().view)
                 }
                 TorrentPeersViewModel.Event.PeersBanned -> {
-                    showSnackbar(R.string.torrent_peers_banned)
+                    showSnackbar(R.string.torrent_peers_banned, view = requireActivity().view)
                     viewModel.loadPeers(serverId, torrentHash)
                 }
                 TorrentPeersViewModel.Event.PeersAdded -> {
-                    showSnackbar(R.string.torrent_peers_added)
+                    showSnackbar(R.string.torrent_peers_added, view = requireActivity().view)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent adds the peers

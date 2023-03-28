@@ -245,24 +245,24 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentFilesViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error), view = requireActivity().view)
                 }
                 TorrentFilesViewModel.Event.TorrentNotFound -> {
-                    showSnackbar(R.string.torrent_error_not_found)
+                    showSnackbar(R.string.torrent_error_not_found, view = requireActivity().view)
                 }
                 TorrentFilesViewModel.Event.PathIsInvalidOrInUse -> {
-                    showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use)
+                    showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use, view = requireActivity().view)
                 }
                 TorrentFilesViewModel.Event.FilePriorityUpdated -> {
-                    showSnackbar(R.string.torrent_files_priority_update_success)
+                    showSnackbar(R.string.torrent_files_priority_update_success, view = requireActivity().view)
                     viewModel.loadFiles(serverId, torrentHash)
                 }
                 TorrentFilesViewModel.Event.FileRenamed -> {
-                    showSnackbar(R.string.torrent_files_file_renamed_success)
+                    showSnackbar(R.string.torrent_files_file_renamed_success, view = requireActivity().view)
                     viewModel.loadFiles(serverId, torrentHash)
                 }
                 TorrentFilesViewModel.Event.FolderRenamed -> {
-                    showSnackbar(R.string.torrent_files_folder_renamed_success)
+                    showSnackbar(R.string.torrent_files_folder_renamed_success, view = requireActivity().view)
                     viewModel.loadFiles(serverId, torrentHash)
                 }
             }

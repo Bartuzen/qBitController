@@ -20,6 +20,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toDp
 import dev.bartuzen.qbitcontroller.utils.toPx
+import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -140,10 +141,10 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentPiecesViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error), view = requireActivity().view)
                 }
                 TorrentPiecesViewModel.Event.TorrentNotFound -> {
-                    showSnackbar(R.string.torrent_error_not_found)
+                    showSnackbar(R.string.torrent_error_not_found, view = requireActivity().view)
                 }
             }
         }

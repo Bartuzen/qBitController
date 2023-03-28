@@ -101,7 +101,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                                     }
                                 )
                             } else {
-                                showSnackbar(R.string.torrent_trackers_cannot_delete_default)
+                                showSnackbar(R.string.torrent_trackers_cannot_delete_default, view = requireActivity().view)
                                 finishSelection()
                                 actionMode?.finish()
                             }
@@ -118,7 +118,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                                     }
                                 )
                             } else {
-                                showSnackbar(R.string.torrent_trackers_cannot_edit_default)
+                                showSnackbar(R.string.torrent_trackers_cannot_edit_default, view = requireActivity().view)
                                 finishSelection()
                                 actionMode?.finish()
                             }
@@ -218,21 +218,21 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
             when (event) {
                 is TorrentTrackersViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                    showSnackbar(getErrorMessage(requireContext(), event.error), view = requireActivity().view)
                 }
                 TorrentTrackersViewModel.Event.TorrentNotFound -> {
-                    showSnackbar(R.string.torrent_error_not_found)
+                    showSnackbar(R.string.torrent_error_not_found, view = requireActivity().view)
                 }
                 TorrentTrackersViewModel.Event.TrackersAdded -> {
-                    showSnackbar(R.string.torrent_trackers_added)
+                    showSnackbar(R.string.torrent_trackers_added, view = requireActivity().view)
                     viewModel.loadTrackers(serverId, torrentHash)
                 }
                 TorrentTrackersViewModel.Event.TrackersDeleted -> {
-                    showSnackbar(R.string.torrent_trackers_deleted)
+                    showSnackbar(R.string.torrent_trackers_deleted, view = requireActivity().view)
                     viewModel.loadTrackers(serverId, torrentHash)
                 }
                 TorrentTrackersViewModel.Event.TrackerEdited -> {
-                    showSnackbar(R.string.torrent_trackers_edited)
+                    showSnackbar(R.string.torrent_trackers_edited, view = requireActivity().view)
                     viewModel.loadTrackers(serverId, torrentHash)
                 }
             }
