@@ -1,0 +1,7 @@
+- Added torrent downloaded notification
+- Added trackers to torrent list drawer
+- The available disk space is now displayed above the torrent list
+- The fields on the torrent list drawer can now be collapsed
+- Fixed some minor crashes
+
+Check GitHub release for all changes.
