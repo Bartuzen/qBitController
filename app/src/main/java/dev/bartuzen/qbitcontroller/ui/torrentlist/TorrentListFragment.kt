@@ -489,10 +489,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         viewModel.filteredTorrentList.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { torrentList ->
             val layoutManager = binding.recyclerTorrentList.layoutManager as LinearLayoutManager
+            val position = layoutManager.findFirstVisibleItemPosition()
+            val offset = layoutManager.findViewByPosition(position)?.top
 
-            val scrollOffset = layoutManager.findFirstVisibleItemPosition()
             adapter.submitList(torrentList) {
-                layoutManager.scrollToPositionWithOffset(scrollOffset, 0)
+                if (offset != null) {
+                    layoutManager.scrollToPositionWithOffset(position, offset)
+                }
             }
         }
 
