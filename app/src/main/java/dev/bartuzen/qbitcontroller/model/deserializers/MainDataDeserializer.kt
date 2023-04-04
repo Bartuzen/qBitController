@@ -48,8 +48,8 @@ class MainDataDeserializer : JsonDeserializer<MainData>() {
                 val host = URI.create(tracker).host ?: throw IllegalArgumentException()
                 PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
             } catch (_: IllegalArgumentException) {
-                tracker
-            }
+                null
+            } ?: tracker
 
             val list = formattedTrackers.getOrPut(formattedTracker) { mutableListOf() }
             list.addAll(hashes)
