@@ -45,6 +45,7 @@ enum class TorrentSort {
     PRIORITY,
     ETA,
     SIZE,
+    RATIO,
     PROGRESS,
     CONNECTED_SEEDS,
     TOTAL_SEEDS,

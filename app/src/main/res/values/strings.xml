@@ -50,6 +50,7 @@
     <string name="torrent_sort_eta">ETA</string>
     <string name="torrent_sort_size">Size</string>
     <string name="torrent_sort_progress">Progress</string>
+    <string name="torrent_sort_ratio">Ratio</string>
     <string name="torrent_sort_connected_seeds">Connected Seeds</string>
     <string name="torrent_sort_total_seeds">Total Seeds</string>
     <string name="torrent_sort_connected_leeches">Connected Leeches</string>

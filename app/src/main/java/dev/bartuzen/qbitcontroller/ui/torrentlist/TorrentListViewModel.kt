@@ -113,6 +113,11 @@ class TorrentListViewModel @Inject constructor(
                                 .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
                                 .thenBy(Torrent::hash)
                         }
+                        TorrentSort.RATIO -> {
+                            compareBy(Torrent::ratio)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
                         TorrentSort.CONNECTED_SEEDS -> {
                             compareBy(Torrent::connectedSeeds)
                                 .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)

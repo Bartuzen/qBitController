@@ -74,6 +74,9 @@
                     android:id="@+id/menu_sort_progress"
                     android:title="@string/torrent_sort_progress" />
                 <item
+                    android:id="@+id/menu_sort_ratio"
+                    android:title="@string/torrent_sort_ratio" />
+                <item
                     android:id="@+id/menu_sort_connected_seeds"
                     android:title="@string/torrent_sort_connected_seeds" />
                 <item

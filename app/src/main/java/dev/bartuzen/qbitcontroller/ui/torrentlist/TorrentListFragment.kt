@@ -126,6 +126,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             TorrentSort.ETA -> R.id.menu_sort_eta
                             TorrentSort.SIZE -> R.id.menu_sort_size
                             TorrentSort.PROGRESS -> R.id.menu_sort_progress
+                            TorrentSort.RATIO -> R.id.menu_sort_ratio
                             TorrentSort.CONNECTED_SEEDS -> R.id.menu_sort_connected_seeds
                             TorrentSort.TOTAL_SEEDS -> R.id.menu_sort_total_seeds
                             TorrentSort.CONNECTED_LEECHES -> R.id.menu_sort_connected_leeches
@@ -227,6 +228,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_sort_progress -> {
                             viewModel.setTorrentSort(TorrentSort.PROGRESS)
+                        }
+                        R.id.menu_sort_ratio -> {
+                            viewModel.setTorrentSort(TorrentSort.RATIO)
                         }
                         R.id.menu_sort_connected_seeds -> {
                             viewModel.setTorrentSort(TorrentSort.CONNECTED_SEEDS)
