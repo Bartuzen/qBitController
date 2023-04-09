@@ -1,0 +1,6 @@
+- Added option to sort torrents by ratio
+- Fixed incorrect scroll behavior on torrent list
+- Fixed some trackers throwing exceptions when they can't be parsed
+- Fixed priority icons being the same color as background in light theme
+
+Check GitHub release for all changes.
