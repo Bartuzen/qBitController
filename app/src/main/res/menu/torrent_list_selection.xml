@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
         android:id="@+id/menu_pause"
@@ -26,26 +27,34 @@
         android:title="@string/menu_priority"
         app:showAsAction="ifRoom">
 
-        <menu>
+        <menu tools:ignore="UnusedAttribute">
             <item
                 android:id="@+id/menu_priority_maximize"
                 android:icon="@drawable/ic_priority_maximize"
-                android:title="@string/menu_priority_maximize" />
+                android:iconTint="@color/color_on_secondary"
+                android:title="@string/menu_priority_maximize"
+                app:iconTint="@color/color_on_secondary" />
 
             <item
                 android:id="@+id/menu_priority_increase"
                 android:icon="@drawable/ic_priority_increase"
-                android:title="@string/menu_priority_increase" />
+                android:iconTint="@color/color_on_secondary"
+                android:title="@string/menu_priority_increase"
+                app:iconTint="@color/color_on_secondary" />
 
             <item
                 android:id="@+id/menu_priority_decrease"
                 android:icon="@drawable/ic_priority_decrease"
-                android:title="@string/menu_priority_decrease" />
+                android:iconTint="@color/color_on_secondary"
+                android:title="@string/menu_priority_decrease"
+                app:iconTint="@color/color_on_secondary" />
 
             <item
                 android:id="@+id/menu_priority_minimize"
                 android:icon="@drawable/ic_priority_minimize"
-                android:title="@string/menu_priority_minimize" />
+                android:iconTint="@color/color_on_secondary"
+                android:title="@string/menu_priority_minimize"
+                app:iconTint="@color/color_on_secondary" />
         </menu>
 
     </item>
