@@ -11,7 +11,7 @@ data class TorrentPeer(
     val connection: String,
 
     @JsonProperty("country_code")
-    val countryCode: String,
+    val countryCode: String?,
 
     @JsonProperty("ip")
     val ip: String,

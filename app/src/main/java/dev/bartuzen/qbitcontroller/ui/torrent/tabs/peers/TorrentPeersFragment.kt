@@ -230,10 +230,6 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             setTitle(getString(R.string.torrent_peers_ip_format, peer.ip, peer.port))
             setPositiveButton()
 
-            val countryName = Locale("", peer.countryCode).getDisplayCountry(
-                Locale(context.getString(R.string.language_code))
-            )
-
             val progress = peer.progress.let { progress ->
                 if (progress < 1) {
                     (progress * 100).floorToDecimal(1).toString()
@@ -258,7 +254,16 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             val flagsText = if (peer.flags.isNotEmpty()) "" else "-"
             val filesText = if (peer.files.isNotEmpty()) "" else "-"
 
-            binding.textCountry.text = getString(R.string.torrent_peers_details_country, countryName)
+            if (peer.countryCode != null) {
+                val countryName = Locale("", peer.countryCode).getDisplayCountry(
+                    Locale(context.getString(R.string.language_code))
+                )
+                binding.textCountry.text = getString(R.string.torrent_peers_details_country, countryName)
+                binding.textCountry.visibility = View.VISIBLE
+            } else {
+                binding.textCountry.visibility = View.GONE
+            }
+
             binding.textConnection.text = getString(R.string.torrent_peers_details_connection, peer.connection)
             binding.textFlags.text = getString(R.string.torrent_peers_details_flags, flagsText)
             binding.textClient.text = getString(R.string.torrent_peers_details_client, peer.client ?: "-")

@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.color.MaterialColors
@@ -43,10 +44,15 @@ class TorrentPeersAdapter : MultiSelectAdapter<TorrentPeer, String, TorrentPeers
 
             binding.textName.text = context.getString(R.string.torrent_peers_ip_format, peer.ip, peer.port)
 
-            val countryName = Locale("", peer.countryCode).getDisplayCountry(
-                Locale(context.getString(R.string.language_code))
-            )
-            binding.textCountry.text = context.getString(R.string.torrent_peers_country, countryName)
+            if (peer.countryCode != null) {
+                val countryName = Locale("", peer.countryCode).getDisplayCountry(
+                    Locale(context.getString(R.string.language_code))
+                )
+                binding.textCountry.text = context.getString(R.string.torrent_peers_country, countryName)
+                binding.textCountry.visibility = View.VISIBLE
+            } else {
+                binding.textCountry.visibility = View.GONE
+            }
 
             binding.textConnection.text = context.getString(R.string.torrent_peers_connection, peer.connection)
 
