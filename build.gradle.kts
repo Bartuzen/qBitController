@@ -2,7 +2,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("org.jmailen.kotlinter") version "3.14.0"
-    id("com.github.ben-manes.versions") version "0.45.0"
+    id("com.github.ben-manes.versions") version "0.46.0"
 }
 
 tasks.withType<DependencyUpdatesTask> {
@@ -28,7 +28,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.4.2")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.45")
 
         classpath("com.google.gms:google-services:4.3.15")

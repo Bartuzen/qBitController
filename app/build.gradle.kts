@@ -105,7 +105,7 @@ if (isFirebaseEnabled) {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -137,12 +137,12 @@ dependencies {
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.8")
+    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9")
 
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.2")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     val firebaseImplementation by configurations
-    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.2.3"))
+    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.4.0"))
     firebaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
     firebaseImplementation("com.google.firebase:firebase-analytics-ktx")
 }
