@@ -1,0 +1,3 @@
+- Fixed peer list failing to load when country resolving is disabled
+
+Check GitHub release for all changes.
