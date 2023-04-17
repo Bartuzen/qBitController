@@ -22,6 +22,12 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_plugin_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/menu_plugins"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_stats"
         android:icon="@drawable/ic_stats"
         android:title="@string/stats_menu_title"

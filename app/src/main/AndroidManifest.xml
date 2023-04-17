@@ -151,6 +151,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.log.LogActivity"
             android:exported="false" />
 

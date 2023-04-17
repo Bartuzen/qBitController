@@ -42,6 +42,7 @@ import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.log.LogActivity
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
+import dev.bartuzen.qbitcontroller.ui.search.SearchActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -196,6 +197,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         R.id.menu_rss -> {
                             val intent = Intent(requireActivity(), RssActivity::class.java).apply {
                                 putExtra(RssActivity.Extras.SERVER_ID, serverId)
+                            }
+                            startActivity(intent)
+                        }
+                        R.id.menu_plugin_search -> {
+                            val intent = Intent(requireActivity(), SearchActivity::class.java).apply {
+                                putExtra(SearchActivity.Extras.SERVER_ID, serverId)
                             }
                             startActivity(intent)
                         }

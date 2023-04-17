@@ -12,6 +12,7 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
     <string name="menu_rss">RSS</string>
+    <string name="menu_plugins">Plugins</string>
     <string name="menu_log">Execution Log</string>
     <string name="menu_select_all">Select All</string>
     <string name="menu_select_inverse">Select Inverse</string>
@@ -532,6 +533,21 @@
     <string name="rss_success_all_articles_mark_as_read">All articles marked as read successfully.</string>
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
+
+    <string name="search_start_query">Search Query</string>
+    <string name="search_start_category">Category</string>
+    <string name="search_start_category_all">All</string>
+    <string name="search_start_category_anime">Anime</string>
+    <string name="search_start_category_books">Books</string>
+    <string name="search_start_category_games">Games</string>
+    <string name="search_start_category_movies">Movies</string>
+    <string name="search_start_category_music">Music</string>
+    <string name="search_start_category_pictures">Pictures</string>
+    <string name="search_start_category_software">Software</string>
+    <string name="search_start_category_tv_shows">TV shows</string>
+    <string name="search_start_plugins_enabled">Enabled Plugins</string>
+    <string name="search_start_plugins_all">All Plugins</string>
+    <string name="search_start_plugins_select">Select Plugins</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>
