@@ -142,7 +142,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     val firebaseImplementation by configurations
-    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.4.0"))
+    firebaseImplementation(platform("com.google.firebase:firebase-bom:31.5.0"))
     firebaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
     firebaseImplementation("com.google.firebase:firebase-analytics-ktx")
 }
