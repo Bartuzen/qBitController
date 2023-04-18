@@ -15,8 +15,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchStartBinding
 import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultFragment
+import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
+import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
@@ -73,6 +76,14 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
 
         viewModel.plugins.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { plugins ->
             adapter.submitPlugins(plugins)
+        }
+
+        viewModel.eventFlow.launchAndCollectIn(this) { event ->
+            when (event) {
+                is SearchStartViewModel.Event.Error -> {
+                    showSnackbar(getErrorMessage(requireContext(), event.error))
+                }
+            }
         }
     }
 
