@@ -548,6 +548,10 @@
     <string name="search_start_plugins_enabled">Enabled Plugins</string>
     <string name="search_start_plugins_all">All Plugins</string>
     <string name="search_start_plugins_select">Select Plugins</string>
+    <string name="search_start">Start Search</string>
+    <string name="search_torrent_size">Size: %1$s</string>
+    <string name="search_torrent_seeders">Seeders: %1$s</string>
+    <string name="search_torrent_leechers">Leechers: %1$s</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>

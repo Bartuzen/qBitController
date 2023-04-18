@@ -5,6 +5,8 @@ import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Plugin
+import dev.bartuzen.qbitcontroller.model.Search
+import dev.bartuzen.qbitcontroller.model.StartSearch
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentPeers
@@ -304,6 +306,17 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/rss/removeItem")
     suspend fun removeItem(@Field("path") path: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/start")
+    suspend fun startSearch(
+        @Field("pattern") pattern: String,
+        @Field("category") category: String,
+        @Field("plugins") plugins: String
+    ): Response<StartSearch>
+
+    @GET("api/v2/search/results")
+    suspend fun getSearchResults(@Query("id") id: Int): Response<Search>
 
     @GET("api/v2/search/plugins")
     suspend fun getPlugins(): Response<List<Plugin>>

@@ -9,6 +9,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemPluginBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemSearchStartHeaderBinding
 import dev.bartuzen.qbitcontroller.model.Plugin
+import dev.bartuzen.qbitcontroller.utils.text
 
 class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var plugins: List<Plugin> = emptyList()
@@ -55,6 +56,28 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class HeaderViewHolder(val binding: ItemSearchStartHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+        val searchQuery get() = binding.inputLayoutQuery.text
+        val category
+            get() = when (val position = binding.dropdownCategory.position) {
+                0 -> "all"
+                1 -> "anime"
+                2 -> "books"
+                3 -> "games"
+                4 -> "movies"
+                5 -> "music"
+                6 -> "pictures"
+                7 -> "software"
+                8 -> "tv"
+                else -> throw IllegalStateException("Unknown category position: $position")
+            }
+        val plugins
+            get() = when (val id = binding.radioGroupPlugin.checkedRadioButtonId) {
+                R.id.radio_plugins_enabled -> "enabled"
+                R.id.radio_plugins_all -> "all"
+                R.id.radio_plugins_select -> selectedPlugins.joinToString("|") { it.name }
+                else -> throw IllegalStateException("Unknown id: $id")
+            }
+
         init {
             binding.radioGroupPlugin.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
