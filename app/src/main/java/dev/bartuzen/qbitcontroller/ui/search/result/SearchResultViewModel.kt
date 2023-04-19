@@ -79,6 +79,7 @@ class SearchResultViewModel @Inject constructor(
                     _searchResult.value = result.data
                     if (result.data.status == Search.Status.STOPPED) {
                         _isSearchContinuing.value = false
+                        eventChannel.send(Event.SearchStopped)
                     }
                 }
                 is RequestResult.Error -> {
@@ -99,5 +100,6 @@ class SearchResultViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object SearchStopped : Event()
     }
 }

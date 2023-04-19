@@ -112,6 +112,9 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 is SearchResultViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+                SearchResultViewModel.Event.SearchStopped -> {
+                    showSnackbar(R.string.search_stop_success)
+                }
             }
         }
     }
