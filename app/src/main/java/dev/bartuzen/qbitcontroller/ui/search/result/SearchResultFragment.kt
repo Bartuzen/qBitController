@@ -115,4 +115,9 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.deleteSearch(serverId)
+    }
 }

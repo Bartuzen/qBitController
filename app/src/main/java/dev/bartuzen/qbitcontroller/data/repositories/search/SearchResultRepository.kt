@@ -17,6 +17,10 @@ class SearchResultRepository @Inject constructor(
         service.stopSearch(searchId)
     }
 
+    suspend fun deleteSearch(serverId: Int, searchId: Int) = requestManager.request(serverId) { service ->
+        service.deleteSearch(searchId)
+    }
+
     suspend fun getSearchResults(serverId: Int, searchId: Int) = requestManager.request(serverId) { service ->
         service.getSearchResults(searchId)
     }

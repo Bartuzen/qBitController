@@ -319,6 +319,10 @@ interface TorrentService {
     @POST("api/v2/search/stop")
     suspend fun stopSearch(@Field("id") id: Int): Response<Unit>
 
+    @FormUrlEncoded
+    @POST("api/v2/search/delete")
+    suspend fun deleteSearch(@Field("id") id: Int): Response<Unit>
+
     @GET("api/v2/search/results")
     suspend fun getSearchResults(@Query("id") id: Int): Response<Search>
 

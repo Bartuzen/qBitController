@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchResultRepository
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,6 +65,11 @@ class SearchResultViewModel @Inject constructor(
                 eventChannel.send(Event.Error(result))
             }
         }
+    }
+
+    fun deleteSearch(serverId: Int) = CoroutineScope(Dispatchers.Main).launch {
+        val searchId = searchId ?: return@launch
+        repository.deleteSearch(serverId, searchId)
     }
 
     private fun updateResults(serverId: Int) = viewModelScope.launch {
