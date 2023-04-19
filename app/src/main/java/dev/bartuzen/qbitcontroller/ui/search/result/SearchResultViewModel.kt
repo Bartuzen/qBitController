@@ -47,6 +47,24 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
+    fun stopSearch(serverId: Int) = viewModelScope.launch {
+        if (!isSearchContinuing.value) {
+            return@launch
+        }
+        val searchId = searchId ?: return@launch
+
+        when (val result = repository.stopSearch(serverId, searchId)) {
+            is RequestResult.Success -> {
+                updateResults(serverId).invokeOnCompletion {
+                    _isSearchContinuing.value = false
+                }
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     private fun updateResults(serverId: Int) = viewModelScope.launch {
         searchId?.let { searchId ->
             when (val result = repository.getSearchResults(serverId, searchId)) {

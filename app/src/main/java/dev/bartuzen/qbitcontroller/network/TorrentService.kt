@@ -315,6 +315,10 @@ interface TorrentService {
         @Field("plugins") plugins: String
     ): Response<StartSearch>
 
+    @FormUrlEncoded
+    @POST("api/v2/search/stop")
+    suspend fun stopSearch(@Field("id") id: Int): Response<Unit>
+
     @GET("api/v2/search/results")
     suspend fun getSearchResults(@Query("id") id: Int): Response<Search>
 

@@ -13,6 +13,10 @@ class SearchResultRepository @Inject constructor(
             service.startSearch(pattern, category, plugins)
         }
 
+    suspend fun stopSearch(serverId: Int, searchId: Int) = requestManager.request(serverId) { service ->
+        service.stopSearch(searchId)
+    }
+
     suspend fun getSearchResults(serverId: Int, searchId: Int) = requestManager.request(serverId) { service ->
         service.getSearchResults(searchId)
     }

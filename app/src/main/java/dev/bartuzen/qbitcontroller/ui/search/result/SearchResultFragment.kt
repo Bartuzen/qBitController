@@ -2,10 +2,15 @@ package dev.bartuzen.qbitcontroller.ui.search.result
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -44,6 +49,26 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.search_result, menu)
+                }
+
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_search_stop -> {
+                            viewModel.stopSearch(serverId)
+                        }
+                        else -> return false
+                    }
+                    return true
+                }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
+        )
+
         if (savedInstanceState == null) {
             viewModel.startSearch(serverId, searchQuery, category, plugins)
         }

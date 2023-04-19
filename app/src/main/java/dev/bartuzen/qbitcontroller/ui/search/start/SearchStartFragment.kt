@@ -10,6 +10,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -51,7 +52,8 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
                     return true
                 }
             },
-            viewLifecycleOwner
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
         )
 
         val adapter = SearchStartAdapter()
