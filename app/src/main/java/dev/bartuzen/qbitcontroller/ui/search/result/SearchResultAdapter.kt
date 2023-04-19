@@ -12,7 +12,9 @@ import okhttp3.internal.Util.verifyAsIpAddress
 import okhttp3.internal.publicsuffix.PublicSuffixDatabase
 import java.net.URI
 
-class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
+class SearchResultAdapter(
+    private val onClick: (searchResult: Search.Result) -> Unit
+) : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
     private var results: List<Search.Result> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
@@ -32,6 +34,12 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
     }
 
     inner class ViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                onClick(results[bindingAdapterPosition])
+            }
+        }
+
         fun bind(result: Search.Result) {
             val context = binding.root.context
 

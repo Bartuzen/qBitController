@@ -1,6 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.search.result
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,9 +20,12 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchResultBinding
+import dev.bartuzen.qbitcontroller.model.Search
+import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.cancel
@@ -73,7 +79,11 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             viewModel.startSearch(serverId, searchQuery, category, plugins)
         }
 
-        val adapter = SearchResultAdapter()
+        val adapter = SearchResultAdapter(
+            onClick = { searchResult ->
+                showSearchResultDialog(searchResult)
+            }
+        )
         binding.recyclerTorrents.adapter = adapter
         binding.recyclerTorrents.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
@@ -114,6 +124,27 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 }
                 SearchResultViewModel.Event.SearchStopped -> {
                     showSnackbar(R.string.search_stop_success)
+                }
+            }
+        }
+    }
+
+    private fun showSearchResultDialog(searchResult: Search.Result) {
+        showDialog {
+            setTitle(searchResult.fileName)
+            setPositiveButton(R.string.search_download) { _, _ ->
+                val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
+                    putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
+                    putExtra(AddTorrentActivity.Extras.TORRENT_URL, searchResult.fileUrl)
+                }
+                startActivity(intent)
+            }
+            setNeutralButton(R.string.search_open_description) { _, _ ->
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(searchResult.descriptionLink))
+                    startActivity(intent)
+                } catch (_: ActivityNotFoundException) {
+                    showSnackbar(R.string.search_no_browser)
                 }
             }
         }
