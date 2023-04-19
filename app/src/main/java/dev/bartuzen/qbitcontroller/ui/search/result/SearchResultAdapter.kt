@@ -8,6 +8,9 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemSearchResultBinding
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.utils.formatBytes
+import okhttp3.internal.Util.verifyAsIpAddress
+import okhttp3.internal.publicsuffix.PublicSuffixDatabase
+import java.net.URI
 
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
     private var results: List<Search.Result> = emptyList()
@@ -42,6 +45,18 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                     "-"
                 }
             )
+
+            val site = try {
+                val host = URI.create(result.siteUrl).host ?: throw IllegalArgumentException()
+                if (verifyAsIpAddress(host)) {
+                    host
+                } else {
+                    PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
+                }
+            } catch (_: IllegalArgumentException) {
+                null
+            } ?: result.siteUrl
+            binding.textEngine.text = context.getString(R.string.search_torrent_site, site)
 
             binding.textSeeders.text = context.getString(
                 R.string.search_torrent_seeders,
