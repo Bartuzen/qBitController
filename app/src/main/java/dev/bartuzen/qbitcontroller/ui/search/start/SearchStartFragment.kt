@@ -17,7 +17,6 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchStartBinding
 import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
@@ -39,15 +38,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = SearchStartAdapter()
         binding.recyclerSearch.adapter = adapter
-
-        if (savedInstanceState?.containsKey("searchQuery") == true) {
-            adapter.restoreState(
-                searchQuery = savedInstanceState.getString("searchQuery")!!,
-                selectedCategoryPosition = savedInstanceState.getInt("selectedCategoryPosition"),
-                selectedPluginOption = savedInstanceState.getSerializableCompat("selectedPluginOption")!!,
-                selectedPlugins = savedInstanceState.getStringArrayList("selectedPlugins")!!
-            )
-        }
+        restoreState(adapter)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {
@@ -119,6 +110,8 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
             SearchStartAdapter.PluginSelection.SELECTED -> adapter.selectedPlugins.joinToString("|")
         }
 
+        saveState()
+
         val fragment = SearchResultFragment(
             serverId = serverId,
             searchQuery = adapter.searchQuery,
@@ -135,11 +128,27 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        saveState()
+    }
+
+    private fun saveState() {
         val adapter = binding.recyclerSearch.adapter as? SearchStartAdapter ?: return
 
-        outState.putString("searchQuery", adapter.searchQuery)
-        outState.putInt("selectedCategoryPosition", adapter.selectedCategoryPosition)
-        outState.putSerializable("selectedPluginOption", adapter.selectedPluginOption)
-        outState.putStringArrayList("selectedPlugins", ArrayList(adapter.selectedPlugins))
+        viewModel.saveState(
+            searchQuery = adapter.searchQuery,
+            selectedCategoryPosition = adapter.selectedCategoryPosition,
+            selectedPluginOption = adapter.selectedPluginOption,
+            selectedPlugins = adapter.selectedPlugins
+        )
+    }
+
+    private fun restoreState(adapter: SearchStartAdapter) {
+        val state = viewModel.getState() ?: return
+        adapter.restoreState(
+            searchQuery = state.searchQuery,
+            selectedCategoryPosition = state.selectedCategoryPosition,
+            selectedPluginOption = state.selectedPluginOption,
+            selectedPlugins = state.selectedPlugins
+        )
     }
 }

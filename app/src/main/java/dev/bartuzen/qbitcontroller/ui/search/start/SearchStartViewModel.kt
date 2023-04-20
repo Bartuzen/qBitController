@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.search.start
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchStartViewModel @Inject constructor(
-    private val repository: SearchStartRepository
+    private val repository: SearchStartRepository,
+    private val state: SavedStateHandle
 ) : ViewModel() {
     private val _plugins = MutableStateFlow<List<Plugin>?>(null)
     val plugins = _plugins.asStateFlow()
@@ -59,6 +61,39 @@ class SearchStartViewModel @Inject constructor(
             }
         }
     }
+
+    fun saveState(
+        searchQuery: String,
+        selectedCategoryPosition: Int,
+        selectedPluginOption: SearchStartAdapter.PluginSelection,
+        selectedPlugins: List<String>
+    ) {
+        state["searchQuery"] = searchQuery
+        state["selectedCategoryPosition"] = selectedCategoryPosition
+        state["selectedPluginOption"] = selectedPluginOption
+        state["selectedPlugins"] = selectedPlugins
+    }
+
+    fun getState(): State? {
+        val searchQuery: String = state["searchQuery"] ?: return null
+        val selectedCategoryPosition: Int = state["selectedCategoryPosition"] ?: return null
+        val selectedPluginOption: SearchStartAdapter.PluginSelection = state["selectedPluginOption"] ?: return null
+        val selectedPlugins: List<String> = state["selectedPlugins"] ?: return null
+
+        return State(
+            searchQuery = searchQuery,
+            selectedCategoryPosition = selectedCategoryPosition,
+            selectedPluginOption = selectedPluginOption,
+            selectedPlugins = selectedPlugins
+        )
+    }
+
+    data class State(
+        val searchQuery: String,
+        val selectedCategoryPosition: Int,
+        val selectedPluginOption: SearchStartAdapter.PluginSelection,
+        val selectedPlugins: List<String>
+    )
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
