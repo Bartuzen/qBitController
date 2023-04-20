@@ -131,7 +131,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
 
     private fun showSearchResultDialog(searchResult: Search.Result) {
         showDialog {
-            setTitle(searchResult.fileName)
+            setMessage(searchResult.fileName)
             setPositiveButton(R.string.search_download) { _, _ ->
                 val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
                     putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
