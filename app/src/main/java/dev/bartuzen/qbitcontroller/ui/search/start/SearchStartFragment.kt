@@ -37,7 +37,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = SearchStartAdapter()
-        binding.recyclerPlugins.adapter = adapter
+        binding.recyclerSearch.adapter = adapter
 
         requireActivity().addMenuProvider(
             object : MenuProvider {
