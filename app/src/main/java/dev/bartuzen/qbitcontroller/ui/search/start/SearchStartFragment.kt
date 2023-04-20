@@ -36,6 +36,9 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val adapter = SearchStartAdapter()
+        binding.recyclerPlugins.adapter = adapter
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -45,7 +48,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
                         R.id.menu_search_start -> {
-                            startSearch()
+                            startSearch(adapter)
                         }
                         else -> return false
                     }
@@ -55,9 +58,6 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
             viewLifecycleOwner,
             Lifecycle.State.RESUMED
         )
-
-        val adapter = SearchStartAdapter()
-        binding.recyclerPlugins.adapter = adapter
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
@@ -89,15 +89,31 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
         }
     }
 
-    private fun startSearch() {
-        val viewHolder =
-            binding.recyclerPlugins.findViewHolderForAdapterPosition(0) as SearchStartAdapter.HeaderViewHolder
+    private fun startSearch(adapter: SearchStartAdapter) {
+        val category = when (val position = adapter.selectedCategoryPosition) {
+            0 -> "all"
+            1 -> "anime"
+            2 -> "books"
+            3 -> "games"
+            4 -> "movies"
+            5 -> "music"
+            6 -> "pictures"
+            7 -> "software"
+            8 -> "tv"
+            else -> throw IllegalStateException("Unknown category position: $position")
+        }
+
+        val plugins = when (adapter.selectedPluginOption) {
+            SearchStartAdapter.PluginSelection.ENABLED -> "enabled"
+            SearchStartAdapter.PluginSelection.ALL -> "all"
+            SearchStartAdapter.PluginSelection.SELECTED -> adapter.selectedPlugins.joinToString("|")
+        }
 
         val fragment = SearchResultFragment(
             serverId = serverId,
-            searchQuery = viewHolder.searchQuery,
-            category = viewHolder.category,
-            plugins = viewHolder.plugins
+            searchQuery = adapter.searchQuery,
+            category = category,
+            plugins = plugins
         )
         parentFragmentManager.commit {
             setReorderingAllowed(true)
