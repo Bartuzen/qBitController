@@ -28,7 +28,7 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
         }
-    val selectedPlugins = mutableListOf<String>()
+    var selectedPlugins = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = if (viewType == R.layout.item_search_start_header) {
         HeaderViewHolder(ItemSearchStartHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -56,6 +56,20 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun submitPlugins(plugins: List<Plugin>) {
         this.plugins = plugins
         notifyDataSetChanged()
+    }
+
+    fun restoreState(
+        searchQuery: String,
+        selectedCategoryPosition: Int,
+        selectedPluginOption: PluginSelection,
+        selectedPlugins: List<String>
+    ) {
+        this.searchQuery = searchQuery
+        this.selectedCategoryPosition = selectedCategoryPosition
+        this.selectedPluginOption = selectedPluginOption
+        this.selectedPlugins = selectedPlugins.toMutableList()
+
+        notifyItemChanged(0, Unit)
     }
 
     inner class HeaderViewHolder(val binding: ItemSearchStartHeaderBinding) : RecyclerView.ViewHolder(binding.root) {

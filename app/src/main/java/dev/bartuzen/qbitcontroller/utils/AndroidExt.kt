@@ -42,7 +42,7 @@ inline fun <reified T : Serializable> Bundle.getSerializableCompat(name: String)
         getSerializable(name, T::class.java)
     } else {
         @Suppress("DEPRECATION")
-        getSerializable(name)
+        getSerializable(name) as? T
     }
 
 val Activity.view: View get() = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
