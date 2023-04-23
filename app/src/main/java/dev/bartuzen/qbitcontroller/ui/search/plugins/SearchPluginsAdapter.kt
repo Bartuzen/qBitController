@@ -10,7 +10,7 @@ import dev.bartuzen.qbitcontroller.model.Plugin
 class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolder>() {
     private var plugins: List<Plugin> = emptyList()
 
-    private var _pluginsEnabledState = mutableMapOf<String, Boolean>()
+    private val _pluginsEnabledState = mutableMapOf<String, Boolean>()
     val pluginsEnabledState get() = _pluginsEnabledState.toMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
