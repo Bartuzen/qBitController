@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.search.plugins
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,11 +14,17 @@ import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.databinding.DialogPluginInstallBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchPluginsBinding
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setNegativeButton
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
+import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.text
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
@@ -46,6 +53,9 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                     when (menuItem.itemId) {
                         R.id.menu_update -> {
                             viewModel.updatePluginStates(serverId, adapter.pluginsEnabledState, adapter.pluginsToDelete)
+                        }
+                        R.id.menu_install_plugins -> {
+                            showInstallPluginDialog()
                         }
                         R.id.menu_update_plugins -> {
                             viewModel.updateAllPlugins(serverId)
@@ -89,9 +99,37 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                     showSnackbar(R.string.search_plugins_update_state_success)
                     viewModel.loadPlugins(serverId)
                 }
+                SearchPluginsViewModel.Event.PluginsInstalled -> {
+                    showSnackbar(R.string.search_plugins_install_success)
+                    delay(1000)
+                    viewModel.loadPlugins(serverId)
+                }
                 SearchPluginsViewModel.Event.PluginsUpdated -> {
                     showSnackbar(R.string.search_plugins_update_success)
                 }
+            }
+        }
+    }
+
+    private fun showInstallPluginDialog() {
+        lateinit var dialogBinding: DialogPluginInstallBinding
+
+        val dialog = showDialog(DialogPluginInstallBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            setTitle(R.string.search_plugins_install_plugins)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val sources = dialogBinding.inputLayoutSources.text
+
+            if (sources.isNotBlank()) {
+                viewModel.installPlugin(serverId, sources.split("\n"))
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutSources.error = getString(R.string.search_plugins_cannot_be_empty)
             }
         }
     }

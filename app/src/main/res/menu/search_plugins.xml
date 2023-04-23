@@ -9,6 +9,11 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/menu_install_plugins"
+        android:title="@string/search_plugins_install_plugins"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_update_plugins"
         android:title="@string/search_plugins_update_plugins"
         app:showAsAction="never" />

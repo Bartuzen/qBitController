@@ -131,6 +131,17 @@ class SearchPluginsViewModel @Inject constructor(
             }
         }
 
+    fun installPlugin(serverId: Int, sources: List<String>) = viewModelScope.launch {
+        when (val result = repository.installPlugins(serverId, sources)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.PluginsInstalled)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun updateAllPlugins(serverId: Int) = viewModelScope.launch {
         when (val result = repository.updatePlugins(serverId)) {
             is RequestResult.Success -> {
@@ -145,6 +156,7 @@ class SearchPluginsViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object PluginsStateUpdated : Event()
+        object PluginsInstalled : Event()
         object PluginsUpdated : Event()
     }
 }

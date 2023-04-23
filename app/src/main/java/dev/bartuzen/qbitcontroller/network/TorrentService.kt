@@ -334,6 +334,10 @@ interface TorrentService {
     suspend fun enablePlugins(@Field("names") names: String, @Field("enable") isEnabled: Boolean): Response<Unit>
 
     @FormUrlEncoded
+    @POST("api/v2/search/installPlugin")
+    suspend fun installPlugins(@Field("sources") sources: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/search/uninstallPlugin")
     suspend fun uninstallPlugins(@Field("names") names: String): Response<Unit>
 
