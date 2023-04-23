@@ -50,6 +50,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
                         R.id.menu_plugins -> {
+                            saveState()
                             val fragment = SearchPluginsFragment(serverId)
                             parentFragmentManager.commit {
                                 setReorderingAllowed(true)
