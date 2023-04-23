@@ -15,6 +15,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchStartBinding
+import dev.bartuzen.qbitcontroller.ui.search.plugins.SearchPluginsFragment
 import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -48,6 +49,15 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
+                        R.id.menu_plugins -> {
+                            val fragment = SearchPluginsFragment(serverId)
+                            parentFragmentManager.commit {
+                                setReorderingAllowed(true)
+                                setDefaultAnimations()
+                                replace(R.id.container, fragment)
+                                addToBackStack(null)
+                            }
+                        }
                         R.id.menu_search_start -> {
                             startSearch(adapter)
                         }

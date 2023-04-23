@@ -560,6 +560,10 @@
     <string name="search_stop_success">Search stopped successfully.</string>
     <string name="search_no_browser">Can\'t find any browser.</string>
 
+    <string name="search_plugins">Plugins</string>
+    <string name="search_plugins_update">Update</string>
+    <string name="search_plugins_update_success">Plugin states updated successfully.</string>
+
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>
     <string name="settings_add_new_server">Add new server</string>
