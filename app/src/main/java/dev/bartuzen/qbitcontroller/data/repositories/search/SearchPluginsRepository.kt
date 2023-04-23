@@ -16,4 +16,8 @@ class SearchPluginsRepository @Inject constructor(
         requestManager.request(serverId) { service ->
             service.enablePlugins(plugins.joinToString("|"), isEnabled)
         }
+
+    suspend fun uninstallPlugins(serverId: Int, plugins: List<String>) = requestManager.request(serverId) { service ->
+        service.uninstallPlugins(plugins.joinToString("|"))
+    }
 }

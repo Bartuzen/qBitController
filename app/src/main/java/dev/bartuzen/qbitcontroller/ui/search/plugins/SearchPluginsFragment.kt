@@ -45,7 +45,7 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
                         R.id.menu_update -> {
-                            viewModel.updatePluginStates(serverId, adapter.pluginsEnabledState)
+                            viewModel.updatePluginStates(serverId, adapter.pluginsEnabledState, adapter.pluginsToDelete)
                         }
                         else -> return false
                     }

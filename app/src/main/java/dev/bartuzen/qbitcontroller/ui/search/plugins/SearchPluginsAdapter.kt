@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemPluginsPluginBinding
 import dev.bartuzen.qbitcontroller.model.Plugin
 
@@ -12,6 +13,9 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
 
     private val _pluginsEnabledState = mutableMapOf<String, Boolean>()
     val pluginsEnabledState get() = _pluginsEnabledState.toMap()
+
+    private val _pluginsToDelete = mutableListOf<String>()
+    val pluginsToDelete get() = _pluginsToDelete.toList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemPluginsPluginBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,11 +29,10 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitPlugins(plugins: List<Plugin>) {
-        if (this.plugins.isNotEmpty()) {
-            this.plugins.forEach { plugin ->
-                if (plugin !in this.plugins) {
-                    _pluginsEnabledState.remove(plugin.name)
-                }
+        this.plugins.forEach { plugin ->
+            if (plugin !in plugins) {
+                _pluginsEnabledState.remove(plugin.name)
+                _pluginsToDelete.remove(plugin.name)
             }
         }
 
@@ -49,11 +52,29 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
                 val plugin = plugins[bindingAdapterPosition]
                 _pluginsEnabledState[plugin.name] = isChecked
             }
+
+            binding.imageDelete.setOnClickListener {
+                val plugin = plugins[bindingAdapterPosition]
+                if (plugin.name in _pluginsToDelete) {
+                    _pluginsToDelete.remove(plugin.name)
+                } else {
+                    _pluginsToDelete.add(plugin.name)
+                }
+                notifyItemChanged(bindingAdapterPosition, Unit)
+            }
         }
 
         fun bind(plugin: Plugin) {
             binding.checkboxPlugin.isChecked = _pluginsEnabledState[plugin.name] ?: plugin.isEnabled
             binding.checkboxPlugin.text = plugin.fullName
+
+            if (plugin.name in _pluginsToDelete) {
+                binding.imageDelete.setImageResource(R.drawable.ic_undo)
+                binding.checkboxPlugin.isEnabled = false
+            } else {
+                binding.imageDelete.setImageResource(R.drawable.ic_delete)
+                binding.checkboxPlugin.isEnabled = true
+            }
         }
     }
 }
