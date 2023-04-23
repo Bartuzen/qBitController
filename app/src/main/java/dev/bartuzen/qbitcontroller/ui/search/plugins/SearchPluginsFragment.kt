@@ -47,6 +47,9 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                         R.id.menu_update -> {
                             viewModel.updatePluginStates(serverId, adapter.pluginsEnabledState, adapter.pluginsToDelete)
                         }
+                        R.id.menu_update_plugins -> {
+                            viewModel.updateAllPlugins(serverId)
+                        }
                         else -> return false
                     }
                     return true
@@ -83,8 +86,11 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 SearchPluginsViewModel.Event.PluginsStateUpdated -> {
-                    showSnackbar(R.string.search_plugins_update_success)
+                    showSnackbar(R.string.search_plugins_update_state_success)
                     viewModel.loadPlugins(serverId)
+                }
+                SearchPluginsViewModel.Event.PluginsUpdated -> {
+                    showSnackbar(R.string.search_plugins_update_success)
                 }
             }
         }

@@ -336,4 +336,7 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/search/uninstallPlugin")
     suspend fun uninstallPlugins(@Field("names") names: String): Response<Unit>
+
+    @POST("api/v2/search/updatePlugins")
+    suspend fun updatePlugins(): Response<Unit>
 }

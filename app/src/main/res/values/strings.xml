@@ -562,7 +562,9 @@
 
     <string name="search_plugins">Plugins</string>
     <string name="search_plugins_update">Update</string>
-    <string name="search_plugins_update_success">Plugin states updated successfully.</string>
+    <string name="search_plugins_update_plugins">Update Plugins</string>
+    <string name="search_plugins_update_state_success">Plugin states updated successfully.</string>
+    <string name="search_plugins_update_success">All plugins are updated successfully.</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>

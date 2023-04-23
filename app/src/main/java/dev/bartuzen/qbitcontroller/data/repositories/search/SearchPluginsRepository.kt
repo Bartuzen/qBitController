@@ -20,4 +20,8 @@ class SearchPluginsRepository @Inject constructor(
     suspend fun uninstallPlugins(serverId: Int, plugins: List<String>) = requestManager.request(serverId) { service ->
         service.uninstallPlugins(plugins.joinToString("|"))
     }
+
+    suspend fun updatePlugins(serverId: Int) = requestManager.request(serverId) { service ->
+        service.updatePlugins()
+    }
 }

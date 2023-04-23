@@ -8,4 +8,9 @@
         android:title="@string/search_plugins_update"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_update_plugins"
+        android:title="@string/search_plugins_update_plugins"
+        app:showAsAction="never" />
+
 </menu>

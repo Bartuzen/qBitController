@@ -131,8 +131,20 @@ class SearchPluginsViewModel @Inject constructor(
             }
         }
 
+    fun updateAllPlugins(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.updatePlugins(serverId)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.PluginsUpdated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object PluginsStateUpdated : Event()
+        object PluginsUpdated : Event()
     }
 }
