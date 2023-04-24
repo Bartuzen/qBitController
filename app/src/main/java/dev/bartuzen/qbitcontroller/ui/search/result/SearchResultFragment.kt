@@ -9,8 +9,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -59,6 +61,36 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.search_result, menu)
+
+                    val searchItem = menu.findItem(R.id.menu_search)
+
+                    val searchView = searchItem.actionView as SearchView
+                    searchView.queryHint = getString(R.string.search_filter)
+                    searchView.isSubmitButtonEnabled = false
+                    searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?) = false
+
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            viewModel.setSearchQuery(newText ?: "")
+                            return true
+                        }
+                    })
+
+                    searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                        override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                            for (menuItem in menu.iterator()) {
+                                menuItem.isVisible = false
+                            }
+
+                            searchView.maxWidth = Integer.MAX_VALUE
+                            return true
+                        }
+
+                        override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                            requireActivity().invalidateOptionsMenu()
+                            return true
+                        }
+                    })
                 }
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -102,8 +134,8 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             binding.progressIndicator.visibility = if (isLoadingCompleted) View.VISIBLE else View.GONE
         }
 
-        viewModel.searchResult.filterNotNull().launchAndCollectLatestIn(this) { searchResult ->
-            adapter.submitResults(searchResult.results)
+        viewModel.searchResults.filterNotNull().launchAndCollectLatestIn(this) { searchResults ->
+            adapter.submitResults(searchResults)
         }
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {

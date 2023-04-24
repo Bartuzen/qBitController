@@ -12,6 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,8 +24,25 @@ class SearchResultViewModel @Inject constructor(
     private val repository: SearchResultRepository,
     private val state: SavedStateHandle
 ) : ViewModel() {
-    private val _searchResult = MutableStateFlow<Search?>(null)
-    val searchResult = _searchResult.asStateFlow()
+    private val searchResult = MutableStateFlow<Search?>(null)
+
+    private val searchQuery = MutableStateFlow("")
+
+    val searchResults = combine(searchResult, searchQuery) { searchResult, searchQuery ->
+        if (searchResult != null) {
+            searchResult to searchQuery
+        } else {
+            null
+        }
+    }.filterNotNull().map { (searchResult, searchQuery) ->
+        if (searchQuery.isEmpty()) {
+            searchResult.results
+        } else {
+            searchResult.results.filter { result ->
+                result.fileName.contains(searchQuery, ignoreCase = true)
+            }
+        }
+    }
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -76,7 +96,7 @@ class SearchResultViewModel @Inject constructor(
         searchId?.let { searchId ->
             when (val result = repository.getSearchResults(serverId, searchId)) {
                 is RequestResult.Success -> {
-                    _searchResult.value = result.data
+                    searchResult.value = result.data
                     if (result.data.status == Search.Status.STOPPED) {
                         _isSearchContinuing.value = false
                         eventChannel.send(Event.SearchStopped)
@@ -96,6 +116,10 @@ class SearchResultViewModel @Inject constructor(
                 isLoading.value = false
             }
         }
+    }
+
+    fun setSearchQuery(query: String) {
+        searchQuery.value = query
     }
 
     sealed class Event {
