@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -135,7 +136,15 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
         }
 
         viewModel.searchResults.filterNotNull().launchAndCollectLatestIn(this) { searchResults ->
-            adapter.submitResults(searchResults)
+            val layoutManager = binding.recyclerTorrents.layoutManager as LinearLayoutManager
+            val position = layoutManager.findFirstVisibleItemPosition()
+            val offset = layoutManager.findViewByPosition(position)?.top
+
+            adapter.submitList(searchResults) {
+                if (offset != null) {
+                    layoutManager.scrollToPositionWithOffset(position, offset)
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {

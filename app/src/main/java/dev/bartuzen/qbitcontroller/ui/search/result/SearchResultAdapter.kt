@@ -1,8 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.search.result
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemSearchResultBinding
@@ -14,29 +15,25 @@ import java.net.URI
 
 class SearchResultAdapter(
     private val onClick: (searchResult: Search.Result) -> Unit
-) : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
-    private var results: List<Search.Result> = emptyList()
-
+) : ListAdapter<Search.Result, SearchResultAdapter.ViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(results[position])
-    }
-
-    override fun getItemCount() = results.size
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun submitResults(results: List<Search.Result>) {
-        this.results = results
-        notifyDataSetChanged()
+        getItem(position)?.let { result ->
+            holder.bind(result)
+        }
     }
 
     inner class ViewHolder(private val binding: ItemSearchResultBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                onClick(results[bindingAdapterPosition])
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    getItem(bindingAdapterPosition)?.let { result ->
+                        onClick(result)
+                    }
+                }
             }
         }
 
@@ -75,5 +72,14 @@ class SearchResultAdapter(
                 result.leechers?.toString() ?: "-"
             )
         }
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<Search.Result>() {
+        override fun areItemsTheSame(oldItem: Search.Result, newItem: Search.Result) = oldItem.fileUrl == newItem.fileUrl
+
+        override fun areContentsTheSame(oldItem: Search.Result, newItem: Search.Result) =
+            oldItem.fileName == newItem.fileName && oldItem.siteUrl == newItem.siteUrl &&
+                oldItem.fileSize == newItem.fileSize && oldItem.seeders == newItem.seeders &&
+                oldItem.leechers == newItem.leechers
     }
 }
