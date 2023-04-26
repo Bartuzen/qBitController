@@ -139,7 +139,12 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        saveState()
+
+        // binding may be deleted before this function is called
+        try {
+            saveState()
+        } catch (_: IllegalStateException) {
+        }
     }
 
     private fun saveState() {
