@@ -65,8 +65,11 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
         }
 
         fun bind(plugin: Plugin) {
+            val context = binding.root.context
+
             binding.checkboxPlugin.isChecked = _pluginsEnabledState[plugin.name] ?: plugin.isEnabled
             binding.checkboxPlugin.text = plugin.fullName
+            binding.textVersion.text = context.getString(R.string.search_plugins_version, plugin.version)
 
             if (plugin.name in _pluginsToDelete) {
                 binding.imageDelete.setImageResource(R.drawable.ic_undo)
