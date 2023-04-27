@@ -284,7 +284,6 @@
     <string name="torrent_no_categories">未找到任何分类。</string>
     <string name="torrent_no_tags">未找到任何标签。</string>
 
-    <string name="torrent_overview_progress">%1$s / %2$s • %3$s%%</string>
     <string name="torrent_overview_information">信息</string>
     <string name="torrent_overview_total_size">总大小</string>
     <string name="torrent_overview_added_on">添加于</string>

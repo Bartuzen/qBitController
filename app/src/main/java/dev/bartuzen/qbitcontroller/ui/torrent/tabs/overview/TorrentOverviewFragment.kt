@@ -303,10 +303,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 "100"
             }
             binding.textProgress.text = requireContext().getString(
-                R.string.torrent_overview_progress,
+                R.string.torrent_item_progress,
                 formatBytes(requireContext(), torrent.completed),
                 formatBytes(requireContext(), torrent.size),
-                progressText
+                progressText,
+                torrent.ratio.floorToDecimal(2).toString()
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
