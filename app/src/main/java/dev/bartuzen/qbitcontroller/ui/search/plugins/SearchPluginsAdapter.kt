@@ -53,6 +53,14 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
                 _pluginsEnabledState[plugin.name] = isChecked
             }
 
+            binding.textVersion.setOnClickListener {
+                binding.checkboxPlugin.isChecked = !binding.checkboxPlugin.isChecked
+            }
+
+            binding.textUrl.setOnClickListener {
+                binding.checkboxPlugin.isChecked = !binding.checkboxPlugin.isChecked
+            }
+
             binding.imageDelete.setOnClickListener {
                 val plugin = plugins[bindingAdapterPosition]
                 if (plugin.name in _pluginsToDelete) {
@@ -70,13 +78,18 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
             binding.checkboxPlugin.isChecked = _pluginsEnabledState[plugin.name] ?: plugin.isEnabled
             binding.checkboxPlugin.text = plugin.fullName
             binding.textVersion.text = context.getString(R.string.search_plugins_version, plugin.version)
+            binding.textUrl.text = plugin.url
 
             if (plugin.name in _pluginsToDelete) {
                 binding.imageDelete.setImageResource(R.drawable.ic_undo)
                 binding.checkboxPlugin.isEnabled = false
+                binding.textVersion.isEnabled = false
+                binding.textUrl.isEnabled = false
             } else {
                 binding.imageDelete.setImageResource(R.drawable.ic_delete)
                 binding.checkboxPlugin.isEnabled = true
+                binding.textVersion.isEnabled = true
+                binding.textUrl.isEnabled = true
             }
         }
     }
