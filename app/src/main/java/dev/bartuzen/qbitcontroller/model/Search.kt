@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.model.deserializers.NullableLongDeserializer
 
 data class Search(
     val status: Status,
-    val total: Int,
     val results: List<Result>
 ) {
     data class Result(
