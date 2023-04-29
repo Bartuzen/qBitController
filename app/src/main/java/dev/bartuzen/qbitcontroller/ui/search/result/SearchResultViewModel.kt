@@ -28,19 +28,45 @@ class SearchResultViewModel @Inject constructor(
 
     private val searchQuery = MutableStateFlow("")
 
-    val searchResults = combine(searchResult, searchQuery) { searchResult, searchQuery ->
+    private val _filter = MutableStateFlow(
+        Filter(
+            seedsMin = null,
+            seedsMax = null,
+            sizeMin = null,
+            sizeMax = null,
+            sizeMinUnit = 2,
+            sizeMaxUnit = 2
+        )
+    )
+    val filter = _filter.asStateFlow()
+
+    val searchResults = combine(searchResult, searchQuery, filter) { searchResult, searchQuery, filter ->
         if (searchResult != null) {
-            searchResult to searchQuery
+            Triple(searchResult, searchQuery, filter)
         } else {
             null
         }
-    }.filterNotNull().map { (searchResult, searchQuery) ->
-        if (searchQuery.isEmpty()) {
-            searchResult.results
-        } else {
-            searchResult.results.filter { result ->
-                result.fileName.contains(searchQuery, ignoreCase = true)
+    }.filterNotNull().map { (searchResult, searchQuery, filter) ->
+        searchResult.results.filter { result ->
+            if (searchQuery.isNotEmpty() && !result.fileName.contains(searchQuery, ignoreCase = true)) {
+                return@filter false
             }
+
+            if (filter.seedsMin != null && (result.seeders ?: -1) < filter.seedsMin) {
+                return@filter false
+            }
+            if (filter.seedsMax != null && (result.seeders ?: Int.MAX_VALUE) > filter.seedsMax) {
+                return@filter false
+            }
+
+            if (filter.sizeMinBytes != null && (result.fileSize ?: -1) < filter.sizeMinBytes) {
+                return@filter false
+            }
+            if (filter.sizeMaxBytes != null && (result.fileSize ?: Long.MAX_VALUE) > filter.sizeMaxBytes) {
+                return@filter false
+            }
+
+            return@filter true
         }
     }
 
@@ -120,6 +146,39 @@ class SearchResultViewModel @Inject constructor(
 
     fun setSearchQuery(query: String) {
         searchQuery.value = query
+    }
+
+    fun setFilter(filter: Filter) {
+        _filter.value = filter
+    }
+
+    data class Filter(
+        val seedsMin: Int?,
+        val seedsMax: Int?,
+        val sizeMin: Long?,
+        val sizeMax: Long?,
+        val sizeMinUnit: Int,
+        val sizeMaxUnit: Int
+    ) {
+        private fun Int.pow(x: Int): Long {
+            var number = 1L
+            repeat(x) {
+                number *= this
+            }
+            return number
+        }
+
+        val sizeMinBytes = if (sizeMin != null) {
+            sizeMin * 1024.pow(sizeMinUnit)
+        } else {
+            null
+        }
+
+        val sizeMaxBytes = if (sizeMax != null) {
+            sizeMax * 1024.pow(sizeMaxUnit)
+        } else {
+            null
+        }
     }
 
     sealed class Event {

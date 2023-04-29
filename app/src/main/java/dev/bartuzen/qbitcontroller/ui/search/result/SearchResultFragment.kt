@@ -12,6 +12,8 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,14 +24,18 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.databinding.DialogSearchFilterBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchResultBinding
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setNegativeButton
+import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.text
 import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -66,7 +72,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     val searchItem = menu.findItem(R.id.menu_search)
 
                     val searchView = searchItem.actionView as SearchView
-                    searchView.queryHint = getString(R.string.search_filter)
+                    searchView.queryHint = getString(R.string.search_filter_results)
                     searchView.isSubmitButtonEnabled = false
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?) = false
@@ -98,6 +104,9 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     when (menuItem.itemId) {
                         R.id.menu_search_stop -> {
                             viewModel.stopSearch(serverId)
+                        }
+                        R.id.menu_filter -> {
+                            showFilterDialog()
                         }
                         else -> return false
                     }
@@ -187,6 +196,69 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 } catch (_: ActivityNotFoundException) {
                     showSnackbar(R.string.search_no_browser)
                 }
+            }
+        }
+    }
+
+    private fun showFilterDialog() {
+        lateinit var dialogBinding: DialogSearchFilterBinding
+
+        val dialog = showDialog(DialogSearchFilterBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            binding.dropdownSizeMinUnit.setItems(
+                R.string.size_bytes,
+                R.string.size_kibibytes,
+                R.string.size_mebibytes,
+                R.string.size_gibibytes,
+                R.string.size_tebibytes,
+                R.string.size_pebibytes,
+                R.string.size_exbibytes
+            )
+
+            binding.dropdownSizeMaxUnit.setItems(
+                R.string.size_bytes,
+                R.string.size_kibibytes,
+                R.string.size_mebibytes,
+                R.string.size_gibibytes,
+                R.string.size_tebibytes,
+                R.string.size_pebibytes,
+                R.string.size_exbibytes
+            )
+
+            val filter = viewModel.filter.value
+            binding.inputLayoutSeedsMin.text = filter.seedsMin?.toString() ?: ""
+            binding.inputLayoutSeedsMax.text = filter.seedsMax?.toString() ?: ""
+            binding.inputLayoutSizeMin.text = filter.sizeMin?.toString() ?: ""
+            binding.inputLayoutSizeMax.text = filter.sizeMax?.toString() ?: ""
+            binding.dropdownSizeMinUnit.setPosition(filter.sizeMinUnit)
+            binding.dropdownSizeMaxUnit.setPosition(filter.sizeMaxUnit)
+
+            setTitle(R.string.search_filter)
+            setPositiveButton { _, _ ->
+                val newFilter = SearchResultViewModel.Filter(
+                    seedsMin = binding.inputLayoutSeedsMin.text.toIntOrNull(),
+                    seedsMax = binding.inputLayoutSeedsMax.text.toIntOrNull(),
+                    sizeMin = binding.inputLayoutSizeMin.text.toLongOrNull(),
+                    sizeMax = binding.inputLayoutSizeMax.text.toLongOrNull(),
+                    sizeMinUnit = binding.dropdownSizeMinUnit.position,
+                    sizeMaxUnit = binding.dropdownSizeMaxUnit.position
+                )
+                viewModel.setFilter(newFilter)
+            }
+            setNegativeButton()
+        }
+
+        dialogBinding.dropdownSizeMinUnit.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                val window = dialog.window ?: return@setOnFocusChangeListener
+                WindowCompat.getInsetsController(window, window.decorView).hide(WindowInsetsCompat.Type.ime())
+            }
+        }
+        dialogBinding.dropdownSizeMaxUnit.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                val window = dialog.window ?: return@setOnFocusChangeListener
+                WindowCompat.getInsetsController(window, window.decorView).hide(WindowInsetsCompat.Type.ime())
             }
         }
     }

@@ -10,6 +10,12 @@
         app:showAsAction="ifRoom|collapseActionView" />
 
     <item
+        android:id="@+id/menu_filter"
+        android:icon="@drawable/ic_all"
+        android:title="@string/search_filter"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_search_stop"
         android:icon="@drawable/ic_cancel"
         android:title="@string/search_stop"
