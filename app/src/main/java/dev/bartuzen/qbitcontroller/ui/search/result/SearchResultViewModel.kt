@@ -69,6 +69,7 @@ class SearchResultViewModel @Inject constructor(
             return@filter true
         }
     }
+    val searchCount = searchResult.map { it?.results?.size ?: 0 }
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()

@@ -39,7 +39,7 @@ import dev.bartuzen.qbitcontroller.utils.text
 import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
@@ -131,9 +131,6 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 val verticalPx = 8.toPx(requireContext())
                 val horizontalPx = 8.toPx(requireContext())
-                if (parent.getChildAdapterPosition(view) == 0) {
-                    outRect.top = verticalPx
-                }
                 outRect.bottom = verticalPx
                 outRect.left = horizontalPx
                 outRect.right = horizontalPx
@@ -144,7 +141,9 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             binding.progressIndicator.visibility = if (isLoadingCompleted) View.VISIBLE else View.GONE
         }
 
-        viewModel.searchResults.filterNotNull().launchAndCollectLatestIn(this) { searchResults ->
+        combine(viewModel.searchResults, viewModel.searchCount) { searchResults, searchCount ->
+            searchResults to searchCount
+        }.launchAndCollectLatestIn(this) { (searchResults, searchCount) ->
             val layoutManager = binding.recyclerTorrents.layoutManager as LinearLayoutManager
             val position = layoutManager.findFirstVisibleItemPosition()
             val offset = layoutManager.findViewByPosition(position)?.top
@@ -154,6 +153,8 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     layoutManager.scrollToPositionWithOffset(position, offset)
                 }
             }
+
+            binding.textCount.text = getString(R.string.search_showing_count, searchResults.size, searchCount)
         }
 
         viewLifecycleOwner.lifecycle.coroutineScope.launch {

@@ -557,6 +557,7 @@
     <string name="search_filter_size">Size</string>
     <string name="search_filter_min">Min</string>
     <string name="search_filter_max">Max</string>
+    <string name="search_showing_count">Showing %1$d out of %2$d</string>
     <string name="search_torrent_size">Size: %1$s</string>
     <string name="search_torrent_site">Site: %1$s</string>
     <string name="search_torrent_seeders">Seeders: %1$s</string>
