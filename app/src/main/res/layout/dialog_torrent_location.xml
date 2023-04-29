@@ -15,7 +15,7 @@
             android:id="@+id/edit_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Location"
+            android:hint="@string/torrent_overview_save_path"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
