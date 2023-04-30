@@ -52,7 +52,8 @@ enum class TorrentSort {
     CONNECTED_LEECHES,
     TOTAL_LEECHES,
     ADDITION_DATE,
-    COMPLETION_DATE
+    COMPLETION_DATE,
+    LAST_ACTIVITY
 }
 
 fun Theme.toDelegate() = when (this) {

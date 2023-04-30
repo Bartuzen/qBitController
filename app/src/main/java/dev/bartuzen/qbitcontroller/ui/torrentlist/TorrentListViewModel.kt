@@ -148,6 +148,11 @@ class TorrentListViewModel @Inject constructor(
                                 .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
                                 .thenBy(Torrent::hash)
                         }
+                        TorrentSort.LAST_ACTIVITY -> {
+                            compareByDescending(Torrent::lastActivity)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
                     }
                     sortedWith(comparator)
                 }.run {

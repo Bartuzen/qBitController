@@ -94,6 +94,9 @@
                 <item
                     android:id="@+id/menu_sort_completion_date"
                     android:title="@string/torrent_sort_completion_date" />
+                <item
+                    android:id="@+id/menu_sort_last_activity"
+                    android:title="@string/torrent_sort_last_activity" />
             </group>
             <item
                 android:id="@+id/menu_sort_reverse"
