@@ -149,6 +149,7 @@ class SearchResultViewModel @Inject constructor(
 
         when (val result = repository.stopSearch(serverId, searchId)) {
             is RequestResult.Success -> {
+                eventChannel.send(Event.SearchStopped)
                 updateResults(serverId).invokeOnCompletion {
                     _isSearchContinuing.value = false
                 }
@@ -171,7 +172,6 @@ class SearchResultViewModel @Inject constructor(
                     searchResult.value = result.data
                     if (result.data.status == Search.Status.STOPPED) {
                         _isSearchContinuing.value = false
-                        eventChannel.send(Event.SearchStopped)
                     }
                 }
                 is RequestResult.Error -> {
