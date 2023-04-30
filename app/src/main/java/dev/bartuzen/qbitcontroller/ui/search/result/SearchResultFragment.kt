@@ -75,11 +75,11 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                             SearchSort.LEECHERS -> R.id.menu_sort_leechers
                             SearchSort.SEARCH_ENGINE -> R.id.menu_sort_search_engine
                         }
-                        menu.findItem(selectedSort).isChecked = true
+                        menu.findItem(selectedSort)?.isChecked = true
                     }
 
                     viewModel.isReverseSearchSorting.launchAndCollectLatestIn(viewLifecycleOwner) { isReverseSearchSort ->
-                        menu.findItem(R.id.menu_sort_reverse).isChecked = isReverseSearchSort
+                        menu.findItem(R.id.menu_sort_reverse)?.isChecked = isReverseSearchSort
                     }
 
                     val searchItem = menu.findItem(R.id.menu_search)
