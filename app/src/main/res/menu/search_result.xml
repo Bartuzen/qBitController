@@ -16,12 +16,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/menu_search_stop"
-        android:icon="@drawable/ic_cancel"
-        android:title="@string/search_stop"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/torrent_sort_menu"
@@ -51,5 +45,10 @@
         </menu>
     </item>
 
+    <item
+        android:id="@+id/menu_search_stop"
+        android:icon="@drawable/ic_cancel"
+        android:title="@string/search_stop"
+        app:showAsAction="ifRoom" />
 
 </menu>
