@@ -18,7 +18,6 @@ import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -38,11 +37,9 @@ import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
 import dev.bartuzen.qbitcontroller.utils.toPx
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
@@ -171,8 +168,17 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             }
         })
 
-        viewModel.isSearchContinuing.launchAndCollectLatestIn(this) { isLoadingCompleted ->
-            binding.progressIndicator.visibility = if (isLoadingCompleted) View.VISIBLE else View.GONE
+        viewModel.isSearchContinuing.launchAndCollectLatestIn(this) { isSearchContinuing ->
+            binding.progressIndicator.visibility = if (isSearchContinuing) View.VISIBLE else View.GONE
+            binding.swipeRefresh.isEnabled = !isSearchContinuing
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.refresh(serverId, searchQuery, category, plugins)
+        }
+
+        viewModel.isRefreshing.launchAndCollectLatestIn(this) { isRefreshing ->
+            binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
         combine(viewModel.searchResults, viewModel.searchCount) { searchResults, searchCount ->
@@ -191,13 +197,13 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             binding.textCount.text = getString(R.string.search_showing_count, searchResults.size, searchCount)
         }
 
-        viewLifecycleOwner.lifecycle.coroutineScope.launch {
-            while (isActive) {
-                delay(1000)
-                if (!viewModel.isSearchContinuing.value) {
-                    cancel()
-                } else {
-                    viewModel.loadResults(serverId)
+        viewModel.isSearchContinuing.launchAndCollectLatestIn(viewLifecycleOwner) { isSearchContinuing ->
+            if (isSearchContinuing) {
+                while (isActive) {
+                    delay(1000)
+                    if (viewModel.isSearchContinuing.value) {
+                        viewModel.loadResults(serverId)
+                    }
                 }
             }
         }

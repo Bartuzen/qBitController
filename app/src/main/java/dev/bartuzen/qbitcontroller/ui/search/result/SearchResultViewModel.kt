@@ -121,6 +121,9 @@ class SearchResultViewModel @Inject constructor(
 
     private val isLoading = MutableStateFlow(false)
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing = _isRefreshing.asStateFlow()
+
     private val _isSearchContinuing = MutableStateFlow(true)
     val isSearchContinuing = _isSearchContinuing.asStateFlow()
 
@@ -137,6 +140,7 @@ class SearchResultViewModel @Inject constructor(
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
+                _isSearchContinuing.value = false
             }
         }
     }
@@ -176,6 +180,7 @@ class SearchResultViewModel @Inject constructor(
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
+                    _isSearchContinuing.value = false
                 }
             }
         }
@@ -188,6 +193,35 @@ class SearchResultViewModel @Inject constructor(
                 isLoading.value = false
             }
         }
+    }
+
+    fun refresh(serverId: Int, pattern: String, category: String, plugins: String) = viewModelScope.launch {
+        _isRefreshing.value = true
+        val searchId = searchId
+
+        if (searchId == null) {
+            when (val result = repository.startSearch(serverId, pattern, category, plugins)) {
+                is RequestResult.Success -> {
+                    this@SearchResultViewModel.searchId = result.data.id
+                    _isSearchContinuing.value = true
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        } else {
+            when (val result = repository.getSearchResults(serverId, searchId)) {
+                is RequestResult.Success -> {
+                    searchResult.value = result.data
+                    _isSearchContinuing.value = result.data.status != Search.Status.STOPPED
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                }
+            }
+        }
+
+        _isRefreshing.value = false
     }
 
     fun setSearchQuery(query: String) {
