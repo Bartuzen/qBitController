@@ -133,6 +133,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             TorrentSort.TOTAL_LEECHES -> R.id.menu_sort_total_leeches
                             TorrentSort.ADDITION_DATE -> R.id.menu_sort_addition_date
                             TorrentSort.COMPLETION_DATE -> R.id.menu_sort_completion_date
+                            TorrentSort.LAST_ACTIVITY -> R.id.menu_sort_last_activity
                         }
                         menu.findItem(selectedSort).isChecked = true
                     }
@@ -249,6 +250,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_sort_completion_date -> {
                             viewModel.setTorrentSort(TorrentSort.COMPLETION_DATE)
+                        }
+                        R.id.menu_sort_last_activity -> {
+                            viewModel.setTorrentSort(TorrentSort.LAST_ACTIVITY)
                         }
                         R.id.menu_sort_priority -> {
                             viewModel.setTorrentSort(TorrentSort.PRIORITY)

@@ -57,6 +57,7 @@
     <string name="torrent_sort_total_leeches">Total Leeches</string>
     <string name="torrent_sort_addition_date">Addition Date</string>
     <string name="torrent_sort_completion_date">Completion Date</string>
+    <string name="torrent_sort_last_activity">Last Activity</string>
     <string name="torrent_sort_reverse">Reverse</string>
 
     <string name="torrent_status_error">Error</string>
