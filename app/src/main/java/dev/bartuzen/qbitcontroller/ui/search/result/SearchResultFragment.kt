@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.data.SearchSort
 import dev.bartuzen.qbitcontroller.databinding.DialogSearchFilterBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchResultBinding
 import dev.bartuzen.qbitcontroller.model.Search
@@ -69,6 +70,21 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.search_result, menu)
 
+                    viewModel.searchSort.launchAndCollectLatestIn(viewLifecycleOwner) { sort ->
+                        val selectedSort = when (sort) {
+                            SearchSort.NAME -> R.id.menu_sort_name
+                            SearchSort.SIZE -> R.id.menu_sort_size
+                            SearchSort.SEEDERS -> R.id.menu_sort_seeders
+                            SearchSort.LEECHERS -> R.id.menu_sort_leechers
+                            SearchSort.SEARCH_ENGINE -> R.id.menu_sort_search_engine
+                        }
+                        menu.findItem(selectedSort).isChecked = true
+                    }
+
+                    viewModel.isReverseSearchSorting.launchAndCollectLatestIn(viewLifecycleOwner) { isReverseSearchSort ->
+                        menu.findItem(R.id.menu_sort_reverse).isChecked = isReverseSearchSort
+                    }
+
                     val searchItem = menu.findItem(R.id.menu_search)
 
                     val searchView = searchItem.actionView as SearchView
@@ -107,6 +123,24 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                         }
                         R.id.menu_filter -> {
                             showFilterDialog()
+                        }
+                        R.id.menu_sort_name -> {
+                            viewModel.setSearchSort(SearchSort.NAME)
+                        }
+                        R.id.menu_sort_size -> {
+                            viewModel.setSearchSort(SearchSort.SIZE)
+                        }
+                        R.id.menu_sort_seeders -> {
+                            viewModel.setSearchSort(SearchSort.SEEDERS)
+                        }
+                        R.id.menu_sort_leechers -> {
+                            viewModel.setSearchSort(SearchSort.LEECHERS)
+                        }
+                        R.id.menu_sort_search_engine -> {
+                            viewModel.setSearchSort(SearchSort.SEARCH_ENGINE)
+                        }
+                        R.id.menu_sort_reverse -> {
+                            viewModel.changeReverseSorting()
                         }
                         else -> return false
                     }

@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.bartuzen.qbitcontroller.data.SearchSort
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchResultRepository
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -17,11 +19,13 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchResultViewModel @Inject constructor(
     private val repository: SearchResultRepository,
+    private val settingsManager: SettingsManager,
     private val state: SavedStateHandle
 ) : ViewModel() {
     private val searchResult = MutableStateFlow<Search?>(null)
@@ -40,14 +44,55 @@ class SearchResultViewModel @Inject constructor(
     )
     val filter = _filter.asStateFlow()
 
-    val searchResults = combine(searchResult, searchQuery, filter) { searchResult, searchQuery, filter ->
-        if (searchResult != null) {
-            Triple(searchResult, searchQuery, filter)
-        } else {
-            null
+    val searchSort = settingsManager.searchSort.flow
+    val isReverseSearchSorting = settingsManager.isReverseSearchSorting.flow
+
+    private val sortedResults =
+        combine(searchResult, searchSort, isReverseSearchSorting) { searchResult, searchSort, isReverseSearchSorting ->
+            if (searchResult != null) {
+                Triple(searchResult.results, searchSort, isReverseSearchSorting)
+            } else {
+                null
+            }
+        }.filterNotNull().map { (searchResults, searchSort, isReverseSearchSorting) ->
+            withContext(Dispatchers.IO) {
+                searchResults.run {
+                    val comparator = when (searchSort) {
+                        SearchSort.NAME -> {
+                            compareBy(String.CASE_INSENSITIVE_ORDER, Search.Result::fileName)
+                        }
+                        SearchSort.SIZE -> {
+                            compareBy(Search.Result::fileSize)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Search.Result::fileName)
+                        }
+                        SearchSort.SEEDERS -> {
+                            compareBy(Search.Result::seeders)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Search.Result::fileName)
+                        }
+                        SearchSort.LEECHERS -> {
+                            compareBy(Search.Result::leechers)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Search.Result::fileName)
+                        }
+                        SearchSort.SEARCH_ENGINE -> {
+                            compareBy(String.CASE_INSENSITIVE_ORDER, Search.Result::siteUrl)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Search.Result::siteUrl)
+                        }
+                    }
+                    sortedWith(comparator)
+                }.run {
+                    if (isReverseSearchSorting) {
+                        reversed()
+                    } else {
+                        this
+                    }
+                }
+            }
         }
-    }.filterNotNull().map { (searchResult, searchQuery, filter) ->
-        searchResult.results.filter { result ->
+
+    val searchResults = combine(sortedResults, searchQuery, filter) { searchResults, searchQuery, filter ->
+        Triple(searchResults, searchQuery, filter)
+    }.filterNotNull().map { (searchResults, searchQuery, filter) ->
+        searchResults.filter { result ->
             if (searchQuery.isNotEmpty() && !result.fileName.contains(searchQuery, ignoreCase = true)) {
                 return@filter false
             }
@@ -151,6 +196,14 @@ class SearchResultViewModel @Inject constructor(
 
     fun setFilter(filter: Filter) {
         _filter.value = filter
+    }
+
+    fun setSearchSort(searchSort: SearchSort) {
+        settingsManager.searchSort.value = searchSort
+    }
+
+    fun changeReverseSorting() {
+        settingsManager.isReverseSearchSorting.value = !isReverseSearchSorting.value
     }
 
     data class Filter(
