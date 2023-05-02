@@ -12,6 +12,7 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_search">Search</string>
     <string name="menu_rss">RSS</string>
+    <string name="menu_search_online">Search Online</string>
     <string name="menu_log">Execution Log</string>
     <string name="menu_select_all">Select All</string>
     <string name="menu_select_inverse">Select Inverse</string>
@@ -532,6 +533,56 @@
     <string name="rss_success_all_articles_mark_as_read">All articles marked as read successfully.</string>
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
+
+    <string name="search_title">Search</string>
+    <string name="search_start_query">Search Query</string>
+    <string name="search_start_category">Category</string>
+    <string name="search_start_category_all">All</string>
+    <string name="search_start_category_anime">Anime</string>
+    <string name="search_start_category_books">Books</string>
+    <string name="search_start_category_games">Games</string>
+    <string name="search_start_category_movies">Movies</string>
+    <string name="search_start_category_music">Music</string>
+    <string name="search_start_category_pictures">Pictures</string>
+    <string name="search_start_category_software">Software</string>
+    <string name="search_start_category_tv_shows">TV shows</string>
+    <string name="search_start_plugins_enabled">Enabled Plugins</string>
+    <string name="search_start_plugins_all">All Plugins</string>
+    <string name="search_start_plugins_select">Select Plugins</string>
+    <string name="search_start">Start Search</string>
+    <string name="search_stop">Stop Search</string>
+    <string name="search_filter_results">Filter results…</string>
+    <string name="search_filter">Filter</string>
+    <string name="search_filter_seeds">Seeds</string>
+    <string name="search_filter_size">Size</string>
+    <string name="search_filter_min">Min</string>
+    <string name="search_filter_max">Max</string>
+    <string name="search_showing_count">Showing %1$d out of %2$d</string>
+    <string name="search_torrent_size">Size: %1$s</string>
+    <string name="search_torrent_site">Site: %1$s</string>
+    <string name="search_torrent_seeders">Seeders: %1$s</string>
+    <string name="search_torrent_leechers">Leechers: %1$s</string>
+    <string name="search_open_description">Open Description</string>
+    <string name="search_download">Download</string>
+    <string name="search_stop_success">Search stopped successfully.</string>
+    <string name="search_no_browser">Can\'t find any browser.</string>
+
+    <string name="search_sort_name">Name</string>
+    <string name="search_sort_size">Size</string>
+    <string name="search_sort_seeders">Seeders</string>
+    <string name="search_sort_leechers">Leechers</string>
+    <string name="search_sort_search_engine">Search Engine</string>
+
+    <string name="search_plugins">Plugins</string>
+    <string name="search_plugins_save">Save</string>
+    <string name="search_plugins_install_plugins">Install Plugins</string>
+    <string name="search_plugins_update_plugins">Update Plugins</string>
+    <string name="search_plugins_version">Version: %1$s</string>
+    <string name="search_plugins_install_hint">URL or local directory</string>
+    <string name="search_plugins_save_success">Plugins are saved successfully.</string>
+    <string name="search_plugins_install_success">Plugins are installed successfully.</string>
+    <string name="search_plugins_update_success">All plugins are updated successfully.</string>
+    <string name="search_plugins_cannot_be_empty">Plugins cannot be empty.</string>
 
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>

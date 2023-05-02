@@ -28,6 +28,9 @@ class SettingsManager @Inject constructor(
     val areCategoriesCollapsed = primitivePreference(sharedPref, "areCategoriesCollapsed", false)
     val areTagsCollapsed = primitivePreference(sharedPref, "areTagsCollapsed", false)
     val areTrackersCollapsed = primitivePreference(sharedPref, "areTrackersCollapsed", false)
+
+    val searchSort = enumPreference(sharedPref, "searchSort", SearchSort.NAME, SearchSort::valueOf)
+    val isReverseSearchSorting = primitivePreference(sharedPref, "isReverseSearchSort", false)
 }
 
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>
@@ -54,6 +57,14 @@ enum class TorrentSort {
     ADDITION_DATE,
     COMPLETION_DATE,
     LAST_ACTIVITY
+}
+
+enum class SearchSort {
+    NAME,
+    SIZE,
+    SEEDERS,
+    LEECHERS,
+    SEARCH_ENGINE
 }
 
 fun Theme.toDelegate() = when (this) {

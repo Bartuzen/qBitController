@@ -4,6 +4,9 @@ import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.PieceState
+import dev.bartuzen.qbitcontroller.model.Plugin
+import dev.bartuzen.qbitcontroller.model.Search
+import dev.bartuzen.qbitcontroller.model.StartSearch
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentPeers
@@ -303,4 +306,41 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/rss/removeItem")
     suspend fun removeItem(@Field("path") path: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/start")
+    suspend fun startSearch(
+        @Field("pattern") pattern: String,
+        @Field("category") category: String,
+        @Field("plugins") plugins: String
+    ): Response<StartSearch>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/stop")
+    suspend fun stopSearch(@Field("id") id: Int): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/delete")
+    suspend fun deleteSearch(@Field("id") id: Int): Response<Unit>
+
+    @GET("api/v2/search/results")
+    suspend fun getSearchResults(@Query("id") id: Int): Response<Search>
+
+    @GET("api/v2/search/plugins")
+    suspend fun getPlugins(): Response<List<Plugin>>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/enablePlugin")
+    suspend fun enablePlugins(@Field("names") names: String, @Field("enable") isEnabled: Boolean): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/installPlugin")
+    suspend fun installPlugins(@Field("sources") sources: String): Response<Unit>
+
+    @FormUrlEncoded
+    @POST("api/v2/search/uninstallPlugin")
+    suspend fun uninstallPlugins(@Field("names") names: String): Response<Unit>
+
+    @POST("api/v2/search/updatePlugins")
+    suspend fun updatePlugins(): Response<Unit>
 }
