@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.search.result
 
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Rect
@@ -9,6 +10,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
@@ -51,6 +53,19 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     private val searchQuery get() = arguments?.getString("searchQuery", null)!!
     private val category get() = arguments?.getString("category", null)!!
     private val plugins get() = arguments?.getString("plugins", null)!!
+
+    private val startAddTorrentActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val isAdded = result.data?.getBooleanExtra(
+                    AddTorrentActivity.Extras.IS_ADDED,
+                    false
+                ) ?: false
+                if (isAdded) {
+                    showSnackbar(R.string.torrent_add_success)
+                }
+            }
+        }
 
     constructor(serverId: Int, searchQuery: String, category: String, plugins: String) : this() {
         arguments = bundleOf(
@@ -228,7 +243,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
                     putExtra(AddTorrentActivity.Extras.TORRENT_URL, searchResult.fileUrl)
                 }
-                startActivity(intent)
+                startAddTorrentActivity.launch(intent)
             }
             setNeutralButton(R.string.search_open_description) { _, _ ->
                 try {
