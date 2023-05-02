@@ -51,8 +51,8 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
-                        R.id.menu_update -> {
-                            viewModel.updatePluginStates(serverId, adapter.pluginsEnabledState, adapter.pluginsToDelete)
+                        R.id.menu_save -> {
+                            viewModel.savePlugins(serverId, adapter.pluginsEnabledState, adapter.pluginsToDelete)
                         }
                         R.id.menu_install_plugins -> {
                             showInstallPluginDialog()
@@ -96,7 +96,7 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 SearchPluginsViewModel.Event.PluginsStateUpdated -> {
-                    showSnackbar(R.string.search_plugins_update_state_success)
+                    showSnackbar(R.string.search_plugins_save_success)
                     viewModel.loadPlugins(serverId)
                 }
                 SearchPluginsViewModel.Event.PluginsInstalled -> {

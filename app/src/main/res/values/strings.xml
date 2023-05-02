@@ -574,12 +574,12 @@
     <string name="search_sort_search_engine">Search Engine</string>
 
     <string name="search_plugins">Plugins</string>
-    <string name="search_plugins_update">Update</string>
+    <string name="search_plugins_save">Save</string>
     <string name="search_plugins_install_plugins">Install Plugins</string>
     <string name="search_plugins_update_plugins">Update Plugins</string>
     <string name="search_plugins_version">Version: %1$s</string>
     <string name="search_plugins_install_hint">URL or local directory</string>
-    <string name="search_plugins_update_state_success">Plugin states updated successfully.</string>
+    <string name="search_plugins_save_success">Plugins are saved successfully.</string>
     <string name="search_plugins_install_success">Plugins are installed successfully.</string>
     <string name="search_plugins_update_success">All plugins are updated successfully.</string>
     <string name="search_plugins_cannot_be_empty">Plugins cannot be empty.</string>

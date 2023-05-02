@@ -62,74 +62,73 @@ class SearchPluginsViewModel @Inject constructor(
         }
     }
 
-    fun updatePluginStates(serverId: Int, newStates: Map<String, Boolean>, pluginsToDelete: List<String>) =
-        viewModelScope.launch {
-            val plugins = plugins.value ?: return@launch
+    fun savePlugins(serverId: Int, newStates: Map<String, Boolean>, pluginsToDelete: List<String>) = viewModelScope.launch {
+        val plugins = plugins.value ?: return@launch
 
-            val pluginsToEnable = plugins.filter { plugin ->
-                plugin.name !in pluginsToDelete && newStates[plugin.name] == true
-            }.map { plugin ->
-                plugin.name
-            }
-            val pluginsToDisable = plugins.filter { plugin ->
-                plugin.name !in pluginsToDelete && newStates[plugin.name] == false
-            }.map { plugin ->
-                plugin.name
-            }
-
-            val job = Job()
-
-            viewModelScope.launch(job) {
-                val enablePluginsDeferred = launch enable@{
-                    if (pluginsToEnable.isEmpty()) {
-                        return@enable
-                    }
-
-                    when (val result = repository.enablePlugins(serverId, pluginsToEnable, true)) {
-                        is RequestResult.Success -> {}
-                        is RequestResult.Error -> {
-                            yield()
-                            eventChannel.send(Event.Error(result))
-                            job.cancel()
-                        }
-                    }
-                }
-                val disablePluginsDeferred = launch disable@{
-                    if (pluginsToDisable.isEmpty()) {
-                        return@disable
-                    }
-
-                    when (val result = repository.enablePlugins(serverId, pluginsToDisable, false)) {
-                        is RequestResult.Success -> {}
-                        is RequestResult.Error -> {
-                            yield()
-                            eventChannel.send(Event.Error(result))
-                            job.cancel()
-                        }
-                    }
-                }
-                val uninstallPluginsDeferred = launch uninstall@{
-                    if (pluginsToDelete.isEmpty()) {
-                        return@uninstall
-                    }
-
-                    when (val result = repository.uninstallPlugins(serverId, pluginsToDelete)) {
-                        is RequestResult.Success -> {}
-                        is RequestResult.Error -> {
-                            yield()
-                            eventChannel.send(Event.Error(result))
-                            job.cancel()
-                        }
-                    }
-                }
-
-                enablePluginsDeferred.join()
-                disablePluginsDeferred.join()
-                uninstallPluginsDeferred.join()
-
-                eventChannel.send(Event.PluginsStateUpdated)
-            }
+        val pluginsToEnable = plugins.filter { plugin ->
+            plugin.name !in pluginsToDelete && newStates[plugin.name] == true
+        }.map { plugin ->
+            plugin.name
         }
+        val pluginsToDisable = plugins.filter { plugin ->
+            plugin.name !in pluginsToDelete && newStates[plugin.name] == false
+        }.map { plugin ->
+            plugin.name
+        }
+
+        val job = Job()
+
+        viewModelScope.launch(job) {
+            val enablePluginsDeferred = launch enable@{
+                if (pluginsToEnable.isEmpty()) {
+                    return@enable
+                }
+
+                when (val result = repository.enablePlugins(serverId, pluginsToEnable, true)) {
+                    is RequestResult.Success -> {}
+                    is RequestResult.Error -> {
+                        yield()
+                        eventChannel.send(Event.Error(result))
+                        job.cancel()
+                    }
+                }
+            }
+            val disablePluginsDeferred = launch disable@{
+                if (pluginsToDisable.isEmpty()) {
+                    return@disable
+                }
+
+                when (val result = repository.enablePlugins(serverId, pluginsToDisable, false)) {
+                    is RequestResult.Success -> {}
+                    is RequestResult.Error -> {
+                        yield()
+                        eventChannel.send(Event.Error(result))
+                        job.cancel()
+                    }
+                }
+            }
+            val uninstallPluginsDeferred = launch uninstall@{
+                if (pluginsToDelete.isEmpty()) {
+                    return@uninstall
+                }
+
+                when (val result = repository.uninstallPlugins(serverId, pluginsToDelete)) {
+                    is RequestResult.Success -> {}
+                    is RequestResult.Error -> {
+                        yield()
+                        eventChannel.send(Event.Error(result))
+                        job.cancel()
+                    }
+                }
+            }
+
+            enablePluginsDeferred.join()
+            disablePluginsDeferred.join()
+            uninstallPluginsDeferred.join()
+
+            eventChannel.send(Event.PluginsStateUpdated)
+        }
+    }
 
     fun installPlugin(serverId: Int, sources: List<String>) = viewModelScope.launch {
         when (val result = repository.installPlugins(serverId, sources)) {
