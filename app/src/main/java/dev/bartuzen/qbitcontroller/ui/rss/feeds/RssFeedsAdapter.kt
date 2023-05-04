@@ -53,10 +53,17 @@ class RssFeedsAdapter(
     }
 
     class DiffCallback : DiffUtil.ItemCallback<RssFeedNode>() {
-        override fun areItemsTheSame(oldItem: RssFeedNode, newItem: RssFeedNode) =
-            oldItem.isFeed == newItem.isFeed && oldItem.name == newItem.name
+        override fun areItemsTheSame(oldItem: RssFeedNode, newItem: RssFeedNode) = if (oldItem.isFeed == newItem.isFeed) {
+            if (oldItem.isFeed) {
+                oldItem.feed?.uid == newItem.feed?.uid
+            } else {
+                oldItem.name == newItem.name
+            }
+        } else {
+            false
+        }
 
         override fun areContentsTheSame(oldItem: RssFeedNode, newItem: RssFeedNode) =
-            oldItem.name == newItem.name && oldItem.feed?.uid == newItem.feed?.uid
+            oldItem.isFeed == newItem.isFeed && oldItem.name == newItem.name
     }
 }
