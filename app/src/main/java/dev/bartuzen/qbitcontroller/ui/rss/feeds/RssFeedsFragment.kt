@@ -12,6 +12,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.ConcatAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,7 +88,8 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     return true
                 }
             },
-            viewLifecycleOwner
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
         )
 
         if (!viewModel.isInitialLoadStarted) {
