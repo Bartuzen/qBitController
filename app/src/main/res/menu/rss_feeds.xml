@@ -8,4 +8,10 @@
         android:title="@string/rss_menu_add"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/menu_rules"
+        android:icon="@drawable/ic_downloading"
+        android:title="@string/rss_rules"
+        app:showAsAction="ifRoom" />
+
 </menu>

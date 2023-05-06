@@ -307,6 +307,9 @@ interface TorrentService {
     @POST("api/v2/rss/removeItem")
     suspend fun removeItem(@Field("path") path: String): Response<Unit>
 
+    @GET("api/v2/rss/rules")
+    suspend fun getRssRules(): Response<String>
+
     @FormUrlEncoded
     @POST("api/v2/search/start")
     suspend fun startSearch(
