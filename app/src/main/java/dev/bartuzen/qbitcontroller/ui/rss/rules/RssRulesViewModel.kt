@@ -61,7 +61,19 @@ class RssRulesViewModel @Inject constructor(
         }
     }
 
+    fun createRule(serverId: Int, name: String) = viewModelScope.launch {
+        when (val result = repository.createRule(serverId, name)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.RuleCreated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object RuleCreated : Event()
     }
 }

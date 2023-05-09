@@ -11,4 +11,8 @@ class RssRulesRepository @Inject constructor(
     suspend fun getRssRules(serverId: Int) = requestManager.request(serverId) { service ->
         service.getRssRules()
     }
+
+    suspend fun createRule(serverId: Int, name: String) = requestManager.request(serverId) { service ->
+        service.setRule(name, "{}")
+    }
 }

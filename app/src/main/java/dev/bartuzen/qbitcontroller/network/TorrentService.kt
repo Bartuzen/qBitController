@@ -311,6 +311,10 @@ interface TorrentService {
     suspend fun getRssRules(): Response<String>
 
     @FormUrlEncoded
+    @POST("api/v2/rss/setRule")
+    suspend fun setRule(@Field("ruleName") name: String, @Field("ruleDef") ruleDefinition: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/search/start")
     suspend fun startSearch(
         @Field("pattern") pattern: String,
