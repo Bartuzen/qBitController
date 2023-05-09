@@ -59,7 +59,12 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             }
         )
 
-        val adapter = RssRulesAdapter()
+        val adapter = RssRulesAdapter(
+            onClick = {},
+            onLongClick = { rule ->
+                showRuleLongClickDialog(rule.name)
+            }
+        )
         binding.recyclerRules.adapter = adapter
         binding.recyclerRules.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
@@ -104,6 +109,10 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
                     showSnackbar(R.string.rss_rule_create_success)
                     viewModel.loadRssRules(serverId)
                 }
+                RssRulesViewModel.Event.RuleDeleted -> {
+                    showSnackbar(R.string.rss_rule_delete_success)
+                    viewModel.loadRssRules(serverId)
+                }
             }
         }
     }
@@ -127,6 +136,35 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             } else {
                 dialogBinding.inputLayoutName.error = getString(R.string.rss_rule_name_cannot_be_empty)
             }
+        }
+    }
+
+    private fun showRuleLongClickDialog(name: String) {
+        showDialog {
+            setTitle(name)
+            setItems(
+                arrayOf(
+                    getString(R.string.rss_rule_delete)
+                )
+            ) { _, which ->
+                when (which) {
+                    0 -> {
+                        showDeleteRuleDialog(name)
+                    }
+                }
+            }
+            setNegativeButton()
+        }
+    }
+
+    private fun showDeleteRuleDialog(name: String) {
+        showDialog {
+            setTitle(R.string.rss_rule_delete)
+            setMessage(getString(R.string.rss_rule_delete_confirm, name))
+            setPositiveButton { _, _ ->
+                viewModel.deleteRule(serverId, name)
+            }
+            setNegativeButton()
         }
     }
 }

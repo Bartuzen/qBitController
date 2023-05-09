@@ -72,8 +72,20 @@ class RssRulesViewModel @Inject constructor(
         }
     }
 
+    fun deleteRule(serverId: Int, name: String) = viewModelScope.launch {
+        when (val result = repository.deleteRule(serverId, name)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.RuleDeleted)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object RuleCreated : Event()
+        object RuleDeleted : Event()
     }
 }
