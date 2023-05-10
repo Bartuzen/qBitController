@@ -315,6 +315,10 @@ interface TorrentService {
     suspend fun setRule(@Field("ruleName") name: String, @Field("ruleDef") ruleDefinition: String): Response<Unit>
 
     @FormUrlEncoded
+    @POST("api/v2/rss/renameRule")
+    suspend fun renameRule(@Field("ruleName") name: String, @Field("newRuleName") newName: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/rss/removeRule")
     suspend fun deleteRule(@Field("ruleName") name: String): Response<Unit>
 

@@ -536,10 +536,12 @@
 
     <string name="rss_rules">RSS Downloader</string>
     <string name="rss_rule_create">Create Rule</string>
+    <string name="rss_rule_rename">Rename Rule</string>
     <string name="rss_rule_delete">Delete Rule</string>
     <string name="rss_rule_name">Rule Name</string>
     <string name="rss_rule_delete_confirm">Are you sure you want to delete rule %1$s?</string>
     <string name="rss_rule_create_success">RSS rule created successfully.</string>
+    <string name="rss_rule_rename_success">RSS rule renamed successfully.</string>
     <string name="rss_rule_delete_success">RSS rule deleted successfully.</string>
     <string name="rss_rule_name_cannot_be_empty">Name cannot be empty.</string>
 

@@ -109,6 +109,10 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
                     showSnackbar(R.string.rss_rule_create_success)
                     viewModel.loadRssRules(serverId)
                 }
+                RssRulesViewModel.Event.RuleRenamed -> {
+                    showSnackbar(R.string.rss_rule_rename_success)
+                    viewModel.loadRssRules(serverId)
+                }
                 RssRulesViewModel.Event.RuleDeleted -> {
                     showSnackbar(R.string.rss_rule_delete_success)
                     viewModel.loadRssRules(serverId)
@@ -144,16 +148,44 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             setTitle(name)
             setItems(
                 arrayOf(
+                    getString(R.string.rss_rule_rename),
                     getString(R.string.rss_rule_delete)
                 )
             ) { _, which ->
                 when (which) {
                     0 -> {
+                        showRenameRuleDialog(name)
+                    }
+                    1 -> {
                         showDeleteRuleDialog(name)
                     }
                 }
             }
             setNegativeButton()
+        }
+    }
+
+    private fun showRenameRuleDialog(name: String) {
+        lateinit var dialogBinding: DialogRssAddRuleBinding
+
+        val dialog = showDialog(DialogRssAddRuleBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            binding.inputLayoutName.text = name
+
+            setTitle(R.string.rss_rule_rename)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newName = dialogBinding.inputLayoutName.text
+            if (newName.isNotBlank()) {
+                viewModel.renameRule(serverId, name, newName)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutName.error = getString(R.string.rss_rule_name_cannot_be_empty)
+            }
         }
     }
 

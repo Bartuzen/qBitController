@@ -16,6 +16,10 @@ class RssRulesRepository @Inject constructor(
         service.setRule(name, "{}")
     }
 
+    suspend fun renameRule(serverId: Int, name: String, newName: String) = requestManager.request(serverId) { service ->
+        service.renameRule(name, newName)
+    }
+
     suspend fun deleteRule(serverId: Int, name: String) = requestManager.request(serverId) { service ->
         service.deleteRule(name)
     }

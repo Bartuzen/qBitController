@@ -72,6 +72,17 @@ class RssRulesViewModel @Inject constructor(
         }
     }
 
+    fun renameRule(serverId: Int, name: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameRule(serverId, name, newName)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.RuleRenamed)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun deleteRule(serverId: Int, name: String) = viewModelScope.launch {
         when (val result = repository.deleteRule(serverId, name)) {
             is RequestResult.Success -> {
@@ -86,6 +97,7 @@ class RssRulesViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object RuleCreated : Event()
+        object RuleRenamed : Event()
         object RuleDeleted : Event()
     }
 }
