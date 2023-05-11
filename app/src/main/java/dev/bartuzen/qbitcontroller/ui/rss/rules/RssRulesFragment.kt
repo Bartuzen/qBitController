@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,9 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
                     }
                     return true
                 }
-            }
+            },
+            viewLifecycleOwner,
+            Lifecycle.State.RESUMED
         )
 
         val adapter = RssRulesAdapter(
