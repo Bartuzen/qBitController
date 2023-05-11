@@ -20,7 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -557,16 +556,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
             binding.inputLayoutSavePath.isEnabled = !torrent.isAutomaticTorrentManagementEnabled
             binding.checkboxDownloadPath.isEnabled = !torrent.isAutomaticTorrentManagementEnabled
-            binding.checkboxAutoTmm.addOnCheckedStateChangedListener { _, state ->
-                binding.checkboxDownloadPath.isEnabled = state != MaterialCheckBox.STATE_CHECKED
-                binding.inputLayoutSavePath.isEnabled = state != MaterialCheckBox.STATE_CHECKED
-                binding.inputLayoutDownloadPath.isEnabled =
-                    state != MaterialCheckBox.STATE_CHECKED && binding.checkboxDownloadPath.isChecked
+            binding.checkboxAutoTmm.setOnCheckedChangeListener { _, isChecked ->
+                binding.checkboxDownloadPath.isEnabled = !isChecked
+                binding.inputLayoutSavePath.isEnabled = !isChecked
+                binding.inputLayoutDownloadPath.isEnabled = !isChecked && binding.checkboxDownloadPath.isChecked
             }
 
             binding.inputLayoutDownloadPath.isEnabled = torrent.downloadPath != null
-            binding.checkboxDownloadPath.addOnCheckedStateChangedListener { _, state ->
-                binding.inputLayoutDownloadPath.isEnabled = state == MaterialCheckBox.STATE_CHECKED
+            binding.checkboxDownloadPath.setOnCheckedChangeListener { _, isChecked ->
+                binding.inputLayoutDownloadPath.isEnabled = isChecked
             }
 
             binding.radioLimitCustom.setOnCheckedChangeListener { _, isChecked ->
