@@ -50,9 +50,9 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     private val viewModel: SearchResultViewModel by viewModels()
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val searchQuery get() = arguments?.getString("searchQuery", null)!!
-    private val category get() = arguments?.getString("category", null)!!
-    private val plugins get() = arguments?.getString("plugins", null)!!
+    private val searchQuery get() = arguments?.getString("searchQuery")!!
+    private val category get() = arguments?.getString("category")!!
+    private val plugins get() = arguments?.getString("plugins")!!
 
     private val startAddTorrentActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
