@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.InputType
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.text.isDigitsOnly
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -38,6 +39,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     "autoRefreshInterval" -> viewModel.autoRefreshInterval.toString()
                     "notificationCheckInterval" -> viewModel.notificationCheckInterval.toString()
                     "theme" -> viewModel.theme.toString()
+                    "pin" -> viewModel.pin
                     else -> defValue
                 }
             }
@@ -71,6 +73,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     "theme" -> {
                         if (value != null) {
                             viewModel.theme = Theme.valueOf(value)
+                        }
+                    }
+                    "pin" -> {
+                        if (value != null && value.isDigitsOnly()) {
+                            viewModel.pin = value
                         }
                     }
                 }
@@ -247,6 +254,23 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             setSummaryProvider {
                 resources.getStringArray(R.array.settings_theme_entries)[viewModel.theme.ordinal]
+            }
+        }
+
+        editText {
+            key = "pin"
+            setTitle(R.string.lock_pin)
+            setDialogTitle(R.string.lock_pin)
+
+            setSummaryProvider {
+                "*".repeat(viewModel.pin.length)
+            }
+
+            setOnBindEditTextListener { editText ->
+                val text = viewModel.pin
+                editText.inputType = InputType.TYPE_NUMBER_VARIATION_PASSWORD
+                editText.setText(text)
+                editText.setSelection(text.length)
             }
         }
     }

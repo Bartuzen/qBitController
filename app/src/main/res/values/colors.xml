@@ -45,4 +45,10 @@
     <color name="log_info">#0969DA</color>
     <color name="log_warning">#BC4C00</color>
     <color name="log_critical">#CF222E</color>
+
+    <color name="pin_button">#FBF8FD</color>
+    <color name="pin_button_special">#595D72</color>
+    <color name="pin_button_text">#000000</color>
+    <color name="pin_button_ripple">#DAE1FF</color>
+    <color name="pin_indicator">#1C1C1C</color>
 </resources>

@@ -28,4 +28,10 @@
     <color name="log_info">#58A6FF</color>
     <color name="log_warning">#DB6D28</color>
     <color name="log_critical">#F85149</color>
+
+    <color name="pin_button">#2E2E35</color>
+    <color name="pin_button_special">#A5AAC1</color>
+    <color name="pin_button_text">#FFFFFF</color>
+    <color name="pin_button_ripple">#DAE1FF</color>
+    <color name="pin_indicator">#F2F0F4</color>
 </resources>

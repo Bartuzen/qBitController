@@ -27,6 +27,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.lock.LockActivity"
+            android:exported="false" />
+
         <activity android:name=".ui.torrent.TorrentActivity" />
 
         <activity

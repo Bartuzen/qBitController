@@ -25,6 +25,7 @@ import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
 import dev.bartuzen.qbitcontroller.databinding.ActivityMainBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.ui.lock.LockActivity
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -57,6 +58,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (savedInstanceState == null && viewModel.isPinEnabled) {
+            val intent = Intent(this, LockActivity::class.java)
+            startActivity(intent)
+        }
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 

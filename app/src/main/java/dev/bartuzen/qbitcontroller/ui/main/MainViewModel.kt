@@ -4,17 +4,21 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val state: SavedStateHandle,
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
+    settingsManager: SettingsManager
 ) : ViewModel() {
     val currentServer = state.getStateFlow<ServerConfig?>("current_server", null)
 
     val serversFlow = serverManager.serversFlow
+
+    val isPinEnabled = settingsManager.pin.value.isNotEmpty()
 
     fun setCurrentServer(serverConfig: ServerConfig?) {
         state["current_server"] = serverConfig

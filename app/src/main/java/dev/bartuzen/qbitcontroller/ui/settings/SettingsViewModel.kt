@@ -44,4 +44,10 @@ class SettingsViewModel @Inject constructor(
         set(value) {
             settingsManager.theme.value = value
         }
+
+    var pin
+        get() = settingsManager.pin.value
+        set(value) {
+            settingsManager.pin.value = value
+        }
 }

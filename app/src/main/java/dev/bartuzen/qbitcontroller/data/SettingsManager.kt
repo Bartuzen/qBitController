@@ -31,6 +31,8 @@ class SettingsManager @Inject constructor(
 
     val searchSort = enumPreference(sharedPref, "searchSort", SearchSort.NAME, SearchSort::valueOf)
     val isReverseSearchSorting = primitivePreference(sharedPref, "isReverseSearchSort", false)
+
+    val pin = primitivePreference(sharedPref, "pin", "")
 }
 
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>
