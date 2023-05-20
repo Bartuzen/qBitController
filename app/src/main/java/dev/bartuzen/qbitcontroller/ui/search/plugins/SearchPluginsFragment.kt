@@ -11,6 +11,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -26,6 +27,7 @@ import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
@@ -101,8 +103,11 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                 }
                 SearchPluginsViewModel.Event.PluginsInstalled -> {
                     showSnackbar(R.string.search_plugins_install_success)
-                    delay(1000)
-                    viewModel.loadPlugins(serverId)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        viewModel.loadPlugins(serverId)
+                    }
                 }
                 SearchPluginsViewModel.Event.PluginsUpdated -> {
                     showSnackbar(R.string.search_plugins_update_success)
