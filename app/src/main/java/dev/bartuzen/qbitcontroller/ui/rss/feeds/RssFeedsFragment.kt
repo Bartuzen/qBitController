@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,8 +35,10 @@ import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
@@ -64,6 +67,9 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
+                        R.id.menu_refresh -> {
+                            viewModel.refreshAllFeeds(serverId)
+                        }
                         R.id.menu_add -> {
                             showDialog {
                                 setItems(
@@ -166,6 +172,14 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             when (event) {
                 is RssFeedsViewModel.Event.Error -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
+                }
+                RssFeedsViewModel.Event.AllFeedsRefreshed -> {
+                    showSnackbar(R.string.rss_success_all_feeds_refresh)
+
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(1000)
+                        viewModel.loadRssFeeds(serverId)
+                    }
                 }
                 RssFeedsViewModel.Event.FeedAddError -> {
                     showSnackbar(R.string.rss_error_feed_add)

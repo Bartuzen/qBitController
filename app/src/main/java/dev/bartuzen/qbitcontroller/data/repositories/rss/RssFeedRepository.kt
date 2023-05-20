@@ -12,6 +12,10 @@ class RssFeedRepository @Inject constructor(
         service.getRssFeeds(false)
     }
 
+    suspend fun refreshAllFeeds(serverId: Int) = requestManager.request(serverId) { service ->
+        service.refreshItem("")
+    }
+
     suspend fun addRssFeed(serverId: Int, url: String, path: String) = requestManager.request(serverId) { service ->
         service.addRssFeed(url, path)
     }

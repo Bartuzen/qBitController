@@ -499,6 +499,7 @@
     <string name="rss_menu_move_folder">Move Folder</string>
     <string name="rss_menu_delete_folder">Delete Folder</string>
     <string name="rss_menu_mark_all_as_read">Mark All as Read</string>
+    <string name="rss_menu_refresh_all">Refresh All</string>
     <string name="rss_menu_refresh">Refresh</string>
 
     <string name="rss_hint_feed_url">Feed URL</string>
@@ -531,6 +532,7 @@
 
     <string name="rss_success_article_mark_as_read">Article marked as read successfully.</string>
     <string name="rss_success_all_articles_mark_as_read">All articles marked as read successfully.</string>
+    <string name="rss_success_all_feeds_refresh">Refreshed all feeds successfully.</string>
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
 
