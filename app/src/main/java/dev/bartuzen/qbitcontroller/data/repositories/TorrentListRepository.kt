@@ -89,4 +89,8 @@ class TorrentListRepository @Inject constructor(
     suspend fun setUploadSpeedLimit(serverId: Int, limit: Int) = requestManager.request(serverId) { service ->
         service.setUploadSpeedLimit(limit)
     }
+
+    suspend fun shutdown(serverId: Int) = requestManager.request(serverId) { service ->
+        service.shutdown()
+    }
 }

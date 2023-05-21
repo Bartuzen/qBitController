@@ -14,6 +14,7 @@
     <string name="menu_rss">RSS</string>
     <string name="menu_search_online">Search Online</string>
     <string name="menu_log">Execution Log</string>
+    <string name="menu_shutdown">Quit qBittorrent</string>
     <string name="menu_select_all">Select All</string>
     <string name="menu_select_inverse">Select Inverse</string>
 
@@ -183,6 +184,9 @@
     <string name="torrent_list_menu_alternative_speed_limits">Alternative Speed Limits</string>
     <string name="torrent_list_switch_speed_limit_alternative_success">Switched to alternative speed limits.</string>
     <string name="torrent_list_switch_speed_limit_regular_success">Switched to regular speed limits.</string>
+
+    <string name="torrent_list_shutdown_confirm">Are you sure you want to quit qBittorrent?</string>
+    <string name="torrent_list_shutdown_success">qBittorrent has been shutdown successfully.</string>
 
     <string name="torrent_list_status">Status</string>
     <string name="torrent_list_status_format">%1$s (%2$d)</string>

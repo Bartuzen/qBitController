@@ -46,6 +46,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_shutdown"
+        android:title="@string/menu_shutdown"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_sort"
         android:title="@string/torrent_sort_menu"
