@@ -310,6 +310,7 @@
 
     <string name="torrent_overview_transfer">Transfer</string>
     <string name="torrent_overview_time_active">Time Active</string>
+    <string name="torrent_overview_time_active_seeding_time_format">%1$s (seeded for %2$s)</string>
     <string name="torrent_overview_downloaded">Downloaded</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s this session)</string>
     <string name="torrent_overview_uploaded">Uploaded</string>

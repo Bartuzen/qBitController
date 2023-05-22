@@ -360,7 +360,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 "-"
             }
 
-            binding.textTimeActive.text = formatSeconds(requireContext(), torrent.timeActive)
+            binding.textTimeActive.text = if (torrent.seedingTime > 0) {
+                getString(
+                    R.string.torrent_overview_time_active_seeding_time_format,
+                    formatSeconds(requireContext(), torrent.timeActive),
+                    formatSeconds(requireContext(), torrent.seedingTime)
+                )
+            } else {
+                formatSeconds(requireContext(), torrent.timeActive)
+            }
             binding.textDownloaded.text = getString(
                 R.string.torrent_overview_downloaded_format,
                 formatBytes(requireContext(), torrent.downloaded),
