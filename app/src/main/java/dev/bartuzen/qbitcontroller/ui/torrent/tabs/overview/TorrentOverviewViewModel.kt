@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +24,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -334,16 +337,12 @@ class TorrentOverviewViewModel @Inject constructor(
     fun exportTorrent(serverId: Int, torrentHash: String, fileUri: Uri) = viewModelScope.launch {
         when (val result = repository.exportTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
-                withContext(Dispatchers.IO) {
-                    context.contentResolver.openOutputStream(fileUri).use { outputStream ->
-                        if (outputStream != null) {
-                            result.data.byteStream().use { inputStream ->
-                                inputStream.copyTo(outputStream)
-                            }
-                        }
-                    }
+                val isSuccessful = writeTorrentFile(fileUri, result.data)
+                if (isSuccessful) {
+                    eventChannel.send(Event.TorrentExported)
+                } else {
+                    eventChannel.send(Event.TorrentExportError)
                 }
-                eventChannel.send(Event.TorrentExported)
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -353,8 +352,32 @@ class TorrentOverviewViewModel @Inject constructor(
                 } else {
                     eventChannel.send(Event.Error(result))
                 }
+
+                deleteTorrentFile(fileUri)
             }
         }
+    }
+
+    private suspend fun writeTorrentFile(uri: Uri, body: ResponseBody) = withContext(Dispatchers.IO) {
+        try {
+            context.contentResolver.openOutputStream(uri).use { outputStream ->
+                if (outputStream != null) {
+                    body.byteStream().use { inputStream ->
+                        inputStream.copyTo(outputStream)
+                    }
+                    true
+                } else {
+                    throw IOException("outputStream is null")
+                }
+            }
+        } catch (_: Exception) {
+            deleteTorrentFile(uri)
+            false
+        }
+    }
+
+    private suspend fun deleteTorrentFile(uri: Uri) = withContext(Dispatchers.IO) {
+        DocumentFile.fromSingleUri(context, uri)?.delete()
     }
 
     sealed class Event {
