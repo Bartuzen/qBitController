@@ -34,6 +34,9 @@ interface TorrentService {
     @GET("api/v2/app/defaultSavePath")
     suspend fun getDefaultSavePath(): Response<String>
 
+    @POST("api/v2/app/shutdown")
+    suspend fun shutdown(): Response<String>
+
     @GET("api/v2/log/main")
     suspend fun getLog(): Response<List<Log>>
 

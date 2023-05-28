@@ -66,6 +66,17 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
+    fun refreshAllFeeds(serverId: Int) = viewModelScope.launch {
+        when (val result = repository.refreshAllFeeds(serverId)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.AllFeedsRefreshed)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun addRssFeed(serverId: Int, url: String, path: String) = viewModelScope.launch {
         when (val result = repository.addRssFeed(serverId, url, path)) {
             is RequestResult.Success -> {
@@ -189,6 +200,7 @@ class RssFeedsViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        object AllFeedsRefreshed : Event()
         object FeedAddError : Event()
         object FeedRenameError : Event()
         object FeedMoveError : Event()

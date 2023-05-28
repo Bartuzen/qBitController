@@ -23,5 +23,8 @@ data class TorrentFile(
 )
 
 enum class TorrentFilePriority(val id: Int) {
-    DO_NOT_DOWNLOAD(0), NORMAL(1), HIGH(6), MAXIMUM(7)
+    DO_NOT_DOWNLOAD(0),
+    NORMAL(1),
+    HIGH(6),
+    MAXIMUM(7)
 }

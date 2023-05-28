@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.checkbox.MaterialCheckBox
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemPluginBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemSearchStartHeaderBinding
@@ -132,8 +131,8 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private lateinit var plugin: Plugin
 
         init {
-            binding.checkboxPlugin.addOnCheckedStateChangedListener { _, state ->
-                if (state == MaterialCheckBox.STATE_CHECKED) {
+            binding.checkboxPlugin.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
                     selectedPlugins.add(plugin.name)
                 } else {
                     selectedPlugins.remove(plugin.name)
@@ -151,6 +150,8 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     enum class PluginSelection {
-        ENABLED, ALL, SELECTED
+        ENABLED,
+        ALL,
+        SELECTED
     }
 }

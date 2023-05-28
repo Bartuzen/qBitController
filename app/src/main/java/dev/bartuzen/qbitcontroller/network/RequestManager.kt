@@ -76,6 +76,15 @@ class RequestManager @Inject constructor(
                             sslSocketFactory(sslContext.socketFactory, trustAllManager)
                         }
                     }
+
+                    addInterceptor { chain ->
+                        val request = chain.request()
+                            .newBuilder()
+                            .header("Connection", "close")
+                            .build()
+                        chain.proceed(request)
+                    }
+                    retryOnConnectionFailure(true)
                 }.build()
             )
             .addConverterFactory(ScalarsConverterFactory.create())

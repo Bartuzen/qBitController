@@ -139,6 +139,9 @@ data class Torrent(
     @JsonProperty("seeding_time_limit")
     val seedingTimeLimit: Int,
 
+    @JsonProperty("seeding_time")
+    val seedingTime: Int,
+
     @JsonProperty("trackers_count")
     val trackerCount: Int
 )
@@ -208,5 +211,7 @@ enum class TorrentState {
 
 @Suppress("unused")
 enum class PieceState {
-    NOT_DOWNLOADED, DOWNLOADING, DOWNLOADED
+    NOT_DOWNLOADED,
+    DOWNLOADING,
+    DOWNLOADED
 }

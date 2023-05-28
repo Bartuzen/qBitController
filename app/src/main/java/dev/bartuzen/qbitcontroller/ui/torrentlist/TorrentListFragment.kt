@@ -213,6 +213,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                             }
                             startActivity(intent)
                         }
+                        R.id.menu_shutdown -> {
+                            showShutdownDialog()
+                        }
                         R.id.menu_sort_name -> {
                             viewModel.setTorrentSort(TorrentSort.NAME)
                         }
@@ -746,6 +749,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     showSnackbar(R.string.torrent_speed_update_success)
                     viewModel.loadMainData(serverId)
                 }
+                TorrentListViewModel.Event.Shutdown -> {
+                    showSnackbar(R.string.torrent_list_shutdown_success)
+                }
             }
         }
     }
@@ -1071,6 +1077,17 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             setOnDismissListener {
                 mainDataJob.cancel()
             }
+        }
+    }
+
+    private fun showShutdownDialog() {
+        showDialog {
+            setTitle(R.string.menu_shutdown)
+            setMessage(R.string.torrent_list_shutdown_confirm)
+            setPositiveButton { _, _ ->
+                viewModel.shutdown(serverId)
+            }
+            setNegativeButton()
         }
     }
 

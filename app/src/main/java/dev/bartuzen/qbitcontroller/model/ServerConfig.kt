@@ -15,7 +15,7 @@ data class ServerConfig(
     val username: String?,
     val password: String?,
     val trustSelfSignedCertificates: Boolean,
-    val basicAuth: BasicAuth
+    val basicAuth: BasicAuth = BasicAuth(false, null, null)
 ) : Parcelable {
     @get:JsonIgnore
     val url: String
@@ -42,7 +42,8 @@ data class ServerConfig(
 }
 
 enum class Protocol {
-    HTTP, HTTPS
+    HTTP,
+    HTTPS
 }
 
 @Parcelize
