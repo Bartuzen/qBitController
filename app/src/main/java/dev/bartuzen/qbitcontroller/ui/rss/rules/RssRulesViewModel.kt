@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssRulesRepository
 import dev.bartuzen.qbitcontroller.model.RssRule
-import dev.bartuzen.qbitcontroller.model.deserializers.parseRssRules
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,7 @@ import javax.inject.Inject
 class RssRulesViewModel @Inject constructor(
     private val repository: RssRulesRepository
 ) : ViewModel() {
-    private val _rssRules = MutableStateFlow<List<RssRule>?>(null)
+    private val _rssRules = MutableStateFlow<Map<String, RssRule>?>(null)
     val rssRules = _rssRules.asStateFlow()
 
     private val eventChannel = Channel<Event>()
@@ -35,7 +34,7 @@ class RssRulesViewModel @Inject constructor(
     private fun updateRssRules(serverId: Int) = viewModelScope.launch {
         when (val result = repository.getRssRules(serverId)) {
             is RequestResult.Success -> {
-                _rssRules.value = parseRssRules(result.data)
+                _rssRules.value = result.data.toSortedMap(String.CASE_INSENSITIVE_ORDER)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))

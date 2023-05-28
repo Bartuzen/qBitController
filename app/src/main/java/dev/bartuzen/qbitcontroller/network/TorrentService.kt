@@ -5,6 +5,7 @@ import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Plugin
+import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.model.StartSearch
 import dev.bartuzen.qbitcontroller.model.Torrent
@@ -308,7 +309,7 @@ interface TorrentService {
     suspend fun removeItem(@Field("path") path: String): Response<Unit>
 
     @GET("api/v2/rss/rules")
-    suspend fun getRssRules(): Response<String>
+    suspend fun getRssRules(): Response<Map<String, RssRule>>
 
     @FormUrlEncoded
     @POST("api/v2/rss/setRule")

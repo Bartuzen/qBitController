@@ -148,7 +148,8 @@
 
         <activity
             android:name=".ui.rss.RssActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.search.SearchActivity"

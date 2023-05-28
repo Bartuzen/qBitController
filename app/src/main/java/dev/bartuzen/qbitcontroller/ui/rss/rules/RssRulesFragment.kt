@@ -10,6 +10,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddRuleBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssRulesBinding
+import dev.bartuzen.qbitcontroller.ui.rss.editrule.EditRssRuleFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
@@ -63,9 +66,17 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
         )
 
         val adapter = RssRulesAdapter(
-            onClick = {},
-            onLongClick = { rule ->
-                showRuleLongClickDialog(rule.name)
+            onClick = { ruleName ->
+                val fragment = EditRssRuleFragment(serverId, ruleName)
+                parentFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    setDefaultAnimations()
+                    replace(R.id.container, fragment)
+                    addToBackStack(null)
+                }
+            },
+            onLongClick = { ruleName ->
+                showRuleLongClickDialog(ruleName)
             }
         )
         binding.recyclerRules.adapter = adapter
@@ -100,7 +111,7 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
         }
 
         viewModel.rssRules.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { rules ->
-            adapter.submitList(rules)
+            adapter.submitList(rules.keys.toList())
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->

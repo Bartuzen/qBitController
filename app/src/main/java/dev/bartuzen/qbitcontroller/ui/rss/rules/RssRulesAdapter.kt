@@ -6,12 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.databinding.ItemRssRuleBinding
-import dev.bartuzen.qbitcontroller.model.RssRule
 
 class RssRulesAdapter(
-    private val onClick: (rule: RssRule) -> Unit,
-    private val onLongClick: (rule: RssRule) -> Unit
-) : ListAdapter<RssRule, RssRulesAdapter.ViewHolder>(DiffCallback()) {
+    private val onClick: (rule: String) -> Unit,
+    private val onLongClick: (rule: String) -> Unit
+) : ListAdapter<String, RssRulesAdapter.ViewHolder>(DiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ItemRssRuleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
@@ -42,15 +41,13 @@ class RssRulesAdapter(
             }
         }
 
-        fun bind(rule: RssRule) {
-            binding.textName.text = rule.name
+        fun bind(rule: String) {
+            binding.textName.text = rule
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<RssRule>() {
-        override fun areItemsTheSame(oldItem: RssRule, newItem: RssRule) = oldItem.name == newItem.name
-
-        override fun areContentsTheSame(oldItem: RssRule, newItem: RssRule) =
-            oldItem.name == newItem.name && oldItem.isEnabled == newItem.isEnabled
+    class DiffCallback : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: String, newItem: String) = true
     }
 }
