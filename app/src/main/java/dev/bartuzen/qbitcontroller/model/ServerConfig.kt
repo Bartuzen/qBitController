@@ -42,7 +42,8 @@ data class ServerConfig(
 }
 
 enum class Protocol {
-    HTTP, HTTPS
+    HTTP,
+    HTTPS
 }
 
 @Parcelize

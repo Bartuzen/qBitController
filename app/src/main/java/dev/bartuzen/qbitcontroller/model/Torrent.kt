@@ -211,5 +211,7 @@ enum class TorrentState {
 
 @Suppress("unused")
 enum class PieceState {
-    NOT_DOWNLOADED, DOWNLOADING, DOWNLOADED
+    NOT_DOWNLOADED,
+    DOWNLOADING,
+    DOWNLOADED
 }

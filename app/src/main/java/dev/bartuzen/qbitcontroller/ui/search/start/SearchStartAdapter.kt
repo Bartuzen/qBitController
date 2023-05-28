@@ -150,6 +150,8 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     enum class PluginSelection {
-        ENABLED, ALL, SELECTED
+        ENABLED,
+        ALL,
+        SELECTED
     }
 }

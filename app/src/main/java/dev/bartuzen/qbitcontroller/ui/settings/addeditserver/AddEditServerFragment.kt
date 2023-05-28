@@ -260,6 +260,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     }
 
     enum class Result {
-        ADDED, EDITED, DELETED
+        ADDED,
+        EDITED,
+        DELETED
     }
 }

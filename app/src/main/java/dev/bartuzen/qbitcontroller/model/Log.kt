@@ -12,5 +12,8 @@ data class Log(
 )
 
 enum class LogType {
-    NORMAL, INFO, WARNING, CRITICAL
+    NORMAL,
+    INFO,
+    WARNING,
+    CRITICAL
 }

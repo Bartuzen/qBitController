@@ -36,7 +36,9 @@ class SettingsManager @Inject constructor(
 typealias ServerConfigMap = SortedMap<Int, ServerConfig>
 
 enum class Theme {
-    LIGHT, DARK, SYSTEM_DEFAULT
+    LIGHT,
+    DARK,
+    SYSTEM_DEFAULT
 }
 
 enum class TorrentSort {
