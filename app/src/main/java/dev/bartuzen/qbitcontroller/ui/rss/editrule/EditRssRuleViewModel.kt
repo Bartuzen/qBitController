@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.rss.editrule
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -20,13 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditRssRuleViewModel @Inject constructor(
-    private val repository: EditRssRuleRepository
+    private val repository: EditRssRuleRepository,
+    private val state: SavedStateHandle
 ) : ViewModel() {
     private val _rssRule = MutableStateFlow<RssRule?>(null)
     val rssRule = _rssRule.asStateFlow()
 
-    private val _categories = MutableStateFlow<List<String>?>(null)
-    val categories = _categories.asStateFlow()
+    val categories = state.getStateFlow<List<String>?>("categories", null)
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -38,6 +39,8 @@ class EditRssRuleViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     var isInitialLoadStarted = false
+
+    val isFetched = state.getStateFlow("isFetched", false)
 
     fun setRule(serverId: Int, name: String, rule: RssRule) = viewModelScope.launch {
         val mapper = jacksonObjectMapper()
@@ -54,6 +57,10 @@ class EditRssRuleViewModel @Inject constructor(
     }
 
     private fun updateData(serverId: Int, ruleName: String) = viewModelScope.launch {
+        if (isFetched.value) {
+            return@launch
+        }
+
         val deferredList = mutableListOf<Deferred<Any>>()
 
         deferredList += async {
@@ -92,7 +99,9 @@ class EditRssRuleViewModel @Inject constructor(
         _rssRule.value = results[0] as RssRule
 
         @Suppress("UNCHECKED_CAST")
-        _categories.value = results[1] as List<String>
+        setCategories(results[1] as List<String>)
+
+        onFetch()
     }
 
     fun loadData(serverId: Int, ruleName: String) {
@@ -102,6 +111,14 @@ class EditRssRuleViewModel @Inject constructor(
                 _isLoading.value = false
             }
         }
+    }
+
+    private fun onFetch() {
+        state["isFetched"] = true
+    }
+
+    private fun setCategories(categories: List<String>) {
+        state["categories"] = categories
     }
 
     sealed class Event {

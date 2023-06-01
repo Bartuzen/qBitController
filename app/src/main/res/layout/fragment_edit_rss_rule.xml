@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,28 +13,23 @@
             android:id="@+id/checkbox_enabled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="@string/rss_rule_enabled"
-            tools:enabled="true" />
+            android:text="@string/rss_rule_enabled" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_use_regex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="@string/rss_rule_use_regular_expressions"
-            tools:enabled="true" />
+            android:text="@string/rss_rule_use_regular_expressions" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_must_contain"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:hint="@string/rss_rule_must_contain"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_must_contain">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_must_contain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -48,11 +42,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:hint="@string/rss_rule_must_not_contain"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_must_not_contain">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_must_not_contain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -65,11 +58,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:hint="@string/rss_rule_episode_filter"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_episode_filter">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_episode_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -80,25 +72,19 @@
             android:id="@+id/checkbox_smart_episode_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="@string/rss_rule_use_smart_episode_filter"
-            tools:enabled="true" />
+            android:text="@string/rss_rule_use_smart_episode_filter" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_category"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:hint="@string/rss_rule_category"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_category">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_category"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                tools:enabled="true" />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,20 +92,17 @@
             android:id="@+id/checkbox_save_path_enabled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="@string/rss_rule_save_to_a_different_directory"
-            tools:enabled="true" />
+            android:text="@string/rss_rule_save_to_a_different_directory" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_save_path"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:hint="@string/rss_rule_save_to"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_save_to">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_save_path"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -132,11 +115,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:hint="@string/rss_rule_ignore_subsequent_matches_for"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_ignore_subsequent_matches_for">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_ignore_days"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />
@@ -149,16 +131,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:hint="@string/rss_rule_add_paused"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_add_paused">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_add_paused"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                tools:enabled="true" />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,16 +146,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:enabled="false"
-            android:hint="@string/rss_rule_torrent_content_layout"
-            tools:enabled="true">
+            android:hint="@string/rss_rule_torrent_content_layout">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_content_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                tools:enabled="true" />
+                android:layout_height="wrap_content" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

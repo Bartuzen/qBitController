@@ -86,22 +86,37 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             binding.inputLayoutSavePath.isEnabled = isChecked
         }
 
-        if (viewModel.rssRule.value == null) {
-            viewModel.rssRule.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { rssRule ->
-                binding.checkboxEnabled.isEnabled = true
-                binding.checkboxUseRegex.isEnabled = true
-                binding.inputLayoutMustContain.isEnabled = true
-                binding.inputLayoutMustNotContain.isEnabled = true
-                binding.inputLayoutEpisodeFilter.isEnabled = true
-                binding.checkboxSmartEpisodeFilter.isEnabled = true
-                binding.checkboxSavePathEnabled.isEnabled = true
-                binding.inputLayoutSavePath.isEnabled = true
-                binding.inputLayoutIgnoreDays.isEnabled = true
-                binding.inputLayoutAddPaused.isEnabled = true
-                binding.dropdownAddPaused.isEnabled = true
-                binding.inputLayoutContentLayout.isEnabled = true
-                binding.dropdownContentLayout.isEnabled = true
+        viewModel.categories.value?.let { categories ->
+            val categoryOptions = categories.toMutableList().apply { add(0, "") }
+            binding.dropdownCategory.setItems(categoryOptions)
+        }
 
+        viewModel.isFetched.launchAndCollectLatestIn(viewLifecycleOwner) { isFetched ->
+            binding.checkboxEnabled.isEnabled = isFetched
+            binding.checkboxUseRegex.isEnabled = isFetched
+            binding.inputLayoutMustContain.isEnabled = isFetched
+            binding.inputLayoutMustNotContain.isEnabled = isFetched
+            binding.inputLayoutEpisodeFilter.isEnabled = isFetched
+            binding.checkboxSmartEpisodeFilter.isEnabled = isFetched
+            binding.inputLayoutCategory.isEnabled = isFetched
+            binding.dropdownCategory.isEnabled = isFetched
+            binding.checkboxSavePathEnabled.isEnabled = isFetched
+            binding.inputLayoutSavePath.isEnabled = isFetched
+            binding.inputLayoutIgnoreDays.isEnabled = isFetched
+            binding.inputLayoutAddPaused.isEnabled = isFetched
+            binding.dropdownAddPaused.isEnabled = isFetched
+            binding.inputLayoutContentLayout.isEnabled = isFetched
+            binding.dropdownContentLayout.isEnabled = isFetched
+        }
+
+        if (viewModel.rssRule.value == null) {
+            combine(viewModel.rssRule, viewModel.categories) { rssRule, categories ->
+                if (rssRule != null && categories != null) {
+                    rssRule to categories
+                } else {
+                    null
+                }
+            }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (rssRule, categories) ->
                 binding.checkboxEnabled.isChecked = rssRule.isEnabled
                 binding.checkboxUseRegex.isChecked = rssRule.useRegex
                 binding.inputLayoutMustContain.text = rssRule.mustContain
@@ -127,24 +142,11 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
                     }
                 )
 
-                cancel()
-            }
-        }
-
-        combine(viewModel.rssRule, viewModel.categories) { rssRule, categories ->
-            if (rssRule != null && categories != null) {
-                rssRule to categories
-            } else {
-                null
-            }
-        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (rssRule, categories) ->
-            val categoryOptions = categories.toMutableList().apply { add(0, "") }
-            binding.dropdownCategory.setItems(categoryOptions)
-
-            if (!binding.dropdownCategory.isEnabled) {
-                binding.inputLayoutCategory.isEnabled = true
-                binding.dropdownCategory.isEnabled = true
+                val categoryOptions = categories.toMutableList().apply { add(0, "") }
+                binding.dropdownCategory.setItems(categoryOptions)
                 binding.dropdownCategory.setPosition(categoryOptions.indexOf(rssRule.assignedCategory))
+
+                cancel()
             }
         }
 
