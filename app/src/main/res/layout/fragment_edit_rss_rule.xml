@@ -104,17 +104,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_layout_episode_filter" />
 
+        <include
+            android:id="@+id/divider"
+            layout="@layout/item_divider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkbox_smart_episode_filter" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_category"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:hint="@string/rss_rule_category"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/checkbox_smart_episode_filter">
+            app:layout_constraintTop_toBottomOf="@id/divider">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_category"
