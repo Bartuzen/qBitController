@@ -22,7 +22,8 @@ private fun parseRssFeeds(node: JsonNode, feedNode: RssFeedNode) {
                     name = key,
                     feed = RssFeed(
                         name = key,
-                        uid = value["uid"].asText()
+                        uid = value["uid"].asText(),
+                        url = value["url"].asText()
                     ),
                     children = null
                 )

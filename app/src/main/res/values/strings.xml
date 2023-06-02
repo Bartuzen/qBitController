@@ -541,6 +541,37 @@
     <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
     <string name="rss_error_feed_not_found">RSS feed is not found.</string>
 
+    <string name="rss_rules">RSS Downloader</string>
+    <string name="rss_rule_create">Create Rule</string>
+    <string name="rss_rule_rename">Rename Rule</string>
+    <string name="rss_rule_delete">Delete Rule</string>
+    <string name="rss_rule_name">Rule Name</string>
+    <string name="rss_rule_delete_confirm">Are you sure you want to delete rule %1$s?</string>
+    <string name="rss_rule_create_success">RSS rule created successfully.</string>
+    <string name="rss_rule_rename_success">RSS rule renamed successfully.</string>
+    <string name="rss_rule_delete_success">RSS rule deleted successfully.</string>
+    <string name="rss_rule_name_cannot_be_empty">Name cannot be empty.</string>
+
+    <string name="rss_rule_enabled">Enabled</string>
+    <string name="rss_rule_use_regular_expressions">Use Regular Expressions</string>
+    <string name="rss_rule_must_contain">Must Contain</string>
+    <string name="rss_rule_must_not_contain">Must Not Contain</string>
+    <string name="rss_rule_episode_filter">Episode Filter</string>
+    <string name="rss_rule_use_smart_episode_filter">Use Smart Episode Filter</string>
+    <string name="rss_rule_category">Category</string>
+    <string name="rss_rule_save_to_a_different_directory">Save to a Different Directory</string>
+    <string name="rss_rule_save_to">Save to</string>
+    <string name="rss_rule_ignore_subsequent_matches_for">Ignore Subsequent Matches For (Days)</string>
+    <string name="rss_rule_add_paused">Add Paused</string>
+    <string name="rss_rule_add_paused_always">Always</string>
+    <string name="rss_rule_add_paused_never">Never</string>
+    <string name="rss_rule_torrent_content_layout">Torrent Content Layout</string>
+    <string name="rss_rule_apply_rule_to_feeds">Apply Rule to Feeds</string>
+    <string name="rss_rule_use_global_settings">Use Global Settings</string>
+    <string name="rss_rule_save">Save Rule</string>
+    <string name="rss_rule_saved_successfully">Rule saved successfully.</string>
+    <string name="rss_rule_not_found">Couldn\'t find rule.</string>
+
     <string name="search_title">Search</string>
     <string name="search_start_query">Search Query</string>
     <string name="search_start_category">Category</string>

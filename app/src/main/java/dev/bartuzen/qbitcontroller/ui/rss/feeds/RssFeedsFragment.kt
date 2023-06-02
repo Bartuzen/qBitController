@@ -25,6 +25,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogRssRenameFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesFragment
+import dev.bartuzen.qbitcontroller.ui.rss.rules.RssRulesFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -67,6 +68,15 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     when (menuItem.itemId) {
+                        R.id.menu_rules -> {
+                            val fragment = RssRulesFragment(serverId)
+                            parentFragmentManager.commit {
+                                setReorderingAllowed(true)
+                                setDefaultAnimations()
+                                replace(R.id.container, fragment)
+                                addToBackStack(null)
+                            }
+                        }
                         R.id.menu_refresh -> {
                             viewModel.refreshAllFeeds(serverId)
                         }
