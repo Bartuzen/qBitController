@@ -7,10 +7,12 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.checkbox.MaterialCheckBox
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentEditRssRuleBinding
@@ -114,13 +116,13 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
         }
 
         if (viewModel.rssRule.value == null) {
-            combine(viewModel.rssRule, viewModel.categories) { rssRule, categories ->
-                if (rssRule != null && categories != null) {
-                    rssRule to categories
+            combine(viewModel.rssRule, viewModel.categories, viewModel.feeds) { rssRule, categories, feeds ->
+                if (rssRule != null && categories != null && feeds != null) {
+                    Triple(rssRule, categories, feeds)
                 } else {
                     null
                 }
-            }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (rssRule, categories) ->
+            }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (rssRule, categories, feeds) ->
                 binding.checkboxEnabled.isChecked = rssRule.isEnabled
                 binding.checkboxUseRegex.isChecked = rssRule.useRegex
                 binding.inputLayoutMustContain.text = rssRule.mustContain
@@ -150,7 +152,28 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
                 binding.dropdownCategory.setItems(categoryOptions)
                 binding.dropdownCategory.setPosition(categoryOptions.indexOf(rssRule.assignedCategory))
 
+                binding.layoutFeeds.removeAllViews()
+                feeds.forEach { (name, url) ->
+                    val checkbox = MaterialCheckBox(requireContext()).apply {
+                        isChecked = rssRule.affectedFeeds.contains(url)
+                        text = name
+                    }
+                    binding.layoutFeeds.addView(checkbox)
+                }
+
                 cancel()
+            }
+        } else {
+            val selectedFeeds = savedInstanceState?.getStringArrayList("selectedFeeds")
+            if (selectedFeeds != null) {
+                binding.layoutFeeds.removeAllViews()
+                viewModel.feeds.value?.forEach { (name, url) ->
+                    val checkbox = MaterialCheckBox(requireContext()).apply {
+                        isChecked = selectedFeeds.contains(url)
+                        text = name
+                    }
+                    binding.layoutFeeds.addView(checkbox)
+                }
             }
         }
 
@@ -171,6 +194,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
 
     private fun constructRuleDefinition(): RssRule? {
         val categories = viewModel.categories.value ?: return null
+        val feeds = viewModel.feeds.value ?: return null
 
         val isEnabled = binding.checkboxEnabled.isChecked
         val mustContain = binding.inputLayoutMustContain.text
@@ -199,6 +223,14 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
         }
         val smartFilter = binding.checkboxSmartEpisodeFilter.isChecked
 
+        val affectedFeeds = binding.layoutFeeds.children.mapIndexed { index, view ->
+            if (view is MaterialCheckBox && view.isChecked) {
+                feeds[index].second
+            } else {
+                null
+            }
+        }.filterNotNull().toList()
+
         return RssRule(
             isEnabled = isEnabled,
             mustContain = mustContain,
@@ -210,7 +242,22 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             assignedCategory = category,
             savePath = savePath,
             torrentContentLayout = contentLayout,
-            smartFilter = smartFilter
+            smartFilter = smartFilter,
+            affectedFeeds = affectedFeeds
         )
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        val feeds = viewModel.feeds.value ?: return
+        val selectedFeedUrls = binding.layoutFeeds.children.mapIndexed { index, view ->
+            if (view is MaterialCheckBox && view.isChecked) {
+                feeds[index].second
+            } else {
+                null
+            }
+        }.filterNotNull().toList()
+        outState.putStringArrayList("selectedFeeds", ArrayList(selectedFeedUrls))
     }
 }

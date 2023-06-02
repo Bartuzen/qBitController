@@ -19,4 +19,8 @@ class EditRssRuleRepository @Inject constructor(
     suspend fun getCategories(serverId: Int) = requestManager.request(serverId) { service ->
         service.getCategories()
     }
+
+    suspend fun getRssFeeds(serverId: Int) = requestManager.request(serverId) { service ->
+        service.getRssFeeds(false)
+    }
 }

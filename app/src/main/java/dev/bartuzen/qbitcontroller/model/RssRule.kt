@@ -13,5 +13,6 @@ data class RssRule(
     val assignedCategory: String,
     val savePath: String,
     val torrentContentLayout: String?,
-    val smartFilter: Boolean
+    val smartFilter: Boolean,
+    val affectedFeeds: List<String>
 )

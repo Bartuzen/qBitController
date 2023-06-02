@@ -566,6 +566,7 @@
     <string name="rss_rule_add_paused_always">Always</string>
     <string name="rss_rule_add_paused_never">Never</string>
     <string name="rss_rule_torrent_content_layout">Torrent Content Layout</string>
+    <string name="rss_rule_apply_rule_to_feeds">Apply Rule to Feeds</string>
     <string name="rss_rule_use_global_settings">Use Global Settings</string>
     <string name="rss_rule_save">Save Rule</string>
     <string name="rss_rule_saved_successfully">Rule saved successfully.</string>

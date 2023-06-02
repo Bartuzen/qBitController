@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.EditRssRuleRepository
+import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.RssRule
+import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Deferred
@@ -28,6 +30,7 @@ class EditRssRuleViewModel @Inject constructor(
     val rssRule = _rssRule.asStateFlow()
 
     val categories = state.getStateFlow<List<String>?>("categories", null)
+    val feeds = state.getStateFlow<List<Pair<String, String>>?>("feeds", null)
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -94,12 +97,42 @@ class EditRssRuleViewModel @Inject constructor(
                 }
             }
         }
+        deferredList += async {
+            when (val result = repository.getRssFeeds(serverId)) {
+                is RequestResult.Success -> {
+                    val feedNode = parseRssFeeds(result.data)
+
+                    val feedList = mutableListOf<Pair<String, String>>()
+                    val nodeQueue = ArrayDeque<RssFeedNode>()
+                    nodeQueue.add(feedNode)
+                    while (nodeQueue.isNotEmpty()) {
+                        val currentNode = nodeQueue.removeFirst()
+                        if (currentNode.isFeed) {
+                            feedList.add(currentNode.name to currentNode.feed!!.url)
+                        } else {
+                            currentNode.children?.forEach { childNode ->
+                                nodeQueue.add(childNode)
+                            }
+                        }
+                    }
+                    feedList.sortBy { it.first }
+                    feedList
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
+                    throw CancellationException()
+                }
+            }
+        }
 
         val results = deferredList.awaitAll()
         _rssRule.value = results[0] as RssRule
 
         @Suppress("UNCHECKED_CAST")
         setCategories(results[1] as List<String>)
+
+        @Suppress("UNCHECKED_CAST")
+        setFeeds(results[2] as List<String>)
 
         onFetch()
     }
@@ -119,6 +152,10 @@ class EditRssRuleViewModel @Inject constructor(
 
     private fun setCategories(categories: List<String>) {
         state["categories"] = categories
+    }
+
+    private fun setFeeds(feeds: List<String>) {
+        state["feeds"] = feeds
     }
 
     sealed class Event {
