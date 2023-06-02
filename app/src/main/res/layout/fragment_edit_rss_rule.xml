@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_enabled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rss_rule_enabled" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/rss_rule_enabled"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_use_regex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rss_rule_use_regular_expressions" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/rss_rule_use_regular_expressions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkbox_enabled" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_must_contain"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/rss_rule_must_contain">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_must_contain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkbox_use_regex">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_must_contain"
@@ -41,8 +56,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/rss_rule_must_not_contain">
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_must_not_contain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_must_contain">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_must_not_contain"
@@ -57,8 +77,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/rss_rule_episode_filter">
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_episode_filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_must_not_contain">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_episode_filter"
@@ -72,14 +97,24 @@
             android:id="@+id/checkbox_smart_episode_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rss_rule_use_smart_episode_filter" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/rss_rule_use_smart_episode_filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_episode_filter" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_category"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/rss_rule_category">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_category"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkbox_smart_episode_filter">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_category"
@@ -92,14 +127,24 @@
             android:id="@+id/checkbox_save_path_enabled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/rss_rule_save_to_a_different_directory" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/rss_rule_save_to_a_different_directory"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_category" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_save_path"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/rss_rule_save_to">
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_save_to"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkbox_save_path_enabled">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_save_path"
@@ -114,8 +159,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/rss_rule_ignore_subsequent_matches_for">
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_ignore_subsequent_matches_for"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_save_path">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_ignore_days"
@@ -130,8 +180,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/rss_rule_add_paused">
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_add_paused"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_ignore_days">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_add_paused"
@@ -145,8 +200,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/rss_rule_torrent_content_layout">
+            android:layout_marginEnd="8dp"
+            android:hint="@string/rss_rule_torrent_content_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_add_paused">
 
             <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                 android:id="@+id/dropdown_content_layout"
@@ -155,6 +215,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
