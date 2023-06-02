@@ -115,7 +115,7 @@ class EditRssRuleViewModel @Inject constructor(
                             }
                         }
                     }
-                    feedList.sortBy { it.first }
+                    feedList.sortWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.first })
                     feedList
                 }
                 is RequestResult.Error -> {
