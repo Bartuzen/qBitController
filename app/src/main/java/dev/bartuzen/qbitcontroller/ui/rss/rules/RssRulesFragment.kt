@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.rss.rules
 
 import android.app.AlertDialog
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -29,7 +27,6 @@ import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
-import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.flow.filterNotNull
 
 @AndroidEntryPoint
@@ -80,18 +77,6 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             }
         )
         binding.recyclerRules.adapter = adapter
-        binding.recyclerRules.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                val verticalPx = 8.toPx(requireContext())
-                val horizontalPx = 8.toPx(requireContext())
-                if (parent.getChildAdapterPosition(view) == 0) {
-                    outRect.top = verticalPx
-                }
-                outRect.bottom = verticalPx
-                outRect.left = horizontalPx
-                outRect.right = horizontalPx
-            }
-        })
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
