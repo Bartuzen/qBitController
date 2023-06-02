@@ -137,7 +137,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
                     when (rssRule.addPaused) {
                         null -> 0
                         true -> 1
-                        false -> 3
+                        false -> 2
                     }
                 )
                 binding.dropdownContentLayout.setPosition(
