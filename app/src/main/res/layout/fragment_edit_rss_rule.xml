@@ -222,6 +222,16 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <include
+            android:id="@+id/divider_2"
+            layout="@layout/item_divider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_layout_content_layout" />
+
         <TextView
             android:id="@+id/apply_rule_to_feeds"
             android:layout_width="0dp"
@@ -231,7 +241,7 @@
             android:text="@string/rss_rule_apply_rule_to_feeds"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_layout_content_layout" />
+            app:layout_constraintTop_toBottomOf="@id/divider_2" />
 
         <LinearLayout
             android:id="@+id/layout_feeds"
