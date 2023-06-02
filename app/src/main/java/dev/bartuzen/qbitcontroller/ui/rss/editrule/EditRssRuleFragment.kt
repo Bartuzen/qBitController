@@ -20,6 +20,7 @@ import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
 import kotlinx.coroutines.cancel
@@ -259,5 +260,10 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             }
         }.filterNotNull().toList()
         outState.putStringArrayList("selectedFeeds", ArrayList(selectedFeedUrls))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireAppCompatActivity().supportActionBar?.title = ruleName
     }
 }

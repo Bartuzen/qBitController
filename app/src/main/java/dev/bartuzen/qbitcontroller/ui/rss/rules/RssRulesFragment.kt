@@ -21,6 +21,7 @@ import dev.bartuzen.qbitcontroller.ui.rss.editrule.EditRssRuleFragment
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
@@ -197,5 +198,10 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             }
             setNegativeButton()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireAppCompatActivity().supportActionBar?.setTitle(R.string.rss_rules)
     }
 }
