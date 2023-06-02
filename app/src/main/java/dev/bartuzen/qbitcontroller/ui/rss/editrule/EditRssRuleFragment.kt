@@ -107,7 +107,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             binding.inputLayoutCategory.isEnabled = isFetched
             binding.dropdownCategory.isEnabled = isFetched
             binding.checkboxSavePathEnabled.isEnabled = isFetched
-            binding.inputLayoutSavePath.isEnabled = isFetched
+            binding.inputLayoutSavePath.isEnabled = isFetched && binding.checkboxSavePathEnabled.isChecked
             binding.inputLayoutIgnoreDays.isEnabled = isFetched
             binding.inputLayoutAddPaused.isEnabled = isFetched
             binding.dropdownAddPaused.isEnabled = isFetched
