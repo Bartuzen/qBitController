@@ -1,0 +1,8 @@
+- Added search support
+- Added RSS auto-download rules support
+- Added ability to refresh all RSS feeds
+- Added ability to shutdown qBittorrent
+- Torrent details screen now also shows seeding time
+- Fixed some crashes
+
+Check GitHub release for all changes.
