@@ -379,7 +379,6 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 formatBytes(requireContext(), torrent.uploaded),
                 formatBytes(requireContext(), torrent.uploadedSession)
             )
-            binding.textRatio.text = torrent.ratio.floorToDecimal(2).toString()
             binding.textReannounceIn.text = formatSeconds(requireContext(), properties.nextReannounce)
             binding.textLastActivity.text = formatDate(torrent.lastActivity)
             binding.textLastSeenComplete.text = if (torrent.lastSeenComplete != null) {
