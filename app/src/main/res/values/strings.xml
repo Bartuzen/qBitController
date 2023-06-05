@@ -145,6 +145,7 @@
 
     <string name="torrent_list_free_space">Free space: %1$s</string>
     <string name="torrent_list_categories">Categories</string>
+    <string name="torrent_list_create_subcategory_title">Create Subcategory</string>
     <string name="torrent_list_create_category_title">Create Category</string>
     <string name="torrent_list_edit_category_title">Edit Category</string>
     <string name="torrent_list_delete_category_title">Delete Category</string>

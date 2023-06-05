@@ -443,7 +443,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 activityBinding.layoutDrawer.close()
             },
             onCreateClick = {
-                showCreateEditCategoryDialog(null)
+                showCreateEditCategoryDialog(null, null)
                 activityBinding.layoutDrawer.close()
             },
             onCollapse = { isCollapsed ->
@@ -898,20 +898,44 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
     }
 
     private fun showCategoryLongClickDialog(name: String) {
+        val areSubcategoriesEnabled = viewModel.mainData.value?.serverState?.areSubcategoriesEnabled == true
+
         showDialog {
             setTitle(name)
             setItems(
-                arrayOf(
-                    getString(R.string.torrent_list_edit_category_title),
-                    getString(R.string.torrent_list_delete_category_title)
-                )
+                if (!areSubcategoriesEnabled) {
+                    arrayOf(
+                        getString(R.string.torrent_list_edit_category_title),
+                        getString(R.string.torrent_list_delete_category_title)
+                    )
+                } else {
+                    arrayOf(
+                        getString(R.string.torrent_list_create_subcategory_title),
+                        getString(R.string.torrent_list_edit_category_title),
+                        getString(R.string.torrent_list_delete_category_title)
+                    )
+                }
             ) { _, which ->
-                when (which) {
-                    0 -> {
-                        showCreateEditCategoryDialog(name)
+                if (!areSubcategoriesEnabled) {
+                    when (which) {
+                        0 -> {
+                            showCreateEditCategoryDialog(name, null)
+                        }
+                        1 -> {
+                            showDeleteCategoryTagDialog(true, name)
+                        }
                     }
-                    1 -> {
-                        showDeleteCategoryTagDialog(true, name)
+                } else {
+                    when (which) {
+                        0 -> {
+                            showCreateEditCategoryDialog(null, name)
+                        }
+                        1 -> {
+                            showCreateEditCategoryDialog(name.substringAfterLast("/"), name)
+                        }
+                        2 -> {
+                            showDeleteCategoryTagDialog(true, name)
+                        }
                     }
                 }
             }
@@ -919,9 +943,10 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
     }
 
-    private fun showCreateEditCategoryDialog(name: String?) {
+    private fun showCreateEditCategoryDialog(name: String?, parent: String?) {
         val category = if (name != null) {
-            viewModel.mainData.value?.categories?.find { it.name == name } ?: return
+            val fullName = parent ?: name
+            viewModel.mainData.value?.categories?.find { it.name == fullName } ?: return
         } else {
             null
         }
@@ -948,7 +973,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
 
             if (category == null) {
-                setTitle(R.string.torrent_list_create_category_title)
+                if (parent == null) {
+                    setTitle(R.string.torrent_list_create_category_title)
+                } else {
+                    setTitle(R.string.torrent_list_create_subcategory_title)
+                }
             } else {
                 binding.editName.isEnabled = false
                 binding.editName.inputType = InputType.TYPE_NULL
@@ -994,9 +1023,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
 
             if (category == null) {
+                val categoryName = if (parent == null) {
+                    dialogBinding.editName.text.toString()
+                } else {
+                    "$parent/${dialogBinding.editName.text}"
+                }
+
                 viewModel.createCategory(
                     serverId = serverId,
-                    name = dialogBinding.editName.text.toString(),
+                    name = categoryName,
                     savePath = dialogBinding.editSavePath.text.toString(),
                     downloadPathEnabled = downloadPathEnabled,
                     downloadPath = dialogBinding.editDownloadPath.text.toString()
