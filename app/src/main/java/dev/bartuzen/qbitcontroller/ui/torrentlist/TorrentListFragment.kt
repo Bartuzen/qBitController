@@ -803,7 +803,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val newLocation = dialogBinding.editLocation.text.toString()
+            val newLocation = dialogBinding.inputLayoutLocation.text
             if (newLocation.isNotBlank()) {
                 onSuccess(newLocation)
                 dialog.dismiss()
@@ -964,11 +964,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             binding.dropdownDownloadPath.onItemChangeListener = { position ->
                 if (position == 1) {
-                    binding.editDownloadPath.isEnabled = true
-                    binding.editDownloadPath.inputType = InputType.TYPE_CLASS_TEXT
+                    binding.inputLayoutDownloadPath.isEnabled = true
+                    binding.inputLayoutDownloadPath.editText?.inputType = InputType.TYPE_CLASS_TEXT
                 } else {
-                    binding.editDownloadPath.isEnabled = false
-                    binding.editDownloadPath.inputType = InputType.TYPE_NULL
+                    binding.inputLayoutDownloadPath.isEnabled = false
+                    binding.inputLayoutDownloadPath.editText?.inputType = InputType.TYPE_NULL
                 }
             }
 
@@ -979,8 +979,8 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     setTitle(R.string.torrent_list_create_subcategory_title)
                 }
             } else {
-                binding.editName.isEnabled = false
-                binding.editName.inputType = InputType.TYPE_NULL
+                binding.inputLayoutName.isEnabled = false
+                binding.inputLayoutName.editText?.inputType = InputType.TYPE_NULL
 
                 binding.inputLayoutName.setTextWithoutAnimation(name)
                 binding.inputLayoutSavePath.setTextWithoutAnimation(category.savePath)
@@ -1007,7 +1007,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             if (category == null) {
-                if (dialogBinding.editName.text.toString().isEmpty()) {
+                if (dialogBinding.inputLayoutName.text.isEmpty()) {
                     dialogBinding.inputLayoutName.error =
                         getString(R.string.torrent_list_create_category_name_cannot_be_empty)
                     return@setOnClickListener
@@ -1024,25 +1024,25 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             if (category == null) {
                 val categoryName = if (parent == null) {
-                    dialogBinding.editName.text.toString()
+                    dialogBinding.inputLayoutName.text
                 } else {
-                    "$parent/${dialogBinding.editName.text}"
+                    "$parent/${dialogBinding.inputLayoutName.text}"
                 }
 
                 viewModel.createCategory(
                     serverId = serverId,
                     name = categoryName,
-                    savePath = dialogBinding.editSavePath.text.toString(),
+                    savePath = dialogBinding.inputLayoutSavePath.text,
                     downloadPathEnabled = downloadPathEnabled,
-                    downloadPath = dialogBinding.editDownloadPath.text.toString()
+                    downloadPath = dialogBinding.inputLayoutDownloadPath.text
                 )
             } else {
                 viewModel.editCategory(
                     serverId = serverId,
                     name = category.name,
-                    savePath = dialogBinding.editSavePath.text.toString(),
+                    savePath = dialogBinding.inputLayoutSavePath.text,
                     downloadPathEnabled = downloadPathEnabled,
-                    downloadPath = dialogBinding.editDownloadPath.text.toString()
+                    downloadPath = dialogBinding.inputLayoutDownloadPath.text
                 )
             }
 

@@ -13,7 +13,6 @@
         android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/torrent_list_create_category_hint"
@@ -30,7 +29,6 @@
         android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_save_path"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/torrent_list_create_category_save_path_hint"
@@ -62,7 +60,6 @@
         android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_download_path"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"

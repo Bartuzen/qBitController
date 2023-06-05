@@ -12,7 +12,6 @@
         android:layout_marginTop="8dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/torrent_overview_save_path"
