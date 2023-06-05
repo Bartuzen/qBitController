@@ -203,7 +203,7 @@ class TorrentListViewModel @Inject constructor(
                         }
                     }
                     is CategoryTag.Item -> {
-                        if (torrent.category != selectedCategory.name) {
+                        if (torrent.category == null || !"${torrent.category}/".startsWith("${selectedCategory.name}/")) {
                             return@filter false
                         }
                     }
