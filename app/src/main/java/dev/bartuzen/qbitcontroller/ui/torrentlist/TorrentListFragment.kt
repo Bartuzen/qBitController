@@ -575,6 +575,8 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 }
             }
 
+            categoryAdapter.areSubcategoriesEnabled = mainData.serverState.areSubcategoriesEnabled
+
             categoryAdapter.submitList(
                 items = categoryMap,
                 allCount = mainData.torrents.size,

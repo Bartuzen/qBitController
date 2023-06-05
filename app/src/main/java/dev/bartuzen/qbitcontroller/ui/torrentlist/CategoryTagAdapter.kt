@@ -5,11 +5,13 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemCategoryTagBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemCategoryTagTitleBinding
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.toPx
 
 class CategoryTagAdapter(
     private val isCategory: Boolean,
@@ -19,6 +21,8 @@ class CategoryTagAdapter(
     private val onCreateClick: () -> Unit,
     private val onCollapse: (isCollapsed: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    var areSubcategoriesEnabled: Boolean = false
 
     private var items: List<Pair<String, Int>> = emptyList()
     private var selectedItem: CategoryTag = CategoryTag.All
@@ -157,11 +161,22 @@ class CategoryTagAdapter(
                     }
                 }
                 is CategoryTag.Item -> {
-                    categoryTag.name
+                    if (!areSubcategoriesEnabled) {
+                        categoryTag.name
+                    } else {
+                        categoryTag.name.substringAfterLast("/")
+                    }
                 }
             }
 
             binding.textCategoryTag.text = context.getString(R.string.torrent_list_category_tag_format, name, count)
+
+            val paddingStart = if (areSubcategoriesEnabled && categoryTag is CategoryTag.Item) {
+                (categoryTag.name.count { it == '/' } * 16 + 16).toPx(context)
+            } else {
+                16.toPx(context)
+            }
+            binding.textCategoryTag.updatePaddingRelative(start = paddingStart)
         }
     }
 

@@ -9,6 +9,9 @@ data class ServerState(
     @JsonProperty("alltime_dl")
     val allTimeDownload: Long,
 
+    @JsonProperty("use_subcategories")
+    val areSubcategoriesEnabled: Boolean,
+
     @JsonProperty("global_ratio")
     val globalRatio: String,
 
