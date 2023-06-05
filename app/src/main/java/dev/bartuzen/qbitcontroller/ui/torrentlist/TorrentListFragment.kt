@@ -533,7 +533,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             )
 
             val stateCountMap = mutableMapOf<TorrentFilter, Int>()
-            val categoryMap = mainData.categories.associateBy({ it.name }, { 0 }).toMutableMap()
+            val categoryMap = mainData.categories.associateBy({ it.name }, { 0 }).toSortedMap()
             val tagMap = mainData.tags.associateBy({ it }, { 0 }).toMutableMap()
 
             var uncategorizedCount = 0
@@ -576,6 +576,19 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             }
 
             categoryAdapter.areSubcategoriesEnabled = mainData.serverState.areSubcategoriesEnabled
+
+            if (mainData.serverState.areSubcategoriesEnabled) {
+                val categories = categoryMap.keys.toList()
+                categories.forEachIndexed { index, category ->
+                    for (i in index + 1 until categories.size) {
+                        if (categories[i].startsWith("$category/")) {
+                            categoryMap[category] = (categoryMap[category] ?: 0) + (categoryMap[categories[i]] ?: 0)
+                        } else {
+                            break
+                        }
+                    }
+                }
+            }
 
             categoryAdapter.submitList(
                 items = categoryMap,
