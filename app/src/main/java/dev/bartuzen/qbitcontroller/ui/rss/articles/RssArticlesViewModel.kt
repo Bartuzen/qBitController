@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
-import dev.bartuzen.qbitcontroller.model.RssFeedWithData
+import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeedWithData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -18,8 +18,8 @@ import javax.inject.Inject
 class RssArticlesViewModel @Inject constructor(
     private val repository: RssArticlesRepository
 ) : ViewModel() {
-    private val _rssFeed = MutableStateFlow<RssFeedWithData?>(null)
-    val rssFeed = _rssFeed.asStateFlow()
+    private val _rssArticles = MutableStateFlow<List<Article>?>(null)
+    val rssArticles = _rssArticles.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -32,12 +32,12 @@ class RssArticlesViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateRssFeed(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
+    private fun updateRssArticles(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
-                val feed = parseRssFeedWithData(result.data, feedPath)
-                if (feed != null) {
-                    _rssFeed.value = feed
+                val articles = parseRssFeedWithData(result.data, feedPath)
+                if (articles != null) {
+                    _rssArticles.value = articles
                 } else {
                     eventChannel.send(Event.RssFeedNotFound)
                 }
@@ -48,19 +48,19 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun loadRssFeed(serverId: Int, feedPath: List<String>) {
+    fun loadRssArticles(serverId: Int, feedPath: List<String>) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateRssFeed(serverId, feedPath).invokeOnCompletion {
+            updateRssArticles(serverId, feedPath).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssFeed(serverId: Int, feedPath: List<String>) {
+    fun refreshRssArticles(serverId: Int, feedPath: List<String>) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateRssFeed(serverId, feedPath).invokeOnCompletion {
+            updateRssArticles(serverId, feedPath).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }

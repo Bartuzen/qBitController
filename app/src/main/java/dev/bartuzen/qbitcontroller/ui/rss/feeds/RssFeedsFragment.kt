@@ -137,7 +137,19 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 viewModel.goBack()
             }
         )
-        binding.recyclerFeeds.adapter = ConcatAdapter(backButtonAdapter, adapter)
+        val currentDirectoryAdapter = RssFeedsCurrentDirectoryAdapter(
+            onClick = {
+                val path = viewModel.currentDirectory.value.toList().reversed()
+                parentFragmentManager.commit {
+                    setReorderingAllowed(true)
+                    setDefaultAnimations()
+                    val fragment = RssArticlesFragment(serverId, path)
+                    replace(R.id.container, fragment)
+                    addToBackStack(null)
+                }
+            }
+        )
+        binding.recyclerFeeds.adapter = ConcatAdapter(backButtonAdapter, currentDirectoryAdapter, adapter)
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshRssFeeds(serverId)
@@ -174,6 +186,8 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             } else {
                 viewModel.goToRoot()
             }
+
+            currentDirectoryAdapter.currentDirectory = currentDirectory.firstOrNull()
 
             onBackPressedCallback.isEnabled = currentDirectory.isNotEmpty()
         }

@@ -65,7 +65,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireAppCompatActivity().supportActionBar?.title = feedPath.last()
+        requireAppCompatActivity().supportActionBar?.title = feedPath.lastOrNull() ?: getString(R.string.rss_all_articles)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {
@@ -92,7 +92,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadRssFeed(serverId, feedPath)
+            viewModel.loadRssArticles(serverId, feedPath)
         }
 
         val adapter = RssArticlesAdapter(
@@ -127,7 +127,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshRssFeed(serverId, feedPath)
+            viewModel.refreshRssArticles(serverId, feedPath)
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
@@ -138,8 +138,8 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        viewModel.rssFeed.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { feed ->
-            adapter.submitList(feed.articles)
+        viewModel.rssArticles.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { articles ->
+            adapter.submitList(articles)
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
@@ -152,18 +152,18 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 }
                 RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
                     showSnackbar(R.string.rss_success_article_mark_as_read)
-                    viewModel.loadRssFeed(serverId, feedPath)
+                    viewModel.loadRssArticles(serverId, feedPath)
                 }
                 RssArticlesViewModel.Event.AllArticlesMarkedAsRead -> {
                     showSnackbar(R.string.rss_success_all_articles_mark_as_read)
-                    viewModel.loadRssFeed(serverId, feedPath)
+                    viewModel.loadRssArticles(serverId, feedPath)
                 }
                 RssArticlesViewModel.Event.FeedRefreshed -> {
                     showSnackbar(R.string.rss_success_feed_refresh)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000)
-                        viewModel.loadRssFeed(serverId, feedPath)
+                        viewModel.loadRssArticles(serverId, feedPath)
                     }
                 }
             }

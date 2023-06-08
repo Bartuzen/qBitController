@@ -3,42 +3,35 @@ package dev.bartuzen.qbitcontroller.model.deserializers
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.Article
-import dev.bartuzen.qbitcontroller.model.RssFeedWithData
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-fun parseRssFeedWithData(feeds: String, path: List<String>): RssFeedWithData? {
+fun parseRssFeedWithData(feeds: String, path: List<String>): List<Article>? {
     val mapper = jacksonObjectMapper()
-    val node = mapper.readTree(feeds)
-    return parseRssFeedWithData(node, path)
-}
-
-private fun parseRssFeedWithData(node: JsonNode, path: List<String>): RssFeedWithData? {
-    var currentNode = node
-    var name = ""
-    outer@ for (currentPath in path) {
-        for ((key, value) in currentNode.fields()) {
-            if (key == currentPath) {
-                name = key
-                currentNode = value
-                continue@outer
-            }
-        }
-        return null
-    }
-
-    return RssFeedWithData(
-        name = name,
-        path = path,
-        uid = currentNode["uid"].asText(),
-        articles = parseArticles(currentNode["articles"])
-    )
-}
-
-private fun parseArticles(node: JsonNode): List<Article> {
+    var node = mapper.readTree(feeds)
     val articles = mutableListOf<Article>()
 
+    path.forEach { name ->
+        node = node[name] ?: return null
+    }
+
+    parseRssFeedWithData(node, articles)
+    articles.sortByDescending { it.date }
+    return articles
+}
+
+private fun parseRssFeedWithData(node: JsonNode, articles: MutableList<Article>) {
+    if (isFeed(node)) {
+        parseArticles(node["articles"], articles)
+    } else {
+        for ((_, value) in node.fields()) {
+            parseRssFeedWithData(value, articles)
+        }
+    }
+}
+
+private fun parseArticles(node: JsonNode, articles: MutableList<Article>): List<Article> {
     for (article in node.iterator()) {
         val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
         val date = ZonedDateTime.parse(article["date"].asText(), dateFormatter).toEpochSecond()
@@ -53,7 +46,14 @@ private fun parseArticles(node: JsonNode): List<Article> {
         )
     }
 
-    articles.sortByDescending { it.date }
-
     return articles
+}
+
+private fun isFeed(node: JsonNode): Boolean {
+    for ((key, value) in node.fields()) {
+        if (key == "articles" && value.isArray) {
+            return true
+        }
+    }
+    return false
 }
