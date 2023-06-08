@@ -76,7 +76,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                     val searchItem = menu.findItem(R.id.menu_search)
 
                     val searchView = searchItem.actionView as SearchView
-                    searchView.queryHint = getString(R.string.search_filter_results)
+                    searchView.queryHint = getString(R.string.rss_filter)
                     searchView.isSubmitButtonEnabled = false
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?) = false

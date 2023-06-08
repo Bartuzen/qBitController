@@ -490,6 +490,7 @@
     <string name="torrent_add_invalid_file">Torrent file is invalid.</string>
 
     <string name="rss_title">RSS</string>
+    <string name="rss_filter">Filter entries…</string>
     <string name="rss_date">Date: %1$s</string>
     <string name="rss_download">Download</string>
     <string name="rss_mark_as_read">Mark as Read</string>
