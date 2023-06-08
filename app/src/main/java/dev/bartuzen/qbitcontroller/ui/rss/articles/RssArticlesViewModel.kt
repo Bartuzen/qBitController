@@ -10,6 +10,9 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,8 +21,7 @@ import javax.inject.Inject
 class RssArticlesViewModel @Inject constructor(
     private val repository: RssArticlesRepository
 ) : ViewModel() {
-    private val _rssArticles = MutableStateFlow<List<Article>?>(null)
-    val rssArticles = _rssArticles.asStateFlow()
+    private val rssArticles = MutableStateFlow<List<Article>?>(null)
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -30,14 +32,32 @@ class RssArticlesViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
+    private val searchQuery = MutableStateFlow("")
+
     var isInitialLoadStarted = false
+
+    val filteredArticles = combine(rssArticles, searchQuery) { articles, searchQuery ->
+        if (articles != null) {
+            articles to searchQuery
+        } else {
+            null
+        }
+    }.filterNotNull().map { (articles, searchQuery) ->
+        if (searchQuery.isNotEmpty()) {
+            articles.filter { article ->
+                article.title.contains(searchQuery, ignoreCase = true)
+            }
+        } else {
+            articles
+        }
+    }
 
     private fun updateRssArticles(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
                 val articles = parseRssFeedWithData(result.data, feedPath)
                 if (articles != null) {
-                    _rssArticles.value = articles
+                    rssArticles.value = articles
                 } else {
                     eventChannel.send(Event.RssFeedNotFound)
                 }
@@ -90,6 +110,10 @@ class RssArticlesViewModel @Inject constructor(
                 eventChannel.send(Event.Error(result))
             }
         }
+    }
+
+    fun setSearchQuery(query: String) {
+        searchQuery.value = query
     }
 
     sealed class Event {
