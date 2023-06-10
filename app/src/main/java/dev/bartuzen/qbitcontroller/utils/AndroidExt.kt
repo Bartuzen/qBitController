@@ -12,6 +12,7 @@ import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +25,8 @@ import java.io.Serializable
 import kotlin.math.ceil
 
 fun Context.getColorCompat(@ColorRes id: Int) = ContextCompat.getColor(this, id)
+
+fun Context.getDrawableCompat(@DrawableRes id: Int) = ContextCompat.getDrawable(this, id)
 
 fun Int.toPx(context: Context) = ceil(this * context.resources.displayMetrics.density).toInt()
 

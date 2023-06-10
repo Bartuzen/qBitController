@@ -45,6 +45,7 @@ class TorrentListViewModel @Inject constructor(
     val isReverseSorting = settingsManager.isReverseSorting.flow
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
     val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
+    val areTorrentSwipeActionsEnabled = settingsManager.areTorrentSwipeActionsEnabled.flow
 
     val areStatesCollapsed = settingsManager.areStatesCollapsed
     val areCategoriesCollapsed = settingsManager.areCategoriesCollapsed

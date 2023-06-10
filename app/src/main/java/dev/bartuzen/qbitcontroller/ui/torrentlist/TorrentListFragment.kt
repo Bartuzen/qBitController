@@ -2,7 +2,9 @@ package dev.bartuzen.qbitcontroller.ui.torrentlist
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputType
 import android.view.ActionMode
@@ -15,6 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.core.view.iterator
@@ -23,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -38,6 +43,8 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
 import dev.bartuzen.qbitcontroller.model.Category
+import dev.bartuzen.qbitcontroller.model.Torrent
+import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.log.LogActivity
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
@@ -46,6 +53,8 @@ import dev.bartuzen.qbitcontroller.ui.search.SearchActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
+import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.getDrawableCompat
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -311,7 +320,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
                         R.id.menu_delete -> {
-                            showDeleteTorrentsDialog(this@apply, actionMode)
+                            showDeleteTorrentsDialog(
+                                hashes = selectedItems.toList(),
+                                onDelete = {
+                                    finishSelection()
+                                    actionMode?.finish()
+                                }
+                            )
                             true
                         }
                         R.id.menu_pause -> {
@@ -418,6 +433,15 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 outRect.right = horizontalPx
             }
         })
+
+        val itemTouchHelper = setupItemTouchHelper()
+        viewModel.areTorrentSwipeActionsEnabled.launchAndCollectLatestIn(viewLifecycleOwner) { isEnabled ->
+            if (isEnabled) {
+                itemTouchHelper.attachToRecyclerView(binding.recyclerTorrentList)
+            } else {
+                itemTouchHelper.attachToRecyclerView(null)
+            }
+        }
 
         val torrentFilterAdapter = TorrentFilterAdapter(
             isCollapsed = viewModel.areStatesCollapsed.value,
@@ -771,19 +795,152 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
     }
 
-    private fun showDeleteTorrentsDialog(adapter: TorrentListAdapter, actionMode: ActionMode?) {
+    private fun setupItemTouchHelper(): ItemTouchHelper {
+        lateinit var itemTouchHelper: ItemTouchHelper
+
+        @Suppress("ktlint:standard:property-naming")
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.START or ItemTouchHelper.END) {
+            val pauseIcon = requireContext().getDrawableCompat(R.drawable.ic_pause)!!
+            val resumeIcon = requireContext().getDrawableCompat(R.drawable.ic_resume)!!
+            val deleteIcon = requireContext().getDrawableCompat(R.drawable.ic_delete)!!
+
+            init {
+                val color = requireContext().getColorCompat(R.color.color_on_secondary)
+                val colorFilter =
+                    BlendModeColorFilterCompat.createBlendModeColorFilterCompat(color, BlendModeCompat.SRC_ATOP)
+
+                pauseIcon.colorFilter = colorFilter
+                resumeIcon.colorFilter = colorFilter
+                deleteIcon.colorFilter = colorFilter
+            }
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val torrent = getTorrent(viewHolder) ?: return
+
+                if (direction == ItemTouchHelper.START) {
+                    showDeleteTorrentsDialog(listOf(torrent.hash)) {}
+                } else if (direction == ItemTouchHelper.END) {
+                    if (isTorrentPaused(torrent)) {
+                        viewModel.resumeTorrents(serverId, listOf(torrent.hash))
+                    } else {
+                        viewModel.pauseTorrents(serverId, listOf(torrent.hash))
+                    }
+                }
+
+                viewHolder.itemView.animate().apply {
+                    translationX(0f)
+                    duration = 300L
+                    withEndAction {
+                        itemTouchHelper.attachToRecyclerView(null)
+                        itemTouchHelper.attachToRecyclerView(binding.recyclerTorrentList)
+                    }
+                }
+            }
+
+            private fun getTorrent(viewHolder: RecyclerView.ViewHolder): Torrent? {
+                val position = viewHolder.bindingAdapterPosition
+                return viewModel.filteredTorrentList.value?.getOrNull(position)
+            }
+
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val torrent = getTorrent(viewHolder) ?: return
+                val leftIcon: Drawable
+                val rightIcon: Drawable
+
+                if (binding.root.layoutDirection == View.LAYOUT_DIRECTION_LTR) {
+                    leftIcon = if (isTorrentPaused(torrent)) {
+                        resumeIcon
+                    } else {
+                        pauseIcon
+                    }
+                    rightIcon = deleteIcon
+                } else {
+                    rightIcon = if (isTorrentPaused(torrent)) {
+                        resumeIcon
+                    } else {
+                        pauseIcon
+                    }
+                    leftIcon = deleteIcon
+                }
+
+                drawLeftIcon(viewHolder.itemView, c, leftIcon)
+                drawRightIcon(viewHolder.itemView, c, rightIcon)
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX / 2, dY, actionState, isCurrentlyActive)
+            }
+
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                binding.swipeRefresh.isEnabled = actionState != ItemTouchHelper.ACTION_STATE_SWIPE
+            }
+
+            private fun isTorrentPaused(torrent: Torrent) = torrent.state in listOf(
+                TorrentState.PAUSED_DL,
+                TorrentState.PAUSED_UP,
+                TorrentState.MISSING_FILES,
+                TorrentState.ERROR
+            )
+
+            private fun drawLeftIcon(itemView: View, canvas: Canvas, icon: Drawable) {
+                val margin = 16.toPx(requireContext())
+                val itemHeight = itemView.bottom - itemView.top
+                val intrinsicWidth = icon.intrinsicWidth
+                val intrinsicHeight = icon.intrinsicHeight
+
+                val left = itemView.left + margin
+                val right = itemView.left + margin + intrinsicWidth
+                val top = itemView.top + (itemHeight - intrinsicHeight) / 2
+                val bottom = top + intrinsicHeight
+                icon.setBounds(left, top, right, bottom)
+
+                icon.draw(canvas)
+            }
+
+            private fun drawRightIcon(itemView: View, canvas: Canvas, icon: Drawable) {
+                val margin = 16.toPx(requireContext())
+                val itemHeight = itemView.bottom - itemView.top
+                val intrinsicWidth = icon.intrinsicWidth
+                val intrinsicHeight = icon.intrinsicHeight
+
+                val left = itemView.right - margin - intrinsicWidth
+                val right = itemView.right - margin
+                val top = itemView.top + (itemHeight - intrinsicHeight) / 2
+                val bottom = top + intrinsicHeight
+                icon.setBounds(left, top, right, bottom)
+
+                icon.draw(canvas)
+            }
+        }
+
+        itemTouchHelper = ItemTouchHelper(callback)
+        return itemTouchHelper
+    }
+
+    private fun showDeleteTorrentsDialog(hashes: List<String>, onDelete: () -> Unit) {
         showDialog(DialogTorrentDeleteBinding::inflate) { binding ->
             setTitle(
                 resources.getQuantityString(
                     R.plurals.torrent_list_delete_torrents,
-                    adapter.selectedItemCount,
-                    adapter.selectedItemCount
+                    hashes.size,
+                    hashes.size
                 )
             )
             setPositiveButton { _, _ ->
-                viewModel.deleteTorrents(serverId, adapter.selectedItems.toList(), binding.checkDeleteFiles.isChecked)
-                adapter.finishSelection()
-                actionMode?.finish()
+                viewModel.deleteTorrents(serverId, hashes, binding.checkDeleteFiles.isChecked)
+                onDelete()
             }
             setNegativeButton()
         }

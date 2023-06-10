@@ -79,6 +79,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             override fun getBoolean(key: String, defValue: Boolean): Boolean {
                 return when (key) {
                     "autoRefreshHideLoadingBar" -> viewModel.autoRefreshHideLoadingBar
+                    "areTorrentSwipeActionsEnabled" -> viewModel.areTorrentSwipeActionsEnabled
                     else -> defValue
                 }
             }
@@ -86,6 +87,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             override fun putBoolean(key: String, value: Boolean) {
                 when (key) {
                     "autoRefreshHideLoadingBar" -> viewModel.autoRefreshHideLoadingBar = value
+                    "areTorrentSwipeActionsEnabled" -> viewModel.areTorrentSwipeActionsEnabled = value
                 }
             }
         }
@@ -236,6 +238,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editText.setText(text)
                 editText.setSelection(text.length)
             }
+        }
+
+        switch {
+            key = "areTorrentSwipeActionsEnabled"
+            setTitle(R.string.settings_enable_torrent_swipe_actions)
         }
 
         list {

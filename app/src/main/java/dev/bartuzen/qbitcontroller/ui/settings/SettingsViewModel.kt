@@ -39,6 +39,12 @@ class SettingsViewModel @Inject constructor(
             settingsManager.notificationCheckInterval.value = value
         }
 
+    var areTorrentSwipeActionsEnabled
+        get() = settingsManager.areTorrentSwipeActionsEnabled.value
+        set(value) {
+            settingsManager.areTorrentSwipeActionsEnabled.value = value
+        }
+
     var theme
         get() = settingsManager.theme.value
         set(value) {

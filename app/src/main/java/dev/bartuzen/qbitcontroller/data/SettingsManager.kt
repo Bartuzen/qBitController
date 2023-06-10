@@ -23,6 +23,7 @@ class SettingsManager @Inject constructor(
     val autoRefreshInterval = primitivePreference(sharedPref, "autoRefreshInterval", 0)
     val autoRefreshHideLoadingBar = primitivePreference(sharedPref, "autoRefreshHideLoadingBar", false)
     val notificationCheckInterval = primitivePreference(sharedPref, "notificationCheckInterval", 15)
+    val areTorrentSwipeActionsEnabled = primitivePreference(sharedPref, "areTorrentSwipeActionsEnabled", false)
 
     val areStatesCollapsed = primitivePreference(sharedPref, "areStatesCollapsed", false)
     val areCategoriesCollapsed = primitivePreference(sharedPref, "areCategoriesCollapsed", false)

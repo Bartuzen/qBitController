@@ -650,6 +650,7 @@
         <item quantity="one">%1$d minute</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
+    <string name="settings_enable_torrent_swipe_actions">Enable torrent swipe actions</string>
     <string name="settings_theme">Theme</string>
 
     <string name="settings_server_title_add">Add Server</string>
