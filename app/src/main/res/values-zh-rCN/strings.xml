@@ -1,4 +1,4 @@
-<resources>
+ <resources>
     <string name="app_name">qBitController</string>
 
     <string name="language_code">zh</string>
@@ -344,7 +344,7 @@
     <string name="torrent_files_menu_rename">重命名</string>
 
     <plurals name="torrent_files_menu_files_selected">
-        <item quantity="one">已选择 %1$d 个文件<</item>
+        <item quantity="one">已选择 %1$d 个文件</item>
         <item quantity="other">已选择 %1$d 个文件</item>
     </plurals>
 
