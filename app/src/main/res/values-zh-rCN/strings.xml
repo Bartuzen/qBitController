@@ -543,7 +543,7 @@
 
     <string name="rss_success_article_mark_as_read">已成功标记该文章为已读。</string>
     <string name="rss_success_all_articles_mark_as_read">已成功标记所有文章为已读。</string>
-    <string name="rss_success_all_feeds_refresh">已成功更新所有订阅源。/string>
+    <string name="rss_success_all_feeds_refresh">已成功更新所有订阅源。</string>
     <string name="rss_success_feed_refresh">已成功更新订阅源。</string>
     <string name="rss_error_feed_not_found">RSS 订阅源未找到。</string>
 
