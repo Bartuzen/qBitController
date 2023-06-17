@@ -117,23 +117,18 @@
     <string name="dialog_cancel">取消</string>
 
     <plurals name="torrent_list_delete_torrents">
-        <item quantity="one">删除 %1$d 个 Torrent</item>
         <item quantity="other">删除 %1$d 个 Torrent</item>
     </plurals>
     <plurals name="torrent_list_torrents_deleted_success">
-        <item quantity="one">已成功删除 %1$d 个 Torrent。</item>
         <item quantity="other">已成功删除 %1$d 个 Torrent。</item>
     </plurals>
     <plurals name="torrent_list_torrents_paused_success">
-        <item quantity="one">已成功暂停 %1$d 个 Torrent。</item>
         <item quantity="other">已成功暂停 %1$d 个 Torrent。</item>
     </plurals>
     <plurals name="torrent_list_torrents_resumed_success">
-        <item quantity="one">已成功恢复 %1$d 个 Torrent。</item>
         <item quantity="other">已成功恢复 %1$d 个 Torrent。</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
-        <item quantity="one">已选择 %1$d 个 Torrent</item>
         <item quantity="other">已选择 %1$d 个 Torrent</item>
     </plurals>
     <string name="torrent_list_search_torrents">搜索 Torrents…</string>
@@ -344,7 +339,6 @@
     <string name="torrent_files_menu_rename">重命名</string>
 
     <plurals name="torrent_files_menu_files_selected">
-        <item quantity="one">已选择 %1$d 个文件</item>
         <item quantity="other">已选择 %1$d 个文件</item>
     </plurals>
 
@@ -370,15 +364,12 @@
     <string name="torrent_trackers_add">添加 Trackers</string>
     <string name="torrent_trackers_add_hint">Trackers</string>
     <plurals name="torrent_trackers_delete_title">
-        <item quantity="one">删除 %1$d 个 Tracker</item>
         <item quantity="other">删除 %1$d 个 Tracker</item>
     </plurals>
     <plurals name="torrent_trackers_delete_desc">
-        <item quantity="one">是否确定要删除 %1$d 个 Tracker？</item>
         <item quantity="other">是否确定要删除 %1$d 个 Tracker？</item>
     </plurals>
     <plurals name="torrent_trackers_selected">
-        <item quantity="one">已选择 %1$d 个 Tracker</item>
         <item quantity="other">已选择 %1$d 个 Tracker</item>
     </plurals>
     <string name="torrent_trackers_added">已成功添加 Trackers。</string>
@@ -401,15 +392,12 @@
     <string name="torrent_peers_add_dialog_title">@string/torrent_peers_menu_add</string>
     <string name="torrent_peers_add_hint">用户</string>
     <plurals name="torrent_peers_ban_title">
-        <item quantity="one">封禁 %1$d 名用户</item>
         <item quantity="other">封禁 %1$d 名用户</item>
     </plurals>
     <plurals name="torrent_peers_ban_desc">
-        <item quantity="one">是否确定要封禁 %1$d 名用户？</item>
         <item quantity="other">是否确定要封禁 %1$d 名用户？</item>
     </plurals>
     <plurals name="torrent_peers_selected">
-        <item quantity="one">已选择 %1$d 名用户</item>
         <item quantity="other">已选择 %1$d 名用户</item>
     </plurals>
     <string name="torrent_peers_added">已成功添加用户。</string>
@@ -635,19 +623,16 @@
     <string name="settings_disabled">已禁用</string>
     <string name="settings_connection_timeout">连接超时</string>
     <plurals name="settings_connection_timeout_desc">
-        <item quantity="one">%1$d 秒</item>
         <item quantity="other">%1$d 秒</item>
     </plurals>
     <string name="settings_auto_refresh_interval">自动刷新间隔</string>
     <plurals name="settings_auto_refresh_interval_desc">
-        <item quantity="one">%1$d 秒</item>
         <item quantity="other">%1$d 秒</item>
     </plurals>
     <string name="settings_auto_refresh_hide_loading_bar">隐藏加载进度条</string>
     <string name="settings_auto_refresh_hide_loading_bar_desc">当自动刷新时隐藏加载进度条</string>
     <string name="settings_notification_check_interval">通知检查间隔</string>
     <plurals name="settings_notification_check_interval_desc">
-        <item quantity="one">%1$d 分</item>
         <item quantity="other">%1$d 分</item>
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">启用滑动操作</string>
