@@ -79,7 +79,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
 
     private fun PreferenceDSL.setUpBasicAuth() {
         category {
-            setTitle(R.string.settings_server_basic_auth)
+            setTitle(R.string.settings_server_advanced_basic_auth)
         }
 
         lateinit var usernamePreference: EditTextPreference
@@ -87,7 +87,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
 
         switch {
             key = "basicAuthEnabled"
-            setTitle(R.string.settings_server_basic_auth_enabled)
+            setTitle(R.string.settings_server_advanced_basic_auth_enabled)
 
             setOnPreferenceChangeListener { _, newValue ->
                 val isEnabled = newValue as Boolean
@@ -103,8 +103,8 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
             usernamePreference = this
 
             key = "basicAuthUsername"
-            setTitle(R.string.settings_server_basic_auth_username)
-            setDialogTitle(R.string.settings_server_basic_auth_username)
+            setTitle(R.string.settings_server_advanced_basic_auth_username)
+            setDialogTitle(R.string.settings_server_advanced_basic_auth_username)
 
             isEnabled = basicAuth.isEnabled == true
             summaryProvider = simpleSummaryProvider
@@ -114,8 +114,8 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
             passwordPreference = this
 
             key = "basicAuthPassword"
-            setTitle(R.string.settings_server_basic_auth_password)
-            setDialogTitle(R.string.settings_server_basic_auth_password)
+            setTitle(R.string.settings_server_advanced_basic_auth_password)
+            setDialogTitle(R.string.settings_server_advanced_basic_auth_password)
 
             isEnabled = basicAuth.isEnabled == true
             summaryProvider = passwordSummaryProvider

@@ -315,8 +315,8 @@ class AddTorrentActivity : AppCompatActivity() {
 
         binding.dropdownAutoTmm.setItems(
             R.string.torrent_add_default,
-            R.string.torrent_add_tmm_manual,
-            R.string.torrent_add_tmm_auto
+            R.string.torrent_add_torrent_management_mode_manual,
+            R.string.torrent_add_torrent_management_mode_auto
         )
         binding.dropdownAutoTmm.onItemChangeListener = { position ->
             binding.inputLayoutSavePath.isEnabled = position != 2

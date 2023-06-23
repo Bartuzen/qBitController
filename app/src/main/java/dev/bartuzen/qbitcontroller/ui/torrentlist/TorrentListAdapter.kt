@@ -62,7 +62,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 "100"
             }
             binding.textProgress.text = context.getString(
-                R.string.torrent_item_progress,
+                R.string.torrent_item_progress_format,
                 formatBytes(context, torrent.completed),
                 formatBytes(context, torrent.size),
                 progressText,

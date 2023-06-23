@@ -15,7 +15,7 @@
             android:id="@+id/checkbox_auto_tmm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/torrent_auto_tmm" />
+            android:text="@string/torrent_option_automatic_torrent_management" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
@@ -98,7 +98,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/torrent_upspeed_limit"
+                        android:hint="@string/torrent_option_upload_speed_limit"
                         android:inputType="numberSigned" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -113,7 +113,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/torrent_dlspeed_limit"
+                        android:hint="@string/torrent_option_download_speed_limit"
                         android:inputType="numberSigned" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -152,19 +152,19 @@
                         android:id="@+id/radio_limit_global"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/torrent_share_limit_global" />
+                        android:text="@string/torrent_option_share_limit_global" />
 
                     <RadioButton
                         android:id="@+id/radio_limit_disable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/torrent_share_limit_disable" />
+                        android:text="@string/torrent_option_share_limit_disable" />
 
                     <RadioButton
                         android:id="@+id/radio_limit_custom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/torrent_share_limit_custom" />
+                        android:text="@string/torrent_option_share_limit_custom" />
 
                 </RadioGroup>
 
@@ -174,7 +174,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="@string/torrent_share_limit_hint_ratio">
+                    android:hint="@string/torrent_option_share_limit_ratio">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -189,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:hint="@string/torrent_share_limit_hint_time">
+                    android:hint="@string/torrent_option_share_limit_time">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"

@@ -168,7 +168,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             setSummaryProvider {
                 resources.getQuantityString(
-                    R.plurals.settings_connection_timeout_desc,
+                    R.plurals.settings_connection_timeout_description,
                     viewModel.connectionTimeout,
                     viewModel.connectionTimeout
                 )
@@ -192,7 +192,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     getString(R.string.settings_disabled)
                 } else {
                     resources.getQuantityString(
-                        R.plurals.settings_auto_refresh_interval_desc,
+                        R.plurals.settings_auto_refresh_interval_description,
                         viewModel.autoRefreshInterval,
                         viewModel.autoRefreshInterval
                     )
@@ -210,7 +210,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         switch {
             key = "autoRefreshHideLoadingBar"
             setTitle(R.string.settings_auto_refresh_hide_loading_bar)
-            setSummary(R.string.settings_auto_refresh_hide_loading_bar_desc)
+            setSummary(R.string.settings_auto_refresh_hide_loading_bar_description)
 
             viewModel.autoRefreshIntervalFlow.launchAndCollectLatestIn(this@SettingsFragment) { autoRefreshInterval ->
                 isEnabled = autoRefreshInterval != 0
@@ -226,7 +226,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             setSummaryProvider {
                 resources.getQuantityString(
-                    R.plurals.settings_notification_check_interval_desc,
+                    R.plurals.settings_notification_check_interval_description,
                     viewModel.notificationCheckInterval,
                     viewModel.notificationCheckInterval
                 )
@@ -249,11 +249,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             key = "theme"
             setTitle(R.string.settings_theme)
             setDialogTitle(R.string.settings_theme)
-            entries = resources.getStringArray(R.array.settings_theme_entries)
+            entries = arrayOf(
+                context.getString(R.string.settings_theme_light),
+                context.getString(R.string.settings_theme_dark),
+                context.getString(R.string.settings_theme_system_default)
+            )
             entryValues = arrayOf("LIGHT", "DARK", "SYSTEM_DEFAULT")
 
             setSummaryProvider {
-                resources.getStringArray(R.array.settings_theme_entries)[viewModel.theme.ordinal]
+                entries[viewModel.theme.ordinal]
             }
         }
     }

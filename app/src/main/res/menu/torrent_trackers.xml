@@ -6,7 +6,7 @@
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_add"
         android:orderInCategory="0"
-        android:title="@string/torrent_trackers_add"
+        android:title="@string/torrent_trackers_action_add"
         app:showAsAction="ifRoom" />
 
 </menu>

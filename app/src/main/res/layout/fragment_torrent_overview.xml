@@ -182,7 +182,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="@string/torrent_overview_save_path" />
+                            android:text="@string/torrent_option_save_path" />
 
                         <TextView
                             android:id="@+id/text_save_path"

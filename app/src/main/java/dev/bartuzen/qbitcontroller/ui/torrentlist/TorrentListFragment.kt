@@ -680,12 +680,12 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     showSnackbar(R.string.torrent_queueing_is_not_enabled)
                 }
                 TorrentListViewModel.Event.CategoryEditingFailed -> {
-                    showSnackbar(R.string.torrent_list_edit_category_fail)
+                    showSnackbar(R.string.torrent_list_edit_category_error)
                 }
                 is TorrentListViewModel.Event.TorrentsDeleted -> {
                     showSnackbar(
                         resources.getQuantityString(
-                            R.plurals.torrent_list_torrents_deleted_success,
+                            R.plurals.torrent_list_torrents_delete_success,
                             event.count,
                             event.count
                         )
@@ -695,7 +695,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 is TorrentListViewModel.Event.TorrentsPaused -> {
                     showSnackbar(
                         resources.getQuantityString(
-                            R.plurals.torrent_list_torrents_paused_success,
+                            R.plurals.torrent_list_torrents_pause_success,
                             event.count,
                             event.count
                         )
@@ -709,7 +709,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 is TorrentListViewModel.Event.TorrentsResumed -> {
                     showSnackbar(
                         resources.getQuantityString(
-                            R.plurals.torrent_list_torrents_resumed_success,
+                            R.plurals.torrent_list_torrents_resume_success,
                             event.count,
                             event.count
                         )
@@ -733,28 +733,28 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     viewModel.loadMainData(serverId)
                 }
                 TorrentListViewModel.Event.TorrentsPriorityDecreased -> {
-                    showSnackbar(R.string.torrent_list_priority_decreased_success)
+                    showSnackbar(R.string.torrent_list_priority_decrease_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
                         viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityIncreased -> {
-                    showSnackbar(R.string.torrent_list_priority_increased_success)
+                    showSnackbar(R.string.torrent_list_priority_increase_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
                         viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityMaximized -> {
-                    showSnackbar(R.string.torrent_list_priority_maximized_success)
+                    showSnackbar(R.string.torrent_list_priority_maximize_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
                         viewModel.loadMainData(serverId)
                     }
                 }
                 TorrentListViewModel.Event.TorrentsPriorityMinimized -> {
-                    showSnackbar(R.string.torrent_list_priority_minimized_success)
+                    showSnackbar(R.string.torrent_list_priority_minimize_success)
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000) // wait until qBittorrent changes the priority
                         viewModel.loadMainData(serverId)
@@ -954,7 +954,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             binding.inputLayoutLocation.setTextWithoutAnimation(currentLocation)
 
-            setTitle(R.string.torrent_location_dialog_title)
+            setTitle(R.string.torrent_list_action_set_location)
             setPositiveButton()
             setNegativeButton()
         }
@@ -1062,14 +1062,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             setItems(
                 if (!areSubcategoriesEnabled) {
                     arrayOf(
-                        getString(R.string.torrent_list_edit_category_title),
-                        getString(R.string.torrent_list_delete_category_title)
+                        getString(R.string.torrent_list_edit_category),
+                        getString(R.string.torrent_list_delete_category)
                     )
                 } else {
                     arrayOf(
-                        getString(R.string.torrent_list_create_subcategory_title),
-                        getString(R.string.torrent_list_edit_category_title),
-                        getString(R.string.torrent_list_delete_category_title)
+                        getString(R.string.torrent_list_create_subcategory),
+                        getString(R.string.torrent_list_edit_category),
+                        getString(R.string.torrent_list_delete_category)
                     )
                 }
             ) { _, which ->
@@ -1131,9 +1131,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
             if (category == null) {
                 if (parent == null) {
-                    setTitle(R.string.torrent_list_create_category_title)
+                    setTitle(R.string.torrent_list_create_category)
                 } else {
-                    setTitle(R.string.torrent_list_create_subcategory_title)
+                    setTitle(R.string.torrent_list_create_subcategory)
                 }
             } else {
                 binding.inputLayoutName.isEnabled = false
@@ -1155,7 +1155,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     }
                 }
 
-                setTitle(R.string.torrent_list_edit_category_title)
+                setTitle(R.string.torrent_list_edit_category)
             }
 
             setPositiveButton()
@@ -1210,13 +1210,13 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
     private fun showDeleteCategoryTagDialog(isCategory: Boolean, name: String) {
         showDialog {
             if (isCategory) {
-                setTitle(R.string.torrent_list_delete_category_title)
-                setMessage(getString(R.string.torrent_list_delete_category_desc, name))
+                setTitle(R.string.torrent_list_delete_category)
+                setMessage(getString(R.string.torrent_list_delete_category_confirm, name))
                 setPositiveButton { _, _ ->
                     viewModel.deleteCategory(serverId, name)
                 }
             } else {
-                setTitle(R.string.torrent_list_delete_tag_title)
+                setTitle(R.string.torrent_list_delete_tag)
                 setMessage(getString(R.string.torrent_list_delete_tag_desc, name))
                 setPositiveButton { _, _ ->
                     viewModel.deleteTag(serverId, name)
@@ -1233,7 +1233,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         val dialog = showDialog(DialogCreateTagBinding::inflate) { binding ->
             dialogBinding = binding
 
-            setTitle(R.string.torrent_list_create_tag_title)
+            setTitle(R.string.torrent_list_create_tag)
             setPositiveButton { _, _ ->
                 viewModel.createTags(
                     serverId,
@@ -1262,7 +1262,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
     private fun showStatsDialog() {
         showDialog(DialogServerStatsBinding::inflate) { binding ->
-            setTitle(R.string.stats_dialog_title)
+            setTitle(R.string.torrent_list_action_statistics)
             setPositiveButton()
 
             val mainDataJob = viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
@@ -1289,7 +1289,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
     private fun showShutdownDialog() {
         showDialog {
-            setTitle(R.string.menu_shutdown)
+            setTitle(R.string.torrent_list_action_shutdown)
             setMessage(R.string.torrent_list_shutdown_confirm)
             setPositiveButton { _, _ ->
                 viewModel.shutdown(serverId)

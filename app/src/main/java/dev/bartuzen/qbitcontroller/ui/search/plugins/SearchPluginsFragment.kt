@@ -122,7 +122,7 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
         val dialog = showDialog(DialogPluginInstallBinding::inflate) { binding ->
             dialogBinding = binding
 
-            setTitle(R.string.search_plugins_install_plugins)
+            setTitle(R.string.search_plugins_action_install_plugins)
             setPositiveButton()
             setNegativeButton()
         }

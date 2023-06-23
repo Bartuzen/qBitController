@@ -5,25 +5,25 @@
     <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_priority"
-        android:title="@string/torrent_files_menu_priority"
+        android:title="@string/torrent_files_action_priority"
         app:showAsAction="ifRoom">
         <menu>
 
             <item
                 android:id="@+id/menu_priority_do_not_download"
-                android:title="@string/torrent_files_menu_priority_do_not_download" />
+                android:title="@string/torrent_files_priority_do_not_download" />
 
             <item
                 android:id="@+id/menu_priority_normal"
-                android:title="@string/torrent_files_menu_priority_normal" />
+                android:title="@string/torrent_files_priority_normal" />
 
             <item
                 android:id="@+id/menu_priority_high"
-                android:title="@string/torrent_files_menu_priority_high" />
+                android:title="@string/torrent_files_priority_high" />
 
             <item
                 android:id="@+id/menu_priority_maximum"
-                android:title="@string/torrent_files_menu_priority_maximum" />
+                android:title="@string/torrent_files_priority_maximum" />
 
         </menu>
     </item>
@@ -31,19 +31,19 @@
     <item
         android:id="@+id/menu_rename"
         android:icon="@drawable/ic_rename"
-        android:title="@string/torrent_files_menu_rename"
+        android:title="@string/torrent_files_action_rename"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
-        android:title="@string/menu_select_all"
+        android:title="@string/action_select_all"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_select_inverse"
         android:icon="@drawable/ic_select_inverse"
-        android:title="@string/menu_select_inverse"
+        android:title="@string/action_select_inverse"
         app:showAsAction="ifRoom" />
 
 </menu>

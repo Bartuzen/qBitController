@@ -302,7 +302,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 "100"
             }
             binding.textProgress.text = requireContext().getString(
-                R.string.torrent_item_progress,
+                R.string.torrent_item_progress_format,
                 formatBytes(requireContext(), torrent.completed),
                 formatBytes(requireContext(), torrent.size),
                 progressText,
@@ -579,7 +579,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 binding.inputLayoutTime.isEnabled = isChecked
             }
 
-            setTitle(R.string.torrent_menu_options)
+            setTitle(R.string.torrent_action_options)
             setPositiveButton { _, _ ->
                 val autoTmm = if (torrent.isAutomaticTorrentManagementEnabled != binding.checkboxAutoTmm.isChecked) {
                     binding.checkboxAutoTmm.isChecked
@@ -682,7 +682,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             val name = viewModel.torrent.value?.name
             binding.inputLayoutName.setTextWithoutAnimation(name)
 
-            setTitle(R.string.torrent_rename_dialog_title)
+            setTitle(R.string.torrent_action_rename_torrent)
             setPositiveButton()
             setNegativeButton()
         }

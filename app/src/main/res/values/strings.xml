@@ -5,63 +5,6 @@
 
     <string name="share_add_torrent">Add Torrent</string>
 
-    <string name="menu_settings">Settings</string>
-
-    <string name="menu_pause">Pause</string>
-    <string name="menu_resume">Resume</string>
-    <string name="menu_delete">Delete</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_rss">RSS</string>
-    <string name="menu_search_online">Search Online</string>
-    <string name="menu_log">Execution Log</string>
-    <string name="menu_shutdown">Quit qBittorrent</string>
-    <string name="menu_select_all">Select All</string>
-    <string name="menu_select_inverse">Select Inverse</string>
-
-    <string name="menu_add_edit_server_delete">Delete</string>
-    <string name="menu_add_edit_server_save">Save</string>
-    <string name="menu_add_edit_server_advanced_settings">Advanced Settings</string>
-
-    <string name="menu_priority">Priority</string>
-    <string name="menu_priority_increase">Increase Priority</string>
-    <string name="menu_priority_decrease">Decrease Priority</string>
-    <string name="menu_priority_maximize">Maximize Priority</string>
-    <string name="menu_priority_minimize">Minimize Priority</string>
-
-    <string name="tab_torrent_overview">Overview</string>
-    <string name="tab_torrent_files">Files</string>
-    <string name="tab_torrent_pieces">Pieces</string>
-    <string name="tab_torrent_trackers">Trackers</string>
-    <string name="tab_torrent_peers">Peers</string>
-    <string name="tab_torrent_web_seeds">HTTP Sources</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="torrent_tabs">Torrent Tabs</string>
-
-    <string name="main_screen_no_servers">No servers have been found. Click here to add one.</string>
-    <string name="main_screen_add_server">Add Server</string>
-
-    <string name="torrent_sort_menu">Sort</string>
-    <string name="torrent_sort_name">Name</string>
-    <string name="torrent_sort_status">Status</string>
-    <string name="torrent_sort_hash">Hash</string>
-    <string name="torrent_sort_dlspeed">Download Speed</string>
-    <string name="torrent_sort_upspeed">Upload Speed</string>
-    <string name="torrent_sort_priority">Priority</string>
-    <string name="torrent_sort_eta">ETA</string>
-    <string name="torrent_sort_size">Size</string>
-    <string name="torrent_sort_progress">Progress</string>
-    <string name="torrent_sort_ratio">Ratio</string>
-    <string name="torrent_sort_connected_seeds">Connected Seeds</string>
-    <string name="torrent_sort_total_seeds">Total Seeds</string>
-    <string name="torrent_sort_connected_leeches">Connected Leeches</string>
-    <string name="torrent_sort_total_leeches">Total Leeches</string>
-    <string name="torrent_sort_addition_date">Addition Date</string>
-    <string name="torrent_sort_completion_date">Completion Date</string>
-    <string name="torrent_sort_last_activity">Last Activity</string>
-    <string name="torrent_sort_reverse">Reverse</string>
-
     <string name="torrent_status_error">Error</string>
     <string name="torrent_status_missing_files">Missing Files</string>
     <string name="torrent_status_seeding">Seeding</string>
@@ -116,19 +59,65 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
 
+    <string name="action_search">Search</string>
+    <string name="action_select_all">Select All</string>
+    <string name="action_select_inverse">Select Inverse</string>
+
+    <string name="main_action_settings">Settings</string>
+    <string name="main_action_about">About</string>
+    <string name="main_no_servers">No servers have been found. Click here to add one.</string>
+    <string name="main_add_server">Add Server</string>
+
+    <string name="torrent_list_action_add_torrent">Add Torrent</string>
+    <string name="torrent_list_action_rss">RSS</string>
+    <string name="torrent_list_action_search_online">Search Online</string>
+    <string name="torrent_list_action_statistics">Statistics</string>
+    <string name="torrent_list_action_execution_log">Execution Log</string>
+    <string name="torrent_list_action_alternative_speed_limits">Alternative Speed Limits</string>
+    <string name="torrent_list_action_shutdown">Quit qBittorrent</string>
+    <string name="torrent_list_action_sort">Sort</string>
+    <string name="torrent_list_action_sort_name">Name</string>
+    <string name="torrent_list_action_sort_status">Status</string>
+    <string name="torrent_list_action_sort_hash">Hash</string>
+    <string name="torrent_list_action_sort_download_speed">Download Speed</string>
+    <string name="torrent_list_action_sort_upload_speed">Upload Speed</string>
+    <string name="torrent_list_action_sort_priority">Priority</string>
+    <string name="torrent_list_action_sort_eta">ETA</string>
+    <string name="torrent_list_action_sort_size">Size</string>
+    <string name="torrent_list_action_sort_progress">Progress</string>
+    <string name="torrent_list_action_sort_ratio">Ratio</string>
+    <string name="torrent_list_action_sort_connected_seeds">Connected Seeds</string>
+    <string name="torrent_list_action_sort_total_seeds">Total Seeds</string>
+    <string name="torrent_list_action_sort_connected_leeches">Connected Leeches</string>
+    <string name="torrent_list_action_sort_total_leeches">Total Leeches</string>
+    <string name="torrent_list_action_sort_addition_date">Addition Date</string>
+    <string name="torrent_list_action_sort_completion_date">Completion Date</string>
+    <string name="torrent_list_action_sort_last_activity">Last Activity</string>
+    <string name="torrent_list_action_sort_reverse">Reverse</string>
+
+    <string name="torrent_list_action_pause">Pause</string>
+    <string name="torrent_list_action_resume">Resume</string>
+    <string name="torrent_list_action_delete">Delete</string>
+    <string name="torrent_list_action_priority">Priority</string>
+    <string name="torrent_list_action_priority_increase">Increase Priority</string>
+    <string name="torrent_list_action_priority_decrease">Decrease Priority</string>
+    <string name="torrent_list_action_priority_maximize">Maximize Priority</string>
+    <string name="torrent_list_action_priority_minimize">Minimize Priority</string>
+    <string name="torrent_list_action_set_location">Set Location</string>
+
     <plurals name="torrent_list_delete_torrents">
         <item quantity="one">Delete %1$d Torrent</item>
         <item quantity="other">Delete %1$d Torrents</item>
     </plurals>
-    <plurals name="torrent_list_torrents_deleted_success">
+    <plurals name="torrent_list_torrents_delete_success">
         <item quantity="one">%1$d torrent deleted successfully.</item>
         <item quantity="other">%1$d torrents deleted successfully.</item>
     </plurals>
-    <plurals name="torrent_list_torrents_paused_success">
+    <plurals name="torrent_list_torrents_pause_success">
         <item quantity="one">%1$d torrent paused successfully.</item>
         <item quantity="other">%1$d torrents paused successfully.</item>
     </plurals>
-    <plurals name="torrent_list_torrents_resumed_success">
+    <plurals name="torrent_list_torrents_resume_success">
         <item quantity="one">%1$d torrent resumed successfully.</item>
         <item quantity="other">%1$d torrents resumed successfully.</item>
     </plurals>
@@ -137,23 +126,24 @@
         <item quantity="other">%1$d torrents selected</item>
     </plurals>
     <string name="torrent_list_search_torrents">Search torrents…</string>
+    <string name="torrent_list_free_space">Free space: %1$s</string>
+    <string name="torrent_list_set_location_hint">Save Path</string>
 
     <string name="torrent_list_category_tag_all">All</string>
     <string name="torrent_list_uncategorized">Uncategorized</string>
     <string name="torrent_list_untagged">Untagged</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
 
-    <string name="torrent_list_free_space">Free space: %1$s</string>
-    <string name="torrent_list_categories">Categories</string>
-    <string name="torrent_list_create_subcategory_title">Create Subcategory</string>
-    <string name="torrent_list_create_category_title">Create Category</string>
-    <string name="torrent_list_edit_category_title">Edit Category</string>
-    <string name="torrent_list_delete_category_title">Delete Category</string>
-    <string name="torrent_list_delete_category_desc">Are you sure you want to delete category %1$s?</string>
+    <string name="torrent_list_categories"> </string>
+    <string name="torrent_list_create_subcategory">Create Subcategory</string>
+    <string name="torrent_list_create_category">Create Category</string>
+    <string name="torrent_list_edit_category">Edit Category</string>
+    <string name="torrent_list_delete_category">Delete Category</string>
+    <string name="torrent_list_delete_category_confirm">Are you sure you want to delete category %1$s?</string>
     <string name="torrent_list_delete_category_success">Category %1$s deleted successfully.</string>
     <string name="torrent_list_create_category_success">Category created successfully.</string>
     <string name="torrent_list_edit_category_success">Category edited successfully.</string>
-    <string name="torrent_list_edit_category_fail">Category editing failed.</string>
+    <string name="torrent_list_edit_category_error">Category editing failed.</string>
     <string name="torrent_list_create_category_hint">Category Name</string>
     <string name="torrent_list_create_category_save_path_hint">Save Path</string>
     <string name="torrent_list_create_category_enable_download_path_hint">Enable Download Path</string>
@@ -163,26 +153,25 @@
     <string name="torrent_list_create_category_download_path_no">No</string>
     <string name="torrent_list_create_category_name_cannot_be_empty">Category name cannot be empty.</string>
 
-    <string name="torrent_list_trackers_title">Trackers</string>
-    <string name="torrent_list_trackers_all">All</string>
-    <string name="torrent_list_trackers_trackerless">Trackerless</string>
-    <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
-
-    <string name="torrent_speed_limits_title">Speed Limits</string>
-    <string name="torrent_speed_download_limit">@string/torrent_add_dlspeed_limit</string>
-    <string name="torrent_speed_upload_limit">@string/torrent_add_upspeed_limit</string>
-    <string name="torrent_speed_update_success">Speed limits updated successfully.</string>
-
     <string name="torrent_list_tags">Tags</string>
-    <string name="torrent_list_create_tag_title">Create Tag</string>
-    <string name="torrent_list_delete_tag_title">Delete Tag</string>
+    <string name="torrent_list_create_tag">Create Tag</string>
+    <string name="torrent_list_delete_tag">Delete Tag</string>
     <string name="torrent_list_delete_tag_desc">Are you sure you want to delete tag %1$s?</string>
     <string name="torrent_list_delete_tag_success">Tag %1$s deleted successfully.</string>
     <string name="torrent_list_create_tag_success">Tag created successfully.</string>
     <string name="torrent_list_create_tag_name_cannot_be_empty">Tag name cannot be empty.</string>
     <string name="torrent_list_create_tag_hint">Tag Name</string>
 
-    <string name="torrent_list_menu_alternative_speed_limits">Alternative Speed Limits</string>
+    <string name="torrent_list_trackers_title">Trackers</string>
+    <string name="torrent_list_trackers_all">All</string>
+    <string name="torrent_list_trackers_trackerless">Trackerless</string>
+    <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
+
+    <string name="torrent_speed_limits_title">Speed Limits</string>
+    <string name="torrent_speed_download_limit">Download Speed Limit</string>
+    <string name="torrent_speed_upload_limit">Upload Speed Limit</string>
+    <string name="torrent_speed_update_success">Speed limits updated successfully.</string>
+
     <string name="torrent_list_switch_speed_limit_alternative_success">Switched to alternative speed limits.</string>
     <string name="torrent_list_switch_speed_limit_regular_success">Switched to regular speed limits.</string>
 
@@ -204,16 +193,14 @@
     <string name="torrent_list_status_moving">Moving</string>
     <string name="torrent_list_status_error">Error</string>
 
-    <string name="torrent_list_priority_increased_success">Priority increased successfully.</string>
-    <string name="torrent_list_priority_decreased_success">Priority decreased successfully.</string>
-    <string name="torrent_list_priority_maximized_success">Priority maximized successfully.</string>
-    <string name="torrent_list_priority_minimized_success">Priority minimized successfully.</string>
+    <string name="torrent_list_priority_increase_success">Priority increased successfully.</string>
+    <string name="torrent_list_priority_decrease_success">Priority decreased successfully.</string>
+    <string name="torrent_list_priority_maximize_success">Priority maximized successfully.</string>
+    <string name="torrent_list_priority_minimize_success">Priority minimized successfully.</string>
 
-    <string name="torrent_item_progress">%1$s / %2$s • %3$s%% • %4$s</string>
+    <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
 
-    <string name="stats_menu_title">Statistics</string>
-    <string name="stats_dialog_title">@string/stats_menu_title</string>
     <string name="stats_category_user_statistics">User Statistics</string>
     <string name="stats_category_cache_statistics">Cache Statistics</string>
     <string name="stats_category_performance_statistics">Performance Statistics</string>
@@ -232,6 +219,13 @@
     <string name="stats_percentage_format">%1$s%%</string>
     <string name="stats_ms_format">%1$d ms</string>
 
+    <string name="torrent_tab_overview">Overview</string>
+    <string name="torrent_tab_files">Files</string>
+    <string name="torrent_tab_pieces">Pieces</string>
+    <string name="torrent_tab_trackers">Trackers</string>
+    <string name="torrent_tab_peers">Peers</string>
+    <string name="torrent_tab_web_seeds">HTTP Sources</string>
+
     <string name="torrent_delete">Delete Torrent</string>
     <string name="torrent_delete_files">Also delete the files on the hard disk</string>
     <string name="torrent_deleted_success">Torrent deleted successfully.</string>
@@ -240,15 +234,23 @@
     <string name="torrent_recheck_success">Torrent recheck started successfully.</string>
     <string name="torrent_reannounce_success">Torrent reannounced successfully.</string>
 
-    <string name="torrent_menu_options">Torrent Options</string>
-    <string name="torrent_menu_force_start">Force Start</string>
-    <string name="torrent_menu_super_seeding">Super Seeding</string>
-    <string name="torrent_menu_copy">Copy</string>
-    <string name="torrent_menu_copy_name">Name</string>
-    <string name="torrent_menu_copy_hash_v1">Hash v1</string>
-    <string name="torrent_menu_copy_hash_v2">Hash v2</string>
-    <string name="torrent_menu_copy_magnet_uri">Magnet URI</string>
-    <string name="torrent_menu_export">Export .torrent</string>
+    <string name="torrent_action_pause">Pause</string>
+    <string name="torrent_action_resume">Resume</string>
+    <string name="torrent_action_delete">Delete</string>
+    <string name="torrent_action_options">Torrent Options</string>
+    <string name="torrent_action_category">Set Category</string>
+    <string name="torrent_action_tags">Set Tags</string>
+    <string name="torrent_action_rename_torrent">Rename Torrent</string>
+    <string name="torrent_action_force_recheck">Force Recheck</string>
+    <string name="torrent_action_force_reannounce">Force Reannounce</string>
+    <string name="torrent_action_force_start">Force Start</string>
+    <string name="torrent_action_super_seeding">Super Seeding</string>
+    <string name="torrent_action_copy">Copy</string>
+    <string name="torrent_action_copy_name">Name</string>
+    <string name="torrent_action_copy_hash_v1">Hash v1</string>
+    <string name="torrent_action_copy_hash_v2">Hash v2</string>
+    <string name="torrent_action_copy_magnet_uri">Magnet URI</string>
+    <string name="torrent_action_export">Export .torrent</string>
 
     <string name="torrent_enable_force_start_success">Force start enabled successfully.</string>
     <string name="torrent_disable_force_start_success">Force start disabled successfully.</string>
@@ -256,26 +258,21 @@
     <string name="torrent_disable_super_seeding_success">Super seeding disabled successfully.</string>
     <string name="torrent_queueing_is_not_enabled">Torrent queueing is not enabled.</string>
 
-    <string name="torrent_menu_category">Set Category</string>
-    <string name="torrent_menu_tags">Set Tags</string>
-    <string name="torrent_menu_recheck">Force Recheck</string>
-    <string name="torrent_menu_reannounce">Force Reannounce</string>
-    <string name="torrent_menu_rename">Rename Torrent</string>
-    <string name="torrent_menu_location">Set Location</string>
-
-    <string name="torrent_category_dialog_title">@string/torrent_menu_category</string>
-    <string name="torrent_tags_dialog_title">@string/torrent_menu_tags</string>
-    <string name="torrent_rename_dialog_title">@string/torrent_menu_rename</string>
-    <string name="torrent_location_dialog_title">@string/torrent_menu_location</string>
-
-    <string name="torrent_name">Name</string>
-    <string name="torrent_dlspeed_limit">Download Speed Limit (KiB/s)</string>
-    <string name="torrent_upspeed_limit">Upload Speed Limit (KiB/s)</string>
-    <string name="torrent_auto_tmm">Automatic Torrent Management</string>
-    <string name="torrent_option_speed_limit">Torrent speed limits</string>
-    <string name="torrent_option_share_limit">Torrent share limits</string>
+    <string name="torrent_option_automatic_torrent_management">Automatic Torrent Management</string>
+    <string name="torrent_option_save_path">Save Path</string>
     <string name="torrent_option_download_path_enable">Use another path for incomplete torrent</string>
     <string name="torrent_option_download_path">Download Path</string>
+    <string name="torrent_option_speed_limit">Torrent speed limits</string>
+    <string name="torrent_option_upload_speed_limit">Upload Speed Limit (KiB/s)</string>
+    <string name="torrent_option_download_speed_limit">Download Speed Limit (KiB/s)</string>
+    <string name="torrent_option_share_limit">Torrent share limits</string>
+    <string name="torrent_option_share_limit_global">Use global share limit</string>
+    <string name="torrent_option_share_limit_disable">Disable share limit</string>
+    <string name="torrent_option_share_limit_custom">Set custom share limit</string>
+    <string name="torrent_option_share_limit_ratio">Ratio</string>
+    <string name="torrent_option_share_limit_time">Minutes</string>
+    <string name="torrent_option_prioritize_first_last_piece">Download first and last pieces first</string>
+    <string name="torrent_option_sequential_download">Download in sequential order</string>
 
     <string name="torrent_category_update_success">Category updated successfully.</string>
     <string name="torrent_tags_update_success">Tags updated successfully.</string>
@@ -287,12 +284,7 @@
     <string name="torrent_export_success">Torrent exported successfully.</string>
     <string name="torrent_export_error">Couldn\'t export torrent.</string>
 
-    <string name="torrent_share_limit_global">Use global share limit</string>
-    <string name="torrent_share_limit_disable">Disable share limit</string>
-    <string name="torrent_share_limit_custom">Set custom share limit</string>
-    <string name="torrent_share_limit_hint_ratio">Ratio</string>
-    <string name="torrent_share_limit_hint_time">Minutes</string>
-
+    <string name="torrent_rename_torrent_hint">Name</string>
     <string name="torrent_no_categories">Couldn\'t find any categories.</string>
     <string name="torrent_no_tags">Couldn\'t find any tags.</string>
 
@@ -301,7 +293,6 @@
     <string name="torrent_overview_added_on">Added On</string>
     <string name="torrent_overview_hash_v1">Hash v1</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
-    <string name="torrent_overview_save_path">Save Path</string>
     <string name="torrent_overview_comment">Comment</string>
     <string name="torrent_overview_pieces">Pieces</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (have %3$d)</string>
@@ -315,7 +306,7 @@
     <string name="torrent_overview_downloaded">Downloaded</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s this session)</string>
     <string name="torrent_overview_uploaded">Uploaded</string>
-    <string name="torrent_overview_uploaded_format">@string/torrent_overview_downloaded_format</string>
+    <string name="torrent_overview_uploaded_format">%1$s (%2$s this session)</string>
     <string name="torrent_overview_ratio">Ratio</string>
     <string name="torrent_overview_reannounce_in">Reannounce In</string>
     <string name="torrent_overview_last_activity">Last Activity</string>
@@ -325,7 +316,7 @@
     <string name="torrent_overview_seeds">Seeds</string>
     <string name="torrent_overview_seeds_format">%1$d (%2$d total)</string>
     <string name="torrent_overview_peers">Peers</string>
-    <string name="torrent_overview_peers_format">@string/torrent_overview_seeds_format</string>
+    <string name="torrent_overview_peers_format">%1$d (%2$d total)</string>
     <string name="torrent_overview_wasted">Wasted</string>
 
     <string name="torrent_files_directory_format"><![CDATA[<b>Directory: </b>]]> %1$s</string>
@@ -336,20 +327,16 @@
     <string name="torrent_files_priority_mixed">Mixed</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
 
-    <string name="torrent_files_menu_priority">Priority</string>
-    <string name="torrent_files_menu_priority_do_not_download">@string/torrent_files_priority_do_not_download</string>
-    <string name="torrent_files_menu_priority_normal">@string/torrent_files_priority_normal</string>
-    <string name="torrent_files_menu_priority_high">@string/torrent_files_priority_high</string>
-    <string name="torrent_files_menu_priority_maximum">@string/torrent_files_priority_maximum</string>
-    <string name="torrent_files_menu_rename">Rename</string>
+    <string name="torrent_files_action_priority">Priority</string>
+    <string name="torrent_files_action_rename">Rename</string>
 
-    <plurals name="torrent_files_menu_files_selected">
+    <plurals name="torrent_files_selected">
         <item quantity="one">%1$d file selected</item>
         <item quantity="other">%1$d files selected</item>
     </plurals>
 
-    <string name="torrent_files_rename_file_dialog_title">Rename File</string>
-    <string name="torrent_files_rename_folder_dialog_title">Rename Folder</string>
+    <string name="torrent_files_rename_file">Rename File</string>
+    <string name="torrent_files_rename_folder">Rename Folder</string>
     <string name="torrent_files_rename_file_hint">File Name</string>
     <string name="torrent_files_rename_folder_hint">Folder Name</string>
 
@@ -362,13 +349,16 @@
     <string name="torrent_piece_size">PIECE SIZE</string>
     <string name="torrent_piece_map">PIECE MAP</string>
 
+    <string name="torrent_trackers_action_delete">Delete</string>
+    <string name="torrent_trackers_action_add">Add Trackers</string>
+    <string name="torrent_trackers_edit_hint">Tracker URL</string>
     <string name="torrent_trackers_peers">Peers</string>
     <string name="torrent_trackers_seeds">Seeds</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_downloaded">Downloaded</string>
     <string name="torrent_trackers_message">Message: %1$s</string>
-    <string name="torrent_trackers_add">Add Trackers</string>
     <string name="torrent_trackers_add_hint">Trackers</string>
+    <string name="torrent_trackers_action_edit">Edit Tracker</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">Delete %1$d Tracker</item>
         <item quantity="other">Delete %1$d Trackers</item>
@@ -388,17 +378,12 @@
     <string name="torrent_trackers_cannot_edit_default">You can\'t edit default trackers.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker URL cannot be empty.</string>
 
-    <string name="torrent_trackers_menu_edit">Edit Tracker</string>
-    <string name="torrent_trackers_dialog_title_edit">@string/torrent_trackers_menu_edit</string>
-    <string name="torrent_trackers_hint_edit">Tracker URL</string>
-
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">Country: %1$s</string>
     <string name="torrent_peers_connection">Connection: %1$s</string>
     <string name="torrent_peers_flags">Flags: %1$s</string>
-    <string name="torrent_peers_menu_add">Add Peers</string>
-    <string name="torrent_peers_menu_ban">Ban Peers</string>
-    <string name="torrent_peers_add_dialog_title">@string/torrent_peers_menu_add</string>
+    <string name="torrent_peers_action_add">Add Peers</string>
+    <string name="torrent_peers_action_ban">Ban Peers</string>
     <string name="torrent_peers_add_hint">Peers</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="one">Ban %1$d Peer</item>
@@ -416,9 +401,9 @@
     <string name="torrent_peers_banned">Peers banned successfully.</string>
     <string name="torrent_peers_invalid">Entered peers are not valid.</string>
 
-    <string name="torrent_peers_details_country">@string/torrent_peers_country</string>
-    <string name="torrent_peers_details_connection">@string/torrent_peers_connection</string>
-    <string name="torrent_peers_details_flags">@string/torrent_peers_flags</string>
+    <string name="torrent_peers_details_country">Country: %1$s</string>
+    <string name="torrent_peers_details_connection">Connection: %1$s</string>
+    <string name="torrent_peers_details_flags">Flags: %1$s</string>
     <string name="torrent_peers_details_client">Client: %1$s</string>
     <string name="torrent_peers_details_peer_id_client">Peer ID Client: %1$s</string>
     <string name="torrent_peers_details_progress">Progress: %1$s%%</string>
@@ -448,9 +433,7 @@
 
     <string name="torrent_error_not_found">Torrent not found.</string>
 
-    <string name="torrent_add_menu_add_torrent">Add Torrent</string>
-
-    <string name="torrent_add_title">@string/torrent_add_menu_add_torrent</string>
+    <string name="torrent_add_title">Add Torrent</string>
     <string name="torrent_add_button_url">URL</string>
     <string name="torrent_add_button_file">File</string>
     <string name="torrent_add_link_hint">Magnet or HTTP Link</string>
@@ -462,9 +445,9 @@
     <string name="torrent_add_sequential_download">Download in sequential order</string>
     <string name="torrent_add_prioritize_first_last_piece">Download first and last pieces first</string>
     <string name="torrent_add_default">Default</string>
-    <string name="torrent_add_tmm">Torrent Management Mode</string>
-    <string name="torrent_add_tmm_manual">Manual</string>
-    <string name="torrent_add_tmm_auto">Automatic</string>
+    <string name="torrent_add_torrent_management_mode">Torrent Management Mode</string>
+    <string name="torrent_add_torrent_management_mode_manual">Manual</string>
+    <string name="torrent_add_torrent_management_mode_auto">Automatic</string>
     <string name="torrent_add_stop_condition">Stop Condition</string>
     <string name="torrent_add_stop_condition_none">None</string>
     <string name="torrent_add_stop_condition_metadata_received">Metadata received</string>
@@ -477,10 +460,11 @@
     <string name="torrent_add_name">Torrent Name</string>
     <string name="torrent_add_ratio_limit">Ratio Limit</string>
     <string name="torrent_add_seeding_time_limit">Seeding Time Limit (Minutes)</string>
-    <string name="torrent_add_dlspeed_limit">Download Speed Limit</string>
-    <string name="torrent_add_upspeed_limit">Upload Speed Limit</string>
+    <string name="torrent_add_download_speed_limit">Download Speed Limit</string>
+    <string name="torrent_add_upload_speed_limit">Upload Speed Limit</string>
+    <string name="torrent_add_action_add_torrent">Add Torrent</string>
 
-    <string name="torrent_add_select_server">Server</string>
+    <string name="torrent_add_server">Server</string>
     <string name="torrent_add_no_server">No servers found.</string>
     <string name="torrent_add_link_cannot_be_empty">Link cannot be empty.</string>
     <string name="torrent_add_file_not_found">Torrent file is not found.</string>
@@ -494,20 +478,20 @@
     <string name="rss_date">Date: %1$s</string>
     <string name="rss_download">Download</string>
     <string name="rss_mark_as_read">Mark as Read</string>
-    <string name="rss_no_desc">No description found</string>
+    <string name="rss_no_description">No description found</string>
 
-    <string name="rss_menu_add">Add</string>
-    <string name="rss_menu_add_feed">Add Feed</string>
-    <string name="rss_menu_rename_feed">Rename Feed</string>
-    <string name="rss_menu_move_feed">Move Feed</string>
-    <string name="rss_menu_delete_feed">Delete Feed</string>
-    <string name="rss_menu_add_folder">Add Folder</string>
-    <string name="rss_menu_rename_folder">Rename Folder</string>
-    <string name="rss_menu_move_folder">Move Folder</string>
-    <string name="rss_menu_delete_folder">Delete Folder</string>
-    <string name="rss_menu_mark_all_as_read">Mark All as Read</string>
-    <string name="rss_menu_refresh_all">Refresh All</string>
-    <string name="rss_menu_refresh">Refresh</string>
+    <string name="rss_action_add">Add</string>
+    <string name="rss_action_add_feed">Add Feed</string>
+    <string name="rss_action_rename_feed">Rename Feed</string>
+    <string name="rss_action_move_feed">Move Feed</string>
+    <string name="rss_action_delete_feed">Delete Feed</string>
+    <string name="rss_action_add_folder">Add Folder</string>
+    <string name="rss_action_rename_folder">Rename Folder</string>
+    <string name="rss_action_move_folder">Move Folder</string>
+    <string name="rss_action_delete_folder">Delete Folder</string>
+    <string name="rss_action_mark_all_as_read">Mark All as Read</string>
+    <string name="rss_action_refresh_all">Refresh All</string>
+    <string name="rss_action_refresh">Refresh</string>
 
     <string name="rss_hint_feed_url">Feed URL</string>
     <string name="rss_hint_feed_name_optional">Feed Name (Optional)</string>
@@ -524,7 +508,7 @@
     <string name="rss_confirm_delete_feed">Are you sure you want to delete feed %1$s?</string>
     <string name="rss_confirm_delete_folder">Are you sure you want to delete folder %1$s?</string>
 
-    <string name="rss_success_feed_add">Feed added successfully.</string>
+    <string name="rss_added_feed">Feed added successfully.</string>
     <string name="rss_success_feed_rename">Feed renamed successfully.</string>
     <string name="rss_success_feed_move">Feed moved successfully.</string>
     <string name="rss_success_feed_delete">Feed deleted successfully.</string>
@@ -532,23 +516,23 @@
     <string name="rss_success_folder_rename">Folder renamed successfully.</string>
     <string name="rss_success_folder_move">Folder moved successfully.</string>
     <string name="rss_success_folder_delete">Folder deleted successfully.</string>
-    <string name="rss_error_feed_add">Couldn\'t add feed.</string>
-    <string name="rss_error_feed_rename">Couldn\'t rename feed.</string>
-    <string name="rss_error_feed_move">Couldn\'t move feed.</string>
-    <string name="rss_error_feed_delete">Couldn\'t delete feed.</string>
-    <string name="rss_error_folder_add">Couldn\'t add folder.</string>
-    <string name="rss_error_folder_rename">Couldn\'t rename folder.</string>
-    <string name="rss_error_folder_move">Couldn\'t move folder.</string>
-    <string name="rss_error_folder_delete">Couldn\'t delete folder.</string>
+    <string name="rss_add_feed_error">Couldn\'t add feed.</string>
+    <string name="rss_rename_feed_error">Couldn\'t rename feed.</string>
+    <string name="rss_move_feed_error">Couldn\'t move feed.</string>
+    <string name="rss_delete_feed_error">Couldn\'t delete feed.</string>
+    <string name="rss_add_folder_error">Couldn\'t add folder.</string>
+    <string name="rss_rename_folder_error">Couldn\'t rename folder.</string>
+    <string name="rss_move_folder_error">Couldn\'t move folder.</string>
+    <string name="rss_delete_folder_error">Couldn\'t delete folder.</string>
 
-    <string name="rss_success_article_mark_as_read">Article marked as read successfully.</string>
-    <string name="rss_success_all_articles_mark_as_read">All articles marked as read successfully.</string>
-    <string name="rss_success_all_feeds_refresh">Refreshed all feeds successfully.</string>
-    <string name="rss_success_feed_refresh">Feed refreshed successfully.</string>
-    <string name="rss_error_feed_not_found">RSS feed is not found.</string>
+    <string name="rss_mark_article_as_read_success">Article marked as read successfully.</string>
+    <string name="rss_mark_all_articles_as_read_success">All articles marked as read successfully.</string>
+    <string name="rss_refresh_all_feeds_success">Refreshed all feeds successfully.</string>
+    <string name="rss_refresh_feed_success">Feed refreshed successfully.</string>
+    <string name="rss_feed_not_found">RSS feed is not found.</string>
 
     <string name="rss_rules">RSS Downloader</string>
-    <string name="rss_rule_create">Create Rule</string>
+    <string name="rss_rule_action_create">Create Rule</string>
     <string name="rss_rule_rename">Rename Rule</string>
     <string name="rss_rule_delete">Delete Rule</string>
     <string name="rss_rule_name">Rule Name</string>
@@ -574,11 +558,12 @@
     <string name="rss_rule_torrent_content_layout">Torrent Content Layout</string>
     <string name="rss_rule_apply_rule_to_feeds">Apply Rule to Feeds</string>
     <string name="rss_rule_use_global_settings">Use Global Settings</string>
-    <string name="rss_rule_save">Save Rule</string>
+    <string name="rss_rule_action_save">Save Rule</string>
     <string name="rss_rule_saved_successfully">Rule saved successfully.</string>
     <string name="rss_rule_not_found">Couldn\'t find rule.</string>
 
     <string name="search_title">Search</string>
+
     <string name="search_start_query">Search Query</string>
     <string name="search_start_category">Category</string>
     <string name="search_start_category_all">All</string>
@@ -593,34 +578,35 @@
     <string name="search_start_plugins_enabled">Enabled Plugins</string>
     <string name="search_start_plugins_all">All Plugins</string>
     <string name="search_start_plugins_select">Select Plugins</string>
-    <string name="search_start">Start Search</string>
-    <string name="search_stop">Stop Search</string>
-    <string name="search_filter_results">Filter results…</string>
-    <string name="search_filter">Filter</string>
-    <string name="search_filter_seeds">Seeds</string>
-    <string name="search_filter_size">Size</string>
-    <string name="search_filter_min">Min</string>
-    <string name="search_filter_max">Max</string>
-    <string name="search_showing_count">Showing %1$d out of %2$d</string>
-    <string name="search_torrent_size">Size: %1$s</string>
-    <string name="search_torrent_site">Site: %1$s</string>
-    <string name="search_torrent_seeders">Seeders: %1$s</string>
-    <string name="search_torrent_leechers">Leechers: %1$s</string>
-    <string name="search_open_description">Open Description</string>
-    <string name="search_download">Download</string>
-    <string name="search_stop_success">Search stopped successfully.</string>
-    <string name="search_no_browser">Can\'t find any browser.</string>
+    <string name="search_start_action_start">Start Search</string>
 
-    <string name="search_sort_name">Name</string>
-    <string name="search_sort_size">Size</string>
-    <string name="search_sort_seeders">Seeders</string>
-    <string name="search_sort_leechers">Leechers</string>
-    <string name="search_sort_search_engine">Search Engine</string>
+    <string name="search_result_filter_results">Filter results…</string>
+    <string name="search_result_filter_seeds">Seeds</string>
+    <string name="search_result_filter_size">Size</string>
+    <string name="search_result_filter_min">Min</string>
+    <string name="search_result_filter_max">Max</string>
+
+    <string name="search_result_showing_count">Showing %1$d out of %2$d</string>
+    <string name="search_result_size">Size: %1$s</string>
+    <string name="search_result_site">Site: %1$s</string>
+    <string name="search_result_seeders">Seeders: %1$s</string>
+    <string name="search_result_leechers">Leechers: %1$s</string>
+    <string name="search_result_open_description">Open Description</string>
+    <string name="search_result_download">Download</string>
+    <string name="search_result_stop_success">Search stopped successfully.</string>
+    <string name="search_result_no_browser">Can\'t find any browser.</string>
+
+    <string name="search_result_action_filter">Filter</string>
+    <string name="search_result_action_sort">Sort</string>
+    <string name="search_result_action_sort_name">Name</string>
+    <string name="search_result_action_sort_size">Size</string>
+    <string name="search_result_action_sort_seeders">Seeders</string>
+    <string name="search_result_action_sort_leechers">Leechers</string>
+    <string name="search_result_action_sort_search_engine">Search Engine</string>
+    <string name="search_result_action_sort_reverse">Reverse</string>
+    <string name="search_result_action_stop_search">Stop Search</string>
 
     <string name="search_plugins">Plugins</string>
-    <string name="search_plugins_save">Save</string>
-    <string name="search_plugins_install_plugins">Install Plugins</string>
-    <string name="search_plugins_update_plugins">Update Plugins</string>
     <string name="search_plugins_version">Version: %1$s</string>
     <string name="search_plugins_install_hint">URL or local directory</string>
     <string name="search_plugins_save_success">Plugins are saved successfully.</string>
@@ -628,30 +614,39 @@
     <string name="search_plugins_update_success">All plugins are updated successfully.</string>
     <string name="search_plugins_cannot_be_empty">Plugins cannot be empty.</string>
 
+    <string name="search_plugins_action_save">Save</string>
+    <string name="search_plugins_action_install_plugins">Install Plugins</string>
+    <string name="search_plugins_action_update_plugins">Update Plugins</string>
+
+    <string name="execution_log_title">Execution Log</string>
+
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>
     <string name="settings_add_new_server">Add new server</string>
     <string name="settings_other">Other</string>
     <string name="settings_disabled">Disabled</string>
     <string name="settings_connection_timeout">Connection timeout</string>
-    <plurals name="settings_connection_timeout_desc">
+    <plurals name="settings_connection_timeout_description">
         <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
     <string name="settings_auto_refresh_interval">Auto refresh interval</string>
-    <plurals name="settings_auto_refresh_interval_desc">
+    <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
     <string name="settings_auto_refresh_hide_loading_bar">Hide loading bar</string>
-    <string name="settings_auto_refresh_hide_loading_bar_desc">Don\'t show loading bar when auto refreshing</string>
+    <string name="settings_auto_refresh_hide_loading_bar_description">Don\'t show loading bar when auto refreshing</string>
     <string name="settings_notification_check_interval">Notification check interval</string>
-    <plurals name="settings_notification_check_interval_desc">
+    <plurals name="settings_notification_check_interval_description">
         <item quantity="one">%1$d minute</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">Enable torrent swipe actions</string>
     <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_theme_system_default">System Default</string>
 
     <string name="settings_server_title_add">Add Server</string>
     <string name="settings_server_title_edit">Edit Server</string>
@@ -661,19 +656,17 @@
     <string name="settings_server_path">Path</string>
     <string name="settings_server_username">Username</string>
     <string name="settings_server_password">Password</string>
-    <string name="settings_trust_self_signed_certificates">Trust self-signed certificates</string>
+    <string name="settings_server_trust_self_signed_certificates">Trust self-signed certificates</string>
     <string name="settings_server_test_configuration">Test Configuration</string>
 
-    <string name="settings_server_basic_auth">Basic Authentication</string>
-    <string name="settings_server_basic_auth_enabled">Enabled</string>
-    <string name="settings_server_basic_auth_username">@string/settings_server_username</string>
-    <string name="settings_server_basic_auth_password">@string/settings_server_password</string>
+    <string name="settings_server_action_delete">Delete</string>
+    <string name="settings_server_action_save">Save</string>
+    <string name="settings_server_action_advanced_settings">Advanced Settings</string>
 
-    <string-array name="settings_theme_entries">
-        <item>Light</item>
-        <item>Dark</item>
-        <item>System default</item>
-    </string-array>
+    <string name="settings_server_advanced_basic_auth">Basic Authentication</string>
+    <string name="settings_server_advanced_basic_auth_enabled">Enabled</string>
+    <string name="settings_server_advanced_basic_auth_username">Username</string>
+    <string name="settings_server_advanced_basic_auth_password">Password</string>
 
     <string name="settings_server_add_success">Server has been added successfully.</string>
     <string name="settings_server_edit_success">Server has been edited successfully.</string>
@@ -682,13 +675,14 @@
     <string name="settings_server_port_must_be_between">Port must be between 1 and 65535.</string>
     <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
-    <string name="settings_server_url_config_not_valid">Entered URL configuration is not valid.</string>
+    <string name="settings_server_url_configuration_not_valid">Entered URL configuration is not valid.</string>
     <string name="settings_server_connection_success">Connected to server successfully.</string>
 
-    <string name="about_menu_title">About</string>
-    <string name="about_dialog_title">@string/about_menu_title</string>
     <string name="about_description">qBitController allows you to control qBittorrent from an Android device.\n\nFor more detailed information and source code: https://github.com/Bartuzen/qBitController</string>
 
     <string name="notification_channel_download_completed">Download completed</string>
     <string name="notification_torrent_downloaded">has finished downloading.</string>
+
+    <string name="accessibility_open_navigation_drawer">Open navigation drawer</string>
+    <string name="accessibility_close_navigation_drawer">Close navigation drawer</string>
 </resources>

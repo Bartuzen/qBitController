@@ -127,7 +127,7 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
         val dialog = showDialog(DialogRssAddRuleBinding::inflate) { binding ->
             dialogBinding = binding
 
-            setTitle(R.string.rss_rule_create)
+            setTitle(R.string.rss_rule_action_create)
             setPositiveButton()
             setNegativeButton()
         }

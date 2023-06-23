@@ -14,7 +14,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/torrent_overview_save_path"
+            android:hint="@string/torrent_list_set_location_hint"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>

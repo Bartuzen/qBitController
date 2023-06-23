@@ -9,5 +9,5 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="16dp"
-    android:text="@string/main_screen_add_server"
+    android:text="@string/main_add_server"
     app:drawableStartCompat="@drawable/ic_add" />

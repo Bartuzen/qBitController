@@ -5,19 +5,19 @@
     <item
         android:id="@+id/menu_advanced"
         android:icon="@drawable/ic_settings"
-        android:title="@string/menu_add_edit_server_advanced_settings"
+        android:title="@string/settings_server_action_advanced_settings"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_delete"
         android:icon="@drawable/ic_delete"
-        android:title="@string/menu_add_edit_server_delete"
+        android:title="@string/settings_server_action_delete"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_save"
         android:icon="@drawable/ic_save"
-        android:title="@string/menu_add_edit_server_save"
+        android:title="@string/settings_server_action_save"
         app:showAsAction="ifRoom" />
 
 </menu>

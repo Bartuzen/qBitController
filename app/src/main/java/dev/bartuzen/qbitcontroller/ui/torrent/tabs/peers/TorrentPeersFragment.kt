@@ -312,7 +312,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
     private fun showAddPeersDialog() {
         showDialog(DialogTorrentPeersAddBinding::inflate) { binding ->
-            setTitle(R.string.torrent_peers_add_dialog_title)
+            setTitle(R.string.torrent_peers_action_add)
             setPositiveButton { _, _ ->
                 viewModel.addPeers(
                     serverId,

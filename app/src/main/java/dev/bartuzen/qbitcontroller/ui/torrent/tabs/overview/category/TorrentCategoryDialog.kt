@@ -39,7 +39,7 @@ class TorrentCategoryDialog() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?) = MaterialAlertDialogBuilder(requireContext()).apply {
         val binding = DialogTorrentCategoryBinding.inflate(layoutInflater)
         setView(binding.root)
-        setTitle(R.string.torrent_category_dialog_title)
+        setTitle(R.string.torrent_action_category)
         setPositiveButton { _, _ ->
             val selectedCategory = binding.chipGroupCategory.checkedChipId.let { id ->
                 if (id != View.NO_ID) {

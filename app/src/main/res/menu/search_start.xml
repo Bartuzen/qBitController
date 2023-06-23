@@ -11,7 +11,7 @@
     <item
         android:id="@+id/menu_search_start"
         android:icon="@drawable/ic_search"
-        android:title="@string/search_start"
+        android:title="@string/search_start_action_start"
         app:showAsAction="ifRoom" />
 
 </menu>

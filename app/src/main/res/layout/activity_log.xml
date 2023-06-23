@@ -22,7 +22,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:theme="@style/AppTheme.ToolbarOverlay"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/menu_log" />
+                app:title="@string/execution_log_title" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

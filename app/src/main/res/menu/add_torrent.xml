@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_add"
-        android:title="@string/torrent_add_menu_add_torrent"
+        android:title="@string/torrent_add_action_add_torrent"
         app:showAsAction="ifRoom" />
 
 </menu>

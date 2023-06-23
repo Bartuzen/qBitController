@@ -167,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/settings_trust_self_signed_certificates" />
+                android:text="@string/settings_server_trust_self_signed_certificates" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_test"

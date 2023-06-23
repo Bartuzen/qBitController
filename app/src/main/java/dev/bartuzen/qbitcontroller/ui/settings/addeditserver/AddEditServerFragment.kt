@@ -211,7 +211,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
         )
 
         if (HttpUrl.parse(config.url) == null) {
-            showSnackbar(R.string.settings_server_url_config_not_valid)
+            showSnackbar(R.string.settings_server_url_configuration_not_valid)
             return null
         }
 

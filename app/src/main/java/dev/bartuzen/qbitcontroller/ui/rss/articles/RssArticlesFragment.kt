@@ -179,18 +179,18 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 RssArticlesViewModel.Event.RssFeedNotFound -> {
-                    showSnackbar(R.string.rss_error_feed_not_found)
+                    showSnackbar(R.string.rss_feed_not_found)
                 }
                 RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
-                    showSnackbar(R.string.rss_success_article_mark_as_read)
+                    showSnackbar(R.string.rss_mark_article_as_read_success)
                     viewModel.loadRssArticles(serverId, feedPath)
                 }
                 RssArticlesViewModel.Event.AllArticlesMarkedAsRead -> {
-                    showSnackbar(R.string.rss_success_all_articles_mark_as_read)
+                    showSnackbar(R.string.rss_mark_all_articles_as_read_success)
                     viewModel.loadRssArticles(serverId, feedPath)
                 }
                 RssArticlesViewModel.Event.FeedRefreshed -> {
-                    showSnackbar(R.string.rss_success_feed_refresh)
+                    showSnackbar(R.string.rss_refresh_feed_success)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000)
@@ -205,7 +205,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         showDialog {
             setTitle(article.title)
 
-            val descriptionText = article.description ?: "<i>${context.getString(R.string.rss_no_desc)}</i>"
+            val descriptionText = article.description ?: "<i>${context.getString(R.string.rss_no_description)}</i>"
 
             val description = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(descriptionText, Html.FROM_HTML_MODE_COMPACT)

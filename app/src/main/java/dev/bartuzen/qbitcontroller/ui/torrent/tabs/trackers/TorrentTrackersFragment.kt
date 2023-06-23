@@ -241,7 +241,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
 
     private fun showAddTrackersDialog() {
         showDialog(DialogTorrentTrackersAddBinding::inflate) { binding ->
-            setTitle(R.string.torrent_trackers_add)
+            setTitle(R.string.torrent_trackers_action_add)
             setPositiveButton { _, _ ->
                 viewModel.addTrackers(
                     serverId,
@@ -285,7 +285,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
 
             binding.inputLayoutTrackerUrl.setTextWithoutAnimation(tracker)
 
-            setTitle(R.string.torrent_trackers_dialog_title_edit)
+            setTitle(R.string.torrent_trackers_action_edit)
             setPositiveButton()
             setNegativeButton()
         }

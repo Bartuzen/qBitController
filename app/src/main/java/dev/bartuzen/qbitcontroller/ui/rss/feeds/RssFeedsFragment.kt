@@ -84,8 +84,8 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                             showDialog {
                                 setItems(
                                     arrayOf(
-                                        getString(R.string.rss_menu_add_feed),
-                                        getString(R.string.rss_menu_add_folder)
+                                        getString(R.string.rss_action_add_feed),
+                                        getString(R.string.rss_action_add_folder)
                                     )
                                 ) { _, which ->
                                     when (which) {
@@ -198,7 +198,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 RssFeedsViewModel.Event.AllFeedsRefreshed -> {
-                    showSnackbar(R.string.rss_success_all_feeds_refresh)
+                    showSnackbar(R.string.rss_refresh_all_feeds_success)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000)
@@ -206,31 +206,31 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     }
                 }
                 RssFeedsViewModel.Event.FeedAddError -> {
-                    showSnackbar(R.string.rss_error_feed_add)
+                    showSnackbar(R.string.rss_add_feed_error)
                 }
                 RssFeedsViewModel.Event.FeedRenameError -> {
-                    showSnackbar(R.string.rss_error_feed_rename)
+                    showSnackbar(R.string.rss_rename_feed_error)
                 }
                 RssFeedsViewModel.Event.FeedMoveError -> {
-                    showSnackbar(R.string.rss_error_feed_move)
+                    showSnackbar(R.string.rss_move_feed_error)
                 }
                 RssFeedsViewModel.Event.FeedDeleteError -> {
-                    showSnackbar(R.string.rss_error_feed_delete)
+                    showSnackbar(R.string.rss_delete_feed_error)
                 }
                 RssFeedsViewModel.Event.FolderAddError -> {
-                    showSnackbar(R.string.rss_error_folder_add)
+                    showSnackbar(R.string.rss_add_folder_error)
                 }
                 RssFeedsViewModel.Event.FolderRenameError -> {
-                    showSnackbar(R.string.rss_error_folder_rename)
+                    showSnackbar(R.string.rss_rename_folder_error)
                 }
                 RssFeedsViewModel.Event.FolderMoveError -> {
-                    showSnackbar(R.string.rss_error_folder_move)
+                    showSnackbar(R.string.rss_move_folder_error)
                 }
                 RssFeedsViewModel.Event.FolderDeleteError -> {
-                    showSnackbar(R.string.rss_error_folder_delete)
+                    showSnackbar(R.string.rss_delete_folder_error)
                 }
                 RssFeedsViewModel.Event.FeedAdded -> {
-                    showSnackbar(R.string.rss_success_feed_add)
+                    showSnackbar(R.string.rss_added_feed)
                     viewModel.loadRssFeeds(serverId)
                 }
                 RssFeedsViewModel.Event.FeedRenamed -> {
@@ -271,7 +271,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         val dialog = showDialog(DialogRssAddFeedBinding::inflate) { binding ->
             dialogBinding = binding
 
-            setTitle(R.string.rss_menu_add_feed)
+            setTitle(R.string.rss_action_add_feed)
             setPositiveButton()
             setNegativeButton()
         }
@@ -311,7 +311,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         val dialog = showDialog(DialogRssAddFolderBinding::inflate) { binding ->
             dialogBinding = binding
 
-            setTitle(R.string.rss_menu_add_folder)
+            setTitle(R.string.rss_action_add_folder)
             setPositiveButton()
             setNegativeButton()
         }
@@ -340,15 +340,15 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             setItems(
                 if (feedNode.isFeed) {
                     arrayOf(
-                        getString(R.string.rss_menu_rename_feed),
-                        getString(R.string.rss_menu_move_feed),
-                        getString(R.string.rss_menu_delete_feed)
+                        getString(R.string.rss_action_rename_feed),
+                        getString(R.string.rss_action_move_feed),
+                        getString(R.string.rss_action_delete_feed)
                     )
                 } else {
                     arrayOf(
-                        getString(R.string.rss_menu_rename_folder),
-                        getString(R.string.rss_menu_move_folder),
-                        getString(R.string.rss_menu_delete_folder)
+                        getString(R.string.rss_action_rename_folder),
+                        getString(R.string.rss_action_move_folder),
+                        getString(R.string.rss_action_delete_folder)
                     )
                 }
             ) { _, which ->
@@ -392,9 +392,9 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             binding.inputLayoutName.setTextWithoutAnimation(currentDirectory.joinToString("\\"))
 
             if (isFeed) {
-                setTitle(R.string.rss_menu_move_feed)
+                setTitle(R.string.rss_action_move_feed)
             } else {
-                setTitle(R.string.rss_menu_move_folder)
+                setTitle(R.string.rss_action_move_folder)
             }
 
             setPositiveButton { _, _ ->
@@ -418,10 +418,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             binding.inputLayoutName.setTextWithoutAnimation(name)
 
             if (isFeed) {
-                setTitle(R.string.rss_menu_rename_feed)
+                setTitle(R.string.rss_action_rename_feed)
                 binding.inputLayoutName.setHint(R.string.rss_hint_feed_name)
             } else {
-                setTitle(R.string.rss_menu_rename_folder)
+                setTitle(R.string.rss_action_rename_folder)
                 binding.inputLayoutName.setHint(R.string.rss_hint_folder_name)
             }
 
@@ -447,10 +447,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     private fun showDeleteFeedFolderDialog(name: String, isFeed: Boolean, onDelete: () -> Unit) {
         showDialog {
             if (isFeed) {
-                setTitle(R.string.rss_menu_delete_feed)
+                setTitle(R.string.rss_action_delete_feed)
                 setMessage(getString(R.string.rss_confirm_delete_feed, name))
             } else {
-                setTitle(R.string.rss_menu_delete_folder)
+                setTitle(R.string.rss_action_delete_folder)
                 setMessage(getString(R.string.rss_confirm_delete_folder, name))
             }
             setPositiveButton { _, _ ->

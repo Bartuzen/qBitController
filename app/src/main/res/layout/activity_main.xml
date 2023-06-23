@@ -45,7 +45,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="32dp"
-            android:text="@string/main_screen_no_servers"
+            android:text="@string/main_no_servers"
             android:textAlignment="gravity"
             android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

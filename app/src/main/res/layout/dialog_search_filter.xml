@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_filter_seeds" />
+        android:text="@string/search_result_filter_seeds" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_filter_min"
+                android:hint="@string/search_result_filter_min"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -43,7 +43,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_filter_max"
+                android:hint="@string/search_result_filter_max"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/search_filter_size" />
+        android:text="@string/search_result_filter_size" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,7 +72,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_filter_min"
+                android:hint="@string/search_result_filter_min"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -108,7 +108,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_filter_max"
+                android:hint="@string/search_result_filter_max"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>

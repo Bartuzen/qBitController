@@ -15,7 +15,7 @@
             android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/torrent_name"
+            android:hint="@string/torrent_rename_torrent_hint"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>

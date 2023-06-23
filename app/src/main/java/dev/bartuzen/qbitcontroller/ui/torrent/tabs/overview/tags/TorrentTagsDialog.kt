@@ -39,7 +39,7 @@ class TorrentTagsDialog() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?) = MaterialAlertDialogBuilder(requireContext()).apply {
         val binding = DialogTorrentTagsBinding.inflate(layoutInflater)
         setView(binding.root)
-        setTitle(R.string.torrent_tags_dialog_title)
+        setTitle(R.string.torrent_action_tags)
         setPositiveButton { _, _ ->
             val selectedTags = binding.chipGroupTags.checkedChipIds.map { id ->
                 binding.chipGroupTags.findViewById<Chip>(id).text.toString()

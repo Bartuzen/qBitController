@@ -162,7 +162,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                 val itemCount = selectedItemCount
                 if (itemCount != 0) {
                     actionMode?.title = resources.getQuantityString(
-                        R.plurals.torrent_files_menu_files_selected,
+                        R.plurals.torrent_files_selected,
                         itemCount,
                         itemCount
                     )
@@ -282,9 +282,9 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
 
             setTitle(
                 if (isFile) {
-                    R.string.torrent_files_rename_file_dialog_title
+                    R.string.torrent_files_rename_file
                 } else {
-                    R.string.torrent_files_rename_folder_dialog_title
+                    R.string.torrent_files_rename_folder
                 }
             )
             setPositiveButton { _, _ ->

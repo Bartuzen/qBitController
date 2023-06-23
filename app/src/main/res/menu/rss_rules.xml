@@ -5,7 +5,7 @@
     <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_add"
-        android:title="@string/rss_rule_create"
+        android:title="@string/rss_rule_action_create"
         app:showAsAction="ifRoom" />
 
 </menu>

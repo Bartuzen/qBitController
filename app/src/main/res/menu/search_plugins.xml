@@ -5,17 +5,17 @@
     <item
         android:id="@+id/menu_save"
         android:icon="@drawable/ic_save"
-        android:title="@string/search_plugins_save"
+        android:title="@string/search_plugins_action_save"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_install_plugins"
-        android:title="@string/search_plugins_install_plugins"
+        android:title="@string/search_plugins_action_install_plugins"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_update_plugins"
-        android:title="@string/search_plugins_update_plugins"
+        android:title="@string/search_plugins_action_update_plugins"
         app:showAsAction="never" />
 
 </menu>

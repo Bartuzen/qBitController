@@ -75,12 +75,12 @@ class TorrentActivity : AppCompatActivity() {
 
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             val resId = when (position) {
-                0 -> R.string.tab_torrent_overview
-                1 -> R.string.tab_torrent_files
-                2 -> R.string.tab_torrent_pieces
-                3 -> R.string.tab_torrent_trackers
-                4 -> R.string.tab_torrent_peers
-                5 -> R.string.tab_torrent_web_seeds
+                0 -> R.string.torrent_tab_overview
+                1 -> R.string.torrent_tab_files
+                2 -> R.string.torrent_tab_pieces
+                3 -> R.string.torrent_tab_trackers
+                4 -> R.string.torrent_tab_peers
+                5 -> R.string.torrent_tab_web_seeds
                 else -> return@TabLayoutMediator
             }
 

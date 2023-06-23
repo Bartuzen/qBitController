@@ -75,7 +75,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/torrent_add_select_server" />
+                            android:text="@string/torrent_add_server" />
 
                         <Spinner
                             android:id="@+id/spinner_servers"
@@ -231,7 +231,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:hint="@string/torrent_add_tmm">
+                        android:hint="@string/torrent_add_torrent_management_mode">
 
                         <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
                             android:id="@+id/dropdown_auto_tmm"
@@ -347,7 +347,7 @@
                                 android:id="@+id/edit_dlspeed_limit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/torrent_add_dlspeed_limit"
+                                android:hint="@string/torrent_add_download_speed_limit"
                                 android:inputType="number" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -385,7 +385,7 @@
                                 android:id="@+id/edit_upspeed_limit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/torrent_add_upspeed_limit"
+                                android:hint="@string/torrent_add_upload_speed_limit"
                                 android:inputType="number" />
 
                         </com.google.android.material.textfield.TextInputLayout>

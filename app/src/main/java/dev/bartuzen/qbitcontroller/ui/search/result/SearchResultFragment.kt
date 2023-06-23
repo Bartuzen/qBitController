@@ -100,7 +100,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     val searchItem = menu.findItem(R.id.menu_search)
 
                     val searchView = searchItem.actionView as SearchView
-                    searchView.queryHint = getString(R.string.search_filter_results)
+                    searchView.queryHint = getString(R.string.search_result_filter_results)
                     searchView.isSubmitButtonEnabled = false
                     searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?) = false
@@ -209,7 +209,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 }
             }
 
-            binding.textCount.text = getString(R.string.search_showing_count, searchResults.size, searchCount)
+            binding.textCount.text = getString(R.string.search_result_showing_count, searchResults.size, searchCount)
         }
 
         viewModel.isSearchContinuing.launchAndCollectLatestIn(viewLifecycleOwner) { isSearchContinuing ->
@@ -229,7 +229,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
                 SearchResultViewModel.Event.SearchStopped -> {
-                    showSnackbar(R.string.search_stop_success)
+                    showSnackbar(R.string.search_result_stop_success)
                 }
             }
         }
@@ -238,19 +238,19 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     private fun showSearchResultDialog(searchResult: Search.Result) {
         showDialog {
             setMessage(searchResult.fileName)
-            setPositiveButton(R.string.search_download) { _, _ ->
+            setPositiveButton(R.string.search_result_download) { _, _ ->
                 val intent = Intent(requireActivity(), AddTorrentActivity::class.java).apply {
                     putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
                     putExtra(AddTorrentActivity.Extras.TORRENT_URL, searchResult.fileUrl)
                 }
                 startAddTorrentActivity.launch(intent)
             }
-            setNeutralButton(R.string.search_open_description) { _, _ ->
+            setNeutralButton(R.string.search_result_open_description) { _, _ ->
                 try {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(searchResult.descriptionLink))
                     startActivity(intent)
                 } catch (_: ActivityNotFoundException) {
-                    showSnackbar(R.string.search_no_browser)
+                    showSnackbar(R.string.search_result_no_browser)
                 }
             }
         }
@@ -290,7 +290,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             binding.dropdownSizeMinUnit.setPosition(filter.sizeMinUnit)
             binding.dropdownSizeMaxUnit.setPosition(filter.sizeMaxUnit)
 
-            setTitle(R.string.search_filter)
+            setTitle(R.string.search_result_action_filter)
             setPositiveButton { _, _ ->
                 val newFilter = SearchResultViewModel.Filter(
                     seedsMin = binding.inputLayoutSeedsMin.text.toIntOrNull(),

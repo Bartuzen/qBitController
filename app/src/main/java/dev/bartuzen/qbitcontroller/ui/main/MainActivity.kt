@@ -100,8 +100,8 @@ class MainActivity : AppCompatActivity() {
             this,
             binding.layoutDrawer,
             binding.toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
+            R.string.accessibility_open_navigation_drawer,
+            R.string.accessibility_close_navigation_drawer
         )
         binding.layoutDrawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
         showDialog(DialogAboutBinding::inflate) { binding ->
             binding.textVersion.text = BuildConfig.VERSION_NAME
 
-            setTitle(R.string.about_dialog_title)
+            setTitle(R.string.main_action_about)
             setPositiveButton()
         }
     }

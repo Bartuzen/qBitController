@@ -6,25 +6,25 @@
     <item
         android:id="@+id/menu_pause"
         android:icon="@drawable/ic_pause"
-        android:title="@string/menu_pause"
+        android:title="@string/torrent_list_action_pause"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_resume"
         android:icon="@drawable/ic_resume"
-        android:title="@string/menu_resume"
+        android:title="@string/torrent_list_action_resume"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_delete"
         android:icon="@drawable/ic_delete"
-        android:title="@string/menu_delete"
+        android:title="@string/torrent_list_action_delete"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_priority"
         android:icon="@drawable/ic_priority"
-        android:title="@string/menu_priority"
+        android:title="@string/torrent_list_action_priority"
         app:showAsAction="ifRoom">
 
         <menu tools:ignore="UnusedAttribute">
@@ -32,28 +32,28 @@
                 android:id="@+id/menu_priority_maximize"
                 android:icon="@drawable/ic_priority_maximize"
                 android:iconTint="@color/color_on_secondary"
-                android:title="@string/menu_priority_maximize"
+                android:title="@string/torrent_list_action_priority_maximize"
                 app:iconTint="@color/color_on_secondary" />
 
             <item
                 android:id="@+id/menu_priority_increase"
                 android:icon="@drawable/ic_priority_increase"
                 android:iconTint="@color/color_on_secondary"
-                android:title="@string/menu_priority_increase"
+                android:title="@string/torrent_list_action_priority_increase"
                 app:iconTint="@color/color_on_secondary" />
 
             <item
                 android:id="@+id/menu_priority_decrease"
                 android:icon="@drawable/ic_priority_decrease"
                 android:iconTint="@color/color_on_secondary"
-                android:title="@string/menu_priority_decrease"
+                android:title="@string/torrent_list_action_priority_decrease"
                 app:iconTint="@color/color_on_secondary" />
 
             <item
                 android:id="@+id/menu_priority_minimize"
                 android:icon="@drawable/ic_priority_minimize"
                 android:iconTint="@color/color_on_secondary"
-                android:title="@string/menu_priority_minimize"
+                android:title="@string/torrent_list_action_priority_minimize"
                 app:iconTint="@color/color_on_secondary" />
         </menu>
 
@@ -61,19 +61,19 @@
 
     <item
         android:id="@+id/menu_location"
-        android:title="@string/torrent_menu_location"
+        android:title="@string/torrent_list_action_set_location"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
-        android:title="@string/menu_select_all"
+        android:title="@string/action_select_all"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_select_inverse"
         android:icon="@drawable/ic_select_inverse"
-        android:title="@string/menu_select_inverse"
+        android:title="@string/action_select_inverse"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -43,7 +43,7 @@ class SearchResultAdapter(
             binding.textTorrentName.text = result.fileName
 
             binding.textSize.text = context.getString(
-                R.string.search_torrent_size,
+                R.string.search_result_size,
                 if (result.fileSize != null) {
                     formatBytes(context, result.fileSize)
                 } else {
@@ -61,14 +61,14 @@ class SearchResultAdapter(
             } catch (_: IllegalArgumentException) {
                 null
             } ?: result.siteUrl
-            binding.textEngine.text = context.getString(R.string.search_torrent_site, site)
+            binding.textEngine.text = context.getString(R.string.search_result_site, site)
 
             binding.textSeeders.text = context.getString(
-                R.string.search_torrent_seeders,
+                R.string.search_result_seeders,
                 result.seeders?.toString() ?: "-"
             )
             binding.textLeechers.text = context.getString(
-                R.string.search_torrent_leechers,
+                R.string.search_result_leechers,
                 result.leechers?.toString() ?: "-"
             )
         }
