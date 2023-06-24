@@ -134,7 +134,7 @@
     <string name="torrent_list_untagged">Untagged</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
 
-    <string name="torrent_list_categories"> </string>
+    <string name="torrent_list_categories">Categories</string>
     <string name="torrent_list_create_subcategory">Create Subcategory</string>
     <string name="torrent_list_create_category">Create Category</string>
     <string name="torrent_list_edit_category">Edit Category</string>
