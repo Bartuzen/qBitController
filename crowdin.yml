@@ -1,5 +1,6 @@
-commit_message: "[ci skip]"
-
+commit_message: '[ci skip]'
 files:
   - source: /app/src/main/res/values/strings.xml
     translation: /app/src/main/res/values-%android_code%/%original_file_name%
+  - source: /fastlane/metadata/android/en-US/*_description.txt
+    translation: /fastlane/metadata/android/%locale%/%original_file_name%
