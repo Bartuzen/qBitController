@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - master
+    branches-ignore:
+      - translations
 
 jobs:
   build:
