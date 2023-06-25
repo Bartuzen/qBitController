@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_code">zh</string>
+    <string name="language_code" comment="ISO 639 alpha-2 or alpha-3 language code. Use alpha-2 code if exists.">zh</string>
     <string name="share_add_torrent">添加种子</string>
     <string name="torrent_status_error">错误</string>
     <string name="torrent_status_missing_files">丢失文件</string>
