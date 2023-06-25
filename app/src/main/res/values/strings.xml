@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">qBitController</string>
+    <string name="app_name" translatable="false">qBitController</string>
 
     <string name="language_code">en</string>
 
