@@ -26,6 +26,19 @@
     <string name="eta_hours">%1$s 时</string>
     <string name="eta_days_hours">%1$s 天 %2$s 时</string>
     <string name="eta_days">%1$s 天</string>
+    <string name="size_format">%1$s %2$s</string>
+    <string name="size_bytes">B</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_mebibytes">MiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="size_exbibytes">EiB</string>
+    <string name="speed_format">%1$s %2$s</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
     <string name="error_invalid_credentials">无效的用户名或密码。</string>
     <string name="error_banned">登录失败次数过多，您已被封禁。</string>
     <string name="error_cannot_connect">无法连接至服务器。</string>
@@ -45,6 +58,7 @@
     <string name="main_no_servers">没有找到服务器。单击此处来添加服务器。</string>
     <string name="main_add_server">添加服务器</string>
     <string name="torrent_list_action_add_torrent">添加 Torrent</string>
+    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">在线搜索</string>
     <string name="torrent_list_action_statistics">统计</string>
     <string name="torrent_list_action_execution_log">运行日志</string>
@@ -99,6 +113,7 @@
     <string name="torrent_list_category_tag_all">全部</string>
     <string name="torrent_list_uncategorized">未分类</string>
     <string name="torrent_list_untagged">无标签</string>
+    <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
     <string name="torrent_list_categories">分类</string>
     <string name="torrent_list_create_subcategory">创建子类</string>
     <string name="torrent_list_create_category">创建分类</string>
@@ -125,8 +140,10 @@
     <string name="torrent_list_create_tag_success">已成功创建标签。</string>
     <string name="torrent_list_create_tag_name_cannot_be_empty">标签名称不得为空。</string>
     <string name="torrent_list_create_tag_hint">标签名称</string>
+    <string name="torrent_list_trackers_title">Trackers</string>
     <string name="torrent_list_trackers_all">全部</string>
     <string name="torrent_list_trackers_trackerless">缺少 Tracker</string>
+    <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
     <string name="torrent_speed_limits_title">速度限制</string>
     <string name="torrent_speed_download_limit">下载速度限制</string>
     <string name="torrent_speed_upload_limit">上传速度限制</string>
@@ -136,6 +153,7 @@
     <string name="torrent_list_shutdown_confirm">是否确定退出 qBittorrent？</string>
     <string name="torrent_list_shutdown_success">qBittorrent 已成功关闭。</string>
     <string name="torrent_list_status">状态</string>
+    <string name="torrent_list_status_format">%1$s (%2$d)</string>
     <string name="torrent_list_status_all">全部</string>
     <string name="torrent_list_status_downloading">下载</string>
     <string name="torrent_list_status_seeding">做种</string>
@@ -152,6 +170,8 @@
     <string name="torrent_list_priority_decrease_success">已成功降低优先级。</string>
     <string name="torrent_list_priority_maximize_success">已成功将优先级提升至最大值。</string>
     <string name="torrent_list_priority_minimize_success">已成功将优先级降低至最小值。</string>
+    <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
+    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">用户统计</string>
     <string name="stats_category_cache_statistics">缓存统计</string>
     <string name="stats_category_performance_statistics">性能统计</string>
@@ -166,9 +186,12 @@
     <string name="stats_queued_io_jobs">队列的 I/O 任务</string>
     <string name="stats_average_time_in_queue">在队列的平均时间</string>
     <string name="stats_total_queued_size">总队列大小</string>
+    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">概览</string>
     <string name="torrent_tab_files">文件</string>
     <string name="torrent_tab_pieces">区块</string>
+    <string name="torrent_tab_trackers">Trackers</string>
     <string name="torrent_tab_peers">用户</string>
     <string name="torrent_tab_web_seeds">HTTP 源</string>
     <string name="torrent_delete">删除 Torrent</string>
@@ -262,6 +285,7 @@
     <string name="torrent_files_priority_high">高</string>
     <string name="torrent_files_priority_maximum">最高</string>
     <string name="torrent_files_priority_mixed">混合的</string>
+    <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">优先级</string>
     <string name="torrent_files_action_rename">重命名</string>
     <plurals name="torrent_files_selected">
@@ -286,6 +310,7 @@
     <string name="torrent_trackers_leeches">下载</string>
     <string name="torrent_trackers_downloaded">已下载</string>
     <string name="torrent_trackers_message">消息：%1$s</string>
+    <string name="torrent_trackers_add_hint">Trackers</string>
     <string name="torrent_trackers_action_edit">编辑 Tracker</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="other">删除 %1$d 个 Tracker</item>
@@ -302,6 +327,7 @@
     <string name="torrent_trackers_cannot_delete_default">你无法删除默认 Trackers。</string>
     <string name="torrent_trackers_cannot_edit_default">你无法编辑默认 Trackers。</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker 地址不得为空。</string>
+    <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">国家：%1$s</string>
     <string name="torrent_peers_connection">连接：%1$s</string>
     <string name="torrent_peers_flags">标志：%1$s</string>
@@ -332,6 +358,7 @@
     <string name="torrent_peers_details_uploaded">已上传：%1$s</string>
     <string name="torrent_peers_details_relevance">文件关联：%1$s%%</string>
     <string name="torrent_peers_details_files">文件：%1$s</string>
+    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">您：期待下载╱他：拒绝上传</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">您：期待下载╱他：同意上传</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">他：期待下载╱您：拒绝上传</string>
@@ -346,6 +373,7 @@
     <string name="torrent_peers_flag_peer_from_lsd">来自 LSD 的下载者</string>
     <string name="torrent_peers_flag_encrypted_traffic">加密的流量</string>
     <string name="torrent_peers_flag_encrypted_handshake">加密握手</string>
+    <string name="torrent_peers_flag_utp">µTP</string>
     <string name="torrent_error_not_found">Torrent 未找到。</string>
     <string name="torrent_add_title">添加 Torrent</string>
     <string name="torrent_add_button_url">链接</string>
@@ -385,6 +413,7 @@
     <string name="torrent_add_success">已成功添加 Torrent。</string>
     <string name="torrent_add_error">无法添加 Torrent。</string>
     <string name="torrent_add_invalid_file">该 Torrent 文件无效。</string>
+    <string name="rss_title">RSS</string>
     <string name="rss_filter">筛选器条目…</string>
     <string name="rss_date">日期：%1$s</string>
     <string name="rss_download">下载</string>
