@@ -4,11 +4,12 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    id("kotlin-parcelize")
-    id("dagger.hilt.android.plugin")
-    kotlin("kapt")
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.kotlinter)
 }
 
 android {
@@ -100,49 +101,46 @@ val isFirebaseEnabled = gradle.startParameter.taskRequests.any { task ->
     }
 }
 if (isFirebaseEnabled) {
-    apply(plugin = "com.google.gms.google-services")
-    apply(plugin = "com.google.firebase.crashlytics")
+    apply(plugin = libs.plugins.firebase.googleServices.get().pluginId)
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.recyclerview:recyclerview:1.3.0")
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.recyclerView)
+    implementation(libs.androidx.constraintLayout)
+    implementation(libs.androidx.swipeRefreshLayout)
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.preference)
+    implementation(libs.androidx.lifecycle.viewModel)
 
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.11")
+    implementation(libs.material)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    debugImplementation(libs.leakCanary)
 
-    implementation("androidx.fragment:fragment-ktx:1.6.0")
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation(libs.work.runtime)
+    implementation(libs.work.hilt.core)
+    kapt(libs.work.hilt.compiler)
 
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
-    implementation("androidx.hilt:hilt-work:1.0.0")
-    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    implementation("com.google.dagger:hilt-android:2.46.1")
-    kapt("com.google.dagger:hilt-compiler:2.46.1")
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.scalars)
+    implementation(libs.retrofit.converter.jackson)
 
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation(libs.jackson.kotlin)
 
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation(libs.viewBindingPropertyDelegate.noReflection)
 
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
-    implementation("com.squareup.retrofit2:converter-jackson:2.9.0")
-
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
-
-    implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9")
-
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    coreLibraryDesugaring(libs.desugar)
 
     val firebaseImplementation by configurations
-    firebaseImplementation(platform("com.google.firebase:firebase-bom:32.1.0"))
-    firebaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
-    firebaseImplementation("com.google.firebase:firebase-analytics-ktx")
+    firebaseImplementation(platform(libs.firebase.bom))
+    firebaseImplementation(libs.firebase.analytics)
+    firebaseImplementation(libs.firebase.crashlytics)
 }
