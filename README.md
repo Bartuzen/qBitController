@@ -29,3 +29,8 @@ controlling [qBittorrent](https://github.com/qbittorrent/qBittorrent) from an An
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" width="32%" />
 </p>
 </details>
+
+## Translations
+
+Check out [Weblate](https://hosted.weblate.org/engage/qbitcontroller/) for contributing to
+localization.
