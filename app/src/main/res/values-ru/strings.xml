@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="language_code">ru</string>
+    <string name="share_add_torrent">Добавить торрент</string>
+    <string name="torrent_status_missing_files">Отсутствуют файлы</string>
+    <string name="torrent_status_error">Ошибка</string>
+</resources>
