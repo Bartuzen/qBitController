@@ -87,7 +87,7 @@
     <string name="torrent_list_action_resume">Devam</string>
     <string name="torrent_list_action_delete">Sil</string>
     <string name="torrent_list_action_priority">Öncelik</string>
-    <string name="torrent_list_action_priority_increase">Önceliği Artır</string>
+    <string name="torrent_list_action_priority_increase">Önceliği Arttır</string>
     <string name="torrent_list_action_priority_decrease">Önceliği Azalt</string>
     <string name="torrent_list_action_priority_maximize">Önceliği Maksimuma Çıkar</string>
     <string name="torrent_list_action_priority_minimize">Önceliği Minimuma İndir</string>
@@ -206,4 +206,21 @@
     <string name="torrent_action_options">Torrent Seçenekleri</string>
     <string name="torrent_list_shutdown_success">qBittorrent başarıyla kapatıldı.</string>
     <string name="torrent_list_status_format">%1$s (%2$d)</string>
+    <string name="torrent_list_priority_increase_success">Öncelik başarıyla arttırıldı.</string>
+    <string name="torrent_list_priority_decrease_success">Öncelik başarıyla azaltıldı.</string>
+    <string name="torrent_list_priority_maximize_success">Öncelik başarıyla maksimize edildi.</string>
+    <string name="torrent_list_priority_minimize_success">Öncelik başarıyla minimize edildi.</string>
+    <string name="torrent_action_category">Kategori Ayarla</string>
+    <string name="torrent_action_tags">Etiketleri Ayarla</string>
+    <string name="torrent_action_rename_torrent">Torrent\'i Yeniden Adlandır</string>
+    <string name="torrent_action_force_recheck">Yeniden Denetlemeye Zorla</string>
+    <string name="torrent_action_force_reannounce">Yeniden Duyurmaya Zorla</string>
+    <string name="torrent_action_force_start">Devam Etmeye Zorla</string>
+    <string name="torrent_action_super_seeding">Süper Gönderim</string>
+    <string name="torrent_action_copy">Kopyala</string>
+    <string name="torrent_action_copy_name">Ad</string>
+    <string name="torrent_action_copy_hash_v1">Adresleme v1</string>
+    <string name="torrent_action_copy_hash_v2">Adresleme v2</string>
+    <string name="torrent_action_copy_magnet_uri">Magnet Bağlantısı</string>
+    <string name="torrent_action_export">.torrent Dosyasını Dışa Aktar</string>
 </resources>
