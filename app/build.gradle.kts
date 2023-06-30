@@ -10,6 +10,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
     alias(libs.plugins.kotlinter)
+
+    id("dev.bartuzen.qbitcontroller.localesconfig")
 }
 
 android {

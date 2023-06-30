@@ -52,3 +52,6 @@ keystore.properties
 
 # Firebase
 google-services.json
+
+# Generated
+locales_config.xml
