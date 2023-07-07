@@ -10,9 +10,7 @@ import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.ServerState
 import dev.bartuzen.qbitcontroller.model.Torrent
-import okhttp3.internal.Util.verifyAsIpAddress
-import okhttp3.internal.publicsuffix.PublicSuffixDatabase
-import java.net.URI
+import dev.bartuzen.qbitcontroller.utils.formatUri
 
 class MainDataDeserializer : JsonDeserializer<MainData>() {
     override fun deserialize(parser: JsonParser, context: DeserializationContext): MainData {
@@ -45,17 +43,7 @@ class MainDataDeserializer : JsonDeserializer<MainData>() {
 
         val formattedTrackers = mutableMapOf<String, MutableList<String>>()
         trackers.forEach { (tracker, hashes) ->
-            val formattedTracker = try {
-                val host = URI.create(tracker).host ?: throw IllegalArgumentException()
-                if (verifyAsIpAddress(host)) {
-                    host
-                } else {
-                    PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
-                }
-            } catch (_: IllegalArgumentException) {
-                null
-            } ?: tracker
-
+            val formattedTracker = formatUri(tracker)
             val list = formattedTrackers.getOrPut(formattedTracker) { mutableListOf() }
             list.addAll(hashes)
         }

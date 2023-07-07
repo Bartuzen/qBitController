@@ -1,10 +1,13 @@
 package dev.bartuzen.qbitcontroller.utils
 
 import android.content.Context
+import android.net.Uri
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import okhttp3.internal.publicsuffix.PublicSuffixDatabase
+import java.net.URI
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -144,3 +147,21 @@ fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)
         DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
             .withZone(ZoneId.systemDefault())
     )
+
+@Suppress("ktlint:standard:property-naming", "ktlint:standard:max-line-length")
+private val ipPattern = Regex(
+    """(?:[a-zA-Z]+://)?(?:(?<ipv4Address>(?:\d{1,3}\.){3}\d{1,3})|\[?(?<ipv6Address>(?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?"""
+)
+
+fun formatUri(uri: String) = try {
+    val ipAddressMatch = ipPattern.matchEntire(uri)
+    if (ipAddressMatch != null) {
+        val groups = ipAddressMatch.groups
+        (groups["ipv4Address"] ?: groups["ipv6Address"])?.value
+    } else {
+        val host = Uri.parse(uri).host ?: URI.create(uri).host ?: throw IllegalArgumentException()
+        PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
+    }
+} catch (_: IllegalArgumentException) {
+    null
+} ?: uri

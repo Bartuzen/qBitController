@@ -9,9 +9,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemSearchResultBinding
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.utils.formatBytes
-import okhttp3.internal.Util.verifyAsIpAddress
-import okhttp3.internal.publicsuffix.PublicSuffixDatabase
-import java.net.URI
+import dev.bartuzen.qbitcontroller.utils.formatUri
 
 class SearchResultAdapter(
     private val onClick: (searchResult: Search.Result) -> Unit
@@ -51,16 +49,7 @@ class SearchResultAdapter(
                 }
             )
 
-            val site = try {
-                val host = URI.create(result.siteUrl).host ?: throw IllegalArgumentException()
-                if (verifyAsIpAddress(host)) {
-                    host
-                } else {
-                    PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
-                }
-            } catch (_: IllegalArgumentException) {
-                null
-            } ?: result.siteUrl
+            val site = formatUri(result.siteUrl)
             binding.textEngine.text = context.getString(R.string.search_result_site, site)
 
             binding.textSeeders.text = context.getString(
