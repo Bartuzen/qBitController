@@ -104,6 +104,7 @@
     <string name="torrent_list_action_priority_maximize">Maximize Priority</string>
     <string name="torrent_list_action_priority_minimize">Minimize Priority</string>
     <string name="torrent_list_action_set_location">Set Location</string>
+    <string name="torrent_list_action_set_category">Set Category</string>
 
     <plurals name="torrent_list_delete_torrents">
         <item quantity="one">Delete %1$d Torrent</item>

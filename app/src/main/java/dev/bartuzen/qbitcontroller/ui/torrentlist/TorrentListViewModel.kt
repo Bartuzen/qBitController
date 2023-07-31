@@ -481,6 +481,17 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
+    fun setCategory(serverId: Int, hashes: List<String>, category: String?) = viewModelScope.launch {
+        when (val result = repository.setCategory(serverId, hashes, category)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentCategoryUpdated)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun setTorrentSort(torrentSort: TorrentSort) {
         settingsManager.sort.value = torrentSort
     }
@@ -569,5 +580,6 @@ class TorrentListViewModel @Inject constructor(
         data class SpeedLimitsToggled(val switchedToAlternativeLimit: Boolean) : Event()
         object SpeedLimitsUpdated : Event()
         object Shutdown : Event()
+        object TorrentCategoryUpdated : Event()
     }
 }

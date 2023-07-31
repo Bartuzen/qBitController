@@ -93,4 +93,9 @@ class TorrentListRepository @Inject constructor(
     suspend fun shutdown(serverId: Int) = requestManager.request(serverId) { service ->
         service.shutdown()
     }
+
+    suspend fun setCategory(serverId: Int, hashes: List<String>, category: String?) =
+        requestManager.request(serverId) { service ->
+            service.setCategory(hashes.joinToString("|"), category ?: "")
+        }
 }

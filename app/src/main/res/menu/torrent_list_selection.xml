@@ -65,6 +65,11 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/menu_set_category"
+        android:title="@string/torrent_list_action_set_category"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/menu_select_all"
         android:icon="@drawable/ic_select_all"
         android:title="@string/action_select_all"

@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputType
+import android.text.TextUtils
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
@@ -31,6 +32,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.TorrentSort
@@ -39,6 +41,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogCreateEditCategoryBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogCreateTagBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogServerStatsBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogSpeedLimitBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogTorrentCategoryBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentDeleteBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentLocationBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentListBinding
@@ -318,88 +321,96 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         return true
                     }
 
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
-                        R.id.menu_delete -> {
-                            showDeleteTorrentsDialog(
-                                hashes = selectedItems.toList(),
-                                onDelete = {
-                                    finishSelection()
-                                    actionMode?.finish()
-                                }
-                            )
-                            true
-                        }
-                        R.id.menu_pause -> {
-                            viewModel.pauseTorrents(serverId, selectedItems.toList())
-                            finishSelection()
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_resume -> {
-                            viewModel.resumeTorrents(serverId, selectedItems.toList())
-                            finishSelection()
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_priority_maximize -> {
-                            viewModel.maximizeTorrentPriority(
-                                serverId,
-                                selectedItems.toList()
-                            )
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_priority_increase -> {
-                            viewModel.increaseTorrentPriority(
-                                serverId,
-                                selectedItems.toList()
-                            )
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_priority_decrease -> {
-                            viewModel.decreaseTorrentPriority(
-                                serverId,
-                                selectedItems.toList()
-                            )
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_priority_minimize -> {
-                            viewModel.minimizeTorrentPriority(
-                                serverId,
-                                selectedItems.toList()
-                            )
-                            actionMode?.finish()
-                            true
-                        }
-                        R.id.menu_location -> {
-                            val selectedItems = selectedItems.toList()
-
-                            val currentLocation =
-                                viewModel.mainData.value?.torrents
-                                    ?.filter { torrent -> torrent.hash in selectedItems }
-                                    ?.distinctBy { torrent -> torrent.savePath }
-                                    ?.let { list ->
-                                        if (list.size == 1) list.first().savePath else null
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                        when (item.itemId) {
+                            R.id.menu_delete -> {
+                                showDeleteTorrentsDialog(
+                                    hashes = selectedItems.toList(),
+                                    onDelete = {
+                                        finishSelection()
+                                        actionMode?.finish()
                                     }
-                            showLocationDialog(
-                                currentLocation = currentLocation,
-                                onSuccess = { newLocation ->
-                                    viewModel.setLocation(serverId, selectedItems, newLocation)
-                                }
-                            )
-                            true
+                                )
+                            }
+                            R.id.menu_pause -> {
+                                viewModel.pauseTorrents(serverId, selectedItems.toList())
+                                finishSelection()
+                                actionMode?.finish()
+                            }
+                            R.id.menu_resume -> {
+                                viewModel.resumeTorrents(serverId, selectedItems.toList())
+                                finishSelection()
+                                actionMode?.finish()
+                            }
+                            R.id.menu_priority_maximize -> {
+                                viewModel.maximizeTorrentPriority(
+                                    serverId,
+                                    selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                            }
+                            R.id.menu_priority_increase -> {
+                                viewModel.increaseTorrentPriority(
+                                    serverId,
+                                    selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                            }
+                            R.id.menu_priority_decrease -> {
+                                viewModel.decreaseTorrentPriority(
+                                    serverId,
+                                    selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                            }
+                            R.id.menu_priority_minimize -> {
+                                viewModel.minimizeTorrentPriority(
+                                    serverId,
+                                    selectedItems.toList()
+                                )
+                                actionMode?.finish()
+                            }
+                            R.id.menu_location -> {
+                                val selectedItems = selectedItems.toList()
+
+                                val currentLocation =
+                                    viewModel.mainData.value?.torrents
+                                        ?.filter { torrent -> torrent.hash in selectedItems }
+                                        ?.distinctBy { torrent -> torrent.savePath }
+                                        ?.let { list ->
+                                            if (list.size == 1) list.first().savePath else null
+                                        }
+                                showLocationDialog(
+                                    currentLocation = currentLocation,
+                                    onSuccess = { newLocation ->
+                                        viewModel.setLocation(serverId, selectedItems, newLocation)
+                                    }
+                                )
+                            }
+                            R.id.menu_set_category -> {
+                                val selectedItems = selectedItems.toList()
+                                val commonCategory = viewModel.mainData.value?.torrents
+                                    ?.filter { torrent -> torrent.hash in selectedItems }
+                                    ?.distinctBy { torrent -> torrent.category }
+                                    ?.let { torrents -> if (torrents.size == 1) torrents.first().category else null }
+
+                                showCategoryDialog(
+                                    commonCategory = commonCategory,
+                                    onSuccess = { category ->
+                                        viewModel.setCategory(serverId, selectedItems, category)
+                                        actionMode?.finish()
+                                    }
+                                )
+                            }
+                            R.id.menu_select_all -> {
+                                selectAll()
+                            }
+                            R.id.menu_select_inverse -> {
+                                selectInverse()
+                            }
+                            else -> return false
                         }
-                        R.id.menu_select_all -> {
-                            selectAll()
-                            true
-                        }
-                        R.id.menu_select_inverse -> {
-                            selectInverse()
-                            true
-                        }
-                        else -> false
+                        return true
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
@@ -791,7 +802,47 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 TorrentListViewModel.Event.Shutdown -> {
                     showSnackbar(R.string.torrent_list_shutdown_success)
                 }
+                TorrentListViewModel.Event.TorrentCategoryUpdated -> {
+                    showSnackbar(R.string.torrent_category_update_success)
+                    viewModel.loadMainData(serverId)
+                }
             }
+        }
+    }
+
+    private fun showCategoryDialog(commonCategory: String?, onSuccess: (category: String?) -> Unit) {
+        val categories = viewModel.mainData.value?.categories ?: return
+        showDialog(DialogTorrentCategoryBinding::inflate) { dialogBinding ->
+            dialogBinding.progressIndicator.visibility = View.GONE
+
+            categories.forEach { category ->
+                val chip = Chip(requireContext())
+                chip.text = category.name
+                chip.setEnsureMinTouchTargetSize(false)
+                chip.setChipBackgroundColorResource(R.color.torrent_category)
+                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isCheckable = true
+
+                if (category.name == commonCategory) {
+                    chip.isChecked = true
+                }
+
+                dialogBinding.chipGroupCategory.addView(chip)
+            }
+
+            setTitle(R.string.torrent_action_category)
+            setPositiveButton { _, _ ->
+                val selectedCategory = dialogBinding.chipGroupCategory.checkedChipId.let { id ->
+                    if (id != View.NO_ID) {
+                        dialogBinding.chipGroupCategory.findViewById<Chip>(id).text.toString()
+                    } else {
+                        null
+                    }
+                }
+
+                onSuccess(selectedCategory)
+            }
+            setNegativeButton()
         }
     }
 
@@ -1265,21 +1316,24 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             setTitle(R.string.torrent_list_action_statistics)
             setPositiveButton()
 
-            val mainDataJob = viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
-                val state = mainData.serverState
+            val mainDataJob =
+                viewModel.mainData.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
+                    val state = mainData.serverState
 
-                binding.textAllTimeUpload.text = formatBytes(requireContext(), state.allTimeUpload)
-                binding.textAllTimeDownload.text = formatBytes(requireContext(), state.allTimeDownload)
-                binding.textAllTimeShareRatio.text = state.globalRatio
-                binding.textSessionWaste.text = formatBytes(requireContext(), state.sessionWaste)
-                binding.textConnectedPeers.text = state.connectedPeers.toString()
-                binding.textTotalBufferSize.text = formatBytes(requireContext(), state.bufferSize)
-                binding.textWriteCacheOverload.text = getString(R.string.stats_percentage_format, state.writeCacheOverload)
-                binding.textReadCacheOverload.text = getString(R.string.stats_percentage_format, state.readCacheOverload)
-                binding.textQueuedIoJobs.text = state.queuedIOJobs
-                binding.textAverageTimeInQueue.text = getString(R.string.stats_ms_format, state.averageTimeInQueue)
-                binding.textTotalQueuedSize.text = formatBytes(requireContext(), state.queuedSize)
-            }
+                    binding.textAllTimeUpload.text = formatBytes(requireContext(), state.allTimeUpload)
+                    binding.textAllTimeDownload.text = formatBytes(requireContext(), state.allTimeDownload)
+                    binding.textAllTimeShareRatio.text = state.globalRatio
+                    binding.textSessionWaste.text = formatBytes(requireContext(), state.sessionWaste)
+                    binding.textConnectedPeers.text = state.connectedPeers.toString()
+                    binding.textTotalBufferSize.text = formatBytes(requireContext(), state.bufferSize)
+                    binding.textWriteCacheOverload.text =
+                        getString(R.string.stats_percentage_format, state.writeCacheOverload)
+                    binding.textReadCacheOverload.text =
+                        getString(R.string.stats_percentage_format, state.readCacheOverload)
+                    binding.textQueuedIoJobs.text = state.queuedIOJobs
+                    binding.textAverageTimeInQueue.text = getString(R.string.stats_ms_format, state.averageTimeInQueue)
+                    binding.textTotalQueuedSize.text = formatBytes(requireContext(), state.queuedSize)
+                }
 
             setOnDismissListener {
                 mainDataJob.cancel()
