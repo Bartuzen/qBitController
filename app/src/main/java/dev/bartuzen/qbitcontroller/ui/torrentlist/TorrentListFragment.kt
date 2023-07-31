@@ -384,6 +384,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                                     currentLocation = currentLocation,
                                     onSuccess = { newLocation ->
                                         viewModel.setLocation(serverId, selectedItems, newLocation)
+                                        actionMode?.finish()
                                     }
                                 )
                             }
