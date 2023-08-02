@@ -649,6 +649,34 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             )
         }
 
+        var isMoveToTop = false
+
+        parentActivity.setFabListener {
+            if (adapter.itemCount > 0) {
+                parentActivity.rotateFab(isMoveToTop)
+                if (isMoveToTop) {
+                    binding.recyclerTorrentList.smoothScrollToPosition(0)
+                } else {
+                    binding.recyclerTorrentList.smoothScrollToPosition(adapter.itemCount - 1)
+                }
+                isMoveToTop = !isMoveToTop
+                !isMoveToTop
+            } else {
+                null
+            }
+        }
+
+        binding.recyclerTorrentList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = binding.recyclerTorrentList.layoutManager as LinearLayoutManager
+                val newIsMoveToTop = layoutManager.findFirstVisibleItemPosition() != 0
+
+                if (isMoveToTop != newIsMoveToTop) {
+                    isMoveToTop = newIsMoveToTop
+                }
+            }
+        })
+
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.refreshMainData(serverId)
         }

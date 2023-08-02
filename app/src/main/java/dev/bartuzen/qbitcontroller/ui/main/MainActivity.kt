@@ -8,12 +8,14 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.commit
 import androidx.recyclerview.widget.ConcatAdapter
@@ -169,6 +171,7 @@ class MainActivity : AppCompatActivity() {
                 if (serverConfig != null) {
                     supportActionBar?.subtitle = null
 
+                    binding.fab.setOnClickListener(null)
                     supportFragmentManager.commit {
                         setReorderingAllowed(true)
                         val fragment = TorrentListFragment(serverConfig.id)
@@ -179,6 +182,7 @@ class MainActivity : AppCompatActivity() {
                     if (currentFragment != null) {
                         supportActionBar?.subtitle = null
 
+                        binding.fab.setOnClickListener(null)
                         supportFragmentManager.commit {
                             setReorderingAllowed(true)
                             remove(currentFragment)
@@ -236,6 +240,26 @@ class MainActivity : AppCompatActivity() {
         drawerAdapter.removeAdapter(adapter)
         binding.recyclerDrawer.adapter = null
         binding.recyclerDrawer.adapter = drawerAdapter
+    }
+
+    fun setFabListener(block: () -> Boolean?) {
+        binding.fab.setOnClickListener {
+            val isMoveToTop = block()
+            if (isMoveToTop == true) {
+                binding.layoutAppBar.setExpanded(true, true)
+            } else if (isMoveToTop == false) {
+                binding.layoutAppBar.setExpanded(false, true)
+            }
+        }
+    }
+
+    fun rotateFab(isMoveToTop: Boolean) {
+        ViewCompat.animate(binding.fab)
+            .rotation(if (isMoveToTop) 0f else 180f)
+            .withLayer()
+            .setDuration(300)
+            .setInterpolator(OvershootInterpolator())
+            .start()
     }
 
     private fun requestNotificationPermission() {
