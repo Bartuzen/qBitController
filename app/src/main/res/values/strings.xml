@@ -648,6 +648,8 @@
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
     <string name="settings_theme_system_default">System Default</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system_default">System Default</string>
 
     <string name="settings_server_title_add">Add Server</string>
     <string name="settings_server_title_edit">Edit Server</string>

@@ -1,11 +1,16 @@
 package dev.bartuzen.qbitcontroller.ui.settings
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.text.InputType
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -23,6 +28,8 @@ import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import org.xmlpull.v1.XmlPullParser
+import java.util.Locale
 
 @AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -38,6 +45,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     "autoRefreshInterval" -> viewModel.autoRefreshInterval.toString()
                     "notificationCheckInterval" -> viewModel.notificationCheckInterval.toString()
                     "theme" -> viewModel.theme.toString()
+                    "language" -> getLanguageCode(AppCompatDelegate.getApplicationLocales()[0])
                     else -> defValue
                 }
             }
@@ -71,6 +79,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     "theme" -> {
                         if (value != null) {
                             viewModel.theme = Theme.valueOf(value)
+                        }
+                    }
+                    "language" -> {
+                        if (value != null) {
+                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(value))
                         }
                     }
                 }
@@ -260,6 +273,73 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 entries[viewModel.theme.ordinal]
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            preference {
+                key = "language"
+                setTitle(R.string.settings_language)
+                summary = getLanguageDisplayName(getLanguageCode(AppCompatDelegate.getApplicationLocales()[0]))
+
+                setOnPreferenceClickListener {
+                    val intent = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
+                        data = Uri.fromParts("package", requireActivity().packageName, null)
+                    }
+                    startActivity(intent)
+                    true
+                }
+            }
+        } else {
+            list {
+                key = "language"
+                setTitle(R.string.settings_language)
+                setDialogTitle(R.string.settings_language)
+                summary = getLanguageDisplayName(getLanguageCode(AppCompatDelegate.getApplicationLocales()[0]))
+
+                val locales = getLocales()
+                entries = locales.values.toTypedArray()
+                entryValues = locales.keys.toTypedArray()
+            }
+        }
+    }
+
+    private fun getLocales(): Map<String, String> {
+        val languages = mutableListOf<Pair<String, String>>()
+        val parser = resources.getXml(R.xml.locales_config)
+
+        while (parser.eventType != XmlPullParser.END_DOCUMENT) {
+            if (parser.eventType == XmlPullParser.START_TAG && parser.name == "locale") {
+                repeat(parser.attributeCount) { i ->
+                    val tag = parser.getAttributeValue(i)
+                    val displayName = getLanguageDisplayName(tag)
+
+                    languages.add(tag to displayName)
+                }
+            }
+
+            parser.next()
+        }
+
+        languages.sortBy { it.second }
+        languages.add(0, "" to getString(R.string.settings_language_system_default))
+
+        return languages.toMap()
+    }
+
+    private fun getLanguageDisplayName(language: String?): String {
+        val locale = when (language) {
+            null, "" -> return getString(R.string.settings_theme_system_default)
+            "zh-CN" -> Locale.forLanguageTag("zh-Hans")
+            "zh-TW" -> Locale.forLanguageTag("zh-Hant")
+            else -> Locale.forLanguageTag(language)
+        }
+        return locale.getDisplayName(locale).replaceFirstChar { it.uppercase() }
+    }
+
+    private fun getLanguageCode(locale: Locale?): String {
+        if (locale == null) {
+            return ""
+        }
+        return locale.toString().replace("_", "-")
     }
 
     override fun onResume() {
