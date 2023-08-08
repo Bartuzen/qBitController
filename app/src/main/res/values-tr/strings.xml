@@ -257,7 +257,7 @@
     <string name="torrent_overview_downloaded">İndirilen</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d dosya seçildi</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %%%4$s</string>
     <string name="torrent_files_action_priority">Öncelik</string>
@@ -282,11 +282,11 @@
     <string name="torrent_trackers_cannot_edit_default">Varsayılan izleyicileri düzenleyemezsiniz.</string>
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="one">%1$d izleyiciyi silmek istediğinizden emin misiniz\?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="torrent_trackers_selected">
         <item quantity="one">%1$d izleyici seçildi</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="torrent_trackers_added">İzleyiciler başarıyla eklendi.</string>
     <string name="torrent_trackers_deleted">İzleyiciler başarıyla silindi.</string>
@@ -436,19 +436,19 @@
     <string name="search_plugins_update_success">Bütün eklentiler başarıyla güncellendi.</string>
     <plurals name="settings_connection_timeout_description">
         <item quantity="one">%1$d saniye</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="settings_auto_refresh_interval">Otomatik yenileme aralığı</string>
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d saniye</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="settings_auto_refresh_hide_loading_bar_description">Otomatik yenileniyorken yükleme çubuğunu gösterme</string>
     <string name="settings_enable_torrent_swipe_actions">Torrent kaydırma eylemlerini etkinleştir</string>
     <string name="settings_notification_check_interval">Bildirim kontrol aralığı</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="one">%1$d dakika</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="settings_theme">Tema</string>
     <string name="settings_theme_light">Aydınlık</string>
@@ -517,11 +517,11 @@
     <string name="torrent_peers_action_ban">Kişi Yasakla</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="one">%1$d Kişiyi Yasakla</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="torrent_peers_selected">
         <item quantity="one">%1$d kişi seçildi</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="torrent_peers_added">Kişiler başarıyla eklendi.</string>
     <string name="torrent_peers_banned">Kişiler başarıyla yasaklandı.</string>
@@ -599,11 +599,11 @@
     <string name="torrent_overview_peers_format">%1$d (toplam %2$d)</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">%1$d İzleyiciyi Sil</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="one">%1$d kişiyi yasaklamak istediğinize emin misiniz\?</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="torrent_peers_details_flags">İşaretler: %1$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">İlgilenen (yerel) ve sıkışan (kişi)</string>
@@ -615,4 +615,6 @@
     <string name="about_description">qBitController, bir Android cihazından qBittorrent\'i kontrol etmenizi sağlar.
 \n
 \nDaha ayrıntılı bilgi ve kaynak kodu için: https://github.com/Bartuzen/qBitController</string>
+    <string name="settings_language">Dil</string>
+    <string name="settings_language_system_default">Sistem Varsayılanı</string>
 </resources>
