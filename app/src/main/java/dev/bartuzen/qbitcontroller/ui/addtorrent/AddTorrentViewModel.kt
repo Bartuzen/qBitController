@@ -96,6 +96,10 @@ class AddTorrentViewModel @Inject constructor(
                 eventChannel.send(Event.FileNotFound)
                 _isCreating.value = false
                 return@launch
+            } catch (e: Exception) {
+                eventChannel.send(Event.FileReadError("${e::class.simpleName} ${e.message}"))
+                _isCreating.value = false
+                return@launch
             }
 
             when (
@@ -224,6 +228,7 @@ class AddTorrentViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         object FileNotFound : Event()
+        data class FileReadError(val error: String) : Event()
         object InvalidTorrentFile : Event()
         object TorrentAddError : Event()
         object TorrentAdded : Event()
