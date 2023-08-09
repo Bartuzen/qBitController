@@ -271,6 +271,6 @@ class SearchResultViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object SearchStopped : Event()
+        data object SearchStopped : Event()
     }
 }

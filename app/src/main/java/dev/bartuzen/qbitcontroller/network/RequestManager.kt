@@ -211,12 +211,12 @@ sealed class RequestResult<out T : Any?> {
 
     sealed class Error : RequestResult<Nothing>() {
         sealed class RequestError : Error() {
-            object InvalidCredentials : RequestError()
-            object Banned : RequestError()
-            object CannotConnect : RequestError()
-            object UnknownHost : RequestError()
-            object Timeout : RequestError()
-            object NoData : RequestError()
+            data object InvalidCredentials : RequestError()
+            data object Banned : RequestError()
+            data object CannotConnect : RequestError()
+            data object UnknownHost : RequestError()
+            data object Timeout : RequestError()
+            data object NoData : RequestError()
             data class UnknownLoginResponse(val response: String?) : RequestError()
             data class Unknown(val message: String?) : RequestError()
         }

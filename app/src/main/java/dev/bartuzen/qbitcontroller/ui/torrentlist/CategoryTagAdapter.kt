@@ -208,7 +208,7 @@ class CategoryTagAdapter(
 }
 
 sealed interface CategoryTag {
-    object All : CategoryTag
-    object Uncategorized : CategoryTag
+    data object All : CategoryTag
+    data object Uncategorized : CategoryTag
     data class Item(val name: String) : CategoryTag
 }

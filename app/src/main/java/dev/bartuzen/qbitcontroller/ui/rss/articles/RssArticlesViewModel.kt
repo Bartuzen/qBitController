@@ -118,9 +118,9 @@ class RssArticlesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object RssFeedNotFound : Event()
-        object ArticleMarkedAsRead : Event()
-        object AllArticlesMarkedAsRead : Event()
-        object FeedRefreshed : Event()
+        data object RssFeedNotFound : Event()
+        data object ArticleMarkedAsRead : Event()
+        data object AllArticlesMarkedAsRead : Event()
+        data object FeedRefreshed : Event()
     }
 }

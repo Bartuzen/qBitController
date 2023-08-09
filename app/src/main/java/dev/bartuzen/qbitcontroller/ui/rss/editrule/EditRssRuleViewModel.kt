@@ -160,7 +160,7 @@ class EditRssRuleViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object RuleUpdated : Event()
-        object RuleNotFound : Event()
+        data object RuleUpdated : Event()
+        data object RuleNotFound : Event()
     }
 }

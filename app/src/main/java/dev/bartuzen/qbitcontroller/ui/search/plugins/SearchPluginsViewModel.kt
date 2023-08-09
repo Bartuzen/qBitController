@@ -154,8 +154,8 @@ class SearchPluginsViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object PluginsStateUpdated : Event()
-        object PluginsInstalled : Event()
-        object PluginsUpdated : Event()
+        data object PluginsStateUpdated : Event()
+        data object PluginsInstalled : Event()
+        data object PluginsUpdated : Event()
     }
 }

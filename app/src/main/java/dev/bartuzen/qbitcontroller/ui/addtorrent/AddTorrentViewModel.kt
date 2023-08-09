@@ -227,10 +227,10 @@ class AddTorrentViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object FileNotFound : Event()
+        data object FileNotFound : Event()
         data class FileReadError(val error: String) : Event()
-        object InvalidTorrentFile : Event()
-        object TorrentAddError : Event()
-        object TorrentAdded : Event()
+        data object InvalidTorrentFile : Event()
+        data object TorrentAddError : Event()
+        data object TorrentAdded : Event()
     }
 }

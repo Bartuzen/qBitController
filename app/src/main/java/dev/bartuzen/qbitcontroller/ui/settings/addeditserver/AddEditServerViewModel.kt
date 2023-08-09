@@ -140,6 +140,6 @@ class AddEditServerViewModel @Inject constructor(
 
     sealed class Event {
         data class TestFailure(val error: RequestResult.Error) : Event()
-        object TestSuccess : Event()
+        data object TestSuccess : Event()
     }
 }

@@ -95,8 +95,8 @@ class RssRulesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object RuleCreated : Event()
-        object RuleRenamed : Event()
-        object RuleDeleted : Event()
+        data object RuleCreated : Event()
+        data object RuleRenamed : Event()
+        data object RuleDeleted : Event()
     }
 }

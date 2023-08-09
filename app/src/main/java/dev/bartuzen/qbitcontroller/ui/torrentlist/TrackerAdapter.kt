@@ -158,7 +158,7 @@ class TrackerAdapter(
 }
 
 sealed interface Tracker {
-    object All : Tracker
-    object Trackerless : Tracker
+    data object All : Tracker
+    data object Trackerless : Tracker
     data class Named(val name: String, val torrentHashes: List<String>) : Tracker
 }

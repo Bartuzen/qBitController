@@ -97,9 +97,9 @@ class TorrentPeersViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object TorrentNotFound : Event()
-        object PeersInvalid : Event()
-        object PeersAdded : Event()
-        object PeersBanned : Event()
+        data object TorrentNotFound : Event()
+        data object PeersInvalid : Event()
+        data object PeersAdded : Event()
+        data object PeersBanned : Event()
     }
 }

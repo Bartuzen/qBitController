@@ -153,10 +153,10 @@ class TorrentFilesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object TorrentNotFound : Event()
-        object PathIsInvalidOrInUse : Event()
-        object FilePriorityUpdated : Event()
-        object FileRenamed : Event()
-        object FolderRenamed : Event()
+        data object TorrentNotFound : Event()
+        data object PathIsInvalidOrInUse : Event()
+        data object FilePriorityUpdated : Event()
+        data object FileRenamed : Event()
+        data object FolderRenamed : Event()
     }
 }

@@ -101,6 +101,6 @@ class TorrentPiecesViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object TorrentNotFound : Event()
+        data object TorrentNotFound : Event()
     }
 }

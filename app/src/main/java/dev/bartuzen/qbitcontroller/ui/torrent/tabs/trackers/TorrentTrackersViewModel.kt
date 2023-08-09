@@ -116,9 +116,9 @@ class TorrentTrackersViewModel @Inject constructor(
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
-        object TorrentNotFound : Event()
-        object TrackersAdded : Event()
-        object TrackersDeleted : Event()
-        object TrackerEdited : Event()
+        data object TorrentNotFound : Event()
+        data object TrackersAdded : Event()
+        data object TrackersDeleted : Event()
+        data object TrackerEdited : Event()
     }
 }
