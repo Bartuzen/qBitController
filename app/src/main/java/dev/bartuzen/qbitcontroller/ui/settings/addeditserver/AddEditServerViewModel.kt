@@ -64,31 +64,31 @@ class AddEditServerViewModel @Inject constructor(
 
         _isTesting.value = true
         val job = viewModelScope.launch {
-            val service = Retrofit.Builder()
-                .baseUrl(serverConfig.url)
-                .client(
-                    OkHttpClient().newBuilder().apply {
-                        addInterceptor(timeoutInterceptor)
-                        addInterceptor(userAgentInterceptor)
-
-                        val basicAuth = serverConfig.basicAuth
-                        if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
-                            addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
-                        }
-
-                        if (serverConfig.trustSelfSignedCertificates) {
-                            val sslContext = SSLContext.getInstance("SSL")
-                            sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-                            sslSocketFactory(sslContext.socketFactory, trustAllManager)
-                            hostnameVerifier { _, _ -> true }
-                        }
-                    }.build()
-                )
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build()
-                .create<TorrentService>()
-
             val error = try {
+                val service = Retrofit.Builder()
+                    .baseUrl(serverConfig.url)
+                    .client(
+                        OkHttpClient().newBuilder().apply {
+                            addInterceptor(timeoutInterceptor)
+                            addInterceptor(userAgentInterceptor)
+
+                            val basicAuth = serverConfig.basicAuth
+                            if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
+                                addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
+                            }
+
+                            if (serverConfig.trustSelfSignedCertificates) {
+                                val sslContext = SSLContext.getInstance("SSL")
+                                sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+                                sslSocketFactory(sslContext.socketFactory, trustAllManager)
+                                hostnameVerifier { _, _ -> true }
+                            }
+                        }.build()
+                    )
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .build()
+                    .create<TorrentService>()
+
                 val response = service.login(serverConfig.username ?: "", serverConfig.password ?: "")
 
                 if (response.code() == 403) {
