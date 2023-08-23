@@ -8,12 +8,12 @@ class SessionCookieJar : CookieJar {
     private var cookies: List<Cookie>? = null
 
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-        if (url.encodedPath().endsWith("login")) {
+        if (url.encodedPath.endsWith("login")) {
             this.cookies = cookies
         }
     }
 
-    override fun loadForRequest(url: HttpUrl) = if (!url.encodedPath().endsWith("login")) {
+    override fun loadForRequest(url: HttpUrl) = if (!url.encodedPath.endsWith("login")) {
         cookies ?: emptyList()
     } else {
         emptyList()

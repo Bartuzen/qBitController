@@ -1,11 +1,18 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
+import coil.imageLoader
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPeersRepository
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
+import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +22,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TorrentPeersViewModel @Inject constructor(
+@SuppressLint("StaticFieldLeak")
+class TorrentPeersViewModel
+@Inject constructor(
     settingsManager: SettingsManager,
-    private val repository: TorrentPeersRepository
+    private val repository: TorrentPeersRepository,
+    private val serverManager: ServerManager,
+    private val requestManager: RequestManager,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val _torrentPeers = MutableStateFlow<List<TorrentPeer>?>(null)
     val torrentPeers = _torrentPeers.asStateFlow()
@@ -35,6 +47,8 @@ class TorrentPeersViewModel @Inject constructor(
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
     val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
+
+    private var imageLoader: ImageLoader? = null
 
     private fun updatePeers(serverId: Int, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getPeers(serverId, torrentHash)) {
@@ -92,6 +106,20 @@ class TorrentPeersViewModel @Inject constructor(
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
             }
+        }
+    }
+
+    fun getServerUrl(serverId: Int) = serverManager.getServer(serverId).url
+
+    fun getImageLoader(serverId: Int) = imageLoader.let { imageLoader ->
+        if (imageLoader == null) {
+            val loader = context.imageLoader.newBuilder()
+                .okHttpClient(requestManager.getOkHttpClient(serverId))
+                .build()
+            this@TorrentPeersViewModel.imageLoader = loader
+            loader
+        } else {
+            imageLoader
         }
     }
 

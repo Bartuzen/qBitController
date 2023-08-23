@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.SvgDecoder
 import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
@@ -17,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application(), Configuration.Provider {
+class App : Application(), Configuration.Provider, ImageLoaderFactory {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
@@ -34,6 +37,12 @@ class App : Application(), Configuration.Provider {
 
     override fun getWorkManagerConfiguration() = Configuration.Builder()
         .setWorkerFactory(workerFactory)
+        .build()
+
+    override fun newImageLoader() = ImageLoader.Builder(this)
+        .components {
+            add(SvgDecoder.Factory())
+        }
         .build()
 
     override fun onCreate() {

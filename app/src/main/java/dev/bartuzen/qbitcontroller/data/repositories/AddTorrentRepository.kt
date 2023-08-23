@@ -2,9 +2,9 @@ package dev.bartuzen.qbitcontroller.data.repositories
 
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,7 +36,7 @@ class AddTorrentRepository @Inject constructor(
             MultipartBody.Part.createFormData(
                 "filename",
                 "torrent",
-                RequestBody.create(MediaType.parse("application/x-bittorrent"), fileBytes)
+                fileBytes.toRequestBody("application/x-bittorrent".toMediaTypeOrNull(), 0)
             )
         } else {
             null

@@ -141,6 +141,9 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugar)
 
+    implementation(libs.coil)
+    implementation(libs.coil.svg)
+
     val firebaseImplementation by configurations
     firebaseImplementation(platform(libs.firebase.bom))
     firebaseImplementation(libs.firebase.analytics)
