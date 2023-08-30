@@ -644,4 +644,7 @@
     <string name="search_plugins_save_success">Плагины успешно сохранены.</string>
     <string name="search_plugins_update_success">Все плагины успешно обновлены.</string>
     <string name="search_plugins_cannot_be_empty">Поле не может быть пустым.</string>
+    <string name="settings_language">Язык</string>
+    <string name="settings_language_system_default">Системное значение по умолчанию</string>
+    <string name="torrent_list_action_set_category">Установить категорию</string>
 </resources>
