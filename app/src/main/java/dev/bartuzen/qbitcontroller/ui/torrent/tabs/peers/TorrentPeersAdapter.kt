@@ -53,6 +53,8 @@ class TorrentPeersAdapter(
                 )
                 binding.textCountry.text = context.getString(R.string.torrent_peers_country, countryName)
                 binding.textCountry.visibility = View.VISIBLE
+
+                loadImage(binding.imageFlag, peer.countryCode)
             } else {
                 binding.textCountry.visibility = View.GONE
             }
@@ -61,10 +63,6 @@ class TorrentPeersAdapter(
 
             val flags = peer.flags.joinToString(" ", transform = { it.flag }).ifEmpty { "-" }
             binding.textFlags.text = context.getString(R.string.torrent_peers_flags, flags)
-
-            if (peer.countryCode != null) {
-                loadImage(binding.imageFlag, peer.countryCode)
-            }
         }
     }
 
