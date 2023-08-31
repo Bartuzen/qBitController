@@ -88,7 +88,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
         val adapter = TorrentPeersAdapter(
             loadImage = { imageView, countryCode ->
                 imageView.load(
-                    data = "${viewModel.getServerUrl(serverId)}images/flags/$countryCode.svg",
+                    data = viewModel.getFlagUrl(serverId, countryCode),
                     imageLoader = viewModel.getImageLoader(serverId)
                 )
             }

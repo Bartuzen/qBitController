@@ -109,7 +109,8 @@ class TorrentPeersViewModel
         }
     }
 
-    fun getServerUrl(serverId: Int) = serverManager.getServer(serverId).url
+    fun getFlagUrl(serverId: Int, countryCode: String) =
+        "${serverManager.getServer(serverId).url}images/flags/$countryCode.svg"
 
     fun getImageLoader(serverId: Int) = imageLoader.let { imageLoader ->
         if (imageLoader == null) {
