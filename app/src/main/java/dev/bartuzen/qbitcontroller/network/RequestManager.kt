@@ -31,6 +31,8 @@ class RequestManager @Inject constructor(
     private val trustAllManager: TrustAllX509TrustManager
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
+    private val okHttpClientMap = mutableMapOf<Int, OkHttpClient>()
+
     private val loggedInServerIds = mutableListOf<Int>()
     private val initialLoginLocks = mutableMapOf<Int, Mutex>()
 
@@ -40,53 +42,59 @@ class RequestManager @Inject constructor(
 
             override fun onServerRemovedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
+                okHttpClientMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
                 initialLoginLocks.remove(serverConfig.id)
             }
 
             override fun onServerChangedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
+                okHttpClientMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
                 initialLoginLocks.remove(serverConfig.id)
             }
         })
     }
 
+    fun getOkHttpClient(serverId: Int) = okHttpClientMap.getOrPut(serverId) {
+        val serverConfig = serverManager.getServer(serverId)
+
+        OkHttpClient().newBuilder().apply {
+            cookieJar(SessionCookieJar())
+            addInterceptor(timeoutInterceptor)
+            addInterceptor(userAgentInterceptor)
+
+            val basicAuth = serverConfig.basicAuth
+            if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
+                addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
+            }
+
+            if (serverConfig.protocol == Protocol.HTTPS) {
+                hostnameVerifier { _, _ -> true }
+
+                if (serverConfig.trustSelfSignedCertificates) {
+                    val sslContext = SSLContext.getInstance("SSL")
+                    sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+                    sslSocketFactory(sslContext.socketFactory, trustAllManager)
+                }
+            }
+
+            addInterceptor { chain ->
+                val request = chain.request()
+                    .newBuilder()
+                    .header("Connection", "close")
+                    .build()
+                chain.proceed(request)
+            }
+            retryOnConnectionFailure(true)
+        }.build()
+    }
+
     private fun getTorrentService(serverId: Int) = torrentServiceMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
         val retrofit = Retrofit.Builder()
             .baseUrl(serverConfig.url)
-            .client(
-                OkHttpClient().newBuilder().apply {
-                    cookieJar(SessionCookieJar())
-                    addInterceptor(timeoutInterceptor)
-                    addInterceptor(userAgentInterceptor)
-
-                    val basicAuth = serverConfig.basicAuth
-                    if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
-                        addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
-                    }
-
-                    if (serverConfig.protocol == Protocol.HTTPS) {
-                        hostnameVerifier { _, _ -> true }
-
-                        if (serverConfig.trustSelfSignedCertificates) {
-                            val sslContext = SSLContext.getInstance("SSL")
-                            sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-                            sslSocketFactory(sslContext.socketFactory, trustAllManager)
-                        }
-                    }
-
-                    addInterceptor { chain ->
-                        val request = chain.request()
-                            .newBuilder()
-                            .header("Connection", "close")
-                            .build()
-                        chain.proceed(request)
-                    }
-                    retryOnConnectionFailure(true)
-                }.build()
-            )
+            .client(getOkHttpClient(serverId))
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(
                 JacksonConverterFactory.create(

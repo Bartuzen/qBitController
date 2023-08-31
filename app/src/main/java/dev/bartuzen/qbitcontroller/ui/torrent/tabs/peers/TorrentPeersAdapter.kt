@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.color.MaterialColors
 import dev.bartuzen.qbitcontroller.R
@@ -13,7 +14,9 @@ import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import java.util.Locale
 
-class TorrentPeersAdapter : MultiSelectAdapter<TorrentPeer, String, TorrentPeersAdapter.ViewHolder>(
+class TorrentPeersAdapter(
+    private val loadImage: (imageView: ImageView, countryCode: String) -> Unit
+) : MultiSelectAdapter<TorrentPeer, String, TorrentPeersAdapter.ViewHolder>(
     diffCallBack = DiffCallback(),
     getKey = { peer ->
         "${peer.ip}:${peer.port}"
@@ -50,6 +53,8 @@ class TorrentPeersAdapter : MultiSelectAdapter<TorrentPeer, String, TorrentPeers
                 )
                 binding.textCountry.text = context.getString(R.string.torrent_peers_country, countryName)
                 binding.textCountry.visibility = View.VISIBLE
+
+                loadImage(binding.imageFlag, peer.countryCode)
             } else {
                 binding.textCountry.visibility = View.GONE
             }

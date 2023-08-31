@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
+import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
@@ -84,7 +85,14 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
         )
 
         var actionMode: ActionMode? = null
-        val adapter = TorrentPeersAdapter().apply {
+        val adapter = TorrentPeersAdapter(
+            loadImage = { imageView, countryCode ->
+                imageView.load(
+                    data = viewModel.getFlagUrl(serverId, countryCode),
+                    imageLoader = viewModel.getImageLoader(serverId)
+                )
+            }
+        ).apply {
             onClick { peer ->
                 showPeerDetailsDialog(peer)
             }

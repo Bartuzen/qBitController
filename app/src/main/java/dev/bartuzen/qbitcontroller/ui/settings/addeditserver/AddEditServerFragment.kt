@@ -33,7 +33,7 @@ import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 @AndroidEntryPoint
 class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_server) {
@@ -210,7 +210,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             basicAuth = basicAuth
         )
 
-        if (HttpUrl.parse(config.url) == null) {
+        if (config.url.toHttpUrlOrNull() == null) {
             showSnackbar(R.string.settings_server_url_configuration_not_valid)
             return null
         }

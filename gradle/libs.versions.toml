@@ -23,6 +23,7 @@ retrofit = "2.9.0"
 jackson = "2.13.4"
 viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.0.3"
+coil = "2.4.0"
 firebase-bom = "32.2.2"
 
 [libraries]
@@ -58,6 +59,9 @@ jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-modul
 viewBindingPropertyDelegate-noReflection = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingPropertyDelegate" }
 
 desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
+
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
