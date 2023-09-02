@@ -26,5 +26,5 @@ tasks.withType<DependencyUpdatesTask> {
 }
 
 task<Delete>("clean") {
-    delete(buildDir)
+    delete(layout.buildDirectory)
 }
