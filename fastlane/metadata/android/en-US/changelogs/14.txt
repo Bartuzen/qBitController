@@ -1,0 +1,7 @@
+- Added swipe actions on torrent list
+- Added subcategory support (for qBittorrent version 4.6.0 and above)
+- Added ability to search in RSS feeds
+- Country flags are now shown on torrent peers
+- Fixed minor issues and crashes
+
+Check GitHub release for all changes.
