@@ -4,12 +4,15 @@ import androidx.annotation.StringRes
 import com.google.android.material.textfield.TextInputLayout
 
 fun TextInputLayout.setTextWithoutAnimation(text: String?, putCursorToEnd: Boolean = true) {
-    isHintAnimationEnabled = false
-    editText?.setText(text)
-    if (putCursorToEnd) {
-        editText?.setSelection(text?.length ?: 0)
+    val editText = editText
+    if (editText != null) {
+        isHintAnimationEnabled = false
+        editText.setText(text)
+        if (putCursorToEnd) {
+            editText.setSelection(editText.length())
+        }
+        isHintAnimationEnabled = true
     }
-    isHintAnimationEnabled = true
 }
 
 fun TextInputLayout.setTextWithoutAnimation(@StringRes id: Int, putCursorToEnd: Boolean = true) {
