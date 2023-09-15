@@ -150,14 +150,14 @@ fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)
 
 @Suppress("ktlint:standard:property-naming", "ktlint:standard:max-line-length")
 private val ipPattern = Regex(
-    """(?:[a-zA-Z]+://)?(?:(?<ipv4Address>(?:\d{1,3}\.){3}\d{1,3})|\[?(?<ipv6Address>(?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?"""
+    """(?:[a-zA-Z]+://)?(?:((?:\d{1,3}\.){3}\d{1,3})|\[?((?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?"""
 )
 
 fun formatUri(uri: String) = try {
     val ipAddressMatch = ipPattern.matchEntire(uri)
     if (ipAddressMatch != null) {
         val groups = ipAddressMatch.groups
-        (groups["ipv4Address"] ?: groups["ipv6Address"])?.value
+        (groups[1] ?: groups[2])?.value
     } else {
         val host = Uri.parse(uri).host ?: URI.create(uri).host ?: throw IllegalArgumentException()
         PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
