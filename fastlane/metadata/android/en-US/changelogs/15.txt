@@ -1,0 +1,4 @@
+- Links in torrent comments are now clickable
+- Fixed app crashing on lower Android versions
+
+Check GitHub release for all changes.
