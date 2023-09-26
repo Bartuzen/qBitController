@@ -329,7 +329,7 @@
     <string name="torrent_trackers_cannot_edit_default">你无法编辑默认 Trackers。</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker 地址不得为空。</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
-    <string name="torrent_peers_country">国家：%1$s</string>
+    <string name="torrent_peers_country">地区：%1$s</string>
     <string name="torrent_peers_connection">连接：%1$s</string>
     <string name="torrent_peers_flags">标志：%1$s</string>
     <string name="torrent_peers_action_add">添加用户</string>
@@ -347,7 +347,7 @@
     <string name="torrent_peers_added">已成功添加用户。</string>
     <string name="torrent_peers_banned">已成功封禁用户。</string>
     <string name="torrent_peers_invalid">输入的用户不正确。</string>
-    <string name="torrent_peers_details_country">国家：%1$s</string>
+    <string name="torrent_peers_details_country">地区：%1$s</string>
     <string name="torrent_peers_details_connection">连接：%1$s</string>
     <string name="torrent_peers_details_flags">标志：%1$s</string>
     <string name="torrent_peers_details_client">客户端：%1$s</string>
