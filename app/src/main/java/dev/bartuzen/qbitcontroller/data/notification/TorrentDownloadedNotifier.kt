@@ -171,7 +171,12 @@ class TorrentDownloadedNotifier @Inject constructor(
     private fun areNotificationsEnabled() = NotificationManagerCompat.from(context).areNotificationsEnabled()
 
     private fun isNotificationChannelEnabled(name: String) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        notificationManager.getNotificationChannel(name).importance != NotificationManager.IMPORTANCE_NONE
+        val channel = notificationManager.getNotificationChannel(name)
+        if (channel != null) {
+            channel.importance != NotificationManager.IMPORTANCE_NONE
+        } else {
+            false
+        }
     } else {
         true
     }
