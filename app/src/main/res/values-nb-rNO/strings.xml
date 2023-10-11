@@ -442,4 +442,24 @@
     <string name="rss_rule_episode_filter">Episodefilter</string>
     <string name="settings_server_edit_success">Tjener redigert.</string>
     <string name="settings_server_required_field">Påkrevd felt.</string>
+    <plurals name="settings_auto_refresh_interval_description">
+        <item quantity="one">%1$d sekund</item>
+        <item quantity="other">%1$d sekunder</item>
+    </plurals>
+    <string name="notification_channel_download_completed">Nedlasting fullført</string>
+    <plurals name="settings_connection_timeout_description">
+        <item quantity="one">%1$d sekund</item>
+        <item quantity="other">%1$d sekunder</item>
+    </plurals>
+    <string name="settings_connection_timeout">Tidsavbrudd for tilkobling</string>
+    <string name="language_code">nob</string>
+    <string name="search_plugins_action_save">Lagre</string>
+    <string name="search_plugins_action_update_plugins">Oppdater programtillegg</string>
+    <string name="settings_other">Annet</string>
+    <string name="rss_rule_not_found">Fant ikke regel.</string>
+    <string name="search_plugins_action_install_plugins">Installer programtillegg</string>
+    <string name="torrent_overview_wasted">Bortkastet</string>
+    <string name="search_start_plugins_select">Velg programtillegg</string>
+    <string name="execution_log_title">Kjøringslogg</string>
+    <string name="torrent_list_action_set_category">Sett kateogri</string>
 </resources>
