@@ -141,8 +141,11 @@ fun getErrorMessage(context: Context, error: RequestResult.Error) = when (error)
     is RequestResult.Error.ApiError -> context.getString(R.string.error_api, error.code)
 }
 
-fun formatDate(epochSecond: Long): String = Instant.ofEpochSecond(epochSecond)
-    .atZone(ZoneId.systemDefault())
+fun formatDate(epochSecondOrMilli: Long): String = if (epochSecondOrMilli >= 100000000000) {
+    Instant.ofEpochMilli(epochSecondOrMilli)
+} else {
+    Instant.ofEpochSecond(epochSecondOrMilli)
+}.atZone(ZoneId.systemDefault())
     .format(
         DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
             .withZone(ZoneId.systemDefault())
