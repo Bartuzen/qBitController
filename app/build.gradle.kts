@@ -29,6 +29,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            isDefault = true
         }
 
         release {
@@ -48,6 +49,7 @@ android {
     productFlavors {
         create("free") {
             dimension = "firebase"
+            isDefault = true
         }
         create("firebase") {
             dimension = "firebase"
