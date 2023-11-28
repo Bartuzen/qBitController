@@ -247,4 +247,24 @@
     <string name="torrent_option_automatic_torrent_management">Gestión Automática de Torrents</string>
     <string name="torrent_option_share_limit_time">Minutos</string>
     <string name="torrent_option_speed_limit">Límites de velocidad de torrent</string>
+    <string name="torrent_overview_comment">Comentario</string>
+    <string name="torrent_overview_hash_v2">Hash v2</string>
+    <string name="torrent_overview_pieces_format">%1$d x %2$s (tiene %3$d)</string>
+    <string name="torrent_option_update_success">Opciones de torrent actualizadas correctamente.</string>
+    <string name="torrent_export_error">No se pudo exportar el torrent.</string>
+    <string name="torrent_overview_total_size">Tamaño Total</string>
+    <string name="torrent_rename_name_cannot_be_blank">El nombre del torrent no puede estar vacío.</string>
+    <string name="torrent_no_tags">No se pudo encontrar ninguna etiqueta.</string>
+    <string name="torrent_location_cannot_be_blank">La ubicación no puede estar vacía.</string>
+    <string name="torrent_overview_time_active">Tiempo Activo</string>
+    <string name="torrent_rename_torrent_hint">Nombre</string>
+    <string name="torrent_overview_hash_v1">Hash v1</string>
+    <string name="torrent_overview_pieces">Piezas</string>
+    <string name="torrent_overview_information">Información</string>
+    <string name="torrent_overview_added_on">Añadido En</string>
+    <string name="torrent_overview_completed_on">Completado El</string>
+    <string name="torrent_export_success">Torrent exportado correctamente.</string>
+    <string name="torrent_overview_created_by">Creado Por</string>
+    <string name="torrent_overview_created_on">Creado El</string>
+    <string name="torrent_no_categories">No se pudo encontrar ninguna categoría.</string>
 </resources>
