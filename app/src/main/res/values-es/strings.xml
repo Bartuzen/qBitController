@@ -222,7 +222,7 @@
     <string name="torrent_enable_force_start_success">Forzar inicio activado correctamente.</string>
     <string name="torrent_action_copy_magnet_uri">Magnet URI</string>
     <string name="torrent_action_copy_name">Nombre</string>
-    <string name="torrent_action_super_seeding">Supersiembra</string>
+    <string name="torrent_action_super_seeding">Súper siembra</string>
     <string name="torrent_disable_force_start_success">Forzar inicio desactivado correctamente.</string>
     <string name="torrent_action_copy">Copiar</string>
     <string name="torrent_action_copy_hash_v2">Hash v2</string>
