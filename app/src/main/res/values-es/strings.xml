@@ -232,4 +232,19 @@
     <string name="torrent_action_force_reannounce">Forzar el reenvío</string>
     <string name="torrent_queueing_is_not_enabled">La cola de torrents no está activada.</string>
     <string name="torrent_disable_super_seeding_success">Super siembra desactivada con éxito.</string>
+    <string name="torrent_rename_success">Actualizado nombre de torrent correctamente.</string>
+    <string name="torrent_category_update_success">Categoría actualizada correctamente.</string>
+    <string name="torrent_option_download_path_enable">Usar otra ruta para torrents incompletos</string>
+    <string name="torrent_option_download_speed_limit">Límite de Velocidad de Bajada (KiB/s)</string>
+    <string name="torrent_location_update_success">Cambiada ubicación de torrent correctamente.</string>
+    <string name="torrent_option_share_limit_ratio">Ratio</string>
+    <string name="torrent_option_save_path">Guardar Ruta</string>
+    <string name="torrent_option_download_path">Ruta de Descarga</string>
+    <string name="torrent_option_sequential_download">Descargar en orden secuencial</string>
+    <string name="torrent_option_prioritize_first_last_piece">Descargar primeras y últimas piezas primero</string>
+    <string name="torrent_tags_update_success">Etiquetas actualizadas correctamente.</string>
+    <string name="torrent_option_upload_speed_limit">Límite de Velocidad de Subida (KiB/s)</string>
+    <string name="torrent_option_automatic_torrent_management">Gestión Automática de Torrents</string>
+    <string name="torrent_option_share_limit_time">Minutos</string>
+    <string name="torrent_option_speed_limit">Límites de velocidad de torrent</string>
 </resources>
