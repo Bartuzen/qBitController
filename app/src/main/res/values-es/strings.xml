@@ -230,4 +230,6 @@
     <string name="torrent_action_export">Exportar .torrent</string>
     <string name="torrent_action_force_start">Forzar el inicio</string>
     <string name="torrent_action_force_reannounce">Forzar el reenvío</string>
+    <string name="torrent_queueing_is_not_enabled">La cola de torrents no está activada.</string>
+    <string name="torrent_disable_super_seeding_success">Supersiembra desactivado correctamente.</string>
 </resources>
