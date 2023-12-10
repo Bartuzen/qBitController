@@ -8,7 +8,7 @@
     <string name="torrent_status_seeding">做种</string>
     <string name="torrent_status_paused">暂停</string>
     <string name="torrent_status_queued">排队</string>
-    <string name="torrent_status_stalled">暂停</string>
+    <string name="torrent_status_stalled">等待</string>
     <string name="torrent_status_checking">正在检查</string>
     <string name="torrent_status_completed">完成</string>
     <string name="torrent_status_force_seeding">[F] 做种</string>
