@@ -569,7 +569,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             )
 
             val stateCountMap = mutableMapOf<TorrentFilter, Int>()
-            val categoryMap = mainData.categories.associateBy({ it.name }, { 0 }).toSortedMap()
+            val categoryMap = mainData.categories.associateBy({ it.name }, { 0 }).toMutableMap()
             val tagMap = mainData.tags.associateBy({ it }, { 0 }).toMutableMap()
 
             var uncategorizedCount = 0

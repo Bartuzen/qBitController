@@ -90,7 +90,7 @@ class CategoryTagAdapter(
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(items: Map<String, Int>, allCount: Int, uncategorizedCount: Int) {
-        this.items = items.toSortedMap().toList()
+        this.items = items.toList()
         this.allCount = allCount
         this.uncategorizedCount = uncategorizedCount
 

@@ -11,6 +11,7 @@ import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.ServerState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.utils.formatUri
+import kotlin.math.min
 
 class MainDataDeserializer : JsonDeserializer<MainData>() {
     override fun deserialize(parser: JsonParser, context: DeserializationContext): MainData {
@@ -29,7 +30,22 @@ class MainDataDeserializer : JsonDeserializer<MainData>() {
             codec.readValue(codec.treeAsTokens(categories), object : TypeReference<Map<String, Category>>() {})
                 .values
                 .toList()
-                .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER, Category::name))
+                .sortedWith(
+                    Comparator { category1, category2 ->
+                        val category1Name = category1.name
+                        val category2Name = category2.name
+
+                        for (i in 0..<min(category1Name.length, category2Name.length)) {
+                            when {
+                                category1Name[i] == '/' && category2Name[i] != '/' -> return@Comparator -1
+                                category1Name[i] != '/' && category2Name[i] == '/' -> return@Comparator 1
+                                category1Name[i] != category2Name[i] ->
+                                    return@Comparator category1Name[i].compareTo(category2Name[i])
+                            }
+                        }
+                        category1Name.length - category2Name.length
+                    }
+                )
         } ?: emptyList()
 
         val tags = node["tags"]?.let { tags ->
