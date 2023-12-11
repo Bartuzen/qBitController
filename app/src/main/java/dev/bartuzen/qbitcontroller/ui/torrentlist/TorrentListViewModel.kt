@@ -172,9 +172,10 @@ class TorrentListViewModel @Inject constructor(
         selectedCategory,
         selectedTag,
         selectedFilter,
-        selectedTracker
+        selectedTracker,
+        mainData
     ) { filters ->
-        if (filters[0] != null) {
+        if (filters[0] != null && filters[6] != null) {
             filters
         } else {
             null
@@ -187,6 +188,7 @@ class TorrentListViewModel @Inject constructor(
         val selectedTag = filters[3] as CategoryTag
         val selectedFilter = filters[4] as TorrentFilter
         val selectedTracker = filters[5] as Tracker
+        val mainData = filters[6] as MainData
 
         withContext(Dispatchers.IO) {
             torrentList.filter { torrent ->
@@ -204,8 +206,18 @@ class TorrentListViewModel @Inject constructor(
                         }
                     }
                     is CategoryTag.Item -> {
-                        if (torrent.category == null || !"${torrent.category}/".startsWith("${selectedCategory.name}/")) {
+                        if (torrent.category == null) {
                             return@filter false
+                        }
+
+                        if (mainData.serverState.areSubcategoriesEnabled) {
+                            if (!"${torrent.category}/".startsWith("${selectedCategory.name}/")) {
+                                return@filter false
+                            }
+                        } else {
+                            if (torrent.category != selectedCategory.name) {
+                                return@filter false
+                            }
                         }
                     }
                 }
