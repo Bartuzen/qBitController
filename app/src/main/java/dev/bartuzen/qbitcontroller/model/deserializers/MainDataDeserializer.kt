@@ -38,7 +38,7 @@ class MainDataDeserializer : JsonDeserializer<MainData>() {
                         for (i in 0..<min(category1Name.length, category2Name.length)) {
                             if (category1Name[i] == '/' && category2Name[i] != '/') {
                                 return@Comparator -1
-                            } else if ( category1Name[i] != '/' && category2Name[i] == '/') {
+                            } else if (category1Name[i] != '/' && category2Name[i] == '/') {
                                 return@Comparator 1
                             } else {
                                 val comparison = category1Name[i].toString().compareTo(category2Name[i].toString(), true)
