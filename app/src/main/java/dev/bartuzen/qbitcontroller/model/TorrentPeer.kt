@@ -51,7 +51,7 @@ data class TorrentPeer(
 
     @JsonProperty("files")
     @JsonDeserialize(using = PeerFilesDeserializer::class)
-    val files: List<String>
+    val files: List<String> = emptyList()
 )
 
 enum class PeerFlag(val flag: String) {
