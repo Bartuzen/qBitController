@@ -36,11 +36,15 @@ class MainDataDeserializer : JsonDeserializer<MainData>() {
                         val category2Name = category2.name
 
                         for (i in 0..<min(category1Name.length, category2Name.length)) {
-                            when {
-                                category1Name[i] == '/' && category2Name[i] != '/' -> return@Comparator -1
-                                category1Name[i] != '/' && category2Name[i] == '/' -> return@Comparator 1
-                                category1Name[i] != category2Name[i] ->
-                                    return@Comparator category1Name[i].compareTo(category2Name[i])
+                            if (category1Name[i] == '/' && category2Name[i] != '/') {
+                                return@Comparator -1
+                            } else if ( category1Name[i] != '/' && category2Name[i] == '/') {
+                                return@Comparator 1
+                            } else {
+                                val comparison = category1Name[i].toString().compareTo(category2Name[i].toString(), true)
+                                if (comparison != 0) {
+                                    return@Comparator comparison
+                                }
                             }
                         }
                         category1Name.length - category2Name.length
