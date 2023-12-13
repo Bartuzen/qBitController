@@ -500,11 +500,18 @@ class AddTorrentActivity : AppCompatActivity() {
             else -> null
         }
 
+        val savePathText = binding.editSavePath.text.toString().ifBlank { null }
+        val savePath = when (autoTmm) {
+            null -> if (savePathText != viewModel.defaultSavePath.value) savePathText else null
+            true -> null
+            false -> savePathText
+        }
+
         viewModel.createTorrent(
             serverId = serverId,
             links = if (isUrlMode) links.split("\n") else null,
             fileUri = if (!isUrlMode) torrentFileUri else null,
-            savePath = binding.editSavePath.text.toString().ifBlank { null },
+            savePath = savePath,
             category = category,
             tags = tags,
             stopCondition = stopCondition,
