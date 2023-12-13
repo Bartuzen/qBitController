@@ -1,8 +1,6 @@
 package dev.bartuzen.qbitcontroller.network
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.JsonMappingException
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -10,10 +8,11 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -35,6 +34,11 @@ class RequestManager @Inject constructor(
 
     private val loggedInServerIds = mutableListOf<Int>()
     private val initialLoginLocks = mutableMapOf<Int, Mutex>()
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+    }
 
     init {
         serverManager.addServerListener(object : ServerManager.ServerListener {
@@ -96,14 +100,7 @@ class RequestManager @Inject constructor(
             .baseUrl(serverConfig.url)
             .client(getOkHttpClient(serverId))
             .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(
-                JacksonConverterFactory.create(
-                    jacksonObjectMapper()
-                        .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE)
-                        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                )
-            )
-            .addConverterFactory(EnumConverterFactory())
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
         retrofit.create(TorrentService::class.java)
     }
@@ -185,12 +182,6 @@ class RequestManager @Inject constructor(
         RequestResult.Error.RequestError.Timeout
     } catch (e: UnknownHostException) {
         RequestResult.Error.RequestError.UnknownHost
-    } catch (e: JsonMappingException) {
-        if (e.cause is SocketTimeoutException) {
-            RequestResult.Error.RequestError.Timeout
-        } else {
-            RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
-        }
     } catch (e: Exception) {
         if (e is CancellationException) {
             throw e

@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kotlinter)
 
     id("dev.bartuzen.qbitcontroller.localesconfig")
@@ -127,6 +128,8 @@ dependencies {
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
 
+    implementation(libs.kotlinxSerialization)
+
     implementation(libs.work.runtime)
     implementation(libs.work.hilt.core)
     kapt(libs.work.hilt.compiler)
@@ -136,9 +139,7 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.scalars)
-    implementation(libs.retrofit.converter.jackson)
-
-    implementation(libs.jackson.kotlin)
+    implementation(libs.retrofit.converter.kotlinxSerialization)
 
     implementation(libs.viewBindingPropertyDelegate.noReflection)
 

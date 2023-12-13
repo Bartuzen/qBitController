@@ -1,34 +1,35 @@
 package dev.bartuzen.qbitcontroller.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableIntSerializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TorrentTracker(
-    @JsonProperty("url")
+    @SerialName("url")
     val url: String,
 
-    @JsonProperty("tier")
+    @SerialName("tier")
     val tier: Int,
 
-    @JsonProperty("num_peers")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_peers")
+    @Serializable(with = NullableIntSerializer::class)
     val peers: Int?,
 
-    @JsonProperty("num_seeds")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_seeds")
+    @Serializable(with = NullableIntSerializer::class)
     val seeds: Int?,
 
-    @JsonProperty("num_leeches")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_leeches")
+    @Serializable(with = NullableIntSerializer::class)
     val leeches: Int?,
 
-    @JsonProperty("num_downloaded")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_downloaded")
+    @Serializable(with = NullableIntSerializer::class)
     val downloaded: Int?,
 
-    @JsonProperty("msg")
-    @JsonDeserialize(using = NullableStringDeserializer::class)
+    @SerialName("msg")
+    @Serializable(with = NullableStringSerializer::class)
     val message: String?
 )
