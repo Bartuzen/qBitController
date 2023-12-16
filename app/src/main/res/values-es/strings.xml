@@ -632,4 +632,5 @@
         <item quantity="other">%1$d rastreadores seleccionados</item>
     </plurals>
     <string name="search_start_query">Consulta</string>
+    <string name="search_result_filter_reset">Restablecer</string>
 </resources>
