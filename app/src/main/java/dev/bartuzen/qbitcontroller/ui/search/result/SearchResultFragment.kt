@@ -302,6 +302,9 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 )
                 viewModel.setFilter(newFilter)
             }
+            setNeutralButton(R.string.search_result_filter_reset) { _, _ ->
+                viewModel.resetFilter()
+            }
             setNegativeButton()
         }
 

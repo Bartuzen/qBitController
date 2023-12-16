@@ -232,6 +232,17 @@ class SearchResultViewModel @Inject constructor(
         _filter.value = filter
     }
 
+    fun resetFilter() {
+        _filter.value = Filter(
+            seedsMin = null,
+            seedsMax = null,
+            sizeMin = null,
+            sizeMax = null,
+            sizeMinUnit = 2,
+            sizeMaxUnit = 2
+        )
+    }
+
     fun setSearchSort(searchSort: SearchSort) {
         settingsManager.searchSort.value = searchSort
     }
