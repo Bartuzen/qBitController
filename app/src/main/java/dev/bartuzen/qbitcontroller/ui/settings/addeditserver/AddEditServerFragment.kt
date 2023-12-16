@@ -154,7 +154,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
 
     private fun validateAndGetServerConfig(): ServerConfig? {
         val name = binding.editName.text.toString().trim().ifEmpty { null }
-        val protocol = Protocol.values()[binding.spinnerProtocol.selectedItemPosition]
+        val protocol = Protocol.entries[binding.spinnerProtocol.selectedItemPosition]
         val host = binding.editHost.text.toString().trim().ifEmpty { null }
         val port = binding.editPort.text.toString().toIntOrNull()
         val path = binding.editPath.text.toString().trim().ifEmpty { null }

@@ -576,7 +576,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             var untaggedCount = 0
 
             mainData.torrents.forEach { torrent ->
-                TorrentFilter.values().forEach { filter ->
+                TorrentFilter.entries.forEach { filter ->
                     when (filter) {
                         TorrentFilter.ACTIVE -> {
                             if (torrent.downloadSpeed != 0L || torrent.uploadSpeed != 0L) {
