@@ -163,7 +163,7 @@
     <string name="torrent_list_status_paused">暂停</string>
     <string name="torrent_list_status_active">活动</string>
     <string name="torrent_list_status_inactive">空闲</string>
-    <string name="torrent_list_status_stalled">暂停</string>
+    <string name="torrent_list_status_stalled">等待</string>
     <string name="torrent_list_status_checking">正在检查</string>
     <string name="torrent_list_status_moving">正在移动</string>
     <string name="torrent_list_status_error">错误</string>
