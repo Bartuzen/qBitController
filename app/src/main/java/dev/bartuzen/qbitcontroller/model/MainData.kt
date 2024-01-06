@@ -44,7 +44,7 @@ private object MainDataSerializer : KSerializer<MainData> {
 
     override fun deserialize(decoder: Decoder) = decoder.decodeStructure(descriptor) {
         lateinit var serverState: ServerState
-        lateinit var torrents: Map<String, Torrent>
+        var torrents: Map<String, Torrent>? = null
         var categories: Map<String, Category>? = null
         var tags: List<String>? = null
         var trackers: Map<String, List<String>>? = null
@@ -89,9 +89,9 @@ private object MainDataSerializer : KSerializer<MainData> {
 
         MainData(
             serverState = serverState,
-            torrents = torrents.mapValues { (hash, torrent) ->
+            torrents = torrents?.mapValues { (hash, torrent) ->
                 torrent.copy(hash = hash)
-            }.values.toList(),
+            }?.values?.toList() ?: emptyList(),
             categories = categories?.values?.toList()?.sortedWith(
                 Comparator { category1, category2 ->
                     val category1Name = category1.name
