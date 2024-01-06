@@ -1,0 +1,6 @@
+- Added reset filter option to search result
+- Minor UI changes
+- Fixed default Auto TMM option not working when adding torrent
+- Fixed minor issues
+
+Check GitHub release for all changes.
