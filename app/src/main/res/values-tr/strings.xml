@@ -617,4 +617,5 @@
 \nDaha ayrıntılı bilgi ve kaynak kodu için: https://github.com/Bartuzen/qBitController</string>
     <string name="settings_language">Dil</string>
     <string name="settings_language_system_default">Sistem Varsayılanı</string>
+    <string name="search_result_filter_reset">Sıfırla</string>
 </resources>
