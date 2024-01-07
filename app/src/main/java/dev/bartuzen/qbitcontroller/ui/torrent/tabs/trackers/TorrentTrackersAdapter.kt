@@ -15,7 +15,7 @@ import dev.bartuzen.qbitcontroller.utils.getColorCompat
 class TorrentTrackersAdapter : MultiSelectAdapter<TorrentTracker, String, TorrentTrackersAdapter.ViewHolder>(
     diffCallBack = DiffCallBack(),
     getKey = { tracker ->
-        "${if (tracker.tier == -1) 0 else 1}${tracker.url}"
+        "${if (tracker.tier == null) 0 else 1}${tracker.url}"
     }
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
