@@ -1,0 +1,3 @@
+- Fixed issues with older qBittorrent versions
+
+Check GitHub release for all changes.
