@@ -33,7 +33,7 @@ private object DownloadPathSerializer : KSerializer<Category.DownloadPath> {
 
     override fun deserialize(decoder: Decoder): Category.DownloadPath {
         val jsonValue = (decoder as JsonDecoder).decodeJsonElement().jsonPrimitive
-        return if (jsonValue.jsonPrimitive.isString) {
+        return if (jsonValue.isString) {
             Category.DownloadPath.Yes(jsonValue.content)
         } else {
             Category.DownloadPath.No
