@@ -8,6 +8,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -35,9 +36,11 @@ class RequestManager @Inject constructor(
     private val loggedInServerIds = mutableListOf<Int>()
     private val initialLoginLocks = mutableMapOf<Int, Mutex>()
 
+    @OptIn(ExperimentalSerializationApi::class)
     private val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
+        explicitNulls = false
     }
 
     init {

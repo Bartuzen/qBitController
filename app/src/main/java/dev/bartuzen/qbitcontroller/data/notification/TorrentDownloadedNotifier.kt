@@ -15,6 +15,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -25,9 +26,11 @@ class TorrentDownloadedNotifier @Inject constructor(
     @ApplicationContext private val context: Context,
     private val serverManager: ServerManager
 ) {
+    @OptIn(ExperimentalSerializationApi::class)
     private val json = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
+        explicitNulls = false
     }
 
     private val sharedPref = context.getSharedPreferences("torrents", Context.MODE_PRIVATE)
