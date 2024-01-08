@@ -163,7 +163,7 @@ private object EtaSerializer : KSerializer<Int?> {
 
     override fun deserialize(decoder: Decoder): Int? {
         val jsonValue = (decoder as JsonDecoder).decodeJsonElement().jsonPrimitive
-        return jsonValue.intOrNull.takeIf { it in 0..8640000 }
+        return jsonValue.intOrNull.takeIf { it in 0..<8640000 }
     }
 }
 
