@@ -310,11 +310,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
-                if (eta < 8640000) {
-                    formatSeconds(requireContext(), eta)
-                } else {
-                    null
-                }
+                formatSeconds(requireContext(), eta)
             }
 
             binding.textState.text = formatTorrentState(requireContext(), torrent.state)
