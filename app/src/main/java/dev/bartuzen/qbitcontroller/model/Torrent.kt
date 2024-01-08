@@ -12,6 +12,9 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.listSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 @Serializable
 data class Torrent(
@@ -159,7 +162,8 @@ private object EtaSerializer : KSerializer<Int?> {
     }
 
     override fun deserialize(decoder: Decoder): Int? {
-        return decoder.decodeInt().takeIf { it in 0..8640000 }
+        val jsonValue = (decoder as JsonDecoder).decodeJsonElement().jsonPrimitive
+        return jsonValue.intOrNull.takeIf { it in 0..8640000 }
     }
 }
 
