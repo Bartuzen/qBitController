@@ -43,7 +43,7 @@ private fun parseArticles(node: JsonElement, articles: MutableList<Article>): Li
         articles += Article(
             id = article.jsonObject["id"]?.jsonPrimitive?.content!!,
             title = article.jsonObject["title"]?.jsonPrimitive?.content!!,
-            description = article.jsonObject["description"]?.jsonPrimitive?.content!!,
+            description = article.jsonObject["description"]?.jsonPrimitive?.content,
             torrentUrl = article.jsonObject["torrentURL"]?.jsonPrimitive?.content!!,
             isRead = article.jsonObject["isRead"]?.jsonPrimitive?.booleanOrNull ?: false,
             date = date
