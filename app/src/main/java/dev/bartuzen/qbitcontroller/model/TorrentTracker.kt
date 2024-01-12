@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
 import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.TrackerTierDeserializer
 
 data class TorrentTracker(
     @JsonProperty("url")
     val url: String,
 
     @JsonProperty("tier")
-    val tier: Int,
+    @JsonDeserialize(using = TrackerTierDeserializer::class)
+    val tier: Int?,
 
     @JsonProperty("num_peers")
     @JsonDeserialize(using = NullableIntDeserializer::class)
