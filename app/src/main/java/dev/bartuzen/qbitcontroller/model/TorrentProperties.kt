@@ -1,72 +1,71 @@
 package dev.bartuzen.qbitcontroller.model
 
-import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
-import dev.bartuzen.qbitcontroller.model.serializers.NullableIntSerializer
-import dev.bartuzen.qbitcontroller.model.serializers.NullableLongSerializer
-import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableEpochTimeDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableLongDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
 
-@Serializable
 data class TorrentProperties(
-    @SerialName("piece_size")
-    @Serializable(with = NullableLongSerializer::class)
+    @JsonProperty("piece_size")
+    @JsonDeserialize(using = NullableLongDeserializer::class)
     val pieceSize: Long?,
 
-    @SerialName("pieces_num")
-    @Serializable(with = NullableIntSerializer::class)
+    @JsonProperty("pieces_num")
+    @JsonDeserialize(using = NullableIntDeserializer::class)
     val piecesCount: Int?,
 
-    @SerialName("pieces_have")
+    @JsonProperty("pieces_have")
     val piecesHave: Int,
 
-    @SerialName("total_size")
-    @Serializable(with = NullableLongSerializer::class)
+    @JsonProperty("total_size")
+    @JsonDeserialize(using = NullableLongDeserializer::class)
     val totalSize: Long?,
 
-    @SerialName("addition_date")
+    @JsonProperty("addition_date")
     val additionDate: Long,
 
-    @SerialName("completion_date")
-    @Serializable(with = NullableLongSerializer::class)
+    @JsonProperty("completion_date")
+    @JsonDeserialize(using = NullableLongDeserializer::class)
     val completionDate: Long?,
 
-    @SerialName("creation_date")
-    @Serializable(with = NullableEpochTimeSerializer::class)
+    @JsonProperty("creation_date")
+    @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
     val creationDate: Long?,
 
-    @SerialName("created_by")
-    @Serializable(with = NullableStringSerializer::class)
+    @JsonProperty("created_by")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
     val createdBy: String?,
 
-    @SerialName("save_path")
+    @JsonProperty("save_path")
     val savePath: String,
 
-    @SerialName("comment")
-    @Serializable(with = NullableStringSerializer::class)
+    @JsonProperty("comment")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
     val comment: String?,
 
-    @SerialName("reannounce")
+    @JsonProperty("reannounce")
     val nextReannounce: Long,
 
-    @SerialName("nb_connections")
+    @JsonProperty("nb_connections")
     val connections: Int,
 
-    @SerialName("nb_connections_limit")
+    @JsonProperty("nb_connections_limit")
     val connectionsLimit: Int,
 
-    @SerialName("seeds")
+    @JsonProperty("seeds")
     val seeds: Int,
 
-    @SerialName("seeds_total")
+    @JsonProperty("seeds_total")
     val seedsTotal: Int,
 
-    @SerialName("peers")
+    @JsonProperty("peers")
     val peers: Int,
 
-    @SerialName("peers_total")
+    @JsonProperty("peers_total")
     val peersTotal: Int,
 
-    @SerialName("total_wasted")
+    @JsonProperty("total_wasted")
     val wasted: Long
 )

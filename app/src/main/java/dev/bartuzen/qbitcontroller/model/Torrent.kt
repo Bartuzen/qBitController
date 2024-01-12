@@ -1,278 +1,217 @@
 package dev.bartuzen.qbitcontroller.model
 
-import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
-import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.descriptors.listSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.intOrNull
-import kotlinx.serialization.json.jsonPrimitive
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import dev.bartuzen.qbitcontroller.model.deserializers.EtaDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableEpochTimeDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.PriorityDeserializer
+import dev.bartuzen.qbitcontroller.model.deserializers.TagDeserializer
 
-@Serializable
 data class Torrent(
-    @SerialName("hash")
-    val hash: String = "",
+    @JsonProperty("hash")
+    val hash: String,
 
-    @SerialName("infohash_v1")
-    @Serializable(with = NullableStringSerializer::class)
+    @JsonProperty("infohash_v1")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
     val hashV1: String?,
 
-    @SerialName("infohash_v2")
-    @Serializable(with = NullableStringSerializer::class)
+    @JsonProperty("infohash_v2")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
     val hashV2: String?,
 
-    @SerialName("name")
+    @JsonProperty("name")
     val name: String,
 
-    @SerialName("state")
-    val state: TorrentState = TorrentState.UNKNOWN,
+    @JsonProperty("state")
+    val state: TorrentState,
 
-    @SerialName("added_on")
+    @JsonProperty("added_on")
     val additionDate: Long,
 
-    @SerialName("completion_on")
-    @Serializable(with = NullableEpochTimeSerializer::class)
+    @JsonProperty("completion_on")
+    @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
     val completionDate: Long?,
 
-    @SerialName("completed")
+    @JsonProperty("completed")
     val completed: Long,
 
-    @SerialName("size")
+    @JsonProperty("size")
     val size: Long,
 
-    @SerialName("eta")
-    @Serializable(with = EtaSerializer::class)
+    @JsonProperty("eta")
+    @JsonDeserialize(using = EtaDeserializer::class)
     val eta: Int?,
 
-    @SerialName("dlspeed")
+    @JsonProperty("dlspeed")
     val downloadSpeed: Long,
 
-    @SerialName("upspeed")
+    @JsonProperty("upspeed")
     val uploadSpeed: Long,
 
-    @SerialName("dl_limit")
+    @JsonProperty("dl_limit")
     val downloadSpeedLimit: Int,
 
-    @SerialName("up_limit")
+    @JsonProperty("up_limit")
     val uploadSpeedLimit: Int,
 
-    @SerialName("progress")
+    @JsonProperty("progress")
     val progress: Double,
 
-    @SerialName("priority")
-    @Serializable(with = PrioritySerializer::class)
+    @JsonProperty("priority")
+    @JsonDeserialize(using = PriorityDeserializer::class)
     val priority: Int?,
 
-    @SerialName("num_seeds")
+    @JsonProperty("num_seeds")
     val connectedSeeds: Int,
 
-    @SerialName("num_leechs")
+    @JsonProperty("num_leechs")
     val connectedLeeches: Int,
 
-    @SerialName("num_complete")
+    @JsonProperty("num_complete")
     val totalSeeds: Int,
 
-    @SerialName("num_incomplete")
+    @JsonProperty("num_incomplete")
     val totalLeeches: Int,
 
-    @SerialName("save_path")
+    @JsonProperty("save_path")
     val savePath: String?,
 
-    @SerialName("download_path")
-    @Serializable(with = NullableStringSerializer::class)
+    @JsonProperty("download_path")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
     val downloadPath: String?,
 
-    @SerialName("category")
-    @Serializable(with = NullableStringSerializer::class)
+    @JsonProperty("category")
+    @JsonDeserialize(using = NullableStringDeserializer::class)
     val category: String?,
 
-    @SerialName("tags")
-    @Serializable(with = TagsSerializer::class)
+    @JsonProperty("tags")
+    @JsonDeserialize(using = TagDeserializer::class)
     val tags: List<String>,
 
-    @SerialName("seq_dl")
+    @JsonProperty("seq_dl")
     val isSequentialDownloadEnabled: Boolean,
 
-    @SerialName("f_l_piece_prio")
+    @JsonProperty("f_l_piece_prio")
     val isFirstLastPiecesPrioritized: Boolean,
 
-    @SerialName("auto_tmm")
+    @JsonProperty("auto_tmm")
     val isAutomaticTorrentManagementEnabled: Boolean,
 
-    @SerialName("force_start")
+    @JsonProperty("force_start")
     val isForceStartEnabled: Boolean,
 
-    @SerialName("super_seeding")
+    @JsonProperty("super_seeding")
     val isSuperSeedingEnabled: Boolean,
 
-    @SerialName("magnet_uri")
+    @JsonProperty("magnet_uri")
     val magnetUri: String,
 
-    @SerialName("time_active")
+    @JsonProperty("time_active")
     val timeActive: Long,
 
-    @SerialName("downloaded")
+    @JsonProperty("downloaded")
     val downloaded: Long,
 
-    @SerialName("downloaded_session")
+    @JsonProperty("downloaded_session")
     val downloadedSession: Long,
 
-    @SerialName("uploaded")
+    @JsonProperty("uploaded")
     val uploaded: Long,
 
-    @SerialName("uploaded_session")
+    @JsonProperty("uploaded_session")
     val uploadedSession: Long,
 
-    @SerialName("ratio")
+    @JsonProperty("ratio")
     val ratio: Double,
 
-    @SerialName("last_activity")
+    @JsonProperty("last_activity")
     val lastActivity: Long,
 
-    @SerialName("seen_complete")
-    @Serializable(with = NullableEpochTimeSerializer::class)
+    @JsonProperty("seen_complete")
+    @JsonDeserialize(using = NullableEpochTimeDeserializer::class)
     val lastSeenComplete: Long?,
 
-    @SerialName("ratio_limit")
+    @JsonProperty("ratio_limit")
     val ratioLimit: Double,
 
-    @SerialName("seeding_time_limit")
+    @JsonProperty("seeding_time_limit")
     val seedingTimeLimit: Int,
 
-    @SerialName("seeding_time")
+    @JsonProperty("seeding_time")
     val seedingTime: Int,
 
-    @SerialName("trackers_count")
+    @JsonProperty("trackers_count")
     val trackerCount: Int
 )
 
-private object EtaSerializer : KSerializer<Int?> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Eta", PrimitiveKind.INT)
-
-    override fun serialize(encoder: Encoder, value: Int?) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun deserialize(decoder: Decoder): Int? {
-        val jsonValue = (decoder as JsonDecoder).decodeJsonElement().jsonPrimitive
-        return jsonValue.intOrNull.takeIf { it in 0..<8640000 }
-    }
-}
-
-private object PrioritySerializer : KSerializer<Int?> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Priority", PrimitiveKind.INT)
-
-    override fun serialize(encoder: Encoder, value: Int?) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun deserialize(decoder: Decoder): Int? {
-        return decoder.decodeInt().takeIf { it != 0 }
-    }
-}
-
-private object TagsSerializer : KSerializer<List<String>> {
-    @OptIn(ExperimentalSerializationApi::class)
-    override val descriptor: SerialDescriptor = listSerialDescriptor<List<String>>()
-
-    override fun serialize(encoder: Encoder, value: List<String>) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun deserialize(decoder: Decoder): List<String> {
-        return decoder.decodeString().takeIf { it.isNotEmpty() }?.split(", ") ?: emptyList()
-    }
-}
-
-@Serializable
 enum class TorrentState {
-    @SerialName("forcedDL")
+    @JsonProperty("forcedDL")
     FORCED_DL,
 
-    @SerialName("downloading")
+    @JsonProperty("downloading")
     DOWNLOADING,
 
-    @SerialName("forcedMetaDL")
+    @JsonProperty("forcedMetaDL")
     FORCED_META_DL,
 
-    @SerialName("metaDL")
+    @JsonProperty("metaDL")
     META_DL,
 
-    @SerialName("allocating")
+    @JsonProperty("allocating")
     ALLOCATING,
 
-    @SerialName("stalledDL")
+    @JsonProperty("stalledDL")
     STALLED_DL,
 
-    @SerialName("forcedUP")
+    @JsonProperty("forcedUP")
     FORCED_UP,
 
-    @SerialName("uploading")
+    @JsonProperty("uploading")
     UPLOADING,
 
-    @SerialName("stalledUP")
+    @JsonProperty("stalledUP")
     STALLED_UP,
 
-    @SerialName("checkingResumeData")
+    @JsonProperty("checkingResumeData")
     CHECKING_RESUME_DATA,
 
-    @SerialName("queuedDL")
+    @JsonProperty("queuedDL")
     QUEUED_DL,
 
-    @SerialName("queuedUP")
+    @JsonProperty("queuedUP")
     QUEUED_UP,
 
-    @SerialName("checkingUP")
+    @JsonProperty("checkingUP")
     CHECKING_UP,
 
-    @SerialName("checkingDL")
+    @JsonProperty("checkingDL")
     CHECKING_DL,
 
-    @SerialName("pausedDL")
+    @JsonProperty("pausedDL")
     PAUSED_DL,
 
-    @SerialName("pausedUP")
+    @JsonProperty("pausedUP")
     PAUSED_UP,
 
-    @SerialName("moving")
+    @JsonProperty("moving")
     MOVING,
 
-    @SerialName("missingFiles")
+    @JsonProperty("missingFiles")
     MISSING_FILES,
 
-    @SerialName("error")
+    @JsonProperty("error")
     ERROR,
 
-    @SerialName("unknown")
+    @JsonProperty("unknown")
+    @JsonEnumDefaultValue
     UNKNOWN
 }
 
 @Suppress("unused")
-@Serializable(with = PieceStateSerializer::class)
-enum class PieceState(val id: Int) {
-    NOT_DOWNLOADED(0),
-    DOWNLOADING(1),
-    DOWNLOADED(2)
-}
-
-private object PieceStateSerializer : KSerializer<PieceState> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("PieceState", PrimitiveKind.INT)
-
-    override fun serialize(encoder: Encoder, value: PieceState) {
-        throw UnsupportedOperationException()
-    }
-
-    override fun deserialize(decoder: Decoder): PieceState {
-        val pieceStateId = decoder.decodeInt()
-        return PieceState.entries.find { it.id == pieceStateId }
-            ?: throw IllegalArgumentException("Unknown PieceState id: $pieceStateId")
-    }
+enum class PieceState {
+    NOT_DOWNLOADED,
+    DOWNLOADING,
+    DOWNLOADED
 }

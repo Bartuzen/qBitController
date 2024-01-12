@@ -1,11 +1,9 @@
 package dev.bartuzen.qbitcontroller.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@Serializable
 data class RssRule(
-    @SerialName("enabled") val isEnabled: Boolean,
+    @JsonProperty("enabled") val isEnabled: Boolean,
     val mustContain: String,
     val mustNotContain: String,
     val useRegex: Boolean,

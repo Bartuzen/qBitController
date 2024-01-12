@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.settings.addeditserver
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fasterxml.jackson.databind.JsonMappingException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -105,6 +106,12 @@ class AddEditServerViewModel @Inject constructor(
                 RequestResult.Error.RequestError.Timeout
             } catch (e: UnknownHostException) {
                 RequestResult.Error.RequestError.UnknownHost
+            } catch (e: JsonMappingException) {
+                if (e.cause is SocketTimeoutException) {
+                    RequestResult.Error.RequestError.Timeout
+                } else {
+                    RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
+                }
             } catch (e: Exception) {
                 if (e is CancellationException) {
                     throw e

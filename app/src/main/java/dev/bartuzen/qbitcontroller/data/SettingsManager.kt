@@ -3,8 +3,10 @@ package dev.bartuzen.qbitcontroller.data
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.primitivePreference
+import java.util.SortedMap
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,6 +33,8 @@ class SettingsManager @Inject constructor(
     val searchSort = enumPreference(sharedPref, "searchSort", SearchSort.NAME, SearchSort::valueOf)
     val isReverseSearchSorting = primitivePreference(sharedPref, "isReverseSearchSort", false)
 }
+
+typealias ServerConfigMap = SortedMap<Int, ServerConfig>
 
 enum class Theme {
     LIGHT,

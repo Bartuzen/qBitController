@@ -1,30 +1,29 @@
-package dev.bartuzen.qbitcontroller.model.serializers
+package dev.bartuzen.qbitcontroller.model.deserializers
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dev.bartuzen.qbitcontroller.model.RssFeed
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 
 fun parseRssFeeds(feeds: String): RssFeedNode {
-    val node = Json.parseToJsonElement(feeds)
+    val mapper = jacksonObjectMapper()
+    val node = mapper.readTree(feeds)
     val feedNode = RssFeedNode("", null, mutableListOf())
 
     parseRssFeeds(node, feedNode)
     return feedNode
 }
 
-private fun parseRssFeeds(node: JsonElement, feedNode: RssFeedNode) {
-    for ((key, value) in node.jsonObject) {
+private fun parseRssFeeds(node: JsonNode, feedNode: RssFeedNode) {
+    for ((key, value) in node.fields()) {
         if (isFeed(value)) {
             feedNode.children!!.add(
                 RssFeedNode(
                     name = key,
                     feed = RssFeed(
                         name = key,
-                        uid = value.jsonObject["uid"]?.jsonPrimitive?.content ?: "",
-                        url = value.jsonObject["url"]?.jsonPrimitive?.content ?: ""
+                        uid = value["uid"].asText(),
+                        url = value["url"].asText()
                     ),
                     children = null
                 )
@@ -37,9 +36,9 @@ private fun parseRssFeeds(node: JsonElement, feedNode: RssFeedNode) {
     }
 }
 
-private fun isFeed(node: JsonElement): Boolean {
-    for ((key, value) in node.jsonObject) {
-        if (key == "uid" && value.jsonPrimitive.isString) {
+private fun isFeed(node: JsonNode): Boolean {
+    for ((key, value) in node.fields()) {
+        if (key == "uid" && value.isTextual) {
             return true
         }
     }

@@ -1,14 +1,15 @@
 package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,13 +19,12 @@ class ServerManager @Inject constructor(
 ) {
     private val sharedPref = context.getSharedPreferences("servers", Context.MODE_PRIVATE)
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-    }
+    private val mapper = jacksonObjectMapper()
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 
-    private fun readServerConfigs() = json.decodeFromString<Map<Int, ServerConfig>>(
+    private fun readServerConfigs() = mapper.readValue<ServerConfigMap>(
         sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
-    ).toSortedMap()
+    )
 
     private val _serversFlow = MutableStateFlow(readServerConfigs())
     val serversFlow = _serversFlow.asStateFlow()
@@ -44,7 +44,7 @@ class ServerManager @Inject constructor(
         serverConfigs[serverId] = newServerConfig
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, json.encodeToString(serverConfigs.toMutableMap()))
+            .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))
             .putInt(Keys.LAST_SERVER_ID, serverId)
             .commit()
 
@@ -59,7 +59,7 @@ class ServerManager @Inject constructor(
         serverConfigs[serverConfig.id] = serverConfig
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, json.encodeToString(serverConfigs.toMutableMap()))
+            .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))
             .commit()
 
         if (isSuccess) {
@@ -74,7 +74,7 @@ class ServerManager @Inject constructor(
         serverConfigs.remove(serverId)
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, json.encodeToString(serverConfigs.toMutableMap()))
+            .putString(Keys.SERVER_CONFIGS, mapper.writeValueAsString(serverConfigs))
             .commit()
 
         if (isSuccess) {

@@ -1331,7 +1331,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         getString(R.string.stats_percentage_format, state.writeCacheOverload)
                     binding.textReadCacheOverload.text =
                         getString(R.string.stats_percentage_format, state.readCacheOverload)
-                    binding.textQueuedIoJobs.text = state.queuedIOJobs.toString()
+                    binding.textQueuedIoJobs.text = state.queuedIOJobs
                     binding.textAverageTimeInQueue.text = getString(R.string.stats_ms_format, state.averageTimeInQueue)
                     binding.textTotalQueuedSize.text = formatBytes(requireContext(), state.queuedSize)
                 }

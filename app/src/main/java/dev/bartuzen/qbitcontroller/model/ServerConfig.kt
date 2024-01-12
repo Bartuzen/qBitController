@@ -1,11 +1,10 @@
 package dev.bartuzen.qbitcontroller.model
 
 import android.os.Parcelable
+import com.fasterxml.jackson.annotation.JsonIgnore
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.Serializable
 
 @Parcelize
-@Serializable
 data class ServerConfig(
     val id: Int,
     val name: String?,
@@ -15,9 +14,10 @@ data class ServerConfig(
     val path: String?,
     val username: String?,
     val password: String?,
-    val trustSelfSignedCertificates: Boolean = false,
+    val trustSelfSignedCertificates: Boolean,
     val basicAuth: BasicAuth = BasicAuth(false, null, null)
 ) : Parcelable {
+    @get:JsonIgnore
     val url: String
         get() {
             val url = "${protocol.toString().lowercase()}://$visibleUrl"
@@ -28,6 +28,7 @@ data class ServerConfig(
             }
         }
 
+    @get:JsonIgnore
     val visibleUrl
         get() = buildString {
             append(host)
@@ -46,7 +47,6 @@ enum class Protocol {
 }
 
 @Parcelize
-@Serializable
 data class BasicAuth(
     val isEnabled: Boolean,
     val username: String?,

@@ -1,0 +1,14 @@
+package dev.bartuzen.qbitcontroller.model.deserializers
+
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonDeserializer
+import dev.bartuzen.qbitcontroller.model.PeerFlag
+
+class PeerFlagDeserializer : JsonDeserializer<List<PeerFlag>>() {
+    override fun deserialize(parser: JsonParser, context: DeserializationContext): List<PeerFlag> {
+        return parser.valueAsString?.split(" ")?.mapNotNull { flagStr ->
+            PeerFlag.entries.find { it.flag == flagStr }
+        } ?: emptyList()
+    }
+}

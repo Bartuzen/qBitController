@@ -1,11 +1,9 @@
 package dev.bartuzen.qbitcontroller.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.fasterxml.jackson.annotation.JsonProperty
 
-@Serializable
 data class Plugin(
-    @SerialName("enabled")
+    @JsonProperty("enabled")
     val isEnabled: Boolean,
     val fullName: String,
     val name: String,

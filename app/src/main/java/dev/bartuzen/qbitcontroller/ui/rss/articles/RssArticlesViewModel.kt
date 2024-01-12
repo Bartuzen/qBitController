@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
 import dev.bartuzen.qbitcontroller.model.Article
-import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeedWithData
+import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeedWithData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

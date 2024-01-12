@@ -8,6 +8,8 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.ServerManager
@@ -15,9 +17,6 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -26,12 +25,7 @@ class TorrentDownloadedNotifier @Inject constructor(
     @ApplicationContext private val context: Context,
     private val serverManager: ServerManager
 ) {
-    @OptIn(ExperimentalSerializationApi::class)
-    private val json = Json {
-        ignoreUnknownKeys = true
-        coerceInputValues = true
-        explicitNulls = false
-    }
+    private val mapper = jacksonObjectMapper()
 
     private val sharedPref = context.getSharedPreferences("torrents", Context.MODE_PRIVATE)
 
@@ -189,11 +183,11 @@ class TorrentDownloadedNotifier @Inject constructor(
 
     private fun getTorrents(serverId: Int): Map<String, TorrentState>? {
         val json = sharedPref.getString("server_$serverId", null)
-        return if (json != null) this.json.decodeFromString(json) else null
+        return if (json != null) mapper.readValue(json) else null
     }
 
     private fun setTorrents(serverId: Int, torrents: Map<String, TorrentState>) {
-        val json = json.encodeToString(torrents)
+        val json = mapper.writeValueAsString(torrents)
         sharedPref.edit {
             putString("server_$serverId", json)
         }

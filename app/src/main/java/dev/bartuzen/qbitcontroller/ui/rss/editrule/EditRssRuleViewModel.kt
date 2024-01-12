@@ -3,11 +3,12 @@ package dev.bartuzen.qbitcontroller.ui.rss.editrule
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.EditRssRuleRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.RssRule
-import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeeds
+import dev.bartuzen.qbitcontroller.model.deserializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Deferred
@@ -18,8 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,7 +46,8 @@ class EditRssRuleViewModel @Inject constructor(
     val isFetched = state.getStateFlow("isFetched", false)
 
     fun setRule(serverId: Int, name: String, rule: RssRule) = viewModelScope.launch {
-        val json = Json.encodeToString(rule)
+        val mapper = jacksonObjectMapper()
+        val json = mapper.writeValueAsString(rule)
 
         when (val result = repository.setRule(serverId, name, json)) {
             is RequestResult.Success -> {
