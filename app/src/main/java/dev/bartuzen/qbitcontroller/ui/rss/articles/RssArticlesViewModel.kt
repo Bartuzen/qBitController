@@ -52,7 +52,7 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    private fun updateRssArticles(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
+    fun updateRssArticles(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
                 val articles = parseRssFeedWithData(result.data, feedPath)
@@ -86,20 +86,21 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?) = viewModelScope.launch {
-        when (val result = repository.markAsRead(serverId, feedPath, articleId)) {
-            is RequestResult.Success -> {
-                if (articleId == null) {
-                    eventChannel.send(Event.AllArticlesMarkedAsRead)
-                } else {
-                    eventChannel.send(Event.ArticleMarkedAsRead)
+    fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?, showMessage: Boolean = true) =
+        viewModelScope.launch {
+            when (val result = repository.markAsRead(serverId, feedPath, articleId)) {
+                is RequestResult.Success -> {
+                    if (articleId == null) {
+                        eventChannel.send(Event.AllArticlesMarkedAsRead)
+                    } else {
+                        eventChannel.send(Event.ArticleMarkedAsRead(showMessage))
+                    }
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
                 }
             }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
         }
-    }
 
     fun refreshFeed(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
         when (val result = repository.refreshItem(serverId, feedPath)) {
@@ -119,7 +120,7 @@ class RssArticlesViewModel @Inject constructor(
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         data object RssFeedNotFound : Event()
-        data object ArticleMarkedAsRead : Event()
+        data class ArticleMarkedAsRead(val showMessage: Boolean) : Event()
         data object AllArticlesMarkedAsRead : Event()
         data object FeedRefreshed : Event()
     }
