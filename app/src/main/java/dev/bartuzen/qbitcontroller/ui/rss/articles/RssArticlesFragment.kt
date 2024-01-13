@@ -136,7 +136,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                             putExtra(AddTorrentActivity.Extras.TORRENT_URL, article.torrentUrl)
                         }
                         startAddTorrentActivity.launch(intent)
-                        viewModel.markAsRead(serverId, feedPath, article.id)
+                        viewModel.markAsRead(serverId, feedPath, article.id, false)
                     },
                     onMarkAsRead = {
                         viewModel.markAsRead(serverId, feedPath, article.id)
@@ -182,9 +182,13 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 RssArticlesViewModel.Event.RssFeedNotFound -> {
                     showSnackbar(R.string.rss_feed_not_found)
                 }
-                RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
-                    showSnackbar(R.string.rss_mark_article_as_read_success)
-                    viewModel.loadRssArticles(serverId, feedPath)
+                is RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
+                    if (event.showMessage) {
+                        showSnackbar(R.string.rss_mark_article_as_read_success)
+                        viewModel.loadRssArticles(serverId, feedPath)
+                    } else {
+                        viewModel.updateRssArticles(serverId, feedPath)
+                    }
                 }
                 RssArticlesViewModel.Event.AllArticlesMarkedAsRead -> {
                     showSnackbar(R.string.rss_mark_all_articles_as_read_success)
