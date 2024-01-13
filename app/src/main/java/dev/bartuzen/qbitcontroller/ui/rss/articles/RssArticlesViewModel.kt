@@ -86,20 +86,21 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?, showMessage: Boolean = true) = viewModelScope.launch {
-        when (val result = repository.markAsRead(serverId, feedPath, articleId)) {
-            is RequestResult.Success -> {
-                if (articleId == null) {
-                    eventChannel.send(Event.AllArticlesMarkedAsRead)
-                } else {
-                    eventChannel.send(Event.ArticleMarkedAsRead(showMessage))
+    fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?, showMessage: Boolean = true) =
+        viewModelScope.launch {
+            when (val result = repository.markAsRead(serverId, feedPath, articleId)) {
+                is RequestResult.Success -> {
+                    if (articleId == null) {
+                        eventChannel.send(Event.AllArticlesMarkedAsRead)
+                    } else {
+                        eventChannel.send(Event.ArticleMarkedAsRead(showMessage))
+                    }
+                }
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.Error(result))
                 }
             }
-            is RequestResult.Error -> {
-                eventChannel.send(Event.Error(result))
-            }
         }
-    }
 
     fun refreshFeed(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
         when (val result = repository.refreshItem(serverId, feedPath)) {
