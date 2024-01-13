@@ -136,6 +136,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                             putExtra(AddTorrentActivity.Extras.TORRENT_URL, article.torrentUrl)
                         }
                         startAddTorrentActivity.launch(intent)
+                        viewModel.markAsRead(serverId, feedPath, article.id)
                     },
                     onMarkAsRead = {
                         viewModel.markAsRead(serverId, feedPath, article.id)
