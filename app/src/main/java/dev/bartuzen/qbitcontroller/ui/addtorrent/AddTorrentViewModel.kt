@@ -150,7 +150,7 @@ class AddTorrentViewModel @Inject constructor(
                     result.data.values
                         .toList()
                         .map { it.name }
-                        .sortedBy { it }
+                        .sorted()
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
@@ -161,7 +161,7 @@ class AddTorrentViewModel @Inject constructor(
         val tagsDeferred = async {
             when (val result = repository.getTags(serverId)) {
                 is RequestResult.Success -> {
-                    result.data.sortedBy { it }
+                    result.data.sorted()
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))

@@ -30,7 +30,7 @@ class TorrentCategoryViewModel @Inject constructor(
                 _categories.value = result.data.values
                     .toList()
                     .map { it.name }
-                    .sortedBy { it }
+                    .sorted()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))

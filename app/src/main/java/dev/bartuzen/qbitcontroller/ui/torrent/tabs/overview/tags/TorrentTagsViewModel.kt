@@ -27,8 +27,7 @@ class TorrentTagsViewModel @Inject constructor(
     fun updateTags(serverId: Int) = viewModelScope.launch {
         when (val result = repository.getTags(serverId)) {
             is RequestResult.Success -> {
-                _tags.value = result.data
-                    .sortedBy { it }
+                _tags.value = result.data.sorted()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
