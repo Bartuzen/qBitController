@@ -196,32 +196,33 @@ class TorrentOverviewViewModel @Inject constructor(
         // setting download path when auto TMM is enabled has no effect, so we need to set auto TMM first
         val delayDownloadPathRequest = autoTmm != null && downloadPath != null
 
-        try {
-            requests.filterIndexed { index, _ ->
-                !delayDownloadPathRequest || index != -1
-            }.map { request ->
-                launch {
-                    val result = request()
-                    if (result is RequestResult.Error) {
-                        eventChannel.send(Event.Error(result))
-                        throw CancellationException()
-                    }
-                }
-            }.joinAll()
-            if (delayDownloadPathRequest) {
-                launch {
-                    val result = requests[1]()
-                    if (result is RequestResult.Error) {
-                        eventChannel.send(Event.Error(result))
-                        throw CancellationException()
-                    }
+        var isErrored = false
+
+        requests.filterIndexed { index, _ ->
+            !delayDownloadPathRequest || index != -1
+        }.map { request ->
+            launch {
+                val result = request()
+                if (result is RequestResult.Error) {
+                    isErrored = true
+                    eventChannel.send(Event.Error(result))
+                    throw CancellationException()
                 }
             }
-        } catch (_: CancellationException) {
-            return@launch
+        }.joinAll()
+        if (delayDownloadPathRequest && !isErrored) {
+            launch {
+                val result = requests[1]()
+                if (result is RequestResult.Error) {
+                    isErrored = true
+                    eventChannel.send(Event.Error(result))
+                }
+            }
         }
 
-        eventChannel.send(Event.OptionsUpdated)
+        if (!isErrored) {
+            eventChannel.send(Event.OptionsUpdated)
+        }
     }
 
     fun setForceStart(serverId: Int, torrentHash: String, value: Boolean) = viewModelScope.launch {
