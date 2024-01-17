@@ -92,10 +92,15 @@ class TorrentOverviewRepository @Inject constructor(
         service.removeTags(hash, tags.joinToString(","))
     }
 
-    suspend fun setShareLimit(serverId: Int, hash: String, ratioLimit: Double, seedingTimeLimit: Int) =
-        requestManager.request(serverId) { service ->
-            service.setShareLimit(hash, ratioLimit, seedingTimeLimit)
-        }
+    suspend fun setShareLimit(
+        serverId: Int,
+        hash: String,
+        ratioLimit: Double,
+        seedingTimeLimit: Int,
+        inactiveSeedingTimeLimit: Int
+    ) = requestManager.request(serverId) { service ->
+        service.setShareLimit(hash, ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
+    }
 
     suspend fun exportTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.exportTorrent(hash)

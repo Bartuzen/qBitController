@@ -165,7 +165,8 @@ interface TorrentService {
     suspend fun setShareLimit(
         @Field("hashes") hashes: String,
         @Field("ratioLimit") ratioLimit: Double,
-        @Field("seedingTimeLimit") seedingTimeLimit: Int
+        @Field("seedingTimeLimit") seedingTimeLimit: Int,
+        @Field("inactiveSeedingTimeLimit") inactiveSeedingTimeLimit: Int
     ): Response<Unit>
 
     @FormUrlEncoded

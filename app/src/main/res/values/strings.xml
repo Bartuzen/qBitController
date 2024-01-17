@@ -271,7 +271,8 @@
     <string name="torrent_option_share_limit_disable">Disable share limit</string>
     <string name="torrent_option_share_limit_custom">Set custom share limit</string>
     <string name="torrent_option_share_limit_ratio">Ratio</string>
-    <string name="torrent_option_share_limit_time">Minutes</string>
+    <string name="torrent_option_share_limit_total_minutes">Total Minutes</string>
+    <string name="torrent_option_share_limit_inactive_minutes">Inactive Minutes</string>
     <string name="torrent_option_prioritize_first_last_piece">Download first and last pieces first</string>
     <string name="torrent_option_sequential_download">Download in sequential order</string>
 

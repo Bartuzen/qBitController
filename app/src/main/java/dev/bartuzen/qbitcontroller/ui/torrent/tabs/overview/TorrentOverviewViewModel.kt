@@ -160,7 +160,8 @@ class TorrentOverviewViewModel @Inject constructor(
         uploadSpeedLimit: Int?,
         downloadSpeedLimit: Int?,
         ratioLimit: Double?,
-        seedingTimeLimit: Int?
+        seedingTimeLimit: Int?,
+        inactiveSeedingTimeLimit: Int?
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 
@@ -185,8 +186,16 @@ class TorrentOverviewViewModel @Inject constructor(
         if (downloadSpeedLimit != null) {
             requests.add { repository.setDownloadSpeedLimit(serverId, torrentHash, downloadSpeedLimit) }
         }
-        if (ratioLimit != null && seedingTimeLimit != null) {
-            requests.add { repository.setShareLimit(serverId, torrentHash, ratioLimit, seedingTimeLimit) }
+        if (ratioLimit != null && seedingTimeLimit != null && inactiveSeedingTimeLimit != null) {
+            requests.add {
+                repository.setShareLimit(
+                    serverId,
+                    torrentHash,
+                    ratioLimit,
+                    seedingTimeLimit,
+                    inactiveSeedingTimeLimit
+                )
+            }
         }
 
         if (requests.isEmpty()) {

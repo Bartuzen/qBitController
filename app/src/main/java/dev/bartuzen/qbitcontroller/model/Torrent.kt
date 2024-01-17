@@ -139,6 +139,9 @@ data class Torrent(
     @JsonProperty("seeding_time_limit")
     val seedingTimeLimit: Int,
 
+    @JsonProperty("inactive_seeding_time_limit")
+    val inactiveSeedingTimeLimit: Int = -1,
+
     @JsonProperty("seeding_time")
     val seedingTime: Int,
 

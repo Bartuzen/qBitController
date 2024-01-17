@@ -537,13 +537,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     binding.radioLimitGlobal.isChecked = true
 
                     binding.inputLayoutRatio.isEnabled = false
-                    binding.inputLayoutTime.isEnabled = false
+                    binding.inputLayoutTotalMinutes.isEnabled = false
+                    binding.inputLayoutInactiveMinutes.isEnabled = false
                 }
                 torrent.seedingTimeLimit == -1 && torrent.ratioLimit == -1.0 -> {
                     binding.radioLimitDisable.isChecked = true
 
                     binding.inputLayoutRatio.isEnabled = false
-                    binding.inputLayoutTime.isEnabled = false
+                    binding.inputLayoutTotalMinutes.isEnabled = false
+                    binding.inputLayoutInactiveMinutes.isEnabled = false
                 }
                 else -> {
                     binding.radioLimitCustom.isChecked = true
@@ -552,7 +554,12 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         binding.inputLayoutRatio.setTextWithoutAnimation(torrent.ratioLimit.toString())
                     }
                     if (torrent.seedingTimeLimit >= 0) {
-                        binding.inputLayoutTime.setTextWithoutAnimation(torrent.seedingTimeLimit.toString())
+                        binding.inputLayoutTotalMinutes.setTextWithoutAnimation(torrent.seedingTimeLimit.toString())
+                    }
+                    if (torrent.inactiveSeedingTimeLimit >= 0) {
+                        binding.inputLayoutInactiveMinutes.setTextWithoutAnimation(
+                            torrent.inactiveSeedingTimeLimit.toString()
+                        )
                     }
                 }
             }
@@ -572,7 +579,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
             binding.radioLimitCustom.setOnCheckedChangeListener { _, isChecked ->
                 binding.inputLayoutRatio.isEnabled = isChecked
-                binding.inputLayoutTime.isEnabled = isChecked
+                binding.inputLayoutTotalMinutes.isEnabled = isChecked
+                binding.inputLayoutInactiveMinutes.isEnabled = isChecked
             }
 
             setTitle(R.string.torrent_action_options)
@@ -618,35 +626,39 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         null
                     }
                 }
-                val (ratioLimit, seedingTimeLimit) = when (binding.radioGroupLimit.checkedRadioButtonId) {
-                    R.id.radio_limit_global -> {
-                        -2.0 to -2
-                    }
-                    R.id.radio_limit_disable -> {
-                        -1.0 to -1
-                    }
-                    R.id.radio_limit_custom -> {
-                        val ratioLimit = binding.inputLayoutRatio.text.toDoubleOrNull() ?: -1.0
-                        val seedingTimeLimit = binding.inputLayoutTime.text.toIntOrNull() ?: -1
+                val (ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit) =
+                    when (binding.radioGroupLimit.checkedRadioButtonId) {
+                        R.id.radio_limit_global -> {
+                            Triple(-2.0, -2, -2)
+                        }
+                        R.id.radio_limit_disable -> {
+                            Triple(-1.0, -1, -1)
+                        }
+                        R.id.radio_limit_custom -> {
+                            val ratioLimit = binding.inputLayoutRatio.text.toDoubleOrNull() ?: -1.0
+                            val seedingTimeLimit = binding.inputLayoutTotalMinutes.text.toIntOrNull() ?: -1
+                            val inactiveSeedingTimeLimit = binding.inputLayoutInactiveMinutes.text.toIntOrNull() ?: -1
 
-                        if (ratioLimit != -1.0 || seedingTimeLimit != -1) {
-                            ratioLimit to seedingTimeLimit
+                            if (ratioLimit != -1.0 || seedingTimeLimit != -1 || inactiveSeedingTimeLimit != -1) {
+                                Triple(ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
+                            } else {
+                                Triple(null, null, null)
+                            }
+                        }
+                        else -> {
+                            Triple(null, null, null)
+                        }
+                    }.let { (ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit) ->
+                        if (ratioLimit == null || seedingTimeLimit == null || inactiveSeedingTimeLimit == null) {
+                            Triple(null, null, null)
+                        } else if (ratioLimit != torrent.ratioLimit || seedingTimeLimit != torrent.seedingTimeLimit ||
+                            inactiveSeedingTimeLimit != torrent.inactiveSeedingTimeLimit
+                        ) {
+                            Triple(ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
                         } else {
-                            null to null
+                            Triple(null, null, null)
                         }
                     }
-                    else -> {
-                        null to null
-                    }
-                }.let { (ratioLimit, seedingTimeLimit) ->
-                    if (ratioLimit == null || seedingTimeLimit == null) {
-                        null to null
-                    } else if (ratioLimit != torrent.ratioLimit || seedingTimeLimit != torrent.seedingTimeLimit) {
-                        ratioLimit to seedingTimeLimit
-                    } else {
-                        null to null
-                    }
-                }
 
                 viewModel.setTorrentOptions(
                     serverId = serverId,
@@ -659,7 +671,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     uploadSpeedLimit = uploadSpeedLimit,
                     downloadSpeedLimit = downloadSpeedLimit,
                     ratioLimit = ratioLimit,
-                    seedingTimeLimit = seedingTimeLimit
+                    seedingTimeLimit = seedingTimeLimit,
+                    inactiveSeedingTimeLimit = inactiveSeedingTimeLimit
                 )
             }
             setNegativeButton()
