@@ -632,6 +632,6 @@
     </plurals>
     <string name="search_start_query">Consulta</string>
     <string name="search_result_filter_reset">Restablecer</string>
-    <string name="torrent_option_share_limit_total_minutes">Minutos en total</string>
+    <string name="torrent_option_share_limit_total_minutes">Minutos totales</string>
     <string name="torrent_option_share_limit_inactive_minutes">Minutos inactivo</string>
 </resources>
