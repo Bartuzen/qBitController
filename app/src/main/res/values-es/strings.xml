@@ -245,7 +245,6 @@
     <string name="torrent_tags_update_success">Etiquetas actualizadas correctamente.</string>
     <string name="torrent_option_upload_speed_limit">Límite de Velocidad de Subida (KiB/s)</string>
     <string name="torrent_option_automatic_torrent_management">Gestión automática de los torrents</string>
-    <string name="torrent_option_share_limit_time">Minutos</string>
     <string name="torrent_option_speed_limit">Límites de la velocidad del Torrent</string>
     <string name="torrent_overview_comment">Comentario</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>

@@ -148,7 +148,6 @@
     <string name="torrent_action_copy_hash_v2">Sjekksum v2</string>
     <string name="torrent_action_export">Eksporter .torrent</string>
     <string name="torrent_option_share_limit_ratio">Forhold</string>
-    <string name="torrent_option_share_limit_time">Minutter</string>
     <string name="torrent_overview_information">Info</string>
     <string name="torrent_overview_total_size">Total størrelse</string>
     <string name="torrent_overview_hash_v1">Sjekksum v1</string>
