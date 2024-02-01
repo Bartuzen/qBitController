@@ -23,7 +23,7 @@
 
     <item
         android:id="@+id/menu_plugin_search"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_online"
         android:title="@string/torrent_list_action_search_online"
         app:showAsAction="ifRoom" />
 
