@@ -16,6 +16,9 @@
         <item name="android:textAlignment">viewStart</item>
 
         <item name="snackbarTextViewStyle">@style/AppTheme.SnackbarTextViewStyle</item>
+
+        <item name="android:statusBarColor">@color/status_bar_color</item>
+        <item name="android:navigationBarColor">@color/navigation_bar_color</item>
     </style>
 
     <style name="AppTheme.ToolbarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />

@@ -5,6 +5,8 @@
 
     <color name="color_on_secondary">#FFFFFF</color>
 
+    <color name="status_bar_color">#282828</color>
+
     <color name="gray">#535353</color>
 
     <color name="rss_read_article_background">#353535</color>
