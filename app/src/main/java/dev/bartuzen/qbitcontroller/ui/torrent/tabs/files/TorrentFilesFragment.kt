@@ -112,12 +112,12 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                                 actionMode?.finish()
                             }
                             R.id.menu_rename -> {
-                                val key = selectedItems.first()
+                                val key = selectedItems.firstOrNull() ?: return true
                                 val fileName = key.drop(1)
                                 val isFile = key.startsWith("1")
 
                                 val nodeStack = viewModel.nodeStack.value
-                                val separator = viewModel.torrentFiles.value?.separator ?: return false
+                                val separator = viewModel.torrentFiles.value?.separator ?: return true
 
                                 val root = if (nodeStack.isNotEmpty()) {
                                     val folderList = mutableListOf<String>()

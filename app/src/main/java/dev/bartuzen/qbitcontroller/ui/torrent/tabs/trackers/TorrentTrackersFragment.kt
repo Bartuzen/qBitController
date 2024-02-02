@@ -111,7 +111,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                                 }
                             }
                             R.id.menu_edit -> {
-                                val selectedItem = selectedItems.first()
+                                val selectedItem = selectedItems.firstOrNull() ?: return true
                                 if (selectedItem.first() == '1') {
                                     val tracker = selectedItem.substring(1)
                                     showEditTrackerDialog(
