@@ -105,33 +105,34 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
                     override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
 
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
-                        R.id.menu_ban_peers -> {
-                            showBanPeersDialog(
-                                peers = selectedItems,
-                                onBan = {
-                                    finishSelection()
-                                    actionMode?.finish()
-                                }
-                            )
-                            true
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                        when (item.itemId) {
+                            R.id.menu_ban_peers -> {
+                                showBanPeersDialog(
+                                    peers = selectedItems,
+                                    onBan = {
+                                        finishSelection()
+                                        actionMode?.finish()
+                                    }
+                                )
+                            }
+                            R.id.menu_select_all -> {
+                                selectAll()
+                            }
+                            R.id.menu_select_inverse -> {
+                                selectInverse()
+                            }
+                            else -> return false
                         }
-                        R.id.menu_select_all -> {
-                            selectAll()
-                            true
-                        }
-                        R.id.menu_select_inverse -> {
-                            selectInverse()
-                            true
-                        }
-                        else -> false
+                        return true
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
                         finishSelection()
                         actionMode = null
                     }
-                })
+                }
+                )
             }
             onSelectionModeEnd {
                 actionMode?.finish()

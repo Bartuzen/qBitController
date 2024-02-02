@@ -87,52 +87,57 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
 
                     override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
 
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = when (item.itemId) {
-                        R.id.menu_delete -> {
-                            val items = selectedItems
-                                .filter { !it.startsWith("0") }
-                                .map { it.substring(1) }
-                            if (items.isNotEmpty()) {
-                                showDeleteTrackersDialog(
-                                    trackerKeys = items,
-                                    onDelete = {
-                                        finishSelection()
-                                        actionMode?.finish()
-                                    }
-                                )
-                            } else {
-                                showSnackbar(R.string.torrent_trackers_cannot_delete_default, view = requireActivity().view)
-                                finishSelection()
-                                actionMode?.finish()
+                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+                        when (item.itemId) {
+                            R.id.menu_delete -> {
+                                val items = selectedItems
+                                    .filter { !it.startsWith("0") }
+                                    .map { it.substring(1) }
+                                if (items.isNotEmpty()) {
+                                    showDeleteTrackersDialog(
+                                        trackerKeys = items,
+                                        onDelete = {
+                                            finishSelection()
+                                            actionMode?.finish()
+                                        }
+                                    )
+                                } else {
+                                    showSnackbar(
+                                        R.string.torrent_trackers_cannot_delete_default,
+                                        view = requireActivity().view
+                                    )
+                                    finishSelection()
+                                    actionMode?.finish()
+                                }
                             }
-                            true
-                        }
-                        R.id.menu_edit -> {
-                            val selectedItem = selectedItems.first()
-                            if (selectedItem.first() == '1') {
-                                val tracker = selectedItem.substring(1)
-                                showEditTrackerDialog(
-                                    tracker = tracker,
-                                    onSuccess = { newUrl ->
-                                        viewModel.editTracker(serverId, torrentHash, tracker, newUrl)
-                                    }
-                                )
-                            } else {
-                                showSnackbar(R.string.torrent_trackers_cannot_edit_default, view = requireActivity().view)
-                                finishSelection()
-                                actionMode?.finish()
+                            R.id.menu_edit -> {
+                                val selectedItem = selectedItems.first()
+                                if (selectedItem.first() == '1') {
+                                    val tracker = selectedItem.substring(1)
+                                    showEditTrackerDialog(
+                                        tracker = tracker,
+                                        onSuccess = { newUrl ->
+                                            viewModel.editTracker(serverId, torrentHash, tracker, newUrl)
+                                        }
+                                    )
+                                } else {
+                                    showSnackbar(
+                                        R.string.torrent_trackers_cannot_edit_default,
+                                        view = requireActivity().view
+                                    )
+                                    finishSelection()
+                                    actionMode?.finish()
+                                }
                             }
-                            true
+                            R.id.menu_select_all -> {
+                                selectAll()
+                            }
+                            R.id.menu_select_inverse -> {
+                                selectInverse()
+                            }
+                            else -> return false
                         }
-                        R.id.menu_select_all -> {
-                            selectAll()
-                            true
-                        }
-                        R.id.menu_select_inverse -> {
-                            selectInverse()
-                            true
-                        }
-                        else -> false
+                        return true
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
