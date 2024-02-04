@@ -11,6 +11,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentPeerBinding
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
 import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
+import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import java.util.Locale
 
@@ -46,6 +47,15 @@ class TorrentPeersAdapter(
             binding.root.setCardBackgroundColor(backgroundColor)
 
             binding.textName.text = context.getString(R.string.torrent_peers_ip_format, peer.ip, peer.port)
+
+            val speedList = mutableListOf<String>()
+            if (peer.downloadSpeed > 0) {
+                speedList.add("↓ ${formatBytesPerSecond(context, peer.downloadSpeed.toLong())}")
+            }
+            if (peer.uploadSpeed > 0) {
+                speedList.add("↑ ${formatBytesPerSecond(context, peer.uploadSpeed.toLong())}")
+            }
+            binding.textSpeed.text = speedList.joinToString(" ")
 
             if (peer.countryCode != null) {
                 val countryName = Locale("", peer.countryCode).getDisplayCountry(
