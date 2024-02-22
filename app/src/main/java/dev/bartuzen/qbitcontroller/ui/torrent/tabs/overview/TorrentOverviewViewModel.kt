@@ -11,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
+import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -41,6 +42,9 @@ class TorrentOverviewViewModel @Inject constructor(
 
     private val _torrentProperties = MutableStateFlow<TorrentProperties?>(null)
     val torrentProperties = _torrentProperties.asStateFlow()
+
+    private val _torrentPieces = MutableStateFlow<List<PieceState>?>(null)
+    val torrentPieces = _torrentPieces.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -88,12 +92,29 @@ class TorrentOverviewViewModel @Inject constructor(
                 }
             }
         }
+        val piecesDeferred = async {
+            when (val result = repository.getPieces(serverId, torrentHash)) {
+                is RequestResult.Success -> {
+                    result.data
+                }
+                is RequestResult.Error -> {
+                    if (result is RequestResult.Error.ApiError && result.code == 404) {
+                        eventChannel.send(Event.TorrentNotFound)
+                    } else {
+                        eventChannel.send(Event.Error(result))
+                    }
+                    throw CancellationException()
+                }
+            }
+        }
 
         val torrent = torrentDeferred.await()
         val properties = propertiesDeferred.await()
+        val pieces = piecesDeferred.await()
 
         _torrent.value = torrent
         _torrentProperties.value = properties
+        _torrentPieces.value = pieces
 
         notifier.checkCompleted(serverId, torrent)
     }

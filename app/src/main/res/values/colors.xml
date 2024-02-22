@@ -18,9 +18,6 @@
     <color name="category_tag_selected_background">@color/gray</color>
     <color name="torrent_status_selected_background">@color/gray</color>
 
-    <color name="piece_downloaded">@color/color_primary</color>
-    <color name="piece_not_downloaded">@color/gray</color>
-
     <color name="torrent_category">@color/color_primary</color>
     <color name="torrent_tag">@color/color_secondary</color>
 
@@ -37,6 +34,10 @@
     <color name="torrent_state_paused_uploading">#218BFF</color>
     <color name="torrent_state_queued">#7D4E00</color>
     <color name="torrent_state_error">#CF222E</color>
+
+    <color name="piece_not_downloaded">@color/gray</color>
+    <color name="piece_downloading">#A1F0A1</color>
+    <color name="piece_downloaded">#0078D7</color>
 
     <color name="file_priority_do_not_download">#57606A</color>
     <color name="file_priority_normal">#2DA44E</color>

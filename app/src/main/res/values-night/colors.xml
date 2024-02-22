@@ -20,6 +20,9 @@
     <color name="torrent_state_queued">#845306</color>
     <color name="torrent_state_error">#F85149</color>
 
+    <color name="piece_downloading">#238636</color>
+    <color name="piece_downloaded">#1F6FEB</color>
+
     <color name="file_priority_do_not_download">#8B949E</color>
     <color name="file_priority_normal">#238636</color>
     <color name="file_priority_high">#E17B5A</color>

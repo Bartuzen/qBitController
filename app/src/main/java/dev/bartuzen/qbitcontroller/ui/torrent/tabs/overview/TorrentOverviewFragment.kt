@@ -228,8 +228,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
-        combine(viewModel.torrent, viewModel.torrentProperties) { torrent, properties ->
-            torrent != null && properties != null
+        combine(viewModel.torrent, viewModel.torrentProperties, viewModel.torrentPieces) { torrent, properties, pieces ->
+            torrent != null && properties != null && pieces != null
         }.launchAndCollectLatestIn(viewLifecycleOwner) { isVisible ->
             if (isVisible) {
                 binding.layoutContent.alpha = 0f
@@ -242,13 +242,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             }
         }
 
-        combine(viewModel.torrent, viewModel.torrentProperties) { torrent, properties ->
-            if (torrent != null && properties != null) {
-                torrent to properties
+        combine(viewModel.torrent, viewModel.torrentProperties, viewModel.torrentPieces) { torrent, properties, pieces ->
+            if (torrent != null && properties != null && pieces != null) {
+                Triple(torrent, properties, pieces)
             } else {
                 null
             }
-        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrent, properties) ->
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (torrent, properties, pieces) ->
+            binding.viewLine.setPieces(pieces)
+
             binding.progressTorrent.setColor(getTorrentStateColor(requireContext(), torrent.state))
 
             binding.textName.text = torrent.name

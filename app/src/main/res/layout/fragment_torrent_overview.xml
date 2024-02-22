@@ -114,6 +114,33 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginTop="8dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/torrent_overview_pieces" />
+
+                        <dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.PieceBarView
+                            android:id="@+id/view_line"
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="8dp">
+
                     <GridLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
