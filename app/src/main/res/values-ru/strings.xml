@@ -345,7 +345,6 @@
     <string name="torrent_option_download_speed_limit">Ограничение скорости загрузки (КиБ/с)</string>
     <string name="torrent_option_share_limit_custom">Задать ограничение раздачи</string>
     <string name="torrent_option_share_limit_ratio">Рейтинг</string>
-    <string name="torrent_option_share_limit_time">Минуты</string>
     <string name="torrent_overview_total_size">Общий размер</string>
     <string name="torrent_overview_hash_v1">Инфо-хеш v1</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (из них есть %3$d)</string>

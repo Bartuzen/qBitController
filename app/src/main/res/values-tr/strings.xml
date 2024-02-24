@@ -238,7 +238,6 @@
     <string name="torrent_option_share_limit_disable">Paylaşım sınırını devre dışı bırak</string>
     <string name="torrent_option_share_limit_custom">Özel paylaşım sınırı ayarla</string>
     <string name="torrent_option_share_limit_ratio">Oran</string>
-    <string name="torrent_option_share_limit_time">Dakika</string>
     <string name="torrent_option_prioritize_first_last_piece">Önce ilk ve son parçaları indir</string>
     <string name="torrent_option_sequential_download">Sıralı düzende indir</string>
     <string name="torrent_category_update_success">Kategori başarıyla güncellendi.</string>
@@ -618,4 +617,6 @@
     <string name="settings_language">Dil</string>
     <string name="settings_language_system_default">Sistem Varsayılanı</string>
     <string name="search_result_filter_reset">Sıfırla</string>
+    <string name="torrent_option_share_limit_total_minutes">Toplam Dakika</string>
+    <string name="torrent_option_share_limit_inactive_minutes">Etkin Olmayan Dakika</string>
 </resources>

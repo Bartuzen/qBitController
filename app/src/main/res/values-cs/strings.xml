@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="size_mebibytes">MiB</string>
+    <string name="error_cannot_connect">Nelze připojit k serveru.</string>
+    <string name="error_timeout">Připojení vypršelo.</string>
+    <string name="error_no_data">Server neposlal žádná data.</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Zrušit</string>
+    <string name="action_search">Hledání</string>
+    <string name="action_select_all">Zvolit vše</string>
+    <string name="action_select_inverse">Invertovat výběr</string>
+    <string name="main_action_settings">Nastavení</string>
+    <string name="language_code">cs</string>
+    <string name="share_add_torrent">Přidat Torrent</string>
+    <string name="torrent_status_error">Chyba</string>
+    <string name="torrent_status_paused">Pozastaveno</string>
+    <string name="torrent_status_missing_files">Chybí soubory</string>
+    <string name="torrent_status_queued">Ve frontě</string>
+    <string name="torrent_status_checking">Kontroluje se</string>
+    <string name="torrent_status_completed">Dokončeno</string>
+    <string name="torrent_status_checking_resume_data">Kontrola pokračovacích dat</string>
+    <string name="torrent_status_allocating_space">Alokování místa</string>
+    <string name="torrent_status_downloading">Stahování</string>
+    <string name="torrent_status_downloading_metadata">Stahování metadat</string>
+    <string name="torrent_status_moving">Přesouvání</string>
+    <string name="size_bytes">B</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="size_exbibytes">EiB</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
+    <string name="error_invalid_credentials">Neplatné uživatelské jméno či heslo.</string>
+    <string name="error_unknown_host">Neznámá IP či hostitel.</string>
+    <string name="main_action_about">O aplikaci</string>
+    <string name="main_add_server">Přidat server</string>
+</resources>

@@ -236,7 +236,6 @@
     <string name="torrent_option_share_limit_disable">禁用分享限制</string>
     <string name="torrent_option_share_limit_custom">设置自定义分享限制</string>
     <string name="torrent_option_share_limit_ratio">分享率</string>
-    <string name="torrent_option_share_limit_time">做种时间（分钟）</string>
     <string name="torrent_option_prioritize_first_last_piece">先下载首尾文件块</string>
     <string name="torrent_option_sequential_download">按顺序下载</string>
     <string name="torrent_category_update_success">已成功更新分类。</string>
@@ -601,4 +600,6 @@
     <string name="settings_language">语言</string>
     <string name="settings_language_system_default">系统默认</string>
     <string name="torrent_list_action_set_category">设置标签</string>
+    <string name="torrent_option_share_limit_total_minutes">总分钟数</string>
+    <string name="search_result_filter_reset">清除筛选</string>
 </resources>
