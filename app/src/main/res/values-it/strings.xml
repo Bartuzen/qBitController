@@ -44,7 +44,7 @@
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_statistics">Statistiche</string>
     <string name="torrent_list_action_execution_log">Log Esecuzione</string>
-    <string name="torrent_list_action_alternative_speed_limits">Limiti di velocità alternativi</string>
+    <string name="torrent_speed_alternative_speed_limits">Limiti di velocità alternativi</string>
     <string name="torrent_list_action_shutdown">Esci da qBittorrent</string>
     <string name="torrent_list_action_sort">Ordina</string>
     <string name="torrent_list_action_sort_name">Nome</string>

@@ -45,7 +45,7 @@
     <string name="torrent_list_action_execution_log">Kjøringslogg</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">Søk på nett</string>
-    <string name="torrent_list_action_alternative_speed_limits">Alternative hastighetsgrenser</string>
+    <string name="torrent_speed_alternative_speed_limits">Alternative hastighetsgrenser</string>
     <string name="torrent_list_action_shutdown">Avslutt qBittorrent</string>
     <string name="torrent_list_action_sort">Sorter</string>
     <string name="torrent_list_action_sort_name">Navn</string>

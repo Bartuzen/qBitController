@@ -114,7 +114,7 @@
     <string name="torrent_status_unknown">Unbekannt</string>
     <string name="torrent_list_action_sort_status">Status</string>
     <string name="torrent_list_category_tag_all">Alle</string>
-    <string name="torrent_list_action_alternative_speed_limits">Alternatives Speed Limit</string>
+    <string name="torrent_speed_alternative_speed_limits">Alternatives Speed Limit</string>
     <string name="torrent_list_action_sort_reverse">Umgekehrt</string>
     <string name="torrent_list_action_search_online">Suche Online</string>
     <string name="error_unknown">Unbekannter Fehler: %1$s</string>

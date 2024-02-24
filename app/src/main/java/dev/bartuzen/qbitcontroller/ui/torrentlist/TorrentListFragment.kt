@@ -156,12 +156,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                     }
 
                     viewModel.mainData.launchAndCollectLatestIn(viewLifecycleOwner) { mainData ->
-                        val speedLimitMode = menu.findItem(R.id.menu_speed_limit_mode)
                         val stats = menu.findItem(R.id.menu_stats)
-
-                        speedLimitMode.isEnabled = mainData != null
-                        speedLimitMode.isChecked = mainData?.serverState?.useAlternativeSpeedLimits == true
-
                         stats.isEnabled = mainData != null
                     }
 
@@ -281,11 +276,6 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                         }
                         R.id.menu_sort_reverse -> {
                             viewModel.changeReverseSorting()
-                        }
-                        R.id.menu_speed_limit_mode -> {
-                            val isCurrentLimitAlternative =
-                                viewModel.mainData.value?.serverState?.useAlternativeSpeedLimits == true
-                            viewModel.toggleSpeedLimitsMode(serverId, isCurrentLimitAlternative)
                         }
                         R.id.menu_stats -> {
                             showStatsDialog()
@@ -537,7 +527,11 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
 
         binding.textSpeed.setOnClickListener {
             viewModel.mainData.value?.serverState?.let { serverState ->
-                showSpeedLimitsDialog(serverState.downloadSpeedLimit, serverState.uploadSpeedLimit)
+                showSpeedLimitsDialog(
+                    useAlternativeSpeedLimits = serverState.useAlternativeSpeedLimits,
+                    downloadSpeedLimit = serverState.downloadSpeedLimit,
+                    uploadSpeedLimit = serverState.uploadSpeedLimit
+                )
             }
         }
 
@@ -1022,11 +1016,20 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
     }
 
-    private fun showSpeedLimitsDialog(downloadSpeedLimit: Int, uploadSpeedLimit: Int) {
+    private fun showSpeedLimitsDialog(useAlternativeSpeedLimits: Boolean, downloadSpeedLimit: Int, uploadSpeedLimit: Int) {
         lateinit var dialogBinding: DialogSpeedLimitBinding
 
         val dialog = showDialog(DialogSpeedLimitBinding::inflate) { binding ->
             dialogBinding = binding
+
+            binding.checkSpeedLimit.isChecked = useAlternativeSpeedLimits
+            binding.checkSpeedLimit.setOnCheckedChangeListener { _, isChecked ->
+                val isEnabled = useAlternativeSpeedLimits == isChecked
+                binding.inputLayoutDownload.isEnabled = isEnabled
+                binding.inputLayoutUpload.isEnabled = isEnabled
+                binding.inputLayoutDlspeedUnit.isEnabled = isEnabled
+                binding.inputLayoutUpspeedUnit.isEnabled = isEnabled
+            }
 
             binding.dropdownDlspeedLimitUnit.setItems(
                 R.string.speed_kibibytes_per_second,
@@ -1046,6 +1049,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newUseAlternativeSpeedLimits = dialogBinding.checkSpeedLimit.isChecked
+
+            if (useAlternativeSpeedLimits != newUseAlternativeSpeedLimits) {
+                viewModel.toggleSpeedLimitsMode(serverId, !newUseAlternativeSpeedLimits)
+                dialog.dismiss()
+                return@setOnClickListener
+            }
+
             fun convertSpeedToBytes(speed: String, unit: Int): Int? {
                 if (speed.isEmpty()) {
                     return 0

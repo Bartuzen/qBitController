@@ -40,12 +40,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/menu_speed_limit_mode"
-        android:checkable="true"
-        android:title="@string/torrent_list_action_alternative_speed_limits"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/menu_shutdown"
         android:title="@string/torrent_list_action_shutdown"
         app:showAsAction="never" />

@@ -193,7 +193,7 @@
     <string name="torrent_list_action_sort_status">Estado</string>
     <string name="torrent_list_category_tag_all">Todos</string>
     <string name="stats_all_time_download">Total Bajado</string>
-    <string name="torrent_list_action_alternative_speed_limits">Límites de Velocidad Alternativos</string>
+    <string name="torrent_speed_alternative_speed_limits">Límites de Velocidad Alternativos</string>
     <string name="stats_session_waste">Desperdicio de Sesión</string>
     <string name="eta_seconds">%1$ss</string>
     <string name="torrent_list_action_sort_reverse">Invertir</string>

@@ -1,77 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="16dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp">
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/check_speed_limit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/torrent_speed_alternative_speed_limits"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_upload"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:hint="@string/torrent_speed_upload_limit"
-            app:layout_constraintEnd_toStartOf="@id/input_layout_upspeed_unit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/input_layout_upload"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/torrent_speed_upload_limit"
+        app:layout_constraintEnd_toStartOf="@id/input_layout_upspeed_unit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/check_speed_limit">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_upspeed_unit"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/input_layout_upspeed_unit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/check_speed_limit">
 
         <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
-                android:id="@+id/dropdown_upspeed_limit_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:id="@+id/dropdown_upspeed_limit_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_download"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:hint="@string/torrent_speed_download_limit"
-            app:layout_constraintEnd_toStartOf="@id/input_layout_dlspeed_unit"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_layout_upload">
+        android:id="@+id/input_layout_download"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:hint="@string/torrent_speed_download_limit"
+        app:layout_constraintEnd_toStartOf="@id/input_layout_dlspeed_unit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_upload">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_dlspeed_unit"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_layout_upload">
+        android:id="@+id/input_layout_dlspeed_unit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_upload">
 
         <dev.bartuzen.qbitcontroller.ui.view.ExposedDropdownTextView
-                android:id="@+id/dropdown_dlspeed_limit_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:id="@+id/dropdown_dlspeed_limit_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

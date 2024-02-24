@@ -63,7 +63,7 @@
     <string name="torrent_list_action_search_online">在线搜索</string>
     <string name="torrent_list_action_statistics">统计</string>
     <string name="torrent_list_action_execution_log">运行日志</string>
-    <string name="torrent_list_action_alternative_speed_limits">备用速度限制</string>
+    <string name="torrent_speed_alternative_speed_limits">备用速度限制</string>
     <string name="torrent_list_action_shutdown">退出 qBittorrent</string>
     <string name="torrent_list_action_sort">排序</string>
     <string name="torrent_list_action_sort_name">名称</string>

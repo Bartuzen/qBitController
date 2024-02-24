@@ -73,7 +73,6 @@
     <string name="torrent_list_action_search_online">Search Online</string>
     <string name="torrent_list_action_statistics">Statistics</string>
     <string name="torrent_list_action_execution_log">Execution Log</string>
-    <string name="torrent_list_action_alternative_speed_limits">Alternative Speed Limits</string>
     <string name="torrent_list_action_shutdown">Quit qBittorrent</string>
     <string name="torrent_list_action_sort">Sort</string>
     <string name="torrent_list_action_sort_name">Name</string>
@@ -169,6 +168,7 @@
     <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
 
     <string name="torrent_speed_limits_title">Speed Limits</string>
+    <string name="torrent_speed_alternative_speed_limits">Alternative Speed Limits</string>
     <string name="torrent_speed_download_limit">Download Speed Limit</string>
     <string name="torrent_speed_upload_limit">Upload Speed Limit</string>
     <string name="torrent_speed_update_success">Speed limits updated successfully.</string>

@@ -64,7 +64,7 @@
     <string name="torrent_list_action_search_online">Çevrimiçi Ara</string>
     <string name="torrent_list_action_statistics">İstatistikler</string>
     <string name="torrent_list_action_execution_log">Çalıştırma Günlüğü</string>
-    <string name="torrent_list_action_alternative_speed_limits">Alternatif Hız Sınırlarını</string>
+    <string name="torrent_speed_alternative_speed_limits">Alternatif Hız Sınırlarını</string>
     <string name="torrent_list_action_shutdown">qBittorrent\'i Kapat</string>
     <string name="torrent_list_action_sort">Sıralama</string>
     <string name="torrent_list_action_sort_name">Ad</string>

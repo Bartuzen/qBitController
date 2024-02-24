@@ -140,7 +140,7 @@
     <string name="torrent_status_unknown">Невідомо</string>
     <string name="torrent_list_action_sort_status">Статус</string>
     <string name="torrent_list_category_tag_all">Усе</string>
-    <string name="torrent_list_action_alternative_speed_limits">Альтернативні обмеження швидкості</string>
+    <string name="torrent_speed_alternative_speed_limits">Альтернативні обмеження швидкості</string>
     <string name="eta_seconds">%1$sс</string>
     <string name="torrent_list_action_sort_reverse">У зворотному порядку</string>
     <string name="torrent_list_action_search_online">Шукати онлайн</string>

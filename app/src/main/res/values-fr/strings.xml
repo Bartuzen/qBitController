@@ -81,7 +81,7 @@
     <string name="torrent_list_action_search_online">Rechercher en ligne</string>
     <string name="torrent_list_action_statistics">Statistiques</string>
     <string name="torrent_list_action_execution_log">Journal d\'exécution</string>
-    <string name="torrent_list_action_alternative_speed_limits">Limites de vitesse alternatives</string>
+    <string name="torrent_speed_alternative_speed_limits">Limites de vitesse alternatives</string>
     <string name="torrent_list_action_shutdown">Quitter qBittorrent</string>
     <string name="torrent_list_action_sort">Trier</string>
     <string name="torrent_list_action_sort_name">Nom</string>

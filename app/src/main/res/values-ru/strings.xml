@@ -507,7 +507,7 @@
     <string name="dialog_cancel">Отмена</string>
     <string name="action_select_all">Выделить всё</string>
     <string name="main_no_servers">Серверы не найдены. Нажмите здесь, чтобы добавить.</string>
-    <string name="torrent_list_action_alternative_speed_limits">Особые ограничения скорости</string>
+    <string name="torrent_speed_alternative_speed_limits">Особые ограничения скорости</string>
     <string name="torrent_list_action_sort_name">Имя</string>
     <string name="torrent_list_action_sort_status">Статус</string>
     <string name="torrent_list_action_sort_priority">Приоритет</string>

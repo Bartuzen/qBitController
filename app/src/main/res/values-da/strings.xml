@@ -43,7 +43,7 @@
     <string name="torrent_list_action_add_torrent">Tilføj Torrent</string>
     <string name="torrent_list_action_search_online">Søg Online</string>
     <string name="torrent_list_action_statistics">Statistikker</string>
-    <string name="torrent_list_action_alternative_speed_limits">Alternative Hastighedsgrænser</string>
+    <string name="torrent_speed_alternative_speed_limits">Alternative Hastighedsgrænser</string>
     <string name="torrent_list_action_shutdown">Afslut qBittorrent</string>
     <string name="torrent_list_action_sort">Sortér</string>
     <string name="torrent_list_action_sort_eta">ETA</string>
