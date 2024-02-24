@@ -140,7 +140,10 @@ class TorrentFilesViewModel @Inject constructor(
     fun goBack() {
         _nodeStack.update { stack ->
             stack.clone().apply {
-                pop()
+                try {
+                    pop()
+                } catch (_: NoSuchElementException) {
+                }
             }
         }
     }
