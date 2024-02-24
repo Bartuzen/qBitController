@@ -1,0 +1,5 @@
+- Added inactive seeding time limit to torrent options
+- Alternative speed limits option is moved to speed limits dialog
+- Reverted internal changes that created problems, especially on older qBittorrent versions
+
+Check GitHub release for all changes.
