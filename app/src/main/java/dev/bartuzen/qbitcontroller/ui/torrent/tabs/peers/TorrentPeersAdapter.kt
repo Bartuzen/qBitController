@@ -82,6 +82,7 @@ class TorrentPeersAdapter(
 
         override fun areContentsTheSame(oldItem: TorrentPeer, newItem: TorrentPeer) =
             oldItem.ip == newItem.ip && oldItem.port == newItem.port && oldItem.countryCode == newItem.countryCode &&
-                oldItem.connection == newItem.connection && oldItem.flags == newItem.flags
+                oldItem.connection == newItem.connection && oldItem.flags == newItem.flags &&
+                oldItem.downloadSpeed == newItem.downloadSpeed && oldItem.uploadSpeed == newItem.uploadSpeed
     }
 }
