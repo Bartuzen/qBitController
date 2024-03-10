@@ -121,7 +121,7 @@
     <string name="torrent_status_stalled">Verzögert</string>
     <plurals name="torrent_list_torrents_delete_success">
         <item quantity="one">%1$d Torrent wurde erfolgreich gelöscht.</item>
-        <item quantity="other">"%1$d  Torrents wurden erfolgreich gelöscht."</item>
+        <item quantity="other">%1$d Torrents wurden erfolgreich gelöscht.</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
         <item quantity="one">%1$d Torrent ausgewählt</item>
