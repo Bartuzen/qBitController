@@ -287,6 +287,7 @@
     <string name="torrent_export_error">Couldn\'t export torrent.</string>
 
     <string name="torrent_rename_torrent_hint">Name</string>
+    <string name="torrent_force_recheck_confirm">Are you sure you want to force recheck this torrent?</string>
     <string name="torrent_no_categories">Couldn\'t find any categories.</string>
     <string name="torrent_no_tags">Couldn\'t find any tags.</string>
 

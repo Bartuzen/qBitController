@@ -156,7 +156,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                             showRenameTorrentDialog()
                         }
                         R.id.menu_recheck -> {
-                            viewModel.recheckTorrent(serverId, torrentHash)
+                            showRecheckDialog()
                         }
                         R.id.menu_reannounce -> {
                             viewModel.reannounceTorrent(serverId, torrentHash)
@@ -704,6 +704,17 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             } else {
                 dialogBinding.inputLayoutName.error = getString(R.string.torrent_rename_name_cannot_be_blank)
             }
+        }
+    }
+
+    private fun showRecheckDialog() {
+        showDialog {
+            setTitle(R.string.torrent_action_force_recheck)
+            setMessage(R.string.torrent_force_recheck_confirm)
+            setPositiveButton { _, _ ->
+                viewModel.recheckTorrent(serverId, torrentHash)
+            }
+            setNegativeButton()
         }
     }
 
