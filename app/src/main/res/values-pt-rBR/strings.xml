@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="torrent_enable_super_seeding_success">\"Super seeding\" ativado com sucesso.</string>
-    <string name="torrent_option_share_limit_total_minutes">Total de minutos</string>
+    <string name="torrent_option_share_limit_total_minutes">Total em minutos</string>
     <string name="torrent_option_share_limit_inactive_minutes">Minutos inativos</string>
     <string name="torrent_location_cannot_be_blank">A localização não pode estar em branco.</string>
     <string name="torrent_export_error">Não foi possível exportar torrent.</string>
@@ -56,7 +56,7 @@
         <item quantity="many">%1$d segundos</item>
         <item quantity="other">%1$d segundos</item>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar">Ocultar a barra de carregamento</string>
+    <string name="settings_auto_refresh_hide_loading_bar">Ocultar barra de carregamento</string>
     <string name="settings_auto_refresh_hide_loading_bar_description">Não exibir barra de carregamento ao atualizar automaticamente</string>
     <string name="settings_notification_check_interval">Intervalo de verificação de notificações</string>
     <string name="settings_server_advanced_basic_auth">Autenticação básica</string>
@@ -74,8 +74,8 @@
     </plurals>
     <string name="torrent_add_start_torrent">Iniciar torrent</string>
     <string name="torrent_add_skip_hash_checking">Ignorar verificação de hash</string>
-    <string name="torrent_add_sequential_download">Baixar em ordem sequencial</string>
-    <string name="torrent_add_prioritize_first_last_piece">Baixar primeiro os primeiros e os últimos pedaços</string>
+    <string name="torrent_add_sequential_download">Fazer download em ordem sequencial</string>
+    <string name="torrent_add_prioritize_first_last_piece">Fazer download da primeira e as últimas peças primeiro</string>
     <string name="torrent_add_default">Padrão</string>
     <string name="torrent_add_stop_condition">Condição de parada</string>
     <string name="torrent_add_stop_condition_none">Nenhuma</string>
@@ -87,22 +87,22 @@
     <string name="torrent_add_success">Torrent adicionado com sucesso.</string>
     <string name="torrent_add_error">Não foi possível adicionar o torrent.</string>
     <string name="rss_action_delete_folder">Excluir pasta</string>
-    <string name="rss_action_refresh_all">Atualizar tudo</string>
+    <string name="rss_action_refresh_all">Atualizar todos</string>
     <string name="rss_action_mark_all_as_read">Marcar tudo como lido</string>
     <string name="rss_action_refresh">Atualizar</string>
-    <string name="rss_field_required">Este campo é obrigatório.</string>
-    <string name="rss_move_feed_error">Não foi possível mover o Feed.</string>
+    <string name="rss_field_required">Campo obrigatório.</string>
+    <string name="rss_move_feed_error">Não foi possível mover o feed.</string>
     <string name="rss_rename_folder_error">Não foi possível renomear a pasta.</string>
     <string name="rss_mark_all_articles_as_read_success">Todos os artigos marcados como lidos com sucesso.</string>
     <string name="rss_refresh_feed_success">Feed atualizado com sucesso.</string>
     <string name="rss_rule_must_not_contain">Não deve conter</string>
-    <string name="rss_rule_use_smart_episode_filter">Use filtro de episódio inteligente</string>
+    <string name="rss_rule_use_smart_episode_filter">Usar filtro de episódio inteligente</string>
     <string name="rss_rule_save_to_a_different_directory">Salvar em um diretório diferente</string>
     <string name="rss_rule_use_global_settings">Usar configurações globais</string>
     <string name="rss_move_folder_error">Não foi possível mover a pasta.</string>
-    <string name="rss_feed_not_found">RSS feed não foi encontrado.</string>
+    <string name="rss_feed_not_found">O feed RSS não foi encontrado.</string>
     <string name="rss_rule_episode_filter">Filtro de episódio</string>
-    <string name="rss_rules">RSS Downloader</string>
+    <string name="rss_rules">Assistente de download RSS</string>
     <string name="torrent_status_checking_resume_data">Verificando dados do resumo</string>
     <string name="language_code">pt-BR</string>
     <string name="share_add_torrent">Adicionar torrent</string>
@@ -149,7 +149,7 @@
     <string name="torrent_list_action_sort_completion_date">Data de conclusão</string>
     <string name="torrent_list_action_sort_last_activity">Ultima atividade</string>
     <string name="torrent_list_action_sort_reverse">Reverter</string>
-    <string name="torrent_list_action_pause">Pausa</string>
+    <string name="torrent_list_action_pause">Pausar</string>
     <string name="torrent_list_action_delete">Excluir</string>
     <string name="torrent_list_action_priority">Prioridade</string>
     <string name="torrent_list_action_priority_increase">Aumentar prioridade</string>
@@ -173,7 +173,7 @@
         <item quantity="many">%1$d torrents foram retomados com sucesso.</item>
         <item quantity="other">%1$d torrents foram retomados com sucesso.</item>
     </plurals>
-    <string name="torrent_list_action_resume">Retomar</string>
+    <string name="torrent_list_action_resume">Continuar</string>
     <plurals name="torrent_list_delete_torrents">
         <item quantity="one">Excluir %1$d torrent</item>
         <item quantity="many">Excluir %1$d torrents</item>
@@ -184,7 +184,7 @@
     <string name="torrent_list_set_location_hint">Salvar caminho</string>
     <string name="torrent_list_category_tag_all">Todos</string>
     <string name="torrent_list_uncategorized">Sem categoria</string>
-    <string name="torrent_list_untagged">Sem etiqueta</string>
+    <string name="torrent_list_untagged">Sem tag</string>
     <string name="torrent_list_categories">Categorias</string>
     <string name="torrent_list_create_subcategory">Criar subcategoria</string>
     <string name="torrent_list_create_category">Criar categoria</string>
@@ -240,13 +240,13 @@
     <string name="torrent_tab_peers">Peers</string>
     <string name="torrent_tab_web_seeds">Fontes HTTP</string>
     <string name="torrent_delete">Excluir torrent</string>
-    <string name="torrent_delete_files">Excluir também os arquivos do disco rígido</string>
+    <string name="torrent_delete_files">Excluir também os arquivos no disco rígido</string>
     <string name="torrent_deleted_success">Torrent excluído com sucesso.</string>
     <string name="torrent_paused_success">Torrent pausado com sucesso.</string>
     <string name="torrent_resumed_success">Torrent retomado com sucesso.</string>
     <string name="torrent_recheck_success">A nova verificação do torrent foi iniciada com sucesso.</string>
     <string name="torrent_option_download_path_enable">Usar outro caminho para torrents incompletos</string>
-    <string name="torrent_option_speed_limit">Limites de velocidade de torrent</string>
+    <string name="torrent_option_speed_limit">Limite de velocidade para torrent</string>
     <string name="torrent_option_upload_speed_limit">Limite de velocidade para upload (KiB/s)</string>
     <string name="torrent_option_download_speed_limit">Limite de velocidade para download (KiB/s)</string>
     <string name="torrent_option_share_limit">Limitar compartilhamento de torrent</string>
@@ -254,15 +254,15 @@
     <string name="torrent_option_share_limit_disable">Desabilitar limite de compartilhamento</string>
     <string name="torrent_option_share_limit_custom">Definir limite de compartilhamento personalizado</string>
     <string name="torrent_option_share_limit_ratio">Proporção</string>
-    <string name="torrent_option_prioritize_first_last_piece">Baixar primeiro os primeiros e os últimos pedaços</string>
-    <string name="torrent_option_sequential_download">Baixar em ordem sequencial</string>
+    <string name="torrent_option_prioritize_first_last_piece">Fazer download da primeira e as últimas peças primeiro</string>
+    <string name="torrent_option_sequential_download">Fazer download em ordem sequencial</string>
     <string name="torrent_category_update_success">Categoria atualizada com sucesso.</string>
-    <string name="torrent_tags_update_success">Etiquetas atualizadas com sucesso.</string>
+    <string name="torrent_tags_update_success">Tags atualizadas com sucesso.</string>
     <string name="torrent_rename_success">Nome de torrent atualizado com sucesso.</string>
     <string name="torrent_location_update_success">Alterado localização de torrent com sucesso.</string>
     <string name="torrent_rename_name_cannot_be_blank">O nome do torrent não pode ficar em branco.</string>
     <string name="torrent_option_save_path">Salvar em</string>
-    <string name="torrent_option_download_path">Caminho do Download</string>
+    <string name="torrent_option_download_path">Caminho de download</string>
     <string name="torrent_action_tags">Definir tags</string>
     <string name="torrent_action_rename_torrent">Renomear torrent</string>
     <string name="torrent_action_force_recheck">Forçar nova verificação</string>
@@ -279,12 +279,12 @@
     <string name="torrent_disable_force_start_success">\"Forçar início\" desativado com sucesso.</string>
     <string name="torrent_disable_super_seeding_success">\"Super seeding\" desativado com sucesso.</string>
     <string name="torrent_queueing_is_not_enabled">A fila de torrent não está habilitada.</string>
-    <string name="torrent_option_automatic_torrent_management">Gerenciamento Automático de Torrents</string>
+    <string name="torrent_option_automatic_torrent_management">Gerenciamento automático de torrents</string>
     <string name="torrent_option_update_success">Opções do torrent atualizadas com sucesso.</string>
     <string name="torrent_export_success">Torrent exportado com sucesso.</string>
     <string name="torrent_rename_torrent_hint">Nome</string>
-    <string name="torrent_no_tags">Não foi possível encontrar etiquetas.</string>
-    <string name="torrent_no_categories">Não foi possível encontrar categorias.</string>
+    <string name="torrent_no_tags">Não foi possível encontrar nenhuma tag.</string>
+    <string name="torrent_no_categories">Não foi possível encontrar nenhuma categoria.</string>
     <string name="torrent_overview_hash_v1">Hash v1</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
     <string name="torrent_overview_comment">Comentário</string>
@@ -294,15 +294,15 @@
     <string name="torrent_overview_created_by">Criado por</string>
     <string name="torrent_overview_added_on">Adicionado em</string>
     <string name="torrent_overview_created_on">Criado em</string>
-    <string name="torrent_overview_transfer">Transferência</string>
+    <string name="torrent_overview_transfer">Transferir</string>
     <string name="torrent_overview_time_active">Tempo ativo</string>
     <string name="torrent_overview_downloaded">Download concluído</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s nesta sessão)</string>
     <string name="torrent_overview_uploaded">Enviado</string>
     <string name="torrent_overview_ratio">Proporção</string>
-    <string name="torrent_overview_reannounce_in">Reanunciar em</string>
+    <string name="torrent_overview_reannounce_in">Reavisar em</string>
     <string name="torrent_overview_last_activity">Última atividade</string>
-    <string name="torrent_overview_last_seen_complete">Visto completo pela última vez</string>
+    <string name="torrent_overview_last_seen_complete">Visto como \"completo\" pela última vez</string>
     <string name="torrent_overview_connections">Conexões</string>
     <string name="torrent_overview_connections_format">%1$d (%2$d máx.)</string>
     <string name="torrent_overview_seeds">Seeds</string>
@@ -323,7 +323,7 @@
         <item quantity="many">%1$d arquivos selecionados</item>
         <item quantity="other">%1$d arquivos selecionados</item>
     </plurals>
-    <string name="torrent_files_rename_file">Renomear o arquivo</string>
+    <string name="torrent_files_rename_file">Renomear arquivo</string>
     <string name="torrent_files_rename_folder">Renomear pasta</string>
     <string name="torrent_files_priority_update_success">Arquivos prioritários atualizados com sucesso.</string>
     <string name="torrent_files_file_renamed_success">Arquivo renomeado com sucesso</string>
@@ -415,7 +415,7 @@
     <string name="torrent_add_content_layout">Layout de conteúdo</string>
     <string name="torrent_add_content_layout_original">Original</string>
     <string name="torrent_add_content_layout_subfolder">Criar subpasta</string>
-    <string name="torrent_add_content_layout_no_subfolder">Não crie subpasta</string>
+    <string name="torrent_add_content_layout_no_subfolder">Não criar subpasta</string>
     <string name="torrent_add_save_path">Salvar em</string>
     <string name="torrent_add_name">Nome do torrent</string>
     <string name="torrent_add_ratio_limit">Limite da proporção</string>
@@ -447,7 +447,7 @@
     <string name="rss_all_articles">Todos os artigos</string>
     <string name="rss_view_all_articles">Ver todos os artigos</string>
     <string name="rss_view_all_articles_in">Ver todos os artigos em %1$s</string>
-    <string name="rss_confirm_delete_feed">Tem certeza que deseja excluir o Feed %1$s?</string>
+    <string name="rss_confirm_delete_feed">Tem certeza que deseja excluir o feed %1$s?</string>
     <string name="rss_confirm_delete_folder">Tem certeza que deseja excluir a pasta %1$s?</string>
     <string name="rss_added_feed">Feed adicionado com sucesso.</string>
     <string name="rss_success_feed_rename">Feed renomeado com sucesso.</string>
@@ -457,13 +457,13 @@
     <string name="rss_success_folder_rename">Pasta renomeada com sucesso.</string>
     <string name="rss_success_folder_move">Pasta movida com sucesso.</string>
     <string name="rss_success_folder_delete">Pasta excluída com sucesso.</string>
-    <string name="rss_add_feed_error">Não foi possível adicionar o Feed.</string>
-    <string name="rss_rename_feed_error">Não foi possível renomear o Feed.</string>
-    <string name="rss_delete_feed_error">Não foi possível excluir o Feed.</string>
+    <string name="rss_add_feed_error">Não foi possível adicionar o feed.</string>
+    <string name="rss_rename_feed_error">Não foi possível renomear o feed.</string>
+    <string name="rss_delete_feed_error">Não foi possível excluir o feed.</string>
     <string name="rss_add_folder_error">Não foi possível adicionar a pasta.</string>
     <string name="rss_delete_folder_error">Não foi possível excluir a pasta.</string>
     <string name="rss_mark_article_as_read_success">Artigo marcado como lido com sucesso.</string>
-    <string name="rss_refresh_all_feeds_success">Atualizou todos os feeds com sucesso.</string>
+    <string name="rss_refresh_all_feeds_success">Todos os feeds foram atualizados com sucesso.</string>
     <string name="rss_rule_action_create">Criar regra</string>
     <string name="rss_rule_rename">Renomear regra</string>
     <string name="rss_rule_delete">Excluir regra</string>
@@ -474,16 +474,16 @@
     <string name="rss_rule_delete_success">Regra do RSS excluída com sucesso.</string>
     <string name="rss_rule_name_cannot_be_empty">O nome não pode estar vazio.</string>
     <string name="rss_rule_enabled">Habilitado</string>
-    <string name="rss_rule_use_regular_expressions">Use expressões regulares</string>
+    <string name="rss_rule_use_regular_expressions">Usar expressões regulares</string>
     <string name="rss_rule_must_contain">Deve conter</string>
     <string name="rss_rule_category">Categoria</string>
     <string name="rss_rule_save_to">Salvar para</string>
     <string name="rss_rule_ignore_subsequent_matches_for">Ignorar partidas subsequentes para (dias)</string>
-    <string name="rss_rule_add_paused">Adicionar pausado</string>
+    <string name="rss_rule_add_paused">Adicionar pausados</string>
     <string name="rss_rule_add_paused_always">Sempre</string>
     <string name="rss_rule_add_paused_never">Nunca</string>
-    <string name="rss_rule_torrent_content_layout">Layout de conteúdo do Torrent</string>
-    <string name="rss_rule_apply_rule_to_feeds">Aplicar a regra aos feeds</string>
+    <string name="rss_rule_torrent_content_layout">Layout de conteúdos torrent</string>
+    <string name="rss_rule_apply_rule_to_feeds">Aplicar regra aos feeds</string>
     <string name="rss_rule_action_save">Salvar regra</string>
     <string name="rss_rule_saved_successfully">Regra salva com sucesso.</string>
     <string name="rss_rule_not_found">Não foi possível encontrar a regra.</string>
@@ -540,7 +540,7 @@
     <string name="settings_server_username">Usuário</string>
     <string name="settings_server_password">Senha</string>
     <string name="settings_server_trust_self_signed_certificates">Confiar em certificados auto-assinados</string>
-    <string name="settings_server_test_configuration">Configuração de teste</string>
+    <string name="settings_server_test_configuration">Testar configuração</string>
     <string name="settings_server_action_delete">Excluir</string>
     <string name="settings_server_action_save">Salvar</string>
     <string name="settings_server_action_advanced_settings">Configurações avançadas</string>
@@ -625,11 +625,11 @@
     <string name="torrent_list_priority_minimize_success">Prioridade minimizada com sucesso.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
-    <string name="stats_category_user_statistics">Estatísticas do usuário</string>
-    <string name="stats_category_cache_statistics">Estatísticas do cache</string>
-    <string name="stats_category_performance_statistics">Estatísticas da performance</string>
-    <string name="torrent_reannounce_success">Torrent reanunciado com sucesso.</string>
-    <string name="torrent_action_pause">Pausa</string>
+    <string name="stats_category_user_statistics">Estatísticas de usuário</string>
+    <string name="stats_category_cache_statistics">Estatísticas de cache</string>
+    <string name="stats_category_performance_statistics">Estatísticas de performance</string>
+    <string name="torrent_reannounce_success">Torrent reavisado com sucesso.</string>
+    <string name="torrent_action_pause">Pausar</string>
     <string name="torrent_action_resume">Retomar</string>
     <string name="torrent_action_delete">Excluir</string>
     <string name="torrent_action_options">Opções do torrent</string>
