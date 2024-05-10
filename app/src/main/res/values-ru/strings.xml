@@ -348,7 +348,7 @@
     <string name="torrent_overview_total_size">Общий размер</string>
     <string name="torrent_overview_hash_v1">Инфо-хеш v1</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (из них есть %3$d)</string>
-    <string name="torrent_overview_completed_on">Дата завершения</string>
+    <string name="torrent_overview_completed_on">Завершено</string>
     <string name="torrent_overview_created_by">Создан в</string>
     <string name="torrent_overview_created_on">Дата создания</string>
     <string name="torrent_overview_transfer">Торрент</string>
@@ -589,7 +589,7 @@
     <string name="torrent_trackers_deleted">Трекеры удалены успешно.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_trackers_url_cannot_be_empty">URL трекера не может быть пустым.</string>
-    <string name="torrent_overview_added_on">Дата добавления</string>
+    <string name="torrent_overview_added_on">Добавлено</string>
     <string name="torrent_no_categories">Не удалось найти ни одной категории.</string>
     <string name="torrent_overview_information">Информация</string>
     <string name="torrent_peers_flags">Флаги: %1$s</string>
@@ -646,4 +646,8 @@
     <string name="settings_language">Язык</string>
     <string name="settings_language_system_default">Системное значение по умолчанию</string>
     <string name="torrent_list_action_set_category">Установить категорию</string>
+    <string name="torrent_option_share_limit_total_minutes">Всего минут</string>
+    <string name="torrent_option_share_limit_inactive_minutes">Неактивные минуты</string>
+    <string name="search_result_filter_reset">Сбросить</string>
+    <string name="torrent_force_recheck_confirm">Вы уверены, что хотите принудительно перепроверить этот торрент?</string>
 </resources>
