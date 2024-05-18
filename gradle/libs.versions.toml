@@ -15,7 +15,6 @@ androidx-fragment = "1.7.1"
 androidx-preference = "1.2.1"
 androidx-lifecycle-viewModel = "2.8.0"
 material = "1.12.0"
-leakCanary = "2.14"
 coroutines = "1.8.1"
 work-runtime = "2.9.0"
 work-hilt = "1.2.0"
@@ -37,8 +36,6 @@ androidx-preference = { group = "androidx.preference", name = "preference-ktx", 
 androidx-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewModel" }
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
-leakCanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakCanary" }
 
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }

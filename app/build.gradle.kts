@@ -122,7 +122,6 @@ dependencies {
 
     implementation(libs.material)
 
-    debugImplementation(libs.leakCanary)
 
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
