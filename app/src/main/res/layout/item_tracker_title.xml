@@ -13,11 +13,11 @@
         tools:layout_height="1dp" />
 
     <TextView
+        android:id="@+id/text_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text_title"
-        android:padding="8dp"
         android:drawablePadding="8dp"
+        android:padding="8dp"
         android:text="@string/torrent_list_trackers_title"
         tools:drawableStart="@drawable/ic_collapse" />
 

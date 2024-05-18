@@ -48,7 +48,7 @@
                     android:id="@+id/checkbox_download_path"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/torrent_option_download_path_enable"/>
+                    android:text="@string/torrent_option_download_path_enable" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_download_path"
