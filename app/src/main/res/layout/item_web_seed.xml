@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/text_web_seed"
-        style="@style/TextAppearance.MaterialComponents.Body2"
+        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"

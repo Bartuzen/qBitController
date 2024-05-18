@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
-import android.graphics.Color
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.google.android.material.chip.Chip
-import com.google.android.material.color.MaterialColors
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentBinding
 import dev.bartuzen.qbitcontroller.model.Torrent
@@ -18,7 +16,6 @@ import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
-import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.setColor
 
@@ -44,12 +41,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
         fun bind(torrent: Torrent) {
             val context = binding.root.context
 
-            val backgroundColor = if (isItemSelected(getKey(torrent))) {
-                context.getColorCompat(R.color.selected_card_background)
-            } else {
-                MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.TRANSPARENT)
-            }
-            binding.root.setCardBackgroundColor(backgroundColor)
+            binding.root.isChecked = isItemSelected(getKey(torrent))
 
             binding.textName.text = torrent.name
 

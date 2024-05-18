@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.IntRange
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -75,4 +76,14 @@ fun <T : BaseProgressIndicatorSpec> BaseProgressIndicator<T>.setColor(color: Int
         Color.green(color),
         Color.blue(color)
     )
+}
+
+typealias themeColors = com.google.android.material.R.attr
+
+fun Context.getThemeColor(
+    color: Int,
+    @IntRange(from = 0, to = 255) alpha: Int = 255,
+    defaultColor: Int = Color.TRANSPARENT
+) = MaterialColors.getColor(this, color, defaultColor).let {
+    MaterialColors.compositeARGBWithAlpha(it, alpha)
 }

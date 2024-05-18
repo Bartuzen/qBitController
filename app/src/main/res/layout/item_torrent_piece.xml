@@ -4,4 +4,4 @@
     android:id="@+id/view_piece"
     android:layout_width="16dp"
     android:layout_height="16dp"
-    tools:background="@color/color_primary" />
+    tools:background="?attr/colorPrimary" />

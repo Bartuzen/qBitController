@@ -8,6 +8,8 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFilterBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentStatusTitleBinding
 import dev.bartuzen.qbitcontroller.model.TorrentState
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
+import dev.bartuzen.qbitcontroller.utils.themeColors
 
 class TorrentFilterAdapter(
     isCollapsed: Boolean,
@@ -96,14 +98,17 @@ class TorrentFilterAdapter(
         }
 
         fun bind() {
-            views.forEach { (view, filter, stringId) ->
-                if (this@TorrentFilterAdapter.filter == filter) {
-                    view.setBackgroundResource(R.color.torrent_status_selected_background)
-                } else {
-                    view.setBackgroundColor(Color.TRANSPARENT)
-                }
+            val context = binding.root.context
 
-                val context = binding.root.context
+            views.forEach { (view, filter, stringId) ->
+                val backgroundColor =
+                    if (this@TorrentFilterAdapter.filter == filter) {
+                        context.getThemeColor(themeColors.colorPrimaryVariant, alpha = 35)
+                    } else {
+                        Color.TRANSPARENT
+                    }
+                view.setBackgroundColor(backgroundColor)
+
                 view.text = context.getString(
                     R.string.torrent_list_status_format,
                     context.getString(stringId),

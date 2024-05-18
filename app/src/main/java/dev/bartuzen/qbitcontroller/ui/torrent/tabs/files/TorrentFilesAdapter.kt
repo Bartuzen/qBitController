@@ -14,7 +14,9 @@ import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatFilePriority
 import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
 import dev.bartuzen.qbitcontroller.utils.setColor
+import dev.bartuzen.qbitcontroller.utils.themeColors
 
 class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentFilesAdapter.ViewHolder>(
     diffCallBack = DiffCallBack(),
@@ -60,7 +62,7 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
             val context = binding.root.context
 
             val backgroundColor = if (isItemSelected(getKey(fileNode))) {
-                context.getColorCompat(R.color.selected_card_background)
+                context.getThemeColor(themeColors.colorSecondary, alpha = 39)
             } else {
                 Color.TRANSPARENT
             }

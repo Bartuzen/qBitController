@@ -35,7 +35,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.google.android.material.R as materialR
 
 @AndroidEntryPoint
 class AddTorrentActivity : AppCompatActivity() {
@@ -118,7 +117,9 @@ class AddTorrentActivity : AppCompatActivity() {
                 }
                 "content", "file" -> {
                     torrentFileUri = uri
-                    viewModel.setUrlMode(false)
+                    binding.toggleButtonMode.check(R.id.button_file)
+                    binding.inputLayoutTorrentLink.visibility = View.GONE
+                    binding.textFileName.visibility = View.VISIBLE
                 }
             }
         } else if (intent.hasExtra(Intent.EXTRA_TEXT)) {
@@ -157,34 +158,20 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.isUrlMode.launchAndCollectLatestIn(this) { isUrlMode ->
-            if (isUrlMode) {
-                @Suppress("PrivateResource")
-                binding.buttonFile.setChipBackgroundColorResource(materialR.color.mtrl_chip_background_color)
-                binding.buttonUrl.setChipBackgroundColorResource(R.color.color_primary)
-
-                binding.inputLayoutTorrentLink.visibility = View.VISIBLE
-                binding.textFileName.visibility = View.GONE
-            } else {
-                @Suppress("PrivateResource")
-                binding.buttonUrl.setChipBackgroundColorResource(materialR.color.mtrl_chip_background_color)
-                binding.buttonFile.setChipBackgroundColorResource(R.color.color_primary)
-
-                binding.inputLayoutTorrentLink.visibility = View.GONE
-                binding.textFileName.visibility = View.VISIBLE
+        binding.toggleButtonMode.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                if (checkedId == R.id.button_url) {
+                    binding.inputLayoutTorrentLink.visibility = View.VISIBLE
+                    binding.textFileName.visibility = View.GONE
+                } else if (checkedId == R.id.button_file) {
+                    binding.inputLayoutTorrentLink.visibility = View.GONE
+                    binding.textFileName.visibility = View.VISIBLE
+                }
             }
         }
 
         binding.textFileName.setOnClickListener {
             startFileActivity.launch(arrayOf("application/x-bittorrent"))
-        }
-
-        binding.buttonUrl.setOnClickListener {
-            viewModel.setUrlMode(true)
-        }
-
-        binding.buttonFile.setOnClickListener {
-            viewModel.setUrlMode(false)
         }
 
         binding.editTorrentLink.addTextChangedListener(
@@ -435,7 +422,7 @@ class AddTorrentActivity : AppCompatActivity() {
     }
 
     private fun tryAddTorrent(serverId: Int) {
-        val isUrlMode = viewModel.isUrlMode.value
+        val isUrlMode = binding.toggleButtonMode.checkedButtonId == R.id.button_url
         var isValid = true
 
         val links = binding.editTorrentLink.text.toString()

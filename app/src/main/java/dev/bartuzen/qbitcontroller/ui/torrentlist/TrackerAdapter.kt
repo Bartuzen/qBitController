@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTrackerBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemTrackerTitleBinding
-import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
+import dev.bartuzen.qbitcontroller.utils.themeColors
 
 class TrackerAdapter(
     isCollapsed: Boolean,
@@ -140,7 +141,7 @@ class TrackerAdapter(
             val context = binding.root.context
 
             val backgroundColor = if (selectedTracker == tracker) {
-                context.getColorCompat(R.color.category_tag_selected_background)
+                context.getThemeColor(themeColors.colorPrimaryVariant, alpha = 35)
             } else {
                 Color.TRANSPARENT
             }

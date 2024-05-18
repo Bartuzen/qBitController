@@ -56,9 +56,9 @@ import dev.bartuzen.qbitcontroller.ui.search.SearchActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
-import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import dev.bartuzen.qbitcontroller.utils.getDrawableCompat
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -68,6 +68,7 @@ import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
+import dev.bartuzen.qbitcontroller.utils.themeColors
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
@@ -851,7 +852,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             val deleteIcon = requireContext().getDrawableCompat(R.drawable.ic_delete)!!
 
             init {
-                val color = requireContext().getColorCompat(R.color.color_on_secondary)
+                val color = requireContext().getThemeColor(themeColors.colorOnSurface)
                 val colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(color, BlendModeCompat.SRC_ATOP)
 

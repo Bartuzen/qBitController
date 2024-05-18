@@ -31,30 +31,22 @@
             <item
                 android:id="@+id/menu_priority_maximize"
                 android:icon="@drawable/ic_priority_maximize"
-                android:iconTint="@color/color_on_secondary"
-                android:title="@string/torrent_list_action_priority_maximize"
-                app:iconTint="@color/color_on_secondary" />
+                android:title="@string/torrent_list_action_priority_maximize" />
 
             <item
                 android:id="@+id/menu_priority_increase"
                 android:icon="@drawable/ic_priority_increase"
-                android:iconTint="@color/color_on_secondary"
-                android:title="@string/torrent_list_action_priority_increase"
-                app:iconTint="@color/color_on_secondary" />
+                android:title="@string/torrent_list_action_priority_increase" />
 
             <item
                 android:id="@+id/menu_priority_decrease"
                 android:icon="@drawable/ic_priority_decrease"
-                android:iconTint="@color/color_on_secondary"
-                android:title="@string/torrent_list_action_priority_decrease"
-                app:iconTint="@color/color_on_secondary" />
+                android:title="@string/torrent_list_action_priority_decrease" />
 
             <item
                 android:id="@+id/menu_priority_minimize"
                 android:icon="@drawable/ic_priority_minimize"
-                android:iconTint="@color/color_on_secondary"
-                android:title="@string/torrent_list_action_priority_minimize"
-                app:iconTint="@color/color_on_secondary" />
+                android:title="@string/torrent_list_action_priority_minimize" />
         </menu>
 
     </item>
