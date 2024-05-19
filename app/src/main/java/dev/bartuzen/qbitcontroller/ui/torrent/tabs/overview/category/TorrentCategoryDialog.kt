@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isEmpty
@@ -60,12 +59,9 @@ class TorrentCategoryDialog() : DialogFragment() {
         viewModel.categories.filterNotNull().launchAndCollectLatestIn(this@TorrentCategoryDialog) { categories ->
             if (binding.chipGroupCategory.isEmpty()) {
                 categories.forEach { category ->
-                    val chip = Chip(requireContext())
+                    val chip = layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategory, false) as Chip
                     chip.text = category
-                    chip.setEnsureMinTouchTargetSize(false)
-                    chip.setChipBackgroundColorResource(R.color.torrent_category)
-                    chip.ellipsize = TextUtils.TruncateAt.END
-                    chip.isCheckable = true
+                    chip.isClickable = true
 
                     if (category == currentCategory) {
                         chip.isChecked = true

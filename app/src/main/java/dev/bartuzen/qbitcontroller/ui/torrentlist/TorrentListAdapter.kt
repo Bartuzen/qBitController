@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -78,21 +77,18 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
 
             binding.chipGroupCategoryAndTag.removeAllViews()
 
+            val layoutInflater = LayoutInflater.from(context)
             if (torrent.category != null) {
-                val chip = Chip(context)
+                val chip = layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategoryAndTag, false) as Chip
                 chip.text = torrent.category
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isFocusable = false
                 binding.chipGroupCategoryAndTag.addView(chip)
             }
 
             torrent.tags.forEach { tag ->
-                val chip = Chip(context)
+                val chip = layoutInflater.inflate(R.layout.chip_tag, binding.chipGroupCategoryAndTag, false) as Chip
                 chip.text = tag
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isFocusable = false
                 binding.chipGroupCategoryAndTag.addView(chip)
             }
 

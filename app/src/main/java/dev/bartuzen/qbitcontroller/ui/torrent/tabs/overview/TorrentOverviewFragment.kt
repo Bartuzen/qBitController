@@ -3,7 +3,6 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -256,20 +255,16 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.chipGroupCategoryAndTag.removeAllViews()
 
             if (torrent.category != null) {
-                val chip = Chip(context)
+                val chip = layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategoryAndTag, false) as Chip
                 chip.text = torrent.category
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isFocusable = false
                 binding.chipGroupCategoryAndTag.addView(chip)
             }
 
             torrent.tags.forEach { tag ->
-                val chip = Chip(context)
+                val chip = layoutInflater.inflate(R.layout.chip_tag, binding.chipGroupCategoryAndTag, false) as Chip
                 chip.text = tag
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isFocusable = false
                 binding.chipGroupCategoryAndTag.addView(chip)
             }
 

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -236,12 +235,9 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.chipGroupCategory.removeAllViews()
 
             categoryList.forEach { category ->
-                val chip = Chip(this@AddTorrentActivity)
+                val chip = layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategory, false) as Chip
                 chip.text = category
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
-                chip.isCheckable = true
+                chip.isClickable = true
 
                 if (category == selectedCategory) {
                     chip.isChecked = true
@@ -271,12 +267,9 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.chipGroupTag.removeAllViews()
 
             tagList.forEach { tag ->
-                val chip = Chip(this@AddTorrentActivity)
+                val chip = layoutInflater.inflate(R.layout.chip_tag, binding.chipGroupTag, false) as Chip
                 chip.text = tag
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                chip.isCheckable = true
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isClickable = true
 
                 if (selectedTags.contains(tag)) {
                     chip.isChecked = true

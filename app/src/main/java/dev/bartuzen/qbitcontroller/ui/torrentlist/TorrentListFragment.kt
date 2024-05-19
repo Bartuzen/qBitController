@@ -7,7 +7,6 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputType
-import android.text.TextUtils
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
@@ -812,12 +811,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             dialogBinding.progressIndicator.visibility = View.GONE
 
             categories.forEach { category ->
-                val chip = Chip(requireContext())
+                val chip = layoutInflater.inflate(R.layout.chip_category, dialogBinding.chipGroupCategory, false) as Chip
                 chip.text = category.name
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
-                chip.isCheckable = true
+                chip.isClickable = true
 
                 if (category.name == commonCategory) {
                     chip.isChecked = true
