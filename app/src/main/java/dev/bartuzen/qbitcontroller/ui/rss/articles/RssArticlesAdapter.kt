@@ -41,7 +41,7 @@ class RssArticlesAdapter(
             val context = binding.root.context
 
             val backgroundColor = context.getThemeColor(
-                if (article.isRead) themeColors.colorSurfaceContainerLow else themeColors.colorSurfaceContainerHigh,
+                if (article.isRead) themeColors.colorSurfaceContainerLow else themeColors.colorSurfaceContainerHigh
             )
             binding.root.setCardBackgroundColor(backgroundColor)
 
