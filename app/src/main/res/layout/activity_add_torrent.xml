@@ -152,7 +152,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:visibility="gone"
-                        app:chipSpacing="8dp"
                         app:singleSelection="true" />
 
                     <TextView
@@ -181,8 +180,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:visibility="gone"
-                        app:chipSpacing="8dp" />
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/text_no_tags"

@@ -29,7 +29,6 @@
             android:id="@+id/chip_group_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:chipSpacing="8dp"
             app:singleSelection="true" />
 
     </LinearLayout>
