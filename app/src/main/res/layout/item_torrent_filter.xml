@@ -18,7 +18,7 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="12dp"
         android:text="@string/torrent_list_status_all"
-        app:drawableLeftCompat="@drawable/ic_all" />
+        app:drawableStartCompat="@drawable/ic_all" />
 
     <TextView
         android:id="@+id/text_downloading"
