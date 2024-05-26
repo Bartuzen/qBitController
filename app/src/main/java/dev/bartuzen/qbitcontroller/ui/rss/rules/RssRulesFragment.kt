@@ -18,6 +18,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddRuleBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssRulesBinding
 import dev.bartuzen.qbitcontroller.ui.rss.editrule.EditRssRuleFragment
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -43,6 +44,8 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerRules.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

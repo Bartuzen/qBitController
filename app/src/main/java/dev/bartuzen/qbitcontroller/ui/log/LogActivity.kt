@@ -2,10 +2,13 @@ package dev.bartuzen.qbitcontroller.ui.log
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.databinding.ActivityLogBinding
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -26,6 +29,10 @@ class LogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLogBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        enableEdgeToEdge()
+        binding.layoutAppBar.applySystemBarInsets()
+        binding.recyclerLog.applyNavigationBarInsets()
 
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
         if (serverId == -1) {

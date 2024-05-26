@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -15,6 +16,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsFragment
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +37,9 @@ class TorrentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTorrentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        enableEdgeToEdge()
+        binding.layoutAppBar.applySystemBarInsets()
 
         val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)

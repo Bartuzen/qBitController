@@ -12,6 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentWebSeedsBinding
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -38,6 +39,8 @@ class TorrentWebSeedsFragment() : Fragment(R.layout.fragment_torrent_web_seeds) 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerWebSeeds.applyNavigationBarInsets()
+
         val adapter = TorrentWebSeedsAdapter()
         binding.recyclerWebSeeds.adapter = adapter
         binding.recyclerWebSeeds.addItemDecoration(object : RecyclerView.ItemDecoration() {

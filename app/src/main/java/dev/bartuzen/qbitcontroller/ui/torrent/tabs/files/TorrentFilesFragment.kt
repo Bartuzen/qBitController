@@ -19,6 +19,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogRenameFileFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -53,6 +54,8 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerFiles.applyNavigationBarInsets()
+
         var actionMode: ActionMode? = null
         val adapter = TorrentFilesAdapter().apply {
             onClick { file ->

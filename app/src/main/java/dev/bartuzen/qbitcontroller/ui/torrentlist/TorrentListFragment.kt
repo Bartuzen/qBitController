@@ -53,6 +53,8 @@ import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
 import dev.bartuzen.qbitcontroller.ui.search.SearchActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getDrawableCompat
@@ -123,6 +125,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.textSpeed.applySystemBarInsets(top = false, padding = 4)
+        binding.recyclerTorrentList.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
