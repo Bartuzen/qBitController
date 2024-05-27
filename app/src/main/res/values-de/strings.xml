@@ -130,4 +130,5 @@
     <string name="torrent_list_action_sort_total_seeds">Seeds insgesamt</string>
     <string name="torrent_list_action_sort_connected_leeches">Verbundene Leeches</string>
     <string name="torrent_list_action_sort_upload_speed">Uploadgeschwindigkeit</string>
+    <string name="eta_seconds">%1$ss</string>
 </resources>
