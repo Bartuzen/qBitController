@@ -15,7 +15,9 @@
             android:id="@+id/progress_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            app:hideAnimationBehavior="outward"
+            app:showAnimationBehavior="inward" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"

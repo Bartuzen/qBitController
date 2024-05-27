@@ -186,8 +186,13 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             }
         })
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isSearchContinuing.launchAndCollectLatestIn(this) { isSearchContinuing ->
-            binding.progressIndicator.visibility = if (isSearchContinuing) View.VISIBLE else View.GONE
+            if (isSearchContinuing) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
             binding.swipeRefresh.isEnabled = !isSearchContinuing
         }
 

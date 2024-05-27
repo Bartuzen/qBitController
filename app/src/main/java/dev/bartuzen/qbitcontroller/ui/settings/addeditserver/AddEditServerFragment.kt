@@ -139,8 +139,13 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             viewModel.testConnection(config)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isTesting.launchAndCollectLatestIn(viewLifecycleOwner) { isTesting ->
-            binding.progressIndicator.visibility = if (isTesting) View.VISIBLE else View.GONE
+            if (isTesting) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->

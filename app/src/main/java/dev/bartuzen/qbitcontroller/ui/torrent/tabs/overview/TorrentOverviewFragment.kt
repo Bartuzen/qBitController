@@ -216,14 +216,14 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             viewModel.loadTorrent(serverId, torrentHash)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.INVISIBLE)
         viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
             val autoRefreshLoadingBar = viewModel.autoRefreshHideLoadingBar.value
-            binding.progressIndicator.visibility =
-                if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
-                }
+            if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->

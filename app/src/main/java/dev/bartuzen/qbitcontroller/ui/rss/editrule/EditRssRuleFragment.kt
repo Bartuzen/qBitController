@@ -75,8 +75,13 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             viewModel.loadData(serverId, ruleName)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isLoading.launchAndCollectLatestIn(this) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (isLoading) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         binding.dropdownAddPaused.setItems(
