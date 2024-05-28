@@ -24,7 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         val binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        theme.applyStyle(R.style.ThemeOverlay_Material3_Preference, true);
+        theme.applyStyle(R.style.ThemeOverlay_Material3_Preference, true)
 
         enableEdgeToEdge()
         binding.layoutAppBar.applySystemBarInsets()
