@@ -68,14 +68,15 @@ fun Context.copyToClipboard(text: String, label: String? = null) {
     clipboard.setPrimaryClip(clip)
 }
 
-fun <T : BaseProgressIndicatorSpec> BaseProgressIndicator<T>.setColor(color: Int) {
-    setIndicatorColor(color)
-    trackColor = Color.argb(
-        (MaterialColors.ALPHA_DISABLED * 255).toInt(),
-        Color.red(color),
-        Color.green(color),
-        Color.blue(color)
-    )
+fun <T : BaseProgressIndicatorSpec> BaseProgressIndicator<T>.setColor(color: Int, harmonize: Boolean = true) {
+    val indicatorColor = if (harmonize) {
+        MaterialColors.harmonizeWithPrimary(context, color)
+    } else {
+        color
+    }
+
+    setIndicatorColor(indicatorColor)
+    trackColor = MaterialColors.compositeARGBWithAlpha(indicatorColor, (MaterialColors.ALPHA_DISABLED * 255).toInt())
 }
 
 typealias themeColors = com.google.android.material.R.attr
