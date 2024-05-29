@@ -1155,7 +1155,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
     }
 
-     private fun showCreateEditCategoryDialog(name: String?, parent: String?) {
+    private fun showCreateEditCategoryDialog(name: String?, parent: String?) {
         val category = if (name != null) {
             val fullName = parent ?: name
             viewModel.mainData.value?.categories?.find { it.name == fullName } ?: return
