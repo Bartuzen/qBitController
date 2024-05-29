@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_indicator"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:indeterminate="true"
+            app:hideAnimationBehavior="outward"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:showAnimationBehavior="inward" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_enabled"
@@ -40,7 +45,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_must_contain"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -59,7 +64,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_must_not_contain"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -79,7 +84,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_episode_filter"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -107,9 +112,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_layout_episode_filter" />
 
-        <include
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider"
-            layout="@layout/item_divider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -118,7 +122,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_category"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -147,7 +151,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_save_path"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -166,7 +170,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_ignore_days"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -186,7 +190,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_add_paused"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -205,7 +209,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_content_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -222,9 +226,8 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <include
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider_2"
-            layout="@layout/item_divider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -243,18 +246,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_2" />
 
-        <LinearLayout
-            android:id="@+id/layout_feeds"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/feed_list_border"
-            android:orientation="vertical"
-            android:padding="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/apply_rule_to_feeds" />
+            app:layout_constraintTop_toBottomOf="@id/apply_rule_to_feeds">
+
+            <LinearLayout
+                android:id="@+id/layout_feeds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="4dp" />
+
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

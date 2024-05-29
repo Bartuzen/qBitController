@@ -1,14 +1,16 @@
 package dev.bartuzen.qbitcontroller.ui.main
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemServerBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
+import dev.bartuzen.qbitcontroller.utils.themeColors
 
 class ServerListAdapter(
     private val onClick: (serverConfig: ServerConfig) -> Unit,
@@ -56,13 +58,14 @@ class ServerListAdapter(
         }
 
         fun bind(serverConfig: ServerConfig) {
-            binding.root.setBackgroundResource(
-                if (serverConfig.id == selectedServerId) {
-                    R.color.server_selected_background
-                } else {
-                    android.R.color.transparent
-                }
-            )
+            val context = binding.root.context
+
+            val backgroundColor = if (serverConfig.id == selectedServerId) {
+                context.getThemeColor(themeColors.colorPrimaryVariant, alpha = 35)
+            } else {
+                Color.TRANSPARENT
+            }
+            binding.root.setBackgroundColor(backgroundColor)
 
             if (serverConfig.name != null) {
                 binding.textName.text = serverConfig.name

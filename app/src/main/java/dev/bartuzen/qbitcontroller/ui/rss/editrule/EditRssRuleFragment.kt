@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentEditRssRuleBinding
 import dev.bartuzen.qbitcontroller.model.RssRule
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -44,6 +45,8 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.scrollView.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -72,8 +75,13 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             viewModel.loadData(serverId, ruleName)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isLoading.launchAndCollectLatestIn(this) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (isLoading) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         binding.dropdownAddPaused.setItems(

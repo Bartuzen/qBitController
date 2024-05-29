@@ -6,13 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +23,8 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -35,7 +37,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.google.android.material.R as materialR
 
 @AndroidEntryPoint
 class AddTorrentActivity : AppCompatActivity() {
@@ -57,6 +58,7 @@ class AddTorrentActivity : AppCompatActivity() {
     private val startFileActivity = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) {
             torrentFileUri = uri
+            binding.textFileName.error = null
         }
     }
 
@@ -71,6 +73,10 @@ class AddTorrentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddTorrentBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        enableEdgeToEdge()
+        binding.layoutAppBar.applySystemBarInsets()
+        binding.scrollView.applyNavigationBarInsets()
 
         torrentFileUri = savedInstanceState?.getParcelableCompat(Extras.FILE_URI)
 
@@ -118,7 +124,9 @@ class AddTorrentActivity : AppCompatActivity() {
                 }
                 "content", "file" -> {
                     torrentFileUri = uri
-                    viewModel.setUrlMode(false)
+                    binding.toggleButtonMode.check(R.id.button_file)
+                    binding.inputLayoutTorrentLink.visibility = View.GONE
+                    binding.textFileName.visibility = View.VISIBLE
                 }
             }
         } else if (intent.hasExtra(Intent.EXTRA_TEXT)) {
@@ -157,34 +165,20 @@ class AddTorrentActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.isUrlMode.launchAndCollectLatestIn(this) { isUrlMode ->
-            if (isUrlMode) {
-                @Suppress("PrivateResource")
-                binding.buttonFile.setChipBackgroundColorResource(materialR.color.mtrl_chip_background_color)
-                binding.buttonUrl.setChipBackgroundColorResource(R.color.color_primary)
-
-                binding.inputLayoutTorrentLink.visibility = View.VISIBLE
-                binding.textFileName.visibility = View.GONE
-            } else {
-                @Suppress("PrivateResource")
-                binding.buttonUrl.setChipBackgroundColorResource(materialR.color.mtrl_chip_background_color)
-                binding.buttonFile.setChipBackgroundColorResource(R.color.color_primary)
-
-                binding.inputLayoutTorrentLink.visibility = View.GONE
-                binding.textFileName.visibility = View.VISIBLE
+        binding.toggleButtonMode.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                if (checkedId == R.id.button_url) {
+                    binding.inputLayoutTorrentLink.visibility = View.VISIBLE
+                    binding.textFileName.visibility = View.GONE
+                } else if (checkedId == R.id.button_file) {
+                    binding.inputLayoutTorrentLink.visibility = View.GONE
+                    binding.textFileName.visibility = View.VISIBLE
+                }
             }
         }
 
         binding.textFileName.setOnClickListener {
             startFileActivity.launch(arrayOf("application/x-bittorrent"))
-        }
-
-        binding.buttonUrl.setOnClickListener {
-            viewModel.setUrlMode(true)
-        }
-
-        binding.buttonFile.setOnClickListener {
-            viewModel.setUrlMode(false)
         }
 
         binding.editTorrentLink.addTextChangedListener(
@@ -219,8 +213,13 @@ class AddTorrentActivity : AppCompatActivity() {
             viewModel.loadCategoryAndTags(id)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isCreating.launchAndCollectLatestIn(this) { isCreating ->
-            binding.progressIndicator.visibility = if (isCreating) View.VISIBLE else View.GONE
+            if (isCreating) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isLoading.launchAndCollectLatestIn(this) { isLoading ->
@@ -249,12 +248,9 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.chipGroupCategory.removeAllViews()
 
             categoryList.forEach { category ->
-                val chip = Chip(this@AddTorrentActivity)
+                val chip = layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategory, false) as Chip
                 chip.text = category
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
-                chip.isCheckable = true
+                chip.isClickable = true
 
                 if (category == selectedCategory) {
                     chip.isChecked = true
@@ -284,12 +280,9 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.chipGroupTag.removeAllViews()
 
             tagList.forEach { tag ->
-                val chip = Chip(this@AddTorrentActivity)
+                val chip = layoutInflater.inflate(R.layout.chip_tag, binding.chipGroupTag, false) as Chip
                 chip.text = tag
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                chip.isCheckable = true
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isClickable = true
 
                 if (selectedTags.contains(tag)) {
                     chip.isChecked = true
@@ -435,7 +428,7 @@ class AddTorrentActivity : AppCompatActivity() {
     }
 
     private fun tryAddTorrent(serverId: Int) {
-        val isUrlMode = viewModel.isUrlMode.value
+        val isUrlMode = binding.toggleButtonMode.checkedButtonId == R.id.button_url
         var isValid = true
 
         val links = binding.editTorrentLink.text.toString()

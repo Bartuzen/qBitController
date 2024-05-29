@@ -3,7 +3,6 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,8 +28,7 @@ import javax.inject.Inject
 class AddTorrentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: AddTorrentRepository,
-    private val serverManager: ServerManager,
-    private val state: SavedStateHandle
+    private val serverManager: ServerManager
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -52,8 +50,6 @@ class AddTorrentViewModel @Inject constructor(
 
     private val _isCreating = MutableStateFlow(false)
     val isCreating = _isCreating.asStateFlow()
-
-    val isUrlMode = state.getStateFlow("isUrlMode", true)
 
     private var loadCategoryTagJob: Job? = null
 
@@ -219,10 +215,6 @@ class AddTorrentViewModel @Inject constructor(
                 _isRefreshing.value = false
             }
         }
-    }
-
-    fun setUrlMode(isUrlMode: Boolean) {
-        state["isUrlMode"] = isUrlMode
     }
 
     sealed class Event {

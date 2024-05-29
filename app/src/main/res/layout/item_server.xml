@@ -15,14 +15,14 @@
 
         <TextView
             android:id="@+id/text_name"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Server Name" />
 
         <TextView
             android:id="@+id/text_url"
-            style="@style/TextAppearance.MaterialComponents.Caption"
+            style="@style/TextAppearance.Material3.LabelMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -30,9 +30,8 @@
 
     </LinearLayout>
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/listDivider" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

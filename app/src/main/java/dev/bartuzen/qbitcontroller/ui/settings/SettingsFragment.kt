@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputType
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationManagerCompat
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.preferences
@@ -36,6 +38,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: SettingsViewModel by viewModels()
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        listView.applyNavigationBarInsets()
+        listView.clipToPadding = false
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = object : PreferenceDataStore() {

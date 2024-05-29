@@ -25,6 +25,7 @@ import dev.bartuzen.qbitcontroller.model.BasicAuth
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsFragment
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -50,6 +51,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.scrollView.applyNavigationBarInsets()
+
         requireAppCompatActivity().supportActionBar?.setTitle(
             if (serverId == null) {
                 R.string.settings_server_title_add
@@ -136,8 +139,13 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             viewModel.testConnection(config)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isTesting.launchAndCollectLatestIn(viewLifecycleOwner) { isTesting ->
-            binding.progressIndicator.visibility = if (isTesting) View.VISIBLE else View.GONE
+            if (isTesting) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->

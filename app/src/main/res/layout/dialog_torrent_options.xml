@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_auto_tmm"
@@ -18,11 +19,10 @@
             android:text="@string/torrent_option_automatic_torrent_management" />
 
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +32,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_save_path"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -52,7 +52,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_download_path"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -69,12 +69,11 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,7 +89,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_up_speed_limit"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
@@ -105,7 +104,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_dl_speed_limit"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp">
@@ -123,12 +122,11 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Material3.CardView.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:cardElevation="0dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1dp">
+            app:cardBackgroundColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -170,7 +168,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_ratio"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -185,7 +183,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_total_minutes"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -200,7 +198,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_layout_inactive_minutes"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

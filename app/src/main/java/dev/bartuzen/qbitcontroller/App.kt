@@ -7,6 +7,7 @@ import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.decode.SvgDecoder
+import com.google.android.material.color.DynamicColors
 import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
@@ -47,6 +48,7 @@ class App : Application(), Configuration.Provider, ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this)
 
         configMigrator.run()
 

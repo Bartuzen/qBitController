@@ -10,7 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
-import androidx.preference.SwitchPreference
+import androidx.preference.SwitchPreferenceCompat
 import dev.bartuzen.qbitcontroller.R
 
 class PreferenceDSL(private val fragment: PreferenceFragmentCompat) {
@@ -49,8 +49,8 @@ class PreferenceDSL(private val fragment: PreferenceFragmentCompat) {
         screen.addPreference(SeekBarPreference(context).apply(block))
     }
 
-    fun switch(block: SwitchPreference.() -> Unit) {
-        screen.addPreference(SwitchPreference(context).apply(block))
+    fun switch(block: SwitchPreferenceCompat.() -> Unit) {
+        screen.addPreference(SwitchPreferenceCompat(context).apply(block))
     }
 
     private fun <T : DialogPreference> T.setDialogText() = apply {

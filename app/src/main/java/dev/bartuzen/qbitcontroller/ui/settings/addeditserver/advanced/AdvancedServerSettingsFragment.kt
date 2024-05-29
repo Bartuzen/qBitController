@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced
 
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.preference.EditTextPreference
@@ -12,6 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.BasicAuth
 import dev.bartuzen.qbitcontroller.utils.PreferenceDSL
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 
@@ -42,6 +44,13 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
 
     constructor(basicAuth: BasicAuth) : this() {
         arguments = bundleOf("basicAuth" to basicAuth)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        listView.applyNavigationBarInsets()
+        listView.clipToPadding = false
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -122,6 +131,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
 
             setOnBindEditTextListener { editText ->
                 editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                editText.setSelection(editText.length())
             }
         }
     }

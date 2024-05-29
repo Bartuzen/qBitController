@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.IntRange
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -67,12 +68,23 @@ fun Context.copyToClipboard(text: String, label: String? = null) {
     clipboard.setPrimaryClip(clip)
 }
 
-fun <T : BaseProgressIndicatorSpec> BaseProgressIndicator<T>.setColor(color: Int) {
-    setIndicatorColor(color)
-    trackColor = Color.argb(
-        (MaterialColors.ALPHA_DISABLED * 255).toInt(),
-        Color.red(color),
-        Color.green(color),
-        Color.blue(color)
-    )
+fun <T : BaseProgressIndicatorSpec> BaseProgressIndicator<T>.setColor(color: Int, harmonize: Boolean = true) {
+    val indicatorColor = if (harmonize) {
+        MaterialColors.harmonizeWithPrimary(context, color)
+    } else {
+        color
+    }
+
+    setIndicatorColor(indicatorColor)
+    trackColor = MaterialColors.compositeARGBWithAlpha(indicatorColor, (MaterialColors.ALPHA_DISABLED * 255).toInt())
+}
+
+typealias themeColors = com.google.android.material.R.attr
+
+fun Context.getThemeColor(
+    color: Int,
+    @IntRange(from = 0, to = 255) alpha: Int = 255,
+    defaultColor: Int = Color.TRANSPARENT
+) = MaterialColors.getColor(this, color, defaultColor).let {
+    MaterialColors.compositeARGBWithAlpha(it, alpha)
 }

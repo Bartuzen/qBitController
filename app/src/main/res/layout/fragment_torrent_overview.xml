@@ -15,11 +15,15 @@
             android:id="@+id/progress_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            app:hideAnimationBehavior="outward"
+            app:showAnimationBehavior="inward" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:clipToPadding="false">
 
             <LinearLayout
                 android:id="@+id/layout_content"
@@ -55,7 +59,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            app:chipSpacing="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -265,8 +268,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="8dp">
+                    android:layout_margin="8dp">
 
                     <GridLayout
                         android:layout_width="match_parent"

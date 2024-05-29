@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemCategoryTagBinding
 import dev.bartuzen.qbitcontroller.databinding.ItemCategoryTagTitleBinding
-import dev.bartuzen.qbitcontroller.utils.getColorCompat
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
+import dev.bartuzen.qbitcontroller.utils.themeColors
 import dev.bartuzen.qbitcontroller.utils.toPx
 
 class CategoryTagAdapter(
@@ -139,7 +140,7 @@ class CategoryTagAdapter(
             val context = binding.root.context
 
             val backgroundColor = if (selectedItem == categoryTag) {
-                context.getColorCompat(R.color.category_tag_selected_background)
+                context.getThemeColor(themeColors.colorPrimaryVariant, alpha = 35)
             } else {
                 Color.TRANSPARENT
             }

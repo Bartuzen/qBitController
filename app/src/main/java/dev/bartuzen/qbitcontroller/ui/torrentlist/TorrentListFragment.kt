@@ -7,7 +7,6 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.InputType
-import android.text.TextUtils
 import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
@@ -54,11 +53,13 @@ import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
 import dev.bartuzen.qbitcontroller.ui.search.SearchActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
-import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import dev.bartuzen.qbitcontroller.utils.getDrawableCompat
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.getThemeColor
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -68,6 +69,7 @@ import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
+import dev.bartuzen.qbitcontroller.utils.themeColors
 import dev.bartuzen.qbitcontroller.utils.toPx
 import dev.bartuzen.qbitcontroller.utils.view
 import kotlinx.coroutines.delay
@@ -123,6 +125,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.textSpeed.applySystemBarInsets(top = false, padding = 4)
+        binding.recyclerTorrentList.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -652,14 +657,14 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             viewModel.loadMainData(serverId)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
             val autoRefreshLoadingBar = viewModel.autoRefreshHideLoadingBar.value
-            binding.progressIndicator.visibility =
-                if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
@@ -811,12 +816,9 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             dialogBinding.progressIndicator.visibility = View.GONE
 
             categories.forEach { category ->
-                val chip = Chip(requireContext())
+                val chip = layoutInflater.inflate(R.layout.chip_category, dialogBinding.chipGroupCategory, false) as Chip
                 chip.text = category.name
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
-                chip.isCheckable = true
+                chip.isClickable = true
 
                 if (category.name == commonCategory) {
                     chip.isChecked = true
@@ -851,7 +853,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
             val deleteIcon = requireContext().getDrawableCompat(R.drawable.ic_delete)!!
 
             init {
-                val color = requireContext().getColorCompat(R.color.color_on_secondary)
+                val color = requireContext().getThemeColor(themeColors.colorOnSurface)
                 val colorFilter =
                     BlendModeColorFilterCompat.createBlendModeColorFilterCompat(color, BlendModeCompat.SRC_ATOP)
 

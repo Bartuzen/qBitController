@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogPluginInstallBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchPluginsBinding
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -44,6 +45,8 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerPlugins.applyNavigationBarInsets()
+
         val adapter = SearchPluginsAdapter()
         binding.recyclerPlugins.adapter = adapter
         binding.recyclerPlugins.addItemDecoration(
@@ -87,8 +90,13 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
             viewModel.refreshPlugins(serverId)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isLoading.launchAndCollectLatestIn(this) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (isLoading) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(this) { isRefreshing ->

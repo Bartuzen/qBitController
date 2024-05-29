@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.log
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
@@ -39,24 +38,24 @@ class LogAdapter : RecyclerView.Adapter<LogAdapter.ViewHolder>() {
             val context = binding.root.context
 
             val logColor = when (log.type) {
-                LogType.NORMAL -> {
-                    MaterialColors.getColor(context, android.R.attr.textColorPrimary, Color.TRANSPARENT)
-                }
-                LogType.INFO -> {
-                    context.getColorCompat(R.color.log_info)
-                }
-                LogType.WARNING -> {
-                    context.getColorCompat(R.color.log_warning)
-                }
-                LogType.CRITICAL -> {
-                    context.getColorCompat(R.color.log_critical)
-                }
+                LogType.NORMAL -> null
+                LogType.INFO -> R.color.log_info
+                LogType.WARNING -> R.color.log_warning
+                LogType.CRITICAL -> R.color.log_critical
+            }?.let { colorId ->
+                MaterialColors.harmonizeWithPrimary(context, context.getColorCompat(colorId))
             }
 
-            binding.textLog.text = SpannableStringBuilder()
-                .append(formatDate(log.timestamp), ForegroundColorSpan(context.getColorCompat(R.color.log_timestamp)), 0)
-                .append(" - ")
-                .append(log.message, ForegroundColorSpan(logColor), 0)
+            binding.textLog.text = SpannableStringBuilder().apply {
+                append(formatDate(log.timestamp), ForegroundColorSpan(context.getColorCompat(R.color.log_timestamp)), 0)
+                append(" - ")
+
+                if (logColor != null) {
+                    append(log.message, ForegroundColorSpan(logColor), 0)
+                } else {
+                    append(log.message)
+                }
+            }
         }
     }
 }

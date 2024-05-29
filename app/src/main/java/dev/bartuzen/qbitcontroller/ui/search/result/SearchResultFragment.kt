@@ -30,6 +30,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogSearchFilterBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchResultBinding
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -77,6 +78,8 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerTorrents.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -183,8 +186,13 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             }
         })
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isSearchContinuing.launchAndCollectLatestIn(this) { isSearchContinuing ->
-            binding.progressIndicator.visibility = if (isSearchContinuing) View.VISIBLE else View.GONE
+            if (isSearchContinuing) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
             binding.swipeRefresh.isEnabled = !isSearchContinuing
         }
 

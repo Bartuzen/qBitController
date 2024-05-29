@@ -26,6 +26,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssArticlesBinding
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -66,6 +67,8 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerArticles.applyNavigationBarInsets()
+
         requireAppCompatActivity().supportActionBar?.title = feedPath.lastOrNull() ?: getString(R.string.rss_all_articles)
 
         requireActivity().addMenuProvider(
@@ -162,8 +165,13 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
             viewModel.refreshRssArticles(serverId, feedPath)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isLoading ->
-            binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
+            if (isLoading) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->

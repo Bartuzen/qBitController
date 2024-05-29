@@ -3,7 +3,6 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -32,6 +31,7 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category.TorrentCategoryDialog
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.tags.TorrentTagsDialog
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.copyToClipboard
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
@@ -82,6 +82,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.scrollView.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -214,14 +216,14 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             viewModel.loadTorrent(serverId, torrentHash)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.INVISIBLE)
         viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
             val autoRefreshLoadingBar = viewModel.autoRefreshHideLoadingBar.value
-            binding.progressIndicator.visibility =
-                if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
-                }
+            if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
@@ -256,20 +258,16 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.chipGroupCategoryAndTag.removeAllViews()
 
             if (torrent.category != null) {
-                val chip = Chip(context)
+                val chip = layoutInflater.inflate(R.layout.chip_category, binding.chipGroupCategoryAndTag, false) as Chip
                 chip.text = torrent.category
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_category)
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isFocusable = false
                 binding.chipGroupCategoryAndTag.addView(chip)
             }
 
             torrent.tags.forEach { tag ->
-                val chip = Chip(context)
+                val chip = layoutInflater.inflate(R.layout.chip_tag, binding.chipGroupCategoryAndTag, false) as Chip
                 chip.text = tag
-                chip.setEnsureMinTouchTargetSize(false)
-                chip.setChipBackgroundColorResource(R.color.torrent_tag)
-                chip.ellipsize = TextUtils.TruncateAt.END
+                chip.isFocusable = false
                 binding.chipGroupCategoryAndTag.addView(chip)
             }
 

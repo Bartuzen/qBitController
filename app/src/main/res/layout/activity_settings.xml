@@ -8,15 +8,15 @@
     tools:context=".ui.settings.SettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/layout_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:liftOnScroll="false">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/AppTheme.ToolbarOverlay"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="?attr/actionBarSize" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

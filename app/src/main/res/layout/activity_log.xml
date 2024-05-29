@@ -7,24 +7,16 @@
     tools:context=".ui.log.LogActivity">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/layout_app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:liftOnScroll="false">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:titleEnabled="false">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/AppTheme.ToolbarOverlay"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/execution_log_title" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/execution_log_title" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,14 +35,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
+                app:hideAnimationBehavior="outward"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:showAnimationBehavior="inward" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_log"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

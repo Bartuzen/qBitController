@@ -9,6 +9,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -27,6 +28,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogAboutBinding
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
@@ -59,6 +61,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        enableEdgeToEdge()
+        binding.navView.applySystemBarInsets(top = true, bottom = true, start = true, end = false)
+        binding.layoutAppBar.applySystemBarInsets()
 
         setSupportActionBar(binding.toolbar)
 

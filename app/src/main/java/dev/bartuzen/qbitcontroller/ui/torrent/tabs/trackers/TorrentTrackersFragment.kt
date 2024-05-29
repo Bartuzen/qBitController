@@ -22,6 +22,7 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogEditTrackerBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogTorrentTrackersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentTrackersBinding
+import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -55,6 +56,8 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.recyclerTrackers.applyNavigationBarInsets()
+
         requireActivity().addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -191,14 +194,14 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
             viewModel.loadTrackers(serverId, torrentHash)
         }
 
+        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
             val autoRefreshLoadingBar = viewModel.autoRefreshHideLoadingBar.value
-            binding.progressIndicator.visibility =
-                if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+            if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
+                binding.progressIndicator.show()
+            } else {
+                binding.progressIndicator.hide()
+            }
         }
 
         viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
