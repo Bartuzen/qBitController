@@ -8,7 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/progress_indicator"
@@ -246,7 +247,6 @@
             app:layout_constraintTop_toBottomOf="@id/divider_2" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_feeds"
             style="@style/Widget.Material3.CardView.Outlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -264,14 +264,6 @@
                 android:padding="4dp" />
 
         </com.google.android.material.card.MaterialCardView>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="8dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/card_feeds" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
