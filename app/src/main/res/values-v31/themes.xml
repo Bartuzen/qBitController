@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:windowSplashScreenBackground">@android:color/system_neutral1_100</item>
+        <item name="android:windowSplashScreenBackground" tools:ignore="PrivateResource">
+            @color/m3_ref_palette_dynamic_neutral_variant98
+        </item>
     </style>
 
 </resources>
