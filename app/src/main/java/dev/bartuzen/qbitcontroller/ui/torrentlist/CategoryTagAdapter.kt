@@ -18,7 +18,7 @@ class CategoryTagAdapter(
     private val isCategory: Boolean,
     isCollapsed: Boolean,
     private val onSelected: (categoryTag: CategoryTag) -> Unit,
-    private val onLongClick: (name: String) -> Unit,
+    private val onLongClick: (name: String, view: View) -> Unit,
     private val onCreateClick: () -> Unit,
     private val onCollapse: (isCollapsed: Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -126,7 +126,7 @@ class CategoryTagAdapter(
             binding.root.setOnLongClickListener {
                 val categoryTag = categoryTag
                 if (categoryTag is CategoryTag.Item) {
-                    onLongClick(categoryTag.name)
+                    onLongClick(categoryTag.name, binding.root)
                     true
                 } else {
                     false

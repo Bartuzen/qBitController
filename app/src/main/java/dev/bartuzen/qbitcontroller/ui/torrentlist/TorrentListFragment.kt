@@ -15,6 +15,7 @@ import android.view.MenuItem.OnActionExpandListener
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.core.graphics.BlendModeColorFilterCompat
@@ -469,9 +470,31 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 viewModel.setSelectedCategory(category)
                 activityBinding.layoutDrawer.close()
             },
-            onLongClick = { name ->
-                showCategoryLongClickDialog(name)
-                activityBinding.layoutDrawer.close()
+            onLongClick = { name, rootView ->
+                val areSubcategoriesEnabled = viewModel.mainData.value?.serverState?.areSubcategoriesEnabled == true
+
+                val popupMenu = PopupMenu(requireContext(), rootView)
+                popupMenu.inflate(R.menu.torrent_list_drawer_category)
+                popupMenu.menu.findItem(R.id.menu_create_subcategory).isVisible = areSubcategoriesEnabled
+                popupMenu.show()
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.menu_create_subcategory -> {
+                            showCreateEditCategoryDialog(null, name)
+                        }
+                        R.id.menu_edit -> {
+                            showCreateEditCategoryDialog(name.substringAfterLast("/"), name)
+                        }
+                        R.id.menu_delete -> {
+                            showDeleteCategoryTagDialog(true, name)
+                        }
+                        else -> return@setOnMenuItemClickListener false
+                    }
+
+                    activityBinding.layoutDrawer.close()
+                    true
+                }
             },
             onCreateClick = {
                 showCreateEditCategoryDialog(null, null)
@@ -489,9 +512,22 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
                 viewModel.setSelectedTag(tag)
                 activityBinding.layoutDrawer.close()
             },
-            onLongClick = { name ->
-                showDeleteCategoryTagDialog(false, name)
-                activityBinding.layoutDrawer.close()
+            onLongClick = { name, rootView ->
+                val popupMenu = PopupMenu(requireContext(), rootView)
+                popupMenu.inflate(R.menu.torrent_list_drawer_tag)
+                popupMenu.show()
+
+                popupMenu.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.menu_delete -> {
+                            showDeleteCategoryTagDialog(false, name)
+                        }
+                        else -> return@setOnMenuItemClickListener false
+                    }
+
+                    activityBinding.layoutDrawer.close()
+                    true
+                }
             },
             onCreateClick = {
                 showCreateTagDialog()
@@ -1119,53 +1155,7 @@ class TorrentListFragment() : Fragment(R.layout.fragment_torrent_list) {
         }
     }
 
-    private fun showCategoryLongClickDialog(name: String) {
-        val areSubcategoriesEnabled = viewModel.mainData.value?.serverState?.areSubcategoriesEnabled == true
-
-        showDialog {
-            setTitle(name)
-            setItems(
-                if (!areSubcategoriesEnabled) {
-                    arrayOf(
-                        getString(R.string.torrent_list_edit_category),
-                        getString(R.string.torrent_list_delete_category)
-                    )
-                } else {
-                    arrayOf(
-                        getString(R.string.torrent_list_create_subcategory),
-                        getString(R.string.torrent_list_edit_category),
-                        getString(R.string.torrent_list_delete_category)
-                    )
-                }
-            ) { _, which ->
-                if (!areSubcategoriesEnabled) {
-                    when (which) {
-                        0 -> {
-                            showCreateEditCategoryDialog(name, null)
-                        }
-                        1 -> {
-                            showDeleteCategoryTagDialog(true, name)
-                        }
-                    }
-                } else {
-                    when (which) {
-                        0 -> {
-                            showCreateEditCategoryDialog(null, name)
-                        }
-                        1 -> {
-                            showCreateEditCategoryDialog(name.substringAfterLast("/"), name)
-                        }
-                        2 -> {
-                            showDeleteCategoryTagDialog(true, name)
-                        }
-                    }
-                }
-            }
-            setNegativeButton()
-        }
-    }
-
-    private fun showCreateEditCategoryDialog(name: String?, parent: String?) {
+     private fun showCreateEditCategoryDialog(name: String?, parent: String?) {
         val category = if (name != null) {
             val fullName = parent ?: name
             viewModel.mainData.value?.categories?.find { it.name == fullName } ?: return
