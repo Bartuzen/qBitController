@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinter)
 
     id("dev.bartuzen.qbitcontroller.localesconfig")
@@ -96,10 +96,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 val isFirebaseEnabled = gradle.startParameter.taskRequests.any { task ->
     task.args.any { arg ->
         arg.contains("Firebase")
@@ -128,10 +124,10 @@ dependencies {
 
     implementation(libs.work.runtime)
     implementation(libs.work.hilt.core)
-    kapt(libs.work.hilt.compiler)
+    ksp(libs.work.hilt.compiler)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.scalars)

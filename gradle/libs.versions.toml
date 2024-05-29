@@ -24,6 +24,7 @@ viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.0.4"
 coil = "2.6.0"
 firebase-bom = "33.0.0"
+ksp = "2.0.0-1.0.21"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
@@ -69,7 +70,7 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersions" }
 
