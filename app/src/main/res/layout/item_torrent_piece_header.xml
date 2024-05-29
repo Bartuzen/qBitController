@@ -46,12 +46,11 @@
         app:layout_constraintTop_toBottomOf="@id/text_piece_size_title"
         tools:text="Pieces Size Text" />
 
-    <View
+    <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
         android:layout_width="0dp"
-        android:layout_height="1dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="?android:listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_pieces" />

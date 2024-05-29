@@ -111,9 +111,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_layout_episode_filter" />
 
-        <include
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider"
-            layout="@layout/item_divider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -226,9 +225,8 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <include
+        <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider_2"
-            layout="@layout/item_divider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
