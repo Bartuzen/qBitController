@@ -58,6 +58,7 @@ class AddTorrentActivity : AppCompatActivity() {
     private val startFileActivity = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) {
             torrentFileUri = uri
+            binding.textFileName.error = null
         }
     }
 
