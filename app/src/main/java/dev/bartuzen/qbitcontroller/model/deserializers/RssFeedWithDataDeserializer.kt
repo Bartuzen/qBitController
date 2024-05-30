@@ -16,22 +16,23 @@ fun parseRssFeedWithData(feeds: String, path: List<String>): List<Article>? {
         node = node[name] ?: return null
     }
 
-    parseRssFeedWithData(node, articles)
+    parseRssFeedWithData(node, articles, path)
     articles.sortByDescending { it.date }
     return articles
 }
 
-private fun parseRssFeedWithData(node: JsonNode, articles: MutableList<Article>) {
+private fun parseRssFeedWithData(node: JsonNode, articles: MutableList<Article>, path: List<String>) {
     if (isFeed(node)) {
-        parseArticles(node["articles"], articles)
+        parseArticles(node["articles"], articles, path)
     } else {
-        for ((_, value) in node.fields()) {
-            parseRssFeedWithData(value, articles)
+        for ((key, value) in node.fields()) {
+            val newPath = path.toMutableList().also { it.add(key) }
+            parseRssFeedWithData(value, articles, newPath)
         }
     }
 }
 
-private fun parseArticles(node: JsonNode, articles: MutableList<Article>): List<Article> {
+private fun parseArticles(node: JsonNode, articles: MutableList<Article>, path: List<String>): List<Article> {
     for (article in node.iterator()) {
         val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
         val date = ZonedDateTime.parse(article["date"].asText(), dateFormatter).toEpochSecond()
@@ -42,7 +43,8 @@ private fun parseArticles(node: JsonNode, articles: MutableList<Article>): List<
             description = article["description"]?.asText(),
             torrentUrl = article["torrentURL"].asText(),
             isRead = article["isRead"]?.asBoolean() ?: false,
-            date = date
+            date = date,
+            path = path
         )
     }
 
