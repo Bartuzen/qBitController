@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.ArrayDeque
 import javax.inject.Inject
 
 @HiltViewModel
@@ -178,16 +177,16 @@ class RssFeedsViewModel @Inject constructor(
 
     fun goToFolder(node: String) {
         _currentDirectory.update { stack ->
-            stack.clone().apply {
-                push(node)
+            ArrayDeque(stack).apply {
+                addLast(node)
             }
         }
     }
 
     fun goBack() {
         _currentDirectory.update { stack ->
-            stack.clone().apply {
-                pop()
+            ArrayDeque(stack).apply {
+                removeLastOrNull()
             }
         }
     }

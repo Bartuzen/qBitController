@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.ArrayDeque
 import javax.inject.Inject
 
 @HiltViewModel
@@ -131,19 +130,16 @@ class TorrentFilesViewModel @Inject constructor(
 
     fun goToFolder(node: String) {
         _nodeStack.update { stack ->
-            stack.clone().apply {
-                push(node)
+            ArrayDeque(stack).apply {
+                addLast(node)
             }
         }
     }
 
     fun goBack() {
         _nodeStack.update { stack ->
-            stack.clone().apply {
-                try {
-                    pop()
-                } catch (_: NoSuchElementException) {
-                }
+            ArrayDeque(stack).apply {
+                removeLastOrNull()
             }
         }
     }

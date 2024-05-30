@@ -1,7 +1,5 @@
 package dev.bartuzen.qbitcontroller.model
 
-import java.util.ArrayDeque
-
 data class RssFeedNode(
     val name: String,
     val feed: RssFeed?,
@@ -13,7 +11,7 @@ data class RssFeedNode(
 
     fun findFolder(folderList: ArrayDeque<String>): RssFeedNode? {
         var currentNode = this
-        for (child in folderList.descendingIterator()) {
+        for (child in folderList) {
             currentNode = currentNode.children?.find { it.name == child } ?: return null
         }
         return currentNode

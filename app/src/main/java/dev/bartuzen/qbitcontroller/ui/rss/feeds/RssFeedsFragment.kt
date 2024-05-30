@@ -119,7 +119,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         val adapter = RssFeedsAdapter(
             onClick = { feedNode ->
                 if (feedNode.isFeed) {
-                    val feedPath = viewModel.currentDirectory.value.toList().reversed() + feedNode.name
+                    val feedPath = viewModel.currentDirectory.value.toList() + feedNode.name
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
                         setDefaultAnimations()
@@ -142,7 +142,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         )
         val currentDirectoryAdapter = RssFeedsCurrentDirectoryAdapter(
             onClick = {
-                val path = viewModel.currentDirectory.value.toList().reversed()
+                val path = viewModel.currentDirectory.value.toList()
                 parentFragmentManager.commit {
                     setReorderingAllowed(true)
                     setDefaultAnimations()
@@ -186,7 +186,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             if (currentNode != null) {
                 adapter.submitList(currentNode) {
                     if (currentDirectory.isNotEmpty()) {
-                        backButtonAdapter.currentDirectory = currentDirectory.reversed().joinToString("\\")
+                        backButtonAdapter.currentDirectory = currentDirectory.joinToString("\\")
                     } else {
                         backButtonAdapter.currentDirectory = null
                     }
@@ -288,7 +288,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             val feedUrl = dialogBinding.editFeedUrl.text.toString()
             if (feedUrl.isNotBlank()) {
                 val name = dialogBinding.editName.text.toString().ifBlank { null }
-                val currentDirectory = viewModel.currentDirectory.value.reversed().joinToString("\\").ifEmpty { null }
+                val currentDirectory = viewModel.currentDirectory.value.joinToString("\\").ifEmpty { null }
 
                 val fullPath = when {
                     currentDirectory != null && name != null -> {
@@ -327,7 +327,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val path = dialogBinding.editName.text.toString()
             if (path.isNotBlank()) {
-                val currentDirectory = viewModel.currentDirectory.value.reversed().joinToString("\\").ifEmpty { null }
+                val currentDirectory = viewModel.currentDirectory.value.joinToString("\\").ifEmpty { null }
 
                 val fullPath = if (currentDirectory != null) {
                     "$currentDirectory\\$path"
@@ -380,7 +380,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                         )
                     }
                     2 -> {
-                        val feedPath = (viewModel.currentDirectory.value.reversed() + feedNode.name).joinToString("\\")
+                        val feedPath = (viewModel.currentDirectory.value + feedNode.name).joinToString("\\")
                         showDeleteFeedFolderDialog(
                             name = feedNode.name,
                             isFeed = feedNode.isFeed,
@@ -396,7 +396,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
     private fun showMoveFeedFolderDialog(name: String, isFeed: Boolean, onMove: (from: String, to: String) -> Unit) {
         showDialog(DialogRssMoveFeedFolderBinding::inflate) { binding ->
-            val currentDirectory = viewModel.currentDirectory.value.reversed()
+            val currentDirectory = viewModel.currentDirectory.value
             binding.inputLayoutName.setTextWithoutAnimation(currentDirectory.joinToString("\\"))
 
             if (isFeed) {
@@ -440,7 +440,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val newName = dialogBinding.editName.text.toString()
             if (newName.isNotBlank()) {
-                val currentDirectory = viewModel.currentDirectory.value.reversed()
+                val currentDirectory = viewModel.currentDirectory.value
                 val from = (currentDirectory.toList() + name).joinToString("\\")
                 val to = (currentDirectory.toList() + newName).joinToString("\\")
 

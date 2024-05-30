@@ -1,7 +1,5 @@
 package dev.bartuzen.qbitcontroller.model
 
-import java.util.ArrayDeque
-
 data class TorrentFileNode(
     val name: String,
     val file: TorrentFile?,
@@ -14,7 +12,7 @@ data class TorrentFileNode(
 
     fun findChildNode(childList: ArrayDeque<String>): TorrentFileNode? {
         var currentNode = this
-        for (child in childList.descendingIterator()) {
+        for (child in childList) {
             currentNode = currentNode.children?.find { it.name == child } ?: return null
         }
         return currentNode
