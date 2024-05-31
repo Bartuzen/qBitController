@@ -52,6 +52,7 @@
         <item name="snackbarTextViewStyle">@style/AppTheme.SnackbarTextViewStyle</item>
 
         <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.Material3.ActionBar</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Material3</item>
     </style>
