@@ -46,7 +46,6 @@ class TorrentPeersViewModel
     var isInitialLoadStarted = false
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
-    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private var imageLoader: ImageLoader? = null
 

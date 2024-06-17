@@ -198,8 +198,7 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
 
         binding.progressIndicator.setVisibilityAfterHide(View.GONE)
         viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
-            val autoRefreshLoadingBar = viewModel.autoRefreshHideLoadingBar.value
-            if (isNaturalLoading == true || isNaturalLoading == false && !autoRefreshLoadingBar) {
+            if (isNaturalLoading == true) {
                 binding.progressIndicator.show()
             } else {
                 binding.progressIndicator.hide()

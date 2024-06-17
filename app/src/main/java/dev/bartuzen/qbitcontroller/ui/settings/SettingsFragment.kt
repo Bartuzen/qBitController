@@ -25,7 +25,6 @@ import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
 import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
-import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
@@ -100,7 +99,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             override fun getBoolean(key: String, defValue: Boolean): Boolean {
                 return when (key) {
-                    "autoRefreshHideLoadingBar" -> viewModel.autoRefreshHideLoadingBar
                     "areTorrentSwipeActionsEnabled" -> viewModel.areTorrentSwipeActionsEnabled
                     else -> defValue
                 }
@@ -108,7 +106,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
             override fun putBoolean(key: String, value: Boolean) {
                 when (key) {
-                    "autoRefreshHideLoadingBar" -> viewModel.autoRefreshHideLoadingBar = value
                     "areTorrentSwipeActionsEnabled" -> viewModel.areTorrentSwipeActionsEnabled = value
                 }
             }
@@ -226,16 +223,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 editText.inputType = InputType.TYPE_CLASS_NUMBER
                 editText.setText(text)
                 editText.setSelection(text.length)
-            }
-        }
-
-        switch {
-            key = "autoRefreshHideLoadingBar"
-            setTitle(R.string.settings_auto_refresh_hide_loading_bar)
-            setSummary(R.string.settings_auto_refresh_hide_loading_bar_description)
-
-            viewModel.autoRefreshIntervalFlow.launchAndCollectLatestIn(this@SettingsFragment) { autoRefreshInterval ->
-                isEnabled = autoRefreshInterval != 0
             }
         }
 

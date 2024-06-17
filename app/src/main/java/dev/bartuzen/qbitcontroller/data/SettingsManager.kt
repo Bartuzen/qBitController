@@ -21,7 +21,6 @@ class SettingsManager @Inject constructor(
     val isReverseSorting = primitivePreference(sharedPref, "isReverseSorting", false)
     val connectionTimeout = primitivePreference(sharedPref, "connectionTimeout", 10)
     val autoRefreshInterval = primitivePreference(sharedPref, "autoRefreshInterval", 0)
-    val autoRefreshHideLoadingBar = primitivePreference(sharedPref, "autoRefreshHideLoadingBar", true)
     val notificationCheckInterval = primitivePreference(sharedPref, "notificationCheckInterval", 15)
     val areTorrentSwipeActionsEnabled = primitivePreference(sharedPref, "areTorrentSwipeActionsEnabled", true)
 

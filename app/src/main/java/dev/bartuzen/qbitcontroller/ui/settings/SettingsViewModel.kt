@@ -25,14 +25,6 @@ class SettingsViewModel @Inject constructor(
             settingsManager.autoRefreshInterval.value = value
         }
 
-    var autoRefreshIntervalFlow = settingsManager.autoRefreshInterval.flow
-
-    var autoRefreshHideLoadingBar
-        get() = settingsManager.autoRefreshHideLoadingBar.value
-        set(value) {
-            settingsManager.autoRefreshHideLoadingBar.value = value
-        }
-
     var notificationCheckInterval
         get() = settingsManager.notificationCheckInterval.value
         set(value) {

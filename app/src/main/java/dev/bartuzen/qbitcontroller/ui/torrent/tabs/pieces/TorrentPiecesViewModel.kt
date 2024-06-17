@@ -40,7 +40,6 @@ class TorrentPiecesViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
-    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private fun updatePieces(serverId: Int, torrentHash: String) = viewModelScope.launch {
         val piecesDeferred = async {

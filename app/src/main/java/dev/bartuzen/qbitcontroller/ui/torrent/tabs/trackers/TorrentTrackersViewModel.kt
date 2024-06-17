@@ -34,7 +34,6 @@ class TorrentTrackersViewModel @Inject constructor(
     var isInitialLoadStarted = false
 
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
-    val autoRefreshHideLoadingBar = settingsManager.autoRefreshHideLoadingBar.flow
 
     private fun updateTrackers(serverId: Int, torrentHash: String) = viewModelScope.launch {
         when (val result = repository.getTrackers(serverId, torrentHash)) {
