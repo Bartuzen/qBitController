@@ -56,8 +56,6 @@
         <item quantity="many">%1$d segundos</item>
         <item quantity="other">%1$d segundos</item>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar">Ocultar barra de carregamento</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">Não exibir barra de carregamento ao atualizar automaticamente</string>
     <string name="settings_notification_check_interval">Intervalo de verificação de notificações</string>
     <string name="settings_server_advanced_basic_auth">Autenticação básica</string>
     <string name="settings_server_url_configuration_not_valid">A configuração de URL inserida não é válida.</string>

@@ -147,8 +147,6 @@
         <item quantity="many">%1$d секунд</item>
         <item quantity="other">%1$d секунд</item>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar">Скрыть полосу загрузки</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">Не показывать полосу загрузки при автоматическом обновлении</string>
     <string name="settings_notification_check_interval">Интервал проверки уведомлений</string>
     <string name="settings_server_host">Хост</string>
     <string name="settings_server_edit_success">Сервер успешно отредактирован.</string>

@@ -555,8 +555,6 @@
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="other">%1$d 秒</item>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar">隐藏加载进度条</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">当自动刷新时隐藏加载进度条</string>
     <string name="settings_notification_check_interval">通知检查间隔</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="other">%1$d 分</item>

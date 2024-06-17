@@ -500,7 +500,6 @@
     <string name="torrent_add_content_layout_no_subfolder">No crear subcarpeta</string>
     <string name="torrent_peers_add_hint">Pares</string>
     <string name="torrent_add_speed_limit_too_big">El límite de velocidad es demasiado grande.</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">No mostrar la barra de carga cuando se actualiza automáticamente</string>
     <string name="torrent_peers_flag_utp">Micro Transport Protocol (µTP)</string>
     <string name="search_plugins_update_success">Todos los plugins se actualizaron correctamente.</string>
     <string name="search_plugins_cannot_be_empty">Los plugins no pueden estar vacíos.</string>
@@ -573,7 +572,6 @@
     <string name="torrent_peers_details_progress">Progreso: %1$s%%</string>
     <string name="rss_success_feed_delete">Se ha borrado el feed correctamente.</string>
     <string name="rss_rules">Descargador de RSS</string>
-    <string name="settings_auto_refresh_hide_loading_bar">Ocultar la barra de carga</string>
     <string name="rss_hint_folder_name">Nombre de la carpeta</string>
     <string name="settings_servers">Servidores</string>
     <string name="rss_all_articles">Todos los artículos</string>

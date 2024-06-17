@@ -442,7 +442,6 @@
         <item quantity="one">%1$d saniye</item>
         <item quantity="other"/>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar_description">Otomatik yenileniyorken yükleme çubuğunu gösterme</string>
     <string name="settings_enable_torrent_swipe_actions">Torrent kaydırma eylemlerini etkinleştir</string>
     <string name="settings_notification_check_interval">Bildirim kontrol aralığı</string>
     <plurals name="settings_notification_check_interval_description">
@@ -579,7 +578,6 @@
     <string name="settings_add_new_server">Yeni sunucu ekle</string>
     <string name="settings_other">Diğer</string>
     <string name="settings_disabled">Devre Dışı</string>
-    <string name="settings_auto_refresh_hide_loading_bar">Yükleme çubuğunu gizle</string>
     <string name="settings_theme_dark">Karanlık</string>
     <string name="settings_theme_system_default">Sistem Varsayılanı</string>
     <string name="settings_server_title_add">Sunucu Ekle</string>

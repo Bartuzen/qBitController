@@ -336,7 +336,6 @@
     <string name="settings_connection_timeout">Forbindelse afbrudt</string>
     <string name="settings_add_new_server">Tilføj ny server</string>
     <string name="settings_auto_refresh_interval">Automatisk opdateringsinterval</string>
-    <string name="settings_auto_refresh_hide_loading_bar">Skjul indlæsning bar</string>
     <string name="search_plugins_install_hint">URL eller lokal mappe</string>
     <plurals name="settings_connection_timeout_description">
         <item quantity="one">%1$d sekund</item>
