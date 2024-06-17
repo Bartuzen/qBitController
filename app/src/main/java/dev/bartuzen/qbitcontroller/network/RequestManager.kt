@@ -69,14 +69,11 @@ class RequestManager @Inject constructor(
                 addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
             }
 
-            if (serverConfig.protocol == Protocol.HTTPS) {
+            if (serverConfig.protocol == Protocol.HTTPS && serverConfig.trustSelfSignedCertificates) {
+                val sslContext = SSLContext.getInstance("SSL")
+                sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+                sslSocketFactory(sslContext.socketFactory, trustAllManager)
                 hostnameVerifier { _, _ -> true }
-
-                if (serverConfig.trustSelfSignedCertificates) {
-                    val sslContext = SSLContext.getInstance("SSL")
-                    sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-                    sslSocketFactory(sslContext.socketFactory, trustAllManager)
-                }
             }
 
             addInterceptor { chain ->
