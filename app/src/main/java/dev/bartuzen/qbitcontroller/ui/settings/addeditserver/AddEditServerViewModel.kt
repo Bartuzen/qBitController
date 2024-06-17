@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.fasterxml.jackson.databind.JsonMappingException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.BasicAuthInterceptor
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -77,7 +78,7 @@ class AddEditServerViewModel @Inject constructor(
                                 addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
                             }
 
-                            if (serverConfig.trustSelfSignedCertificates) {
+                            if (serverConfig.protocol == Protocol.HTTPS && serverConfig.trustSelfSignedCertificates) {
                                 val sslContext = SSLContext.getInstance("SSL")
                                 sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
                                 sslSocketFactory(sslContext.socketFactory, trustAllManager)
