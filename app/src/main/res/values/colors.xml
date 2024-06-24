@@ -145,9 +145,9 @@
     <color name="torrent_state_downloading">#1A7F37</color>
     <color name="torrent_state_stalled_downloading">#2DA44E</color>
     <color name="torrent_state_stalled_uploading">#0969DA</color>
-    <color name="torrent_state_uploading">#0969DA</color>
+    <color name="torrent_state_uploading">#7BB5F9</color>
     <color name="torrent_state_paused_downloading">#57606A</color>
-    <color name="torrent_state_paused_uploading">#218BFF</color>
+    <color name="torrent_state_paused_uploading">#8250DF</color>
     <color name="torrent_state_queued">#7D4E00</color>
     <color name="torrent_state_error">#CF222E</color>
 
