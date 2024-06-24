@@ -19,7 +19,6 @@
     <string name="torrent_status_checking">Kontroluje se</string>
     <string name="torrent_status_completed">Dokončeno</string>
     <string name="torrent_status_checking_resume_data">Kontrola pokračovacích dat</string>
-    <string name="torrent_status_allocating_space">Alokování místa</string>
     <string name="torrent_status_downloading">Stahování</string>
     <string name="torrent_status_downloading_metadata">Stahování metadat</string>
     <string name="torrent_status_moving">Přesouvání</string>

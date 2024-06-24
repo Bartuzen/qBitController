@@ -12,7 +12,6 @@
     <string name="torrent_status_queued">I kø</string>
     <string name="torrent_status_checking">Sjekker</string>
     <string name="torrent_status_completed">Fullført</string>
-    <string name="torrent_status_allocating_space">Tildeler plass</string>
     <string name="torrent_status_downloading">Laster ned</string>
     <string name="torrent_status_checking_resume_data">Sjekker gjenopprettingsdata</string>
     <string name="torrent_status_downloading_metadata">Laster ned metadata</string>

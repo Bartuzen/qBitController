@@ -31,7 +31,6 @@
     <string name="torrent_status_error">Error</string>
     <string name="eta_minutes_seconds">%1$sm %2$ss</string>
     <string name="torrent_list_delete_tag_desc">¿Estás seguro que quieres eliminar la etiqueta %1$s?</string>
-    <string name="torrent_status_allocating_space">Asignando Espacio</string>
     <string name="torrent_list_status_resumed">Continuados</string>
     <string name="torrent_list_action_sort_priority">Prioridad</string>
     <string name="size_bytes">B</string>

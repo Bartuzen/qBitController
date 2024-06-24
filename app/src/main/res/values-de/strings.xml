@@ -21,7 +21,6 @@
     <string name="torrent_status_error">Fehler</string>
     <string name="error_timeout">Zeitüberschreitung der Verbindung.</string>
     <string name="torrent_list_delete_tag_desc">Soll das Label %1$s wirklich gelöscht werden?</string>
-    <string name="torrent_status_allocating_space">Belege Speicherplatz</string>
     <string name="torrent_list_action_sort_priority">Priorität</string>
     <string name="torrent_list_action_sort_addition_date">Hinzugefügt am</string>
     <string name="torrent_speed_limits_title">Geschwindigkeitlimits</string>

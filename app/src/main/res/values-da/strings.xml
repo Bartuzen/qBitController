@@ -6,7 +6,6 @@
     <string name="torrent_status_checking">Tjekker</string>
     <string name="torrent_status_completed">Færdig</string>
     <string name="torrent_status_force_seeding">[F] Seeding</string>
-    <string name="torrent_status_allocating_space">Allokerer plads</string>
     <string name="torrent_status_downloading">Downloader</string>
     <string name="torrent_status_downloading_metadata">Downloader Metadata</string>
     <string name="torrent_status_force_downloading_metadata">[F] Downloader Metadata</string>

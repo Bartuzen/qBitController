@@ -15,7 +15,6 @@
     <string name="torrent_status_checking">Denetleniyor</string>
     <string name="torrent_status_completed">Tamamlandı</string>
     <string name="torrent_status_force_seeding">[F] Gönderiliyor</string>
-    <string name="torrent_status_allocating_space">Yer Ayrılıyor</string>
     <string name="torrent_status_downloading">İndiriliyor</string>
     <string name="torrent_status_checking_resume_data">Devam Etme Verisi Denetleniyor</string>
     <string name="torrent_status_downloading_metadata">Üstveri indiriliyor</string>

@@ -26,7 +26,6 @@
     <string name="torrent_status_seeding">Раздаётся</string>
     <string name="torrent_status_force_seeding">[П] Раздаётся</string>
     <string name="torrent_status_stalled">Простаивает</string>
-    <string name="torrent_status_allocating_space">Выделяется место</string>
     <string name="torrent_status_checking_resume_data">Проверка данных возобновления</string>
     <string name="torrent_status_moving">Перемещается</string>
     <string name="torrent_status_force_downloading">[П] Загружается</string>

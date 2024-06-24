@@ -24,7 +24,6 @@
     <string name="error_timeout">Час з\'єднання закінчився.</string>
     <string name="eta_minutes_seconds">%1$sхв %2$sс</string>
     <string name="torrent_list_delete_tag_desc">Ви впевнені, що хочете видалити тег %1$s\?</string>
-    <string name="torrent_status_allocating_space">Виділення простору</string>
     <string name="torrent_list_action_sort_priority">Пріоритет</string>
     <string name="size_bytes">Б</string>
     <string name="torrent_list_action_sort_addition_date">За датою додавання</string>

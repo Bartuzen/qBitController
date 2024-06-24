@@ -39,7 +39,6 @@
     <string name="torrent_status_paused">En pause</string>
     <string name="torrent_status_queued">En attente</string>
     <string name="torrent_status_force_seeding">[F] Seeding</string>
-    <string name="torrent_status_allocating_space">Allouer de l\'espace</string>
     <string name="torrent_status_downloading">Téléchargement</string>
     <string name="torrent_status_checking_resume_data">Vérification des données de reprise</string>
     <string name="torrent_status_downloading_metadata">Téléchargement des métadonnées</string>

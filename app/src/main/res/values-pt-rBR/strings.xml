@@ -110,7 +110,6 @@
     <string name="torrent_status_stalled">Parado</string>
     <string name="torrent_status_checking">Verificando</string>
     <string name="torrent_status_force_seeding">[F] Seeding</string>
-    <string name="torrent_status_allocating_space">Alocando espaço</string>
     <string name="torrent_status_downloading">Fazendo o download</string>
     <string name="torrent_status_downloading_metadata">Baixando metadados</string>
     <string name="torrent_status_force_downloading_metadata">[F] Baixando metadados</string>
