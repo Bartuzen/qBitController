@@ -13,8 +13,7 @@ fun getTorrentStateColor(context: Context, state: TorrentState) = context.getCol
         TorrentState.CHECKING_DL,
         TorrentState.CHECKING_UP,
         TorrentState.CHECKING_RESUME_DATA,
-        TorrentState.MOVING,
-        TorrentState.ALLOCATING -> {
+        TorrentState.MOVING -> {
             R.color.torrent_state_downloading
         }
         TorrentState.STALLED_DL -> {

@@ -109,7 +109,6 @@ fun formatTorrentState(context: Context, state: TorrentState) = context.getStrin
         TorrentState.CHECKING_UP, TorrentState.CHECKING_DL -> R.string.torrent_status_checking
         TorrentState.CHECKING_RESUME_DATA -> R.string.torrent_status_checking_resume_data
         TorrentState.FORCED_UP -> R.string.torrent_status_force_seeding
-        TorrentState.ALLOCATING -> R.string.torrent_status_allocating_space
         TorrentState.DOWNLOADING -> R.string.torrent_status_downloading
         TorrentState.META_DL -> R.string.torrent_status_downloading_metadata
         TorrentState.FORCED_META_DL -> R.string.torrent_status_force_downloading_metadata

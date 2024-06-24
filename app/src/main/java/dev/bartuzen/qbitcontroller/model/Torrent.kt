@@ -162,9 +162,6 @@ enum class TorrentState {
     @JsonProperty("metaDL")
     META_DL,
 
-    @JsonProperty("allocating")
-    ALLOCATING,
-
     @JsonProperty("stalledDL")
     STALLED_DL,
 
