@@ -219,13 +219,13 @@
             android:id="@+id/checkbox_prioritize_first_last_pieces"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/torrent_add_prioritize_first_last_piece" />
+            android:text="@string/torrent_option_prioritize_first_last_piece" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox_sequential_download"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/torrent_add_sequential_download" />
+            android:text="@string/torrent_option_sequential_download" />
 
     </LinearLayout>
 
