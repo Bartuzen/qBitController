@@ -9,6 +9,16 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:id="@+id/image_expand"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:visibility="invisible"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_expand" />
+
+    <ImageView
         android:id="@+id/image_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"

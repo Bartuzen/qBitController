@@ -11,7 +11,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +20,6 @@ class RssFeedsViewModel @Inject constructor(
 ) : ViewModel() {
     private val _rssFeeds = MutableStateFlow<RssFeedNode?>(null)
     val rssFeeds = _rssFeeds.asStateFlow()
-
-    private val _currentDirectory = MutableStateFlow(ArrayDeque<String>())
-    val currentDirectory = _currentDirectory.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -35,6 +31,8 @@ class RssFeedsViewModel @Inject constructor(
     val isRefreshing = _isRefreshing.asStateFlow()
 
     var isInitialLoadStarted = false
+
+    val collapsedNodes: MutableSet<String> = mutableSetOf()
 
     private fun updateRssFeeds(serverId: Int) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
@@ -172,28 +170,6 @@ class RssFeedsViewModel @Inject constructor(
                     eventChannel.send(Event.Error(result))
                 }
             }
-        }
-    }
-
-    fun goToFolder(node: String) {
-        _currentDirectory.update { stack ->
-            ArrayDeque(stack).apply {
-                addLast(node)
-            }
-        }
-    }
-
-    fun goBack() {
-        _currentDirectory.update { stack ->
-            ArrayDeque(stack).apply {
-                removeLastOrNull()
-            }
-        }
-    }
-
-    fun goToRoot() {
-        _currentDirectory.update {
-            ArrayDeque()
         }
     }
 
