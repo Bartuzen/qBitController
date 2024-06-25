@@ -405,7 +405,6 @@
     <string name="torrent_peers_details_client">Cliente: %1$s</string>
     <string name="rss_move_folder_error">No se ha podido mover la carpeta.</string>
     <string name="search_start_category_music">Música</string>
-    <string name="rss_hint_move_path">Ruta</string>
     <string name="torrent_add_link_cannot_be_empty">El enlace no puede estar vacío.</string>
     <string name="search_plugins_action_update_plugins">Actualizar los plugins</string>
     <plurals name="torrent_peers_selected">

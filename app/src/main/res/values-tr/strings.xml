@@ -553,7 +553,6 @@
     <string name="rss_action_delete_folder">Klasörü Sil</string>
     <string name="rss_action_mark_all_as_read">Tümünü Okundu Olarak İşaretle</string>
     <string name="rss_hint_folder_name">Klasör Adı</string>
-    <string name="rss_hint_move_path">Yol</string>
     <string name="rss_success_feed_rename">Bildirim başarıyla yeniden adlandırıldı.</string>
     <string name="rss_success_feed_move">Bildirim başarıyla taşındı.</string>
     <string name="rss_success_feed_delete">Bildirim başarıyla silindi.</string>

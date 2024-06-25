@@ -367,7 +367,6 @@
     <string name="rss_action_refresh_all">Gjenoppfrisk alt</string>
     <string name="rss_hint_feed_url">Strøm-nettadresse</string>
     <string name="rss_hint_feed_name">Strøm-navn</string>
-    <string name="rss_hint_move_path">Sti</string>
     <string name="rss_added_feed">Strøm tillagt.</string>
     <string name="torrent_list_switch_speed_limit_regular_success">Byttet til vanlige hastighetsgrenser.</string>
     <string name="error_api">API-et returnerte feil: %1$d</string>

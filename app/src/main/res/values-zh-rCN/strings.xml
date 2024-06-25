@@ -434,7 +434,6 @@
     <string name="rss_hint_feed_name_optional">订阅源名称（可选）</string>
     <string name="rss_hint_feed_name">订阅源名称</string>
     <string name="rss_hint_folder_name">文件夹名称</string>
-    <string name="rss_hint_move_path">路径</string>
     <string name="rss_all_articles">所有文章</string>
     <string name="rss_view_all_articles">查阅所有文章</string>
     <string name="rss_view_all_articles_in">查阅所有文章用 %1$s</string>

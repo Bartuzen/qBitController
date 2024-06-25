@@ -440,7 +440,6 @@
     <string name="rss_hint_feed_name_optional">Nome do feed (opcional)</string>
     <string name="rss_hint_feed_name">Nome do feed</string>
     <string name="rss_hint_folder_name">Nome da pasta</string>
-    <string name="rss_hint_move_path">Caminho</string>
     <string name="rss_all_articles">Todos os artigos</string>
     <string name="rss_view_all_articles">Ver todos os artigos</string>
     <string name="rss_view_all_articles_in">Ver todos os artigos em %1$s</string>

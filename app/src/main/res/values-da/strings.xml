@@ -261,7 +261,6 @@
     <string name="rss_hint_feed_name_optional">Feed Navn (Valgfrit)</string>
     <string name="rss_hint_feed_name">Feed Navn</string>
     <string name="rss_hint_folder_name">Mappenavn</string>
-    <string name="rss_hint_move_path">Sti</string>
     <string name="rss_all_articles">Alle artikler</string>
     <string name="rss_view_all_articles_in">Se alle artikler i %1$s</string>
     <string name="rss_confirm_delete_feed">Er du sikker på, at du vil slette feed %1$s?</string>

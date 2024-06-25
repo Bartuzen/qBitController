@@ -70,7 +70,6 @@
     <string name="torrent_peers_flag_peer_from_pex">Пир из PEX</string>
     <string name="torrent_add_click_to_select_file">Нажмите чтобы выбрать файлы</string>
     <string name="rss_no_description">Описание не найдено</string>
-    <string name="rss_hint_move_path">Путь</string>
     <string name="rss_action_add_feed">Добавить ленту</string>
     <string name="rss_action_delete_feed">Удалить ленту</string>
     <string name="rss_all_articles">Все статьи</string>
