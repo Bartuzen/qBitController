@@ -276,7 +276,6 @@
     <string name="about_description">qBitController permite controlar qBittorrent desde un dispositivo Android.
 \n
 \nPara obtener información más detallada y el código fuente: https://github.com/Bartuzen/qBitController</string>
-    <string name="rss_view_all_articles_in">Ver todos los artículos en %1$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interesados (locales) y ahogados (pares)</string>
     <string name="search_result_leechers">Sanguijuelas: %1$s</string>
     <string name="search_result_filter_min">Mínimo</string>
@@ -292,7 +291,6 @@
     <string name="search_result_action_sort_search_engine">Motor de búsqueda</string>
     <string name="torrent_peers_details_flags">Banderas: %1$s</string>
     <string name="rss_action_add_feed">Añadir feed</string>
-    <string name="rss_action_add">Añadir</string>
     <string name="torrent_option_share_limit_disable">Desactivar el límite de la cuota</string>
     <string name="rss_rule_must_contain">Debe contener</string>
     <string name="torrent_add_click_to_select_file">Haga clic para seleccionar un archivo</string>
@@ -349,7 +347,6 @@
     <string name="torrent_trackers_add_hint">Rastreadores</string>
     <string name="settings_server_trust_self_signed_certificates">Confiar en certificados autofirmados</string>
     <string name="settings_server_password">Contraseña</string>
-    <string name="rss_view_all_articles">Ver todos los artículos</string>
     <string name="rss_success_folder_delete">Se ha borrado una carpeta correctamente.</string>
     <string name="settings_server_username_min_character">El usuario debe tener al menos 3 caracteres.</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interesados (pares) y ahogados (locales)</string>
@@ -400,7 +397,6 @@
     <string name="settings_server_test_configuration">Configuración de prueba</string>
     <string name="torrent_trackers_downloaded">Descargado</string>
     <string name="torrent_add_prioritize_first_last_piece">Descargue primero la primera y la última pieza</string>
-    <string name="torrent_overview_ratio">Relación</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">La ruta no es válida o ya está en uso.</string>
     <string name="torrent_peers_details_client">Cliente: %1$s</string>
     <string name="rss_move_folder_error">No se ha podido mover la carpeta.</string>

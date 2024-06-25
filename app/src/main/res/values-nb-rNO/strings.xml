@@ -161,7 +161,6 @@
     <string name="torrent_overview_time_active">Tid aktiv</string>
     <string name="torrent_overview_downloaded">Nedlastet</string>
     <string name="torrent_overview_uploaded">Opplastet</string>
-    <string name="torrent_overview_ratio">Forhold</string>
     <string name="torrent_overview_last_activity">Siste aktivitet</string>
     <string name="torrent_overview_connections">Tilkoblinger</string>
     <string name="torrent_overview_seeds">Delere</string>
@@ -224,7 +223,6 @@
     <string name="rss_title">RSS</string>
     <string name="rss_download">Last ned</string>
     <string name="rss_mark_as_read">Marker som lest</string>
-    <string name="rss_action_add">Legg til</string>
     <string name="rss_action_add_folder">Legg til mappe</string>
     <string name="rss_action_rename_folder">Gi mappe nytt navn</string>
     <string name="rss_action_move_folder">Flytt mappe</string>
@@ -232,8 +230,6 @@
     <string name="rss_action_mark_all_as_read">Marker alle som lest</string>
     <string name="rss_hint_folder_name">Mappenavn</string>
     <string name="rss_all_articles">Alle artikler</string>
-    <string name="rss_view_all_articles">Vis alle artikler</string>
-    <string name="rss_view_all_articles_in">Vis alle artikler i %1$s</string>
     <string name="rss_field_required">Dette feltet er påkrevd.</string>
     <string name="rss_success_folder_move">Mappe flyttet.</string>
     <string name="rss_success_folder_delete">Mappe slettet.</string>

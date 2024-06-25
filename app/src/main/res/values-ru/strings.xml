@@ -77,7 +77,6 @@
     <string name="rss_action_rename_feed">Переименовать ленту</string>
     <string name="rss_action_add_folder">Добавить папку</string>
     <string name="rss_action_refresh_all">Обновить всё</string>
-    <string name="rss_view_all_articles">Посмотреть все статьи</string>
     <string name="rss_success_folder_delete">Папка успешно удалена.</string>
     <string name="rss_add_folder_error">Не удалось добавить папку.</string>
     <string name="rss_field_required">Это поле обязательно.</string>
@@ -352,7 +351,6 @@
     <string name="torrent_overview_downloaded">Загружено</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s за сеанс)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s за сеанс)</string>
-    <string name="torrent_overview_ratio">Рейтинг</string>
     <string name="torrent_overview_reannounce_in">Следующий анонс</string>
     <string name="torrent_overview_last_activity">Последняя активность</string>
     <string name="torrent_overview_last_seen_complete">Замечен целиком</string>
@@ -422,7 +420,6 @@
     <string name="rss_filter">Фильтр записей…</string>
     <string name="rss_date">Дата: %1$s</string>
     <string name="rss_download">Загрузить</string>
-    <string name="rss_action_add">Добавить</string>
     <string name="rss_action_move_feed">Переместить ленту</string>
     <string name="rss_action_rename_folder">Переименовать папку</string>
     <string name="rss_action_move_folder">Переместить папку</string>
@@ -433,7 +430,6 @@
     <string name="rss_hint_feed_name_optional">Имя ленты (необязательно)</string>
     <string name="rss_hint_feed_name">Имя ленты</string>
     <string name="rss_hint_folder_name">Имя папки</string>
-    <string name="rss_view_all_articles_in">Посмотреть все статьи в %1$s</string>
     <string name="rss_confirm_delete_folder">Уверены, что хотите удалить папку %1$s\?</string>
     <string name="rss_success_feed_rename">Лента переименована успешно.</string>
     <string name="rss_success_feed_move">Лента перемещена успешно.</string>

@@ -246,7 +246,6 @@
     <string name="rss_date">Dato: %1$s</string>
     <string name="rss_mark_as_read">Markér som læst</string>
     <string name="rss_no_description">Ingen beskrivelse fundet</string>
-    <string name="rss_action_add">Tilføj</string>
     <string name="rss_action_add_feed">Tilføj feed</string>
     <string name="rss_action_rename_feed">Omdøb Feed</string>
     <string name="rss_action_move_feed">Flyt Feed</string>
@@ -262,7 +261,6 @@
     <string name="rss_hint_feed_name">Feed Navn</string>
     <string name="rss_hint_folder_name">Mappenavn</string>
     <string name="rss_all_articles">Alle artikler</string>
-    <string name="rss_view_all_articles_in">Se alle artikler i %1$s</string>
     <string name="rss_confirm_delete_feed">Er du sikker på, at du vil slette feed %1$s?</string>
     <string name="rss_added_feed">Feed tilføjet med succes.</string>
     <string name="rss_success_feed_rename">Feed omdøbt med succes.</string>
@@ -467,7 +465,6 @@
     <string name="rss_rule_action_create">Opret Regel</string>
     <string name="torrent_overview_completed_on">Færdig på</string>
     <string name="torrent_trackers_peers">Modparter</string>
-    <string name="rss_view_all_articles">Vis alle artikler</string>
     <string name="rss_rule_rename">Omdøb Regel</string>
     <string name="size_exbibytes">EiB</string>
     <string name="search_start_category">Kategori</string>
@@ -511,7 +508,6 @@
     <string name="torrent_overview_uploaded">Uploadet</string>
     <string name="torrent_add_content_layout_original">Original</string>
     <string name="settings_server_host">Vært</string>
-    <string name="torrent_overview_ratio">Ratio</string>
     <string name="torrent_add_content_layout_subfolder">Opret undermapper</string>
     <string name="settings_server_advanced_basic_auth_password">Adgangskode</string>
     <string name="torrent_overview_last_activity">Sidste aktivitet</string>
