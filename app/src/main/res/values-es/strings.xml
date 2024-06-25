@@ -627,4 +627,5 @@
     <string name="torrent_option_share_limit_total_minutes">Minutos totales</string>
     <string name="torrent_option_share_limit_inactive_minutes">Minutos inactivo</string>
     <string name="torrent_force_recheck_confirm">¿Estás seguro que quieres forzar la verificación de este torrent?</string>
+    <string name="rss_action_move_select_folder">Selecciona una carpeta</string>
 </resources>
