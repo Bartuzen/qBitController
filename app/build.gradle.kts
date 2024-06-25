@@ -92,7 +92,7 @@ android {
     }
 
     lint {
-        disable += "MissingTranslation"
+        disable += listOf("MissingTranslation", "ExtraTranslation")
     }
 }
 
