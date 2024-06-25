@@ -494,12 +494,12 @@
     <string name="rss_action_mark_all_as_read">Mark All as Read</string>
     <string name="rss_action_refresh_all">Refresh All</string>
     <string name="rss_action_refresh">Refresh</string>
+    <string name="rss_action_move_select_folder">Select a folder</string>
 
     <string name="rss_hint_feed_url">Feed URL</string>
     <string name="rss_hint_feed_name_optional">Feed Name (Optional)</string>
     <string name="rss_hint_feed_name">Feed Name</string>
     <string name="rss_hint_folder_name">Folder Name</string>
-    <string name="rss_hint_move_path">Path</string>
 
     <string name="rss_all_articles">All Articles</string>
     <string name="rss_view_all_articles">View All Articles</string>

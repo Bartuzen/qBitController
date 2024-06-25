@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.rss.feeds
 
 import android.os.Bundle
+import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -20,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFeedBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFolderBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogRssMoveFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssRenameFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
@@ -48,6 +48,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     private val viewModel: RssFeedsViewModel by viewModels()
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
+
+    private var movingItem: RssFeedNode? = null
+
+    private var actionMode: ActionMode? = null
 
     constructor(serverId: Int) : this() {
         arguments = bundleOf("serverId" to serverId)
@@ -93,12 +97,26 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         val adapter = RssFeedsAdapter(
             collapsedNodes = viewModel.collapsedNodes,
             onClick = { feedNode ->
-                parentFragmentManager.commit {
-                    setReorderingAllowed(true)
-                    setDefaultAnimations()
-                    val fragment = RssArticlesFragment(serverId, feedNode.path)
-                    replace(R.id.container, fragment)
-                    addToBackStack(null)
+                val movingItem = movingItem
+                if (movingItem == null) {
+                    parentFragmentManager.commit {
+                        setReorderingAllowed(true)
+                        setDefaultAnimations()
+                        val fragment = RssArticlesFragment(serverId, feedNode.path)
+                        replace(R.id.container, fragment)
+                        addToBackStack(null)
+                    }
+                } else {
+                    if (feedNode.isFolder) {
+                        val from = movingItem.path.joinToString("\\")
+                        val to = (feedNode.path + movingItem.name).joinToString("\\")
+
+                        viewModel.moveItem(serverId, from, to, feedNode.isFeed)
+
+                        this@RssFeedsFragment.movingItem = null
+                        actionMode?.finish()
+                        actionMode = null
+                    }
                 }
             },
             onLongClick = { feedNode, rootView ->
@@ -265,7 +283,14 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     showRenameFeedFolderDialog(feedNode)
                 }
                 R.id.move -> {
-                    showMoveFeedFolderDialog(feedNode)
+                    movingItem = feedNode
+                    actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
+                        override fun onCreateActionMode(mode: ActionMode, menu: Menu) = true
+                        override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
+                        override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = false
+                        override fun onDestroyActionMode(mode: ActionMode) {}
+                    })
+                    actionMode?.setTitle(R.string.rss_action_move_select_folder)
                 }
                 R.id.delete -> {
                     showDeleteFeedFolderDialog(feedNode)
@@ -282,28 +307,6 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         }
 
         popupMenu.show()
-    }
-
-    private fun showMoveFeedFolderDialog(feedNode: RssFeedNode) {
-        showDialog(DialogRssMoveFeedFolderBinding::inflate) { binding ->
-            binding.inputLayoutName.setTextWithoutAnimation(feedNode.path.dropLast(1).joinToString("\\"))
-
-            if (feedNode.isFeed) {
-                setTitle(R.string.rss_action_move_feed)
-            } else {
-                setTitle(R.string.rss_action_move_folder)
-            }
-
-            setPositiveButton { _, _ ->
-                val from = feedNode.path.joinToString("\\")
-                val to = binding.editPath.text.toString().let { path ->
-                    if (path.isBlank()) feedNode.name else "$path\\${feedNode.name}"
-                }
-
-                viewModel.moveItem(serverId, from, to, feedNode.isFeed)
-            }
-            setNegativeButton()
-        }
     }
 
     private fun showRenameFeedFolderDialog(feedNode: RssFeedNode) {
