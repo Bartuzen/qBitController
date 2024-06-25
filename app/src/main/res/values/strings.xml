@@ -309,7 +309,6 @@
     <string name="torrent_overview_downloaded_format">%1$s (%2$s this session)</string>
     <string name="torrent_overview_uploaded">Uploaded</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s this session)</string>
-    <string name="torrent_overview_ratio">Ratio</string>
     <string name="torrent_overview_reannounce_in">Reannounce In</string>
     <string name="torrent_overview_last_activity">Last Activity</string>
     <string name="torrent_overview_last_seen_complete">Last Seen Complete</string>
@@ -482,7 +481,6 @@
     <string name="rss_mark_as_read">Mark as Read</string>
     <string name="rss_no_description">No description found</string>
 
-    <string name="rss_action_add">Add</string>
     <string name="rss_action_add_feed">Add Feed</string>
     <string name="rss_action_rename_feed">Rename Feed</string>
     <string name="rss_action_move_feed">Move Feed</string>
@@ -502,8 +500,6 @@
     <string name="rss_hint_folder_name">Folder Name</string>
 
     <string name="rss_all_articles">All Articles</string>
-    <string name="rss_view_all_articles">View All Articles</string>
-    <string name="rss_view_all_articles_in">View All Articles in %1$s</string>
 
     <string name="rss_field_required">This field is required.</string>
 
