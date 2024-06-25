@@ -36,7 +36,11 @@ class TorrentPiecesAdapter : RecyclerView.Adapter<TorrentPiecesAdapter.ViewHolde
 
             val backgroundColor = context.getThemeColor(
                 themeColors.colorPrimary,
-                alpha = if (piece == PieceState.DOWNLOADED) 255 else 63
+                alpha = when (piece) {
+                    PieceState.NOT_DOWNLOADED -> 63
+                    PieceState.DOWNLOADING -> 127
+                    PieceState.DOWNLOADED -> 255
+                }
             )
             binding.viewPiece.setBackgroundColor(backgroundColor)
         }
