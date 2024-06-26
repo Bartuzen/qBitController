@@ -627,4 +627,5 @@
     <string name="torrent_action_options">Opções do torrent</string>
     <string name="torrent_action_category">Definir categoria</string>
     <string name="torrent_force_recheck_confirm">Tem certeza de que deseja forçar uma nova verificação desse torrent?</string>
+    <string name="rss_action_move_select_folder">Selecione uma pasta</string>
 </resources>
