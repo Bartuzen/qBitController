@@ -1,36 +1,57 @@
 package dev.bartuzen.qbitcontroller.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
-import dev.bartuzen.qbitcontroller.model.deserializers.TrackerTierDeserializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableIntSerializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
+@Serializable
 data class TorrentTracker(
-    @JsonProperty("url")
+    @SerialName("url")
     val url: String,
 
-    @JsonProperty("tier")
-    @JsonDeserialize(using = TrackerTierDeserializer::class)
+    @SerialName("tier")
+    @Serializable(with = TrackerTierSerializer::class)
     val tier: Int?,
 
-    @JsonProperty("num_peers")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_peers")
+    @Serializable(with = NullableIntSerializer::class)
     val peers: Int?,
 
-    @JsonProperty("num_seeds")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_seeds")
+    @Serializable(with = NullableIntSerializer::class)
     val seeds: Int?,
 
-    @JsonProperty("num_leeches")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_leeches")
+    @Serializable(with = NullableIntSerializer::class)
     val leeches: Int?,
 
-    @JsonProperty("num_downloaded")
-    @JsonDeserialize(using = NullableIntDeserializer::class)
+    @SerialName("num_downloaded")
+    @Serializable(with = NullableIntSerializer::class)
     val downloaded: Int?,
 
-    @JsonProperty("msg")
-    @JsonDeserialize(using = NullableStringDeserializer::class)
+    @SerialName("msg")
+    @Serializable(with = NullableStringSerializer::class)
     val message: String?
 )
+
+private object TrackerTierSerializer : KSerializer<Int?> {
+    override val descriptor = JsonPrimitive.serializer().descriptor
+
+    override fun serialize(encoder: Encoder, value: Int?) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun deserialize(decoder: Decoder): Int? {
+        val jsonValue = (decoder as JsonDecoder).decodeJsonElement().jsonPrimitive
+        // Older versions return empty string instead of -1 for default trackers
+        return jsonValue.intOrNull.takeIf { it != -1 }
+    }
+}

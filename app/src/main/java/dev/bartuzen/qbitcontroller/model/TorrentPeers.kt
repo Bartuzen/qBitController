@@ -1,8 +1,10 @@
 package dev.bartuzen.qbitcontroller.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TorrentPeers(
-    @JsonProperty("peers")
+    @SerialName("peers")
     val peers: Map<String, TorrentPeer>
 )

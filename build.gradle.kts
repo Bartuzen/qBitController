@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.kotlinter) apply false
+    alias(libs.plugins.kotlinxSerialization) apply false
     alias(libs.plugins.gradleVersions)
 
     alias(libs.plugins.firebase.googleServices) apply false

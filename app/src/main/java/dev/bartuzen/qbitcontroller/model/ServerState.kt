@@ -1,68 +1,70 @@
 package dev.bartuzen.qbitcontroller.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ServerState(
-    @JsonProperty("alltime_ul")
+    @SerialName("alltime_ul")
     val allTimeUpload: Long,
 
-    @JsonProperty("alltime_dl")
+    @SerialName("alltime_dl")
     val allTimeDownload: Long,
 
-    @JsonProperty("use_subcategories")
-    val areSubcategoriesEnabled: Boolean,
+    @SerialName("use_subcategories")
+    val areSubcategoriesEnabled: Boolean = false,
 
-    @JsonProperty("global_ratio")
+    @SerialName("global_ratio")
     val globalRatio: String,
 
-    @JsonProperty("total_wasted_session")
+    @SerialName("total_wasted_session")
     val sessionWaste: Long,
 
-    @JsonProperty("total_peer_connections")
+    @SerialName("total_peer_connections")
     val connectedPeers: Long,
 
-    @JsonProperty("total_buffers_size")
+    @SerialName("total_buffers_size")
     val bufferSize: Long,
 
-    @JsonProperty("write_cache_overload")
+    @SerialName("write_cache_overload")
     val writeCacheOverload: String,
 
-    @JsonProperty("read_cache_overload")
+    @SerialName("read_cache_overload")
     val readCacheOverload: String,
 
-    @JsonProperty("queued_io_jobs")
-    val queuedIOJobs: String,
+    @SerialName("queued_io_jobs")
+    val queuedIOJobs: Long,
 
-    @JsonProperty("average_time_queue")
+    @SerialName("average_time_queue")
     val averageTimeInQueue: Long,
 
-    @JsonProperty("total_queued_size")
+    @SerialName("total_queued_size")
     val queuedSize: Long,
 
-    @JsonProperty("dl_info_data")
+    @SerialName("dl_info_data")
     val downloadSession: Long,
 
-    @JsonProperty("dl_info_speed")
+    @SerialName("dl_info_speed")
     val downloadSpeed: Long,
 
-    @JsonProperty("dl_rate_limit")
+    @SerialName("dl_rate_limit")
     val downloadSpeedLimit: Int,
 
-    @JsonProperty("up_info_data")
+    @SerialName("up_info_data")
     val uploadSession: Long,
 
-    @JsonProperty("up_info_speed")
+    @SerialName("up_info_speed")
     val uploadSpeed: Long,
 
-    @JsonProperty("up_rate_limit")
+    @SerialName("up_rate_limit")
     val uploadSpeedLimit: Int,
 
-    @JsonProperty("use_alt_speed_limits")
+    @SerialName("use_alt_speed_limits")
     val useAlternativeSpeedLimits: Boolean,
 
-    @JsonProperty("queueing")
+    @SerialName("queueing")
     val isQueueingEnabled: Boolean,
 
-    @JsonProperty("free_space_on_disk")
+    @SerialName("free_space_on_disk")
     val freeSpace: Long
 )

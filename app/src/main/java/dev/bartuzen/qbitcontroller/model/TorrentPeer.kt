@@ -1,58 +1,89 @@
 package dev.bartuzen.qbitcontroller.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableStringDeserializer
-import dev.bartuzen.qbitcontroller.model.deserializers.PeerFilesDeserializer
-import dev.bartuzen.qbitcontroller.model.deserializers.PeerFlagDeserializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
+@Serializable
 data class TorrentPeer(
-    @JsonProperty("connection")
+    @SerialName("connection")
     val connection: String,
 
-    @JsonProperty("country_code")
+    @SerialName("country_code")
     val countryCode: String?,
 
-    @JsonProperty("ip")
+    @SerialName("ip")
     val ip: String,
 
-    @JsonProperty("port")
+    @SerialName("port")
     val port: Int,
 
-    @JsonProperty("flags")
-    @JsonDeserialize(using = PeerFlagDeserializer::class)
+    @SerialName("flags")
+    @Serializable(with = PeerFlagSerializer::class)
     val flags: List<PeerFlag>,
 
-    @JsonProperty("client")
-    @JsonDeserialize(using = NullableStringDeserializer::class)
+    @SerialName("client")
+    @Serializable(with = NullableStringSerializer::class)
     val client: String?,
 
-    @JsonProperty("peer_id_client")
-    @JsonDeserialize(using = NullableStringDeserializer::class)
+    @SerialName("peer_id_client")
+    @Serializable(with = NullableStringSerializer::class)
     val peerIdClient: String?,
 
-    @JsonProperty("dl_speed")
+    @SerialName("dl_speed")
     val downloadSpeed: Int,
 
-    @JsonProperty("up_speed")
+    @SerialName("up_speed")
     val uploadSpeed: Int,
 
-    @JsonProperty("downloaded")
+    @SerialName("downloaded")
     val downloaded: Long,
 
-    @JsonProperty("uploaded")
+    @SerialName("uploaded")
     val uploaded: Long,
 
-    @JsonProperty("progress")
+    @SerialName("progress")
     val progress: Double,
 
-    @JsonProperty("relevance")
+    @SerialName("relevance")
     val relevance: Double,
 
-    @JsonProperty("files")
-    @JsonDeserialize(using = PeerFilesDeserializer::class)
+    @SerialName("files")
+    @Serializable(with = PeerFilesSerializer::class)
     val files: List<String> = emptyList()
 )
+
+private object PeerFlagSerializer : KSerializer<List<PeerFlag>> {
+    override val descriptor: SerialDescriptor = ListSerializer(String.serializer()).descriptor
+
+    override fun serialize(encoder: Encoder, value: List<PeerFlag>) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun deserialize(decoder: Decoder): List<PeerFlag> {
+        return decoder.decodeString().split(" ").mapNotNull { flagStr ->
+            PeerFlag.entries.find { it.flag == flagStr }
+        }
+    }
+}
+
+private object PeerFilesSerializer : KSerializer<List<String>> {
+    override val descriptor: SerialDescriptor = ListSerializer(String.serializer()).descriptor
+
+    override fun serialize(encoder: Encoder, value: List<String>) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun deserialize(decoder: Decoder): List<String> {
+        return decoder.decodeString().takeIf { it.isNotEmpty() }?.split("\n") ?: emptyList()
+    }
+}
 
 enum class PeerFlag(val flag: String) {
     INTERESTED_LOCAL_CHOKED_PEER("d"),

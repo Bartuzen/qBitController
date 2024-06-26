@@ -16,10 +16,10 @@ androidx-preference = "1.2.1"
 androidx-lifecycle-viewModel = "2.8.0"
 material = "1.12.0"
 coroutines = "1.8.1"
+kotlinxSerialization = "1.7.1"
 work-runtime = "2.9.0"
 work-hilt = "1.2.0"
-retrofit = "2.9.0"
-jackson = "2.13.4"
+retrofit = "2.11.0"
 viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.0.4"
 coil = "2.6.0"
@@ -41,6 +41,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
+kotlinxSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
 work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 work-hilt-core = { group = "androidx.hilt", name = "hilt-work", version.ref = "work-hilt" }
 work-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "work-hilt" }
@@ -50,9 +52,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit" }
-retrofit-converter-jackson = { group = "com.squareup.retrofit2", name = "converter-jackson", version.ref = "retrofit" }
-
-jackson-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson" }
+retrofit-converter-kotlinxSerialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 
 viewBindingPropertyDelegate-noReflection = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingPropertyDelegate" }
 
@@ -72,6 +72,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersions" }
 
 firebase-googleServices = { id = "com.google.gms.google-services", version.ref = "firebase-googleServices" }

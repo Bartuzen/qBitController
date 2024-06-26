@@ -19,8 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
--keep class dev.bartuzen.qbitcontroller.model.* { *; }
--keep class dev.bartuzen.qbitcontroller.model.*.* { *; }
-
--dontwarn com.fasterxml.jackson.databind.ext.Java7SupportImpl

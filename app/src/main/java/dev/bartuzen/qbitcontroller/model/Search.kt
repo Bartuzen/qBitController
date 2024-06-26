@@ -1,41 +1,43 @@
 package dev.bartuzen.qbitcontroller.model
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableIntDeserializer
-import dev.bartuzen.qbitcontroller.model.deserializers.NullableLongDeserializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableIntSerializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableLongSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Search(
     val status: Status,
     val results: List<Result>
 ) {
+    @Serializable
     data class Result(
-        @JsonProperty("descrLink")
+        @SerialName("descrLink")
         val descriptionLink: String,
 
         val fileName: String,
 
-        @JsonDeserialize(using = NullableLongDeserializer::class)
+        @Serializable(with = NullableLongSerializer::class)
         val fileSize: Long?,
 
         val fileUrl: String,
 
-        @JsonProperty("nbLeechers")
-        @JsonDeserialize(using = NullableIntDeserializer::class)
+        @SerialName("nbLeechers")
+        @Serializable(with = NullableIntSerializer::class)
         val leechers: Int?,
 
-        @JsonProperty("nbSeeders")
-        @JsonDeserialize(using = NullableIntDeserializer::class)
+        @SerialName("nbSeeders")
+        @Serializable(with = NullableIntSerializer::class)
         val seeders: Int?,
 
         val siteUrl: String
     )
 
     enum class Status {
-        @JsonProperty("Running")
+        @SerialName("Running")
         RUNNING,
 
-        @JsonProperty("Stopped")
+        @SerialName("Stopped")
         STOPPED
     }
 }
