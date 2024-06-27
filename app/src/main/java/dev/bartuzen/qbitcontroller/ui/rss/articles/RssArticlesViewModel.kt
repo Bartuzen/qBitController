@@ -52,12 +52,16 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun updateRssArticles(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
+    fun updateRssArticles(serverId: Int, feedPath: List<String>, uid: String?) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
-                val articles = parseRssFeedWithData(result.data, feedPath)
-                if (articles != null) {
-                    rssArticles.value = articles
+                val articles = parseRssFeedWithData(result.data, feedPath, uid)
+                if (articles.first != null) {
+                    rssArticles.value = articles.first
+
+                    if (articles.second != null) {
+                        eventChannel.send(Event.FeedPathChanged(articles.second!!))
+                    }
                 } else {
                     eventChannel.send(Event.RssFeedNotFound)
                 }
@@ -68,19 +72,19 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun loadRssArticles(serverId: Int, feedPath: List<String>) {
+    fun loadRssArticles(serverId: Int, feedPath: List<String>, uid: String?) {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateRssArticles(serverId, feedPath).invokeOnCompletion {
+            updateRssArticles(serverId, feedPath, uid).invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssArticles(serverId: Int, feedPath: List<String>) {
+    fun refreshRssArticles(serverId: Int, feedPath: List<String>, uid: String?) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateRssArticles(serverId, feedPath).invokeOnCompletion {
+            updateRssArticles(serverId, feedPath, uid).invokeOnCompletion {
                 _isRefreshing.value = false
             }
         }
@@ -123,5 +127,6 @@ class RssArticlesViewModel @Inject constructor(
         data class ArticleMarkedAsRead(val showMessage: Boolean) : Event()
         data object AllArticlesMarkedAsRead : Event()
         data object FeedRefreshed : Event()
+        data class FeedPathChanged(val newPath: List<String>) : Event()
     }
 }

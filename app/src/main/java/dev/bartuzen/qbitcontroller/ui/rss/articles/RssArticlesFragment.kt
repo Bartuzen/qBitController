@@ -16,6 +16,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +45,15 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     private val viewModel: RssArticlesViewModel by viewModels()
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val feedPath get() = arguments?.getStringArrayList("feedPath")!!
+    private var feedPath get() = arguments?.getStringArrayList("feedPath")!!
+        set(value) {
+            arguments = bundleOf(
+                "serverId" to serverId,
+                "feedPath" to value,
+                "uid" to uid
+            )
+        }
+    private val uid get() = arguments?.getString("uid")
 
     private val startAddTorrentActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -59,10 +68,11 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
             }
         }
 
-    constructor(serverId: Int, feedPath: List<String>) : this() {
+    constructor(serverId: Int, feedPath: List<String>, feedUid: String?) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "feedPath" to ArrayList(feedPath)
+            "feedPath" to ArrayList(feedPath),
+            "uid" to feedUid
         )
     }
 
@@ -126,7 +136,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
         if (!viewModel.isInitialLoadStarted) {
             viewModel.isInitialLoadStarted = true
-            viewModel.loadRssArticles(serverId, feedPath)
+            viewModel.loadRssArticles(serverId, feedPath, uid)
         }
 
         val adapter = RssArticlesAdapter(
@@ -162,7 +172,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         })
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshRssArticles(serverId, feedPath)
+            viewModel.refreshRssArticles(serverId, feedPath, uid)
         }
 
         binding.progressIndicator.setVisibilityAfterHide(View.GONE)
@@ -193,22 +203,31 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 is RssArticlesViewModel.Event.ArticleMarkedAsRead -> {
                     if (event.showMessage) {
                         showSnackbar(R.string.rss_mark_article_as_read_success)
-                        viewModel.loadRssArticles(serverId, feedPath)
+                        viewModel.loadRssArticles(serverId, feedPath, uid)
                     } else {
-                        viewModel.updateRssArticles(serverId, feedPath)
+                        viewModel.updateRssArticles(serverId, feedPath, uid)
                     }
                 }
                 RssArticlesViewModel.Event.AllArticlesMarkedAsRead -> {
                     showSnackbar(R.string.rss_mark_all_articles_as_read_success)
-                    viewModel.loadRssArticles(serverId, feedPath)
+                    viewModel.loadRssArticles(serverId, feedPath, uid)
                 }
                 RssArticlesViewModel.Event.FeedRefreshed -> {
                     showSnackbar(R.string.rss_refresh_feed_success)
 
                     viewLifecycleOwner.lifecycleScope.launch {
                         delay(1000)
-                        viewModel.loadRssArticles(serverId, feedPath)
+                        viewModel.loadRssArticles(serverId, feedPath, uid)
                     }
+                }
+                is RssArticlesViewModel.Event.FeedPathChanged -> {
+                    feedPath = ArrayList(event.newPath)
+                    requireAppCompatActivity().supportActionBar?.title = event.newPath.lastOrNull()
+
+                    setFragmentResult(
+                        requestKey = "rssArticlesResult",
+                        result = bundleOf("isUpdated" to true)
+                    )
                 }
             }
         }

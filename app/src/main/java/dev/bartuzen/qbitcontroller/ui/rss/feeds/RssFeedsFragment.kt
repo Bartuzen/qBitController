@@ -13,6 +13,7 @@ import androidx.core.view.MenuCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -102,7 +103,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     parentFragmentManager.commit {
                         setReorderingAllowed(true)
                         setDefaultAnimations()
-                        val fragment = RssArticlesFragment(serverId, feedNode.path)
+                        val fragment = RssArticlesFragment(serverId, feedNode.path, feedNode.feed?.uid)
                         replace(R.id.container, fragment)
                         addToBackStack(null)
                     }
@@ -144,6 +145,13 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
 
         viewModel.rssFeeds.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { feedNode ->
             adapter.setNode(feedNode)
+        }
+
+        setFragmentResultListener("rssArticlesResult") { _, bundle ->
+            val isUpdated = bundle.getBoolean("isUpdated", false)
+            if (isUpdated) {
+                viewModel.loadRssFeeds(serverId)
+            }
         }
 
         viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
