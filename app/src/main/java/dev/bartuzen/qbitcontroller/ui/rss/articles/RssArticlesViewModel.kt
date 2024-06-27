@@ -62,7 +62,7 @@ class RssArticlesViewModel @Inject constructor(
                     if (articles.second != null) {
                         eventChannel.send(Event.FeedPathChanged(articles.second!!))
                     }
-                }  else {
+                } else {
                     eventChannel.send(Event.RssFeedNotFound)
                 }
             }

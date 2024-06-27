@@ -18,7 +18,7 @@ fun parseRssFeedWithData(feeds: String, path: List<String>, uid: String?): Pair<
     val articles = mutableListOf<Article>()
     var newPath: List<String>? = null
 
-    for(name in path) {
+    for (name in path) {
         val newNode = node.jsonObject[name]
         if (newNode != null) {
             node = newNode
@@ -76,7 +76,7 @@ private fun findNodeByUid(node: JsonElement, uid: String): Pair<JsonElement, Lis
     val nodes = ArrayDeque<Pair<JsonElement, List<String>>>()
     nodes += node to emptyList()
 
-    while(nodes.isNotEmpty()) {
+    while (nodes.isNotEmpty()) {
         val currentNode = nodes.removeLast()
         if (isFeed(currentNode.first)) {
             if (currentNode.first.jsonObject["uid"]?.jsonPrimitive?.content == uid) {
