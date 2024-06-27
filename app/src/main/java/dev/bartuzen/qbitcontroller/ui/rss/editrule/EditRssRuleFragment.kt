@@ -257,8 +257,6 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
         val feeds = viewModel.feeds.value ?: return
         val selectedFeedUrls = binding.layoutFeeds.children.mapIndexed { index, view ->
             if (view is MaterialCheckBox && view.isChecked) {
