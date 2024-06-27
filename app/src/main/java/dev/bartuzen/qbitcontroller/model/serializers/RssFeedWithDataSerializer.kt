@@ -12,17 +12,34 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-fun parseRssFeedWithData(feeds: String, path: List<String>): List<Article>? {
-    var node = Json.parseToJsonElement(feeds)
+fun parseRssFeedWithData(feeds: String, path: List<String>, uid: String?): Pair<List<Article>?, List<String>?> {
+    val rootNode = Json.parseToJsonElement(feeds)
+    var node = rootNode
     val articles = mutableListOf<Article>()
+    var newPath: List<String>? = null
 
-    path.forEach { name ->
-        node = node.jsonObject[name] ?: return null
+    for(name in path) {
+        val newNode = node.jsonObject[name]
+        if (newNode != null) {
+            node = newNode
+        } else if (uid != null) {
+            val uidNode = findNodeByUid(rootNode, uid)
+
+            if (uidNode != null) {
+                node = uidNode.first
+                newPath = uidNode.second
+                break
+            } else {
+                return null to null
+            }
+        } else {
+            return null to null
+        }
     }
 
     parseRssFeedWithData(node, articles, path)
     articles.sortByDescending { it.date }
-    return articles
+    return articles to newPath
 }
 
 private fun parseRssFeedWithData(node: JsonElement, articles: MutableList<Article>, path: List<String>) {
@@ -53,6 +70,26 @@ private fun parseArticles(node: JsonElement, articles: MutableList<Article>, pat
     }
 
     return articles
+}
+
+private fun findNodeByUid(node: JsonElement, uid: String): Pair<JsonElement, List<String>>? {
+    val nodes = ArrayDeque<Pair<JsonElement, List<String>>>()
+    nodes += node to emptyList()
+
+    while(nodes.isNotEmpty()) {
+        val currentNode = nodes.removeLast()
+        if (isFeed(currentNode.first)) {
+            if (currentNode.first.jsonObject["uid"]?.jsonPrimitive?.content == uid) {
+                return currentNode
+            }
+        } else {
+            for ((key, value) in currentNode.first.jsonObject) {
+                nodes += value to currentNode.second + key
+            }
+        }
+    }
+
+    return null
 }
 
 private fun isFeed(node: JsonElement): Boolean {
