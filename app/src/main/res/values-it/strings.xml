@@ -7,7 +7,6 @@
     <string name="torrent_status_seeding">In Seed</string>
     <string name="torrent_status_paused">In Pausa</string>
     <string name="torrent_status_queued">In Coda</string>
-    <string name="torrent_status_allocating_space">Allocazione Spazio</string>
     <string name="torrent_status_downloading">In Download</string>
     <string name="torrent_status_checking_resume_data">Controllo dati recupero</string>
     <string name="torrent_status_downloading_metadata">Download Metadati</string>

@@ -12,7 +12,6 @@
     <string name="torrent_status_checking">正在检查</string>
     <string name="torrent_status_completed">完成</string>
     <string name="torrent_status_force_seeding">[F] 做种</string>
-    <string name="torrent_status_allocating_space">预分配空间</string>
     <string name="torrent_status_downloading">下载</string>
     <string name="torrent_status_checking_resume_data">校验恢复数据</string>
     <string name="torrent_status_downloading_metadata">下载元数据</string>
@@ -268,7 +267,6 @@
     <string name="torrent_overview_downloaded_format">%1$s（本次会话 %2$s）</string>
     <string name="torrent_overview_uploaded">已上传</string>
     <string name="torrent_overview_uploaded_format">%1$s（本次会话 %2$s）</string>
-    <string name="torrent_overview_ratio">分享率</string>
     <string name="torrent_overview_reannounce_in">下次汇报</string>
     <string name="torrent_overview_last_activity">最近活动</string>
     <string name="torrent_overview_last_seen_complete">最后完整可见</string>
@@ -419,7 +417,6 @@
     <string name="rss_download">下载</string>
     <string name="rss_mark_as_read">标记为已读</string>
     <string name="rss_no_description">未找到详细描述</string>
-    <string name="rss_action_add">添加</string>
     <string name="rss_action_add_feed">添加新订阅源</string>
     <string name="rss_action_rename_feed">重命名订阅源</string>
     <string name="rss_action_move_feed">移动订阅源</string>
@@ -435,10 +432,7 @@
     <string name="rss_hint_feed_name_optional">订阅源名称（可选）</string>
     <string name="rss_hint_feed_name">订阅源名称</string>
     <string name="rss_hint_folder_name">文件夹名称</string>
-    <string name="rss_hint_move_path">路径</string>
     <string name="rss_all_articles">所有文章</string>
-    <string name="rss_view_all_articles">查阅所有文章</string>
-    <string name="rss_view_all_articles_in">查阅所有文章用 %1$s</string>
     <string name="rss_field_required">该字段不得为空。</string>
     <string name="rss_confirm_delete_feed">是否确定要删除订阅源 %1$s？</string>
     <string name="rss_confirm_delete_folder">是否确定要删除文件夹 %1$s？</string>
@@ -555,8 +549,6 @@
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="other">%1$d 秒</item>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar">隐藏加载进度条</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">当自动刷新时隐藏加载进度条</string>
     <string name="settings_notification_check_interval">通知检查间隔</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="other">%1$d 分</item>
@@ -602,4 +594,6 @@
     <string name="torrent_list_action_set_category">设置标签</string>
     <string name="torrent_option_share_limit_total_minutes">总分钟数</string>
     <string name="search_result_filter_reset">清除筛选</string>
+    <string name="torrent_option_share_limit_inactive_minutes">非活动分钟数</string>
+    <string name="torrent_force_recheck_confirm">是否强制重新校验？</string>
 </resources>

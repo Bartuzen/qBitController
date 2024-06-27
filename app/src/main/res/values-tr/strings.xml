@@ -15,7 +15,6 @@
     <string name="torrent_status_checking">Denetleniyor</string>
     <string name="torrent_status_completed">Tamamlandı</string>
     <string name="torrent_status_force_seeding">[F] Gönderiliyor</string>
-    <string name="torrent_status_allocating_space">Yer Ayrılıyor</string>
     <string name="torrent_status_downloading">İndiriliyor</string>
     <string name="torrent_status_checking_resume_data">Devam Etme Verisi Denetleniyor</string>
     <string name="torrent_status_downloading_metadata">Üstveri indiriliyor</string>
@@ -335,7 +334,6 @@
     <string name="rss_download">İndir</string>
     <string name="rss_mark_as_read">Okundu Olarak İşaretle</string>
     <string name="rss_no_description">Açıklama bulunamadı</string>
-    <string name="rss_action_add">Ekle</string>
     <string name="rss_action_add_feed">Bildirim Ekle</string>
     <string name="rss_action_rename_feed">Bildirimi Yeniden Adlandır</string>
     <string name="rss_action_rename_folder">Klasörü Yeniden Adlandır</string>
@@ -347,9 +345,7 @@
     <string name="rss_action_refresh">Yenile</string>
     <string name="rss_hint_feed_url">Bildirim URL\'si</string>
     <string name="rss_all_articles">Bütün Makaleler</string>
-    <string name="rss_view_all_articles">Bütün Makaleleri Görüntüle</string>
     <string name="rss_added_feed">Bildirim başarıyla eklendi.</string>
-    <string name="rss_view_all_articles_in">%1$s\'deki Tüm Makaleleri Görüntüle</string>
     <string name="rss_field_required">Bu alan gereklidir.</string>
     <string name="rss_confirm_delete_feed">%1$s bildirimini silmek istediğinizden emin misiniz\?</string>
     <string name="rss_confirm_delete_folder">%1$s klasörünü silmek istediğinizden emin misiniz\?</string>
@@ -442,7 +438,6 @@
         <item quantity="one">%1$d saniye</item>
         <item quantity="other"/>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar_description">Otomatik yenileniyorken yükleme çubuğunu gösterme</string>
     <string name="settings_enable_torrent_swipe_actions">Torrent kaydırma eylemlerini etkinleştir</string>
     <string name="settings_notification_check_interval">Bildirim kontrol aralığı</string>
     <plurals name="settings_notification_check_interval_description">
@@ -488,7 +483,6 @@
     <string name="torrent_overview_downloaded_format">%1$s (bu oturumda %2$s)</string>
     <string name="torrent_overview_uploaded">Gönderilen</string>
     <string name="torrent_overview_uploaded_format">%1$s (bu oturumda %2$s)</string>
-    <string name="torrent_overview_ratio">Oran</string>
     <string name="torrent_overview_reannounce_in">Yeniden Duyuru Süresi</string>
     <string name="torrent_overview_last_activity">Son Etkinlik</string>
     <string name="torrent_overview_last_seen_complete">Tam Halinin Görülmesi</string>
@@ -555,7 +549,6 @@
     <string name="rss_action_delete_folder">Klasörü Sil</string>
     <string name="rss_action_mark_all_as_read">Tümünü Okundu Olarak İşaretle</string>
     <string name="rss_hint_folder_name">Klasör Adı</string>
-    <string name="rss_hint_move_path">Yol</string>
     <string name="rss_success_feed_rename">Bildirim başarıyla yeniden adlandırıldı.</string>
     <string name="rss_success_feed_move">Bildirim başarıyla taşındı.</string>
     <string name="rss_success_feed_delete">Bildirim başarıyla silindi.</string>
@@ -579,7 +572,6 @@
     <string name="settings_add_new_server">Yeni sunucu ekle</string>
     <string name="settings_other">Diğer</string>
     <string name="settings_disabled">Devre Dışı</string>
-    <string name="settings_auto_refresh_hide_loading_bar">Yükleme çubuğunu gizle</string>
     <string name="settings_theme_dark">Karanlık</string>
     <string name="settings_theme_system_default">Sistem Varsayılanı</string>
     <string name="settings_server_title_add">Sunucu Ekle</string>
@@ -619,4 +611,5 @@
     <string name="search_result_filter_reset">Sıfırla</string>
     <string name="torrent_option_share_limit_total_minutes">Toplam Dakika</string>
     <string name="torrent_option_share_limit_inactive_minutes">Etkin Olmayan Dakika</string>
+    <string name="torrent_force_recheck_confirm">Bu torrenti yeniden denetlemeye zorlamak istediğiniz emin misiniz?</string>
 </resources>

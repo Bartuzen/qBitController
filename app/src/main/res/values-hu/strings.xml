@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_add_server">Szerver hozzáadása</string>
+    <string name="settings_server_password">Jelszó</string>
+    <string name="main_no_servers">Nem található szerver. Kattints ide, hogy hozzáadj egyet.</string>
+    <string name="settings_server_host">Hoszt</string>
+    <string name="settings_server_name">Név</string>
+    <string name="settings_language_system_default">Rendszer Alapbeállítás</string>
+    <string name="search_plugins_install_success">Pluginok sikeresen telepítve.</string>
+    <string name="error_invalid_credentials">Hibás felhasználónév vagy jelszó.</string>
+    <string name="search_plugins_update_success">Összes plugin sikeresen frissítve.</string>
+    <string name="settings_server_port">Port</string>
+    <string name="search_plugins_cannot_be_empty">Plugin nem maradhat üresen.</string>
+    <string name="settings_server_path">Útvonal</string>
+    <string name="settings_server_title_add">Szerver hozzáadása</string>
+    <string name="settings_server_title_edit">Szerkesztés</string>
+    <string name="settings_language">Nyelv</string>
+    <string name="settings_auto_refresh_interval">Auto frissítés gyakoriság</string>
+    <string name="settings_server_username">Felhasználónév</string>
+    <string name="search_plugins_action_save">Mentés</string>
+    <string name="settings_server_action_delete">Törlés</string>
+    <string name="settings_server_action_save">Mentés</string>
+    <string name="search_plugins_action_install_plugins">Telepített Pluginok</string>
+    <string name="search_plugins_action_update_plugins">Frissít</string>
+    <string name="share_add_torrent">Torrent hozzáadása</string>
+    <string name="torrent_status_error">Hiba</string>
+    <string name="torrent_status_missing_files">Hiányzó Fájlok</string>
+    <string name="torrent_status_paused">Megállitva</string>
+    <string name="torrent_status_queued">Sorba állítva</string>
+    <string name="torrent_status_stalled">Elakadt</string>
+    <string name="torrent_status_checking">Ellenőrzés</string>
+    <string name="torrent_status_completed">Elkészült</string>
+    <string name="torrent_status_unknown">Ismeretlen</string>
+</resources>

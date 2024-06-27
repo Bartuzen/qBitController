@@ -26,7 +26,6 @@
     <string name="torrent_status_seeding">Раздаётся</string>
     <string name="torrent_status_force_seeding">[П] Раздаётся</string>
     <string name="torrent_status_stalled">Простаивает</string>
-    <string name="torrent_status_allocating_space">Выделяется место</string>
     <string name="torrent_status_checking_resume_data">Проверка данных возобновления</string>
     <string name="torrent_status_moving">Перемещается</string>
     <string name="torrent_status_force_downloading">[П] Загружается</string>
@@ -71,7 +70,6 @@
     <string name="torrent_peers_flag_peer_from_pex">Пир из PEX</string>
     <string name="torrent_add_click_to_select_file">Нажмите чтобы выбрать файлы</string>
     <string name="rss_no_description">Описание не найдено</string>
-    <string name="rss_hint_move_path">Путь</string>
     <string name="rss_action_add_feed">Добавить ленту</string>
     <string name="rss_action_delete_feed">Удалить ленту</string>
     <string name="rss_all_articles">Все статьи</string>
@@ -79,7 +77,6 @@
     <string name="rss_action_rename_feed">Переименовать ленту</string>
     <string name="rss_action_add_folder">Добавить папку</string>
     <string name="rss_action_refresh_all">Обновить всё</string>
-    <string name="rss_view_all_articles">Посмотреть все статьи</string>
     <string name="rss_success_folder_delete">Папка успешно удалена.</string>
     <string name="rss_add_folder_error">Не удалось добавить папку.</string>
     <string name="rss_field_required">Это поле обязательно.</string>
@@ -147,8 +144,6 @@
         <item quantity="many">%1$d секунд</item>
         <item quantity="other">%1$d секунд</item>
     </plurals>
-    <string name="settings_auto_refresh_hide_loading_bar">Скрыть полосу загрузки</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">Не показывать полосу загрузки при автоматическом обновлении</string>
     <string name="settings_notification_check_interval">Интервал проверки уведомлений</string>
     <string name="settings_server_host">Хост</string>
     <string name="settings_server_edit_success">Сервер успешно отредактирован.</string>
@@ -348,7 +343,7 @@
     <string name="torrent_overview_total_size">Общий размер</string>
     <string name="torrent_overview_hash_v1">Инфо-хеш v1</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (из них есть %3$d)</string>
-    <string name="torrent_overview_completed_on">Дата завершения</string>
+    <string name="torrent_overview_completed_on">Завершено</string>
     <string name="torrent_overview_created_by">Создан в</string>
     <string name="torrent_overview_created_on">Дата создания</string>
     <string name="torrent_overview_transfer">Торрент</string>
@@ -356,7 +351,6 @@
     <string name="torrent_overview_downloaded">Загружено</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s за сеанс)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s за сеанс)</string>
-    <string name="torrent_overview_ratio">Рейтинг</string>
     <string name="torrent_overview_reannounce_in">Следующий анонс</string>
     <string name="torrent_overview_last_activity">Последняя активность</string>
     <string name="torrent_overview_last_seen_complete">Замечен целиком</string>
@@ -426,7 +420,6 @@
     <string name="rss_filter">Фильтр записей…</string>
     <string name="rss_date">Дата: %1$s</string>
     <string name="rss_download">Загрузить</string>
-    <string name="rss_action_add">Добавить</string>
     <string name="rss_action_move_feed">Переместить ленту</string>
     <string name="rss_action_rename_folder">Переименовать папку</string>
     <string name="rss_action_move_folder">Переместить папку</string>
@@ -437,7 +430,6 @@
     <string name="rss_hint_feed_name_optional">Имя ленты (необязательно)</string>
     <string name="rss_hint_feed_name">Имя ленты</string>
     <string name="rss_hint_folder_name">Имя папки</string>
-    <string name="rss_view_all_articles_in">Посмотреть все статьи в %1$s</string>
     <string name="rss_confirm_delete_folder">Уверены, что хотите удалить папку %1$s\?</string>
     <string name="rss_success_feed_rename">Лента переименована успешно.</string>
     <string name="rss_success_feed_move">Лента перемещена успешно.</string>
@@ -589,7 +581,7 @@
     <string name="torrent_trackers_deleted">Трекеры удалены успешно.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_trackers_url_cannot_be_empty">URL трекера не может быть пустым.</string>
-    <string name="torrent_overview_added_on">Дата добавления</string>
+    <string name="torrent_overview_added_on">Добавлено</string>
     <string name="torrent_no_categories">Не удалось найти ни одной категории.</string>
     <string name="torrent_overview_information">Информация</string>
     <string name="torrent_peers_flags">Флаги: %1$s</string>
@@ -646,4 +638,8 @@
     <string name="settings_language">Язык</string>
     <string name="settings_language_system_default">Системное значение по умолчанию</string>
     <string name="torrent_list_action_set_category">Установить категорию</string>
+    <string name="torrent_option_share_limit_total_minutes">Всего минут</string>
+    <string name="torrent_option_share_limit_inactive_minutes">Неактивные минуты</string>
+    <string name="search_result_filter_reset">Сбросить</string>
+    <string name="torrent_force_recheck_confirm">Вы уверены, что хотите принудительно перепроверить этот торрент?</string>
 </resources>

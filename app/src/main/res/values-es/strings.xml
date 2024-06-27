@@ -31,7 +31,6 @@
     <string name="torrent_status_error">Error</string>
     <string name="eta_minutes_seconds">%1$sm %2$ss</string>
     <string name="torrent_list_delete_tag_desc">¿Estás seguro que quieres eliminar la etiqueta %1$s?</string>
-    <string name="torrent_status_allocating_space">Asignando Espacio</string>
     <string name="torrent_list_status_resumed">Continuados</string>
     <string name="torrent_list_action_sort_priority">Prioridad</string>
     <string name="size_bytes">B</string>
@@ -277,7 +276,6 @@
     <string name="about_description">qBitController permite controlar qBittorrent desde un dispositivo Android.
 \n
 \nPara obtener información más detallada y el código fuente: https://github.com/Bartuzen/qBitController</string>
-    <string name="rss_view_all_articles_in">Ver todos los artículos en %1$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interesados (locales) y ahogados (pares)</string>
     <string name="search_result_leechers">Sanguijuelas: %1$s</string>
     <string name="search_result_filter_min">Mínimo</string>
@@ -293,7 +291,6 @@
     <string name="search_result_action_sort_search_engine">Motor de búsqueda</string>
     <string name="torrent_peers_details_flags">Banderas: %1$s</string>
     <string name="rss_action_add_feed">Añadir feed</string>
-    <string name="rss_action_add">Añadir</string>
     <string name="torrent_option_share_limit_disable">Desactivar el límite de la cuota</string>
     <string name="rss_rule_must_contain">Debe contener</string>
     <string name="torrent_add_click_to_select_file">Haga clic para seleccionar un archivo</string>
@@ -350,7 +347,6 @@
     <string name="torrent_trackers_add_hint">Rastreadores</string>
     <string name="settings_server_trust_self_signed_certificates">Confiar en certificados autofirmados</string>
     <string name="settings_server_password">Contraseña</string>
-    <string name="rss_view_all_articles">Ver todos los artículos</string>
     <string name="rss_success_folder_delete">Se ha borrado una carpeta correctamente.</string>
     <string name="settings_server_username_min_character">El usuario debe tener al menos 3 caracteres.</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interesados (pares) y ahogados (locales)</string>
@@ -401,12 +397,10 @@
     <string name="settings_server_test_configuration">Configuración de prueba</string>
     <string name="torrent_trackers_downloaded">Descargado</string>
     <string name="torrent_add_prioritize_first_last_piece">Descargue primero la primera y la última pieza</string>
-    <string name="torrent_overview_ratio">Relación</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">La ruta no es válida o ya está en uso.</string>
     <string name="torrent_peers_details_client">Cliente: %1$s</string>
     <string name="rss_move_folder_error">No se ha podido mover la carpeta.</string>
     <string name="search_start_category_music">Música</string>
-    <string name="rss_hint_move_path">Ruta</string>
     <string name="torrent_add_link_cannot_be_empty">El enlace no puede estar vacío.</string>
     <string name="search_plugins_action_update_plugins">Actualizar los plugins</string>
     <plurals name="torrent_peers_selected">
@@ -500,7 +494,6 @@
     <string name="torrent_add_content_layout_no_subfolder">No crear subcarpeta</string>
     <string name="torrent_peers_add_hint">Pares</string>
     <string name="torrent_add_speed_limit_too_big">El límite de velocidad es demasiado grande.</string>
-    <string name="settings_auto_refresh_hide_loading_bar_description">No mostrar la barra de carga cuando se actualiza automáticamente</string>
     <string name="torrent_peers_flag_utp">Micro Transport Protocol (µTP)</string>
     <string name="search_plugins_update_success">Todos los plugins se actualizaron correctamente.</string>
     <string name="search_plugins_cannot_be_empty">Los plugins no pueden estar vacíos.</string>
@@ -573,7 +566,6 @@
     <string name="torrent_peers_details_progress">Progreso: %1$s%%</string>
     <string name="rss_success_feed_delete">Se ha borrado el feed correctamente.</string>
     <string name="rss_rules">Descargador de RSS</string>
-    <string name="settings_auto_refresh_hide_loading_bar">Ocultar la barra de carga</string>
     <string name="rss_hint_folder_name">Nombre de la carpeta</string>
     <string name="settings_servers">Servidores</string>
     <string name="rss_all_articles">Todos los artículos</string>
@@ -634,4 +626,6 @@
     <string name="search_result_filter_reset">Restablecer</string>
     <string name="torrent_option_share_limit_total_minutes">Minutos totales</string>
     <string name="torrent_option_share_limit_inactive_minutes">Minutos inactivo</string>
+    <string name="torrent_force_recheck_confirm">¿Estás seguro que quieres forzar la verificación de este torrent?</string>
+    <string name="rss_action_move_select_folder">Selecciona una carpeta</string>
 </resources>

@@ -12,7 +12,6 @@
     <string name="torrent_status_queued">I kø</string>
     <string name="torrent_status_checking">Sjekker</string>
     <string name="torrent_status_completed">Fullført</string>
-    <string name="torrent_status_allocating_space">Tildeler plass</string>
     <string name="torrent_status_downloading">Laster ned</string>
     <string name="torrent_status_checking_resume_data">Sjekker gjenopprettingsdata</string>
     <string name="torrent_status_downloading_metadata">Laster ned metadata</string>
@@ -162,7 +161,6 @@
     <string name="torrent_overview_time_active">Tid aktiv</string>
     <string name="torrent_overview_downloaded">Nedlastet</string>
     <string name="torrent_overview_uploaded">Opplastet</string>
-    <string name="torrent_overview_ratio">Forhold</string>
     <string name="torrent_overview_last_activity">Siste aktivitet</string>
     <string name="torrent_overview_connections">Tilkoblinger</string>
     <string name="torrent_overview_seeds">Delere</string>
@@ -225,7 +223,6 @@
     <string name="rss_title">RSS</string>
     <string name="rss_download">Last ned</string>
     <string name="rss_mark_as_read">Marker som lest</string>
-    <string name="rss_action_add">Legg til</string>
     <string name="rss_action_add_folder">Legg til mappe</string>
     <string name="rss_action_rename_folder">Gi mappe nytt navn</string>
     <string name="rss_action_move_folder">Flytt mappe</string>
@@ -233,8 +230,6 @@
     <string name="rss_action_mark_all_as_read">Marker alle som lest</string>
     <string name="rss_hint_folder_name">Mappenavn</string>
     <string name="rss_all_articles">Alle artikler</string>
-    <string name="rss_view_all_articles">Vis alle artikler</string>
-    <string name="rss_view_all_articles_in">Vis alle artikler i %1$s</string>
     <string name="rss_field_required">Dette feltet er påkrevd.</string>
     <string name="rss_success_folder_move">Mappe flyttet.</string>
     <string name="rss_success_folder_delete">Mappe slettet.</string>
@@ -368,7 +363,6 @@
     <string name="rss_action_refresh_all">Gjenoppfrisk alt</string>
     <string name="rss_hint_feed_url">Strøm-nettadresse</string>
     <string name="rss_hint_feed_name">Strøm-navn</string>
-    <string name="rss_hint_move_path">Sti</string>
     <string name="rss_added_feed">Strøm tillagt.</string>
     <string name="torrent_list_switch_speed_limit_regular_success">Byttet til vanlige hastighetsgrenser.</string>
     <string name="error_api">API-et returnerte feil: %1$d</string>
