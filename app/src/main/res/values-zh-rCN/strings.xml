@@ -596,4 +596,5 @@
     <string name="search_result_filter_reset">清除筛选</string>
     <string name="torrent_option_share_limit_inactive_minutes">非活动分钟数</string>
     <string name="torrent_force_recheck_confirm">是否强制重新校验？</string>
+    <string name="rss_action_move_select_folder">选择文件夹</string>
 </resources>
