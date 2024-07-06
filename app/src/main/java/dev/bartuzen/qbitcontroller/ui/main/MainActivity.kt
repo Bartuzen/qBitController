@@ -29,6 +29,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListFragment
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
 import dev.bartuzen.qbitcontroller.utils.showDialog
@@ -56,6 +57,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
+    private var currentServerConfig: ServerConfig? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,7 +168,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        var currentServerConfig: ServerConfig? = null
+        currentServerConfig = savedInstanceState?.getParcelableCompat("currentServerConfig")
         viewModel.currentServer.launchAndCollectLatestIn(this) { serverConfig ->
             serverListAdapter.selectedServerId = serverConfig?.id ?: -1
 
@@ -203,6 +206,12 @@ class MainActivity : AppCompatActivity() {
             setTitle(R.string.main_action_about)
             setPositiveButton()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putParcelable("currentServerConfig", currentServerConfig)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
