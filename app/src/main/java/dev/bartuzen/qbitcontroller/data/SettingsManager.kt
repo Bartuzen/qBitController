@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsManager @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
 ) {
     private val sharedPref = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
 
@@ -34,7 +34,7 @@ class SettingsManager @Inject constructor(
 enum class Theme {
     LIGHT,
     DARK,
-    SYSTEM_DEFAULT
+    SYSTEM_DEFAULT,
 }
 
 enum class TorrentSort {
@@ -54,7 +54,7 @@ enum class TorrentSort {
     TOTAL_LEECHES,
     ADDITION_DATE,
     COMPLETION_DATE,
-    LAST_ACTIVITY
+    LAST_ACTIVITY,
 }
 
 enum class SearchSort {
@@ -62,7 +62,7 @@ enum class SearchSort {
     SIZE,
     SEEDERS,
     LEECHERS,
-    SEARCH_ENGINE
+    SEARCH_ENGINE,
 }
 
 fun Theme.toDelegate() = when (this) {

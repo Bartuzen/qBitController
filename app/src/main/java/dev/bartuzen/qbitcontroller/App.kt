@@ -26,7 +26,7 @@ class App : Application(), Configuration.Provider, ImageLoaderFactory {
     lateinit var workerFactory: HiltWorkerFactory
 
     @Inject
-    @Suppress("ktlint:standard:property-naming")
+    @Suppress("ktlint:standard:backing-property-naming")
     lateinit var _settingsManager: Lazy<SettingsManager>
     private val settingsManager: SettingsManager get() = _settingsManager.get()
 

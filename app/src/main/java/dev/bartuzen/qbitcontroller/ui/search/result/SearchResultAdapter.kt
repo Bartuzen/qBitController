@@ -12,11 +12,10 @@ import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatUri
 
 class SearchResultAdapter(
-    private val onClick: (searchResult: Search.Result) -> Unit
+    private val onClick: (searchResult: Search.Result) -> Unit,
 ) : ListAdapter<Search.Result, SearchResultAdapter.ViewHolder>(DiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemSearchResultBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { result ->
@@ -46,7 +45,7 @@ class SearchResultAdapter(
                     formatBytes(context, result.fileSize)
                 } else {
                     "-"
-                }
+                },
             )
 
             val site = formatUri(result.siteUrl)
@@ -54,11 +53,11 @@ class SearchResultAdapter(
 
             binding.textSeeders.text = context.getString(
                 R.string.search_result_seeders,
-                result.seeders?.toString() ?: "-"
+                result.seeders?.toString() ?: "-",
             )
             binding.textLeechers.text = context.getString(
                 R.string.search_result_leechers,
-                result.leechers?.toString() ?: "-"
+                result.leechers?.toString() ?: "-",
             )
         }
     }
@@ -67,8 +66,10 @@ class SearchResultAdapter(
         override fun areItemsTheSame(oldItem: Search.Result, newItem: Search.Result) = oldItem.fileUrl == newItem.fileUrl
 
         override fun areContentsTheSame(oldItem: Search.Result, newItem: Search.Result) =
-            oldItem.fileName == newItem.fileName && oldItem.siteUrl == newItem.siteUrl &&
-                oldItem.fileSize == newItem.fileSize && oldItem.seeders == newItem.seeders &&
+            oldItem.fileName == newItem.fileName &&
+                oldItem.siteUrl == newItem.siteUrl &&
+                oldItem.fileSize == newItem.fileSize &&
+                oldItem.seeders == newItem.seeders &&
                 oldItem.leechers == newItem.leechers
     }
 }

@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ServerManager @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
 ) {
     private val sharedPref = context.getSharedPreferences("servers", Context.MODE_PRIVATE)
 
@@ -23,7 +23,7 @@ class ServerManager @Inject constructor(
     }
 
     private fun readServerConfigs() = json.decodeFromString<Map<Int, ServerConfig>>(
-        sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}"
+        sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}",
     ).toSortedMap()
 
     private val _serversFlow = MutableStateFlow(readServerConfigs())
@@ -38,9 +38,7 @@ class ServerManager @Inject constructor(
         val serverConfigs = readServerConfigs()
         val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
 
-        val newServerConfig = serverConfig.copy(
-            id = serverId
-        )
+        val newServerConfig = serverConfig.copy(id = serverId)
         serverConfigs[serverId] = newServerConfig
 
         val isSuccess = sharedPref.edit()

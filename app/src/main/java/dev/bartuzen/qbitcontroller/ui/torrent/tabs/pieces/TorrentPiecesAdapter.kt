@@ -12,9 +12,8 @@ import dev.bartuzen.qbitcontroller.utils.themeColors
 class TorrentPiecesAdapter : RecyclerView.Adapter<TorrentPiecesAdapter.ViewHolder>() {
     private var pieces: List<PieceState> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentPieceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentPieceBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: TorrentPiecesAdapter.ViewHolder, position: Int) {
         holder.bind(pieces[position])
@@ -40,7 +39,7 @@ class TorrentPiecesAdapter : RecyclerView.Adapter<TorrentPiecesAdapter.ViewHolde
                     PieceState.NOT_DOWNLOADED -> 63
                     PieceState.DOWNLOADING -> 127
                     PieceState.DOWNLOADED -> 255
-                }
+                },
             )
             binding.viewPiece.setBackgroundColor(backgroundColor)
         }

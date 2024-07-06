@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UserAgentInterceptor @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : Interceptor {
     private val userAgent = "${context.getString(R.string.app_name)}/${BuildConfig.VERSION_NAME}"
 

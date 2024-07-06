@@ -34,7 +34,7 @@ class TorrentWebSeedsFragment() : Fragment(R.layout.fragment_torrent_web_seeds) 
     constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "torrentHash" to torrentHash
+            "torrentHash" to torrentHash,
         )
     }
 

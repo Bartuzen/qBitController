@@ -49,7 +49,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
     constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "torrentHash" to torrentHash
+            "torrentHash" to torrentHash,
         )
     }
 
@@ -76,7 +76,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         var actionMode: ActionMode? = null
@@ -102,12 +102,12 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                                         onDelete = {
                                             finishSelection()
                                             actionMode?.finish()
-                                        }
+                                        },
                                     )
                                 } else {
                                     showSnackbar(
                                         R.string.torrent_trackers_cannot_delete_default,
-                                        view = requireActivity().view
+                                        view = requireActivity().view,
                                     )
                                     finishSelection()
                                     actionMode?.finish()
@@ -121,12 +121,12 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                                         tracker = tracker,
                                         onSuccess = { newUrl ->
                                             viewModel.editTracker(serverId, torrentHash, tracker, newUrl)
-                                        }
+                                        },
                                     )
                                 } else {
                                     showSnackbar(
                                         R.string.torrent_trackers_cannot_edit_default,
-                                        view = requireActivity().view
+                                        view = requireActivity().view,
                                     )
                                     finishSelection()
                                     actionMode?.finish()
@@ -158,7 +158,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                     actionMode?.title = resources.getQuantityString(
                         R.plurals.torrent_trackers_selected,
                         itemCount,
-                        itemCount
+                        itemCount,
                     )
                 }
                 actionMode?.menu?.findItem(R.id.menu_edit)?.isEnabled = itemCount == 1
@@ -253,7 +253,7 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 viewModel.addTrackers(
                     serverId,
                     torrentHash,
-                    binding.editTrackers.text.toString().split("\n")
+                    binding.editTrackers.text.toString().split("\n"),
                 )
             }
             setNegativeButton()
@@ -266,15 +266,15 @@ class TorrentTrackersFragment() : Fragment(R.layout.fragment_torrent_trackers) {
                 resources.getQuantityString(
                     R.plurals.torrent_trackers_delete_title,
                     trackerKeys.size,
-                    trackerKeys.size
-                )
+                    trackerKeys.size,
+                ),
             )
             setMessage(
                 resources.getQuantityString(
                     R.plurals.torrent_trackers_delete_desc,
                     trackerKeys.size,
-                    trackerKeys.size
-                )
+                    trackerKeys.size,
+                ),
             )
             setPositiveButton { _, _ ->
                 viewModel.deleteTrackers(serverId, torrentHash, trackerKeys)

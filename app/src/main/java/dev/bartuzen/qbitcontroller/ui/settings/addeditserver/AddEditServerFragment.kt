@@ -53,13 +53,12 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.scrollView.applyNavigationBarInsets()
 
-        requireAppCompatActivity().supportActionBar?.setTitle(
-            if (serverId == null) {
-                R.string.settings_server_title_add
-            } else {
-                R.string.settings_server_title_edit
-            }
-        )
+        val titleRes = if (serverId == null) {
+            R.string.settings_server_title_add
+        } else {
+            R.string.settings_server_title_edit
+        }
+        requireAppCompatActivity().supportActionBar?.setTitle(titleRes)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {
@@ -72,9 +71,11 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                         R.id.menu_save -> {
                             saveServerConfig()
                         }
+
                         R.id.menu_delete -> {
                             deleteServerConfig()
                         }
+
                         R.id.menu_advanced -> {
                             parentFragmentManager.commit {
                                 setReorderingAllowed(true)
@@ -83,6 +84,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                                 addToBackStack(null)
                             }
                         }
+
                         else -> return false
                     }
                     return true
@@ -99,7 +101,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             // If there are back stack entries, we will pop the fragment when we are done. In this case, an animation will
             // be played so menu entries should disappear the moment we pop the fragment, and not wait for the animation to
             // finish. Otherwise we will finish the activity. In this case, we should wait for activity animation to finish.
-            if (parentFragmentManager.backStackEntryCount > 0) Lifecycle.State.RESUMED else Lifecycle.State.STARTED
+            if (parentFragmentManager.backStackEntryCount > 0) Lifecycle.State.RESUMED else Lifecycle.State.STARTED,
         )
 
         setFragmentResultListener("advancedServerSettingsResult") { _, bundle ->
@@ -109,7 +111,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
         binding.spinnerProtocol.adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            listOf("HTTP", "HTTPS")
+            listOf("HTTP", "HTTPS"),
         )
 
         binding.spinnerProtocol.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -153,6 +155,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                 is AddEditServerViewModel.Event.TestFailure -> {
                     showSnackbar(getErrorMessage(requireContext(), event.error))
                 }
+
                 AddEditServerViewModel.Event.TestSuccess -> {
                     showSnackbar(R.string.settings_server_connection_success)
                 }
@@ -215,7 +218,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             username = username,
             password = password,
             trustSelfSignedCertificates = trustSelfSignedCertificates,
-            basicAuth = basicAuth
+            basicAuth = basicAuth,
         )
 
         if (config.url.toHttpUrlOrNull() == null) {
@@ -270,6 +273,6 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     enum class Result {
         ADDED,
         EDITED,
-        DELETED
+        DELETED,
     }
 }

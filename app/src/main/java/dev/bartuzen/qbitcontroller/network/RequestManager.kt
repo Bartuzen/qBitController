@@ -27,7 +27,7 @@ class RequestManager @Inject constructor(
     private val serverManager: ServerManager,
     private val timeoutInterceptor: TimeoutInterceptor,
     private val userAgentInterceptor: UserAgentInterceptor,
-    private val trustAllManager: TrustAllX509TrustManager
+    private val trustAllManager: TrustAllX509TrustManager,
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
     private val okHttpClientMap = mutableMapOf<Int, OkHttpClient>()
@@ -127,7 +127,7 @@ class RequestManager @Inject constructor(
 
     private suspend fun <T : Any> tryRequest(
         serverId: Int,
-        block: suspend (service: TorrentService) -> Response<T>
+        block: suspend (service: TorrentService) -> Response<T>,
     ): RequestResult<T> {
         val service = getTorrentService(serverId)
 

@@ -22,11 +22,10 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
     diffCallBack = DiffCallBack(),
     getKey = { torrent ->
         torrent.hash
-    }
+    },
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { torrent ->
@@ -57,7 +56,7 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
                 formatBytes(context, torrent.completed),
                 formatBytes(context, torrent.size),
                 progressText,
-                torrent.ratio.floorToDecimal(2).toString()
+                torrent.ratio.floorToDecimal(2).toString(),
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
@@ -115,11 +114,16 @@ class TorrentListAdapter : MultiSelectAdapter<Torrent, String, TorrentListAdapte
     class DiffCallBack : DiffUtil.ItemCallback<Torrent>() {
         override fun areItemsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem.hash == newItem.hash
 
-        override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) =
-            oldItem.name == newItem.name && oldItem.progress.floorToDecimal(1) == newItem.progress.floorToDecimal(1) &&
-                oldItem.completed == newItem.completed && oldItem.size == newItem.size && oldItem.eta == newItem.eta &&
-                oldItem.state == newItem.state && oldItem.uploadSpeed == newItem.uploadSpeed &&
-                oldItem.downloadSpeed == newItem.downloadSpeed && oldItem.category == newItem.category &&
-                oldItem.tags == newItem.tags && oldItem.ratio.floorToDecimal(2) == newItem.ratio.floorToDecimal(2)
+        override fun areContentsTheSame(oldItem: Torrent, newItem: Torrent) = oldItem.name == newItem.name &&
+            oldItem.progress.floorToDecimal(1) == newItem.progress.floorToDecimal(1) &&
+            oldItem.completed == newItem.completed &&
+            oldItem.size == newItem.size &&
+            oldItem.eta == newItem.eta &&
+            oldItem.state == newItem.state &&
+            oldItem.uploadSpeed == newItem.uploadSpeed &&
+            oldItem.downloadSpeed == newItem.downloadSpeed &&
+            oldItem.category == newItem.category &&
+            oldItem.tags == newItem.tags &&
+            oldItem.ratio.floorToDecimal(2) == newItem.ratio.floorToDecimal(2)
     }
 }

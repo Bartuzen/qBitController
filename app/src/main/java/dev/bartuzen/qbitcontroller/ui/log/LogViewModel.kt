@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LogViewModel @Inject constructor(
-    private val repository: LogRepository
+    private val repository: LogRepository,
 ) : ViewModel() {
     private val _logs = MutableStateFlow<List<Log>?>(null)
     val logs = _logs.asStateFlow()

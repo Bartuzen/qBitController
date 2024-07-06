@@ -57,7 +57,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
     constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "torrentHash" to torrentHash
+            "torrentHash" to torrentHash,
         )
     }
 
@@ -84,7 +84,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         var actionMode: ActionMode? = null
@@ -92,9 +92,9 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             loadImage = { imageView, countryCode ->
                 imageView.load(
                     data = viewModel.getFlagUrl(serverId, countryCode),
-                    imageLoader = viewModel.getImageLoader(serverId)
+                    imageLoader = viewModel.getImageLoader(serverId),
                 )
-            }
+            },
         ).apply {
             onClick { peer ->
                 showPeerDetailsDialog(peer)
@@ -116,7 +116,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                                     onBan = {
                                         finishSelection()
                                         actionMode?.finish()
-                                    }
+                                    },
                                 )
                             }
                             R.id.menu_select_all -> {
@@ -134,8 +134,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                         finishSelection()
                         actionMode = null
                     }
-                }
-                )
+                })
             }
             onSelectionModeEnd {
                 actionMode?.finish()
@@ -146,7 +145,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                     actionMode?.title = resources.getQuantityString(
                         R.plurals.torrent_peers_selected,
                         itemCount,
-                        itemCount
+                        itemCount,
                     )
                 }
             }
@@ -267,7 +266,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
 
             if (peer.countryCode != null) {
                 val countryName = Locale("", peer.countryCode).getDisplayCountry(
-                    Locale(context.getString(R.string.language_code))
+                    Locale(context.getString(R.string.language_code)),
                 )
                 binding.textCountry.text = getString(R.string.torrent_peers_details_country, countryName)
                 binding.textCountry.visibility = View.VISIBLE
@@ -328,7 +327,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 viewModel.addPeers(
                     serverId,
                     torrentHash,
-                    binding.editPeers.text.toString().split("\n")
+                    binding.editPeers.text.toString().split("\n"),
                 )
             }
             setNegativeButton()
@@ -341,15 +340,15 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
                 resources.getQuantityString(
                     R.plurals.torrent_peers_ban_title,
                     peers.size,
-                    peers.size
-                )
+                    peers.size,
+                ),
             )
             setMessage(
                 resources.getQuantityString(
                     R.plurals.torrent_peers_ban_desc,
                     peers.size,
-                    peers.size
-                )
+                    peers.size,
+                ),
             )
             setPositiveButton { _, _ ->
                 viewModel.banPeers(serverId, peers)

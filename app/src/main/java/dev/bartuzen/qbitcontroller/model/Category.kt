@@ -15,7 +15,7 @@ data class Category(
     val savePath: String,
     @SerialName("download_path")
     @Serializable(with = DownloadPathSerializer::class)
-    val downloadPath: DownloadPath = DownloadPath.Default
+    val downloadPath: DownloadPath = DownloadPath.Default,
 ) {
     sealed interface DownloadPath {
         data object Default : DownloadPath

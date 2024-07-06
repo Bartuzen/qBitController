@@ -80,9 +80,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         torrentFileUri = savedInstanceState?.getParcelableCompat(Extras.FILE_URI)
 
-        val serverId = MutableStateFlow(
-            intent.getIntExtra(Extras.SERVER_ID, -1).takeIf { it != -1 }
-        )
+        val serverId = MutableStateFlow(intent.getIntExtra(Extras.SERVER_ID, -1).takeIf { it != -1 })
 
         if (serverId.value == null) {
             val servers = viewModel.getServers()
@@ -99,7 +97,7 @@ class AddTorrentActivity : AppCompatActivity() {
                 binding.spinnerServers.adapter = ArrayAdapter(
                     this,
                     android.R.layout.simple_spinner_dropdown_item,
-                    servers.map { server -> server.name ?: server.visibleUrl }
+                    servers.map { server -> server.name ?: server.visibleUrl },
                 )
                 binding.spinnerServers.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -186,17 +184,17 @@ class AddTorrentActivity : AppCompatActivity() {
                 if (binding.inputLayoutTorrentLink.isErrorEnabled && text?.isNotBlank() == true) {
                     binding.inputLayoutTorrentLink.isErrorEnabled = false
                 }
-            }
+            },
         )
 
         binding.dropdownDlspeedLimitUnit.setItems(
             R.string.speed_kibibytes_per_second,
-            R.string.speed_mebibytes_per_second
+            R.string.speed_mebibytes_per_second,
         )
 
         binding.dropdownUpspeedLimitUnit.setItems(
             R.string.speed_kibibytes_per_second,
-            R.string.speed_mebibytes_per_second
+            R.string.speed_mebibytes_per_second,
         )
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -309,7 +307,7 @@ class AddTorrentActivity : AppCompatActivity() {
         binding.dropdownAutoTmm.setItems(
             R.string.torrent_add_default,
             R.string.torrent_add_torrent_management_mode_manual,
-            R.string.torrent_add_torrent_management_mode_auto
+            R.string.torrent_add_torrent_management_mode_auto,
         )
         binding.dropdownAutoTmm.onItemChangeListener = { position ->
             binding.inputLayoutSavePath.isEnabled = position != 2
@@ -319,14 +317,14 @@ class AddTorrentActivity : AppCompatActivity() {
             R.string.torrent_add_default,
             R.string.torrent_add_stop_condition_none,
             R.string.torrent_add_stop_condition_metadata_received,
-            R.string.torrent_add_stop_condition_files_checked
+            R.string.torrent_add_stop_condition_files_checked,
         )
 
         binding.dropdownContentLayout.setItems(
             R.string.torrent_add_default,
             R.string.torrent_add_content_layout_original,
             R.string.torrent_add_content_layout_subfolder,
-            R.string.torrent_add_content_layout_no_subfolder
+            R.string.torrent_add_content_layout_no_subfolder,
         )
 
         viewModel.eventFlow.launchAndCollectIn(this) { event ->
@@ -518,7 +516,7 @@ class AddTorrentActivity : AppCompatActivity() {
             skipHashChecking = binding.checkSkipChecking.isChecked,
             isAutoTorrentManagementEnabled = autoTmm,
             isSequentialDownloadEnabled = binding.checkSequentialDownload.isChecked,
-            isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked
+            isFirstLastPiecePrioritized = binding.checkPrioritizeFirstLastPiece.isChecked,
         )
     }
 }

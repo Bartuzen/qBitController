@@ -39,7 +39,7 @@ data class TorrentTracker(
 
     @SerialName("msg")
     @Serializable(with = NullableStringSerializer::class)
-    val message: String?
+    val message: String?,
 )
 
 private object TrackerTierSerializer : KSerializer<Int?> {

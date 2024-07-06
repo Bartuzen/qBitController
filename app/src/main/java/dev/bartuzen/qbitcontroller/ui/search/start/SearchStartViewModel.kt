@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchStartViewModel @Inject constructor(
     private val repository: SearchStartRepository,
-    private val state: SavedStateHandle
+    private val state: SavedStateHandle,
 ) : ViewModel() {
     private val _plugins = MutableStateFlow<List<Plugin>?>(null)
     val plugins = _plugins.asStateFlow()
@@ -66,7 +66,7 @@ class SearchStartViewModel @Inject constructor(
         searchQuery: String,
         selectedCategoryPosition: Int,
         selectedPluginOption: SearchStartAdapter.PluginSelection,
-        selectedPlugins: List<String>
+        selectedPlugins: List<String>,
     ) {
         state["searchQuery"] = searchQuery
         state["selectedCategoryPosition"] = selectedCategoryPosition
@@ -84,7 +84,7 @@ class SearchStartViewModel @Inject constructor(
             searchQuery = searchQuery,
             selectedCategoryPosition = selectedCategoryPosition,
             selectedPluginOption = selectedPluginOption,
-            selectedPlugins = selectedPlugins
+            selectedPlugins = selectedPlugins,
         )
     }
 
@@ -92,7 +92,7 @@ class SearchStartViewModel @Inject constructor(
         val searchQuery: String,
         val selectedCategoryPosition: Int,
         val selectedPluginOption: SearchStartAdapter.PluginSelection,
-        val selectedPlugins: List<String>
+        val selectedPlugins: List<String>,
     )
 
     sealed class Event {

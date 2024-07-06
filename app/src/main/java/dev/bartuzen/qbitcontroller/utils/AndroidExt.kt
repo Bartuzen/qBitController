@@ -58,7 +58,7 @@ fun FragmentTransaction.setDefaultAnimations() {
         R.anim.slide_in_right,
         R.anim.slide_out_left,
         R.anim.slide_in_left,
-        R.anim.slide_out_right
+        R.anim.slide_out_right,
     )
 }
 
@@ -84,7 +84,7 @@ typealias themeColors = com.google.android.material.R.attr
 fun Context.getThemeColor(
     color: Int,
     @IntRange(from = 0, to = 255) alpha: Int = 255,
-    defaultColor: Int = Color.TRANSPARENT
+    defaultColor: Int = Color.TRANSPARENT,
 ) = MaterialColors.getColor(this, color, defaultColor).let {
     MaterialColors.compositeARGBWithAlpha(it, alpha)
 }

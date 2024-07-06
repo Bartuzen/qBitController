@@ -71,7 +71,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
@@ -135,7 +135,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
             serverId = serverId,
             searchQuery = adapter.searchQuery,
             category = category,
-            plugins = plugins
+            plugins = plugins,
         )
         parentFragmentManager.commit {
             setReorderingAllowed(true)
@@ -160,7 +160,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
             searchQuery = adapter.searchQuery,
             selectedCategoryPosition = adapter.selectedCategoryPosition,
             selectedPluginOption = adapter.selectedPluginOption,
-            selectedPlugins = adapter.selectedPlugins
+            selectedPlugins = adapter.selectedPlugins,
         )
     }
 
@@ -170,7 +170,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
             searchQuery = state.searchQuery,
             selectedCategoryPosition = state.selectedCategoryPosition,
             selectedPluginOption = state.selectedPluginOption,
-            selectedPlugins = state.selectedPlugins
+            selectedPlugins = state.selectedPlugins,
         )
     }
 }

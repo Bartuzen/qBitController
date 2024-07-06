@@ -35,7 +35,7 @@ class AddEditServerViewModel @Inject constructor(
     private val serverManager: ServerManager,
     private val timeoutInterceptor: TimeoutInterceptor,
     private val userAgentInterceptor: UserAgentInterceptor,
-    private val trustAllManager: TrustAllX509TrustManager
+    private val trustAllManager: TrustAllX509TrustManager,
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -83,7 +83,7 @@ class AddEditServerViewModel @Inject constructor(
                                 sslSocketFactory(sslContext.socketFactory, trustAllManager)
                                 hostnameVerifier { _, _ -> true }
                             }
-                        }.build()
+                        }.build(),
                     )
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .build()
@@ -113,13 +113,11 @@ class AddEditServerViewModel @Inject constructor(
                 RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
             }
 
-            eventChannel.send(
-                if (error == null) {
-                    Event.TestSuccess
-                } else {
-                    Event.TestFailure(error)
-                }
-            )
+            if (error == null) {
+                eventChannel.send(Event.TestSuccess)
+            } else {
+                eventChannel.send(Event.TestFailure(error))
+            }
         }
 
         job.invokeOnCompletion { e ->

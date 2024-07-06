@@ -20,7 +20,7 @@ class CategoryTagAdapter(
     private val onSelected: (categoryTag: CategoryTag) -> Unit,
     private val onLongClick: (name: String, view: View) -> Unit,
     private val onCreateClick: () -> Unit,
-    private val onCollapse: (isCollapsed: Boolean) -> Unit
+    private val onCollapse: (isCollapsed: Boolean) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var areSubcategoriesEnabled: Boolean = false
@@ -50,9 +50,7 @@ class CategoryTagAdapter(
             ItemViewHolder(ItemCategoryTagBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
         R.layout.item_category_tag_title -> {
-            TitleViewHolder(
-                ItemCategoryTagTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            TitleViewHolder(ItemCategoryTagTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
         else -> throw IllegalStateException("Unknown viewType: $viewType")
     }
@@ -193,9 +191,12 @@ class CategoryTagAdapter(
         }
 
         fun bind() {
-            binding.textTitle.text = binding.root.context.getString(
-                if (isCategory) R.string.torrent_list_categories else R.string.torrent_list_tags
-            )
+            val titleRes = if (isCategory) {
+                R.string.torrent_list_categories
+            } else {
+                R.string.torrent_list_tags
+            }
+            binding.textTitle.setText(titleRes)
 
             if (isCollapsed) {
                 binding.textTitle.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_expand, 0, 0, 0)

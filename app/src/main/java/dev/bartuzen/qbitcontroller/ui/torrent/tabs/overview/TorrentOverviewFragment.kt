@@ -77,7 +77,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "torrentHash" to torrentHash
+            "torrentHash" to torrentHash,
         )
     }
 
@@ -109,17 +109,21 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         copyHashV1.isEnabled = torrent?.hashV1 != null
                         copyHashV2.isEnabled = torrent?.hashV2 != null
 
-                        reannounce.isEnabled = torrent != null && when (torrent.state) {
-                            TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP, TorrentState.QUEUED_DL,
-                            TorrentState.ERROR, TorrentState.CHECKING_UP, TorrentState.CHECKING_DL -> false
+                        reannounce.isEnabled = torrent != null &&
+                            when (torrent.state) {
+                                TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP,
+                                TorrentState.QUEUED_DL, TorrentState.ERROR, TorrentState.CHECKING_UP,
+                                TorrentState.CHECKING_DL,
+                                -> false
 
-                            else -> true
-                        }
+                                else -> true
+                            }
 
                         if (torrent != null) {
                             val isPaused = when (torrent.state) {
                                 TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
-                                TorrentState.MISSING_FILES, TorrentState.ERROR -> true
+                                TorrentState.MISSING_FILES, TorrentState.ERROR,
+                                -> true
 
                                 else -> false
                             }
@@ -204,7 +208,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     return true
                 }
             },
-            viewLifecycleOwner
+            viewLifecycleOwner,
         )
 
         binding.swipeRefresh.setOnRefreshListener {
@@ -303,7 +307,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 formatBytes(requireContext(), torrent.completed),
                 formatBytes(requireContext(), torrent.size),
                 progressText,
-                torrent.ratio.floorToDecimal(2).toString()
+                torrent.ratio.floorToDecimal(2).toString(),
             )
 
             binding.textEta.text = torrent.eta?.let { eta ->
@@ -336,7 +340,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     R.string.torrent_overview_pieces_format,
                     properties.piecesCount,
                     formatBytes(requireContext(), properties.pieceSize),
-                    properties.piecesHave
+                    properties.piecesHave,
                 )
             } else {
                 "-"
@@ -357,7 +361,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 getString(
                     R.string.torrent_overview_time_active_seeding_time_format,
                     formatSeconds(requireContext(), torrent.timeActive),
-                    formatSeconds(requireContext(), torrent.seedingTime)
+                    formatSeconds(requireContext(), torrent.seedingTime),
                 )
             } else {
                 formatSeconds(requireContext(), torrent.timeActive)
@@ -365,12 +369,12 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.textDownloaded.text = getString(
                 R.string.torrent_overview_downloaded_format,
                 formatBytes(requireContext(), torrent.downloaded),
-                formatBytes(requireContext(), torrent.downloadedSession)
+                formatBytes(requireContext(), torrent.downloadedSession),
             )
             binding.textUploaded.text = getString(
                 R.string.torrent_overview_uploaded_format,
                 formatBytes(requireContext(), torrent.uploaded),
-                formatBytes(requireContext(), torrent.uploadedSession)
+                formatBytes(requireContext(), torrent.uploadedSession),
             )
             binding.textReannounceIn.text = formatSeconds(requireContext(), properties.nextReannounce)
             binding.textLastActivity.text = formatDate(torrent.lastActivity)
@@ -382,17 +386,17 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.textConnections.text = getString(
                 R.string.torrent_overview_connections_format,
                 properties.connections,
-                properties.connectionsLimit
+                properties.connectionsLimit,
             )
             binding.textSeeds.text = getString(
                 R.string.torrent_overview_seeds_format,
                 properties.seeds,
-                properties.seedsTotal
+                properties.seedsTotal,
             )
             binding.textPeers.text = getString(
                 R.string.torrent_overview_peers_format,
                 properties.peers,
-                properties.peersTotal
+                properties.peersTotal,
             )
             binding.textWasted.text = formatBytes(requireContext(), properties.wasted)
         }
@@ -465,7 +469,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         } else {
                             R.string.torrent_disable_force_start_success
                         },
-                        view = requireActivity().view
+                        view = requireActivity().view,
                     )
 
                     viewLifecycleOwner.lifecycleScope.launch {
@@ -480,7 +484,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                         } else {
                             R.string.torrent_disable_super_seeding_success
                         },
-                        view = requireActivity().view
+                        view = requireActivity().view,
                     )
 
                     viewLifecycleOwner.lifecycleScope.launch {
@@ -555,7 +559,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     }
                     if (torrent.inactiveSeedingTimeLimit >= 0) {
                         binding.inputLayoutInactiveMinutes.setTextWithoutAnimation(
-                            torrent.inactiveSeedingTimeLimit.toString()
+                            torrent.inactiveSeedingTimeLimit.toString(),
                         )
                     }
                 }
@@ -648,7 +652,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     }.let { (ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit) ->
                         if (ratioLimit == null || seedingTimeLimit == null || inactiveSeedingTimeLimit == null) {
                             Triple(null, null, null)
-                        } else if (ratioLimit != torrent.ratioLimit || seedingTimeLimit != torrent.seedingTimeLimit ||
+                        } else if (ratioLimit != torrent.ratioLimit ||
+                            seedingTimeLimit != torrent.seedingTimeLimit ||
                             inactiveSeedingTimeLimit != torrent.inactiveSeedingTimeLimit
                         ) {
                             Triple(ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
@@ -669,7 +674,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                     downloadSpeedLimit = downloadSpeedLimit,
                     ratioLimit = ratioLimit,
                     seedingTimeLimit = seedingTimeLimit,
-                    inactiveSeedingTimeLimit = inactiveSeedingTimeLimit
+                    inactiveSeedingTimeLimit = inactiveSeedingTimeLimit,
                 )
             }
             setNegativeButton()

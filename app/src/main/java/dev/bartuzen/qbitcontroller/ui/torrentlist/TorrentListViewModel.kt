@@ -30,7 +30,7 @@ import javax.inject.Inject
 class TorrentListViewModel @Inject constructor(
     private val repository: TorrentListRepository,
     private val settingsManager: SettingsManager,
-    private val notifier: TorrentDownloadedNotifier
+    private val notifier: TorrentDownloadedNotifier,
 ) : ViewModel() {
     private val _mainData = MutableStateFlow<MainData?>(null)
     val mainData = _mainData.asStateFlow()
@@ -172,7 +172,7 @@ class TorrentListViewModel @Inject constructor(
         selectedTag,
         selectedFilter,
         selectedTracker,
-        mainData
+        mainData,
     ) { filters ->
         if (filters[0] != null && filters[6] != null) {
             filters

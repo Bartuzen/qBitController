@@ -23,7 +23,7 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     private val requestManager: RequestManager,
     private val serverManager: ServerManager,
     private val settingsManager: SettingsManager,
-    private val notifier: TorrentDownloadedNotifier
+    private val notifier: TorrentDownloadedNotifier,
 ) : CoroutineWorker(appContext, workParams) {
 
     override suspend fun doWork(): Result {

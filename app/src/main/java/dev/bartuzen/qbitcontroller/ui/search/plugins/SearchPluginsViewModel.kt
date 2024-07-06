@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchPluginsViewModel @Inject constructor(
-    private val repository: SearchPluginsRepository
+    private val repository: SearchPluginsRepository,
 ) : ViewModel() {
     private val _plugins = MutableStateFlow<List<Plugin>?>(null)
     val plugins = _plugins.asStateFlow()

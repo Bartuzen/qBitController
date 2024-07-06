@@ -10,7 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val state: SavedStateHandle,
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
 ) : ViewModel() {
     val currentServer = state.getStateFlow<ServerConfig?>("current_server", null)
 

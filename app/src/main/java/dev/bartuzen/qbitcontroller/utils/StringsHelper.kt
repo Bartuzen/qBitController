@@ -115,7 +115,7 @@ fun formatTorrentState(context: Context, state: TorrentState) = context.getStrin
         TorrentState.FORCED_DL -> R.string.torrent_status_force_downloading
         TorrentState.MOVING -> R.string.torrent_status_moving
         TorrentState.UNKNOWN -> R.string.torrent_status_unknown
-    }
+    },
 )
 
 fun formatFilePriority(context: Context, priority: TorrentFilePriority) = context.getString(
@@ -124,7 +124,7 @@ fun formatFilePriority(context: Context, priority: TorrentFilePriority) = contex
         TorrentFilePriority.NORMAL -> R.string.torrent_files_priority_normal
         TorrentFilePriority.HIGH -> R.string.torrent_files_priority_high
         TorrentFilePriority.MAXIMUM -> R.string.torrent_files_priority_maximum
-    }
+    },
 )
 
 fun getErrorMessage(context: Context, error: RequestResult.Error) = when (error) {
@@ -147,12 +147,11 @@ fun formatDate(epochSecondOrMilli: Long): String = if (epochSecondOrMilli >= 100
 }.atZone(ZoneId.systemDefault())
     .format(
         DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-            .withZone(ZoneId.systemDefault())
+            .withZone(ZoneId.systemDefault()),
     )
 
-@Suppress("ktlint:standard:property-naming", "ktlint:standard:max-line-length")
 private val ipPattern = Regex(
-    """(?:[a-zA-Z]+://)?(?:((?:\d{1,3}\.){3}\d{1,3})|\[?((?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?"""
+    """(?:[a-zA-Z]+://)?(?:((?:\d{1,3}\.){3}\d{1,3})|\[?((?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?""",
 )
 
 fun formatUri(uri: String) = try {

@@ -14,13 +14,12 @@ import dev.bartuzen.qbitcontroller.utils.themeColors
 
 class ServerListAdapter(
     private val onClick: (serverConfig: ServerConfig) -> Unit,
-    private val onLongClick: (serverConfig: ServerConfig) -> Unit
+    private val onLongClick: (serverConfig: ServerConfig) -> Unit,
 ) : ListAdapter<ServerConfig, ServerListAdapter.ViewHolder>(DiffCallBack()) {
     var selectedServerId: Int = -1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemServerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemServerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { serverConfig ->

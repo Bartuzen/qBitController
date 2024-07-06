@@ -26,7 +26,7 @@ import javax.inject.Inject
 class SearchResultViewModel @Inject constructor(
     private val repository: SearchResultRepository,
     private val settingsManager: SettingsManager,
-    private val state: SavedStateHandle
+    private val state: SavedStateHandle,
 ) : ViewModel() {
     private val searchResult = MutableStateFlow<Search?>(null)
 
@@ -39,8 +39,8 @@ class SearchResultViewModel @Inject constructor(
             sizeMin = null,
             sizeMax = null,
             sizeMinUnit = 2,
-            sizeMaxUnit = 2
-        )
+            sizeMaxUnit = 2,
+        ),
     )
     val filter = _filter.asStateFlow()
 
@@ -239,7 +239,7 @@ class SearchResultViewModel @Inject constructor(
             sizeMin = null,
             sizeMax = null,
             sizeMinUnit = 2,
-            sizeMaxUnit = 2
+            sizeMaxUnit = 2,
         )
     }
 
@@ -257,7 +257,7 @@ class SearchResultViewModel @Inject constructor(
         val sizeMin: Long?,
         val sizeMax: Long?,
         val sizeMinUnit: Int,
-        val sizeMaxUnit: Int
+        val sizeMaxUnit: Int,
     ) {
         private fun Int.pow(x: Int): Long {
             var number = 1L

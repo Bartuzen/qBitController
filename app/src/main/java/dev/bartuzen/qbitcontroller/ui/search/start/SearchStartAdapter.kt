@@ -61,7 +61,7 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         searchQuery: String,
         selectedCategoryPosition: Int,
         selectedPluginOption: PluginSelection,
-        selectedPlugins: List<String>
+        selectedPlugins: List<String>,
     ) {
         this.searchQuery = searchQuery
         this.selectedCategoryPosition = selectedCategoryPosition
@@ -108,7 +108,7 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 R.string.search_start_category_music,
                 R.string.search_start_category_pictures,
                 R.string.search_start_category_software,
-                R.string.search_start_category_tv_shows
+                R.string.search_start_category_tv_shows,
             )
             binding.dropdownCategory.setPosition(selectedCategoryPosition)
 
@@ -152,6 +152,6 @@ class SearchStartAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class PluginSelection {
         ENABLED,
         ALL,
-        SELECTED
+        SELECTED,
     }
 }

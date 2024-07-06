@@ -15,7 +15,7 @@ fun View.applyInsets(
     @Dimension(unit = Dimension.DP) paddingBottom: Int,
     @Dimension(unit = Dimension.DP) paddingStart: Int,
     @Dimension(unit = Dimension.DP) paddingEnd: Int,
-    typeMask: Int
+    typeMask: Int,
 ) {
     ViewCompat.setOnApplyWindowInsetsListener(this) { v, windowInsets ->
         val insets = windowInsets.getInsets(typeMask)
@@ -45,7 +45,7 @@ fun View.applyInsets(
             top = top,
             bottom = bottom,
             start = start,
-            end = end
+            end = end,
         )
 
         windowInsets
@@ -60,7 +60,7 @@ fun View.applyNavigationBarInsets(
     @Dimension(unit = Dimension.DP) paddingTop: Int = 0,
     @Dimension(unit = Dimension.DP) paddingBottom: Int = 0,
     @Dimension(unit = Dimension.DP) paddingStart: Int = 0,
-    @Dimension(unit = Dimension.DP) paddingEnd: Int = 0
+    @Dimension(unit = Dimension.DP) paddingEnd: Int = 0,
 ) {
     applyInsets(
         top,
@@ -71,7 +71,7 @@ fun View.applyNavigationBarInsets(
         paddingBottom,
         paddingStart,
         paddingEnd,
-        WindowInsetsCompat.Type.navigationBars()
+        WindowInsetsCompat.Type.navigationBars(),
     )
 }
 
@@ -80,7 +80,7 @@ fun View.applyNavigationBarInsets(
     bottom: Boolean = true,
     start: Boolean = true,
     end: Boolean = true,
-    @Dimension(unit = Dimension.DP) padding: Int = 0
+    @Dimension(unit = Dimension.DP) padding: Int = 0,
 ) {
     applyInsets(
         top,
@@ -91,7 +91,7 @@ fun View.applyNavigationBarInsets(
         padding,
         padding,
         padding,
-        WindowInsetsCompat.Type.navigationBars()
+        WindowInsetsCompat.Type.navigationBars(),
     )
 }
 
@@ -103,7 +103,7 @@ fun View.applySystemBarInsets(
     @Dimension(unit = Dimension.DP) paddingTop: Int = 0,
     @Dimension(unit = Dimension.DP) paddingBottom: Int = 0,
     @Dimension(unit = Dimension.DP) paddingStart: Int = 0,
-    @Dimension(unit = Dimension.DP) paddingEnd: Int = 0
+    @Dimension(unit = Dimension.DP) paddingEnd: Int = 0,
 ) {
     applyInsets(
         top,
@@ -113,7 +113,7 @@ fun View.applySystemBarInsets(
         paddingTop,
         paddingBottom,
         paddingStart,
-        paddingEnd, WindowInsetsCompat.Type.systemBars()
+        paddingEnd, WindowInsetsCompat.Type.systemBars(),
     )
 }
 
@@ -122,7 +122,7 @@ fun View.applySystemBarInsets(
     bottom: Boolean = false,
     start: Boolean = true,
     end: Boolean = true,
-    @Dimension(unit = Dimension.DP) padding: Int = 0
+    @Dimension(unit = Dimension.DP) padding: Int = 0,
 ) {
     applyInsets(
         top,
@@ -133,6 +133,6 @@ fun View.applySystemBarInsets(
         padding,
         padding,
         padding,
-        WindowInsetsCompat.Type.systemBars()
+        WindowInsetsCompat.Type.systemBars(),
     )
 }

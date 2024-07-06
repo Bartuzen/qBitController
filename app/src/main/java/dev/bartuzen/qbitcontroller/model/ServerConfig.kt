@@ -16,7 +16,7 @@ data class ServerConfig(
     val username: String?,
     val password: String?,
     val trustSelfSignedCertificates: Boolean = false,
-    val basicAuth: BasicAuth = BasicAuth(false, null, null)
+    val basicAuth: BasicAuth = BasicAuth(false, null, null),
 ) : Parcelable {
     val url: String
         get() {
@@ -42,7 +42,7 @@ data class ServerConfig(
 
 enum class Protocol {
     HTTP,
-    HTTPS
+    HTTPS,
 }
 
 @Parcelize
@@ -50,5 +50,5 @@ enum class Protocol {
 data class BasicAuth(
     val isEnabled: Boolean,
     val username: String?,
-    val password: String?
+    val password: String?,
 ) : Parcelable

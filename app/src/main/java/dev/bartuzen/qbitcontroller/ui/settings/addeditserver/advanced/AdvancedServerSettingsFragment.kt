@@ -141,9 +141,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
 
         setFragmentResult(
             requestKey = "advancedServerSettingsResult",
-            result = bundleOf(
-                "basicAuth" to basicAuth
-            )
+            result = bundleOf("basicAuth" to basicAuth),
         )
     }
 }

@@ -31,7 +31,7 @@ class TorrentCategoryDialog() : DialogFragment() {
     constructor(serverId: Int, currentCategory: String?) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "currentCategory" to currentCategory
+            "currentCategory" to currentCategory,
         )
     }
 

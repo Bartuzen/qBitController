@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TorrentTagsRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun getTags(serverId: Int) = requestManager.request(serverId) { service ->
         service.getTags()

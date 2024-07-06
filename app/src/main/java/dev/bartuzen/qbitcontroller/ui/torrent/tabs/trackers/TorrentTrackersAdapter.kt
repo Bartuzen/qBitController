@@ -13,11 +13,10 @@ class TorrentTrackersAdapter : MultiSelectAdapter<TorrentTracker, String, Torren
     diffCallBack = DiffCallBack(),
     getKey = { tracker ->
         "${if (tracker.tier == null) 0 else 1}${tracker.url}"
-    }
+    },
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentTrackerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentTrackerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { tracker ->
@@ -50,9 +49,11 @@ class TorrentTrackersAdapter : MultiSelectAdapter<TorrentTracker, String, Torren
     class DiffCallBack : DiffUtil.ItemCallback<TorrentTracker>() {
         override fun areItemsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) = oldItem.url == newItem.url
 
-        override fun areContentsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) =
-            oldItem.url == newItem.url && oldItem.peers == newItem.peers && oldItem.seeds == newItem.seeds &&
-                oldItem.leeches == newItem.leeches && oldItem.downloaded == newItem.downloaded &&
-                oldItem.message == newItem.message
+        override fun areContentsTheSame(oldItem: TorrentTracker, newItem: TorrentTracker) = oldItem.url == newItem.url &&
+            oldItem.peers == newItem.peers &&
+            oldItem.seeds == newItem.seeds &&
+            oldItem.leeches == newItem.leeches &&
+            oldItem.downloaded == newItem.downloaded &&
+            oldItem.message == newItem.message
     }
 }

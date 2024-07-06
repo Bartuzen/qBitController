@@ -24,7 +24,7 @@ data class MainData(
     val torrents: List<Torrent>,
     val categories: List<Category>,
     val tags: List<String>,
-    val trackers: Map<String, List<String>>
+    val trackers: Map<String, List<String>>,
 )
 
 private object MainDataSerializer : KSerializer<MainData> {
@@ -55,27 +55,27 @@ private object MainDataSerializer : KSerializer<MainData> {
                 0 -> decodedServerState = decodeSerializableElement(
                     descriptor,
                     index,
-                    ServerState.serializer()
+                    ServerState.serializer(),
                 )
                 1 -> decodedTorrents = decodeSerializableElement(
                     descriptor,
                     index,
-                    MapSerializer(String.serializer(), Torrent.serializer())
+                    MapSerializer(String.serializer(), Torrent.serializer()),
                 )
                 2 -> decodedCategories = decodeSerializableElement(
                     descriptor,
                     index,
-                    MapSerializer(String.serializer(), Category.serializer())
+                    MapSerializer(String.serializer(), Category.serializer()),
                 )
                 3 -> decodedTags = decodeSerializableElement(
                     descriptor,
                     index,
-                    ListSerializer(String.serializer())
+                    ListSerializer(String.serializer()),
                 )
                 4 -> decodedTrackers = decodeSerializableElement(
                     descriptor,
                     index,
-                    MapSerializer(String.serializer(), ListSerializer(String.serializer()))
+                    MapSerializer(String.serializer(), ListSerializer(String.serializer())),
                 )
             }
         }
@@ -104,7 +104,7 @@ private object MainDataSerializer : KSerializer<MainData> {
                     }
                 }
                 category1Name.length - category2Name.length
-            }
+            },
         ) ?: emptyList()
 
         val tags = decodedTags?.sortedWith(String.CASE_INSENSITIVE_ORDER) ?: emptyList()
@@ -121,7 +121,7 @@ private object MainDataSerializer : KSerializer<MainData> {
             torrents = torrents,
             categories = categories,
             tags = tags,
-            trackers = trackers
+            trackers = trackers,
         )
     }
 }

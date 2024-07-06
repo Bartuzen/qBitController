@@ -22,7 +22,7 @@ import javax.inject.Singleton
 @Singleton
 class AppNotificationManager @Inject constructor(
     private val serverManager: ServerManager,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -54,7 +54,7 @@ class AppNotificationManager @Inject constructor(
             .setConstraints(
                 Constraints.Builder()
                     .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build()
+                    .build(),
             ).build()
 
         workManager.enqueueUniqueWork("torrent_downloaded", ExistingWorkPolicy.KEEP, work)
@@ -78,7 +78,7 @@ class AppNotificationManager @Inject constructor(
             val downloadedChannel = NotificationChannel(
                 "channel_server_${serverConfig.id}_downloaded",
                 context.getString(R.string.notification_channel_download_completed),
-                NotificationManager.IMPORTANCE_HIGH
+                NotificationManager.IMPORTANCE_HIGH,
             ).apply {
                 group = "group_server_${serverConfig.id}"
             }

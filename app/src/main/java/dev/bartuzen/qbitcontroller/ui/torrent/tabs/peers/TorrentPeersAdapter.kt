@@ -13,16 +13,15 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import java.util.Locale
 
 class TorrentPeersAdapter(
-    private val loadImage: (imageView: ImageView, countryCode: String) -> Unit
+    private val loadImage: (imageView: ImageView, countryCode: String) -> Unit,
 ) : MultiSelectAdapter<TorrentPeer, String, TorrentPeersAdapter.ViewHolder>(
     diffCallBack = DiffCallback(),
     getKey = { peer ->
         "${peer.ip}:${peer.port}"
-    }
+    },
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentPeerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentPeerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let {
@@ -51,7 +50,7 @@ class TorrentPeersAdapter(
 
             if (peer.countryCode != null) {
                 val countryName = Locale("", peer.countryCode).getDisplayCountry(
-                    Locale(context.getString(R.string.language_code))
+                    Locale(context.getString(R.string.language_code)),
                 )
                 binding.textCountry.text = context.getString(R.string.torrent_peers_country, countryName)
                 binding.textCountry.visibility = View.VISIBLE
@@ -72,9 +71,12 @@ class TorrentPeersAdapter(
         override fun areItemsTheSame(oldItem: TorrentPeer, newItem: TorrentPeer) =
             oldItem.ip == newItem.ip && oldItem.port == newItem.port
 
-        override fun areContentsTheSame(oldItem: TorrentPeer, newItem: TorrentPeer) =
-            oldItem.ip == newItem.ip && oldItem.port == newItem.port && oldItem.countryCode == newItem.countryCode &&
-                oldItem.connection == newItem.connection && oldItem.flags == newItem.flags &&
-                oldItem.downloadSpeed == newItem.downloadSpeed && oldItem.uploadSpeed == newItem.uploadSpeed
+        override fun areContentsTheSame(oldItem: TorrentPeer, newItem: TorrentPeer) = oldItem.ip == newItem.ip &&
+            oldItem.port == newItem.port &&
+            oldItem.countryCode == newItem.countryCode &&
+            oldItem.connection == newItem.connection &&
+            oldItem.flags == newItem.flags &&
+            oldItem.downloadSpeed == newItem.downloadSpeed &&
+            oldItem.uploadSpeed == newItem.uploadSpeed
     }
 }

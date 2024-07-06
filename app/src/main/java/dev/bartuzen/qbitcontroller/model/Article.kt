@@ -7,5 +7,5 @@ data class Article(
     val torrentUrl: String,
     val isRead: Boolean,
     val date: Long,
-    val path: List<String>
+    val path: List<String>,
 )

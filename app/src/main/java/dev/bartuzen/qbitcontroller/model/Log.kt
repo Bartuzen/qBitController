@@ -14,7 +14,7 @@ data class Log(
     val message: String,
     val timestamp: Long,
     @Serializable(with = LogTypeSerializer::class)
-    val type: LogType
+    val type: LogType,
 )
 
 private object LogTypeSerializer : KSerializer<LogType> {
@@ -39,5 +39,5 @@ enum class LogType {
     NORMAL,
     INFO,
     WARNING,
-    CRITICAL
+    CRITICAL,
 }

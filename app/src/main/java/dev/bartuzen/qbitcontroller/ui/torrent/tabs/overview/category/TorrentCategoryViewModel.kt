@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TorrentCategoryViewModel @Inject constructor(
-    private val repository: TorrentCategoryRepository
+    private val repository: TorrentCategoryRepository,
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()

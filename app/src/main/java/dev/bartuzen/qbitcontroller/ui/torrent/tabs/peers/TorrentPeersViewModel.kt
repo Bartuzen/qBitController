@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,14 +21,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-@SuppressLint("StaticFieldLeak")
-class TorrentPeersViewModel
-@Inject constructor(
+class TorrentPeersViewModel @Inject constructor(
     settingsManager: SettingsManager,
     private val repository: TorrentPeersRepository,
     private val serverManager: ServerManager,
     private val requestManager: RequestManager,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
     private val _torrentPeers = MutableStateFlow<List<TorrentPeer>?>(null)
     val torrentPeers = _torrentPeers.asStateFlow()

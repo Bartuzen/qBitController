@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RssFeedsViewModel @Inject constructor(
-    private val repository: RssFeedRepository
+    private val repository: RssFeedRepository,
 ) : ViewModel() {
     private val _rssFeeds = MutableStateFlow<RssFeedNode?>(null)
     val rssFeeds = _rssFeeds.asStateFlow()

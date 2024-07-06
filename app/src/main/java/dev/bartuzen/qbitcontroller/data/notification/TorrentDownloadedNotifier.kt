@@ -23,7 +23,7 @@ import javax.inject.Singleton
 @Singleton
 class TorrentDownloadedNotifier @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
 ) {
     private val json = Json {
         ignoreUnknownKeys = true
@@ -39,7 +39,7 @@ class TorrentDownloadedNotifier @Inject constructor(
         TorrentState.PAUSED_UP,
         TorrentState.FORCED_UP,
         TorrentState.QUEUED_UP,
-        TorrentState.CHECKING_UP
+        TorrentState.CHECKING_UP,
     )
 
     private val downloadingStates = listOf(
@@ -50,7 +50,7 @@ class TorrentDownloadedNotifier @Inject constructor(
         TorrentState.META_DL,
         TorrentState.FORCED_DL,
         TorrentState.PAUSED_DL,
-        TorrentState.STALLED_DL
+        TorrentState.STALLED_DL,
     )
 
     private val notificationManager =
@@ -121,7 +121,7 @@ class TorrentDownloadedNotifier @Inject constructor(
             context,
             0,
             torrentIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0,
         )
 
         val notification = NotificationCompat.Builder(context, "channel_server_${serverId}_downloaded")
@@ -155,7 +155,7 @@ class TorrentDownloadedNotifier @Inject constructor(
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             } else {
                 PendingIntent.FLAG_UPDATE_CURRENT
-            }
+            },
         )
 
         val serverConfig = serverManager.getServer(serverId)

@@ -25,7 +25,7 @@ class ExposedDropdownTextView(context: Context, attrs: AttributeSet?) : Material
         adapter = NonFilterArrayAdapter(
             context,
             R.layout.item_dropdown,
-            items
+            items,
         ).apply {
             setOnItemClickListener { _, _, position, _ ->
                 this@ExposedDropdownTextView.position = position

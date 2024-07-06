@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TorrentPiecesViewModel @Inject constructor(
     settingsManager: SettingsManager,
-    private val repository: TorrentPiecesRepository
+    private val repository: TorrentPiecesRepository,
 ) : ViewModel() {
     private val _torrentPieces = MutableStateFlow<List<PieceState>?>(null)
     val torrentPieces = _torrentPieces.asStateFlow()

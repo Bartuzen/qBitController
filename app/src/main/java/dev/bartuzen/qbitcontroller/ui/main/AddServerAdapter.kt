@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.databinding.ItemAddServerBinding
 
 class AddServerAdapter(
-    private val onClick: () -> Unit
+    private val onClick: () -> Unit,
 ) : RecyclerView.Adapter<AddServerAdapter.ViewHolder>() {
     var isVisible = false
         set(value) {
@@ -20,9 +20,8 @@ class AddServerAdapter(
             field = value
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemAddServerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemAddServerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
     }

@@ -10,5 +10,5 @@ data class Plugin(
     val fullName: String,
     val name: String,
     val url: String,
-    val version: String
+    val version: String,
 )

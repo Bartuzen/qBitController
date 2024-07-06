@@ -14,7 +14,7 @@ import dev.bartuzen.qbitcontroller.utils.themeColors
 class TrackerAdapter(
     isCollapsed: Boolean,
     private val onSelected: (tracker: Tracker) -> Unit,
-    private val onCollapse: (isCollapsed: Boolean) -> Unit
+    private val onCollapse: (isCollapsed: Boolean) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var trackers: List<Tracker> = emptyList()
@@ -40,14 +40,10 @@ class TrackerAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_tracker_title -> {
-            TitleViewHolder(
-                ItemTrackerTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            TitleViewHolder(ItemTrackerTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
         R.layout.item_tracker -> {
-            ViewHolder(
-                ItemTrackerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            ViewHolder(ItemTrackerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
         else -> {
             throw IllegalStateException("Unknown viewType: $viewType")

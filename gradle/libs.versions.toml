@@ -2,7 +2,7 @@
 agp = "8.5.0"
 kotlin = "2.0.0"
 hilt = "2.51.1"
-kotlinter = "3.16.0"
+kotlinter = "4.4.0"
 gradleVersions = "0.51.0"
 firebase-googleServices = "4.4.2"
 firebase-crashlytics = "3.0.2"

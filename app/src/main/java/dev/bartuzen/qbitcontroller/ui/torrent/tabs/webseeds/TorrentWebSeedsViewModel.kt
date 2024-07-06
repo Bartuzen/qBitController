@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TorrentWebSeedsViewModel @Inject constructor(
     settingsManager: SettingsManager,
-    private val repository: TorrentWebSeedsRepository
+    private val repository: TorrentWebSeedsRepository,
 ) : ViewModel() {
     private val _webSeeds = MutableStateFlow<List<String>?>(null)
     val webSeeds = _webSeeds.asStateFlow()

@@ -9,11 +9,10 @@ import dev.bartuzen.qbitcontroller.databinding.ItemRssRuleBinding
 
 class RssRulesAdapter(
     private val onClick: (rule: String) -> Unit,
-    private val onLongClick: (rule: String) -> Unit
+    private val onLongClick: (rule: String) -> Unit,
 ) : ListAdapter<String, RssRulesAdapter.ViewHolder>(DiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemRssRuleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemRssRuleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { rule ->

@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ConfigMigrator @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
     private val currentVersion = 2
 

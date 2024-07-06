@@ -154,7 +154,7 @@ data class Torrent(
     val seedingTime: Int = 0,
 
     @SerialName("trackers_count")
-    val trackerCount: Int = 0
+    val trackerCount: Int = 0,
 )
 
 private object EtaSerializer : KSerializer<Int?> {
@@ -252,15 +252,14 @@ enum class TorrentState {
     ERROR,
 
     @SerialName("unknown")
-    UNKNOWN
+    UNKNOWN,
 }
 
-@Suppress("unused")
 @Serializable(with = PieceStateSerializer::class)
 enum class PieceState(val id: Int) {
     NOT_DOWNLOADED(0),
     DOWNLOADING(1),
-    DOWNLOADED(2)
+    DOWNLOADED(2),
 }
 
 private object PieceStateSerializer : KSerializer<PieceState> {

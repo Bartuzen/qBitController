@@ -31,7 +31,7 @@ class TorrentTagsDialog() : DialogFragment() {
     constructor(serverId: Int, currentTags: List<String>) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "currentTags" to ArrayList(currentTags)
+            "currentTags" to ArrayList(currentTags),
         )
     }
 

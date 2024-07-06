@@ -14,7 +14,7 @@ import dev.bartuzen.qbitcontroller.utils.themeColors
 class TorrentFilterAdapter(
     isCollapsed: Boolean,
     private val onClick: (filter: TorrentFilter) -> Unit,
-    private val onCollapse: (isCollapsed: Boolean) -> Unit
+    private val onCollapse: (isCollapsed: Boolean) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var filter = TorrentFilter.ALL
     private var countMap: Map<TorrentFilter, Int> = emptyMap()
@@ -35,15 +35,13 @@ class TorrentFilterAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_torrent_filter -> {
-            ViewHolder(
-                ItemTorrentFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            ViewHolder(ItemTorrentFilterBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
+
         R.layout.item_torrent_status_title -> {
-            TitleViewHolder(
-                ItemTorrentStatusTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
+            TitleViewHolder(ItemTorrentStatusTitleBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
+
         else -> {
             throw IllegalStateException("Unknown viewType: $viewType")
         }
@@ -82,7 +80,7 @@ class TorrentFilterAdapter(
             Triple(binding.textStalled, TorrentFilter.STALLED, R.string.torrent_list_status_stalled),
             Triple(binding.textChecking, TorrentFilter.CHECKING, R.string.torrent_list_status_checking),
             Triple(binding.textMoving, TorrentFilter.MOVING, R.string.torrent_list_status_moving),
-            Triple(binding.textError, TorrentFilter.ERROR, R.string.torrent_list_status_error)
+            Triple(binding.textError, TorrentFilter.ERROR, R.string.torrent_list_status_error),
         )
 
         init {
@@ -112,7 +110,7 @@ class TorrentFilterAdapter(
                 view.text = context.getString(
                     R.string.torrent_list_status_format,
                     context.getString(stringId),
-                    countMap[filter] ?: 0
+                    countMap[filter] ?: 0,
                 )
             }
         }
@@ -146,8 +144,8 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
             TorrentState.QUEUED_DL,
             TorrentState.META_DL,
             TorrentState.FORCED_META_DL,
-            TorrentState.PAUSED_DL
-        )
+            TorrentState.PAUSED_DL,
+        ),
     ),
     SEEDING(
         listOf(
@@ -155,8 +153,8 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
             TorrentState.CHECKING_UP,
             TorrentState.STALLED_UP,
             TorrentState.FORCED_UP,
-            TorrentState.QUEUED_UP
-        )
+            TorrentState.QUEUED_UP,
+        ),
     ),
     COMPLETED(
         listOf(
@@ -165,8 +163,8 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
             TorrentState.STALLED_UP,
             TorrentState.FORCED_UP,
             TorrentState.QUEUED_UP,
-            TorrentState.PAUSED_UP
-        )
+            TorrentState.PAUSED_UP,
+        ),
     ),
     RESUMED(
         listOf(
@@ -181,14 +179,39 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
             TorrentState.CHECKING_UP,
             TorrentState.STALLED_UP,
             TorrentState.QUEUED_UP,
-            TorrentState.FORCED_UP
-        )
+            TorrentState.FORCED_UP,
+        ),
     ),
-    PAUSED(listOf(TorrentState.PAUSED_DL, TorrentState.PAUSED_UP)),
+    PAUSED(
+        listOf(
+            TorrentState.PAUSED_DL,
+            TorrentState.PAUSED_UP,
+        ),
+    ),
     ACTIVE(null),
     INACTIVE(null),
-    STALLED(listOf(TorrentState.STALLED_DL, TorrentState.STALLED_UP)),
-    CHECKING(listOf(TorrentState.CHECKING_DL, TorrentState.CHECKING_UP, TorrentState.CHECKING_RESUME_DATA)),
-    MOVING(listOf(TorrentState.MOVING)),
-    ERROR(listOf(TorrentState.ERROR, TorrentState.MISSING_FILES))
+    STALLED(
+        listOf(
+            TorrentState.STALLED_DL,
+            TorrentState.STALLED_UP,
+        ),
+    ),
+    CHECKING(
+        listOf(
+            TorrentState.CHECKING_DL,
+            TorrentState.CHECKING_UP,
+            TorrentState.CHECKING_RESUME_DATA,
+        ),
+    ),
+    MOVING(
+        listOf(
+            TorrentState.MOVING,
+        ),
+    ),
+    ERROR(
+        listOf(
+            TorrentState.ERROR,
+            TorrentState.MISSING_FILES,
+        ),
+    ),
 }

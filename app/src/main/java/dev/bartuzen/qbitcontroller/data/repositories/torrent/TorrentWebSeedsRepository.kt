@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TorrentWebSeedsRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun getWebSeeds(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.getWebSeeds(hash)

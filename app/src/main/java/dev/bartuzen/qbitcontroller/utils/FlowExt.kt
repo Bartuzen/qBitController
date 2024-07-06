@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 fun <T> Flow<T>.launchAndCollectIn(
     owner: LifecycleOwner,
     state: Lifecycle.State = Lifecycle.State.STARTED,
-    action: suspend CoroutineScope.(T) -> Unit
+    action: suspend CoroutineScope.(T) -> Unit,
 ) = owner.lifecycleScope.launch {
     owner.repeatOnLifecycle(state) {
         collect {
@@ -24,7 +24,7 @@ fun <T> Flow<T>.launchAndCollectIn(
 fun <T> Flow<T>.launchAndCollectLatestIn(
     owner: LifecycleOwner,
     state: Lifecycle.State = Lifecycle.State.STARTED,
-    action: suspend CoroutineScope.(T) -> Unit
+    action: suspend CoroutineScope.(T) -> Unit,
 ) = owner.lifecycleScope.launch {
     owner.repeatOnLifecycle(state) {
         collectLatest {

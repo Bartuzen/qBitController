@@ -25,12 +25,12 @@ private fun parseRssFeeds(node: JsonElement, feedNode: RssFeedNode, level: Int) 
                     feed = RssFeed(
                         name = key,
                         uid = value.jsonObject["uid"]?.jsonPrimitive?.content ?: "",
-                        url = value.jsonObject["url"]?.jsonPrimitive?.content ?: ""
+                        url = value.jsonObject["url"]?.jsonPrimitive?.content ?: "",
                     ),
                     children = null,
                     path = feedNode.path + key,
-                    level = level
-                )
+                    level = level,
+                ),
             )
         } else {
             val childNode = RssFeedNode(
@@ -38,7 +38,7 @@ private fun parseRssFeeds(node: JsonElement, feedNode: RssFeedNode, level: Int) 
                 feed = null,
                 children = mutableListOf(),
                 path = feedNode.path + key,
-                level = level
+                level = level,
             )
             feedNode.children!!.add(childNode)
             parseRssFeeds(value, childNode, level + 1)

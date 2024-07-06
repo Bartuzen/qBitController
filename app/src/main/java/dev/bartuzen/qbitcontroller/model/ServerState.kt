@@ -66,5 +66,5 @@ data class ServerState(
     val isQueueingEnabled: Boolean,
 
     @SerialName("free_space_on_disk")
-    val freeSpace: Long
+    val freeSpace: Long,
 )

@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.bartuzen.qbitcontroller.databinding.ItemWebSeedBinding
 
 class TorrentWebSeedsAdapter : ListAdapter<String, TorrentWebSeedsAdapter.ViewHolder>(DiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemWebSeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemWebSeedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { webSeed ->

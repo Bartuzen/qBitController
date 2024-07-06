@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TorrentListRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun getMainData(serverId: Int) = requestManager.request(serverId) { service ->
         service.getMainData()
@@ -54,7 +54,7 @@ class TorrentListRepository @Inject constructor(
         name: String,
         savePath: String,
         downloadPathEnabled: Boolean?,
-        downloadPath: String
+        downloadPath: String,
     ) = requestManager.request(serverId) { service ->
         service.createCategory(name, savePath, downloadPathEnabled, downloadPath)
     }
@@ -69,7 +69,7 @@ class TorrentListRepository @Inject constructor(
         name: String,
         savePath: String,
         downloadPathEnabled: Boolean?,
-        downloadPath: String
+        downloadPath: String,
     ) = requestManager.request(serverId) { service ->
         service.editCategory(name, savePath, downloadPathEnabled, downloadPath)
     }

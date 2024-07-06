@@ -50,7 +50,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
             arguments = bundleOf(
                 "serverId" to serverId,
                 "feedPath" to value,
-                "uid" to uid
+                "uid" to uid,
             )
         }
     private val uid get() = arguments?.getString("uid")
@@ -60,7 +60,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
             if (result.resultCode == Activity.RESULT_OK) {
                 val isAdded = result.data?.getBooleanExtra(
                     AddTorrentActivity.Extras.IS_ADDED,
-                    false
+                    false,
                 ) ?: false
                 if (isAdded) {
                     showSnackbar(R.string.torrent_add_success)
@@ -72,7 +72,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
         arguments = bundleOf(
             "serverId" to serverId,
             "feedPath" to ArrayList(feedPath),
-            "uid" to feedUid
+            "uid" to feedUid,
         )
     }
 
@@ -131,7 +131,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
@@ -153,9 +153,9 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                     },
                     onMarkAsRead = {
                         viewModel.markAsRead(serverId, article.path, article.id)
-                    }
+                    },
                 )
-            }
+            },
         )
         binding.recyclerArticles.adapter = adapter
         binding.recyclerArticles.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -226,7 +226,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
 
                     setFragmentResult(
                         requestKey = "rssArticlesResult",
-                        result = bundleOf("isUpdated" to true)
+                        result = bundleOf("isUpdated" to true),
                     )
                 }
             }

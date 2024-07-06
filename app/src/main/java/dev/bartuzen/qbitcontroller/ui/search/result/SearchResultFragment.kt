@@ -60,7 +60,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             if (result.resultCode == Activity.RESULT_OK) {
                 val isAdded = result.data?.getBooleanExtra(
                     AddTorrentActivity.Extras.IS_ADDED,
-                    false
+                    false,
                 ) ?: false
                 if (isAdded) {
                     showSnackbar(R.string.torrent_add_success)
@@ -73,7 +73,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             "serverId" to serverId,
             "searchQuery" to searchQuery,
             "category" to category,
-            "plugins" to plugins
+            "plugins" to plugins,
         )
     }
 
@@ -163,7 +163,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         if (savedInstanceState == null) {
@@ -173,7 +173,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
         val adapter = SearchResultAdapter(
             onClick = { searchResult ->
                 showSearchResultDialog(searchResult)
-            }
+            },
         )
         binding.recyclerTorrents.adapter = adapter
         binding.recyclerTorrents.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -277,7 +277,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 R.string.size_gibibytes,
                 R.string.size_tebibytes,
                 R.string.size_pebibytes,
-                R.string.size_exbibytes
+                R.string.size_exbibytes,
             )
 
             binding.dropdownSizeMaxUnit.setItems(
@@ -287,7 +287,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 R.string.size_gibibytes,
                 R.string.size_tebibytes,
                 R.string.size_pebibytes,
-                R.string.size_exbibytes
+                R.string.size_exbibytes,
             )
 
             val filter = viewModel.filter.value
@@ -306,7 +306,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     sizeMin = binding.inputLayoutSizeMin.text.toLongOrNull(),
                     sizeMax = binding.inputLayoutSizeMax.text.toLongOrNull(),
                     sizeMinUnit = binding.dropdownSizeMinUnit.position,
-                    sizeMaxUnit = binding.dropdownSizeMaxUnit.position
+                    sizeMaxUnit = binding.dropdownSizeMaxUnit.position,
                 )
                 viewModel.setFilter(newFilter)
             }

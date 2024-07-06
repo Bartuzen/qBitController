@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TorrentTrackersViewModel @Inject constructor(
     settingsManager: SettingsManager,
-    private val repository: TorrentTrackersRepository
+    private val repository: TorrentTrackersRepository,
 ) : ViewModel() {
     private val _torrentTrackers = MutableStateFlow<List<TorrentTracker>?>(null)
     val torrentTrackers = _torrentTrackers.asStateFlow()

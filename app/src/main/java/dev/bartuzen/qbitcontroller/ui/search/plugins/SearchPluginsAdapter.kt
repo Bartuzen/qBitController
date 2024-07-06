@@ -17,9 +17,8 @@ class SearchPluginsAdapter : RecyclerView.Adapter<SearchPluginsAdapter.ViewHolde
     private val _pluginsToDelete = mutableListOf<String>()
     val pluginsToDelete get() = _pluginsToDelete.toList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemPluginsPluginBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemPluginsPluginBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(plugins[position])

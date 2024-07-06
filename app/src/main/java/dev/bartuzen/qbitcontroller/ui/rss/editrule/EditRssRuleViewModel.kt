@@ -25,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditRssRuleViewModel @Inject constructor(
     private val repository: EditRssRuleRepository,
-    private val state: SavedStateHandle
+    private val state: SavedStateHandle,
 ) : ViewModel() {
     private val _rssRule = MutableStateFlow<RssRule?>(null)
     val rssRule = _rssRule.asStateFlow()

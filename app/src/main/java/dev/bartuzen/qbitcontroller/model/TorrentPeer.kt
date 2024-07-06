@@ -56,7 +56,7 @@ data class TorrentPeer(
 
     @SerialName("files")
     @Serializable(with = PeerFilesSerializer::class)
-    val files: List<String> = emptyList()
+    val files: List<String> = emptyList(),
 )
 
 private object PeerFlagSerializer : KSerializer<List<PeerFlag>> {
@@ -100,5 +100,5 @@ enum class PeerFlag(val flag: String) {
     PEER_FROM_LSD("L"),
     ENCRYPTED_TRAFFIC("E"),
     ENCRYPTED_HANDSHAKE("e"),
-    UTP("P")
+    UTP("P"),
 }

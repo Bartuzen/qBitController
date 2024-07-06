@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
@@ -29,12 +28,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-@SuppressLint("StaticFieldLeak")
 class TorrentOverviewViewModel @Inject constructor(
     settingsManager: SettingsManager,
     @ApplicationContext private val context: Context,
     private val repository: TorrentOverviewRepository,
-    private val notifier: TorrentDownloadedNotifier
+    private val notifier: TorrentDownloadedNotifier,
 ) : ViewModel() {
     private val _torrent = MutableStateFlow<Torrent?>(null)
     val torrent = _torrent.asStateFlow()
@@ -160,7 +158,7 @@ class TorrentOverviewViewModel @Inject constructor(
         downloadSpeedLimit: Int?,
         ratioLimit: Double?,
         seedingTimeLimit: Int?,
-        inactiveSeedingTimeLimit: Int?
+        inactiveSeedingTimeLimit: Int?,
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 
@@ -192,7 +190,7 @@ class TorrentOverviewViewModel @Inject constructor(
                     torrentHash,
                     ratioLimit,
                     seedingTimeLimit,
-                    inactiveSeedingTimeLimit
+                    inactiveSeedingTimeLimit,
                 )
             }
         }

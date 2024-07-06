@@ -63,7 +63,7 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         val adapter = RssRulesAdapter(
@@ -78,7 +78,7 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             },
             onLongClick = { ruleName ->
                 showRuleLongClickDialog(ruleName)
-            }
+            },
         )
         binding.recyclerRules.adapter = adapter
 
@@ -157,8 +157,8 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
             setItems(
                 arrayOf(
                     getString(R.string.rss_rule_rename),
-                    getString(R.string.rss_rule_delete)
-                )
+                    getString(R.string.rss_rule_delete),
+                ),
             ) { _, which ->
                 when (which) {
                     0 -> {

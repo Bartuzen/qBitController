@@ -25,7 +25,7 @@ data class TorrentFile(
 
     @SerialName("priority")
     @Serializable(with = TorrentFilePrioritySerializer::class)
-    val priority: TorrentFilePriority
+    val priority: TorrentFilePriority,
 )
 
 private object TorrentFilePrioritySerializer : KSerializer<TorrentFilePriority> {
@@ -50,5 +50,5 @@ enum class TorrentFilePriority(val id: Int) {
     DO_NOT_DOWNLOAD(0),
     NORMAL(1),
     HIGH(6),
-    MAXIMUM(7)
+    MAXIMUM(7),
 }

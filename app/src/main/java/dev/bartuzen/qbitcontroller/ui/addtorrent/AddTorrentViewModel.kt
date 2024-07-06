@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -24,11 +23,10 @@ import java.io.FileNotFoundException
 import javax.inject.Inject
 
 @HiltViewModel
-@SuppressLint("StaticFieldLeak")
 class AddTorrentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repository: AddTorrentRepository,
-    private val serverManager: ServerManager
+    private val serverManager: ServerManager,
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -73,7 +71,7 @@ class AddTorrentViewModel @Inject constructor(
         skipHashChecking: Boolean,
         isAutoTorrentManagementEnabled: Boolean?,
         isSequentialDownloadEnabled: Boolean,
-        isFirstLastPiecePrioritized: Boolean
+        isFirstLastPiecePrioritized: Boolean,
     ) = viewModelScope.launch {
         if (!isCreating.value) {
             _isCreating.value = true
@@ -117,7 +115,7 @@ class AddTorrentViewModel @Inject constructor(
                     skipHashChecking,
                     isAutoTorrentManagementEnabled,
                     isSequentialDownloadEnabled,
-                    isFirstLastPiecePrioritized
+                    isFirstLastPiecePrioritized,
                 )
             ) {
                 is RequestResult.Success -> {

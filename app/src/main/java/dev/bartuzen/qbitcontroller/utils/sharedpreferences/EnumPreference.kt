@@ -10,7 +10,7 @@ class EnumPreference<T : Enum<*>>(
     private val sharedPref: SharedPreferences,
     private val key: String,
     private val initialValue: T,
-    private val factory: (String) -> T
+    private val factory: (String) -> T,
 ) {
     var value: T
         get() {

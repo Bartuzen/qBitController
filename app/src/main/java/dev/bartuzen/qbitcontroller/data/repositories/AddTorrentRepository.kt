@@ -10,7 +10,7 @@ import javax.inject.Singleton
 
 @Singleton
 class AddTorrentRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun createTorrent(
         serverId: Int,
@@ -30,13 +30,13 @@ class AddTorrentRepository @Inject constructor(
         skipHashChecking: Boolean,
         isAutoTorrentManagementEnabled: Boolean?,
         isSequentialDownloadEnabled: Boolean,
-        isFirstLastPiecePrioritized: Boolean
+        isFirstLastPiecePrioritized: Boolean,
     ): RequestResult<String> {
         val filePart = if (fileBytes != null) {
             MultipartBody.Part.createFormData(
                 "filename",
                 "torrent",
-                fileBytes.toRequestBody("application/x-bittorrent".toMediaTypeOrNull(), 0)
+                fileBytes.toRequestBody("application/x-bittorrent".toMediaTypeOrNull(), 0),
             )
         } else {
             null
@@ -60,7 +60,7 @@ class AddTorrentRepository @Inject constructor(
                 skipHashChecking,
                 isAutoTorrentManagementEnabled,
                 isSequentialDownloadEnabled,
-                isFirstLastPiecePrioritized
+                isFirstLastPiecePrioritized,
             )
         }
     }

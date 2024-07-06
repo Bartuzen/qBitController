@@ -14,7 +14,7 @@ import dev.bartuzen.qbitcontroller.R
 fun <VB : ViewBinding> showDialog(
     bindingInflater: (LayoutInflater) -> VB,
     context: Context,
-    block: MaterialAlertDialogBuilder.(binding: VB) -> Unit
+    block: MaterialAlertDialogBuilder.(binding: VB) -> Unit,
 ): AlertDialog {
     val binding = bindingInflater(LayoutInflater.from(context))
 
@@ -38,42 +38,42 @@ fun showDialog(context: Context, block: MaterialAlertDialogBuilder.() -> Unit): 
 
 fun <VB : ViewBinding> Fragment.showDialog(
     bindingInflater: (LayoutInflater) -> VB,
-    block: MaterialAlertDialogBuilder.(binding: VB) -> Unit
+    block: MaterialAlertDialogBuilder.(binding: VB) -> Unit,
 ) = showDialog(bindingInflater, requireContext(), block)
 
 fun Fragment.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) = showDialog(requireContext(), block)
 
 fun <VB : ViewBinding> Activity.showDialog(
     bindingInflater: (LayoutInflater) -> VB,
-    block: MaterialAlertDialogBuilder.(binding: VB) -> Unit
+    block: MaterialAlertDialogBuilder.(binding: VB) -> Unit,
 ) = showDialog(bindingInflater, this, block)
 
 fun Activity.showDialog(block: MaterialAlertDialogBuilder.() -> Unit) = showDialog(this, block)
 
 fun MaterialAlertDialogBuilder.setPositiveButton(
     @StringRes textId: Int = R.string.dialog_ok,
-    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null
+    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null,
 ) = apply {
     setPositiveButton(textId, listener)
 }
 
 fun MaterialAlertDialogBuilder.setPositiveButton(
     text: String,
-    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null
+    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null,
 ) = apply {
     setPositiveButton(text, listener)
 }
 
 fun MaterialAlertDialogBuilder.setNegativeButton(
     @StringRes textId: Int = R.string.dialog_cancel,
-    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null
+    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null,
 ) = apply {
     setNegativeButton(textId, listener)
 }
 
 fun MaterialAlertDialogBuilder.setNegativeButton(
     text: String,
-    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null
+    listener: ((dialog: DialogInterface, which: Int) -> Unit)? = null,
 ) = apply {
     setNegativeButton(text, listener)
 }

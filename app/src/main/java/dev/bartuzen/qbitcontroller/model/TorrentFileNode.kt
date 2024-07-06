@@ -4,7 +4,7 @@ data class TorrentFileNode(
     val name: String,
     val file: TorrentFile?,
     val separator: String,
-    val children: MutableList<TorrentFileNode>?
+    val children: MutableList<TorrentFileNode>?,
 ) {
     val isFile get() = children == null
 
@@ -93,5 +93,5 @@ data class FolderProperties(
     val size: Long,
     val progressSum: Double,
     val fileCount: Int,
-    val priority: TorrentFilePriority?
+    val priority: TorrentFilePriority?,
 )

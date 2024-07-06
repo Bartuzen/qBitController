@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             binding.layoutDrawer,
             binding.toolbar,
             R.string.accessibility_open_navigation_drawer,
-            R.string.accessibility_close_navigation_drawer
+            R.string.accessibility_close_navigation_drawer,
         )
         binding.layoutDrawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                     putExtra(SettingsActivity.Extras.EDIT_SERVER_ID, serverConfig.id)
                 }
                 startActivity(intent)
-            }
+            },
         )
 
         val addServerAdapter = AddServerAdapter(
@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                     putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
                 }
                 startActivity(intent)
-            }
+            },
         )
 
         drawerAdapter.addAdapter(serverListAdapter)

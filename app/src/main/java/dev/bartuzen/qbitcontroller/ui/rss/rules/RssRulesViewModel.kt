@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RssRulesViewModel @Inject constructor(
-    private val repository: RssRulesRepository
+    private val repository: RssRulesRepository,
 ) : ViewModel() {
     private val _rssRules = MutableStateFlow<Map<String, RssRule>?>(null)
     val rssRules = _rssRules.asStateFlow()

@@ -87,7 +87,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
@@ -122,7 +122,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             },
             onLongClick = { feedNode, rootView ->
                 showLongClickMenu(feedNode, rootView)
-            }
+            },
         )
         binding.recyclerFeeds.adapter = adapter
 

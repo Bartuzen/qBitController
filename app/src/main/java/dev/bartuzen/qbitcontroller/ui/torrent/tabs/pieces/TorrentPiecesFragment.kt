@@ -40,7 +40,7 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
     constructor(serverId: Int, torrentHash: String) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "torrentHash" to torrentHash
+            "torrentHash" to torrentHash,
         )
     }
 

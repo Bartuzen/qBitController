@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RssRulesRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun getRssRules(serverId: Int) = requestManager.request(serverId) { service ->
         service.getRssRules()

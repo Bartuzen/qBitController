@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Search(
     val status: Status,
-    val results: List<Result>
+    val results: List<Result>,
 ) {
     @Serializable
     data class Result(
@@ -30,7 +30,7 @@ data class Search(
         @Serializable(with = NullableIntSerializer::class)
         val seeders: Int?,
 
-        val siteUrl: String
+        val siteUrl: String,
     )
 
     enum class Status {
@@ -38,6 +38,6 @@ data class Search(
         RUNNING,
 
         @SerialName("Stopped")
-        STOPPED
+        STOPPED,
     }
 }

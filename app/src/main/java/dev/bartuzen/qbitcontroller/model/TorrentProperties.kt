@@ -68,5 +68,5 @@ data class TorrentProperties(
     val peersTotal: Int,
 
     @SerialName("total_wasted")
-    val wasted: Long
+    val wasted: Long,
 )

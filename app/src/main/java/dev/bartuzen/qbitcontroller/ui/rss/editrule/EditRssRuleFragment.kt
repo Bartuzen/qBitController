@@ -40,7 +40,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
     constructor(serverId: Int, ruleName: String) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
-            "ruleName" to ruleName
+            "ruleName" to ruleName,
         )
     }
 
@@ -67,7 +67,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
@@ -87,14 +87,14 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
         binding.dropdownAddPaused.setItems(
             R.string.rss_rule_use_global_settings,
             R.string.rss_rule_add_paused_always,
-            R.string.rss_rule_add_paused_never
+            R.string.rss_rule_add_paused_never,
         )
 
         binding.dropdownContentLayout.setItems(
             R.string.rss_rule_use_global_settings,
             R.string.torrent_add_content_layout_original,
             R.string.torrent_add_content_layout_subfolder,
-            R.string.torrent_add_content_layout_no_subfolder
+            R.string.torrent_add_content_layout_no_subfolder,
         )
 
         binding.checkboxSavePathEnabled.setOnCheckedChangeListener { _, isChecked ->
@@ -146,7 +146,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
                         null -> 0
                         true -> 1
                         false -> 2
-                    }
+                    },
                 )
                 binding.dropdownContentLayout.setPosition(
                     when (rssRule.torrentContentLayout) {
@@ -154,7 +154,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
                         "Subfolder" -> 2
                         "NoSubfolder" -> 3
                         else -> 0
-                    }
+                    },
                 )
 
                 val categoryOptions = categories.toMutableList().apply { add(0, "") }
@@ -252,7 +252,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             savePath = savePath,
             torrentContentLayout = contentLayout,
             smartFilter = smartFilter,
-            affectedFeeds = affectedFeeds
+            affectedFeeds = affectedFeeds,
         )
     }
 

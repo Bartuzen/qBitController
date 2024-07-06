@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TimeoutInterceptor @Inject constructor(
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val connectionTimeout = settingsManager.connectionTimeout.value

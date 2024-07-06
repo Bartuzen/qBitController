@@ -5,7 +5,7 @@ data class RssFeedNode(
     val feed: RssFeed?,
     val children: MutableList<RssFeedNode>?,
     val path: List<String>,
-    val level: Int
+    val level: Int,
 ) {
     val isFeed get() = children == null
 

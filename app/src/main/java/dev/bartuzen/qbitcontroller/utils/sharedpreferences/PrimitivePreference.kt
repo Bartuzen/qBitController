@@ -11,7 +11,7 @@ class PrimitivePreference<T : Any>(
     private val sharedPref: SharedPreferences,
     private val key: String,
     private val initialValue: T,
-    private val type: KClass<T>
+    private val type: KClass<T>,
 ) {
     private fun getEditor(value: T): SharedPreferences.Editor {
         val editor = sharedPref.edit()

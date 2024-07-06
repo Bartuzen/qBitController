@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class StartSearch(
-    val id: Int
+    val id: Int,
 )

@@ -65,7 +65,7 @@ private fun parseArticles(node: JsonElement, articles: MutableList<Article>, pat
             torrentUrl = article.jsonObject["torrentURL"]?.jsonPrimitive?.content!!,
             isRead = article.jsonObject["isRead"]?.jsonPrimitive?.booleanOrNull ?: false,
             date = date,
-            path = path
+            path = path,
         )
     }
 

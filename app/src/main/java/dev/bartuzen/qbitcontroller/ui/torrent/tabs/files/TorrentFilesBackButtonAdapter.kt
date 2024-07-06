@@ -8,7 +8,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ItemTorrentFilesBackButtonBinding
 
 class TorrentFilesBackButtonAdapter(
-    private val onClick: () -> Unit
+    private val onClick: () -> Unit,
 ) : RecyclerView.Adapter<TorrentFilesBackButtonAdapter.ViewHolder>() {
     var currentDirectory: String? = null
         set(value) {
@@ -24,9 +24,8 @@ class TorrentFilesBackButtonAdapter(
             }
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentFilesBackButtonBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentFilesBackButtonBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind()

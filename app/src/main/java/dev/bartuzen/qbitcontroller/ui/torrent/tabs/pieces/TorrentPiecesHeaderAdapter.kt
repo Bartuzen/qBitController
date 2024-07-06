@@ -10,9 +10,8 @@ class TorrentPiecesHeaderAdapter : RecyclerView.Adapter<TorrentPiecesHeaderAdapt
     private var pieceCount: Int? = null
     private var pieceSize: Long? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentPieceHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentPieceHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind()

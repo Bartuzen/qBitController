@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TorrentFilesViewModel @Inject constructor(
     settingsManager: SettingsManager,
-    private val repository: TorrentFilesRepository
+    private val repository: TorrentFilesRepository,
 ) : ViewModel() {
     private val _torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
     val torrentFiles = _torrentFiles.asStateFlow()

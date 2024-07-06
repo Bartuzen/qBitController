@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val serverManager: ServerManager,
-    private val settingsManager: SettingsManager
+    private val settingsManager: SettingsManager,
 ) : ViewModel() {
     fun getServers() = serverManager.serversFlow.value
 

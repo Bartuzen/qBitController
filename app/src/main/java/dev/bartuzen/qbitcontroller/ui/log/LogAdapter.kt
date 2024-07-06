@@ -17,9 +17,8 @@ import dev.bartuzen.qbitcontroller.utils.getColorCompat
 class LogAdapter : RecyclerView.Adapter<LogAdapter.ViewHolder>() {
     private var logs: List<Log> = emptyList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemLogBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemLogBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(logs[position])

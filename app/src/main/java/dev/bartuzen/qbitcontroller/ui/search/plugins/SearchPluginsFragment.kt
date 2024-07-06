@@ -52,7 +52,7 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
         binding.recyclerPlugins.addItemDecoration(
             MaterialDividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL).apply {
                 isLastItemDecorated = false
-            }
+            },
         )
 
         requireActivity().addMenuProvider(
@@ -78,7 +78,7 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                 }
             },
             viewLifecycleOwner,
-            Lifecycle.State.RESUMED
+            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {

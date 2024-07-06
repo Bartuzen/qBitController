@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchPluginsRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun getPlugins(serverId: Int) = requestManager.request(serverId) { service ->
         service.getPlugins()

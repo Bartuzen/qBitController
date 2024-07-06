@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TorrentOverviewRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun getTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
         service.getTorrentList(hash)
@@ -97,7 +97,7 @@ class TorrentOverviewRepository @Inject constructor(
         hash: String,
         ratioLimit: Double,
         seedingTimeLimit: Int,
-        inactiveSeedingTimeLimit: Int
+        inactiveSeedingTimeLimit: Int,
     ) = requestManager.request(serverId) { service ->
         service.setShareLimit(hash, ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
     }

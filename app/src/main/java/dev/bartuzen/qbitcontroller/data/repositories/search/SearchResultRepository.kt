@@ -6,7 +6,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SearchResultRepository @Inject constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager,
 ) {
     suspend fun startSearch(serverId: Int, pattern: String, category: String, plugins: String) =
         requestManager.request(serverId) { service ->

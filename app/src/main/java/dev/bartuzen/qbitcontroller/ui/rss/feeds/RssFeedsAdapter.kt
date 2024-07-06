@@ -15,14 +15,13 @@ import dev.bartuzen.qbitcontroller.utils.toPx
 class RssFeedsAdapter(
     private val collapsedNodes: MutableSet<String>,
     private val onClick: (feed: RssFeedNode) -> Unit,
-    private val onLongClick: (feed: RssFeedNode, view: View) -> Unit
+    private val onLongClick: (feed: RssFeedNode, view: View) -> Unit,
 ) : ListAdapter<RssFeedNode, RssFeedsAdapter.ViewHolder>(DiffCallback()) {
 
     private var rootNode: RssFeedNode? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemRssFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemRssFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { node ->

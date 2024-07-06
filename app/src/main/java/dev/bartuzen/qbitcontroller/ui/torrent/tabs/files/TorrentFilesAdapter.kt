@@ -22,11 +22,10 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
     diffCallBack = DiffCallBack(),
     getKey = { fileNode ->
         "${if (fileNode.isFile) 1 else 0}${fileNode.name}"
-    }
+    },
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
-        ItemTorrentFileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        ViewHolder(ItemTorrentFileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let { file ->
@@ -97,7 +96,7 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
                     formatFilePriority(context, file.priority),
                     formatBytes(context, downloadedSize),
                     formatBytes(context, file.size),
-                    progressText
+                    progressText,
                 )
             } else {
                 val properties = fileNode.getFolderProperties()
@@ -133,7 +132,7 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
                     priorityText,
                     formatBytes(context, downloadedSize),
                     formatBytes(context, properties.size),
-                    progressText
+                    progressText,
                 )
             }
         }
@@ -144,7 +143,9 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
             oldItem.isFile == newItem.isFile && oldItem.name == newItem.name
 
         override fun areContentsTheSame(oldItem: TorrentFileNode, newItem: TorrentFileNode) = oldItem.name == newItem.name &&
-            oldItem.file?.priority == newItem.file?.priority && oldItem.file?.progress == newItem.file?.progress &&
-            oldItem.file?.size == newItem.file?.size && oldItem.getFolderProperties() == newItem.getFolderProperties()
+            oldItem.file?.priority == newItem.file?.priority &&
+            oldItem.file?.progress == newItem.file?.progress &&
+            oldItem.file?.size == newItem.file?.size &&
+            oldItem.getFolderProperties() == newItem.getFolderProperties()
     }
 }

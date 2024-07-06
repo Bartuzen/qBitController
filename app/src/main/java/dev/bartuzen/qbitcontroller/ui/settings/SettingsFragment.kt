@@ -189,7 +189,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 resources.getQuantityString(
                     R.plurals.settings_connection_timeout_description,
                     viewModel.connectionTimeout,
-                    viewModel.connectionTimeout
+                    viewModel.connectionTimeout,
                 )
             }
 
@@ -213,7 +213,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     resources.getQuantityString(
                         R.plurals.settings_auto_refresh_interval_description,
                         viewModel.autoRefreshInterval,
-                        viewModel.autoRefreshInterval
+                        viewModel.autoRefreshInterval,
                     )
                 }
             }
@@ -237,7 +237,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 resources.getQuantityString(
                     R.plurals.settings_notification_check_interval_description,
                     viewModel.notificationCheckInterval,
-                    viewModel.notificationCheckInterval
+                    viewModel.notificationCheckInterval,
                 )
             }
 
@@ -261,7 +261,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             entries = arrayOf(
                 context.getString(R.string.settings_theme_light),
                 context.getString(R.string.settings_theme_dark),
-                context.getString(R.string.settings_theme_system_default)
+                context.getString(R.string.settings_theme_system_default),
             )
             entryValues = arrayOf("LIGHT", "DARK", "SYSTEM_DEFAULT")
 
