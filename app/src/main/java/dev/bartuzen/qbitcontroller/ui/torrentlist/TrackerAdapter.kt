@@ -76,7 +76,7 @@ class TrackerAdapter(
         this.allCount = allCount
         this.trackerlessCount = trackerlessCount
 
-        this.trackers = trackers.toSortedMap().map { (tracker, torrentHashes) ->
+        this.trackers = trackers.map { (tracker, torrentHashes) ->
             Tracker.Named(tracker, torrentHashes)
         }
 

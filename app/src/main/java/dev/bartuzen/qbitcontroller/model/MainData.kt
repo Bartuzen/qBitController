@@ -109,7 +109,7 @@ private object MainDataSerializer : KSerializer<MainData> {
 
         val tags = decodedTags?.sortedWith(String.CASE_INSENSITIVE_ORDER) ?: emptyList()
 
-        val trackers = mutableMapOf<String, MutableList<String>>()
+        val trackers = sortedMapOf<String, MutableList<String>>()
         decodedTrackers?.forEach { (tracker, hashes) ->
             val formattedTracker = formatUri(tracker)
             val list = trackers.getOrPut(formattedTracker) { mutableListOf() }
