@@ -642,4 +642,5 @@
     <string name="torrent_option_share_limit_inactive_minutes">Неактивные минуты</string>
     <string name="search_result_filter_reset">Сбросить</string>
     <string name="torrent_force_recheck_confirm">Вы уверены, что хотите принудительно перепроверить этот торрент?</string>
+    <string name="rss_action_move_select_folder">Выберите папку</string>
 </resources>
