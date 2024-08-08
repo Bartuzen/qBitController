@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kotlinter)
+    alias(libs.plugins.compose.compiler)
 
     id("dev.bartuzen.qbitcontroller.localesconfig")
 }
@@ -90,6 +91,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
     }
 
     lint {
@@ -118,6 +120,20 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModel)
 
     implementation(libs.material)
+
+    api(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.toolingPreview)
+
+    implementation(libs.compose.materialIcons.core)
+    implementation(libs.compose.materialIcons.extended)
+    
+    implementation(libs.compose.navigation)
+
+    implementation(libs.compose.hilt)
+
+    implementation(libs.accompanist.permissions)
 
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)

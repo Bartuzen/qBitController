@@ -1,6 +1,9 @@
 package dev.bartuzen.qbitcontroller.utils
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentState
 
@@ -47,3 +50,6 @@ fun getTorrentStateColor(context: Context, state: TorrentState) = context.getCol
         }
     },
 )
+
+@Composable
+fun getTorrentStateColor(state: TorrentState) = Color(getTorrentStateColor(LocalContext.current, state))

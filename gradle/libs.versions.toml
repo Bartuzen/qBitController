@@ -14,6 +14,10 @@ androidx-swipeRefreshLayout = "1.1.0"
 androidx-fragment = "1.8.1"
 androidx-preference = "1.2.1"
 androidx-lifecycle-viewModel = "2.8.2"
+compose-bom = "2024.08.00-alpha01"
+compose-navigation = "2.8.0-beta06"
+compose-hilt = "1.2.0"
+accompanist = "0.34.0"
 material = "1.12.0"
 coroutines = "1.8.1"
 kotlinxSerialization = "1.7.1"
@@ -37,6 +41,20 @@ androidx-preference = { group = "androidx.preference", name = "preference-ktx", 
 androidx-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewModel" }
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+compose-bom = { module = "dev.chrisbanes.compose:compose-bom", version.ref = "compose-bom" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-toolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+
+compose-materialIcons-core = { module = "androidx.compose.material:material-icons-core" }
+compose-materialIcons-extended = { module = "androidx.compose.material:material-icons-extended" }
+
+compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation" }
+
+compose-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "compose-hilt" }
+
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
 
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -74,6 +92,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersions" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 firebase-googleServices = { id = "com.google.gms.google-services", version.ref = "firebase-googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
