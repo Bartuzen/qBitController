@@ -275,7 +275,7 @@
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="about_description">qBitController permite controlar qBittorrent desde un dispositivo Android.
 \n
-\nPara obtener información más detallada y el código fuente: https://github.com/Bartuzen/qBitController</string>
+\nPara obtener información más detallada y el código fuente: %1$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interesados (locales) y ahogados (pares)</string>
     <string name="search_result_leechers">Sanguijuelas: %1$s</string>
     <string name="search_result_filter_min">Mínimo</string>

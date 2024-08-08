@@ -175,7 +175,7 @@
     <string name="settings_server_remove_success">Сервер успешно удалён.</string>
     <string name="about_description">qBitController позволяет управлять qBittorrent с устройства Android.
 \n
-\nБолее подробная информация и исходный код: https://github.com/Bartuzen/qBitController</string>
+\nБолее подробная информация и исходный код: %1$s</string>
     <string name="search_result_leechers">Личеры: %1$s</string>
     <string name="search_result_open_description">Открыть описание</string>
     <string name="search_result_no_browser">Не удаётся найти браузер.</string>
