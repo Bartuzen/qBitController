@@ -4,8 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import android.text.util.Linkify
-import android.widget.TextView
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -155,21 +153,27 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -3637,13 +3641,31 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
                     )
                     Text(text = BuildConfig.VERSION_NAME)
                 }
-                AndroidView(
-                    factory = { context ->
-                        TextView(context).apply {
-                            autoLinkMask = Linkify.WEB_URLS
-                            text = context.getString(R.string.about_description)
+
+                val description = buildAnnotatedString {
+                    val parts = stringResource(R.string.about_description).split("%1\$s")
+                    parts.forEachIndexed { index, part ->
+                        append(part)
+                        if (index != parts.lastIndex) {
+                            withLink(
+                                link = LinkAnnotation.Url(
+                                    url = BuildConfig.SOURCE_CODE_URL,
+                                    styles = TextLinkStyles(
+                                        style = SpanStyle(
+                                            color = MaterialTheme.colorScheme.primary,
+                                            textDecoration = TextDecoration.Underline,
+                                        ),
+                                    ),
+                                ),
+                            ) {
+                                append(BuildConfig.SOURCE_CODE_URL)
+                            }
                         }
-                    },
+                    }
+                }
+                Text(
+                    text = description,
+                    style = TextStyle(lineBreak = LineBreak.Paragraph),
                     modifier = Modifier.padding(top = 8.dp),
                 )
             }

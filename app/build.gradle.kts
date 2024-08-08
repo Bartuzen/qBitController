@@ -26,6 +26,8 @@ android {
         targetSdk = 34
         versionCode = 18
         versionName = "0.8.5"
+
+        buildConfigField("String", "SOURCE_CODE_URL", "\"https://github.com/Bartuzen/qBitController\"")
     }
 
     buildTypes {

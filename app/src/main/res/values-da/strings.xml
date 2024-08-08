@@ -518,6 +518,6 @@
     <string name="torrent_add_download_speed_limit">Download Hastighedsgrænse</string>
     <string name="about_description">qBitController giver dig mulighed for at styre qBittorrent fra en Android-enhed.
 \n
-\nYderligere oplysninger og kildekode: https://github.com/Bartuzen/qBitController</string>
+\nYderligere oplysninger og kildekode: %1$s</string>
     <string name="torrent_add_upload_speed_limit">Upload hastighedsbegrænsning</string>
 </resources>

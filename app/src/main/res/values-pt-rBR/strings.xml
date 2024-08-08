@@ -64,7 +64,7 @@
     <string name="settings_server_advanced_basic_auth_password">Senha</string>
     <string name="about_description">qBitController permite que você controle qBittorrent de um dispositivo Android.
 \n
-\nPara informações mais detalhadas e código fonte: https://github.com/Bartuzen/qBitController</string>
+\nPara informações mais detalhadas e código fonte: %1$s</string>
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d segundo</item>
         <item quantity="many">%1$d segundos</item>
