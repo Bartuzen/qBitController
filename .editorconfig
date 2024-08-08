@@ -1,5 +1,6 @@
 root = true
 
+# noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
 max_line_length = 125
 indent_size = 4
