@@ -18,12 +18,12 @@ plugins {
 
 android {
     namespace = "dev.bartuzen.qbitcontroller"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "dev.bartuzen.qbitcontroller"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 18
         versionName = "0.8.5"
 
