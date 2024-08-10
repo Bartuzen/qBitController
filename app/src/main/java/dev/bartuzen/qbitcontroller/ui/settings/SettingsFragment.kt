@@ -315,7 +315,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             parser.next()
         }
 
-        languages.sortBy { it.second }
+        languages.sortBy { (_, displayName) -> displayName }
         languages.add(0, "" to getString(R.string.settings_language_system_default))
 
         return languages.toMap()

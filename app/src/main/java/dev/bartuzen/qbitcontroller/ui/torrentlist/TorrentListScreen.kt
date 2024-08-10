@@ -1426,27 +1426,27 @@ private fun DrawerContent(
             )
         }
 
-        items(statuses) { status ->
+        items(statuses) { (status, stringResource, icon) ->
             AnimatedVisibility(
                 visible = !areStatesCollapsed,
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
                 DrawerItem(
-                    icon = status.third,
-                    iconModifier = if (status.first == TorrentFilter.STALLED) {
+                    icon = icon,
+                    iconModifier = if (status == TorrentFilter.STALLED) {
                         Modifier.graphicsLayer(scaleX = -1f, rotationZ = 90f)
                     } else {
                         Modifier
                     },
                     text = stringResource(
                         R.string.torrent_list_status_format,
-                        stringResource(status.second),
-                        counts?.stateCountMap?.get(status.first) ?: 0,
+                        stringResource(stringResource),
+                        counts?.stateCountMap?.get(status) ?: 0,
                     ),
-                    isSelected = selectedFilter == status.first,
+                    isSelected = selectedFilter == status,
                     onClick = {
-                        onSelectFilter(status.first)
+                        onSelectFilter(status)
                         onDrawerClose()
                     },
                     modifier = Modifier.focusProperties {

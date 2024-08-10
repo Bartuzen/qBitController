@@ -55,12 +55,12 @@ class RssArticlesViewModel @Inject constructor(
     fun updateRssArticles(serverId: Int, feedPath: List<String>, uid: String?) = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
-                val articles = parseRssFeedWithData(result.data, feedPath, uid)
-                if (articles.first != null) {
-                    rssArticles.value = articles.first
+                val (articles, newFeedPath) = parseRssFeedWithData(result.data, feedPath, uid)
+                if (articles != null) {
+                    rssArticles.value = articles
 
-                    if (articles.second != null) {
-                        eventChannel.send(Event.FeedPathChanged(articles.second!!))
+                    if (newFeedPath != null) {
+                        eventChannel.send(Event.FeedPathChanged(newFeedPath))
                     }
                 } else {
                     eventChannel.send(Event.RssFeedNotFound)

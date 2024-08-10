@@ -23,15 +23,10 @@ fun parseRssFeedWithData(feeds: String, path: List<String>, uid: String?): Pair<
         if (newNode != null) {
             node = newNode
         } else if (uid != null) {
-            val uidNode = findNodeByUid(rootNode, uid)
-
-            if (uidNode != null) {
-                node = uidNode.first
-                newPath = uidNode.second
-                break
-            } else {
-                return null to null
-            }
+            val (currentNode, currentPath) = findNodeByUid(rootNode, uid) ?: return null to null
+            node = currentNode
+            newPath = currentPath
+            break
         } else {
             return null to null
         }
@@ -77,14 +72,14 @@ private fun findNodeByUid(node: JsonElement, uid: String): Pair<JsonElement, Lis
     nodes += node to emptyList()
 
     while (nodes.isNotEmpty()) {
-        val currentNode = nodes.removeLast()
-        if (isFeed(currentNode.first)) {
-            if (currentNode.first.jsonObject["uid"]?.jsonPrimitive?.content == uid) {
-                return currentNode
+        val (json, path) = nodes.removeLast()
+        if (isFeed(json)) {
+            if (json.jsonObject["uid"]?.jsonPrimitive?.content == uid) {
+                return json to path
             }
         } else {
-            for ((key, value) in currentNode.first.jsonObject) {
-                nodes += value to currentNode.second + key
+            for ((key, value) in json.jsonObject) {
+                nodes += value to path + key
             }
         }
     }
