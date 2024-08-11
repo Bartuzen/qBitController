@@ -296,7 +296,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                         override fun onCreateActionMode(mode: ActionMode, menu: Menu) = true
                         override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
                         override fun onActionItemClicked(mode: ActionMode, item: MenuItem) = false
-                        override fun onDestroyActionMode(mode: ActionMode) {}
+                        override fun onDestroyActionMode(mode: ActionMode) {
+                            movingItem = null
+                            actionMode = null
+                        }
                     })
                     actionMode?.setTitle(R.string.rss_action_move_select_folder)
                 }
