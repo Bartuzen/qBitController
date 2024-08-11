@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.BasicAuth
 import dev.bartuzen.qbitcontroller.utils.PreferenceDSL
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 
@@ -49,7 +49,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listView.applyNavigationBarInsets()
+        listView.applySystemBarInsets(top = false)
         listView.clipToPadding = false
     }
 

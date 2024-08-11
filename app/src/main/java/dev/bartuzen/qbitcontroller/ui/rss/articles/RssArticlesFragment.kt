@@ -27,7 +27,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssArticlesBinding
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -77,7 +77,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recyclerArticles.applyNavigationBarInsets()
+        binding.recyclerArticles.applySystemBarInsets(top = false)
 
         requireAppCompatActivity().supportActionBar?.title = feedPath.lastOrNull() ?: getString(R.string.rss_all_articles)
 

@@ -14,7 +14,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPiecesBinding
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -45,7 +45,7 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recyclerPieces.applyNavigationBarInsets()
+        binding.recyclerPieces.applySystemBarInsets(top = false)
 
         val adapter = TorrentPiecesAdapter()
         val headerAdapter = TorrentPiecesHeaderAdapter()

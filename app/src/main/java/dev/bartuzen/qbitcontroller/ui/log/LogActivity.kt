@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.databinding.ActivityLogBinding
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
@@ -31,8 +30,8 @@ class LogActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets()
-        binding.recyclerLog.applyNavigationBarInsets()
+        binding.layoutAppBar.applySystemBarInsets(bottom = false)
+        binding.recyclerLog.applySystemBarInsets(top = false)
 
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
         if (serverId == -1) {

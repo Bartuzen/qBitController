@@ -25,7 +25,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogTorrentPeersAddBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentPeersBinding
 import dev.bartuzen.qbitcontroller.model.PeerFlag
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -64,7 +64,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recyclerPeers.applyNavigationBarInsets()
+        binding.recyclerPeers.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {

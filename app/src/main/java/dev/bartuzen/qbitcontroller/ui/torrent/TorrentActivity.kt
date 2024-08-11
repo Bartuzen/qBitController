@@ -39,7 +39,7 @@ class TorrentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets()
+        binding.layoutAppBar.applySystemBarInsets(bottom = false)
 
         val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)

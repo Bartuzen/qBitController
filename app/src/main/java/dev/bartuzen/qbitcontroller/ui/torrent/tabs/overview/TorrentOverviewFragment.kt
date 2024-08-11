@@ -31,7 +31,7 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.category.TorrentCategoryDialog
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.tags.TorrentTagsDialog
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.copyToClipboard
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
@@ -82,7 +82,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.scrollView.applyNavigationBarInsets()
+        binding.scrollView.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {

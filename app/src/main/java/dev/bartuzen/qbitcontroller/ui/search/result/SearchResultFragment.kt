@@ -30,7 +30,7 @@ import dev.bartuzen.qbitcontroller.databinding.DialogSearchFilterBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchResultBinding
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -78,7 +78,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.recyclerTorrents.applyNavigationBarInsets()
+        binding.recyclerTorrents.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {

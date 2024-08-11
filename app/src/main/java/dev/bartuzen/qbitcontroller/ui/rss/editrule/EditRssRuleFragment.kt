@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentEditRssRuleBinding
 import dev.bartuzen.qbitcontroller.model.RssRule
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -45,7 +45,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.scrollView.applyNavigationBarInsets()
+        binding.scrollView.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {

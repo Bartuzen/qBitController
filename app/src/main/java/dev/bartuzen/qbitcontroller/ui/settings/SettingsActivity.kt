@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         theme.applyStyle(R.style.ThemeOverlay_Material3_Preference, true)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets()
+        binding.layoutAppBar.applySystemBarInsets(bottom = false)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

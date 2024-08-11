@@ -24,7 +24,7 @@ class RssActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets()
+        binding.layoutAppBar.applySystemBarInsets(bottom = false)
 
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
 

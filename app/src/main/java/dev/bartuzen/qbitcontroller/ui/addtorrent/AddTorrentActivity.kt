@@ -23,7 +23,6 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
-import dev.bartuzen.qbitcontroller.utils.applyNavigationBarInsets
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
@@ -75,8 +74,8 @@ class AddTorrentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets()
-        binding.scrollView.applyNavigationBarInsets()
+        binding.layoutAppBar.applySystemBarInsets(bottom = false)
+        binding.scrollView.applySystemBarInsets(top = false)
 
         torrentFileUri = savedInstanceState?.getParcelableCompat(Extras.FILE_URI)
 
