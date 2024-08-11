@@ -64,6 +64,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
     private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerPeers.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(

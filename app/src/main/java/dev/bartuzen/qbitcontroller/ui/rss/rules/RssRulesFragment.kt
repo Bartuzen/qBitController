@@ -44,6 +44,7 @@ class RssRulesFragment() : Fragment(R.layout.fragment_rss_rules) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerRules.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(

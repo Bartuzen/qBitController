@@ -31,6 +31,7 @@ class LogActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         binding.layoutAppBar.applySystemBarInsets(bottom = false)
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerLog.applySystemBarInsets(top = false)
 
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)

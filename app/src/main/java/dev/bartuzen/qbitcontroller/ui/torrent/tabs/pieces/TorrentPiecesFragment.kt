@@ -45,6 +45,7 @@ class TorrentPiecesFragment() : Fragment(R.layout.fragment_torrent_pieces) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerPieces.applySystemBarInsets(top = false)
 
         val adapter = TorrentPiecesAdapter()

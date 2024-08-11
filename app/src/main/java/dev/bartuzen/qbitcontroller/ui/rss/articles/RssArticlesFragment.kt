@@ -77,6 +77,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerArticles.applySystemBarInsets(top = false)
 
         requireAppCompatActivity().supportActionBar?.title = feedPath.lastOrNull() ?: getString(R.string.rss_all_articles)

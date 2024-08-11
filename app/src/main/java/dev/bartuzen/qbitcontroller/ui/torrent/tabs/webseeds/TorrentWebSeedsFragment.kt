@@ -39,6 +39,7 @@ class TorrentWebSeedsFragment() : Fragment(R.layout.fragment_torrent_web_seeds) 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerWebSeeds.applySystemBarInsets(top = false)
 
         val adapter = TorrentWebSeedsAdapter()

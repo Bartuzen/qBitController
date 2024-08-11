@@ -38,6 +38,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerSearch.applySystemBarInsets(top = false)
 
         val adapter = SearchStartAdapter()

@@ -51,6 +51,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.scrollView.applySystemBarInsets(top = false)
 
         val titleRes = if (serverId == null) {

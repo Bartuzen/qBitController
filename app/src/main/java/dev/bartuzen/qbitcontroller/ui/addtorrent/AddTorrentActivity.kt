@@ -75,6 +75,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         binding.layoutAppBar.applySystemBarInsets(bottom = false)
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.scrollView.applySystemBarInsets(top = false)
 
         torrentFileUri = savedInstanceState?.getParcelableCompat(Extras.FILE_URI)

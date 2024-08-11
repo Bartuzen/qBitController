@@ -59,6 +59,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.recyclerFeeds.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(

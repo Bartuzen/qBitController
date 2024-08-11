@@ -82,6 +82,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.scrollView.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(

@@ -45,6 +45,7 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.scrollView.applySystemBarInsets(top = false)
 
         requireActivity().addMenuProvider(
