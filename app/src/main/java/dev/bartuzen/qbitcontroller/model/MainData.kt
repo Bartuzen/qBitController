@@ -16,7 +16,6 @@ import kotlinx.serialization.encoding.CompositeDecoder
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.encoding.decodeStructure
-import kotlin.math.min
 
 @Serializable(with = MainDataSerializer::class)
 data class MainData(
@@ -86,25 +85,46 @@ private object MainDataSerializer : KSerializer<MainData> {
             torrent.copy(hash = hash)
         }?.values?.toList() ?: emptyList()
 
-        val categories = decodedCategories?.values?.sortedWith(
-            Comparator { category1, category2 ->
-                val category1Name = category1.name
-                val category2Name = category2.name
+        val categoryComparator = Comparator<Category> { category1, category2 ->
+            category1.name.compareTo(category2.name, ignoreCase = true).let { comparison ->
+                if (comparison != 0) {
+                    return@Comparator comparison
+                }
+            }
 
-                for (i in 0..<min(category1Name.length, category2Name.length)) {
-                    if (category1Name[i] == '/' && category2Name[i] != '/') {
-                        return@Comparator -1
-                    } else if (category1Name[i] != '/' && category2Name[i] == '/') {
-                        return@Comparator 1
-                    } else {
-                        val comparison = category1Name[i].toString().compareTo(category2Name[i].toString(), true)
-                        if (comparison != 0) {
-                            return@Comparator comparison
-                        }
+            category1.name.compareTo(category2.name)
+        }
+
+        val subcategoryComparator = Comparator<Category> { category1, category2 ->
+            val parts1 = category1.name.split("/")
+            val parts2 = category2.name.split("/")
+
+            for (i in parts1.indices) {
+                if (i >= parts2.size) {
+                    return@Comparator 1
+                }
+
+                val part1 = parts1[i]
+                val part2 = parts2[i]
+
+                part1.compareTo(part2, ignoreCase = true).let { comparison ->
+                    if (comparison != 0) {
+                        return@Comparator comparison
                     }
                 }
-                category1Name.length - category2Name.length
-            },
+
+                part1.compareTo(part2).let { comparison ->
+                    if (comparison != 0) {
+                        return@Comparator comparison
+                    }
+                }
+            }
+
+            return@Comparator parts1.size.compareTo(parts2.size)
+        }
+
+        val categories = decodedCategories?.values?.sortedWith(
+            if (serverState.areSubcategoriesEnabled) subcategoryComparator else categoryComparator,
         ) ?: emptyList()
 
         val tags = decodedTags?.sortedWith(String.CASE_INSENSITIVE_ORDER) ?: emptyList()

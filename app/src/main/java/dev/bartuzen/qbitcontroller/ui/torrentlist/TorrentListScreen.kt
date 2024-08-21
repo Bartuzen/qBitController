@@ -1554,7 +1554,7 @@ private fun DrawerContent(
         }
 
         val areSubcategoriesEnabled = mainData?.serverState?.areSubcategoriesEnabled == true
-        items(counts?.categoryMap?.toList() ?: emptyList()) { (category, count) ->
+        items(counts?.categoryMap ?: emptyList()) { (category, count) ->
             AnimatedVisibility(
                 visible = !areCategoriesCollapsed,
                 enter = fadeIn() + expandVertically(),
@@ -1719,7 +1719,7 @@ private fun DrawerContent(
             }
         }
 
-        items(counts?.tagMap?.toList() ?: emptyList()) { (tag, count) ->
+        items(counts?.tagMap ?: emptyList()) { (tag, count) ->
             var showMenu by remember { mutableStateOf(false) }
 
             AnimatedVisibility(

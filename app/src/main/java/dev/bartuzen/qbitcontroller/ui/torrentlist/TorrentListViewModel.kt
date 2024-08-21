@@ -467,8 +467,8 @@ class TorrentListViewModel @Inject constructor(
 
         Counts(
             stateCountMap = stateCountMap,
-            categoryMap = categoryMap,
-            tagMap = tagMap,
+            categoryMap = categoryMap.toList(),
+            tagMap = tagMap.toList(),
             allCount = mainData.torrents.size,
             uncategorizedCount = uncategorizedCount,
             untaggedCount = untaggedCount,
@@ -478,8 +478,8 @@ class TorrentListViewModel @Inject constructor(
 
     data class Counts(
         val stateCountMap: Map<TorrentFilter, Int>,
-        val categoryMap: Map<String, Int>,
-        val tagMap: Map<String, Int>,
+        val categoryMap: List<Pair<String, Int>>,
+        val tagMap: List<Pair<String, Int>>,
         val allCount: Int,
         val uncategorizedCount: Int,
         val untaggedCount: Int,
