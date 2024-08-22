@@ -19,11 +19,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
+import okhttp3.dnsoverhttps.DnsOverHttps
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.create
 import java.net.ConnectException
+import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.security.SecureRandom
@@ -68,7 +71,7 @@ class AddEditServerViewModel @Inject constructor(
                 val service = Retrofit.Builder()
                     .baseUrl(serverConfig.url)
                     .client(
-                        OkHttpClient().newBuilder().apply {
+                        OkHttpClient().newBuilder().apply clientBuilder@{
                             addInterceptor(timeoutInterceptor)
                             addInterceptor(userAgentInterceptor)
 
@@ -82,6 +85,18 @@ class AddEditServerViewModel @Inject constructor(
                                 sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
                                 sslSocketFactory(sslContext.socketFactory, trustAllManager)
                                 hostnameVerifier { _, _ -> true }
+                            }
+
+                            if (serverConfig.dnsOverHttps != null) {
+                                val dns = DnsOverHttps.Builder().apply {
+                                    client(this@clientBuilder.build())
+                                    url(serverConfig.dnsOverHttps.url.toHttpUrl())
+                                    bootstrapDnsHosts(
+                                        serverConfig.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) },
+                                    )
+                                }.build()
+
+                                dns(dns)
                             }
                         }.build(),
                     )
