@@ -53,6 +53,14 @@ class PreferenceDSL(private val fragment: PreferenceFragmentCompat) {
         screen.addPreference(SwitchPreferenceCompat(context).apply(block))
     }
 
+    fun divider() {
+        screen.addPreference(object : Preference(context) {
+            init {
+                layoutResource = R.layout.preference_divider
+            }
+        })
+    }
+
     private fun <T : DialogPreference> T.setDialogText() = apply {
         positiveButtonText = context.getString(R.string.dialog_ok)
         negativeButtonText = context.getString(R.string.dialog_cancel)

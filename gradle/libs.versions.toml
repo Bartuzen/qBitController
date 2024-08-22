@@ -24,6 +24,7 @@ kotlinxSerialization = "1.7.1"
 work-runtime = "2.9.1"
 work-hilt = "1.2.0"
 retrofit = "2.11.0"
+okhttp = "4.12.0"
 viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.0.4"
 coil = "2.7.0"
@@ -71,6 +72,8 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-converter-scalars = { group = "com.squareup.retrofit2", name = "converter-scalars", version.ref = "retrofit" }
 retrofit-converter-kotlinxSerialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+
+okhttp-doh = { module = "com.squareup.okhttp3:okhttp-dnsoverhttps", version.ref = "okhttp" }
 
 viewBindingPropertyDelegate-noReflection = { group = "com.github.kirich1409", name = "viewbindingpropertydelegate-noreflection", version.ref = "viewBindingPropertyDelegate" }
 

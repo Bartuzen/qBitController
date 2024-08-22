@@ -6,15 +6,18 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference.SummaryProvider
 import androidx.preference.PreferenceDataStore
 import androidx.preference.PreferenceFragmentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.BasicAuth
+import dev.bartuzen.qbitcontroller.model.DnsOverHttps
 import dev.bartuzen.qbitcontroller.utils.PreferenceDSL
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
+import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 
 @AndroidEntryPoint
@@ -23,6 +26,12 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
         get() = arguments?.getParcelableCompat<BasicAuth>("basicAuth")!!
         set(value) {
             arguments?.putParcelable("basicAuth", value)
+        }
+
+    private var dnsOverHttps
+        get() = arguments?.getSerializableCompat<DnsOverHttps>("dnsOverHttps")
+        set(value) {
+            arguments?.putSerializable("dnsOverHttps", value)
         }
 
     private val simpleSummaryProvider = SummaryProvider<EditTextPreference> { preference ->
@@ -42,8 +51,11 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
         }
     }
 
-    constructor(basicAuth: BasicAuth) : this() {
-        arguments = bundleOf("basicAuth" to basicAuth)
+    constructor(basicAuth: BasicAuth, dnsOverHttps: DnsOverHttps?) : this() {
+        arguments = bundleOf(
+            "basicAuth" to basicAuth,
+            "dnsOverHttps" to dnsOverHttps,
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,6 +71,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
                 when (key) {
                     "basicAuthUsername" -> basicAuth = basicAuth.copy(username = value.takeIf { it?.isNotBlank() == true })
                     "basicAuthPassword" -> basicAuth = basicAuth.copy(password = value.takeIf { it?.isNotBlank() == true })
+                    "dnsOverHttps" -> dnsOverHttps = value?.takeIf { it != "Disabled" }?.let { DnsOverHttps.valueOf(it) }
                 }
             }
 
@@ -66,6 +79,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
                 return when (key) {
                     "basicAuthUsername" -> basicAuth.username
                     "basicAuthPassword" -> basicAuth.password
+                    "dnsOverHttps" -> dnsOverHttps?.name ?: "Disabled"
                     else -> null
                 }
             }
@@ -134,6 +148,34 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
                 editText.setSelection(editText.length())
             }
         }
+
+        divider()
+
+        list {
+            key = "dnsOverHttps"
+            setTitle(R.string.settings_server_advanced_doh)
+            setDialogTitle(R.string.settings_server_advanced_doh)
+
+            entries = listOf(
+                R.string.settings_disabled,
+                R.string.settings_server_advanced_doh_cloudflare,
+                R.string.settings_server_advanced_doh_google,
+                R.string.settings_server_advanced_doh_adguard,
+                R.string.settings_server_advanced_doh_quad9,
+                R.string.settings_server_advanced_doh_alidns,
+                R.string.settings_server_advanced_doh_dnspod,
+                R.string.settings_server_advanced_doh_360,
+                R.string.settings_server_advanced_doh_quad101,
+                R.string.settings_server_advanced_doh_mullvad,
+                R.string.settings_server_advanced_doh_controld,
+                R.string.settings_server_advanced_doh_njalla,
+                R.string.settings_server_advanced_doh_shecan,
+            ).map { context.getString(it) }.toTypedArray()
+
+            entryValues = arrayOf("Disabled") + DnsOverHttps.entries.map { it.name }.toTypedArray()
+
+            summaryProvider = SummaryProvider<ListPreference> { it.entry }
+        }
     }
 
     override fun onDestroy() {
@@ -141,7 +183,10 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
 
         setFragmentResult(
             requestKey = "advancedServerSettingsResult",
-            result = bundleOf("basicAuth" to basicAuth),
+            result = bundleOf(
+                "basicAuth" to basicAuth,
+                "dnsOverHttps" to dnsOverHttps,
+            ),
         )
     }
 }

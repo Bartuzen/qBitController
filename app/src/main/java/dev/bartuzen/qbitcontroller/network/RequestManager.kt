@@ -8,13 +8,16 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.dnsoverhttps.DnsOverHttps
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.net.ConnectException
+import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.security.SecureRandom
@@ -64,7 +67,7 @@ class RequestManager @Inject constructor(
     fun getOkHttpClient(serverId: Int) = okHttpClientMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
 
-        OkHttpClient().newBuilder().apply {
+        OkHttpClient().newBuilder().apply clientBuilder@{
             cookieJar(SessionCookieJar())
             addInterceptor(timeoutInterceptor)
             addInterceptor(userAgentInterceptor)
@@ -89,6 +92,16 @@ class RequestManager @Inject constructor(
                 chain.proceed(request)
             }
             retryOnConnectionFailure(true)
+
+            if (serverConfig.dnsOverHttps != null) {
+                val dns = DnsOverHttps.Builder().apply {
+                    client(this@clientBuilder.build())
+                    url(serverConfig.dnsOverHttps.url.toHttpUrl())
+                    bootstrapDnsHosts(serverConfig.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) })
+                }.build()
+
+                dns(dns)
+            }
         }.build()
     }
 

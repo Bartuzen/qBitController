@@ -153,6 +153,8 @@ dependencies {
     implementation(libs.retrofit.converter.scalars)
     implementation(libs.retrofit.converter.kotlinxSerialization)
 
+    implementation(libs.okhttp.doh)
+
     implementation(libs.viewBindingPropertyDelegate.noReflection)
 
     coreLibraryDesugaring(libs.desugar)

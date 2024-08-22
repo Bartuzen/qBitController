@@ -22,12 +22,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSettingsAddEditServerBinding
 import dev.bartuzen.qbitcontroller.model.BasicAuth
+import dev.bartuzen.qbitcontroller.model.DnsOverHttps
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsFragment
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
+import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -45,6 +47,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }
 
     private var basicAuth = BasicAuth(false, null, null)
+    private var dnsOverHttps: DnsOverHttps? = null
 
     constructor(serverId: Int?) : this() {
         arguments = bundleOf("serverId" to serverId)
@@ -81,7 +84,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
                             parentFragmentManager.commit {
                                 setReorderingAllowed(true)
                                 setDefaultAnimations()
-                                replace(R.id.container, AdvancedServerSettingsFragment(basicAuth))
+                                replace(R.id.container, AdvancedServerSettingsFragment(basicAuth, dnsOverHttps))
                                 addToBackStack(null)
                             }
                         }
@@ -107,6 +110,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
 
         setFragmentResultListener("advancedServerSettingsResult") { _, bundle ->
             basicAuth = bundle.getParcelableCompat("basicAuth")!!
+            dnsOverHttps = bundle.getSerializableCompat("dnsOverHttps")
         }
 
         binding.spinnerProtocol.adapter = ArrayAdapter(
@@ -126,6 +130,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
         serverId?.let { id ->
             val serverConfig = viewModel.getServerConfig(id)
             basicAuth = serverConfig.basicAuth
+            dnsOverHttps = serverConfig.dnsOverHttps
 
             binding.inputLayoutName.setTextWithoutAnimation(serverConfig.name)
             binding.spinnerProtocol.setSelection(serverConfig.protocol.ordinal)
@@ -220,6 +225,7 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
             password = password,
             trustSelfSignedCertificates = trustSelfSignedCertificates,
             basicAuth = basicAuth,
+            dnsOverHttps = dnsOverHttps,
         )
 
         if (config.url.toHttpUrlOrNull() == null) {

@@ -666,6 +666,19 @@
     <string name="settings_server_advanced_basic_auth_enabled">Enabled</string>
     <string name="settings_server_advanced_basic_auth_username">Username</string>
     <string name="settings_server_advanced_basic_auth_password">Password</string>
+    <string name="settings_server_advanced_doh">DNS over HTTPS (DoH)</string>
+    <string name="settings_server_advanced_doh_cloudflare" translatable="false">Cloudflare</string>
+    <string name="settings_server_advanced_doh_google" translatable="false">Google</string>
+    <string name="settings_server_advanced_doh_adguard" translatable="false">AdGuard</string>
+    <string name="settings_server_advanced_doh_quad9" translatable="false">Quad9</string>
+    <string name="settings_server_advanced_doh_alidns" translatable="false">AliDNS</string>
+    <string name="settings_server_advanced_doh_dnspod" translatable="false">DNSPod</string>
+    <string name="settings_server_advanced_doh_360" translatable="false">360</string>
+    <string name="settings_server_advanced_doh_quad101" translatable="false">Quad101</string>
+    <string name="settings_server_advanced_doh_mullvad" translatable="false">Mullvad</string>
+    <string name="settings_server_advanced_doh_controld" translatable="false">ControlD</string>
+    <string name="settings_server_advanced_doh_njalla" translatable="false">Njalla</string>
+    <string name="settings_server_advanced_doh_shecan" translatable="false">Shecan</string>
 
     <string name="settings_server_add_success">Server has been added successfully.</string>
     <string name="settings_server_edit_success">Server has been edited successfully.</string>
