@@ -614,4 +614,5 @@
     <string name="torrent_option_share_limit_inactive_minutes">Etkin Olmayan Dakika</string>
     <string name="torrent_force_recheck_confirm">Bu torrenti yeniden denetlemeye zorlamak istediğiniz emin misiniz?</string>
     <string name="rss_action_move_select_folder">Bir klasör seç</string>
+    <string name="settings_server_advanced_doh">HTTPS üzerinden DNS (DoH)</string>
 </resources>
