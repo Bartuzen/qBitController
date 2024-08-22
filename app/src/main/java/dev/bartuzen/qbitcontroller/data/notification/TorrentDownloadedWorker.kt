@@ -16,6 +16,10 @@ import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlin.time.Duration.Companion.minutes
 
 @HiltWorker
@@ -48,14 +52,22 @@ class TorrentDownloadedWorker @AssistedInject constructor(
             return
         }
 
-        serverManager.serversFlow.value.forEach { (serverId, _) ->
-            if (isDownloadNotificationsEnabled(serverId)) {
-                val result = requestManager.request(serverId) { service ->
-                    service.getTorrentList()
-                }
+        val serverIds = serverManager.serversFlow.value.keys
+            .filter { isDownloadNotificationsEnabled(it) }
 
-                if (result is RequestResult.Success) {
-                    notifier.checkCompleted(serverId, result.data)
+        supervisorScope {
+            val semaphore = Semaphore(5)
+            serverIds.forEach { serverId ->
+                launch {
+                    val result = semaphore.withPermit {
+                        requestManager.request(serverId) { service ->
+                            service.getTorrentList()
+                        }
+                    }
+
+                    if (result is RequestResult.Success) {
+                        notifier.checkCompleted(serverId, result.data)
+                    }
                 }
             }
         }
