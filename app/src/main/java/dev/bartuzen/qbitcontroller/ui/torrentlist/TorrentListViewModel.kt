@@ -201,7 +201,7 @@ class TorrentListViewModel @Inject constructor(
                 return@map null
             }
 
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.Default) {
                 torrentList.run {
                     val comparator = when (torrentSort) {
                         TorrentSort.NAME -> {
@@ -320,7 +320,7 @@ class TorrentListViewModel @Inject constructor(
         val selectedTracker = filters[5] as Tracker
         val mainData = filters[6] as MainData
 
-        withContext(Dispatchers.IO) {
+        withContext(Dispatchers.Default) {
             torrentList.filter { torrent ->
                 if (searchQuery.isNotEmpty()) {
                     if (!torrent.name.contains(searchQuery, ignoreCase = true)) {

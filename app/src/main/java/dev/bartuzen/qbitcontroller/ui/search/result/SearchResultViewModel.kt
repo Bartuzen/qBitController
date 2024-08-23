@@ -55,7 +55,7 @@ class SearchResultViewModel @Inject constructor(
                 null
             }
         }.filterNotNull().map { (searchResults, searchSort, isReverseSearchSorting) ->
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.Default) {
                 searchResults.run {
                     val comparator = when (searchSort) {
                         SearchSort.NAME -> {
