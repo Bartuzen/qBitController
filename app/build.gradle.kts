@@ -1,6 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+import android.databinding.tool.ext.joinToCamelCaseAsVar
 import java.io.FileInputStream
+import java.util.Locale
 import java.util.Properties
 
 plugins {
@@ -69,13 +71,16 @@ android {
                 keystoreProperties.load(FileInputStream(keystorePropertiesFile))
             }
 
-            fun getProperty(propertyName: String, envName: String) =
-                keystoreProperties.getProperty(propertyName) ?: System.getenv("QBITCONTROLLER_$envName")
+            fun getProperty(vararg name: String): String? {
+                val propertyName = name.toList().joinToCamelCaseAsVar()
+                val envName = "QBITCONTROLLER_" + name.joinToString("_").uppercase(Locale.US)
+                return keystoreProperties.getProperty(propertyName) ?: System.getenv(envName)
+            }
 
-            storeFile = getProperty("storeFile", "STORE_FILE")?.let { file(it) }
-            storePassword = getProperty("storePassword", "STORE_PASSWORD")
-            keyAlias = getProperty("keyAlias", "KEY_ALIAS")
-            keyPassword = getProperty("keyPassword", "KEY_PASSWORD")
+            storeFile = getProperty("store", "file")?.let { file(it) }
+            storePassword = getProperty("store", "password")
+            keyAlias = getProperty("key", "alias")
+            keyPassword = getProperty("key", "password")
         }
     }
 
