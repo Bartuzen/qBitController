@@ -14,6 +14,7 @@ plugins {
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.baselineprofile)
 
     id("dev.bartuzen.qbitcontroller.localesconfig")
 }
@@ -132,6 +133,9 @@ dependencies {
     implementation(libs.compose.material3)
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.toolingPreview)
+
+    implementation(libs.androidx.profileinstaller)
+    baselineProfile(project(":baselineProfile"))
 
     implementation(libs.compose.materialIcons.core)
     implementation(libs.compose.materialIcons.extended)

@@ -18,3 +18,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "qBitController"
 include(":app")
+include(":baselineProfile")

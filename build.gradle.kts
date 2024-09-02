@@ -13,6 +13,9 @@ plugins {
 
     alias(libs.plugins.firebase.googleServices) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
+
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.baselineprofile) apply false
 }
 
 tasks.withType<DependencyUpdatesTask> {
