@@ -228,7 +228,7 @@ sealed class RequestResult<out T : Any?> {
             data object Timeout : RequestError()
             data object NoData : RequestError()
             data class UnknownLoginResponse(val response: String?) : RequestError()
-            data class Unknown(val message: String?) : RequestError()
+            data class Unknown(val message: String) : RequestError()
         }
 
         data class ApiError(val code: Int) : Error()
