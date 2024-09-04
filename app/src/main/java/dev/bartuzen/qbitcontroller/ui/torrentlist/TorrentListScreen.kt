@@ -2023,7 +2023,11 @@ private fun TopBar(
 
             if (!isSearchMode) {
                 Column {
-                    Text(text = currentServer.name ?: stringResource(R.string.app_name))
+                    Text(
+                        text = currentServer.name ?: stringResource(R.string.app_name),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     AnimatedNullableVisibility(
                         value = mainData,
                         enter = fadeIn() + expandVertically(),
@@ -2035,6 +2039,8 @@ private fun TopBar(
                                 formatBytes(mainData.serverState.freeSpace),
                             ),
                             style = MaterialTheme.typography.titleMedium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     }
                 }
@@ -2375,6 +2381,8 @@ fun TopBarSelection(
                     selectedSize,
                     selectedSize,
                 ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
