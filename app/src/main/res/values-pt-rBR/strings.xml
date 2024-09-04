@@ -629,4 +629,5 @@
     <string name="torrent_force_recheck_confirm">Tem certeza de que deseja forçar uma nova verificação desse torrent?</string>
     <string name="rss_action_move_select_folder">Selecione uma pasta</string>
     <string name="settings_server_advanced_doh">DNS sobre HTTPS (DoH)</string>
+    <string name="rss_action_add">Adicionar</string>
 </resources>
