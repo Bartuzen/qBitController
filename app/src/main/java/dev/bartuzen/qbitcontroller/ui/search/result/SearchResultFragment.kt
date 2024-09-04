@@ -101,6 +101,10 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                         menu.findItem(R.id.menu_sort_reverse)?.isChecked = isReverseSearchSort
                     }
 
+                    viewModel.isSearchContinuing.launchAndCollectLatestIn(viewLifecycleOwner) { isSearchContinuing ->
+                        menu.findItem(R.id.menu_search_stop)?.isEnabled = isSearchContinuing
+                    }
+
                     val searchItem = menu.findItem(R.id.menu_search)
 
                     val searchView = searchItem.actionView as SearchView
