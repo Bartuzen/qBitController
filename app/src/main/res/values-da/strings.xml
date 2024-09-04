@@ -246,6 +246,7 @@
     <string name="rss_date">Dato: %1$s</string>
     <string name="rss_mark_as_read">Markér som læst</string>
     <string name="rss_no_description">Ingen beskrivelse fundet</string>
+    <string name="rss_action_add">Tilføj</string>
     <string name="rss_action_add_feed">Tilføj feed</string>
     <string name="rss_action_rename_feed">Omdøb Feed</string>
     <string name="rss_action_move_feed">Flyt Feed</string>

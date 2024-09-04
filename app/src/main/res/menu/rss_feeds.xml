@@ -3,6 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_add"
+        android:icon="@drawable/ic_add"
+        android:title="@string/rss_action_add"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/menu_add_feed"
+                android:title="@string/rss_action_add_feed" />
+            <item
+                android:id="@+id/menu_add_folder"
+                android:title="@string/rss_action_add_folder" />
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/menu_refresh"
         android:icon="@drawable/ic_refresh"
         android:title="@string/rss_action_refresh_all"

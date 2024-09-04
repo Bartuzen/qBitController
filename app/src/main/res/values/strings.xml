@@ -481,6 +481,7 @@
     <string name="rss_mark_as_read">Mark as Read</string>
     <string name="rss_no_description">No description found</string>
 
+    <string name="rss_action_add">Add</string>
     <string name="rss_action_add_feed">Add Feed</string>
     <string name="rss_action_rename_feed">Rename Feed</string>
     <string name="rss_action_move_feed">Move Feed</string>

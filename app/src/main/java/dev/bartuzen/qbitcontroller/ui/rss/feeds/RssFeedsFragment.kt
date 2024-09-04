@@ -82,6 +82,12 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                         R.id.menu_refresh -> {
                             viewModel.refreshAllFeeds(serverId)
                         }
+                        R.id.menu_add_feed -> {
+                            showAddFeedDialog(null)
+                        }
+                        R.id.menu_add_folder -> {
+                            showAddFolderDialog(null)
+                        }
                         else -> return false
                     }
                     return true
@@ -228,7 +234,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         }
     }
 
-    private fun showAddFeedDialog(feedNode: RssFeedNode) {
+    private fun showAddFeedDialog(feedNode: RssFeedNode?) {
         lateinit var dialogBinding: DialogRssAddFeedBinding
 
         val dialog = showDialog(DialogRssAddFeedBinding::inflate) { binding ->
@@ -244,7 +250,11 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
             if (feedUrl.isNotBlank()) {
                 val name = dialogBinding.editName.text.toString().ifBlank { null }
 
-                val itemPath = (feedNode.path + (name ?: feedUrl)).joinToString("\\")
+                val itemPath = if (feedNode != null) {
+                    (feedNode.path + (name ?: feedUrl)).joinToString("\\")
+                } else {
+                    name ?: feedUrl
+                }
                 viewModel.addRssFeed(serverId, feedUrl, itemPath)
                 dialog.dismiss()
             } else {
@@ -253,7 +263,7 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         }
     }
 
-    private fun showAddFolderDialog(feedNode: RssFeedNode) {
+    private fun showAddFolderDialog(feedNode: RssFeedNode?) {
         lateinit var dialogBinding: DialogRssAddFolderBinding
 
         val dialog = showDialog(DialogRssAddFolderBinding::inflate) { binding ->
@@ -267,7 +277,11 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val name = dialogBinding.editName.text.toString()
             if (name.isNotBlank()) {
-                val itemPath = (feedNode.path + name).joinToString("\\")
+                val itemPath = if (feedNode != null) {
+                    (feedNode.path + name).joinToString("\\")
+                } else {
+                    name
+                }
                 viewModel.addRssFolder(serverId, itemPath)
                 dialog.dismiss()
             } else {

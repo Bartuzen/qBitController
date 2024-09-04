@@ -420,6 +420,7 @@
     <string name="rss_filter">Фильтр записей…</string>
     <string name="rss_date">Дата: %1$s</string>
     <string name="rss_download">Загрузить</string>
+    <string name="rss_action_add">Добавить</string>
     <string name="rss_action_move_feed">Переместить ленту</string>
     <string name="rss_action_rename_folder">Переименовать папку</string>
     <string name="rss_action_move_folder">Переместить папку</string>

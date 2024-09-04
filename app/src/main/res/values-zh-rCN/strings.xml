@@ -417,6 +417,7 @@
     <string name="rss_download">下载</string>
     <string name="rss_mark_as_read">标记为已读</string>
     <string name="rss_no_description">未找到详细描述</string>
+    <string name="rss_action_add">添加</string>
     <string name="rss_action_add_feed">添加新订阅源</string>
     <string name="rss_action_rename_feed">重命名订阅源</string>
     <string name="rss_action_move_feed">移动订阅源</string>

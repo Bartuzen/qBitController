@@ -291,6 +291,7 @@
     <string name="search_result_action_sort_search_engine">Motor de búsqueda</string>
     <string name="torrent_peers_details_flags">Banderas: %1$s</string>
     <string name="rss_action_add_feed">Añadir feed</string>
+    <string name="rss_action_add">Añadir</string>
     <string name="torrent_option_share_limit_disable">Desactivar el límite de la cuota</string>
     <string name="rss_rule_must_contain">Debe contener</string>
     <string name="torrent_add_click_to_select_file">Haga clic para seleccionar un archivo</string>

@@ -223,6 +223,7 @@
     <string name="rss_title">RSS</string>
     <string name="rss_download">Last ned</string>
     <string name="rss_mark_as_read">Marker som lest</string>
+    <string name="rss_action_add">Legg til</string>
     <string name="rss_action_add_folder">Legg til mappe</string>
     <string name="rss_action_rename_folder">Gi mappe nytt navn</string>
     <string name="rss_action_move_folder">Flytt mappe</string>
