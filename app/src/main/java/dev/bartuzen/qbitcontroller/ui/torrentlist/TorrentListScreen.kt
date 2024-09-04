@@ -1235,7 +1235,7 @@ private fun TorrentItem(
                 } else {
                     AnnotatedString(torrent.name)
                 }
-                Text(text = name, style = MaterialTheme.typography.titleMedium)
+                Text(text = name, style = MaterialTheme.typography.bodyLarge)
 
                 Spacer(modifier = Modifier.height(4.dp))
 
