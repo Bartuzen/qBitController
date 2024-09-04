@@ -2041,6 +2041,8 @@ private fun TopBar(
                             style = MaterialTheme.typography.titleMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
+                            fontWeight = FontWeight.Normal,
+                            modifier = Modifier.alpha(0.78f),
                         )
                     }
                 }
