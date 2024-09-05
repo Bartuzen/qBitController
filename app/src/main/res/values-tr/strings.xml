@@ -615,4 +615,8 @@
     <string name="torrent_force_recheck_confirm">Bu torrenti yeniden denetlemeye zorlamak istediğiniz emin misiniz?</string>
     <string name="rss_action_move_select_folder">Bir klasör seç</string>
     <string name="settings_server_advanced_doh">HTTPS üzerinden DNS (DoH)</string>
+    <plurals name="torrent_add_files_selected">
+        <item quantity="one">%1$d dosya seçildi</item>
+        <item quantity="other"></item>
+    </plurals>
 </resources>
