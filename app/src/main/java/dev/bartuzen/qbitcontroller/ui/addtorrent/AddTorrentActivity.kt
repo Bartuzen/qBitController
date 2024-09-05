@@ -26,6 +26,8 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableArrayListCompat
+import dev.bartuzen.qbitcontroller.utils.getParcelableArrayListExtraCompat
+import dev.bartuzen.qbitcontroller.utils.getParcelableExtraCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -129,8 +131,30 @@ class AddTorrentActivity : AppCompatActivity() {
                         }
                     }
                 }
-                Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
-                    binding.inputLayoutTorrentLink.setTextWithoutAnimation(text)
+                Intent.ACTION_SEND -> {
+                    when (intent.type) {
+                        "text/plain" -> intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+                            binding.inputLayoutTorrentLink.setTextWithoutAnimation(text)
+                        }
+                        "application/x-bittorrent" -> intent.getParcelableExtraCompat<Uri>(Intent.EXTRA_STREAM)?.let { uri ->
+                            torrentFileUris = listOf(uri)
+                            binding.toggleButtonMode.check(R.id.button_file)
+                            binding.inputLayoutTorrentLink.visibility = View.GONE
+                            binding.textFileName.visibility = View.VISIBLE
+                        }
+                    }
+                }
+                Intent.ACTION_SEND_MULTIPLE -> {
+                    when (intent.type) {
+                        "application/x-bittorrent" -> intent.getParcelableArrayListExtraCompat<Uri>(
+                            Intent.EXTRA_STREAM,
+                        )?.let { uris ->
+                            torrentFileUris = uris
+                            binding.toggleButtonMode.check(R.id.button_file)
+                            binding.inputLayoutTorrentLink.visibility = View.GONE
+                            binding.textFileName.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }

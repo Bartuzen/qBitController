@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -55,6 +56,22 @@ inline fun <reified T : Serializable> Bundle.getSerializableCompat(name: String)
     } else {
         @Suppress("DEPRECATION")
         getSerializable(name) as? T
+    }
+
+inline fun <reified T : Parcelable> Intent.getParcelableArrayListExtraCompat(name: String) =
+    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+        getParcelableArrayListExtra(name, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getParcelableArrayListExtra(name)
+    }
+
+inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(name: String) =
+    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+        getParcelableExtra(name, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getParcelableExtra(name) as? T
     }
 
 val Activity.view: View get() = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
