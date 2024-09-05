@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 
 import android.content.Context
 import android.net.Uri
+import android.provider.MediaStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,7 +57,7 @@ class AddTorrentViewModel @Inject constructor(
     fun createTorrent(
         serverId: Int,
         links: List<String>?,
-        fileUri: Uri?,
+        fileUris: List<Uri>?,
         savePath: String?,
         category: String?,
         tags: List<String>,
@@ -76,15 +77,28 @@ class AddTorrentViewModel @Inject constructor(
         if (!isCreating.value) {
             _isCreating.value = true
 
-            val fileBytes = try {
-                if (fileUri != null) {
+            val files = try {
+                fileUris?.mapNotNull {
                     withContext(Dispatchers.IO) {
-                        context.contentResolver.openInputStream(fileUri).use { stream ->
+                        val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
+                        val fileName = context.contentResolver.query(it, projection, null, null, null)?.use { metaCursor ->
+                            if (metaCursor.moveToFirst()) {
+                                metaCursor.getString(0)
+                            } else {
+                                null
+                            }
+                        }
+
+                        val content = context.contentResolver.openInputStream(it).use { stream ->
                             stream?.readBytes()
                         }
+
+                        if (fileName != null && content != null) {
+                            fileName to content
+                        } else {
+                            null
+                        }
                     }
-                } else {
-                    null
                 }
             } catch (_: FileNotFoundException) {
                 eventChannel.send(Event.FileNotFound)
@@ -100,7 +114,7 @@ class AddTorrentViewModel @Inject constructor(
                 val result = repository.createTorrent(
                     serverId,
                     links,
-                    fileBytes,
+                    files,
                     savePath,
                     category,
                     tags,

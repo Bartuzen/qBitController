@@ -15,7 +15,7 @@ class AddTorrentRepository @Inject constructor(
     suspend fun createTorrent(
         serverId: Int,
         links: List<String>?,
-        fileBytes: ByteArray?,
+        files: List<Pair<String, ByteArray>>?,
         savePath: String?,
         category: String?,
         tags: List<String>,
@@ -32,20 +32,18 @@ class AddTorrentRepository @Inject constructor(
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean,
     ): RequestResult<String> {
-        val filePart = if (fileBytes != null) {
+        val fileParts = files?.map { (fileName, byteArray) ->
             MultipartBody.Part.createFormData(
-                "filename",
-                "torrent",
-                fileBytes.toRequestBody("application/x-bittorrent".toMediaTypeOrNull(), 0),
+                "torrents",
+                fileName,
+                byteArray.toRequestBody("application/x-bittorrent".toMediaTypeOrNull(), 0),
             )
-        } else {
-            null
         }
 
         return requestManager.request(serverId) { service ->
             service.addTorrent(
                 links?.joinToString("\n"),
-                filePart,
+                fileParts,
                 savePath,
                 category,
                 tags.joinToString(",").ifEmpty { null },

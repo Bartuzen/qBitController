@@ -33,6 +33,14 @@ fun Int.toPx(context: Context) = ceil(this * context.resources.displayMetrics.de
 
 fun Int.toDp(context: Context) = ceil(this / context.resources.displayMetrics.density).toInt()
 
+inline fun <reified T : Parcelable> Bundle.getParcelableArrayListCompat(name: String): ArrayList<T>? =
+    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+        getParcelableArrayList(name, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        getParcelableArrayList(name)
+    }
+
 inline fun <reified T : Parcelable> Bundle.getParcelableCompat(name: String) =
     if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
         getParcelable(name, T::class.java)

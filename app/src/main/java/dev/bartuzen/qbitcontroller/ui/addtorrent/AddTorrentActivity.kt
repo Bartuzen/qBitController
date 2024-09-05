@@ -25,7 +25,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivityAddTorrentBinding
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
+import dev.bartuzen.qbitcontroller.utils.getParcelableArrayListCompat
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
@@ -54,14 +54,14 @@ class AddTorrentActivity : AppCompatActivity() {
 
     private val viewModel: AddTorrentViewModel by viewModels()
 
-    private val startFileActivity = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) {
-            torrentFileUri = uri
+    private val startFileActivity = registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
+        if (uris.isNotEmpty()) {
+            torrentFileUris = uris
             binding.textFileName.error = null
         }
     }
 
-    private var torrentFileUri: Uri? = null
+    private var torrentFileUris: List<Uri> = emptyList()
         set(value) {
             field = value
             updateFileName()
@@ -78,7 +78,7 @@ class AddTorrentActivity : AppCompatActivity() {
         binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
         binding.scrollView.applySystemBarInsets(top = false)
 
-        torrentFileUri = savedInstanceState?.getParcelableCompat(Extras.FILE_URI)
+        torrentFileUris = savedInstanceState?.getParcelableArrayListCompat(Extras.FILE_URI) ?: emptyList()
 
         val serverId = MutableStateFlow(intent.getIntExtra(Extras.SERVER_ID, -1).takeIf { it != -1 })
 
@@ -122,7 +122,7 @@ class AddTorrentActivity : AppCompatActivity() {
                             binding.inputLayoutTorrentLink.setTextWithoutAnimation(uri.toString())
                         }
                         "content" -> {
-                            torrentFileUri = uri
+                            torrentFileUris = listOf(uri)
                             binding.toggleButtonMode.check(R.id.button_file)
                             binding.inputLayoutTorrentLink.visibility = View.GONE
                             binding.textFileName.visibility = View.VISIBLE
@@ -364,7 +364,7 @@ class AddTorrentActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(Extras.FILE_URI, torrentFileUri)
+        outState.putParcelableArrayList(Extras.FILE_URI, ArrayList(torrentFileUris))
         outState.putString(Extras.SELECTED_CATEGORY, getSelectedCategory())
         outState.putStringArrayList(Extras.SELECTED_TAGS, ArrayList(getSelectedTags()))
     }
@@ -382,24 +382,34 @@ class AddTorrentActivity : AppCompatActivity() {
     }
 
     private fun updateFileName() {
-        val uri = torrentFileUri
+        val uris = torrentFileUris
 
-        if (uri != null) {
-            lifecycleScope.launch {
-                val fileName = withContext(Dispatchers.IO) {
-                    val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
-                    contentResolver.query(uri, projection, null, null, null)?.use { metaCursor ->
-                        if (metaCursor.moveToFirst()) {
-                            metaCursor.getString(0)
-                        } else {
-                            null
+        when (uris.size) {
+            0 -> {
+                binding.textFileName.setText(R.string.torrent_add_click_to_select_file)
+            }
+            1 -> {
+                lifecycleScope.launch {
+                    val fileName = withContext(Dispatchers.IO) {
+                        val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
+                        contentResolver.query(uris.single(), projection, null, null, null)?.use { metaCursor ->
+                            if (metaCursor.moveToFirst()) {
+                                metaCursor.getString(0)
+                            } else {
+                                null
+                            }
                         }
                     }
+                    binding.textFileName.text = fileName
                 }
-                binding.textFileName.text = fileName
             }
-        } else {
-            binding.textFileName.setText(R.string.torrent_add_click_to_select_file)
+            else -> {
+                binding.textFileName.text = resources.getQuantityString(
+                    R.plurals.torrent_add_files_selected,
+                    uris.size,
+                    uris.size,
+                )
+            }
         }
     }
 
@@ -433,7 +443,6 @@ class AddTorrentActivity : AppCompatActivity() {
         var isValid = true
 
         val links = binding.editTorrentLink.text.toString()
-        val torrentFileUri = torrentFileUri
 
         if (isUrlMode && links.isBlank()) {
             isValid = false
@@ -442,7 +451,7 @@ class AddTorrentActivity : AppCompatActivity() {
             binding.inputLayoutTorrentLink.isErrorEnabled = false
         }
 
-        if (!isUrlMode && torrentFileUri == null) {
+        if (!isUrlMode && torrentFileUris.isEmpty()) {
             isValid = false
             binding.textFileName.error = ""
         } else {
@@ -504,7 +513,7 @@ class AddTorrentActivity : AppCompatActivity() {
         viewModel.createTorrent(
             serverId = serverId,
             links = if (isUrlMode) links.split("\n") else null,
-            fileUri = if (!isUrlMode) torrentFileUri else null,
+            fileUris = if (!isUrlMode) torrentFileUris else null,
             savePath = savePath,
             category = category,
             tags = tags,
