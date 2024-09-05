@@ -111,25 +111,28 @@ class AddTorrentActivity : AppCompatActivity() {
         }
 
         val torrentUrl = intent.getStringExtra(Extras.TORRENT_URL)
-        val uri = intent.data
 
         if (torrentUrl != null) {
             binding.inputLayoutTorrentLink.setTextWithoutAnimation(torrentUrl)
-        } else if (uri != null) {
-            when (uri.scheme) {
-                "http", "https", "magnet" -> {
-                    binding.inputLayoutTorrentLink.setTextWithoutAnimation(uri.toString())
+        } else {
+            when (intent.action) {
+                Intent.ACTION_VIEW -> intent.data?.let { uri ->
+                    when (uri.scheme) {
+                        "magnet" -> {
+                            binding.inputLayoutTorrentLink.setTextWithoutAnimation(uri.toString())
+                        }
+                        "content" -> {
+                            torrentFileUri = uri
+                            binding.toggleButtonMode.check(R.id.button_file)
+                            binding.inputLayoutTorrentLink.visibility = View.GONE
+                            binding.textFileName.visibility = View.VISIBLE
+                        }
+                    }
                 }
-                "content", "file" -> {
-                    torrentFileUri = uri
-                    binding.toggleButtonMode.check(R.id.button_file)
-                    binding.inputLayoutTorrentLink.visibility = View.GONE
-                    binding.textFileName.visibility = View.VISIBLE
+                Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+                    binding.inputLayoutTorrentLink.setTextWithoutAnimation(text)
                 }
             }
-        } else if (intent.hasExtra(Intent.EXTRA_TEXT)) {
-            val text = intent.getStringExtra(Intent.EXTRA_TEXT)
-            binding.inputLayoutTorrentLink.setTextWithoutAnimation(text)
         }
 
         setSupportActionBar(binding.toolbar)
