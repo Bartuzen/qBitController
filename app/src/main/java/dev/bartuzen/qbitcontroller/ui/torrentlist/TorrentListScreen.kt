@@ -51,6 +51,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
@@ -149,6 +150,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -980,10 +982,10 @@ fun TorrentListScreen(
                             state = listState,
                             modifier = Modifier.fillMaxSize(),
                         ) {
-                            items(
+                            itemsIndexed(
                                 items = torrents ?: emptyList(),
-                                key = { "$serverId-${it.hash}" },
-                            ) { torrent ->
+                                key = { _, torrent -> "$serverId-${torrent.hash}" },
+                            ) { index, torrent ->
                                 TorrentItem(
                                     torrent = torrent,
                                     selected = torrent.hash in selectedTorrents,
@@ -1013,6 +1015,7 @@ fun TorrentListScreen(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .animateItem()
+                                        .testTag("torrent_$index")
                                         .focusProperties {
                                             canFocus = drawerState.isClosed
                                         },
