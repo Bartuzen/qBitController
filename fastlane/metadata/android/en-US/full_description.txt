@@ -1,13 +1,12 @@
 Free and open-source application for controlling qBittorrent on your servers.
 
 Features:
-
-- Add multiple servers
-- Add torrents from magnet link, or file
+- Manage multiple qBittorrent servers
+- Add torrents using magnet links or files
 - See detailed information about torrents
 - Perform various actions on torrents such as pausing, resuming, deleting, and more
 - Sort torrents by their name, size, progress, download/upload speed, and more
-- Filter torrents by their category and tags
-- Create and delete categories and tags
-
-https://github.com/Bartuzen/qBitController
+- Filter torrents by their state, category, tag, and tracker
+- Manage categories and tags
+- View RSS feeds, create auto download rules
+- Search torrents online

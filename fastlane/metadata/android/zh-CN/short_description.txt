@@ -1,1 +1,0 @@
-一款能从 Android 设备中远程控制 qBittorrent 的软件。

@@ -1,0 +1,9 @@
+- Updated to Material Design 3 and added Material You support
+- Added confirmation dialog for torrent force recheck
+- Removed the hide loading bar option; it's now enabled by default
+- Fixed incorrect torrent progress bar colors
+- RSS feeds are now displayed in a tree view
+- Fixed "Mark as Read" not working in certain RSS scenarios
+- Added DNS over HTTPS support
+- Added ability to select multiple files while adding torrents
+- Many minor changes and fixes
