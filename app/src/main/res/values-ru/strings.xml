@@ -644,4 +644,11 @@
     <string name="search_result_filter_reset">Сбросить</string>
     <string name="torrent_force_recheck_confirm">Вы уверены, что хотите принудительно перепроверить этот торрент?</string>
     <string name="rss_action_move_select_folder">Выберите папку</string>
+    <plurals name="torrent_add_files_selected">
+        <item quantity="one">%1$d файл выбран</item>
+        <item quantity="few">%1$d файла выбрано</item>
+        <item quantity="many">%1$d файлов выбрано</item>
+        <item quantity="other">%1$d файлов выбрано</item>
+    </plurals>
+    <string name="settings_server_advanced_doh">DNS через HTTPS (DoH)</string>
 </resources>

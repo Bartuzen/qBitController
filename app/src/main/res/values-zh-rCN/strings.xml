@@ -592,7 +592,7 @@
     <string name="accessibility_close_navigation_drawer">关闭侧滑栏</string>
     <string name="settings_language">语言</string>
     <string name="settings_language_system_default">系统默认</string>
-    <string name="torrent_list_action_set_category">设置标签</string>
+    <string name="torrent_list_action_set_category">设置分类</string>
     <string name="torrent_option_share_limit_total_minutes">总分钟数</string>
     <string name="search_result_filter_reset">清除筛选</string>
     <string name="torrent_option_share_limit_inactive_minutes">非活动分钟数</string>

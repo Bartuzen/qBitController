@@ -629,4 +629,10 @@
     <string name="torrent_option_share_limit_inactive_minutes">Minutos inactivo</string>
     <string name="torrent_force_recheck_confirm">¿Estás seguro que quieres forzar la verificación de este torrent?</string>
     <string name="rss_action_move_select_folder">Selecciona una carpeta</string>
+    <string name="settings_server_advanced_doh">DNS sobre HTTPS (DsH)</string>
+    <plurals name="torrent_add_files_selected">
+        <item quantity="one">%1$d archivo seleccionado</item>
+        <item quantity="many">%1$d archivos seleccionados</item>
+        <item quantity="other">%1$d archivos seleccionados</item>
+    </plurals>
 </resources>

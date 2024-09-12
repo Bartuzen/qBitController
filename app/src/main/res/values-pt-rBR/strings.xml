@@ -245,7 +245,7 @@
     <string name="torrent_option_download_path_enable">Usar outro caminho para torrents incompletos</string>
     <string name="torrent_option_speed_limit">Limite de velocidade para torrent</string>
     <string name="torrent_option_upload_speed_limit">Limite de velocidade para upload (KiB/s)</string>
-    <string name="torrent_option_download_speed_limit">Limite de velocidade para download (KiB/s)</string>
+    <string name="torrent_option_download_speed_limit">Limite de velocidade para download (KB/s)</string>
     <string name="torrent_option_share_limit">Limitar compartilhamento de torrent</string>
     <string name="torrent_option_share_limit_global">Usar limite de compartilhamento global</string>
     <string name="torrent_option_share_limit_disable">Desabilitar limite de compartilhamento</string>
@@ -628,4 +628,11 @@
     <string name="torrent_action_category">Definir categoria</string>
     <string name="torrent_force_recheck_confirm">Tem certeza de que deseja forçar uma nova verificação desse torrent?</string>
     <string name="rss_action_move_select_folder">Selecione uma pasta</string>
+    <string name="settings_server_advanced_doh">DNS sobre HTTPS (DoH)</string>
+    <string name="rss_action_add">Adicionar</string>
+    <plurals name="torrent_add_files_selected">
+        <item quantity="one">%1$d arquivo selecionado</item>
+        <item quantity="many">%1$d arquivos selecionados</item>
+        <item quantity="other">%1$d arquivos selecionados</item>
+    </plurals>
 </resources>
