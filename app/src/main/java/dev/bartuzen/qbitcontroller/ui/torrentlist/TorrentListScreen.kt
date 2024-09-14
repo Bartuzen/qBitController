@@ -1238,7 +1238,12 @@ private fun TorrentItem(
                 } else {
                     AnnotatedString(torrent.name)
                 }
-                Text(text = name, style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        lineBreak = LineBreak.Paragraph,
+                    ),
+                )
 
                 Spacer(modifier = Modifier.height(4.dp))
 
