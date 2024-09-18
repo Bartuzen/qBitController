@@ -1036,10 +1036,12 @@ fun TorrentListScreen(
                         }
 
                         SideEffect {
-                            listState.requestScrollToItem(
-                                index = listState.firstVisibleItemIndex,
-                                scrollOffset = listState.firstVisibleItemScrollOffset,
-                            )
+                            if (!listState.isScrollInProgress) {
+                                listState.requestScrollToItem(
+                                    index = listState.firstVisibleItemIndex,
+                                    scrollOffset = listState.firstVisibleItemScrollOffset,
+                                )
+                            }
                         }
                     }
 
