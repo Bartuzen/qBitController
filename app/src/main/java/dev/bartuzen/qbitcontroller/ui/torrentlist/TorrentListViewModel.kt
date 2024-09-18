@@ -49,7 +49,7 @@ class TorrentListViewModel @Inject constructor(
 
     val currentServerId = savedStateHandle.getStateFlow<Int?>("current_server_id", null)
 
-    private val _currentServer = MutableStateFlow(currentServerId.value?.let { serverManager.getServerOrNull(it) })
+    private val _currentServer = MutableStateFlow(null as ServerConfig?)
     val currentServer = _currentServer.asStateFlow()
 
     val serversFlow = serverManager.serversFlow
@@ -156,7 +156,7 @@ class TorrentListViewModel @Inject constructor(
     }
 
     init {
-        setCurrentServer(getFirstServer()?.id)
+        setCurrentServer(getFirstServer()?.id, forceReset = true)
         serverManager.addServerListener(serverListener)
 
         viewModelScope.launch {
