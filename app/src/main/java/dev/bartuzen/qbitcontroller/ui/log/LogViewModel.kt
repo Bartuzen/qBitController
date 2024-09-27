@@ -7,6 +7,7 @@ import dev.bartuzen.qbitcontroller.data.repositories.log.LogRepository
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -35,6 +36,7 @@ class LogViewModel @Inject constructor(
         when (val result = repository.getLog(serverId)) {
             is RequestResult.Success -> {
                 _logs.value = result.data.reversed()
+                eventChannel.send(Event.UpdateSuccess)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -55,12 +57,16 @@ class LogViewModel @Inject constructor(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateLog(serverId).invokeOnCompletion {
-                _isRefreshing.value = false
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
     sealed class Event {
+        data object UpdateSuccess : Event()
         data class Error(val error: RequestResult.Error) : Event()
     }
 }
