@@ -635,4 +635,7 @@
         <item quantity="many">%1$d archivos seleccionados</item>
         <item quantity="other">%1$d archivos seleccionados</item>
     </plurals>
+    <string name="torrent_overview_private">Privado</string>
+    <string name="torrent_overview_private_yes">Sí</string>
+    <string name="torrent_overview_private_no">No</string>
 </resources>
