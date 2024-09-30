@@ -155,6 +155,9 @@ data class Torrent(
 
     @SerialName("trackers_count")
     val trackerCount: Int = 0,
+
+    @SerialName("private")
+    val isPrivate: Boolean?,
 )
 
 private object EtaSerializer : KSerializer<Int?> {

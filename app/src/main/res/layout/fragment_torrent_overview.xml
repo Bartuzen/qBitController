@@ -159,6 +159,19 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_private" />
+
+                        <TextView
+                            android:id="@+id/text_private"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Private Text" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_hash_v1" />
 
                         <TextView
