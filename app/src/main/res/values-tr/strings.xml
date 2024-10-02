@@ -622,4 +622,5 @@
     <string name="torrent_overview_private">Özel</string>
     <string name="torrent_overview_private_yes">Evet</string>
     <string name="torrent_overview_private_no">Hayır</string>
+    <string name="torrent_list_status_set_as_default">Varsayılan Olarak Ayarla</string>
 </resources>
