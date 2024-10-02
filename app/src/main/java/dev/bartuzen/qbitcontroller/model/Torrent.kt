@@ -4,6 +4,7 @@ import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -198,7 +199,9 @@ private object TagsSerializer : KSerializer<List<String>> {
     }
 }
 
-@Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@Serializable(with = TorrentStateSerializer::class)
+@KeepGeneratedSerializer
 enum class TorrentState {
     @SerialName("forcedDL")
     FORCED_DL,
@@ -256,6 +259,38 @@ enum class TorrentState {
 
     @SerialName("unknown")
     UNKNOWN,
+}
+
+private object TorrentStateSerializer : KSerializer<TorrentState> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("TorrentState", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: TorrentState) {
+        TorrentState.generatedSerializer().serialize(encoder, value)
+    }
+
+    override fun deserialize(decoder: Decoder): TorrentState {
+        return when (decoder.decodeString()) {
+            "pausedDL", "stoppedDL" -> TorrentState.PAUSED_DL
+            "pausedUP", "stoppedUP" -> TorrentState.PAUSED_UP
+            "forcedDL" -> TorrentState.FORCED_DL
+            "downloading" -> TorrentState.DOWNLOADING
+            "forcedMetaDL" -> TorrentState.FORCED_META_DL
+            "metaDL" -> TorrentState.META_DL
+            "stalledDL" -> TorrentState.STALLED_DL
+            "forcedUP" -> TorrentState.FORCED_UP
+            "uploading" -> TorrentState.UPLOADING
+            "stalledUP" -> TorrentState.STALLED_UP
+            "checkingResumeData" -> TorrentState.CHECKING_RESUME_DATA
+            "queuedDL" -> TorrentState.QUEUED_DL
+            "queuedUP" -> TorrentState.QUEUED_UP
+            "checkingUP" -> TorrentState.CHECKING_UP
+            "checkingDL" -> TorrentState.CHECKING_DL
+            "moving" -> TorrentState.MOVING
+            "missingFiles" -> TorrentState.MISSING_FILES
+            "error" -> TorrentState.ERROR
+            else -> TorrentState.UNKNOWN
+        }
+    }
 }
 
 @Serializable(with = PieceStateSerializer::class)
