@@ -157,6 +157,7 @@
                             tools:text="Added On Text" />
 
                         <TextView
+                            android:id="@+id/text_private_title"
                             android:layout_width="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="@string/torrent_overview_private" />

@@ -332,11 +332,15 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 "-"
             }
             binding.textAddedOn.text = formatDate(properties.additionDate)
+
+            binding.textPrivateTitle.visibility = if (torrent.isPrivate == null) View.GONE else View.VISIBLE
+            binding.textPrivate.visibility = if (torrent.isPrivate == null) View.GONE else View.VISIBLE
             binding.textPrivate.text = when (torrent.isPrivate) {
                 true -> getString(R.string.torrent_overview_private_yes)
                 false -> getString(R.string.torrent_overview_private_no)
-                null -> "-"
+                null -> null
             }
+
             binding.textHashV1.text = torrent.hashV1 ?: "-"
             binding.textHashV2.text = torrent.hashV2 ?: "-"
             binding.textSavePath.text = properties.savePath
