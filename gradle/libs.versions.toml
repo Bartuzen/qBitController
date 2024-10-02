@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.1"
+agp = "8.7.0"
 kotlin = "2.0.20"
 hilt = "2.52"
 kotlinter = "4.4.1"
@@ -11,11 +11,11 @@ androidx-appcompat = "1.7.0"
 androidx-recyclerView = "1.3.2"
 androidx-constraintLayout = "2.1.4"
 androidx-swipeRefreshLayout = "1.1.0"
-androidx-fragment = "1.8.3"
+androidx-fragment = "1.8.4"
 androidx-preference = "1.2.1"
 androidx-lifecycle-viewModel = "2.8.6"
-compose-bom = "2024.09.02"
-compose-navigation = "2.8.1"
+compose-bom = "2024.09.03"
+compose-navigation = "2.8.2"
 compose-hilt = "1.2.0"
 accompanist = "0.36.0"
 material = "1.12.0"
@@ -28,14 +28,13 @@ okhttp = "4.12.0"
 viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.1.2"
 coil = "2.7.0"
-firebase-bom = "33.3.0"
+firebase-bom = "33.4.0"
 ksp = "2.0.20-1.0.25"
 junit = "1.2.1"
 espressoCore = "3.6.1"
 uiautomator = "2.3.0"
-benchmarkMacroJunit4 = "1.3.1"
-baselineprofile = "1.3.1"
-profileinstaller = "1.4.0"
+baselineprofile = "1.3.2"
+profileinstaller = "1.4.1"
 
 [libraries]
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
@@ -95,7 +94,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
-androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "baselineprofile" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [plugins]
