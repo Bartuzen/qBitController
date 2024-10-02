@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.data
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.primitivePreference
 import javax.inject.Inject
@@ -22,6 +23,7 @@ class SettingsManager @Inject constructor(
     val notificationCheckInterval = primitivePreference(sharedPref, "notificationCheckInterval", 15)
     val areTorrentSwipeActionsEnabled = primitivePreference(sharedPref, "areTorrentSwipeActionsEnabled", true)
 
+    val defaultTorrentStatus = enumPreference(sharedPref, "defaultTorrentState", TorrentFilter.ALL, TorrentFilter::valueOf)
     val areStatesCollapsed = primitivePreference(sharedPref, "areStatesCollapsed", false)
     val areCategoriesCollapsed = primitivePreference(sharedPref, "areCategoriesCollapsed", false)
     val areTagsCollapsed = primitivePreference(sharedPref, "areTagsCollapsed", false)

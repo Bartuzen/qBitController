@@ -127,7 +127,7 @@ class TorrentListViewModel @Inject constructor(
             _searchQuery.value = ""
             _selectedCategory.value = CategoryTag.All
             _selectedTag.value = CategoryTag.All
-            _selectedFilter.value = TorrentFilter.ALL
+            _selectedFilter.value = settingsManager.defaultTorrentStatus.value
             _selectedTracker.value = Tracker.All
 
             viewModelScope.launch {
@@ -750,6 +750,10 @@ class TorrentListViewModel @Inject constructor(
 
     fun setSelectedTracker(tracker: Tracker) {
         _selectedTracker.value = tracker
+    }
+
+    fun setDefaultTorrentStatus(status: TorrentFilter) {
+        settingsManager.defaultTorrentStatus.value = status
     }
 
     fun setFiltersCollapseState(isCollapsed: Boolean) {

@@ -841,6 +841,7 @@ fun TorrentListScreen(
                         isDrawerOpen = drawerState.isOpen,
                         onServerSelected = { viewModel.setCurrentServer(it) },
                         onDialogOpen = { currentDialog = it },
+                        onSetDefaultTorrentStatus = { viewModel.setDefaultTorrentStatus(it) },
                         onDrawerClose = { scope.launch { drawerState.close() } },
                         onCollapseStates = { viewModel.setFiltersCollapseState(!areStatesCollapsed) },
                         onCollapseCategories = { viewModel.setCategoriesCollapseState(!areCategoriesCollapsed) },
@@ -1357,6 +1358,7 @@ private fun DrawerContent(
     isDrawerOpen: Boolean,
     onServerSelected: (serverId: Int) -> Unit,
     onDialogOpen: (dialog: Dialog) -> Unit,
+    onSetDefaultTorrentStatus: (status: TorrentFilter) -> Unit,
     onDrawerClose: () -> Unit,
     onCollapseStates: () -> Unit,
     onCollapseCategories: () -> Unit,
@@ -1442,6 +1444,8 @@ private fun DrawerContent(
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
+                var showMenu by remember { mutableStateOf(false) }
+
                 DrawerItem(
                     icon = icon,
                     iconModifier = if (status == TorrentFilter.STALLED) {
@@ -1459,10 +1463,30 @@ private fun DrawerContent(
                         onSelectFilter(status)
                         onDrawerClose()
                     },
+                    onLongClick = {
+                        showMenu = true
+                    },
                     modifier = Modifier.focusProperties {
                         canFocus = isDrawerOpen
                     },
                 )
+                DropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = {
+                        showMenu = false
+                    },
+                ) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_list_status_set_as_default))
+                        },
+                        onClick = {
+                            showMenu = false
+                            onDrawerClose()
+                            onSetDefaultTorrentStatus(status)
+                        },
+                    )
+                }
             }
         }
 
