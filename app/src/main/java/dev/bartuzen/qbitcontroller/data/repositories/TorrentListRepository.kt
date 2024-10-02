@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.data.repositories
 
+import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,11 +19,17 @@ class TorrentListRepository @Inject constructor(
         }
 
     suspend fun pauseTorrents(serverId: Int, hashes: List<String>) = requestManager.request(serverId) { service ->
-        service.pauseTorrents(hashes.joinToString("|"))
+        when (requestManager.getQBittorrentVersion(serverId)) {
+            QBittorrentVersion.V4 -> service.pauseTorrents(hashes.joinToString("|"))
+            QBittorrentVersion.V5 -> service.stopTorrents(hashes.joinToString("|"))
+        }
     }
 
     suspend fun resumeTorrents(serverId: Int, hashes: List<String>) = requestManager.request(serverId) { service ->
-        service.resumeTorrents(hashes.joinToString("|"))
+        when (requestManager.getQBittorrentVersion(serverId)) {
+            QBittorrentVersion.V4 -> service.resumeTorrents(hashes.joinToString("|"))
+            QBittorrentVersion.V5 -> service.startTorrents(hashes.joinToString("|"))
+        }
     }
 
     suspend fun deleteCategory(serverId: Int, category: String) = requestManager.request(serverId) { service ->

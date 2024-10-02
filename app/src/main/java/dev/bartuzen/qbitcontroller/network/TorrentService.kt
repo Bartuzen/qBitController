@@ -31,6 +31,9 @@ interface TorrentService {
     @POST("api/v2/auth/login")
     suspend fun login(@Field("username") username: String, @Field("password") password: String): Response<String>
 
+    @GET("api/v2/app/version")
+    suspend fun getVersion(): Response<String>
+
     @GET("api/v2/app/defaultSavePath")
     suspend fun getDefaultSavePath(): Response<String>
 
@@ -71,6 +74,14 @@ interface TorrentService {
     @FormUrlEncoded
     @POST("api/v2/torrents/resume")
     suspend fun resumeTorrents(@Field("hashes") hashes: String): Response<String>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/stop")
+    suspend fun stopTorrents(@Field("hashes") hashes: String): Response<String>
+
+    @FormUrlEncoded
+    @POST("api/v2/torrents/start")
+    suspend fun startTorrents(@Field("hashes") hashes: String): Response<String>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/recheck")

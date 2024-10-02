@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
+import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,11 +23,17 @@ class TorrentOverviewRepository @Inject constructor(
         }
 
     suspend fun pauseTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
-        service.pauseTorrents(hash)
+        when (requestManager.getQBittorrentVersion(serverId)) {
+            QBittorrentVersion.V4 -> service.pauseTorrents(hash)
+            QBittorrentVersion.V5 -> service.stopTorrents(hash)
+        }
     }
 
     suspend fun resumeTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
-        service.resumeTorrents(hash)
+        when (requestManager.getQBittorrentVersion(serverId)) {
+            QBittorrentVersion.V4 -> service.resumeTorrents(hash)
+            QBittorrentVersion.V5 -> service.startTorrents(hash)
+        }
     }
 
     suspend fun toggleSequentialDownload(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
