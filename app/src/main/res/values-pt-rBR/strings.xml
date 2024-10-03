@@ -638,4 +638,5 @@
     <string name="torrent_overview_private_no">Não</string>
     <string name="torrent_overview_private_yes">Sim</string>
     <string name="torrent_overview_private">Particular</string>
+    <string name="torrent_list_status_set_as_default">Definir como padrão</string>
 </resources>
