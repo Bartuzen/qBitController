@@ -27,8 +27,8 @@ android {
         applicationId = "dev.bartuzen.qbitcontroller"
         minSdk = 21
         targetSdk = 35
-        versionCode = 19
-        versionName = "1.0.0"
+        versionCode = 20
+        versionName = "1.1.0"
 
         buildConfigField("String", "SOURCE_CODE_URL", "\"https://github.com/Bartuzen/qBitController\"")
     }

@@ -55,26 +55,25 @@ class BaselineProfileGenerator {
             device.findObject(By.text("Peers")).click()
             device.findObject(By.text("HTTP Sources")).click()
             device.pressBack()
-            device.waitForWindowUpdate(null, 5000)
 
+            device.wait(Until.hasObject(By.desc("Add Torrent")), 5000)
             device.findObject(By.desc("Add Torrent")).click()
             device.pressBack()
-            device.waitForWindowUpdate(null, 5000)
 
+            device.wait(Until.hasObject(By.res("overflow")), 5000)
             device.findObject(By.res("overflow")).click()
             device.findObject(By.text("RSS")).click()
             device.pressBack()
-            device.waitForWindowUpdate(null, 5000)
 
+            device.wait(Until.hasObject(By.res("overflow")), 5000)
             device.findObject(By.res("overflow")).click()
             device.findObject(By.text("Search Online")).click()
             device.pressBack()
-            device.waitForWindowUpdate(null, 5000)
 
+            device.wait(Until.hasObject(By.res("overflow")), 5000)
             device.findObject(By.res("overflow")).click()
             device.findObject(By.text("Execution Log")).click()
             device.pressBack()
-            device.waitForWindowUpdate(null, 5000)
         }
     }
 }

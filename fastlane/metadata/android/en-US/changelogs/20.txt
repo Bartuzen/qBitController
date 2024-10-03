@@ -1,0 +1,5 @@
+- Added option to set default torrent status filter
+- Torrent details now display private status
+- Fixed issues with qBittorrent 5.0.0
+- Fixed torrent list refreshing not working after process death
+- Fixed minor issues
