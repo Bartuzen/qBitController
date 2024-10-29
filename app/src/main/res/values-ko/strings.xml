@@ -1,2 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="share_add_torrent">토렌트 추가</string>
+    <string name="torrent_status_missing_files">누락된 파일</string>
+    <string name="torrent_status_seeding">시딩</string>
+    <string name="torrent_status_paused">일시정지됨</string>
+    <string name="torrent_status_queued">예약됨</string>
+    <string name="torrent_status_stalled">대기중</string>
+    <string name="torrent_status_checking">확인중</string>
+    <string name="torrent_status_completed">완료됨</string>
+    <string name="language_code">kr</string>
+    <string name="torrent_status_error">에러</string>
+</resources>
