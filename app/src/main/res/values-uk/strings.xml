@@ -220,8 +220,8 @@
     <string name="torrent_action_copy_hash_v2">Хеш v2</string>
     <string name="torrent_action_copy_magnet_uri">Магнітне посилання</string>
     <string name="torrent_action_export">Експортувати .torrent</string>
-    <string name="torrent_enable_force_start_success">Торрент примусово почато.</string>
-    <string name="torrent_disable_force_start_success">Тепер торрент не почато примусово.</string>
+    <string name="torrent_enable_force_start_success">Примусовий запуск вимкнений.</string>
+    <string name="torrent_disable_force_start_success">Примусовий запуск увімкнений.</string>
     <string name="stats_connected_peers">Під\'єднані піри</string>
     <string name="stats_total_buffer_size">Загальний розмір буфера</string>
     <string name="torrent_status_checking_resume_data">Перевірка даних поновлення</string>
