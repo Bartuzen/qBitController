@@ -79,6 +79,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     "notificationCheckInterval" -> {
                         val num = value?.toIntOrNull() ?: return
                         viewModel.notificationCheckInterval = when {
+                            num == 0 -> 0
                             num > 24 * 60 -> 24 * 60
                             num < 15 -> 15
                             else -> num
@@ -234,11 +235,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             isEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
 
             setSummaryProvider {
-                resources.getQuantityString(
-                    R.plurals.settings_notification_check_interval_description,
-                    viewModel.notificationCheckInterval,
-                    viewModel.notificationCheckInterval,
-                )
+                val notificationCheckInterval = viewModel.notificationCheckInterval
+                if (notificationCheckInterval == 0) {
+                    getString(R.string.settings_disabled)
+                } else {
+                    resources.getQuantityString(
+                        R.plurals.settings_notification_check_interval_description,
+                        notificationCheckInterval,
+                        notificationCheckInterval,
+                    )
+                }
             }
 
             setOnBindEditTextListener { editText ->

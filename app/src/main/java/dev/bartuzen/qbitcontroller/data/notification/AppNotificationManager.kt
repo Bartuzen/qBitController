@@ -51,13 +51,14 @@ class AppNotificationManager @Inject constructor(
     fun startWorker() {
         val workManager = WorkManager.getInstance(context)
 
-        val areNotificationsEnabled = NotificationManagerCompat.from(context).areNotificationsEnabled()
+        val repeatInterval = settingsManager.notificationCheckInterval.value.toLong()
+        val areNotificationsEnabled =
+            NotificationManagerCompat.from(context).areNotificationsEnabled() && repeatInterval != 0L
         if (!areNotificationsEnabled) {
             workManager.cancelUniqueWork("torrent_downloaded")
             return
         }
 
-        val repeatInterval = settingsManager.notificationCheckInterval.value.toLong()
         val currentWork = workManager.getWorkInfosForUniqueWork("torrent_downloaded").get().firstOrNull()
 
         if (currentWork != null &&
