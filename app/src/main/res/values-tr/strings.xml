@@ -469,7 +469,6 @@
     <string name="settings_server_url_configuration_not_valid">Girilen URL yapılandırması geçerli değil.</string>
     <string name="settings_server_connection_success">Sunucuya başarıyla bağlanıldı.</string>
     <string name="notification_channel_download_completed">İndirme tamamlandı</string>
-    <string name="notification_torrent_downloaded">başarıyla indirildi.</string>
     <string name="accessibility_open_navigation_drawer">Gezinme çekmecesini aç</string>
     <string name="accessibility_close_navigation_drawer">Gezinme çekmecesini kapat</string>
     <string name="torrent_option_share_limit_global">Genel paylaşım sınırlarını kullan</string>

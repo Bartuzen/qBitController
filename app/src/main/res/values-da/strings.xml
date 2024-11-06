@@ -375,7 +375,6 @@
     <string name="share_add_torrent">Tilføj Torrent</string>
     <string name="torrent_status_missing_files">Manglende Filer</string>
     <string name="notification_channel_download_completed">Download færdig</string>
-    <string name="notification_torrent_downloaded">er færdig med at downloade.</string>
     <string name="language_code">da</string>
     <string name="torrent_status_error">Fejl</string>
     <string name="torrent_status_seeding">Seeding</string>

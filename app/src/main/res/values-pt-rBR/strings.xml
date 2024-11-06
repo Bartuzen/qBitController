@@ -537,7 +537,6 @@
     <string name="settings_server_action_save">Salvar</string>
     <string name="settings_server_action_advanced_settings">Configurações avançadas</string>
     <string name="settings_server_advanced_basic_auth_enabled">Habilitado</string>
-    <string name="notification_torrent_downloaded">terminou de ser baixado.</string>
     <string name="settings_server_advanced_basic_auth_username">Usuário</string>
     <string name="settings_server_add_success">O servidor foi adicionado com sucesso.</string>
     <string name="settings_server_edit_success">O servidor foi editado com sucesso.</string>

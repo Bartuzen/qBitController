@@ -587,7 +587,6 @@
     <string name="settings_server_connection_success">已成功连接到服务器。</string>
     <string name="about_description">qBitController 是一款能从 Android 设备中远程控制 qBittorrent 的软件。\n\n您可从此处获取更多详细信息以及源代码： %1$s</string>
     <string name="notification_channel_download_completed">下载完成</string>
-    <string name="notification_torrent_downloaded">已下载完成。</string>
     <string name="accessibility_open_navigation_drawer">打开侧滑栏</string>
     <string name="accessibility_close_navigation_drawer">关闭侧滑栏</string>
     <string name="settings_language">语言</string>

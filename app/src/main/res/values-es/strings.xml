@@ -558,7 +558,6 @@
     <string name="torrent_add_link_hint">Iman o enlace HTTP</string>
     <string name="torrent_overview_peers">Pares</string>
     <string name="execution_log_title">Registro de ejecución</string>
-    <string name="notification_torrent_downloaded">ha finalizado la descarga.</string>
     <string name="settings_server_title_add">Añadir un servidor</string>
     <string name="accessibility_open_navigation_drawer">Abrir el cajón de navegación</string>
     <string name="rss_rule_action_create">Crear una regla</string>
