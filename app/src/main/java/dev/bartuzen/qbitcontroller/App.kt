@@ -53,7 +53,11 @@ class App : Application(), Configuration.Provider, ImageLoaderFactory {
         configMigrator.run()
 
         notificationManager.updateChannels()
-        notificationManager.startWorker()
+        CoroutineScope(Dispatchers.Main).launch {
+            settingsManager.notificationCheckInterval.flow.collectLatest {
+                notificationManager.startWorker()
+            }
+        }
 
         CoroutineScope(Dispatchers.Main).launch {
             settingsManager.theme.flow.collectLatest { theme ->

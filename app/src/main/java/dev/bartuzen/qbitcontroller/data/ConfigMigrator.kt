@@ -9,7 +9,7 @@ import javax.inject.Singleton
 class ConfigMigrator @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
-    private val currentVersion = 2
+    private val currentVersion = 3
 
     fun run() {
         val sharedPref = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
@@ -23,7 +23,7 @@ class ConfigMigrator @Inject constructor(
         }
 
         if (oldVersion < currentVersion) {
-//            startMigration(oldVersion)
+            startMigration(oldVersion)
 
             sharedPref.edit()
                 .putInt("configVersion", currentVersion)
@@ -31,9 +31,15 @@ class ConfigMigrator @Inject constructor(
         }
     }
 
-//    private fun startMigration(oldVersion: Int) {
-//        if (oldVersion < 3) {
-//
-//        }
-//    }
+    private fun startMigration(oldVersion: Int) {
+        if (oldVersion < 3) {
+            val sharedPref = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+            val notificationCheckInterval = sharedPref.getInt("notificationCheckInterval", -1).takeIf { it != -1 }
+            if (notificationCheckInterval != null && notificationCheckInterval < 15) {
+                sharedPref.edit()
+                    .putInt("notificationCheckInterval", 15)
+                    .apply()
+            }
+        }
+    }
 }

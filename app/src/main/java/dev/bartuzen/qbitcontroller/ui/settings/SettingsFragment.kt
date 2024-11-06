@@ -80,7 +80,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                         val num = value?.toIntOrNull() ?: return
                         viewModel.notificationCheckInterval = when {
                             num > 24 * 60 -> 24 * 60
-                            num < 1 -> 1
+                            num < 15 -> 15
                             else -> num
                         }
                     }

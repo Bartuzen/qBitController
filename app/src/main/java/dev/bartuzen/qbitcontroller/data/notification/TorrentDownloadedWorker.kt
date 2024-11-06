@@ -11,16 +11,12 @@ import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import dev.bartuzen.qbitcontroller.data.ServerManager
-import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
-import kotlin.time.Duration.Companion.minutes
 
 @HiltWorker
 class TorrentDownloadedWorker @AssistedInject constructor(
@@ -28,28 +24,17 @@ class TorrentDownloadedWorker @AssistedInject constructor(
     @Assisted workParams: WorkerParameters,
     private val requestManager: RequestManager,
     private val serverManager: ServerManager,
-    private val settingsManager: SettingsManager,
     private val notifier: TorrentDownloadedNotifier,
 ) : CoroutineWorker(appContext, workParams) {
     private val notificationManager = NotificationManagerCompat.from(applicationContext)
 
     override suspend fun doWork(): Result {
-        settingsManager.notificationCheckInterval.flow.collectLatest { interval ->
-            while (true) {
-                checkCompleted()
-                delay(interval.minutes)
-            }
-        }
-        return Result.success()
-    }
-
-    private suspend fun checkCompleted() {
         notifier.discardRemovedServers()
 
         if (!notificationManager.areNotificationsEnabled()) {
             WorkManager.getInstance(applicationContext)
                 .cancelUniqueWork("torrent_downloaded")
-            return
+            return Result.success()
         }
 
         val serverIds = serverManager.serversFlow.value.keys
@@ -71,6 +56,8 @@ class TorrentDownloadedWorker @AssistedInject constructor(
                 }
             }
         }
+
+        return Result.success()
     }
 
     private fun isDownloadNotificationsEnabled(serverId: Int) = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
