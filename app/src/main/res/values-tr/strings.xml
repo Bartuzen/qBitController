@@ -616,6 +616,10 @@
     <string name="settings_server_advanced_doh">HTTPS üzerinden DNS (DoH)</string>
     <plurals name="torrent_add_files_selected">
         <item quantity="one">%1$d dosya seçildi</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
+    <string name="torrent_overview_private">Özel</string>
+    <string name="torrent_overview_private_yes">Evet</string>
+    <string name="torrent_overview_private_no">Hayır</string>
+    <string name="torrent_list_status_set_as_default">Varsayılan Olarak Ayarla</string>
 </resources>

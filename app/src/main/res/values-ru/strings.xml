@@ -650,4 +650,8 @@
         <item quantity="other">%1$d файлов выбрано</item>
     </plurals>
     <string name="settings_server_advanced_doh">DNS через HTTPS (DoH)</string>
+    <string name="torrent_overview_private_yes">Да</string>
+    <string name="torrent_overview_private">Частный</string>
+    <string name="torrent_overview_private_no">Нет</string>
+    <string name="torrent_list_status_set_as_default">Установить по умолчанию</string>
 </resources>
