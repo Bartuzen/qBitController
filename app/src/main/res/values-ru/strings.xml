@@ -357,7 +357,7 @@
     <string name="torrent_overview_connections_format">%1$d (%2$d макс.)</string>
     <string name="torrent_overview_seeds">Сиды</string>
     <string name="torrent_overview_wasted">Потеряно</string>
-    <string name="torrent_files_directory_format"><b>Папка: </b> %1$s</string>
+    <string name="torrent_files_directory_format"><![CDATA[<b>Папка: </b>]]> %1$s</string>
     <string name="torrent_files_priority_mixed">Смешанный</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">Приоритет загрузки</string>
@@ -654,4 +654,5 @@
     <string name="torrent_overview_private">Частный</string>
     <string name="torrent_overview_private_no">Нет</string>
     <string name="torrent_list_status_set_as_default">Установить по умолчанию</string>
+    <string name="notification_torrent_downloaded">Торрент загружен</string>
 </resources>
