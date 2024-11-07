@@ -466,7 +466,7 @@
     <string name="rss_delete_feed_error">No se puede borrar el feed.</string>
     <string name="torrent_peers_flag_peer_snubbed">Desairado por sus pares</string>
     <string name="rss_delete_folder_error">No se ha podido borrar la carpeta.</string>
-    <string name="torrent_files_directory_format"><b>Directorio: </b> %1$s</string>
+    <string name="torrent_files_directory_format"><![CDATA[<b>Directorio: </b>]]> %1$s</string>
     <string name="settings_enable_torrent_swipe_actions">Habilitar deslizar</string>
     <string name="search_plugins_install_success">Los plugins se han instalado correctamente.</string>
     <string name="rss_mark_all_articles_as_read_success">Todos los artículos marcados como leídos.</string>
@@ -638,4 +638,5 @@
     <string name="torrent_overview_private_yes">Sí</string>
     <string name="torrent_overview_private_no">No</string>
     <string name="torrent_list_status_set_as_default">Establecer como predeterminado</string>
+    <string name="notification_torrent_downloaded">Torrent descargado</string>
 </resources>
