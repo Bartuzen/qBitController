@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.data.repositories
 
+import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -36,14 +37,21 @@ class AddTorrentRepository @Inject constructor(
             MultipartBody.Part.createFormData(
                 "torrents",
                 fileName,
-                byteArray.toRequestBody("application/x-bittorrent".toMediaTypeOrNull(), 0),
+                byteArray.toRequestBody("application/x-bittorrent".toMediaTypeOrNull()),
             )
         }
+
+        val pausedKey = when (requestManager.getQBittorrentVersion(serverId)) {
+            QBittorrentVersion.V4 -> "paused"
+            QBittorrentVersion.V5 -> "stopped"
+        }
+        val pausedPart = MultipartBody.Part.createFormData(pausedKey, isPaused.toString())
+        val parts = fileParts.orEmpty() + pausedPart
 
         return requestManager.request(serverId) { service ->
             service.addTorrent(
                 links?.joinToString("\n"),
-                fileParts,
+                parts,
                 savePath,
                 category,
                 tags.joinToString(",").ifEmpty { null },
@@ -54,7 +62,6 @@ class AddTorrentRepository @Inject constructor(
                 uploadSpeedLimit,
                 ratioLimit,
                 seedingTimeLimit,
-                isPaused,
                 skipHashChecking,
                 isAutoTorrentManagementEnabled,
                 isSequentialDownloadEnabled,
