@@ -1065,6 +1065,7 @@ fun TorrentListScreen(
 
                             AnimatedContent(
                                 emptyListState,
+                                contentAlignment = Alignment.Center,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .imePadding(),
