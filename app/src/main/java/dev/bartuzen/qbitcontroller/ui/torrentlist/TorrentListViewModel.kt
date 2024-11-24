@@ -772,6 +772,14 @@ class TorrentListViewModel @Inject constructor(
         settingsManager.areTrackersCollapsed.value = isCollapsed
     }
 
+    fun resetFilters() {
+        _searchQuery.value = ""
+        _selectedCategory.value = CategoryTag.All
+        _selectedTag.value = CategoryTag.All
+        _selectedFilter.value = TorrentFilter.ALL
+        _selectedTracker.value = Tracker.All
+    }
+
     fun setSpeedLimits(serverId: Int, download: Int?, upload: Int?) {
         val job = Job()
 

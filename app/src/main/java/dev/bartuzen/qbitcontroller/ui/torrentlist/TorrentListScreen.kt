@@ -40,6 +40,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -65,7 +66,9 @@ import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -88,6 +91,7 @@ import androidx.compose.material.icons.outlined.KeyboardDoubleArrowDown
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowUp
 import androidx.compose.material.icons.outlined.ToggleOff
 import androidx.compose.material.icons.outlined.ToggleOn
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DrawerDefaults
@@ -107,6 +111,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -196,6 +201,7 @@ import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.components.EmptyListMessage
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.ui.icons.Priority
@@ -241,6 +247,11 @@ fun TorrentListScreen(
     val servers by viewModel.serversFlow.collectAsStateWithLifecycle()
     val currentServer = viewModel.currentServer.collectAsStateWithLifecycle().value
     val serverId = currentServer?.id
+
+    val selectedFilter by viewModel.selectedFilter.collectAsStateWithLifecycle()
+    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
+    val selectedTag by viewModel.selectedTag.collectAsStateWithLifecycle()
+    val selectedTracker by viewModel.selectedTracker.collectAsStateWithLifecycle()
 
     var isSearchMode by remember { mutableStateOf(false) }
     val selectedTorrents = remember { mutableStateListOf<String>() }
@@ -815,11 +826,6 @@ fun TorrentListScreen(
                 ) {
                     val counts by viewModel.counts.collectAsStateWithLifecycle()
 
-                    val selectedFilter by viewModel.selectedFilter.collectAsStateWithLifecycle()
-                    val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
-                    val selectedTag by viewModel.selectedTag.collectAsStateWithLifecycle()
-                    val selectedTracker by viewModel.selectedTracker.collectAsStateWithLifecycle()
-
                     val areStatesCollapsed by viewModel.areStatesCollapsed.collectAsStateWithLifecycle()
                     val areCategoriesCollapsed by viewModel.areCategoriesCollapsed.collectAsStateWithLifecycle()
                     val areTagsCollapsed by viewModel.areTagsCollapsed.collectAsStateWithLifecycle()
@@ -977,71 +983,116 @@ fun TorrentListScreen(
                             }
                         }
 
-                        LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            contentPadding = PaddingValues(horizontal = 4.dp),
-                            state = listState,
-                            modifier = Modifier.fillMaxSize(),
-                        ) {
-                            itemsIndexed(
-                                items = torrents ?: emptyList(),
-                                key = { _, torrent -> "$serverId-${torrent.hash}" },
-                            ) { index, torrent ->
-                                TorrentItem(
-                                    torrent = torrent,
-                                    selected = torrent.hash in selectedTorrents,
-                                    searchQuery = searchQuery.ifEmpty { null },
-                                    onClick = {
-                                        if (selectedTorrents.isNotEmpty()) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            LazyColumn(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                contentPadding = PaddingValues(horizontal = 4.dp),
+                                state = listState,
+                                modifier = Modifier.fillMaxSize(),
+                            ) {
+                                itemsIndexed(
+                                    items = torrents.orEmpty(),
+                                    key = { _, torrent -> "$serverId-${torrent.hash}" },
+                                ) { index, torrent ->
+                                    TorrentItem(
+                                        torrent = torrent,
+                                        selected = torrent.hash in selectedTorrents,
+                                        searchQuery = searchQuery.ifEmpty { null },
+                                        onClick = {
+                                            if (selectedTorrents.isNotEmpty()) {
+                                                if (torrent.hash !in selectedTorrents) {
+                                                    selectedTorrents += torrent.hash
+                                                } else {
+                                                    selectedTorrents -= torrent.hash
+                                                }
+                                            } else {
+                                                val intent = Intent(context, TorrentActivity::class.java).apply {
+                                                    putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
+                                                    putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
+                                                }
+                                                torrentLauncher.launch(intent)
+                                            }
+                                        },
+                                        onLongClick = {
                                             if (torrent.hash !in selectedTorrents) {
                                                 selectedTorrents += torrent.hash
                                             } else {
                                                 selectedTorrents -= torrent.hash
                                             }
-                                        } else {
-                                            val intent = Intent(context, TorrentActivity::class.java).apply {
-                                                putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
-                                                putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
-                                            }
-                                            torrentLauncher.launch(intent)
-                                        }
-                                    },
-                                    onLongClick = {
-                                        if (torrent.hash !in selectedTorrents) {
-                                            selectedTorrents += torrent.hash
-                                        } else {
-                                            selectedTorrents -= torrent.hash
-                                        }
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .animateItem()
-                                        .testTag("torrent_$index")
-                                        .focusProperties {
-                                            canFocus = drawerState.isClosed
                                         },
-                                    swipeEnabled = swipeEnabled,
-                                    onPauseTorrent = { viewModel.pauseTorrents(serverId, listOf(torrent.hash)) },
-                                    onResumeTorrent = { viewModel.resumeTorrents(serverId, listOf(torrent.hash)) },
-                                    onDeleteTorrent = { currentDialog = Dialog.DeleteTorrent(torrent.hash) },
-                                )
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .animateItem()
+                                            .testTag("torrent_$index")
+                                            .focusProperties {
+                                                canFocus = drawerState.isClosed
+                                            },
+                                        swipeEnabled = swipeEnabled,
+                                        onPauseTorrent = { viewModel.pauseTorrents(serverId, listOf(torrent.hash)) },
+                                        onResumeTorrent = { viewModel.resumeTorrents(serverId, listOf(torrent.hash)) },
+                                        onDeleteTorrent = { currentDialog = Dialog.DeleteTorrent(torrent.hash) },
+                                    )
+                                }
+
+                                item {
+                                    Spacer(
+                                        modifier = Modifier.windowInsetsBottomHeight(
+                                            WindowInsets.systemBars.union(WindowInsets.ime),
+                                        ),
+                                    )
+                                }
                             }
 
-                            item {
-                                Spacer(
-                                    modifier = Modifier.windowInsetsBottomHeight(
-                                        WindowInsets.systemBars.union(WindowInsets.ime),
-                                    ),
-                                )
+                            SideEffect {
+                                if (!listState.isScrollInProgress) {
+                                    listState.requestScrollToItem(
+                                        index = listState.firstVisibleItemIndex,
+                                        scrollOffset = listState.firstVisibleItemScrollOffset,
+                                    )
+                                }
                             }
-                        }
 
-                        SideEffect {
-                            if (!listState.isScrollInProgress) {
-                                listState.requestScrollToItem(
-                                    index = listState.firstVisibleItemIndex,
-                                    scrollOffset = listState.firstVisibleItemScrollOffset,
-                                )
+                            val emptyListState = if (torrents?.isEmpty() == true) {
+                                val hasFilters = searchQuery != "" ||
+                                    selectedCategory != CategoryTag.All ||
+                                    selectedTag != CategoryTag.All ||
+                                    selectedFilter != TorrentFilter.ALL ||
+                                    selectedTracker != Tracker.All
+                                if (hasFilters) 1 else 2
+                            } else {
+                                0
+                            }
+
+                            AnimatedContent(
+                                emptyListState,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .imePadding(),
+                            ) { emptyListState ->
+                                when (emptyListState) {
+                                    1 -> {
+                                        NoResultsMessage(
+                                            onResetFilters = {
+                                                viewModel.resetFilters()
+                                                isSearchMode = false
+                                            },
+                                        )
+                                    }
+                                    2 -> {
+                                        NoTorrentsMessage(
+                                            serverId = serverId,
+                                            onTorrentAdded = {
+                                                viewModel.loadMainData()
+                                                scope.launch {
+                                                    snackbarHostState.currentSnackbarData?.dismiss()
+                                                    snackbarHostState.showSnackbar(
+                                                        context.getString(R.string.torrent_add_success),
+                                                    )
+                                                }
+                                            },
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -3719,5 +3770,78 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
                 Text(text = stringResource(R.string.dialog_ok))
             }
         },
+    )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val addTorrentLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val isAdded = result.data?.getBooleanExtra(AddTorrentActivity.Extras.IS_ADDED, false) == true
+            if (isAdded) {
+                onTorrentAdded()
+            }
+        }
+    }
+
+    EmptyListMessage(
+        icon = Icons.Default.Download,
+        title = stringResource(R.string.torrent_list_empty_title),
+        description = stringResource(R.string.torrent_list_empty_description),
+        actionButton = {
+            FlowRow(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        val intent = Intent(context, RssActivity::class.java).apply {
+                            putExtra(RssActivity.Extras.SERVER_ID, serverId)
+                        }
+                        context.startActivity(intent)
+                    },
+                ) {
+                    Text(text = stringResource(R.string.torrent_list_empty_rss))
+                }
+                OutlinedButton(
+                    onClick = {
+                        val intent = Intent(context, SearchActivity::class.java).apply {
+                            putExtra(SearchActivity.Extras.SERVER_ID, serverId)
+                        }
+                        context.startActivity(intent)
+                    },
+                ) {
+                    Text(text = stringResource(R.string.torrent_list_empty_search))
+                }
+                Button(
+                    onClick = {
+                        val intent = Intent(context, AddTorrentActivity::class.java).apply {
+                            putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
+                        }
+                        addTorrentLauncher.launch(intent)
+                    },
+                ) {
+                    Text(text = stringResource(R.string.torrent_list_empty_add))
+                }
+            }
+        },
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun NoResultsMessage(onResetFilters: () -> Unit, modifier: Modifier = Modifier) {
+    EmptyListMessage(
+        icon = Icons.Default.FilterList,
+        title = stringResource(R.string.torrent_list_no_result_title),
+        description = stringResource(R.string.torrent_list_no_result_description),
+        actionButton = {
+            Button(onClick = onResetFilters) {
+                Text(text = stringResource(R.string.torrent_list_no_result_reset))
+            }
+        },
+        modifier = modifier,
     )
 }

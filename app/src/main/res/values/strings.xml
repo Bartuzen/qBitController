@@ -67,6 +67,15 @@
     <string name="main_no_servers">No servers have been found. Click here to add one.</string>
     <string name="main_add_server">Add Server</string>
 
+    <string name="torrent_list_empty_title">No Torrents Found</string>
+    <string name="torrent_list_empty_description">You don\'t have any torrents. Add one to get started.</string>
+    <string name="torrent_list_empty_rss">Add via RSS</string>
+    <string name="torrent_list_empty_search">Search Torrents</string>
+    <string name="torrent_list_empty_add">Add Torrent</string>
+    <string name="torrent_list_no_result_title">No Results Found</string>
+    <string name="torrent_list_no_result_description">No torrents match your current filters. Try adjusting your filters or search criteria.</string>
+    <string name="torrent_list_no_result_reset">Reset Filters</string>
+
     <string name="torrent_list_action_add_torrent">Add Torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">Search Online</string>
