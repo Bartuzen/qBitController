@@ -2434,7 +2434,7 @@ private fun TopBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarSelection(
+private fun TopBarSelection(
     torrents: List<Torrent>?,
     selectedTorrents: SnapshotStateList<String>,
     canFocusNow: Boolean,
@@ -3080,7 +3080,7 @@ private fun DeleteTorrentsDialog(
 }
 
 @Composable
-fun SetTorrentsLocationDialog(
+private fun SetTorrentsLocationDialog(
     initialLocation: String?,
     onDismiss: () -> Unit,
     onConfirm: (location: String) -> Unit,
@@ -3156,7 +3156,7 @@ fun SetTorrentsLocationDialog(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SetTorrentsCategoryDialog(
+private fun SetTorrentsCategoryDialog(
     initialSelectedCategory: String?,
     categories: List<String>,
     onDismiss: () -> Unit,
@@ -3776,7 +3776,7 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifier: Modifier = Modifier) {
+private fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val addTorrentLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -3833,7 +3833,7 @@ fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifier: Modif
 }
 
 @Composable
-fun NoResultsMessage(onResetFilters: () -> Unit, modifier: Modifier = Modifier) {
+private fun NoResultsMessage(onResetFilters: () -> Unit, modifier: Modifier = Modifier) {
     EmptyListMessage(
         icon = Icons.Default.FilterList,
         title = stringResource(R.string.torrent_list_no_result_title),
