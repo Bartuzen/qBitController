@@ -623,4 +623,12 @@
     <string name="torrent_overview_private_no">Hayır</string>
     <string name="torrent_list_status_set_as_default">Varsayılan Olarak Ayarla</string>
     <string name="notification_torrent_downloaded">Torrent indirildi</string>
+    <string name="torrent_list_empty_description">Hiç torrentiniz yok. Başlamak için bir tane ekleyin.</string>
+    <string name="torrent_list_empty_rss">RSS ile Ekle</string>
+    <string name="torrent_list_empty_search">Torrent Ara</string>
+    <string name="torrent_list_no_result_reset">Filtreleri Sıfırla</string>
+    <string name="torrent_list_empty_title">Torrent Bulunamadı</string>
+    <string name="torrent_list_empty_add">Torrent Ekle</string>
+    <string name="torrent_list_no_result_title">Sonuç Bulunamadı</string>
+    <string name="torrent_list_no_result_description">Mevcut filtrelerinize uygun torrent bulunamadı. Filtrelerinizi veya arama kriterlerinizi değiştirmeyi deneyin.</string>
 </resources>
