@@ -639,4 +639,12 @@
     <string name="torrent_overview_private">Particular</string>
     <string name="torrent_list_status_set_as_default">Definir como padrão</string>
     <string name="notification_torrent_downloaded">Torrent transferido</string>
+    <string name="torrent_list_empty_rss">Adicionar via RSS</string>
+    <string name="torrent_list_empty_search">Buscar Torrents</string>
+    <string name="torrent_list_no_result_reset">Redefinir Filtros</string>
+    <string name="torrent_list_empty_title">Nenhum Torrent Encontrado</string>
+    <string name="torrent_list_empty_description">Você não possui nenhum torrent. Adicione algum para começar.</string>
+    <string name="torrent_list_no_result_title">Nenhum Resultado Encontrado</string>
+    <string name="torrent_list_empty_add">Adicionar Torrent</string>
+    <string name="torrent_list_no_result_description">Nenhum torrent corresponde aos seus filtros atuais. Tente ajustar seus filtros ou o critério de busca.</string>
 </resources>
