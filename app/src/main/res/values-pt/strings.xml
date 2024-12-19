@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="language_code">pt</string>
+    <string name="share_add_torrent">Adicionar Torrent</string>
+    <string name="torrent_status_checking">A verificar</string>
+    <string name="torrent_status_error">Erro</string>
+    <string name="torrent_status_seeding">A semear</string>
+    <string name="torrent_status_paused">Pausado</string>
+    <string name="torrent_status_queued">Na fila</string>
+    <string name="torrent_status_stalled">Parado</string>
+    <string name="torrent_status_completed">Completo</string>
+</resources>
