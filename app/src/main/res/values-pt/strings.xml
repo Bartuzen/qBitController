@@ -92,4 +92,20 @@
     <string name="torrent_list_action_sort_upload_speed">Velocidade de envio</string>
     <string name="torrent_list_action_sort_priority">Prioridade</string>
     <string name="torrent_list_action_sort_total_leeches">Total sanguessugas</string>
+    <string name="torrent_list_no_result_reset">Repor Filtros</string>
+    <string name="torrent_list_action_sort">Ordenar</string>
+    <string name="torrent_list_action_priority_increase">Aumentar Prioridade</string>
+    <string name="torrent_list_action_priority_decrease">Diminuir Prioridade</string>
+    <string name="torrent_list_action_set_location">Definir localização</string>
+    <string name="torrent_list_action_set_category">Definir categoria</string>
+    <string name="torrent_list_search_torrents">Pesquisar torrents…</string>
+    <string name="torrent_list_free_space">Espaço livre: %1$s</string>
+    <string name="torrent_list_untagged">Sem etiqueta</string>
+    <string name="torrent_list_create_category">Criar Categoria</string>
+    <string name="torrent_list_edit_category">Editar Categoria</string>
+    <string name="torrent_list_categories">Categorias</string>
+    <string name="torrent_list_create_subcategory">Criar Subcategoria</string>
+    <string name="torrent_list_category_tag_all">Todos</string>
+    <string name="torrent_list_uncategorized">Sem Categoria</string>
+    <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
 </resources>
