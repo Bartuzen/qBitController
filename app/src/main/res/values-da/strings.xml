@@ -217,10 +217,10 @@
     <string name="torrent_peers_details_country">Land: %1$s</string>
     <string name="torrent_peers_details_connection">Forbindelse: %1$s</string>
     <string name="torrent_peers_details_client">Klient: %1$s</string>
-    <string name="torrent_peers_details_progress">Fremskridt: %1$s%</string>
+    <string name="torrent_peers_details_progress">Fremskridt: %1$s%%</string>
     <string name="torrent_peers_details_download_speed">Download Hastighed: %1$s</string>
     <string name="torrent_peers_details_uploaded">Uploadet: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevans: %1$s%</string>
+    <string name="torrent_peers_details_relevance">Relevans: %1$s%%</string>
     <string name="torrent_peers_details_files">Filer: %1$s</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_encrypted_traffic">Krypteret trafik</string>

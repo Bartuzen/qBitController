@@ -381,7 +381,7 @@
     <string name="torrent_peers_details_upload_speed">Velocidade de upload: %1$s</string>
     <string name="torrent_peers_details_downloaded">Transferido: %1$s</string>
     <string name="torrent_peers_details_uploaded">Enviado: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevância: %1$s%%%</string>
+    <string name="torrent_peers_details_relevance">Relevância: %1$s%%</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interessados (locais) e paralisados (peer)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Interessados (locais) e não paralisados (peer)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interessados (peer) e paralisados (locais)</string>
