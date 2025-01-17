@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 
@@ -109,7 +108,6 @@ fun AppBarActions(
                     }
                 },
                 modifier = Modifier
-                    .testTag("overflow")
                     .focusProperties {
                         this.canFocus = canFocus
                     },

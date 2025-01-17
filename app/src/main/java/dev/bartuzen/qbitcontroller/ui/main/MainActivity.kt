@@ -12,9 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.lifecycleScope
@@ -69,9 +66,6 @@ class MainActivity : AppCompatActivity() {
                 NavHost(
                     navController = navController,
                     startDestination = Destination.TorrentList,
-                    modifier = Modifier.semantics {
-                        testTagsAsResourceId = true
-                    },
                 ) {
                     composable<Destination.TorrentList> {
                         var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }

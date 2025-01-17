@@ -155,7 +155,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -1024,7 +1023,6 @@ fun TorrentListScreen(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .animateItem()
-                                            .testTag("torrent_$index")
                                             .focusProperties {
                                                 canFocus = drawerState.isClosed
                                             },
