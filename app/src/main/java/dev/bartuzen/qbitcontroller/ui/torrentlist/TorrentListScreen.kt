@@ -213,6 +213,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.adaptiveIconPainterResource
+import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -1527,6 +1528,7 @@ private fun DrawerContent(
                     onDismissRequest = {
                         showMenu = false
                     },
+                    modifier = Modifier.dropdownMenuHeight(),
                 ) {
                     DropdownMenuItem(
                         text = {
@@ -1673,6 +1675,7 @@ private fun DrawerContent(
                     onDismissRequest = {
                         showMenu = false
                     },
+                    modifier = Modifier.dropdownMenuHeight(),
                 ) {
                     if (areSubcategoriesEnabled) {
                         DropdownMenuItem(
@@ -1837,6 +1840,7 @@ private fun DrawerContent(
                     onDismissRequest = {
                         showMenu = false
                     },
+                    modifier = Modifier.dropdownMenuHeight(),
                 ) {
                     DropdownMenuItem(
                         text = {
@@ -2363,6 +2367,7 @@ private fun TopBar(
                     expanded = showSortMenu,
                     onDismissRequest = { showSortMenu = false },
                     scrollState = sortMenuScrollState,
+                    modifier = Modifier.dropdownMenuHeight(),
                 ) {
                     Text(
                         text = stringResource(R.string.torrent_list_action_sort),
@@ -2534,6 +2539,7 @@ private fun TopBarSelection(
                             DropdownMenu(
                                 expanded = showPriorityMenu,
                                 onDismissRequest = { showPriorityMenu = false },
+                                modifier = Modifier.dropdownMenuHeight(),
                             ) {
                                 Text(
                                     text = stringResource(R.string.torrent_list_action_priority),

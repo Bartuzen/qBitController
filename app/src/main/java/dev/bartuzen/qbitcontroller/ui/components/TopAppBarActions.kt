@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 
 data class ActionMenuItem(
     val title: String,
@@ -132,6 +133,7 @@ fun AppBarActions(
                 },
                 expanded = showOverflow,
                 scrollState = overflowScrollState,
+                modifier = Modifier.dropdownMenuHeight(),
             ) {
                 overflowList.forEach { item ->
                     DropdownMenuItem(
