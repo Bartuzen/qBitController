@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="language_code">zh(TW)</string>
+    <string name="language_code">zh-TW</string>
     <string name="share_add_torrent">加入種子</string>
     <string name="torrent_status_error">錯誤</string>
     <string name="torrent_status_missing_files">遺失檔案</string>
