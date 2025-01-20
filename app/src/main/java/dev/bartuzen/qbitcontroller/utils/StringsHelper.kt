@@ -14,6 +14,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.Locale
 import kotlin.math.roundToLong
 
 fun formatBytes(context: Context, byte: Long) = when (byte) {
@@ -172,6 +173,22 @@ fun formatDate(epochSecondOrMilli: Long): String = if (epochSecondOrMilli >= 100
         DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
             .withZone(ZoneId.systemDefault()),
     )
+
+fun getCountryName(context: Context, countryCode: String): String {
+    val (language, country) = context.getString(R.string.language_code)
+        .replace("-", "_")
+        .split("_")
+        .let { it.first() to it.getOrNull(1) }
+
+    val localeForLanguage = if (country == null) Locale(language) else Locale(language, country)
+
+    return Locale("", countryCode).getDisplayCountry(
+        localeForLanguage,
+    )
+}
+
+@Composable
+fun getCountryName(countryCode: String) = getCountryName(LocalContext.current, countryCode)
 
 private val ipPattern = Regex(
     """(?:[a-zA-Z]+://)?(?:((?:\d{1,3}\.){3}\d{1,3})|\[?((?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?""",

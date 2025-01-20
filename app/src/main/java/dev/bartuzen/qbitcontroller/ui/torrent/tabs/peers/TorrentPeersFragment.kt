@@ -29,6 +29,7 @@ import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
+import dev.bartuzen.qbitcontroller.utils.getCountryName
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -42,7 +43,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 @AndroidEntryPoint
 class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
@@ -266,9 +266,7 @@ class TorrentPeersFragment() : Fragment(R.layout.fragment_torrent_peers) {
             val filesText = if (peer.files.isNotEmpty()) "" else "-"
 
             if (peer.countryCode != null) {
-                val countryName = Locale("", peer.countryCode).getDisplayCountry(
-                    Locale(context.getString(R.string.language_code)),
-                )
+                val countryName = getCountryName(context, peer.countryCode)
                 binding.textCountry.text = getString(R.string.torrent_peers_details_country, countryName)
                 binding.textCountry.visibility = View.VISIBLE
             } else {

@@ -10,7 +10,7 @@ import dev.bartuzen.qbitcontroller.databinding.ItemTorrentPeerBinding
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
 import dev.bartuzen.qbitcontroller.ui.base.MultiSelectAdapter
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
-import java.util.Locale
+import dev.bartuzen.qbitcontroller.utils.getCountryName
 
 class TorrentPeersAdapter(
     private val loadImage: (imageView: ImageView, countryCode: String) -> Unit,
@@ -49,9 +49,7 @@ class TorrentPeersAdapter(
             binding.textSpeed.text = speedList.joinToString(" ")
 
             if (peer.countryCode != null) {
-                val countryName = Locale("", peer.countryCode).getDisplayCountry(
-                    Locale(context.getString(R.string.language_code)),
-                )
+                val countryName = getCountryName(context, peer.countryCode)
                 binding.textCountry.text = context.getString(R.string.torrent_peers_country, countryName)
                 binding.textCountry.visibility = View.VISIBLE
 
