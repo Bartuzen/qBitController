@@ -661,4 +661,7 @@
     <string name="torrent_files_rename_file_hint">Ім\'я файлу</string>
     <string name="torrent_overview_peers_format">%1$d (усього %2$d)</string>
     <string name="torrent_overview_wasted">Витрачено</string>
+    <string name="torrent_overview_popularity">Популярність</string>
+    <string name="rss_action_edit_feed_url">Редагувати URL каналу</string>
+    <string name="rss_success_feed_change_url">URL каналу успішно змінено.</string>
 </resources>
