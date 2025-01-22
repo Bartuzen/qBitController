@@ -501,6 +501,7 @@
     <string name="rss_action_add">Add</string>
     <string name="rss_action_add_feed">Add Feed</string>
     <string name="rss_action_rename_feed">Rename Feed</string>
+    <string name="rss_action_edit_feed_url">Edit Feed URL</string>
     <string name="rss_action_move_feed">Move Feed</string>
     <string name="rss_action_delete_feed">Delete Feed</string>
     <string name="rss_action_add_folder">Add Folder</string>
@@ -526,6 +527,7 @@
 
     <string name="rss_added_feed">Feed added successfully.</string>
     <string name="rss_success_feed_rename">Feed renamed successfully.</string>
+    <string name="rss_success_feed_change_url">Feed URL changed successfully.</string>
     <string name="rss_success_feed_move">Feed moved successfully.</string>
     <string name="rss_success_feed_delete">Feed deleted successfully.</string>
     <string name="rss_success_folder_add">Folder added successfully.</string>

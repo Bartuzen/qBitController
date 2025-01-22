@@ -31,4 +31,8 @@ class RssFeedRepository @Inject constructor(
     suspend fun moveItem(serverId: Int, from: String, to: String) = requestManager.request(serverId) { service ->
         service.moveItem(from, to)
     }
+
+    suspend fun setFeedUrl(serverId: Int, path: String, url: String) = requestManager.request(serverId) { service ->
+        service.setFeedUrl(path, url)
+    }
 }

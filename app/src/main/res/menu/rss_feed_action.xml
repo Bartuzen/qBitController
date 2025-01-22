@@ -6,6 +6,10 @@
         android:title="@string/rss_action_rename_feed" />
 
     <item
+        android:id="@+id/edit_feed_url"
+        android:title="@string/rss_action_edit_feed_url"/>
+
+    <item
         android:id="@+id/move"
         android:title="@string/rss_action_move_feed" />
 

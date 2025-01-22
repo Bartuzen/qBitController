@@ -173,6 +173,17 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
+    fun setFeedUrl(serverId: Int, path: String, url: String) = viewModelScope.launch {
+        when (val result = repository.setFeedUrl(serverId, path, url)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FeedUrlChanged)
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         data object AllFeedsRefreshed : Event()
@@ -186,6 +197,7 @@ class RssFeedsViewModel @Inject constructor(
         data object FolderDeleteError : Event()
         data object FeedAdded : Event()
         data object FeedRenamed : Event()
+        data object FeedUrlChanged : Event()
         data object FeedMoved : Event()
         data object FeedDeleted : Event()
         data object FolderAdded : Event()

@@ -311,6 +311,10 @@ interface TorrentService {
     suspend fun addRssFeed(@Field("url") url: String, @Field("path") path: String): Response<Unit>
 
     @FormUrlEncoded
+    @POST("api/v2/rss/setFeedURL")
+    suspend fun setFeedUrl(@Field("path") path: String, @Field("url") url: String): Response<Unit>
+
+    @FormUrlEncoded
     @POST("api/v2/rss/addFolder")
     suspend fun addRssFolder(@Field("path") path: String): Response<Unit>
 

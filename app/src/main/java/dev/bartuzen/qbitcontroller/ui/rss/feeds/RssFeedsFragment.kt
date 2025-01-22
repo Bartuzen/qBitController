@@ -22,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFeedBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssAddFolderBinding
+import dev.bartuzen.qbitcontroller.databinding.DialogRssEditFeedUrlBinding
 import dev.bartuzen.qbitcontroller.databinding.DialogRssRenameFeedFolderBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
@@ -206,6 +207,10 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     showSnackbar(R.string.rss_success_feed_rename)
                     viewModel.loadRssFeeds(serverId)
                 }
+                RssFeedsViewModel.Event.FeedUrlChanged -> {
+                    showSnackbar(R.string.rss_success_feed_change_url)
+                    viewModel.loadRssFeeds(serverId)
+                }
                 RssFeedsViewModel.Event.FeedMoved -> {
                     showSnackbar(R.string.rss_success_feed_move)
                     viewModel.loadRssFeeds(serverId)
@@ -305,6 +310,9 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 R.id.rename -> {
                     showRenameFeedFolderDialog(feedNode)
                 }
+                R.id.edit_feed_url -> {
+                    showEditFeedUrlDialog(feedNode)
+                }
                 R.id.move -> {
                     movingItem = feedNode
                     actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
@@ -382,6 +390,32 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 viewModel.deleteItem(serverId, feedNode.path.joinToString("\\"), feedNode.isFeed)
             }
             setNegativeButton()
+        }
+    }
+
+    private fun showEditFeedUrlDialog(feedNode: RssFeedNode) {
+        val url = feedNode.feed?.url ?: return
+        lateinit var dialogBinding: DialogRssEditFeedUrlBinding
+
+        val dialog = showDialog(DialogRssEditFeedUrlBinding::inflate) { binding ->
+            dialogBinding = binding
+
+            binding.inputLayoutUrl.setTextWithoutAnimation(url)
+
+            setTitle(R.string.rss_action_edit_feed_url)
+            setPositiveButton()
+            setNegativeButton()
+        }
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            val newUrl = dialogBinding.editUrl.text.toString()
+            if (newUrl.isNotBlank()) {
+                val path = feedNode.path.joinToString("\\")
+                viewModel.setFeedUrl(serverId, path, newUrl)
+                dialog.dismiss()
+            } else {
+                dialogBinding.inputLayoutUrl.error = getString(R.string.rss_field_required)
+            }
         }
     }
 
