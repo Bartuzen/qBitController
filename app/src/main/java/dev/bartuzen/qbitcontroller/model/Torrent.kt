@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.model
 
+import dev.bartuzen.qbitcontroller.model.serializers.NullableDoubleSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -162,6 +163,10 @@ data class Torrent(
 
     @SerialName("popularity")
     val popularity: Double?,
+
+    @SerialName("availability")
+    @Serializable(with = NullableDoubleSerializer::class)
+    val availability: Double?,
 )
 
 private object EtaSerializer : KSerializer<Int?> {

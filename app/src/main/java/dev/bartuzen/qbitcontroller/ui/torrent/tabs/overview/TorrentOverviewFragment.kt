@@ -409,6 +409,7 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 properties.peersTotal,
             )
             binding.textWasted.text = formatBytes(requireContext(), properties.wasted)
+            binding.textAvailability.text = torrent.availability?.floorToDecimal(3)?.toString() ?: "-"
 
             binding.textPopularityTitle.visibility = if (torrent.popularity == null) View.GONE else View.VISIBLE
             binding.textPopularity.visibility = if (torrent.popularity == null) View.GONE else View.VISIBLE
