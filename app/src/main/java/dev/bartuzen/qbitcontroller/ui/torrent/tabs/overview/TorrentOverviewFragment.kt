@@ -409,6 +409,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
                 properties.peersTotal,
             )
             binding.textWasted.text = formatBytes(requireContext(), properties.wasted)
+
+            binding.textPopularityTitle.visibility = if (torrent.popularity == null) View.GONE else View.VISIBLE
+            binding.textPopularity.visibility = if (torrent.popularity == null) View.GONE else View.VISIBLE
+            binding.textPopularity.text = torrent.popularity?.floorToDecimal(2).toString()
         }
 
         viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->

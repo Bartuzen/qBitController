@@ -427,6 +427,20 @@
                             android:layout_marginTop="8dp"
                             tools:text="Wasted Text" />
 
+                        <TextView
+                            android:id="@+id/text_popularity_title"
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/torrent_overview_popularity" />
+
+                        <TextView
+                            android:id="@+id/text_popularity"
+                            android:layout_width="0dp"
+                            android:layout_gravity="fill_horizontal"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            tools:text="Wasted Text" />
+
                     </GridLayout>
 
                 </com.google.android.material.card.MaterialCardView>
