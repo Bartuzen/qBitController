@@ -2117,15 +2117,12 @@ private fun TopBar(
                         overflow = TextOverflow.Ellipsis,
                     )
                     AnimatedNullableVisibility(
-                        value = mainData,
+                        value = mainData?.serverState?.freeSpace?.takeIf { it >= 0 },
                         enter = fadeIn() + expandVertically(),
                         exit = fadeOut() + shrinkVertically(),
-                    ) { _, mainData ->
+                    ) { _, freeSpace ->
                         Text(
-                            text = stringResource(
-                                R.string.torrent_list_free_space,
-                                formatBytes(mainData.serverState.freeSpace),
-                            ),
+                            text = stringResource(R.string.torrent_list_free_space, formatBytes(freeSpace)),
                             style = MaterialTheme.typography.titleMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
