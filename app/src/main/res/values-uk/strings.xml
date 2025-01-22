@@ -664,4 +664,5 @@
     <string name="torrent_overview_popularity">Популярність</string>
     <string name="rss_action_edit_feed_url">Редагувати URL каналу</string>
     <string name="rss_success_feed_change_url">URL каналу успішно змінено.</string>
+    <string name="torrent_overview_availability">Доступність</string>
 </resources>
