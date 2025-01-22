@@ -439,7 +439,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            tools:text="Wasted Text" />
+                            tools:text="Popularity Text" />
 
                     </GridLayout>
 
