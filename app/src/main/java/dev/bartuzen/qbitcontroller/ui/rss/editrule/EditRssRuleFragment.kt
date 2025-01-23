@@ -24,7 +24,7 @@ import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 
@@ -125,65 +125,64 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             binding.dropdownContentLayout.isEnabled = isFetched
         }
 
-        if (viewModel.rssRule.value == null) {
-            combine(viewModel.rssRule, viewModel.categories, viewModel.feeds) { rssRule, categories, feeds ->
-                if (rssRule != null && categories != null && feeds != null) {
-                    Triple(rssRule, categories, feeds)
-                } else {
-                    null
-                }
-            }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (rssRule, categories, feeds) ->
-                binding.checkboxEnabled.isChecked = rssRule.isEnabled
-                binding.checkboxUseRegex.isChecked = rssRule.useRegex
-                binding.inputLayoutMustContain.text = rssRule.mustContain
-                binding.inputLayoutMustNotContain.text = rssRule.mustNotContain
-                binding.inputLayoutEpisodeFilter.text = rssRule.episodeFilter
-                binding.checkboxSmartEpisodeFilter.isChecked = rssRule.smartFilter
-                binding.checkboxSavePathEnabled.isChecked = rssRule.savePath.isNotEmpty()
-                binding.inputLayoutSavePath.text = rssRule.savePath
-                binding.inputLayoutIgnoreDays.text = rssRule.ignoreDays.toString()
-                binding.dropdownAddPaused.setPosition(
-                    when (rssRule.addPaused) {
-                        null -> 0
-                        true -> 1
-                        false -> 2
-                    },
-                )
-                binding.dropdownContentLayout.setPosition(
-                    when (rssRule.torrentContentLayout) {
-                        "Original" -> 1
-                        "Subfolder" -> 2
-                        "NoSubfolder" -> 3
-                        else -> 0
-                    },
-                )
-
-                val categoryOptions = categories.toMutableList().apply { add(0, "") }
-                binding.dropdownCategory.setItems(categoryOptions)
-                binding.dropdownCategory.setPosition(categoryOptions.indexOf(rssRule.assignedCategory))
-
-                binding.layoutFeeds.removeAllViews()
-                feeds.forEach { (name, url) ->
-                    val checkbox = MaterialCheckBox(requireContext()).apply {
-                        isChecked = rssRule.affectedFeeds.contains(url)
-                        text = name
-                    }
-                    binding.layoutFeeds.addView(checkbox)
-                }
-
-                cancel()
+        var job: Job? = null
+        job = combine(viewModel.rssRule, viewModel.categories, viewModel.feeds) { rssRule, categories, feeds ->
+            if (rssRule != null && categories != null && feeds != null) {
+                Triple(rssRule, categories, feeds)
+            } else {
+                null
             }
-        } else {
-            val selectedFeeds = savedInstanceState?.getStringArrayList("selectedFeeds")
-            if (selectedFeeds != null) {
-                binding.layoutFeeds.removeAllViews()
-                viewModel.feeds.value?.forEach { (name, url) ->
-                    val checkbox = MaterialCheckBox(requireContext()).apply {
-                        isChecked = selectedFeeds.contains(url)
-                        text = name
-                    }
-                    binding.layoutFeeds.addView(checkbox)
+        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (rssRule, categories, feeds) ->
+            binding.checkboxEnabled.isChecked = rssRule.isEnabled
+            binding.checkboxUseRegex.isChecked = rssRule.useRegex
+            binding.inputLayoutMustContain.text = rssRule.mustContain
+            binding.inputLayoutMustNotContain.text = rssRule.mustNotContain
+            binding.inputLayoutEpisodeFilter.text = rssRule.episodeFilter
+            binding.checkboxSmartEpisodeFilter.isChecked = rssRule.smartFilter
+            binding.checkboxSavePathEnabled.isChecked = rssRule.savePath.isNotEmpty()
+            binding.inputLayoutSavePath.text = rssRule.savePath
+            binding.inputLayoutIgnoreDays.text = rssRule.ignoreDays.toString()
+            binding.dropdownAddPaused.setPosition(
+                when (rssRule.addPaused) {
+                    null -> 0
+                    true -> 1
+                    false -> 2
+                },
+            )
+            binding.dropdownContentLayout.setPosition(
+                when (rssRule.torrentContentLayout) {
+                    "Original" -> 1
+                    "Subfolder" -> 2
+                    "NoSubfolder" -> 3
+                    else -> 0
+                },
+            )
+
+            val categoryOptions = categories.toMutableList().apply { add(0, "") }
+            binding.dropdownCategory.setItems(categoryOptions)
+            binding.dropdownCategory.setPosition(categoryOptions.indexOf(rssRule.assignedCategory))
+
+            binding.layoutFeeds.removeAllViews()
+            feeds.forEach { (name, url) ->
+                val checkbox = MaterialCheckBox(requireContext()).apply {
+                    isChecked = rssRule.affectedFeeds.contains(url)
+                    text = name
                 }
+                binding.layoutFeeds.addView(checkbox)
+            }
+
+            job?.cancel()
+        }
+
+        val selectedFeeds = savedInstanceState?.getStringArrayList("selectedFeeds")
+        if (selectedFeeds != null) {
+            binding.layoutFeeds.removeAllViews()
+            viewModel.feeds.value?.forEach { (name, url) ->
+                val checkbox = MaterialCheckBox(requireContext()).apply {
+                    isChecked = selectedFeeds.contains(url)
+                    text = name
+                }
+                binding.layoutFeeds.addView(checkbox)
             }
         }
 
