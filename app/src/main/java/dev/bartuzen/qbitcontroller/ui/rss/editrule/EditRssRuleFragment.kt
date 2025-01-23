@@ -8,22 +8,26 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.core.view.children
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.textview.MaterialTextView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentEditRssRuleBinding
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.getColorCompat
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.text
+import dev.bartuzen.qbitcontroller.utils.toPx
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
@@ -163,12 +167,21 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
             binding.dropdownCategory.setPosition(categoryOptions.indexOf(rssRule.assignedCategory))
 
             binding.layoutFeeds.removeAllViews()
-            feeds.forEach { (name, url) ->
-                val checkbox = MaterialCheckBox(requireContext()).apply {
-                    isChecked = rssRule.affectedFeeds.contains(url)
-                    text = name
+            if (feeds.isNotEmpty()) {
+                feeds.forEach { (name, url) ->
+                    val checkbox = MaterialCheckBox(requireContext()).apply {
+                        isChecked = rssRule.affectedFeeds.contains(url)
+                        text = name
+                    }
+                    binding.layoutFeeds.addView(checkbox)
                 }
-                binding.layoutFeeds.addView(checkbox)
+            } else {
+                val textView = MaterialTextView(requireContext()).apply {
+                    setText(R.string.rss_rule_no_feed_found)
+                    setTextColor(requireContext().getColorCompat(R.color.md_theme_error))
+                    setPadding(8.toPx(requireContext()))
+                }
+                binding.layoutFeeds.addView(textView)
             }
 
             job?.cancel()
@@ -177,12 +190,22 @@ class EditRssRuleFragment() : Fragment(R.layout.fragment_edit_rss_rule) {
         val selectedFeeds = savedInstanceState?.getStringArrayList("selectedFeeds")
         if (selectedFeeds != null) {
             binding.layoutFeeds.removeAllViews()
-            viewModel.feeds.value?.forEach { (name, url) ->
-                val checkbox = MaterialCheckBox(requireContext()).apply {
-                    isChecked = selectedFeeds.contains(url)
-                    text = name
+            val feeds = viewModel.feeds.value
+            if (feeds?.isNotEmpty() == true) {
+                feeds.forEach { (name, url) ->
+                    val checkbox = MaterialCheckBox(requireContext()).apply {
+                        isChecked = selectedFeeds.contains(url)
+                        text = name
+                    }
+                    binding.layoutFeeds.addView(checkbox)
                 }
-                binding.layoutFeeds.addView(checkbox)
+            } else {
+                val textView = MaterialTextView(requireContext()).apply {
+                    setText(R.string.rss_rule_no_feed_found)
+                    setTextColor(requireContext().getColorCompat(R.color.md_theme_error))
+                    setPadding(8.toPx(requireContext()))
+                }
+                binding.layoutFeeds.addView(textView)
             }
         }
 
