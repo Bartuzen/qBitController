@@ -32,8 +32,7 @@
 
         <activity
             android:name=".ui.settings.SettingsActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -42,8 +41,7 @@
 
         <activity
             android:name=".ui.addtorrent.AddTorrentActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -82,8 +80,7 @@
 
         <activity
             android:name=".ui.rss.RssActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:exported="false" />
 
         <activity
             android:name=".ui.search.SearchActivity"

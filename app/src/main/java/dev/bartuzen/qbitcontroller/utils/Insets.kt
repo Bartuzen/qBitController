@@ -11,7 +11,15 @@ fun View.applyInsets(top: Boolean, bottom: Boolean, start: Boolean, end: Boolean
         val isLtr = layoutDirection == View.LAYOUT_DIRECTION_LTR
 
         val topPadding = if (top) insets.top else 0
-        val bottomPadding = if (bottom) insets.bottom else 0
+        val bottomPadding = if (bottom) {
+            if (windowInsets.isVisible(WindowInsetsCompat.Type.ime())) {
+                windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            } else {
+                insets.bottom
+            }
+        } else {
+            0
+        }
 
         val startPadding = if (start) {
             if (isLtr) insets.left else insets.right
