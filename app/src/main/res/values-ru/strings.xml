@@ -667,4 +667,5 @@
     <string name="rss_action_edit_feed_url">Редактировать URL ленты</string>
     <string name="rss_success_feed_change_url">URL ленты успешно изменен.</string>
     <string name="torrent_overview_availability">Доступность</string>
+    <string name="rss_rule_no_feed_found">Лента не найдена</string>
 </resources>
