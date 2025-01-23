@@ -635,4 +635,5 @@
     <string name="torrent_overview_popularity">Popülerlik</string>
     <string name="rss_action_edit_feed_url">Bildirim URLʼsini Düzenle</string>
     <string name="rss_success_feed_change_url">Bildirim URLʼsi başarıyla değiştirildi.</string>
+    <string name="rss_rule_no_feed_found">Bildirim bulunamadı</string>
 </resources>
