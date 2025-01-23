@@ -647,4 +647,9 @@
     <string name="torrent_list_no_result_title">Ningún resultado encontrado</string>
     <string name="torrent_list_no_result_description">Ningún torrent coincide con tus filtros actuales. Intenta ajustar tus filtros o criterios de búsqueda.</string>
     <string name="torrent_list_no_result_reset">Restablecer filtros</string>
+    <string name="rss_action_edit_feed_url">Editar URL del feed</string>
+    <string name="torrent_overview_availability">Disponibilidad</string>
+    <string name="torrent_overview_popularity">Popularidad</string>
+    <string name="rss_success_feed_change_url">URL del feed cambiada con éxito.</string>
+    <string name="rss_rule_no_feed_found">Ningún feed encontrado</string>
 </resources>
