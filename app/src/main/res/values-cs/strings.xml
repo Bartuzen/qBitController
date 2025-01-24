@@ -645,4 +645,6 @@
     <string name="notification_channel_download_completed">Stahování dokončeno</string>
     <string name="notification_torrent_downloaded">Torrent stažen</string>
     <string name="settings_server_password_min_character">Heslo musí mít alespoň 6 znaků.</string>
+    <string name="torrent_overview_availability">Dostupnost</string>
+    <string name="torrent_overview_popularity">Oblíbenost</string>
 </resources>
