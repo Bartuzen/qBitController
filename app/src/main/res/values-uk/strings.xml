@@ -664,4 +664,7 @@
     <string name="rss_success_feed_change_url">URL каналу успішно змінено.</string>
     <string name="torrent_overview_availability">Доступність</string>
     <string name="rss_rule_no_feed_found">Канал не знайдено</string>
+    <string name="torrent_list_no_server_add">Додати сервер</string>
+    <string name="torrent_list_no_server_title">Немає доступних серверів</string>
+    <string name="torrent_list_no_server_description">Ви ще не додали жодного сервера. Додайте один, щоб почати.</string>
 </resources>
