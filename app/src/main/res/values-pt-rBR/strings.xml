@@ -137,8 +137,6 @@
     <string name="action_select_inverse">Inverter seleção</string>
     <string name="main_action_settings">Configurações</string>
     <string name="main_action_about">Sobre</string>
-    <string name="main_no_servers">Nenhum servidor foi encontrado. Clique aqui para adicionar.</string>
-    <string name="main_add_server">Adicionar servidor</string>
     <string name="torrent_list_action_add_torrent">Adicionar torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">Pesquisar na Internet</string>

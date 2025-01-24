@@ -37,8 +37,6 @@
     <string name="action_select_all">Seleziona Tutto</string>
     <string name="action_select_inverse">Selezione Inversa</string>
     <string name="main_action_about">Informazioni</string>
-    <string name="main_no_servers">Nessun server trovato. Clicca qui per aggiungerne uno.</string>
-    <string name="main_add_server">Aggiungi Server</string>
     <string name="torrent_list_action_add_torrent">Aggiungi Torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_statistics">Statistiche</string>

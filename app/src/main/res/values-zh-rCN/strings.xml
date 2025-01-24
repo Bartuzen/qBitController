@@ -55,8 +55,6 @@
     <string name="action_select_inverse">反选</string>
     <string name="main_action_settings">设置</string>
     <string name="main_action_about">关于</string>
-    <string name="main_no_servers">没有找到服务器。单击此处来添加服务器。</string>
-    <string name="main_add_server">添加服务器</string>
     <string name="torrent_list_action_add_torrent">添加 Torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">在线搜索</string>

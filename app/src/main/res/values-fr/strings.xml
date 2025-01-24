@@ -12,7 +12,6 @@
     <string name="error_timeout">La connexion a expiré.</string>
     <string name="error_no_data">Le serveur n\'a envoyé aucune donnée.</string>
     <string name="action_search">Rechercher</string>
-    <string name="main_no_servers">Aucun serveur n\'a été trouvé. Cliquez ici pour en ajouter un.</string>
     <string name="torrent_list_action_sort_size">Taille</string>
     <string name="torrent_list_action_priority_decrease">Diminuer la priorité</string>
     <string name="torrent_list_action_priority_minimize">Minimiser la priorité</string>
@@ -74,7 +73,6 @@
     <string name="action_select_inverse">Sélectionner l\'inverse</string>
     <string name="main_action_settings">Paramètres</string>
     <string name="main_action_about">A propos</string>
-    <string name="main_add_server">Ajouter un serveur</string>
     <string name="torrent_list_action_add_torrent">Ajouter un torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">Rechercher en ligne</string>

@@ -57,8 +57,6 @@
     <string name="action_select_inverse">Tersini Seç</string>
     <string name="main_action_settings">Ayarlar</string>
     <string name="main_action_about">Hakkında</string>
-    <string name="main_no_servers">Sunucu bulunamadı. Eklemek için buraya tıklayın.</string>
-    <string name="main_add_server">Sunucu Ekle</string>
     <string name="torrent_list_action_add_torrent">Torrent Ekle</string>
     <string name="torrent_list_action_search_online">Çevrimiçi Ara</string>
     <string name="torrent_list_action_statistics">İstatistikler</string>

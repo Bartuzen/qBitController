@@ -81,7 +81,6 @@
     <string name="action_search">검색</string>
     <string name="action_select_all">전체 선택</string>
     <string name="action_select_inverse">선택 반전</string>
-    <string name="main_add_server">서버 추가</string>
     <string name="torrent_list_action_add_torrent">토렌트 추가</string>
     <string name="torrent_list_action_execution_log">실행 로그</string>
     <string name="torrent_list_action_shutdown">qBittorrent 종료</string>
@@ -206,7 +205,6 @@
     <string name="dialog_cancel">취소</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="main_action_settings">설정</string>
-    <string name="main_no_servers">알려진 서버가 없습니다. 추가하시려면 이곳을 클릭하세요.</string>
     <string name="torrent_list_action_statistics">통계</string>
     <string name="torrent_list_action_sort">정렬</string>
     <string name="torrent_list_action_sort_status">상태</string>

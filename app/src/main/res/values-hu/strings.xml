@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="main_add_server">Szerver hozzáadása</string>
     <string name="settings_server_password">Jelszó</string>
-    <string name="main_no_servers">Nem található szerver. Kattints ide a hozzáadáshoz.</string>
     <string name="settings_server_host">Hoszt</string>
     <string name="settings_server_name">Név</string>
     <string name="settings_language_system_default">Rendszer Alapbeállítás</string>

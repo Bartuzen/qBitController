@@ -53,7 +53,6 @@
     <string name="torrent_list_set_location_hint">Speicherpfad</string>
     <string name="torrent_list_action_sort">Sortieren</string>
     <string name="torrent_list_create_category_download_path_yes">Ja</string>
-    <string name="main_no_servers">Keine Server gefunden. Hier klicken um einen Server hinzuzufügen.</string>
     <string name="action_select_all">Alles markieren</string>
     <string name="torrent_list_action_sort_name">Name</string>
     <string name="torrent_list_action_priority_decrease">Priorität verringern</string>
@@ -64,7 +63,6 @@
     <string name="torrent_list_free_space">Freier Speicherplatz: %1$s</string>
     <string name="torrent_list_create_category_hint">Kategoriename</string>
     <string name="torrent_status_downloading">Beim Herunterladen</string>
-    <string name="main_add_server">Server hinzufügen</string>
     <string name="torrent_list_action_statistics">Statistik</string>
     <string name="torrent_list_create_category_enable_download_path_hint">Aktiviere Downloadpfad</string>
     <string name="torrent_list_categories">Kategorien</string>
