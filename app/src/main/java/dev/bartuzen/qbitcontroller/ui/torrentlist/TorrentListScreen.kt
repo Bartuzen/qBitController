@@ -66,6 +66,7 @@ import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterList
@@ -1154,17 +1155,24 @@ fun TorrentListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
-                    .clickable {
-                        val intent = Intent(context, SettingsActivity::class.java).apply {
-                            putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
-                        }
-                        context.startActivity(intent)
-                    }
-                    .padding(32.dp),
+                    .imePadding(),
             ) {
-                Text(
-                    text = stringResource(R.string.main_no_servers),
-                    textAlign = TextAlign.Center,
+                EmptyListMessage(
+                    icon = Icons.Filled.Dns,
+                    title = stringResource(R.string.torrent_list_no_server_title),
+                    description = stringResource(R.string.torrent_list_no_server_description),
+                    actionButton = {
+                        Button(
+                            onClick = {
+                                val intent = Intent(context, SettingsActivity::class.java).apply {
+                                    putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
+                                }
+                                context.startActivity(intent)
+                            },
+                        ) {
+                            Text(text = stringResource(R.string.torrent_list_no_server_add))
+                        }
+                    },
                     modifier = Modifier.align(Alignment.Center),
                 )
             }

@@ -64,9 +64,10 @@
 
     <string name="main_action_settings">Settings</string>
     <string name="main_action_about">About</string>
-    <string name="main_no_servers">No servers have been found. Click here to add one.</string>
-    <string name="main_add_server">Add Server</string>
 
+    <string name="torrent_list_no_server_title">No Servers Available</string>
+    <string name="torrent_list_no_server_description">You haven\'t added any servers yet. Add one to get started.</string>
+    <string name="torrent_list_no_server_add">Add Server</string>
     <string name="torrent_list_empty_title">No Torrents Found</string>
     <string name="torrent_list_empty_description">You don\'t have any torrents. Add one to get started.</string>
     <string name="torrent_list_empty_rss">Add via RSS</string>
