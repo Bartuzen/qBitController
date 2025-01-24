@@ -666,4 +666,7 @@
     <string name="rss_success_feed_change_url">URL ленты успешно изменен.</string>
     <string name="torrent_overview_availability">Доступность</string>
     <string name="rss_rule_no_feed_found">Лента не найдена</string>
+    <string name="torrent_list_no_server_title">Нет доступных серверов</string>
+    <string name="torrent_list_no_server_description">Серверы еще не добавлены. Добавьте один для начала работы.</string>
+    <string name="torrent_list_no_server_add">Добавить сервер</string>
 </resources>
