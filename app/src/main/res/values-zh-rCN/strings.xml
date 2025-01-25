@@ -617,4 +617,7 @@
     <string name="rss_success_feed_change_url">已成功更改订阅源 URL。</string>
     <string name="rss_action_edit_feed_url">编辑订阅源 URL</string>
     <string name="rss_rule_no_feed_found">未找到订阅</string>
+    <string name="torrent_list_no_server_title">没有可用的服务器</string>
+    <string name="torrent_list_no_server_description">您还没有添加任何服务器。 添加一个即可开始。</string>
+    <string name="torrent_list_no_server_add">添加服务器</string>
 </resources>
