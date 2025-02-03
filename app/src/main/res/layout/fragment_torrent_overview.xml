@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
+                    android:textIsSelectable="true"
                     android:textSize="18sp"
                     tools:text="Torrent Name" />
 
@@ -68,6 +69,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:textIsSelectable="true"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
                             tools:text="Progress Text" />
@@ -76,6 +78,7 @@
                             android:id="@+id/text_eta"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textIsSelectable="true"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/chip_group_category_and_tag"
                             tools:text="ETA" />
@@ -94,6 +97,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:textIsSelectable="true"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/progress_torrent"
                             tools:text="Torrent State" />
@@ -103,6 +107,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
+                            android:textIsSelectable="true"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/progress_torrent"
                             tools:text="Speed" />
@@ -141,6 +146,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Total Size Text" />
 
                         <TextView
@@ -154,6 +160,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Added On Text" />
 
                         <TextView
@@ -168,6 +175,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Private Text" />
 
                         <TextView
@@ -181,6 +189,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="V1 Hash Text" />
 
                         <TextView
@@ -194,6 +203,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="V2 Hash Text" />
 
                         <TextView
@@ -207,6 +217,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Save Path Text" />
 
                         <TextView
@@ -221,6 +232,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:autoLink="all"
+                            android:textIsSelectable="true"
                             tools:text="Comment Text" />
 
                         <TextView
@@ -234,6 +246,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Pieces Text" />
 
                         <TextView
@@ -247,6 +260,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Completed On Text" />
 
                         <TextView
@@ -260,6 +274,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Created By Text" />
 
                         <TextView
@@ -273,6 +288,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Created On Text" />
 
                     </GridLayout>
@@ -308,6 +324,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Time Active Text" />
 
                         <TextView
@@ -321,6 +338,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Downloaded Text" />
 
                         <TextView
@@ -334,6 +352,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Uploaded Text" />
 
                         <TextView
@@ -347,6 +366,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Reannounce In Text" />
 
                         <TextView
@@ -360,6 +380,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Last Activity Text" />
 
                         <TextView
@@ -373,6 +394,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Last Seen Complete Text" />
 
                         <TextView
@@ -386,6 +408,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Connections Text" />
 
                         <TextView
@@ -399,6 +422,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Seeds Text" />
 
                         <TextView
@@ -412,6 +436,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Peers Text" />
 
                         <TextView
@@ -425,6 +450,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Wasted Text" />
 
                         <TextView
@@ -438,6 +464,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Availability Text" />
 
                         <TextView
@@ -452,6 +479,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:textIsSelectable="true"
                             tools:text="Popularity Text" />
 
                     </GridLayout>
