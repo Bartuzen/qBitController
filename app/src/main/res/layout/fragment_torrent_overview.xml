@@ -231,7 +231,7 @@
                             android:layout_gravity="fill_horizontal"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:autoLink="all"
+                            android:autoLink="web|email|phone"
                             android:textIsSelectable="true"
                             tools:text="Comment Text" />
 
