@@ -93,8 +93,20 @@ class SearchResultViewModel @Inject constructor(
         Triple(searchResults, searchQuery, filter)
     }.filterNotNull().map { (searchResults, searchQuery, filter) ->
         searchResults.filter { result ->
-            if (searchQuery.isNotEmpty() && !result.fileName.contains(searchQuery, ignoreCase = true)) {
-                return@filter false
+            if (searchQuery.isNotEmpty()) {
+                val matchesSearchQuery = searchQuery
+                    .split(" ")
+                    .filter { it.isNotEmpty() && it != "-" }
+                    .all { term ->
+                        val isExclusion = term.startsWith("-")
+                        val cleanTerm = term.removePrefix("-")
+                        val containsTerm = result.fileName.contains(cleanTerm, ignoreCase = true)
+
+                        if (isExclusion) !containsTerm else containsTerm
+                    }
+                if (!matchesSearchQuery) {
+                    return@filter false
+                }
             }
 
             if (filter.seedsMin != null && (result.seeders ?: -1) < filter.seedsMin) {

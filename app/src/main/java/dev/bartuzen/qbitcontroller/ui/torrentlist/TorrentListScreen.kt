@@ -223,8 +223,8 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
-import dev.bartuzen.qbitcontroller.utils.rememberApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
+import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -1289,9 +1289,9 @@ private fun TorrentItem(
                     .padding(horizontal = 12.dp, vertical = 8.dp),
             ) {
                 val name = if (searchQuery != null) {
-                    rememberApplyStyle(
+                    rememberSearchStyle(
                         text = torrent.name,
-                        textToStyle = searchQuery,
+                        searchQuery = searchQuery,
                         style = SpanStyle(
                             color = MaterialTheme.colorScheme.onPrimary,
                             background = MaterialTheme.colorScheme.primary,

@@ -78,22 +78,42 @@ fun measureTextWidth(text: String, style: TextStyle = LocalTextStyle.current): D
 }
 
 @Composable
-fun rememberApplyStyle(text: String, textToStyle: String, style: SpanStyle) = remember(text, textToStyle, style) {
+fun rememberSearchStyle(text: String, searchQuery: String, style: SpanStyle) = remember(text, searchQuery, style) {
     buildAnnotatedString {
-        var currentIndex = 0
-        val searchText = textToStyle.lowercase()
+        val terms = searchQuery
+            .split(" ")
+            .filter { it.isNotEmpty() && it != "-" }
+        val separators = setOf(' ', '-', '_', '.')
 
+        var currentIndex = 0
         while (currentIndex < text.length) {
-            val index = text.indexOf(searchText, currentIndex, ignoreCase = true)
-            if (index == -1) {
+            val firstMatch = terms.mapNotNull { token ->
+                text.indexOf(token, currentIndex, ignoreCase = true).takeIf { it != -1 }?.let { it to token }
+            }.minByOrNull { it.first }
+            if (firstMatch == null) {
                 append(text.substring(currentIndex))
                 break
             }
-            append(text.substring(currentIndex, index))
-            withStyle(style) {
-                append(text.substring(index, index + textToStyle.length))
+            val (matchIndex, token) = firstMatch
+            append(text.substring(currentIndex, matchIndex))
+            var highlightStart = matchIndex
+            var highlightEnd = matchIndex + token.length
+            while (true) {
+                val nextMatch = terms.mapNotNull { token ->
+                    text.indexOf(token, highlightEnd, ignoreCase = true).takeIf { it != -1 }?.let { it to token }
+                }.minByOrNull { it.first } ?: break
+                val (nextMatchIndex, nextToken) = nextMatch
+                val gap = text.substring(highlightEnd, nextMatchIndex)
+                if (gap.isNotEmpty() && gap.all { it in separators }) {
+                    highlightEnd = nextMatchIndex + nextToken.length
+                } else {
+                    break
+                }
             }
-            currentIndex = index + textToStyle.length
+            withStyle(style) {
+                append(text.substring(highlightStart, highlightEnd))
+            }
+            currentIndex = highlightEnd
         }
     }
 }

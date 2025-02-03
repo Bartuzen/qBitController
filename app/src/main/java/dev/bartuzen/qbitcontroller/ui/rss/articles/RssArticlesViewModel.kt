@@ -45,7 +45,18 @@ class RssArticlesViewModel @Inject constructor(
     }.filterNotNull().map { (articles, searchQuery) ->
         if (searchQuery.isNotEmpty()) {
             articles.filter { article ->
-                article.title.contains(searchQuery, ignoreCase = true)
+                val matchesSearchQuery = searchQuery
+                    .split(" ")
+                    .filter { it.isNotEmpty() && it != "-" }
+                    .all { term ->
+                        val isExclusion = term.startsWith("-")
+                        val cleanTerm = term.removePrefix("-")
+                        val containsTerm = article.title.contains(cleanTerm, ignoreCase = true)
+
+                        if (isExclusion) !containsTerm else containsTerm
+                    }
+
+                return@filter matchesSearchQuery
             }
         } else {
             articles

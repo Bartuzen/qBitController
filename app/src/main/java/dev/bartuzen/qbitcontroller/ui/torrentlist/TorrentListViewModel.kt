@@ -323,7 +323,17 @@ class TorrentListViewModel @Inject constructor(
         withContext(Dispatchers.Default) {
             torrentList.filter { torrent ->
                 if (searchQuery.isNotEmpty()) {
-                    if (!torrent.name.contains(searchQuery, ignoreCase = true)) {
+                    val matchesSearchQuery = searchQuery
+                        .split(" ")
+                        .filter { it.isNotEmpty() && it != "-" }
+                        .all { term ->
+                            val isExclusion = term.startsWith("-")
+                            val cleanTerm = term.removePrefix("-")
+                            val containsTerm = torrent.name.contains(cleanTerm, ignoreCase = true)
+
+                            if (isExclusion) !containsTerm else containsTerm
+                        }
+                    if (!matchesSearchQuery) {
                         return@filter false
                     }
                 }
