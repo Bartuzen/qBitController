@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="language_code">heb</string>
+    <string name="share_add_torrent">הוסף טורנט</string>
+    <string name="torrent_status_error">שגיאה</string>
+    <string name="torrent_status_missing_files">קבצים חסרים</string>
+    <string name="torrent_status_seeding">מעלה</string>
+    <string name="torrent_status_paused">מושהה</string>
+    <string name="torrent_status_queued">בתור</string>
+    <string name="torrent_status_checking">בודק</string>
+    <string name="torrent_status_completed">הושלם</string>
+    <string name="torrent_status_force_seeding">[מ] מעלה</string>
+    <string name="torrent_status_downloading">מוריד</string>
+</resources>
