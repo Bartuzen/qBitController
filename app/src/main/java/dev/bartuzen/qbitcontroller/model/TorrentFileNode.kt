@@ -20,16 +20,16 @@ data class TorrentFileNode(
 
     fun getFolderProperties(): FolderProperties {
         var size = 0L
-        var progressSum = 0.0
-        var fileCount = 0
+        var downloadedSize = 0L
         var priority: TorrentFilePriority? = null
         var isMixedPriority = false
 
         children?.forEach { node ->
             if (node.file != null) {
-                size += node.file.size
-                progressSum += node.file.progress
-                fileCount++
+                if (node.file.priority != TorrentFilePriority.DO_NOT_DOWNLOAD) {
+                    size += node.file.size
+                    downloadedSize += (node.file.progress * node.file.size).toLong()
+                }
 
                 if (!isMixedPriority) {
                     if (priority == null) {
@@ -42,8 +42,7 @@ data class TorrentFileNode(
             } else {
                 val properties = node.getFolderProperties()
                 size += properties.size
-                progressSum += properties.progressSum
-                fileCount += properties.fileCount
+                downloadedSize += properties.downloadedSize
 
                 if (!isMixedPriority) {
                     if (properties.priority == null) {
@@ -59,7 +58,7 @@ data class TorrentFileNode(
             }
         }
 
-        return FolderProperties(size, progressSum, fileCount, priority)
+        return FolderProperties(size, downloadedSize, priority)
     }
 
     companion object {
@@ -91,7 +90,6 @@ data class TorrentFileNode(
 
 data class FolderProperties(
     val size: Long,
-    val progressSum: Double,
-    val fileCount: Int,
+    val downloadedSize: Long,
     val priority: TorrentFilePriority?,
 )

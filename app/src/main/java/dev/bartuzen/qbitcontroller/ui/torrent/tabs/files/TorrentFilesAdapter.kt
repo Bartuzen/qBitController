@@ -101,9 +101,9 @@ class TorrentFilesAdapter : MultiSelectAdapter<TorrentFileNode, String, TorrentF
             } else {
                 val properties = fileNode.getFolderProperties()
 
-                val progress = properties.progressSum / properties.fileCount
-                val downloadedSize = (progress * properties.size).toLong()
+                val downloadedSize = properties.downloadedSize
 
+                val progress = (downloadedSize / properties.size.toDouble()).takeUnless { it.isNaN() } ?: 1.0
                 val progressText = if (progress < 1) {
                     (progress * 100).floorToDecimal(1).toString()
                 } else {
