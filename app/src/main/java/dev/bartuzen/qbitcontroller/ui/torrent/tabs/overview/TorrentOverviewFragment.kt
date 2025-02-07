@@ -43,6 +43,7 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
+import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setColor
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
@@ -66,6 +67,14 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
 
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
+    private var torrentName get() = arguments?.getString("torrentName")
+        set(value) {
+            arguments = bundleOf(
+                "serverId" to serverId,
+                "torrentHash" to torrentHash,
+                "torrentName" to value,
+            )
+        }
 
     val exportActivity =
         registerForActivityResult(ActivityResultContracts.CreateDocument("application/x-bittorrent")) { uri ->
@@ -74,10 +83,11 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             }
         }
 
-    constructor(serverId: Int, torrentHash: String) : this() {
+    constructor(serverId: Int, torrentHash: String, torrentName: String?) : this() {
         arguments = bundleOf(
             "serverId" to serverId,
             "torrentHash" to torrentHash,
+            "torrentName" to torrentName,
         )
     }
 
@@ -234,6 +244,10 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.swipeRefresh.isRefreshing = isRefreshing
         }
 
+        torrentName?.let { torrentName ->
+            requireAppCompatActivity().supportActionBar?.title = torrentName
+        }
+
         combine(viewModel.torrent, viewModel.torrentProperties) { torrent, properties ->
             torrent != null && properties != null
         }.launchAndCollectLatestIn(viewLifecycleOwner) { isVisible ->
@@ -258,6 +272,8 @@ class TorrentOverviewFragment() : Fragment(R.layout.fragment_torrent_overview) {
             binding.progressTorrent.setColor(getTorrentStateColor(requireContext(), torrent.state))
 
             binding.textName.text = torrent.name
+            requireAppCompatActivity().supportActionBar?.title = torrent.name
+            torrentName = torrent.name
 
             binding.chipGroupCategoryAndTag.removeAllViews()
 

@@ -1008,8 +1008,9 @@ fun TorrentListScreen(
                                                 }
                                             } else {
                                                 val intent = Intent(context, TorrentActivity::class.java).apply {
-                                                    putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
                                                     putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
+                                                    putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
+                                                    putExtra(TorrentActivity.Extras.TORRENT_NAME, torrent.name)
                                                 }
                                                 torrentLauncher.launch(intent)
                                             }
