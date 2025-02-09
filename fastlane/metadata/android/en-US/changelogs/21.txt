@@ -1,0 +1,6 @@
+- Made changes to notification system
+- Added placeholders to display when the torrent list is empty
+- Added popularity and availability metrics for torrents
+- Added ability to modify RSS feed URLs
+- Improved searching
+- Bug fixes
