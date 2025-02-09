@@ -38,7 +38,6 @@
     <string name="action_search">Søg</string>
     <string name="action_select_all">Vælg Alle</string>
     <string name="main_action_settings">Indstillinger</string>
-    <string name="main_add_server">Tilføj Server</string>
     <string name="torrent_list_action_add_torrent">Tilføj Torrent</string>
     <string name="torrent_list_action_search_online">Søg Online</string>
     <string name="torrent_list_action_statistics">Statistikker</string>
@@ -75,7 +74,6 @@
         <item quantity="one">%1$d torrent slettet.</item>
         <item quantity="other">%1$d torrents slettet.</item>
     </plurals>
-    <string name="main_no_servers">Ingen servere er fundet. Klik her for at tilføje en.</string>
     <string name="torrent_list_search_torrents">Søg torrents…</string>
     <string name="torrent_list_free_space">Tilgængelig plads: %1$s</string>
     <string name="torrent_list_set_location_hint">Gem sti</string>

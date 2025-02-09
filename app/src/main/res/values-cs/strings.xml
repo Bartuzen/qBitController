@@ -35,7 +35,6 @@
     <string name="error_invalid_credentials">Neplatné uživatelské jméno či heslo.</string>
     <string name="error_unknown_host">Neznámá IP či hostitel.</string>
     <string name="main_action_about">O aplikaci</string>
-    <string name="main_add_server">Přidat server</string>
     <string name="torrent_option_speed_limit">Limity rychlosti</string>
     <string name="torrent_disable_super_seeding_success">Mód super sdílení úspěšně vypnut.</string>
     <string name="torrent_list_action_sort_upload_speed">Rychlost odesílání</string>
@@ -180,7 +179,6 @@
     <string name="eta_hours">%1$sh</string>
     <string name="speed_format">%1$s%2$s</string>
     <string name="error_banned">Byli jste zablokování z důvodu mnoha neúspěšných pokusů o přihlášení.</string>
-    <string name="main_no_servers">Žádné servery nebyli nalezeny, kliknutím zde jeden přidáte.</string>
     <string name="torrent_list_action_add_torrent">Přidat torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_priority">Priorita</string>
@@ -645,4 +643,6 @@
     <string name="notification_channel_download_completed">Stahování dokončeno</string>
     <string name="notification_torrent_downloaded">Torrent stažen</string>
     <string name="settings_server_password_min_character">Heslo musí mít alespoň 6 znaků.</string>
+    <string name="torrent_overview_availability">Dostupnost</string>
+    <string name="torrent_overview_popularity">Oblíbenost</string>
 </resources>

@@ -65,7 +65,6 @@
     <string name="torrent_list_set_location_hint">Шлях збереження</string>
     <string name="torrent_list_action_sort">Відсортувати</string>
     <string name="torrent_list_create_category_download_path_yes">Так</string>
-    <string name="main_no_servers">Жодних серверів не знайдено. Натисніть тут, щоб додати один.</string>
     <string name="eta_minutes">%1$sхв</string>
     <string name="action_select_all">Вибрати все</string>
     <string name="torrent_list_action_sort_name">Назва</string>
@@ -78,7 +77,6 @@
     <string name="torrent_list_free_space">Вільний простір: %1$s</string>
     <string name="torrent_list_create_category_hint">Назва категорії</string>
     <string name="torrent_status_downloading">Завантаження</string>
-    <string name="main_add_server">Додати сервер</string>
     <string name="eta_days">%1$sд</string>
     <string name="torrent_list_action_statistics">Статистика</string>
     <string name="torrent_list_create_category_enable_download_path_hint">Використати шлях завантаження</string>
@@ -661,4 +659,12 @@
     <string name="torrent_files_rename_file_hint">Ім\'я файлу</string>
     <string name="torrent_overview_peers_format">%1$d (усього %2$d)</string>
     <string name="torrent_overview_wasted">Витрачено</string>
+    <string name="torrent_overview_popularity">Популярність</string>
+    <string name="rss_action_edit_feed_url">Редагувати URL каналу</string>
+    <string name="rss_success_feed_change_url">URL каналу успішно змінено.</string>
+    <string name="torrent_overview_availability">Доступність</string>
+    <string name="rss_rule_no_feed_found">Канал не знайдено</string>
+    <string name="torrent_list_no_server_add">Додати сервер</string>
+    <string name="torrent_list_no_server_title">Немає доступних серверів</string>
+    <string name="torrent_list_no_server_description">Ви ще не додали жодного сервера. Додайте один, щоб почати.</string>
 </resources>

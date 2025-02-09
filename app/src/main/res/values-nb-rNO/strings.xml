@@ -38,7 +38,6 @@
     <string name="action_select_inverse">Velg motsatt</string>
     <string name="main_action_settings">Innstillinger</string>
     <string name="main_action_about">Om</string>
-    <string name="main_add_server">Legg til tjener</string>
     <string name="torrent_list_action_add_torrent">Legg til torrent</string>
     <string name="torrent_list_action_statistics">Statistikk</string>
     <string name="torrent_list_action_execution_log">Kjøringslogg</string>
@@ -322,7 +321,6 @@
     <string name="error_timeout">Tidsavbrudd for tilkobling.</string>
     <string name="error_no_data">Tjeneren sendte ikke noe data.</string>
     <string name="error_banned">Du har blitt bannlyst som følge av for mange mislykkede innloggingsforsøk.</string>
-    <string name="main_no_servers">Fant ingen tjenere. Trykk her for å legge til en.</string>
     <string name="torrent_list_action_sort_connected_leeches">Tilkoblede hentere</string>
     <string name="torrent_list_action_sort_total_leeches">Totalt antall hentere</string>
     <string name="torrent_list_action_set_location">Sett plassering</string>

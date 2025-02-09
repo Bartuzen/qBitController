@@ -252,7 +252,6 @@
     <string name="action_search">Поиск</string>
     <string name="action_select_inverse">Инвертировать выделение</string>
     <string name="main_action_settings">Настройки</string>
-    <string name="main_add_server">Добавить сервер</string>
     <string name="torrent_list_action_add_torrent">Добавить торрент</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">Поиск в Интернете</string>
@@ -498,7 +497,6 @@
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Отмена</string>
     <string name="action_select_all">Выделить всё</string>
-    <string name="main_no_servers">Серверы не найдены. Нажмите здесь, чтобы добавить.</string>
     <string name="torrent_speed_alternative_speed_limits">Особые ограничения скорости</string>
     <string name="torrent_list_action_sort_name">Имя</string>
     <string name="torrent_list_action_sort_status">Статус</string>
@@ -663,4 +661,12 @@
     <string name="torrent_list_empty_title">Торренты не найдены</string>
     <string name="torrent_list_empty_add">Добавить торрент</string>
     <string name="torrent_list_no_result_description">Торренты, соответствующие вашим фильтрам, не найдены. Попробуйте изменить настройки фильтров или параметры поиска.</string>
+    <string name="torrent_overview_popularity">Популярность</string>
+    <string name="rss_action_edit_feed_url">Редактировать URL ленты</string>
+    <string name="rss_success_feed_change_url">URL ленты успешно изменен.</string>
+    <string name="torrent_overview_availability">Доступность</string>
+    <string name="rss_rule_no_feed_found">Лента не найдена</string>
+    <string name="torrent_list_no_server_title">Нет доступных серверов</string>
+    <string name="torrent_list_no_server_description">Серверы еще не добавлены. Добавьте один для начала работы.</string>
+    <string name="torrent_list_no_server_add">Добавить сервер</string>
 </resources>

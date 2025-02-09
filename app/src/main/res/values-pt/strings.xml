@@ -31,7 +31,6 @@
     <string name="action_search">Pesquisar</string>
     <string name="action_select_all">Selecionar Tudo</string>
     <string name="action_select_inverse">Seleção Inversa</string>
-    <string name="main_add_server">Adicionar Servidor</string>
     <string name="torrent_list_empty_title">Nenhum Torrent Encontrado</string>
     <string name="torrent_list_empty_description">Não tem torrents. Adicionar um para começar.</string>
     <string name="torrent_list_empty_rss">Adicionar via RSS</string>
@@ -170,7 +169,6 @@
     <string name="torrent_action_copy_magnet_uri">URI do Magnet</string>
     <string name="error_unknown_login_response">Resposta de autenticação desconhecida: %1$s</string>
     <string name="error_api">Erro da API: %1$d</string>
-    <string name="main_no_servers">Sem servidores, Clique para adicionar um.</string>
     <string name="torrent_list_no_result_description">Nenhum torrent corresponde aos seus filtros atuais. Tente ajustar os filtros ou critérios de pesquisa.</string>
     <string name="torrent_list_action_priority_maximize">Maximizar Prioridade</string>
     <string name="torrent_list_action_priority_minimize">Minimizar Prioridade</string>

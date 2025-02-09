@@ -55,8 +55,6 @@
     <string name="action_select_inverse">反选</string>
     <string name="main_action_settings">设置</string>
     <string name="main_action_about">关于</string>
-    <string name="main_no_servers">没有找到服务器。单击此处来添加服务器。</string>
-    <string name="main_add_server">添加服务器</string>
     <string name="torrent_list_action_add_torrent">添加 Torrent</string>
     <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_search_online">在线搜索</string>
@@ -614,4 +612,12 @@
     <string name="torrent_list_no_result_description">没有种子与您当前的过滤器匹配。尝试调整您的过滤器或搜索条件。</string>
     <string name="torrent_list_no_result_reset">重置过滤器</string>
     <string name="torrent_overview_private_no">否</string>
+    <string name="torrent_overview_popularity">流行度</string>
+    <string name="torrent_overview_availability">可用性</string>
+    <string name="rss_success_feed_change_url">已成功更改订阅源 URL。</string>
+    <string name="rss_action_edit_feed_url">编辑订阅源 URL</string>
+    <string name="rss_rule_no_feed_found">未找到订阅</string>
+    <string name="torrent_list_no_server_title">没有可用的服务器</string>
+    <string name="torrent_list_no_server_description">您还没有添加任何服务器。 添加一个即可开始。</string>
+    <string name="torrent_list_no_server_add">添加服务器</string>
 </resources>
