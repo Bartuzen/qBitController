@@ -26,8 +26,6 @@
     <string name="torrent_list_delete_tag">குறிச்சொல்லை நீக்கு</string>
     <string name="torrent_list_create_tag_hint">குறிச்சொல் பெயர்</string>
     <string name="torrent_list_trackers_trackerless">டிராக்கர்லெச்</string>
-    <string name="torrent_item_progress_format">%1$s / %2$s • %3$s %% • %4 $ s</string>
-    <string name="torrent_list_speed_format">1 %1$s ( %2$s) ங்கல் %3$s ( %4 $ S)</string>
     <string name="torrent_enable_force_start_success">படை தொடக்க வெற்றிகரமாக இயக்கப்பட்டது.</string>
     <string name="torrent_rename_torrent_hint">பெயர்</string>
     <string name="torrent_overview_private_yes">ஆம்</string>
@@ -36,7 +34,6 @@
     <string name="torrent_files_priority_high">உயர்ந்த</string>
     <string name="torrent_files_priority_maximum">பெருமம்</string>
     <string name="torrent_files_priority_mixed">கலப்பு</string>
-    <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4 $ s %%</string>
     <string name="torrent_files_action_rename">மறுபெயரிடுங்கள்</string>
     <string name="torrent_files_file_renamed_success">கோப்பு வெற்றிகரமாக மறுபெயரிடப்பட்டது</string>
     <string name="torrent_files_folder_renamed_success">கோப்புறை வெற்றிகரமாக மறுபெயரிடப்பட்டது</string>
@@ -75,7 +72,6 @@
     <string name="torrent_overview_wasted">வீணானது</string>
     <string name="torrent_overview_availability">கிடைக்கும் தன்மை</string>
     <string name="torrent_overview_popularity">புகழ்</string>
-    <string name="torrent_files_directory_format">&lt;! [Cdata [&lt;b&gt; அடைவு: &lt;/b&gt;]]&gt; %1$s</string>
     <string name="torrent_files_priority_do_not_download">பதிவிறக்கம் செய்ய வேண்டாம்</string>
     <string name="torrent_files_action_priority">முன்னுரிமை</string>
     <plurals name="torrent_files_selected">
@@ -173,9 +169,7 @@
     <string name="eta_seconds">%1$ss</string>
     <string name="eta_minutes_seconds">%1$sM %2$ss</string>
     <string name="eta_minutes">%1$s.எம்</string>
-    <string name="eta_hours_minutes">%1$sh %2$sm</string>
     <string name="eta_hours">%1$sh</string>
-    <string name="eta_days_hours">%1 SD %2 sh</string>
     <string name="eta_days">%1$sடி</string>
     <string name="size_format">%1$s %2$s</string>
     <string name="size_bytes">B</string>
