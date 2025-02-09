@@ -645,4 +645,10 @@
     <string name="settings_server_password_min_character">Heslo musí mít alespoň 6 znaků.</string>
     <string name="torrent_overview_availability">Dostupnost</string>
     <string name="torrent_overview_popularity">Oblíbenost</string>
+    <string name="torrent_list_no_server_title">Žádné servery k dispozici</string>
+    <string name="torrent_list_no_server_description">Zatím jste nepřidali žádné servery. Chcete-li začít, přidejte jeden.</string>
+    <string name="torrent_list_no_server_add">Přidat server</string>
+    <string name="rss_action_edit_feed_url">Upravit URL kanálu</string>
+    <string name="rss_success_feed_change_url">URL kanálu změněna úspěšně.</string>
+    <string name="rss_rule_no_feed_found">Zádný kanál nenalezen</string>
 </resources>
