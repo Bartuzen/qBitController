@@ -105,6 +105,11 @@ android {
     lint {
         disable += listOf("MissingTranslation", "ExtraTranslation")
     }
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
 }
 
 val isFirebaseEnabled = gradle.startParameter.taskRequests.any { task ->
@@ -139,7 +144,7 @@ dependencies {
 
     implementation(libs.compose.materialIcons.core)
     implementation(libs.compose.materialIcons.extended)
-    
+
     implementation(libs.compose.navigation)
 
     implementation(libs.compose.hilt)
