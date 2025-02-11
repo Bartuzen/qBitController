@@ -156,7 +156,7 @@ class TorrentListViewModel @Inject constructor(
     }
 
     init {
-        setCurrentServer(getFirstServer()?.id, forceReset = true)
+        setCurrentServer(currentServerId.value ?: getFirstServer()?.id, forceReset = true)
         serverManager.addServerListener(serverListener)
 
         viewModelScope.launch {
