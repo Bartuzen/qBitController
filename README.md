@@ -23,3 +23,9 @@ controlling [qBittorrent](https://github.com/qbittorrent/qBittorrent) from an An
 
 Check out [Weblate](https://hosted.weblate.org/engage/qbitcontroller) for contributing to
 localization.
+
+
+## Alternatives
+* [Transdroid](https://www.transdroid.org/) supports many other clients
+* [qBittorrent-Manager](https://github.com/Yash-Garg/qBittorrent-Manager)
+* [Tremotesf](https://github.com/equeim/tremotesf-android) for Transmission
