@@ -61,7 +61,7 @@
     <string name="torrent_peers_flag_peer_snubbed">Уснувший пир</string>
     <string name="torrent_peers_flag_peer_from_lsd">Пир из LSD</string>
     <string name="rss_mark_as_read">Пометить как прочитанное</string>
-    <string name="torrent_peers_flag_optimistic_unchoke">Скоро начнётся скачивание</string>
+    <string name="torrent_peers_flag_optimistic_unchoke">Скоро начнётся загрузка</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Заинтересован (клиент) и занят (пир)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">Заинтересован (пир) и не занят (клиент)</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Не заинтересован (клиент) и не занят (пир)</string>
