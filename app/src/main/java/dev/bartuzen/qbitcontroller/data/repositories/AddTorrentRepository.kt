@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class AddTorrentRepository @Inject constructor(
     private val requestManager: RequestManager,
 ) {
-    suspend fun createTorrent(
+    suspend fun addTorrent(
         serverId: Int,
         links: List<String>?,
         files: List<Pair<String, ByteArray>>?,

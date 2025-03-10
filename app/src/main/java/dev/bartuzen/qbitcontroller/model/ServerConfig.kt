@@ -39,6 +39,9 @@ data class ServerConfig(
                 append("/$path")
             }
         }
+
+    val displayName
+        get() = name ?: visibleUrl
 }
 
 enum class Protocol {

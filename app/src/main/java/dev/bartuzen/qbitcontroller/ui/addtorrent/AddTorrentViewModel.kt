@@ -2,9 +2,14 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 
 import android.content.Context
 import android.net.Uri
+import android.os.Parcelable
 import android.provider.MediaStore
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.ServerManager
@@ -15,46 +20,73 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.parcelize.Parcelize
 import java.io.FileNotFoundException
-import javax.inject.Inject
 
-@HiltViewModel
-class AddTorrentViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = AddTorrentViewModel.Factory::class)
+class AddTorrentViewModel @AssistedInject constructor(
     @ApplicationContext private val context: Context,
+    @Assisted initialServerId: Int?,
+    private val savedStateHandle: SavedStateHandle,
     private val repository: AddTorrentRepository,
     private val serverManager: ServerManager,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(initialServerId: Int?): AddTorrentViewModel
+    }
+
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
-    private val _categoryList = MutableStateFlow<List<String>?>(null)
-    val categoryList = _categoryList.asStateFlow()
+    val servers = serverManager.serversFlow
 
-    private val _tagList = MutableStateFlow<List<String>?>(null)
-    val tagList = _tagList.asStateFlow()
+    val serverId = savedStateHandle.getStateFlow<Int?>("serverId", initialServerId)
 
-    private val _defaultSavePath = MutableStateFlow<String?>(null)
-    val defaultSavePath = _defaultSavePath.asStateFlow()
+    val serverData = savedStateHandle.getStateFlow<ServerData?>("serverData", null)
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    val isLoading = savedStateHandle.getStateFlow("isLoading", false)
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    private val _isCreating = MutableStateFlow(false)
-    val isCreating = _isCreating.asStateFlow()
+    private val _isAdding = MutableStateFlow(false)
+    val isAdding = _isAdding.asStateFlow()
 
     private var loadCategoryTagJob: Job? = null
 
-    fun getServers() = serverManager.serversFlow.value.values.toList()
+    init {
+        viewModelScope.launch {
+            if (serverId.value == null) {
+                val firstServerId = serverManager.serversFlow.value.keys.firstOrNull()
+                if (firstServerId != null) {
+                    setServerId(firstServerId)
+                } else {
+                    eventChannel.send(Event.NoServersFound)
+                    return@launch
+                }
+            }
 
-    fun createTorrent(
+            serverId
+                .drop(if (serverData.value != null) 1 else 0)
+                .collectLatest { serverId ->
+                    setServerData(null)
+                    if (serverId != null) {
+                        loadData(serverId)
+                    }
+                }
+        }
+    }
+
+    fun addTorrent(
         serverId: Int,
         links: List<String>?,
         fileUris: List<Uri>?,
@@ -74,8 +106,8 @@ class AddTorrentViewModel @Inject constructor(
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean,
     ) = viewModelScope.launch {
-        if (!isCreating.value) {
-            _isCreating.value = true
+        if (!isAdding.value) {
+            _isAdding.value = true
 
             val files = try {
                 fileUris?.mapNotNull {
@@ -102,16 +134,16 @@ class AddTorrentViewModel @Inject constructor(
                 }
             } catch (_: FileNotFoundException) {
                 eventChannel.send(Event.FileNotFound)
-                _isCreating.value = false
+                _isAdding.value = false
                 return@launch
             } catch (e: Exception) {
                 eventChannel.send(Event.FileReadError("${e::class.simpleName} ${e.message}"))
-                _isCreating.value = false
+                _isAdding.value = false
                 return@launch
             }
 
             when (
-                val result = repository.createTorrent(
+                val result = repository.addTorrent(
                     serverId,
                     links,
                     files,
@@ -147,11 +179,11 @@ class AddTorrentViewModel @Inject constructor(
                     }
                 }
             }
-            _isCreating.value = false
+            _isAdding.value = false
         }
     }
 
-    private fun updateCategoryAndTags(serverId: Int) = viewModelScope.launch {
+    private fun updateData(serverId: Int) = viewModelScope.launch {
         val categoriesDeferred = async {
             when (val result = repository.getCategories(serverId)) {
                 is RequestResult.Success -> {
@@ -194,43 +226,52 @@ class AddTorrentViewModel @Inject constructor(
             val tags = tagsDeferred.await()
             val defaultSavePath = defaultSavePathDeferred.await()
 
-            _categoryList.value = categories
-            _tagList.value = tags
-            _defaultSavePath.value = defaultSavePath
+            setServerData(ServerData(categories, tags, defaultSavePath))
         } catch (_: CancellationException) {
         }
     }
 
-    fun removeCategoriesAndTags() {
-        _categoryList.value = null
-        _tagList.value = null
-    }
-
-    fun loadCategoryAndTags(serverId: Int) {
+    fun loadData(serverId: Int) {
         loadCategoryTagJob?.cancel()
 
-        _isLoading.value = true
-        val job = updateCategoryAndTags(serverId)
+        setLoading(true)
+        val job = updateData(serverId)
         job.invokeOnCompletion { e ->
             if (e !is CancellationException) {
-                _isLoading.value = false
+                setLoading(false)
                 loadCategoryTagJob = null
             }
         }
         loadCategoryTagJob = job
     }
 
-    fun refreshCategoryAndTags(serverId: Int) {
+    fun refreshData(serverId: Int) {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateCategoryAndTags(serverId).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateData(serverId).invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
+    fun setServerId(serverId: Int?) {
+        savedStateHandle["serverId"] = serverId
+    }
+
+    private fun setServerData(serverData: ServerData?) {
+        savedStateHandle["serverData"] = serverData
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        savedStateHandle["isLoading"] = isLoading
+    }
+
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
+        data object NoServersFound : Event()
         data object FileNotFound : Event()
         data class FileReadError(val error: String) : Event()
         data object InvalidTorrentFile : Event()
@@ -238,3 +279,10 @@ class AddTorrentViewModel @Inject constructor(
         data object TorrentAdded : Event()
     }
 }
+
+@Parcelize
+data class ServerData(
+    val categoryList: List<String>,
+    val tagList: List<String>,
+    val defaultSavePath: String,
+) : Parcelable
