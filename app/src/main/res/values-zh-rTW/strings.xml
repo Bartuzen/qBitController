@@ -594,9 +594,7 @@
     <string name="settings_server_edit_success">已成功編輯伺服器。</string>
     <string name="settings_server_remove_success">已成功移除伺服器。</string>
     <string name="settings_server_required_field">該欄位不得為空。</string>
-    <string name="accessibility_open_navigation_drawer">開啟側滑欄</string>
     <string name="notification_torrent_downloaded">種子已下載</string>
-    <string name="accessibility_close_navigation_drawer">關閉側滑欄</string>
     <string name="torrent_overview_popularity">流行度</string>
     <string name="torrent_files_priority_maximum">最高</string>
     <string name="torrent_trackers_action_add">新增 Trackers</string>

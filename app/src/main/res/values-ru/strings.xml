@@ -191,8 +191,6 @@
     <string name="settings_servers">Серверы</string>
     <string name="settings_other">Другое</string>
     <string name="settings_server_url_configuration_not_valid">Введенная конфигурация URL недопустима.</string>
-    <string name="accessibility_close_navigation_drawer">Закрыть боковое меню</string>
-    <string name="accessibility_open_navigation_drawer">Открыть боковое меню</string>
     <plurals name="torrent_list_torrents_pause_success">
         <item quantity="one">%1$d торрент успешно остановлен.</item>
         <item quantity="few">%1$d торрента успешно остановлено.</item>

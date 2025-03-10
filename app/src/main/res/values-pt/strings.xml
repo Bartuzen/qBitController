@@ -595,8 +595,6 @@
     <string name="settings_server_url_configuration_not_valid">A configuração de URL inserida é inválida.</string>
     <string name="notification_channel_download_completed">Transferência completada</string>
     <string name="notification_torrent_downloaded">Torrent transferido</string>
-    <string name="accessibility_open_navigation_drawer">Abrir painel de navegação</string>
-    <string name="accessibility_close_navigation_drawer">Fechar o painel de navegação</string>
     <string name="rss_confirm_delete_folder">Tem a certeza que quer eliminar a pasta %1$s?</string>
     <string name="rss_rule_apply_rule_to_feeds">Aplicar Regra para Fontes</string>
     <string name="search_start_action_start">Iniciar Pesquisa</string>
