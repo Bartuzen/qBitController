@@ -145,7 +145,7 @@
     <string name="torrent_list_status_completed">완료</string>
     <string name="torrent_list_status_resumed">이어받기됨</string>
     <string name="torrent_list_status_inactive">비활성</string>
-    <string name="torrent_list_status_stalled">중지지됨</string>
+    <string name="torrent_list_status_stalled">중지됨</string>
     <string name="torrent_list_status_checking">확인 중</string>
     <string name="torrent_list_priority_increase_success">우선 순위가 성공적으로 증가했습니다.</string>
     <string name="torrent_list_priority_decrease_success">우선 순위가 성공적으로 감소했습니다.</string>
