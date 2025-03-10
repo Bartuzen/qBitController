@@ -482,11 +482,9 @@ private fun AddTorrentScreen(
 
                     AppBarActions(items = actionMenuItems)
                 },
-                modifier = Modifier.windowInsetsPadding(
-                    WindowInsets.safeDrawing
-                        .exclude(WindowInsets.ime)
-                        .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
-                ),
+                windowInsets = WindowInsets.safeDrawing
+                    .exclude(WindowInsets.ime)
+                    .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
         snackbarHost = {
