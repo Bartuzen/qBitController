@@ -602,5 +602,21 @@
     <string name="settings_server_password_min_character">비밀번호는 최소한 6글자 이상이여야 합니다.</string>
     <string name="about_description">qBitController는 당신이 안드로이드 기기에서 qBittorrent를 제어하게 해줍니다.\n\n더 자세한 정보와 소스코드: %1$s</string>
     <string name="notification_channel_download_completed">내려받기 완료됨</string>
-    <string name="notification_torrent_downloaded">내려받기를 완료했습니다.</string>
+    <string name="notification_torrent_downloaded">내려받기 완료됨</string>
+    <string name="torrent_list_no_server_title">사용 가능한 서버 없음</string>
+    <string name="torrent_list_no_server_description">아직 서버를 추가하지 않았습니다. 시작하기 위해 서버를 추가하십시오.</string>
+    <string name="torrent_list_no_server_add">서버 추가</string>
+    <string name="torrent_list_empty_add">토렌트 추가</string>
+    <string name="torrent_list_no_result_reset">필터 초기화</string>
+    <string name="torrent_list_empty_title">발견된 토렌트 없음</string>
+    <string name="torrent_list_empty_description">토렌트가 없습니다. 시작하기 위해 토렌트를 추가하십시오.</string>
+    <string name="torrent_list_empty_rss">RSS를 통해 추가</string>
+    <string name="torrent_list_empty_search">토렌트 검색</string>
+    <string name="torrent_list_no_result_description">현재 필터에 일치하는 토렌트가 없습니다. 필터나 검색어를 조정해보십시오.</string>
+    <string name="torrent_list_no_result_title">결과가 없음</string>
+    <string name="torrent_overview_availability">가용성</string>
+    <string name="rss_action_edit_feed_url">피드 URL 편집</string>
+    <string name="rss_rule_no_feed_found">발견된 피드 없음</string>
+    <string name="torrent_overview_popularity">인지도</string>
+    <string name="rss_success_feed_change_url">피드 URL이 성공적으로 변경되었습니다.</string>
 </resources>
