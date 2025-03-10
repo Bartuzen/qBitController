@@ -558,7 +558,6 @@
     <string name="settings_server_action_save">Uložit</string>
     <string name="settings_server_advanced_basic_auth">Základní autentizace</string>
     <string name="settings_server_advanced_basic_auth_password">Heslo</string>
-    <string name="accessibility_open_navigation_drawer">Otevřít navigační šuplík</string>
     <string name="rss_mark_article_as_read_success">Článek označen jako přečtený.</string>
     <string name="rss_rule_rename">Přejmenoval pravidlo</string>
     <string name="rss_refresh_feed_success">Zdroj úspěšně aktualizován.</string>
@@ -610,7 +609,6 @@
     <string name="settings_server_advanced_basic_auth_username">Uživatelské jméno</string>
     <string name="settings_server_url_configuration_not_valid">Zadaná URL konfigurace není platná.</string>
     <string name="settings_server_connection_success">Připojení k serveru úspěšné.</string>
-    <string name="accessibility_close_navigation_drawer">Zavřít navigační šuplík</string>
     <string name="rss_rule_delete">Smazat pravidlo</string>
     <string name="settings_server_required_field">Toto pole je povinné.</string>
     <string name="search_result_action_sort_leechers">Leecheři</string>

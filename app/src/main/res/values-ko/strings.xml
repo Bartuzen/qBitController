@@ -468,8 +468,6 @@
     <string name="settings_server_edit_success">서버가 성공적으로 수정되었습니다.</string>
     <string name="settings_server_remove_success">서버가 성공적으로 제거되었습니다.</string>
     <string name="settings_server_port_must_be_between">포트 번호는 1-65535 사이여야 합니다.</string>
-    <string name="accessibility_open_navigation_drawer">사이드바 열기</string>
-    <string name="accessibility_close_navigation_drawer">사이드바 닫기</string>
     <string name="torrent_add_category">범주</string>
     <string name="torrent_add_link_hint">마그넷 또는 HTTP 링크</string>
     <plurals name="torrent_add_files_selected">

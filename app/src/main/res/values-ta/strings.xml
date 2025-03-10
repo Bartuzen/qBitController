@@ -464,8 +464,6 @@
     <string name="settings_server_remove_success">சேவையகம் வெற்றிகரமாக அகற்றப்பட்டுள்ளது.</string>
     <string name="settings_server_required_field">இந்த புலம் தேவை.</string>
     <string name="notification_torrent_downloaded">டொரண்ட் பதிவிறக்கம்</string>
-    <string name="accessibility_open_navigation_drawer">திறந்த வழிசெலுத்தல் அலமாரியை</string>
-    <string name="accessibility_close_navigation_drawer">வழிசெலுத்தல் அலமாரியை மூடு</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
     <string name="eta_days_hours">%1$sd %2$sh</string>
     <string name="torrent_files_directory_format"><![CDATA[<b>அடைவு: </b>]]> %1$s</string>
