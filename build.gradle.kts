@@ -32,6 +32,6 @@ tasks.withType<DependencyUpdatesTask> {
     }
 }
 
-task<Delete>("clean") {
+tasks.register<Delete>("clean") {
     delete(layout.buildDirectory)
 }
