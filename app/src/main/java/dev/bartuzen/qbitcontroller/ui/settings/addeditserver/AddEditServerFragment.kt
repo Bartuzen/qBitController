@@ -26,7 +26,7 @@ import dev.bartuzen.qbitcontroller.model.DnsOverHttps
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsFragment
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
@@ -54,8 +54,8 @@ class AddEditServerFragment() : Fragment(R.layout.fragment_settings_add_edit_ser
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
-        binding.scrollView.applySystemBarInsets(top = false)
+        binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
+        binding.scrollView.applySafeDrawingInsets(top = false)
 
         val titleRes = if (serverId == null) {
             R.string.settings_server_title_add

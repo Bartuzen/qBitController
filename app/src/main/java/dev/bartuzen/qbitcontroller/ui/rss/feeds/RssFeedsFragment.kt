@@ -28,7 +28,7 @@ import dev.bartuzen.qbitcontroller.databinding.FragmentRssFeedsBinding
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesFragment
 import dev.bartuzen.qbitcontroller.ui.rss.rules.RssRulesFragment
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -60,8 +60,8 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
-        binding.recyclerFeeds.applySystemBarInsets(top = false)
+        binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
+        binding.recyclerFeeds.applySafeDrawingInsets(top = false)
 
         requireActivity().addMenuProvider(
             object : MenuProvider {

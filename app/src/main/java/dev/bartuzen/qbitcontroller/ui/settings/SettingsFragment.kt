@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
 import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
@@ -41,7 +41,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listView.applySystemBarInsets(top = false)
+        listView.applySafeDrawingInsets(top = false)
         listView.clipToPadding = false
     }
 

@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.ActivitySettingsBinding
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerFragment
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 
 @AndroidEntryPoint
@@ -27,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
         theme.applyStyle(R.style.ThemeOverlay_Material3_Preference, true)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets(bottom = false)
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

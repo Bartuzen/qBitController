@@ -15,7 +15,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.BasicAuth
 import dev.bartuzen.qbitcontroller.model.DnsOverHttps
 import dev.bartuzen.qbitcontroller.utils.PreferenceDSL
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getParcelableCompat
 import dev.bartuzen.qbitcontroller.utils.getSerializableCompat
 import dev.bartuzen.qbitcontroller.utils.preferences
@@ -61,7 +61,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listView.applySystemBarInsets(top = false)
+        listView.applySafeDrawingInsets(top = false)
         listView.clipToPadding = false
     }
 

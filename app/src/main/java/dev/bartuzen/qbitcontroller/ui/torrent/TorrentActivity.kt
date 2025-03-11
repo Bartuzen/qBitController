@@ -15,7 +15,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsFragment
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 
 @AndroidEntryPoint
 class TorrentActivity : AppCompatActivity() {
@@ -35,7 +35,7 @@ class TorrentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         enableEdgeToEdge()
-        binding.layoutAppBar.applySystemBarInsets(bottom = false)
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
 
         val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
         val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)

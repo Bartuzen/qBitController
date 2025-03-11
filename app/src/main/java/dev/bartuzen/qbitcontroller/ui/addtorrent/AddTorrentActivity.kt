@@ -490,7 +490,7 @@ private fun AddTorrentScreen(
         snackbarHost = {
             SwipeableSnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
+                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
             )
         },
         modifier = Modifier.fillMaxSize(),

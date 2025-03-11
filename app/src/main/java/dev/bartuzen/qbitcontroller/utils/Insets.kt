@@ -36,12 +36,14 @@ fun View.applyInsets(top: Boolean, bottom: Boolean, start: Boolean, end: Boolean
     }
 }
 
-fun View.applySystemBarInsets(top: Boolean = true, bottom: Boolean = true, start: Boolean = true, end: Boolean = true) {
+fun View.applySafeDrawingInsets(top: Boolean = true, bottom: Boolean = true, start: Boolean = true, end: Boolean = true) {
     applyInsets(
         top = top,
         bottom = bottom,
         start = start,
         end = end,
-        typeMask = WindowInsetsCompat.Type.systemBars(),
+        typeMask = WindowInsetsCompat.Type.systemBars() or
+            WindowInsetsCompat.Type.displayCutout() or
+            WindowInsetsCompat.Type.ime(),
     )
 }

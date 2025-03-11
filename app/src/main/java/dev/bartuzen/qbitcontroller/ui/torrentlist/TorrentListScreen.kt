@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,8 +45,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -95,7 +95,6 @@ import androidx.compose.material.icons.outlined.ToggleOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -117,7 +116,6 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -822,7 +820,7 @@ fun TorrentListScreen(
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet(
-                    windowInsets = DrawerDefaults.windowInsets.only(WindowInsetsSides.Start),
+                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
                     drawerState = drawerState,
                 ) {
                     val counts by viewModel.counts.collectAsStateWithLifecycle()
@@ -864,15 +862,13 @@ fun TorrentListScreen(
         ) {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                contentWindowInsets = ScaffoldDefaults.contentWindowInsets.only(
+                contentWindowInsets = WindowInsets.safeDrawing.only(
                     WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
                 ),
                 snackbarHost = {
                     SwipeableSnackbarHost(
                         hostState = snackbarHostState,
-                        modifier = Modifier.windowInsetsPadding(
-                            ScaffoldDefaults.contentWindowInsets.union(WindowInsets.ime),
-                        ),
+                        modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
                     )
                 },
                 topBar = {
@@ -1036,11 +1032,7 @@ fun TorrentListScreen(
                                 }
 
                                 item {
-                                    Spacer(
-                                        modifier = Modifier.windowInsetsBottomHeight(
-                                            WindowInsets.systemBars.union(WindowInsets.ime),
-                                        ),
-                                    )
+                                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                                 }
                             }
 
@@ -1149,6 +1141,9 @@ fun TorrentListScreen(
                             canFocus = drawerState.isClosed,
                         )
                     },
+                    windowInsets = WindowInsets.safeDrawing
+                        .exclude(WindowInsets.ime)
+                        .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
                 )
             },
         ) { innerPadding ->
@@ -1456,7 +1451,7 @@ private fun DrawerContent(
         modifier = modifier.fillMaxSize(),
     ) {
         item {
-            Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.systemBars))
+            Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
         }
 
         items(servers.toList()) { (id, serverConfig) ->
@@ -1956,7 +1951,7 @@ private fun DrawerContent(
         }
 
         item {
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
         }
     }
 }
@@ -2438,6 +2433,9 @@ private fun TopBar(
                 }
             }
         },
+        windowInsets = WindowInsets.safeDrawing
+            .exclude(WindowInsets.ime)
+            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
     )
 }
 
@@ -2663,6 +2661,9 @@ private fun TopBarSelection(
                 canFocus = canFocusNow,
             )
         },
+        windowInsets = WindowInsets.safeDrawing
+            .exclude(WindowInsets.ime)
+            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
     )
 }
 

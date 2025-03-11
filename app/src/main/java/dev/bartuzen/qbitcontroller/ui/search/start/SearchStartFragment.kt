@@ -17,7 +17,7 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchStartBinding
 import dev.bartuzen.qbitcontroller.ui.search.plugins.SearchPluginsFragment
 import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultFragment
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -38,8 +38,8 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
-        binding.recyclerSearch.applySystemBarInsets(top = false)
+        binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
+        binding.recyclerSearch.applySafeDrawingInsets(top = false)
 
         val adapter = SearchStartAdapter()
         binding.recyclerSearch.adapter = adapter

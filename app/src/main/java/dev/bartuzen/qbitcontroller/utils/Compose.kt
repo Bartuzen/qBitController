@@ -14,7 +14,7 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -159,7 +159,7 @@ fun adaptiveIconPainterResource(@DrawableRes id: Int): Painter {
 // https://issuetracker.google.com/issues/382564794
 @Composable
 fun Modifier.dropdownMenuHeight() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-    val insets = WindowInsets.systemBars.asPaddingValues()
+    val insets = WindowInsets.safeDrawing.asPaddingValues()
     val availableHeight = LocalConfiguration.current.screenHeightDp.dp -
         insets.calculateTopPadding() - insets.calculateBottomPadding()
 

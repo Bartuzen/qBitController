@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.databinding.DialogPluginInstallBinding
 import dev.bartuzen.qbitcontroller.databinding.FragmentSearchPluginsBinding
-import dev.bartuzen.qbitcontroller.utils.applySystemBarInsets
+import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
@@ -45,8 +45,8 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.progressIndicator.applySystemBarInsets(top = false, bottom = false)
-        binding.recyclerPlugins.applySystemBarInsets(top = false)
+        binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
+        binding.recyclerPlugins.applySafeDrawingInsets(top = false)
 
         val adapter = SearchPluginsAdapter()
         binding.recyclerPlugins.adapter = adapter

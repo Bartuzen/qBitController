@@ -13,11 +13,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,7 +28,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -133,15 +130,13 @@ private fun LogScreen(
 
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = ScaffoldDefaults.contentWindowInsets.only(
+        contentWindowInsets = WindowInsets.safeDrawing.only(
             WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
         ),
         snackbarHost = {
             SwipeableSnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(
-                    ScaffoldDefaults.contentWindowInsets.union(WindowInsets.ime),
-                ),
+                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
             )
         },
         topBar = {
@@ -200,7 +195,7 @@ private fun LogScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.systemBars))
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                 }
             }
 
