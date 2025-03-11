@@ -19,16 +19,18 @@ class TorrentListRepository @Inject constructor(
         }
 
     suspend fun pauseTorrents(serverId: Int, hashes: List<String>) = requestManager.request(serverId) { service ->
-        when (requestManager.getQBittorrentVersion(serverId)) {
-            QBittorrentVersion.V4 -> service.pauseTorrents(hashes.joinToString("|"))
-            QBittorrentVersion.V5 -> service.stopTorrents(hashes.joinToString("|"))
+        val version = requestManager.getQBittorrentVersion(serverId)
+        when {
+            version >= QBittorrentVersion(5, 0, 0) -> service.stopTorrents(hashes.joinToString("|"))
+            else -> service.pauseTorrents(hashes.joinToString("|"))
         }
     }
 
     suspend fun resumeTorrents(serverId: Int, hashes: List<String>) = requestManager.request(serverId) { service ->
-        when (requestManager.getQBittorrentVersion(serverId)) {
-            QBittorrentVersion.V4 -> service.resumeTorrents(hashes.joinToString("|"))
-            QBittorrentVersion.V5 -> service.startTorrents(hashes.joinToString("|"))
+        val version = requestManager.getQBittorrentVersion(serverId)
+        when {
+            version >= QBittorrentVersion(5, 0, 0) -> service.startTorrents(hashes.joinToString("|"))
+            else -> service.resumeTorrents(hashes.joinToString("|"))
         }
     }
 

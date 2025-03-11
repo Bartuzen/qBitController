@@ -23,16 +23,18 @@ class TorrentOverviewRepository @Inject constructor(
         }
 
     suspend fun pauseTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
-        when (requestManager.getQBittorrentVersion(serverId)) {
-            QBittorrentVersion.V4 -> service.pauseTorrents(hash)
-            QBittorrentVersion.V5 -> service.stopTorrents(hash)
+        val version = requestManager.getQBittorrentVersion(serverId)
+        when {
+            version >= QBittorrentVersion(5, 0, 0) -> service.stopTorrents(hash)
+            else -> service.pauseTorrents(hash)
         }
     }
 
     suspend fun resumeTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
-        when (requestManager.getQBittorrentVersion(serverId)) {
-            QBittorrentVersion.V4 -> service.resumeTorrents(hash)
-            QBittorrentVersion.V5 -> service.startTorrents(hash)
+        val version = requestManager.getQBittorrentVersion(serverId)
+        when {
+            version >= QBittorrentVersion(5, 0, 0) -> service.startTorrents(hash)
+            else -> service.resumeTorrents(hash)
         }
     }
 

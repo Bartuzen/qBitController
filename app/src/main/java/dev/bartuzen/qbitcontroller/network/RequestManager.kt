@@ -3,7 +3,6 @@ package dev.bartuzen.qbitcontroller.network
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
-import dev.bartuzen.qbitcontroller.model.QBittorrentVersionCache
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.NonCancellable
@@ -43,7 +42,7 @@ class RequestManager @Inject constructor(
     private val loggedInServerIds = mutableListOf<Int>()
     private val initialLoginLocks = mutableMapOf<Int, Mutex>()
 
-    private val versions = mutableMapOf<Int, QBittorrentVersionCache>()
+    private val versions = mutableMapOf<Int, Pair<Instant, QBittorrentVersion>>()
     private val versionLocks = mutableMapOf<Int, Mutex>()
 
     private val json = Json {
@@ -117,7 +116,7 @@ class RequestManager @Inject constructor(
         }.build()
     }
 
-    fun getQBittorrentVersion(serverId: Int) = versions[serverId]?.version ?: QBittorrentVersion.V5
+    fun getQBittorrentVersion(serverId: Int) = versions[serverId]?.second ?: QBittorrentVersion.Invalid
 
     private fun getTorrentService(serverId: Int) = torrentServiceMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
@@ -135,20 +134,17 @@ class RequestManager @Inject constructor(
     private suspend fun updateVersionIfNeeded(serverId: Int) {
         val versionLock = versionLocks.getOrPut(serverId) { Mutex() }
         versionLock.withLock {
-            val isVersionValid = versions[serverId]?.let { versionData ->
-                Duration.between(versionData.fetchDate, Instant.now()) < Duration.ofHours(1)
+            val isVersionValid = versions[serverId]?.let { (fetchDate, _) ->
+                Duration.between(fetchDate, Instant.now()) < Duration.ofHours(1)
             } == true
             if (!isVersionValid) {
                 val service = getTorrentService(serverId)
                 val version = service.getVersion()
-                versions[serverId] = QBittorrentVersionCache(
-                    fetchDate = Instant.now(),
-                    version = if (version.body()?.startsWith("v4.") == true) {
-                        QBittorrentVersion.V4
-                    } else {
-                        QBittorrentVersion.V5
-                    },
-                )
+
+                val parsedVersion = version.body()?.let { versionString ->
+                    QBittorrentVersion.fromString(versionString)
+                } ?: QBittorrentVersion.Invalid
+                versions[serverId] = Instant.now() to parsedVersion
             }
         }
     }

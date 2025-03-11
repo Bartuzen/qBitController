@@ -1,5 +1,7 @@
 package dev.bartuzen.qbitcontroller.data.repositories
 
+import android.R.attr.category
+import android.telecom.VideoProfile.isPaused
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -41,9 +43,10 @@ class AddTorrentRepository @Inject constructor(
             )
         }
 
-        val pausedKey = when (requestManager.getQBittorrentVersion(serverId)) {
-            QBittorrentVersion.V4 -> "paused"
-            QBittorrentVersion.V5 -> "stopped"
+        val version = requestManager.getQBittorrentVersion(serverId)
+        val pausedKey = when {
+            version >= QBittorrentVersion(5, 0, 0) -> "stopped"
+            else -> "paused"
         }
         val pausedPart = MultipartBody.Part.createFormData(pausedKey, isPaused.toString())
         val parts = fileParts.orEmpty() + pausedPart
