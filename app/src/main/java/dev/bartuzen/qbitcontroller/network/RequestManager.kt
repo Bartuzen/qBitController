@@ -95,13 +95,6 @@ class RequestManager @Inject constructor(
                 hostnameVerifier { _, _ -> true }
             }
 
-            addInterceptor { chain ->
-                val request = chain.request()
-                    .newBuilder()
-                    .header("Connection", "close")
-                    .build()
-                chain.proceed(request)
-            }
             retryOnConnectionFailure(true)
 
             if (serverConfig.dnsOverHttps != null) {
