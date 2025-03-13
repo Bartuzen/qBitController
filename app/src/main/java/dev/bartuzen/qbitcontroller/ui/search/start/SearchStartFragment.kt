@@ -10,7 +10,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -38,6 +37,7 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
         binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
         binding.recyclerSearch.applySafeDrawingInsets(top = false)
 
@@ -45,7 +45,14 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
         binding.recyclerSearch.adapter = adapter
         restoreState(adapter)
 
-        requireActivity().addMenuProvider(
+        binding.toolbar.setNavigationOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().finish()
+            }
+        }
+        binding.toolbar.addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.search_start, menu)
@@ -71,8 +78,6 @@ class SearchStartFragment() : Fragment(R.layout.fragment_search_start) {
                     return true
                 }
             },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {

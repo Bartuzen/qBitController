@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -78,10 +77,19 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
         binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
         binding.recyclerTorrents.applySafeDrawingInsets(top = false)
 
-        requireActivity().addMenuProvider(
+        binding.toolbar.title = searchQuery.ifBlank { getString(R.string.search_result_title) }
+        binding.toolbar.setNavigationOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().finish()
+            }
+        }
+        binding.toolbar.addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.search_result, menu)
@@ -167,8 +175,6 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                     return true
                 }
             },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
         )
 
         if (savedInstanceState == null) {

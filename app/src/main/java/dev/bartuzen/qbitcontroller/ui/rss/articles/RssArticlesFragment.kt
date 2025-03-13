@@ -18,7 +18,6 @@ import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -31,7 +30,6 @@ import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
-import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.showDialog
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.toPx
@@ -77,12 +75,19 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
         binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
         binding.recyclerArticles.applySafeDrawingInsets(top = false)
 
-        requireAppCompatActivity().supportActionBar?.title = feedPath.lastOrNull() ?: getString(R.string.rss_all_articles)
-
-        requireActivity().addMenuProvider(
+        binding.toolbar.title = feedPath.lastOrNull() ?: getString(R.string.rss_all_articles)
+        binding.toolbar.setNavigationOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().finish()
+            }
+        }
+        binding.toolbar.addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.rss_articles, menu)
@@ -131,8 +136,6 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                     return true
                 }
             },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
@@ -223,7 +226,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 }
                 is RssArticlesViewModel.Event.FeedPathChanged -> {
                     feedPath = ArrayList(event.newPath)
-                    requireAppCompatActivity().supportActionBar?.title = event.newPath.lastOrNull()
+                    binding.toolbar.title = event.newPath.lastOrNull()
 
                     setFragmentResult(
                         requestKey = "rssArticlesResult",

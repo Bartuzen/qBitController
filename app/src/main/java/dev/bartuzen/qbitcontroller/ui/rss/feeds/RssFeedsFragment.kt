@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +31,6 @@ import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
 import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
-import dev.bartuzen.qbitcontroller.utils.requireAppCompatActivity
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.setNegativeButton
 import dev.bartuzen.qbitcontroller.utils.setPositiveButton
@@ -60,10 +58,18 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
         binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
         binding.recyclerFeeds.applySafeDrawingInsets(top = false)
 
-        requireActivity().addMenuProvider(
+        binding.toolbar.setNavigationOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().finish()
+            }
+        }
+        binding.toolbar.addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.rss_feeds, menu)
@@ -94,8 +100,6 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                     return true
                 }
             },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
@@ -417,10 +421,5 @@ class RssFeedsFragment() : Fragment(R.layout.fragment_rss_feeds) {
                 dialogBinding.inputLayoutUrl.error = getString(R.string.rss_field_required)
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        requireAppCompatActivity().supportActionBar?.setTitle(R.string.rss_title)
     }
 }

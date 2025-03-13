@@ -602,6 +602,7 @@
     <string name="search_start_plugins_select">Select Plugins</string>
     <string name="search_start_action_start">Start Search</string>
 
+    <string name="search_result_title">Search Results</string>
     <string name="search_result_filter_results">Filter results…</string>
     <string name="search_result_filter_seeds">Seeds</string>
     <string name="search_result_filter_size">Size</string>

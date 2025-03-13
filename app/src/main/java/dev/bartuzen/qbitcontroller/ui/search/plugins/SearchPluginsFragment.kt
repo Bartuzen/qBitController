@@ -10,7 +10,6 @@ import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -45,6 +44,7 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.layoutAppBar.applySafeDrawingInsets(bottom = false)
         binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
         binding.recyclerPlugins.applySafeDrawingInsets(top = false)
 
@@ -56,7 +56,14 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
             },
         )
 
-        requireActivity().addMenuProvider(
+        binding.toolbar.setNavigationOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                requireActivity().finish()
+            }
+        }
+        binding.toolbar.addMenuProvider(
             object : MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.search_plugins, menu)
@@ -78,8 +85,6 @@ class SearchPluginsFragment() : Fragment(R.layout.fragment_search_plugins) {
                     return true
                 }
             },
-            viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
         )
 
         if (!viewModel.isInitialLoadStarted) {
