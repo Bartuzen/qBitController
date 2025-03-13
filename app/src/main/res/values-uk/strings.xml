@@ -665,4 +665,5 @@
     <string name="torrent_list_no_server_add">Додати сервер</string>
     <string name="torrent_list_no_server_title">Немає доступних серверів</string>
     <string name="torrent_list_no_server_description">Ви ще не додали жодного сервера. Додайте один, щоб почати.</string>
+    <string name="search_result_title">Результати пошуку</string>
 </resources>
