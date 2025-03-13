@@ -635,4 +635,5 @@
     <string name="torrent_list_no_server_add">Sunucu Ekle</string>
     <string name="torrent_list_no_server_description">Henüz bir sunucu eklemediniz. Başlamak için bir tane ekleyin.</string>
     <string name="torrent_list_no_server_title">Sunucu Bulunamadı</string>
+    <string name="search_result_title">Arama Sonuçları</string>
 </resources>
