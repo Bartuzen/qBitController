@@ -4,14 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
-import dev.bartuzen.qbitcontroller.model.Protocol
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.network.BasicAuthInterceptor
+import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import dev.bartuzen.qbitcontroller.network.TimeoutInterceptor
-import dev.bartuzen.qbitcontroller.network.TorrentService
-import dev.bartuzen.qbitcontroller.network.TrustAllX509TrustManager
-import dev.bartuzen.qbitcontroller.network.UserAgentInterceptor
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -19,26 +14,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.dnsoverhttps.DnsOverHttps
-import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.create
 import java.net.ConnectException
-import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.security.SecureRandom
 import javax.inject.Inject
-import javax.net.ssl.SSLContext
 
 @HiltViewModel
 class AddEditServerViewModel @Inject constructor(
     private val serverManager: ServerManager,
-    private val timeoutInterceptor: TimeoutInterceptor,
-    private val userAgentInterceptor: UserAgentInterceptor,
-    private val trustAllManager: TrustAllX509TrustManager,
+    private val requestManager: RequestManager,
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -68,41 +52,8 @@ class AddEditServerViewModel @Inject constructor(
         _isTesting.value = true
         val job = viewModelScope.launch {
             val error = try {
-                val service = Retrofit.Builder()
-                    .baseUrl(serverConfig.url)
-                    .client(
-                        OkHttpClient().newBuilder().apply clientBuilder@{
-                            addInterceptor(timeoutInterceptor)
-                            addInterceptor(userAgentInterceptor)
-
-                            val basicAuth = serverConfig.basicAuth
-                            if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
-                                addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
-                            }
-
-                            if (serverConfig.protocol == Protocol.HTTPS && serverConfig.trustSelfSignedCertificates) {
-                                val sslContext = SSLContext.getInstance("SSL")
-                                sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-                                sslSocketFactory(sslContext.socketFactory, trustAllManager)
-                                hostnameVerifier { _, _ -> true }
-                            }
-
-                            if (serverConfig.dnsOverHttps != null) {
-                                val dns = DnsOverHttps.Builder().apply {
-                                    client(this@clientBuilder.build())
-                                    url(serverConfig.dnsOverHttps.url.toHttpUrl())
-                                    bootstrapDnsHosts(
-                                        serverConfig.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) },
-                                    )
-                                }.build()
-
-                                dns(dns)
-                            }
-                        }.build(),
-                    )
-                    .addConverterFactory(ScalarsConverterFactory.create())
-                    .build()
-                    .create<TorrentService>()
+                val service =
+                    requestManager.buildTorrentService(serverConfig, requestManager.buildOkHttpClient(serverConfig))
 
                 val response = service.login(serverConfig.username ?: "", serverConfig.password ?: "")
 

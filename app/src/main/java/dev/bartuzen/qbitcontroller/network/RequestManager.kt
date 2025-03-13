@@ -18,6 +18,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.create
 import java.net.ConnectException
 import java.net.InetAddress
 import java.net.SocketTimeoutException
@@ -75,54 +76,58 @@ class RequestManager @Inject constructor(
         })
     }
 
+    fun buildOkHttpClient(serverConfig: ServerConfig) = OkHttpClient.Builder().apply clientBuilder@{
+        cookieJar(SessionCookieJar())
+        addInterceptor(timeoutInterceptor)
+        addInterceptor(userAgentInterceptor)
+
+        val basicAuth = serverConfig.basicAuth
+        if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
+            addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
+        }
+
+        if (serverConfig.protocol == Protocol.HTTPS && serverConfig.trustSelfSignedCertificates) {
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
+            sslSocketFactory(sslContext.socketFactory, trustAllManager)
+            hostnameVerifier { _, _ -> true }
+        }
+
+        retryOnConnectionFailure(true)
+
+        if (serverConfig.dnsOverHttps != null) {
+            val dns = DnsOverHttps.Builder().apply {
+                client(this@clientBuilder.build())
+                url(serverConfig.dnsOverHttps.url.toHttpUrl())
+                bootstrapDnsHosts(serverConfig.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) })
+            }.build()
+
+            dns(dns)
+        }
+    }.build()
+
     fun getOkHttpClient(serverId: Int) = okHttpClientMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
-
-        OkHttpClient().newBuilder().apply clientBuilder@{
-            cookieJar(SessionCookieJar())
-            addInterceptor(timeoutInterceptor)
-            addInterceptor(userAgentInterceptor)
-
-            val basicAuth = serverConfig.basicAuth
-            if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
-                addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
-            }
-
-            if (serverConfig.protocol == Protocol.HTTPS && serverConfig.trustSelfSignedCertificates) {
-                val sslContext = SSLContext.getInstance("SSL")
-                sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-                sslSocketFactory(sslContext.socketFactory, trustAllManager)
-                hostnameVerifier { _, _ -> true }
-            }
-
-            retryOnConnectionFailure(true)
-
-            if (serverConfig.dnsOverHttps != null) {
-                val dns = DnsOverHttps.Builder().apply {
-                    client(this@clientBuilder.build())
-                    url(serverConfig.dnsOverHttps.url.toHttpUrl())
-                    bootstrapDnsHosts(serverConfig.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) })
-                }.build()
-
-                dns(dns)
-            }
-        }.build()
+        buildOkHttpClient(serverConfig)
     }
 
-    fun getQBittorrentVersion(serverId: Int) = versions[serverId]?.second ?: QBittorrentVersion.Invalid
+    fun buildTorrentService(serverConfig: ServerConfig, okHttpClient: OkHttpClient) = Retrofit.Builder()
+        .baseUrl(serverConfig.url)
+        .client(okHttpClient)
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+        .create<TorrentService>()
 
     private fun getTorrentService(serverId: Int) = torrentServiceMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
-        val retrofit = Retrofit.Builder()
-            .baseUrl(serverConfig.url)
-            .client(getOkHttpClient(serverId))
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .build()
-        retrofit.create(TorrentService::class.java)
+        val okHttpClient = getOkHttpClient(serverId)
+        buildTorrentService(serverConfig, okHttpClient)
     }
 
     private fun getInitialLoginLock(serverId: Int) = initialLoginLocks.getOrPut(serverId) { Mutex() }
+
+    fun getQBittorrentVersion(serverId: Int) = versions[serverId]?.second ?: QBittorrentVersion.Invalid
 
     private suspend fun updateVersionIfNeeded(serverId: Int) {
         val versionLock = versionLocks.getOrPut(serverId) { Mutex() }
