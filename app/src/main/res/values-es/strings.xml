@@ -651,4 +651,5 @@
     <string name="torrent_list_no_server_description">No has añadido ningún servidor aún. Añade uno para empezar.</string>
     <string name="torrent_list_no_server_title">Ningún servidor disponible</string>
     <string name="torrent_list_no_server_add">Añadir servidor</string>
+    <string name="search_result_title">Buscar resultados</string>
 </resources>
