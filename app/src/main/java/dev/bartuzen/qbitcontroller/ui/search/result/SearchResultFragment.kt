@@ -138,7 +138,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                         }
 
                         override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                            requireActivity().invalidateOptionsMenu()
+                            binding.toolbar.invalidateMenu()
                             return true
                         }
                     })

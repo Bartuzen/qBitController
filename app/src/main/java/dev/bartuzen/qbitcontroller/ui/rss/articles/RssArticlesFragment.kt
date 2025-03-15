@@ -117,7 +117,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                         }
 
                         override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                            requireActivity().invalidateOptionsMenu()
+                            binding.toolbar.invalidateMenu()
                             return true
                         }
                     })
