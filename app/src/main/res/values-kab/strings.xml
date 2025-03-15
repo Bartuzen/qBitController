@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="torrent_list_action_statistics">Taddadanin</string>
+    <string name="torrent_list_tags">Tibzimin</string>
+    <string name="main_action_about">Ɣef</string>
+    <string name="language_code">kab</string>
+    <string name="main_action_settings">Iɣewwaṛen</string>
+    <string name="size_exbibytes">EAṬ</string>
+    <string name="torrent_status_error">Tuccḍa</string>
+    <string name="torrent_status_checking">Asenqed</string>
+    <string name="torrent_status_downloading">Azdam</string>
+    <string name="torrent_status_unknown">Arussin</string>
+    <string name="size_mebibytes">MAṬ</string>
+    <string name="size_gibibytes">GAṬ</string>
+    <string name="size_tebibytes">TAṬ</string>
+    <string name="size_pebibytes">PAṬ</string>
+    <string name="dialog_ok">Ih</string>
+    <string name="dialog_cancel">Semmet</string>
+    <string name="action_search">Nadi</string>
+    <string name="torrent_list_action_rss">RSS</string>
+    <string name="torrent_list_action_sort_size">Tiddi</string>
+    <string name="torrent_list_action_pause">Seṛǧu</string>
+    <string name="torrent_list_action_delete">Kkes</string>
+    <string name="torrent_list_category_tag_all">Akk</string>
+    <string name="torrent_list_categories">Taggayin</string>
+    <string name="torrent_list_create_category_download_path_yes">Ih</string>
+    <string name="torrent_list_create_category_download_path_no">Uhu</string>
+    <string name="torrent_list_status_all">Akk</string>
+    <string name="torrent_list_status_completed">Immed</string>
+    <string name="torrent_status_completed">Immed</string>
+    <string name="torrent_list_action_sort">Smizzwer</string>
+    <string name="torrent_list_action_sort_name">Isem</string>
+    <string name="torrent_list_trackers_all">Akk</string>
+</resources>

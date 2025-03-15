@@ -1,0 +1,13 @@
+Sunucularınızdaki qBittorrent’i kontrol etmek için ücretsiz ve açık kaynaklı uygulama.
+
+Özellikler:
+
+- Birden fazla qBittorrent sunucusunu yönetin
+- Magnet bağlantıları veya dosyalar ile torrent ekleyin
+- Torrentler hakkında ayrıntılı bilgileri görüntüleyin
+- Torrentleri duraklatma, devam ettirme, silme ve daha fazlasını yapın
+- Torrentleri ad, boyut, ilerleme durumu, indirme/yükleme hızı ve daha fazlasına göre sıralayın
+- Torrentleri durum, kategori, etiket ve izleyiciye göre filtreleyin
+- Kategorileri ve etiketleri yönetin
+- RSS akışlarını görüntüleyin, otomatik indirme kuralları oluşturun
+- Çevrimiçi torrent araması yapın
