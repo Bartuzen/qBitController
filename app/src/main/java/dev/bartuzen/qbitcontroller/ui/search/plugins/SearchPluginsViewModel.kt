@@ -2,23 +2,32 @@ package dev.bartuzen.qbitcontroller.ui.search.plugins
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchPluginsRepository
 import dev.bartuzen.qbitcontroller.model.Plugin
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import javax.inject.Inject
 
-@HiltViewModel
-class SearchPluginsViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = SearchPluginsViewModel.Factory::class)
+class SearchPluginsViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
     private val repository: SearchPluginsRepository,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int): SearchPluginsViewModel
+    }
+
     private val _plugins = MutableStateFlow<List<Plugin>?>(null)
     val plugins = _plugins.asStateFlow()
 
@@ -31,7 +40,9 @@ class SearchPluginsViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
+    init {
+        loadPlugins()
+    }
 
     private fun updatePlugins(serverId: Int) = viewModelScope.launch {
         when (val result = repository.getPlugins(serverId)) {
@@ -44,7 +55,7 @@ class SearchPluginsViewModel @Inject constructor(
         }
     }
 
-    fun loadPlugins(serverId: Int) {
+    fun loadPlugins() {
         if (!isLoading.value) {
             _isLoading.value = true
             updatePlugins(serverId).invokeOnCompletion {
@@ -53,16 +64,19 @@ class SearchPluginsViewModel @Inject constructor(
         }
     }
 
-    fun refreshPlugins(serverId: Int) {
+    fun refreshPlugins() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updatePlugins(serverId).invokeOnCompletion {
-                _isRefreshing.value = false
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun savePlugins(serverId: Int, newStates: Map<String, Boolean>, pluginsToDelete: List<String>) = viewModelScope.launch {
+    fun savePlugins(newStates: Map<String, Boolean>, pluginsToDelete: List<String>) = viewModelScope.launch {
         val plugins = plugins.value ?: return@launch
 
         val pluginsToEnable = plugins.filter { plugin ->
@@ -130,7 +144,7 @@ class SearchPluginsViewModel @Inject constructor(
         }
     }
 
-    fun installPlugin(serverId: Int, sources: List<String>) = viewModelScope.launch {
+    fun installPlugin(sources: List<String>) = viewModelScope.launch {
         when (val result = repository.installPlugins(serverId, sources)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.PluginsInstalled)
@@ -141,7 +155,7 @@ class SearchPluginsViewModel @Inject constructor(
         }
     }
 
-    fun updateAllPlugins(serverId: Int) = viewModelScope.launch {
+    fun updateAllPlugins() = viewModelScope.launch {
         when (val result = repository.updatePlugins(serverId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.PluginsUpdated)
