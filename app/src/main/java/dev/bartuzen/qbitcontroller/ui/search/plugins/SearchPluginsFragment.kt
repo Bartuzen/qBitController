@@ -222,18 +222,27 @@ private fun SearchPluginsScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null,
+                        )
                     }
                 },
                 actions = {
                     IconButton(onClick = {
                         viewModel.savePlugins(pluginsEnabledState, pluginsToDelete.toList())
                     }) {
-                        Icon(Icons.Default.Save, stringResource(R.string.search_plugins_action_save))
+                        Icon(
+                            imageVector = Icons.Default.Save,
+                            contentDescription = stringResource(R.string.search_plugins_action_save),
+                        )
                     }
                     var showMenu by remember { mutableStateOf(false) }
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, null)
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = null,
+                        )
                     }
                     DropdownMenu(
                         expanded = showMenu,

@@ -93,7 +93,7 @@ class AdvancedServerSettingsFragment() : PreferenceFragmentCompat() {
             override fun getBoolean(key: String, defValue: Boolean) = when (key) {
                 "basicAuthEnabled" -> basicAuth.isEnabled
                 else -> null
-            } ?: false
+            } == true
         }
         preferences {
             setUpBasicAuth()

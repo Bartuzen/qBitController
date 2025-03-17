@@ -36,9 +36,10 @@ class App : Application(), Configuration.Provider, ImageLoaderFactory {
     @Inject
     lateinit var notificationManager: AppNotificationManager
 
-    override val workManagerConfiguration get() = Configuration.Builder()
-        .setWorkerFactory(workerFactory)
-        .build()
+    override val workManagerConfiguration
+        get() = Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
 
     override fun newImageLoader() = ImageLoader.Builder(this)
         .components {

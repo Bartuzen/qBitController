@@ -52,7 +52,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
@@ -967,7 +966,7 @@ fun TorrentListScreen(
                                 val isTorrentDeleted = result.data?.getBooleanExtra(
                                     TorrentActivity.Extras.TORRENT_DELETED,
                                     false,
-                                ) ?: false
+                                ) == true
                                 if (isTorrentDeleted) {
                                     snackbarHostState.currentSnackbarData?.dismiss()
                                     scope.launch {
@@ -987,10 +986,10 @@ fun TorrentListScreen(
                                 state = listState,
                                 modifier = Modifier.fillMaxSize(),
                             ) {
-                                itemsIndexed(
+                                items(
                                     items = torrents.orEmpty(),
-                                    key = { _, torrent -> "$serverId-${torrent.hash}" },
-                                ) { index, torrent ->
+                                    key = { torrent -> "$serverId-${torrent.hash}" },
+                                ) { torrent ->
                                     TorrentItem(
                                         torrent = torrent,
                                         selected = torrent.hash in selectedTorrents,
@@ -2249,7 +2248,7 @@ private fun TopBar(
                             val isAdded = result.data?.getBooleanExtra(
                                 AddTorrentActivity.Extras.IS_ADDED,
                                 false,
-                            ) ?: false
+                            ) == true
                             if (isAdded) {
                                 onLoadMainData()
                                 scope.launch {
@@ -2469,7 +2468,7 @@ private fun TopBarSelection(
             var selectedSize by remember { mutableIntStateOf(0) }
 
             LaunchedEffect(selectedTorrents.size) {
-                if (selectedTorrents.size != 0) {
+                if (selectedTorrents.isNotEmpty()) {
                     selectedSize = selectedTorrents.size
                 }
             }

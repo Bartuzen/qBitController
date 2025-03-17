@@ -1,9 +1,9 @@
 package dev.bartuzen.qbitcontroller.utils
 
 import android.content.Context
-import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.net.toUri
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
@@ -200,7 +200,7 @@ fun formatUri(uri: String) = try {
         val groups = ipAddressMatch.groups
         (groups[1] ?: groups[2])?.value
     } else {
-        val host = Uri.parse(uri).host ?: URI.create(uri).host ?: throw IllegalArgumentException()
+        val host = uri.toUri().host ?: URI.create(uri).host ?: throw IllegalArgumentException()
         PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
     }
 } catch (_: IllegalArgumentException) {

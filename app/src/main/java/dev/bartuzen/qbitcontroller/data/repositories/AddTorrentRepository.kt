@@ -1,7 +1,5 @@
 package dev.bartuzen.qbitcontroller.data.repositories
 
-import android.R.attr.category
-import android.telecom.VideoProfile.isPaused
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult

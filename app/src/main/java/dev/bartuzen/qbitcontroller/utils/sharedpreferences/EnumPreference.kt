@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.utils.sharedpreferences
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
@@ -18,17 +19,17 @@ class EnumPreference<T : Enum<*>>(
             return if (enumString != null) factory(enumString) else initialValue
         }
         set(value) {
-            sharedPref.edit()
-                .putString(key, value.name)
-                .apply()
+            sharedPref.edit {
+                putString(key, value.name)
+            }
             flow.value = value
         }
 
     @SuppressLint("ApplySharedPref")
     suspend fun setValue(value: T) = withContext(Dispatchers.IO) {
-        sharedPref.edit()
-            .putString(key, value.name)
-            .commit()
+        sharedPref.edit(commit = true) {
+            putString(key, value.name)
+        }
         flow.value = value
     }
 

@@ -59,7 +59,7 @@ class RssArticlesFragment() : Fragment(R.layout.fragment_rss_articles) {
                 val isAdded = result.data?.getBooleanExtra(
                     AddTorrentActivity.Extras.IS_ADDED,
                     false,
-                ) ?: false
+                ) == true
                 if (isAdded) {
                     showSnackbar(R.string.torrent_add_success)
                 }

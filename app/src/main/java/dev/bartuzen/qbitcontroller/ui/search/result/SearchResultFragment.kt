@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
+import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.core.view.MenuProvider
 import androidx.core.view.WindowCompat
@@ -60,7 +60,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
                 val isAdded = result.data?.getBooleanExtra(
                     AddTorrentActivity.Extras.IS_ADDED,
                     false,
-                ) ?: false
+                ) == true
                 if (isAdded) {
                     showSnackbar(R.string.torrent_add_success)
                 }
@@ -266,7 +266,7 @@ class SearchResultFragment() : Fragment(R.layout.fragment_search_result) {
             }
             setNeutralButton(R.string.search_result_open_description) { _, _ ->
                 try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(searchResult.descriptionLink))
+                    val intent = Intent(Intent.ACTION_VIEW, searchResult.descriptionLink.toUri())
                     startActivity(intent)
                 } catch (_: ActivityNotFoundException) {
                     showSnackbar(R.string.search_result_no_browser)
