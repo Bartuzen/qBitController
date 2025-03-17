@@ -8,18 +8,22 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,13 +32,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -95,8 +98,13 @@ private fun LogScreen(
     serverId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: LogViewModel = hiltViewModel(),
+    viewModel: LogViewModel = hiltViewModel(
+        creationCallback = { factory: LogViewModel.Factory ->
+            factory.create(serverId)
+        },
+    ),
 ) {
+    val logs by viewModel.logs.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -104,27 +112,10 @@ private fun LogScreen(
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is LogViewModel.Event.Error -> {
-                val errorMessage = getErrorMessage(context, event.error)
-                if (snackbarHostState.currentSnackbarData?.visuals?.message != errorMessage) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                    scope.launch {
-                        snackbarHostState.showSnackbar(errorMessage, duration = SnackbarDuration.Indefinite)
-                    }
+                scope.launch {
+                    snackbarHostState.showSnackbar(getErrorMessage(context, event.error))
                 }
             }
-
-            LogViewModel.Event.UpdateSuccess -> {
-                if (snackbarHostState.currentSnackbarData?.visuals?.duration == SnackbarDuration.Indefinite) {
-                    snackbarHostState.currentSnackbarData?.dismiss()
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        if (!viewModel.isInitialLoadStarted) {
-            viewModel.isInitialLoadStarted = true
-            viewModel.loadRssFeed(serverId)
         }
     }
 
@@ -133,12 +124,6 @@ private fun LogScreen(
         contentWindowInsets = WindowInsets.safeDrawing.only(
             WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
         ),
-        snackbarHost = {
-            SwipeableSnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
-            )
-        },
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.execution_log_title)) },
@@ -150,17 +135,32 @@ private fun LogScreen(
                         )
                     }
                 },
+                windowInsets = WindowInsets.safeDrawing
+                    .exclude(WindowInsets.ime)
+                    .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
+            )
+        },
+        snackbarHost = {
+            SwipeableSnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
             )
         },
     ) { innerPadding ->
         val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = { viewModel.refreshRssFeed(serverId) },
-            modifier = Modifier.padding(innerPadding),
+            onRefresh = { viewModel.refreshRssFeed() },
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding(),
         ) {
-            val logs by viewModel.logs.collectAsStateWithLifecycle()
+            val listState = rememberLazyListState()
             LazyColumn(
+                state = listState,
+                contentPadding = WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom).asPaddingValues(),
                 modifier = Modifier.fillMaxSize(),
             ) {
                 items(
@@ -174,7 +174,7 @@ private fun LogScreen(
                         LogType.CRITICAL -> R.color.log_critical
                     }?.let { colorId ->
                         harmonizeWithPrimary(colorResource(colorId))
-                    }
+                    } ?: LocalTextStyle.current.color
 
                     val logText = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = colorResource(R.color.log_timestamp))) {
@@ -183,7 +183,7 @@ private fun LogScreen(
 
                         append(" - ")
 
-                        withStyle(style = SpanStyle(color = logColor ?: LocalTextStyle.current.color)) {
+                        withStyle(style = SpanStyle(color = logColor)) {
                             append(log.message)
                         }
                     }
@@ -193,9 +193,14 @@ private fun LogScreen(
                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                     )
                 }
+            }
 
-                item {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            SideEffect {
+                if (!listState.isScrollInProgress) {
+                    listState.requestScrollToItem(
+                        index = listState.firstVisibleItemIndex,
+                        scrollOffset = listState.firstVisibleItemScrollOffset,
+                    )
                 }
             }
 

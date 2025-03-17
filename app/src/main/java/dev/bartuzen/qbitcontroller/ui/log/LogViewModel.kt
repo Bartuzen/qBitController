@@ -2,6 +2,9 @@ package dev.bartuzen.qbitcontroller.ui.log
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.log.LogRepository
 import dev.bartuzen.qbitcontroller.model.Log
@@ -12,12 +15,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class LogViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = LogViewModel.Factory::class)
+class LogViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
     private val repository: LogRepository,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int): LogViewModel
+    }
+
     private val _logs = MutableStateFlow<List<Log>?>(null)
     val logs = _logs.asStateFlow()
 
@@ -32,11 +40,14 @@ class LogViewModel @Inject constructor(
 
     var isInitialLoadStarted = false
 
-    private fun updateLog(serverId: Int) = viewModelScope.launch {
+    init {
+        loadRssFeed()
+    }
+
+    private fun updateLog() = viewModelScope.launch {
         when (val result = repository.getLog(serverId)) {
             is RequestResult.Success -> {
                 _logs.value = result.data.reversed()
-                eventChannel.send(Event.UpdateSuccess)
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -44,19 +55,19 @@ class LogViewModel @Inject constructor(
         }
     }
 
-    fun loadRssFeed(serverId: Int) {
+    fun loadRssFeed() {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateLog(serverId).invokeOnCompletion {
+            updateLog().invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssFeed(serverId: Int) {
+    fun refreshRssFeed() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateLog(serverId).invokeOnCompletion {
+            updateLog().invokeOnCompletion {
                 viewModelScope.launch {
                     delay(25)
                     _isRefreshing.value = false
@@ -66,7 +77,6 @@ class LogViewModel @Inject constructor(
     }
 
     sealed class Event {
-        data object UpdateSuccess : Event()
         data class Error(val error: RequestResult.Error) : Event()
     }
 }
