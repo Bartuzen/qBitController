@@ -1113,7 +1113,11 @@ fun TorrentListScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text(text = stringResource(R.string.app_name))
+                        Text(
+                            text = stringResource(R.string.app_name),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     },
                     actions = {
                         val actionMenuItems = remember {
