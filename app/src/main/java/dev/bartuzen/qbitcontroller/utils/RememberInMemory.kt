@@ -45,7 +45,7 @@ inline fun <reified T : Any> rememberInMemory(vararg inputs: Any?, crossinline i
 @Composable
 @NonRestartableComposable
 @OptIn(InternalComposeApi::class)
-fun LaunchedEffect(vararg keys: Any?, block: suspend CoroutineScope.() -> Unit) {
+fun LaunchedEffectInMemory(vararg keys: Any?, block: suspend CoroutineScope.() -> Unit) {
     val applyContext = currentComposer.applyCoroutineContext
     rememberInMemory(*keys) { LaunchedEffectInMemoryImpl(applyContext, block) }
 }
