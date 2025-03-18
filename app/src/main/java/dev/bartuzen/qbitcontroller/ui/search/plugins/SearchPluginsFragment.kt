@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -294,12 +294,7 @@ private fun SearchPluginsScreen(
             val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
-                contentPadding = PaddingValues(
-                    start = 12.dp,
-                    end = 12.dp,
-                    top = 8.dp,
-                    bottom = 8.dp + WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding(),
-                ),
+                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
@@ -325,6 +320,10 @@ private fun SearchPluginsScreen(
                             .fillMaxWidth()
                             .animateItem(),
                     )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                 }
             }
 
