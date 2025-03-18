@@ -37,13 +37,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Undo
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.rounded.Extension
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -93,6 +90,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Plugin
+import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
+import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
@@ -250,40 +249,28 @@ private fun SearchPluginsScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        viewModel.savePlugins(pluginsEnabledState, pluginsToDelete.toList())
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Save,
-                            contentDescription = stringResource(R.string.search_plugins_action_save),
+                    val actionMenuItems = remember {
+                        listOf(
+                            ActionMenuItem(
+                                title = context.getString(R.string.search_plugins_action_save),
+                                icon = Icons.Filled.Save,
+                                onClick = { viewModel.savePlugins(pluginsEnabledState, pluginsToDelete) },
+                                showAsAction = true,
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.search_plugins_action_install_plugins),
+                                onClick = { currentDialog = Dialog.InstallPlugin },
+                                showAsAction = false,
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.search_plugins_action_update_plugins),
+                                onClick = { viewModel.updateAllPlugins() },
+                                showAsAction = false,
+                            ),
                         )
                     }
-                    var showMenu by rememberSaveable { mutableStateOf(false) }
-                    IconButton(onClick = { showMenu = true }) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = null,
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false },
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(R.string.search_plugins_action_install_plugins)) },
-                            onClick = {
-                                currentDialog = Dialog.InstallPlugin
-                                showMenu = false
-                            },
-                        )
-                        DropdownMenuItem(
-                            text = { Text(text = stringResource(R.string.search_plugins_action_update_plugins)) },
-                            onClick = {
-                                viewModel.updateAllPlugins()
-                                showMenu = false
-                            },
-                        )
-                    }
+
+                    AppBarActions(items = actionMenuItems)
                 },
                 windowInsets = WindowInsets.safeDrawing
                     .exclude(WindowInsets.ime)
