@@ -620,7 +620,6 @@
     <string name="settings_server_remove_success">O servidor removido com sucesso.</string>
     <string name="search_start_category_all">Todos</string>
     <string name="search_plugins_update_success">Todos os plugins atualizados com sucesso.</string>
-    <string name="search_plugins_version">Versão: %1$s</string>
     <string name="search_plugins_install_success">Plugins instalados com sucesso.</string>
     <string name="settings_disabled">Desactivado</string>
     <string name="settings_server_title_add">Adicionar Servidor</string>

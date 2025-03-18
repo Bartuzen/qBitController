@@ -326,7 +326,6 @@
     <string name="settings_title">Indstillinger</string>
     <string name="settings_disabled">Slået fra</string>
     <string name="search_result_action_stop_search">Stop Søgning</string>
-    <string name="search_plugins_version">Version: %1$s</string>
     <string name="execution_log_title">Udførelseslog</string>
     <string name="settings_connection_timeout">Forbindelse afbrudt</string>
     <string name="settings_add_new_server">Tilføj ny server</string>

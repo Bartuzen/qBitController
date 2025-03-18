@@ -36,7 +36,6 @@
     <string name="search_start_category_pictures">Imagens</string>
     <string name="search_start_category_movies">Filmes</string>
     <string name="search_result_action_sort">Organizar</string>
-    <string name="search_plugins_version">Versão: %1$s</string>
     <string name="search_plugins_install_hint">URL ou diretório local</string>
     <string name="search_plugins_save_success">Os plugins foram salvos com sucesso.</string>
     <string name="search_result_action_sort_name">Nome</string>

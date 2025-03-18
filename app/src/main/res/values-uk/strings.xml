@@ -524,7 +524,6 @@
     <string name="search_result_action_sort_search_engine">Пошукова система</string>
     <string name="search_result_action_sort_reverse">Зворотний</string>
     <string name="search_plugins">Плагіни</string>
-    <string name="search_plugins_version">Версія: %1$s</string>
     <string name="search_plugins_install_hint">URL-адреса або локальний каталог</string>
     <string name="search_plugins_save_success">Плагіни успішно збережено.</string>
     <string name="search_plugins_install_success">Плагіни успішно встановлено.</string>

@@ -458,7 +458,6 @@
     <string name="search_result_action_sort_name">Имя</string>
     <string name="search_result_action_sort_seeders">Сидеры</string>
     <string name="search_result_action_stop_search">Остановить поиск</string>
-    <string name="search_plugins_version">Версия: %1$s</string>
     <string name="search_plugins_install_success">Плагины успешно установлены.</string>
     <string name="search_plugins_action_update_plugins">Обновить плагины</string>
     <plurals name="settings_connection_timeout_description">

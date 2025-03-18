@@ -608,7 +608,6 @@
     <string name="rss_rule_add_paused">Añadir en pausa</string>
     <string name="search_start_category_pictures">Imágenes</string>
     <string name="search_plugins_save_success">Los plugins se guardaron correctamente.</string>
-    <string name="search_plugins_version">Versión: %1$s</string>
     <string name="torrent_peers_action_ban">Prohibir pares</string>
     <string name="torrent_add_invalid_file">Torrent no válido.</string>
     <string name="torrent_peers_flag_peer_from_lsd">Par de LSD</string>

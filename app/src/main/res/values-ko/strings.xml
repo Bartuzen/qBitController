@@ -433,7 +433,6 @@
     <string name="search_result_action_sort_name">이름</string>
     <string name="search_result_action_stop_search">검색 중지</string>
     <string name="search_plugins">플러그인</string>
-    <string name="search_plugins_version">버전: %1$s</string>
     <string name="search_plugins_save_success">플러그인이 성공적으로 저장되었습니다.</string>
     <string name="search_plugins_cannot_be_empty">플러그인은 비어있을 수 없습니다.</string>
     <string name="search_plugins_action_save">저장</string>

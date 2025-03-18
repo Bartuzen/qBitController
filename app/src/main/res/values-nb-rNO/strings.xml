@@ -263,7 +263,6 @@
     <string name="search_result_action_sort_search_engine">Søkemotor</string>
     <string name="search_result_action_stop_search">Stopp søk</string>
     <string name="search_plugins">Programtillegg</string>
-    <string name="search_plugins_version">Versjon: %1$s</string>
     <string name="settings_title">Innstillinger</string>
     <string name="settings_servers">Tjener</string>
     <string name="settings_add_new_server">Legg til ny tjener</string>

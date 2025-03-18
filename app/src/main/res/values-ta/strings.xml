@@ -445,7 +445,6 @@
     <string name="search_result_action_sort_size">அளவு</string>
     <string name="search_result_action_stop_search">தேடலை நிறுத்துங்கள்</string>
     <string name="search_plugins">செருகுநிரல்கள்</string>
-    <string name="search_plugins_version">பதிப்பு: %1$s</string>
     <string name="search_plugins_install_hint">முகவரி அல்லது உள்ளக அடைவு</string>
     <string name="search_plugins_cannot_be_empty">செருகுநிரல்கள் காலியாக இருக்க முடியாது.</string>
     <plurals name="settings_connection_timeout_description">

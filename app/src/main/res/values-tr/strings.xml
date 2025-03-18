@@ -423,7 +423,6 @@
     <string name="search_result_action_sort_reverse">Ters Çevir</string>
     <string name="search_result_action_stop_search">Aramayı Durdur</string>
     <string name="search_plugins">Eklentiler</string>
-    <string name="search_plugins_version">Sürüm: %1$s</string>
     <string name="search_plugins_install_hint">URL veya yerel klasör</string>
     <string name="search_plugins_save_success">Eklentiler başarıyla kaydedildi.</string>
     <string name="search_plugins_install_success">Eklentiler başarıyla yüklendi.</string>

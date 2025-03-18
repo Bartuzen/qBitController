@@ -586,7 +586,6 @@
     <string name="search_start_plugins_all">Všechny pluginy</string>
     <string name="search_result_action_sort_reverse">Obrátit</string>
     <string name="search_plugins">Pluginy</string>
-    <string name="search_plugins_version">Verze: %1$s</string>
     <string name="search_plugins_install_hint">URL nebo místní složka</string>
     <string name="search_plugins_save_success">Pluginy uloženy úspěšně.</string>
     <string name="search_plugins_update_success">Všechny pluginy aktualizovány úspěšně.</string>

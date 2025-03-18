@@ -525,7 +525,6 @@
     <string name="search_result_action_sort_reverse">降序</string>
     <string name="search_result_action_stop_search">停止搜索</string>
     <string name="search_plugins">插件</string>
-    <string name="search_plugins_version">版本：%1$s</string>
     <string name="search_plugins_install_hint">URL 或本地目录</string>
     <string name="search_plugins_save_success">插件保存成功。</string>
     <string name="search_plugins_install_success">插件安装成功。</string>
