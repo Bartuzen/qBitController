@@ -172,6 +172,7 @@ class AddTorrentActivity : AppCompatActivity() {
                         }
                         finish()
                     },
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }
@@ -186,6 +187,7 @@ private fun AddTorrentScreen(
     torrentFileUris: List<Uri>?,
     onNavigateBack: () -> Unit,
     onTorrentAdded: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: AddTorrentViewModel = hiltViewModel(
         creationCallback = { factory: AddTorrentViewModel.Factory ->
             factory.create(initialServerId)
@@ -455,6 +457,7 @@ private fun AddTorrentScreen(
     }
 
     Scaffold(
+        modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(
             WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
         ),
@@ -500,7 +503,6 @@ private fun AddTorrentScreen(
                 modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
             )
         },
-        modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
