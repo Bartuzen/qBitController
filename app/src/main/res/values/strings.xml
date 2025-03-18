@@ -597,6 +597,7 @@
     <string name="search_start_category_pictures">Pictures</string>
     <string name="search_start_category_software">Software</string>
     <string name="search_start_category_tv_shows">TV shows</string>
+    <string name="search_start_plugins">Plugins</string>
     <string name="search_start_plugins_enabled">Enabled Plugins</string>
     <string name="search_start_plugins_all">All Plugins</string>
     <string name="search_start_plugins_select">Select Plugins</string>
