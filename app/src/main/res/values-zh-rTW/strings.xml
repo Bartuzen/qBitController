@@ -617,4 +617,5 @@
     <string name="search_result_action_sort_search_engine">搜尋引擎</string>
     <string name="search_result_action_sort_reverse">降序</string>
     <string name="search_result_title">搜尋結果</string>
+    <string name="search_start_plugins">外掛程式</string>
 </resources>
