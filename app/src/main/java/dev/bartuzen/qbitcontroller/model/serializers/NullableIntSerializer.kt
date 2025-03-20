@@ -11,7 +11,7 @@ object NullableIntSerializer : KSerializer<Int?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("NullableInt", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: Int?) {
-        throw UnsupportedOperationException()
+        encoder.encodeInt(value ?: -1)
     }
 
     override fun deserialize(decoder: Decoder): Int? {

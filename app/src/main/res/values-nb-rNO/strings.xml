@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search_result_seeders">Delere: %1$s</string>
+    <string name="search_result_seeders">Delere</string>
     <string name="search_result_action_sort_name">Navn</string>
     <string name="search_result_action_sort_size">Størrelse</string>
     <string name="settings_server_action_save">Lagre</string>

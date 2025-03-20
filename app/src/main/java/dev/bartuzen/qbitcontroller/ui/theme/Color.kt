@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.theme
 
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF415F91)
@@ -217,3 +218,26 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF191C20)
 val surfaceContainerDarkHighContrast = Color(0xFF1D2024)
 val surfaceContainerHighDarkHighContrast = Color(0xFF282A2F)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF33353A)
+
+val seederColorLight = Color(0xFF388E3C)
+val leecherColorLight = Color(0xFF1976D2)
+
+val seederColorDark = Color(0xFF66BB6A)
+val leecherColorDark = Color(0xFF42A5F5)
+
+data class CustomColors(
+    val seederColor: Color = Color.Unspecified,
+    val leecherColor: Color = Color.Unspecified,
+)
+
+val LocalCustomColors = staticCompositionLocalOf { CustomColors() }
+
+val lightCustomColors = CustomColors(
+    seederColor = seederColorLight,
+    leecherColor = leecherColorLight,
+)
+
+val darkCustomColors = CustomColors(
+    seederColor = seederColorDark,
+    leecherColor = leecherColorDark,
+)

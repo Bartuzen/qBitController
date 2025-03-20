@@ -275,7 +275,7 @@
 \n
 \nPara obtener información más detallada y el código fuente: %1$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interesados (locales) y ahogados (pares)</string>
-    <string name="search_result_leechers">Sanguijuelas: %1$s</string>
+    <string name="search_result_leechers">Sanguijuelas</string>
     <string name="search_result_filter_min">Mínimo</string>
     <string name="rss_success_feed_rename">Se ha renombrado el feed correctamente.</string>
     <string name="torrent_files_folder_renamed_success">Carpeta renombrada correctamente</string>
@@ -486,7 +486,7 @@
     <string name="torrent_files_rename_file">Cambiar el nombre del archivo</string>
     <string name="settings_server_advanced_basic_auth_username">Usuario</string>
     <string name="torrent_trackers_cannot_edit_default">No se pueden editar los rastreadores predeterminados.</string>
-    <string name="search_result_seeders">Semillas: %1$s</string>
+    <string name="search_result_seeders">Semillas</string>
     <string name="torrent_piece_map">MAPA DE LA PIEZA</string>
     <string name="torrent_peers_details_upload_speed">Velocidad de subida: %1$s</string>
     <string name="torrent_add_content_layout_no_subfolder">No crear subcarpeta</string>

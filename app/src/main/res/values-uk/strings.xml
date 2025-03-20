@@ -509,8 +509,8 @@
     <string name="search_start_category_books">Книги</string>
     <string name="search_start_category_games">Ігри</string>
     <string name="search_start_category_software">програмне забезпечення</string>
-    <string name="search_result_seeders">Сівалки: %1$s</string>
-    <string name="search_result_leechers">П\'явки: %1$s</string>
+    <string name="search_result_seeders">Сівалки</string>
+    <string name="search_result_leechers">П\'явки</string>
     <string name="search_result_open_description">Відкрийте Опис</string>
     <string name="search_result_download">Завантажити</string>
     <string name="search_result_stop_success">Пошук успішно зупинено.</string>

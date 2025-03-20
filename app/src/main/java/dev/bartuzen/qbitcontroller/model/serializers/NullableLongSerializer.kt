@@ -11,7 +11,7 @@ object NullableLongSerializer : KSerializer<Long?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("NullableLong", PrimitiveKind.LONG)
 
     override fun serialize(encoder: Encoder, value: Long?) {
-        throw UnsupportedOperationException()
+        encoder.encodeLong(value ?: -1)
     }
 
     override fun deserialize(decoder: Decoder): Long? {

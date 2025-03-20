@@ -537,8 +537,8 @@
     <string name="search_result_showing_count">A mostrar %1$d de %2$d</string>
     <string name="search_result_size">Tamanho: %1$s</string>
     <string name="search_result_site">Site: %1$s</string>
-    <string name="search_result_seeders">Sementes: %1$s</string>
-    <string name="search_result_leechers">Sanguessugas: %1$s</string>
+    <string name="search_result_seeders">Sementes</string>
+    <string name="search_result_leechers">Sanguessugas</string>
     <string name="search_result_open_description">Abrir Descrição</string>
     <string name="search_result_download">Transferir</string>
     <string name="search_result_stop_success">A pesquisa parou com sucesso.</string>

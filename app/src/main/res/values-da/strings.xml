@@ -317,7 +317,7 @@
     <string name="search_start_action_start">Start søgning</string>
     <string name="search_result_filter_results">Filter resultater…</string>
     <string name="search_result_size">Størrelse: %1$s</string>
-    <string name="search_result_seeders">Seedere: %1$s</string>
+    <string name="search_result_seeders">Seedere</string>
     <string name="search_result_open_description">Åbn Beskrivelse</string>
     <string name="search_result_stop_success">Søgning stoppet.</string>
     <string name="search_result_no_browser">Kan ikke finde nogen browser.</string>

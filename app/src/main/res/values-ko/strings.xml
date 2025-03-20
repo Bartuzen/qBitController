@@ -426,7 +426,7 @@
     <string name="search_result_filter_seeds">배포</string>
     <string name="search_result_filter_min">최소</string>
     <string name="search_result_size">크기: %1$s</string>
-    <string name="search_result_leechers">공유자: %1$s</string>
+    <string name="search_result_leechers">공유자</string>
     <string name="search_result_open_description">설명 열기</string>
     <string name="search_result_download">내려받기</string>
     <string name="search_result_stop_success">검색이 성공적으로 중지되었습니다.</string>
@@ -563,7 +563,7 @@
     <string name="search_result_site">사이트: %1$s</string>
     <string name="search_result_filter_size">크기</string>
     <string name="search_result_showing_count">%2$d 중 %1$d 표시</string>
-    <string name="search_result_seeders">배포자: %1$s</string>
+    <string name="search_result_seeders">배포자</string>
     <string name="search_result_action_sort">정렬</string>
     <string name="search_result_no_browser">어떤 브라우저도 찾을 수 없습니다.</string>
     <string name="search_result_action_filter">필터</string>

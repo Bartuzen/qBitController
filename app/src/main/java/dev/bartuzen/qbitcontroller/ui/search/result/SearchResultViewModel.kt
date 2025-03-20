@@ -1,8 +1,12 @@
 package dev.bartuzen.qbitcontroller.ui.search.result
 
+import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SearchSort
 import dev.bartuzen.qbitcontroller.data.SettingsManager
@@ -12,37 +16,46 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
-@HiltViewModel
-class SearchResultViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = SearchResultViewModel.Factory::class)
+class SearchResultViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted("searchQuery") private val searchQuery: String,
+    @Assisted("category") private val category: String,
+    @Assisted("plugins") private val plugins: String,
     private val repository: SearchResultRepository,
     private val settingsManager: SettingsManager,
-    private val state: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            serverId: Int,
+            @Assisted("searchQuery") searchQuery: String,
+            @Assisted("category") category: String,
+            @Assisted("plugins") plugins: String,
+        ): SearchResultViewModel
+    }
+
     private val searchResult = MutableStateFlow<Search?>(null)
 
-    private val searchQuery = MutableStateFlow("")
+    private val filterQuery = savedStateHandle.getStateFlow("filterQuery", "")
 
-    private val _filter = MutableStateFlow(
-        Filter(
-            seedsMin = null,
-            seedsMax = null,
-            sizeMin = null,
-            sizeMax = null,
-            sizeMinUnit = 2,
-            sizeMaxUnit = 2,
-        ),
-    )
-    val filter = _filter.asStateFlow()
+    val filter = savedStateHandle.getStateFlow("filter", Filter())
 
     val searchSort = settingsManager.searchSort.flow
     val isReverseSearchSorting = settingsManager.isReverseSearchSorting.flow
@@ -85,16 +98,16 @@ class SearchResultViewModel @Inject constructor(
                     } else {
                         this
                     }
-                }
+                }.distinct()
             }
-        }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
-    val searchResults = combine(sortedResults, searchQuery, filter) { searchResults, searchQuery, filter ->
-        Triple(searchResults, searchQuery, filter)
-    }.filterNotNull().map { (searchResults, searchQuery, filter) ->
-        searchResults.filter { result ->
-            if (searchQuery.isNotEmpty()) {
-                val matchesSearchQuery = searchQuery
+    val searchResults = combine(sortedResults, filterQuery, filter) { searchResults, filterQuery, filter ->
+        Triple(searchResults, filterQuery, filter)
+    }.filterNotNull().map { (searchResults, filterQuery, filter) ->
+        searchResults?.filter { result ->
+            if (filterQuery.isNotEmpty()) {
+                val matchesFilterQuery = filterQuery
                     .split(" ")
                     .filter { it.isNotEmpty() && it != "-" }
                     .all { term ->
@@ -104,7 +117,7 @@ class SearchResultViewModel @Inject constructor(
 
                         if (isExclusion) !containsTerm else containsTerm
                     }
-                if (!matchesSearchQuery) {
+                if (!matchesFilterQuery) {
                     return@filter false
                 }
             }
@@ -125,8 +138,11 @@ class SearchResultViewModel @Inject constructor(
 
             return@filter true
         }
-    }
-    val searchCount = searchResult.map { it?.results?.size ?: 0 }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    val searchCount = sortedResults
+        .map { it?.size }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -139,14 +155,36 @@ class SearchResultViewModel @Inject constructor(
     private val _isSearchContinuing = MutableStateFlow(true)
     val isSearchContinuing = _isSearchContinuing.asStateFlow()
 
-    private var searchId: Int? = state["searchId"]
+    private var searchId: Int? = savedStateHandle["searchId"]
         set(value) {
-            state["searchId"] = value
+            savedStateHandle["searchId"] = value
             field = value
         }
 
-    fun startSearch(serverId: Int, pattern: String, category: String, plugins: String) = viewModelScope.launch {
-        when (val result = repository.startSearch(serverId, pattern, category, plugins)) {
+    init {
+        if (searchId == null) {
+            startSearch()
+        }
+
+        loadResults()
+        viewModelScope.launch {
+            combine(isSearchContinuing, isLoading) { isSearchContinuing, isLoading ->
+                isSearchContinuing to isLoading
+            }.collectLatest { (isSearchContinuing, isLoading) ->
+                if (isSearchContinuing && !isLoading) {
+                    delay(1000)
+                    loadResults()
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        deleteSearch()
+    }
+
+    private fun startSearch() = viewModelScope.launch {
+        when (val result = repository.startSearch(serverId, searchQuery, category, plugins)) {
             is RequestResult.Success -> {
                 searchId = result.data.id
             }
@@ -157,7 +195,7 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
-    fun stopSearch(serverId: Int) = viewModelScope.launch {
+    fun stopSearch() = viewModelScope.launch {
         if (!isSearchContinuing.value) {
             return@launch
         }
@@ -166,7 +204,7 @@ class SearchResultViewModel @Inject constructor(
         when (val result = repository.stopSearch(serverId, searchId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.SearchStopped)
-                updateResults(serverId).invokeOnCompletion {
+                updateResults().invokeOnCompletion {
                     _isSearchContinuing.value = false
                 }
             }
@@ -176,12 +214,12 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
-    fun deleteSearch(serverId: Int) = CoroutineScope(Dispatchers.Main).launch {
+    private fun deleteSearch() = CoroutineScope(Dispatchers.Main).launch {
         val searchId = searchId ?: return@launch
         repository.deleteSearch(serverId, searchId)
     }
 
-    private fun updateResults(serverId: Int) = viewModelScope.launch {
+    private fun updateResults() = viewModelScope.launch {
         searchId?.let { searchId ->
             when (val result = repository.getSearchResults(serverId, searchId)) {
                 is RequestResult.Success -> {
@@ -198,21 +236,21 @@ class SearchResultViewModel @Inject constructor(
         }
     }
 
-    fun loadResults(serverId: Int) {
+    private fun loadResults() {
         if (!isLoading.value) {
             isLoading.value = true
-            updateResults(serverId).invokeOnCompletion {
+            updateResults().invokeOnCompletion {
                 isLoading.value = false
             }
         }
     }
 
-    fun refresh(serverId: Int, pattern: String, category: String, plugins: String) = viewModelScope.launch {
+    fun refresh() = viewModelScope.launch {
         _isRefreshing.value = true
         val searchId = searchId
 
         if (searchId == null) {
-            when (val result = repository.startSearch(serverId, pattern, category, plugins)) {
+            when (val result = repository.startSearch(serverId, searchQuery, category, plugins)) {
                 is RequestResult.Success -> {
                     this@SearchResultViewModel.searchId = result.data.id
                     _isSearchContinuing.value = true
@@ -236,23 +274,16 @@ class SearchResultViewModel @Inject constructor(
         _isRefreshing.value = false
     }
 
-    fun setSearchQuery(query: String) {
-        searchQuery.value = query
+    fun setFilterQuery(filterQuery: String) {
+        savedStateHandle["filterQuery"] = filterQuery
     }
 
     fun setFilter(filter: Filter) {
-        _filter.value = filter
+        savedStateHandle["filter"] = filter
     }
 
     fun resetFilter() {
-        _filter.value = Filter(
-            seedsMin = null,
-            seedsMax = null,
-            sizeMin = null,
-            sizeMax = null,
-            sizeMinUnit = 2,
-            sizeMaxUnit = 2,
-        )
+        setFilter(Filter())
     }
 
     fun setSearchSort(searchSort: SearchSort) {
@@ -263,14 +294,15 @@ class SearchResultViewModel @Inject constructor(
         settingsManager.isReverseSearchSorting.value = !isReverseSearchSorting.value
     }
 
+    @Parcelize
     data class Filter(
-        val seedsMin: Int?,
-        val seedsMax: Int?,
-        val sizeMin: Long?,
-        val sizeMax: Long?,
-        val sizeMinUnit: Int,
-        val sizeMaxUnit: Int,
-    ) {
+        val seedsMin: Int? = null,
+        val seedsMax: Int? = null,
+        val sizeMin: Long? = null,
+        val sizeMax: Long? = null,
+        val sizeMinUnit: Int = 2,
+        val sizeMaxUnit: Int = 2,
+    ) : Parcelable {
         private fun Int.pow(x: Int): Long {
             var number = 1L
             repeat(x) {
@@ -279,12 +311,14 @@ class SearchResultViewModel @Inject constructor(
             return number
         }
 
+        @IgnoredOnParcel
         val sizeMinBytes = if (sizeMin != null) {
             sizeMin * 1024.pow(sizeMinUnit)
         } else {
             null
         }
 
+        @IgnoredOnParcel
         val sizeMaxBytes = if (sizeMax != null) {
             sizeMax * 1024.pow(sizeMaxUnit)
         } else {

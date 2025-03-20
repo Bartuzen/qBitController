@@ -412,8 +412,8 @@
     <string name="search_result_action_sort_size">Boyut</string>
     <string name="search_result_action_sort_seeders">Gönderen</string>
     <string name="search_result_action_sort_leechers">İndiren</string>
-    <string name="search_result_seeders">Gönderen: %1$s</string>
-    <string name="search_result_leechers">İndiren: %1$s</string>
+    <string name="search_result_seeders">Gönderen</string>
+    <string name="search_result_leechers">İndiren</string>
     <string name="search_result_open_description">Açıklamayı Göster</string>
     <string name="search_result_download">İndir</string>
     <string name="search_result_stop_success">Arama başarıyla durduruldu.</string>

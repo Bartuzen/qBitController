@@ -176,7 +176,7 @@
     <string name="about_description">qBitController позволяет управлять qBittorrent с устройства Android.
 \n
 \nБолее подробная информация и исходный код: %1$s</string>
-    <string name="search_result_leechers">Личеры: %1$s</string>
+    <string name="search_result_leechers">Личеры</string>
     <string name="search_result_open_description">Открыть описание</string>
     <string name="search_result_no_browser">Не удаётся найти браузер.</string>
     <string name="search_result_action_sort">Сортировка</string>
@@ -451,7 +451,7 @@
     <string name="search_result_filter_max">Максимум</string>
     <string name="search_result_size">Размер: %1$s</string>
     <string name="search_result_site">Сайт: %1$s</string>
-    <string name="search_result_seeders">Сиды: %1$s</string>
+    <string name="search_result_seeders">Сиды</string>
     <string name="search_result_download">Загрузить</string>
     <string name="search_result_stop_success">Поиск завершился успешно.</string>
     <string name="search_result_action_filter">Фильтр</string>

@@ -253,10 +253,13 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean =
         else -> lightScheme
     }
 
+    val customColorsPalette = if (darkTheme) darkCustomColors else lightCustomColors
+
     MaterialTheme(colorScheme = colorScheme) {
         CompositionLocalProvider(
             LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             LocalContentColor provides MaterialTheme.colorScheme.onBackground,
+            LocalCustomColors provides customColorsPalette,
             content = content,
         )
     }

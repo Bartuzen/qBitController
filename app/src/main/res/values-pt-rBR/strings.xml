@@ -493,8 +493,8 @@
     <string name="search_result_showing_count">Mostrando %1$d de %2$d</string>
     <string name="search_result_size">Tamanho: %1$s</string>
     <string name="search_result_site">Site: %1$s</string>
-    <string name="search_result_seeders">Seeders: %1$s</string>
-    <string name="search_result_leechers">Leechers: %1$s</string>
+    <string name="search_result_seeders">Seeders</string>
+    <string name="search_result_leechers">Leechers</string>
     <string name="search_result_open_description">Descrição aberta</string>
     <string name="search_result_download">Download</string>
     <string name="search_result_stop_success">A pesquisa foi interrompida com êxito.</string>
