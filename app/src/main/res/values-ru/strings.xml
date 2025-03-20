@@ -61,7 +61,7 @@
     <string name="torrent_peers_flag_peer_snubbed">Уснувший пир</string>
     <string name="torrent_peers_flag_peer_from_lsd">Пир из LSD</string>
     <string name="rss_mark_as_read">Пометить как прочитанное</string>
-    <string name="torrent_peers_flag_optimistic_unchoke">Скоро начнётся скачивание</string>
+    <string name="torrent_peers_flag_optimistic_unchoke">Скоро начнётся загрузка</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Заинтересован (клиент) и занят (пир)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">Заинтересован (пир) и не занят (клиент)</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Не заинтересован (клиент) и не занят (пир)</string>
@@ -191,8 +191,6 @@
     <string name="settings_servers">Серверы</string>
     <string name="settings_other">Другое</string>
     <string name="settings_server_url_configuration_not_valid">Введенная конфигурация URL недопустима.</string>
-    <string name="accessibility_close_navigation_drawer">Закрыть боковое меню</string>
-    <string name="accessibility_open_navigation_drawer">Открыть боковое меню</string>
     <plurals name="torrent_list_torrents_pause_success">
         <item quantity="one">%1$d торрент успешно остановлен.</item>
         <item quantity="few">%1$d торрента успешно остановлено.</item>
@@ -460,7 +458,6 @@
     <string name="search_result_action_sort_name">Имя</string>
     <string name="search_result_action_sort_seeders">Сидеры</string>
     <string name="search_result_action_stop_search">Остановить поиск</string>
-    <string name="search_plugins_version">Версия: %1$s</string>
     <string name="search_plugins_install_success">Плагины успешно установлены.</string>
     <string name="search_plugins_action_update_plugins">Обновить плагины</string>
     <plurals name="settings_connection_timeout_description">
@@ -669,4 +666,6 @@
     <string name="torrent_list_no_server_title">Нет доступных серверов</string>
     <string name="torrent_list_no_server_description">Серверы еще не добавлены. Добавьте один для начала работы.</string>
     <string name="torrent_list_no_server_add">Добавить сервер</string>
+    <string name="search_result_title">Результаты поиска</string>
+    <string name="search_start_plugins">Плагины</string>
 </resources>

@@ -525,7 +525,6 @@
     <string name="search_result_action_sort_reverse">降序</string>
     <string name="search_result_action_stop_search">停止搜索</string>
     <string name="search_plugins">插件</string>
-    <string name="search_plugins_version">版本：%1$s</string>
     <string name="search_plugins_install_hint">URL 或本地目录</string>
     <string name="search_plugins_save_success">插件保存成功。</string>
     <string name="search_plugins_install_success">插件安装成功。</string>
@@ -585,8 +584,6 @@
     <string name="settings_server_connection_success">已成功连接到服务器。</string>
     <string name="about_description">qBitController 是一款能从 Android 设备中远程控制 qBittorrent 的软件。\n\n您可从此处获取更多详细信息以及源代码： %1$s</string>
     <string name="notification_channel_download_completed">下载完成</string>
-    <string name="accessibility_open_navigation_drawer">打开侧滑栏</string>
-    <string name="accessibility_close_navigation_drawer">关闭侧滑栏</string>
     <string name="settings_language">语言</string>
     <string name="settings_language_system_default">系统默认</string>
     <string name="torrent_list_action_set_category">设置分类</string>

@@ -263,7 +263,6 @@
     <string name="search_result_action_sort_search_engine">Søkemotor</string>
     <string name="search_result_action_stop_search">Stopp søk</string>
     <string name="search_plugins">Programtillegg</string>
-    <string name="search_plugins_version">Versjon: %1$s</string>
     <string name="settings_title">Innstillinger</string>
     <string name="settings_servers">Tjener</string>
     <string name="settings_add_new_server">Legg til ny tjener</string>
@@ -279,9 +278,7 @@
     <string name="settings_server_action_delete">Slett</string>
     <string name="settings_server_action_advanced_settings">Avanserte innstillinger</string>
     <string name="settings_server_advanced_basic_auth_username">Brukernavn</string>
-    <string name="accessibility_close_navigation_drawer">Lukk navigasjonsskuff</string>
     <string name="settings_server_advanced_basic_auth_password">Passord</string>
-    <string name="accessibility_open_navigation_drawer">Åpne navigasjonsskuff</string>
     <string name="size_exbibytes">EiB</string>
     <string name="speed_mebibytes_per_second">MiB/s</string>
     <string name="speed_gibibytes_per_second">GiB/s</string>

@@ -455,7 +455,6 @@
     <string name="settings_server_username">Ім\'я користувача</string>
     <string name="settings_server_password">Пароль</string>
     <string name="notification_torrent_downloaded">Торрент завантажено</string>
-    <string name="accessibility_open_navigation_drawer">Відкрити панель навігації</string>
     <string name="rss_rule_enabled">Увімкнено</string>
     <string name="rss_rule_save_to">Зберегти в</string>
     <string name="search_result_filter_seeds">Насіння</string>
@@ -525,7 +524,6 @@
     <string name="search_result_action_sort_search_engine">Пошукова система</string>
     <string name="search_result_action_sort_reverse">Зворотний</string>
     <string name="search_plugins">Плагіни</string>
-    <string name="search_plugins_version">Версія: %1$s</string>
     <string name="search_plugins_install_hint">URL-адреса або локальний каталог</string>
     <string name="search_plugins_save_success">Плагіни успішно збережено.</string>
     <string name="search_plugins_install_success">Плагіни успішно встановлено.</string>
@@ -631,7 +629,6 @@
     <string name="settings_server_title_add">Додати сервер</string>
     <string name="settings_server_advanced_doh">DNS через HTTPS (DoH)</string>
     <string name="settings_server_connection_success">Підключено до сервера успішно.</string>
-    <string name="accessibility_close_navigation_drawer">Закрити панель навігації</string>
     <string name="settings_server_username_min_character">Ім\'я користувача має складатися не менше ніж з 3 символів.</string>
     <string name="torrent_files_directory_format"><![CDATA[<b>Каталог: </b>]]> %1$s</string>
     <string name="torrent_disable_super_seeding_success">Суперпосадку успішно вимкнено.</string>
@@ -667,4 +664,6 @@
     <string name="torrent_list_no_server_add">Додати сервер</string>
     <string name="torrent_list_no_server_title">Немає доступних серверів</string>
     <string name="torrent_list_no_server_description">Ви ще не додали жодного сервера. Додайте один, щоб почати.</string>
+    <string name="search_result_title">Результати пошуку</string>
+    <string name="search_start_plugins">Плагіни</string>
 </resources>

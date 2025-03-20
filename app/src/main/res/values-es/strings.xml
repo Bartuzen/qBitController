@@ -422,7 +422,6 @@
     <string name="torrent_error_not_found">Torrent no encontrado.</string>
     <string name="torrent_trackers_edited">Rastreadores editados correctamente.</string>
     <string name="torrent_add_no_server">No se encontraron servidores.</string>
-    <string name="accessibility_close_navigation_drawer">Cerrar la barra de navegación</string>
     <string name="torrent_add_sequential_download">Descargar por orden secuencial</string>
     <string name="search_result_action_filter">Filtro</string>
     <string name="rss_add_feed_error">No se puede añadir el feed.</string>
@@ -557,7 +556,6 @@
     <string name="torrent_overview_peers">Pares</string>
     <string name="execution_log_title">Registro de ejecución</string>
     <string name="settings_server_title_add">Añadir un servidor</string>
-    <string name="accessibility_open_navigation_drawer">Abrir el cajón de navegación</string>
     <string name="rss_rule_action_create">Crear una regla</string>
     <string name="search_result_action_stop_search">Detener la búsqueda</string>
     <string name="torrent_peers_banned">Pares vetados con éxito.</string>
@@ -610,7 +608,6 @@
     <string name="rss_rule_add_paused">Añadir en pausa</string>
     <string name="search_start_category_pictures">Imágenes</string>
     <string name="search_plugins_save_success">Los plugins se guardaron correctamente.</string>
-    <string name="search_plugins_version">Versión: %1$s</string>
     <string name="torrent_peers_action_ban">Prohibir pares</string>
     <string name="torrent_add_invalid_file">Torrent no válido.</string>
     <string name="torrent_peers_flag_peer_from_lsd">Par de LSD</string>
@@ -653,4 +650,6 @@
     <string name="torrent_list_no_server_description">No has añadido ningún servidor aún. Añade uno para empezar.</string>
     <string name="torrent_list_no_server_title">Ningún servidor disponible</string>
     <string name="torrent_list_no_server_add">Añadir servidor</string>
+    <string name="search_result_title">Buscar resultados</string>
+    <string name="search_start_plugins">Complementos</string>
 </resources>
