@@ -222,12 +222,26 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF33353A)
 val seederColorLight = Color(0xFF388E3C)
 val leecherColorLight = Color(0xFF1976D2)
 
+val logTimestampLight = Color(0xFF6E7781)
+val logInfoLight = Color(0xFF0969DA)
+val logWarningLight = Color(0xFFBC4C00)
+val logCriticalLight = Color(0xFFCF222E)
+
 val seederColorDark = Color(0xFF66BB6A)
 val leecherColorDark = Color(0xFF42A5F5)
+
+val logTimestampDark = Color(0xFF6E7681)
+val logInfoDark = Color(0xFF58A6FF)
+val logWarningDark = Color(0xFFDB6D28)
+val logCriticalDark = Color(0xFFF85149)
 
 data class CustomColors(
     val seederColor: Color = Color.Unspecified,
     val leecherColor: Color = Color.Unspecified,
+    val logTimestamp: Color = Color.Unspecified,
+    val logInfo: Color = Color.Unspecified,
+    val logWarning: Color = Color.Unspecified,
+    val logCritical: Color = Color.Unspecified,
 )
 
 val LocalCustomColors = staticCompositionLocalOf { CustomColors() }
@@ -235,9 +249,17 @@ val LocalCustomColors = staticCompositionLocalOf { CustomColors() }
 val lightCustomColors = CustomColors(
     seederColor = seederColorLight,
     leecherColor = leecherColorLight,
+    logTimestamp = logTimestampLight,
+    logInfo = logInfoLight,
+    logWarning = logWarningLight,
+    logCritical = logCriticalLight,
 )
 
 val darkCustomColors = CustomColors(
     seederColor = seederColorDark,
     leecherColor = leecherColorDark,
+    logTimestamp = logTimestampDark,
+    logInfo = logInfoDark,
+    logWarning = logWarningDark,
+    logCritical = logCriticalDark,
 )

@@ -8,6 +8,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -20,18 +26,24 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -46,20 +58,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.LogType
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -170,35 +181,18 @@ private fun LogScreen(
             LazyColumn(
                 state = listState,
                 modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
             ) {
                 items(
                     items = logs ?: emptyList(),
                     key = { it.id },
                 ) { log ->
-                    val logColor = when (log.type) {
-                        LogType.NORMAL -> null
-                        LogType.INFO -> R.color.log_info
-                        LogType.WARNING -> R.color.log_warning
-                        LogType.CRITICAL -> R.color.log_critical
-                    }?.let { colorId ->
-                        harmonizeWithPrimary(colorResource(colorId))
-                    } ?: LocalTextStyle.current.color
-
-                    val logText = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = colorResource(R.color.log_timestamp))) {
-                            append(formatDate(log.timestamp))
-                        }
-
-                        append(" - ")
-
-                        withStyle(style = SpanStyle(color = logColor)) {
-                            append(log.message)
-                        }
-                    }
-
-                    Text(
-                        text = logText,
-                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                    LogItem(
+                        log = log,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
                     )
                 }
 
@@ -227,6 +221,68 @@ private fun LogScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.TopCenter),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun LogItem(log: Log, modifier: Modifier = Modifier) {
+    val logColor = when (log.type) {
+        LogType.NORMAL -> null
+        LogType.INFO -> LocalCustomColors.current.logInfo
+        LogType.WARNING -> LocalCustomColors.current.logWarning
+        LogType.CRITICAL -> LocalCustomColors.current.logCritical
+    }?.let { color ->
+        harmonizeWithPrimary(color)
+    } ?: LocalContentColor.current
+
+    ElevatedCard(modifier = modifier) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(12.dp)
+                    .background(
+                        color = logColor,
+                        shape = CircleShape,
+                    ),
+            )
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    Text(
+                        text = formatDate(log.timestamp),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = LocalCustomColors.current.logTimestamp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+
+                    val icon = when (log.type) {
+                        LogType.WARNING -> Icons.Filled.Warning
+                        LogType.CRITICAL -> Icons.Filled.Error
+                        else -> null
+                    }
+                    if (icon != null) {
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = null,
+                            tint = logColor,
+                            modifier = Modifier.size(16.dp),
+                        )
+                    }
+                }
+
+                Text(
+                    text = log.message,
+                    color = logColor,
                 )
             }
         }
