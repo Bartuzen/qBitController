@@ -114,6 +114,7 @@ private fun LogScreen(
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is LogViewModel.Event.Error -> {
+                snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getErrorMessage(context, event.error))
                 }
