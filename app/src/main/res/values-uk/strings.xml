@@ -666,4 +666,5 @@
     <string name="torrent_list_no_server_description">Ви ще не додали жодного сервера. Додайте один, щоб почати.</string>
     <string name="search_result_title">Результати пошуку</string>
     <string name="search_start_plugins">Плагіни</string>
+    <string name="search_result_details">Подробиці</string>
 </resources>
