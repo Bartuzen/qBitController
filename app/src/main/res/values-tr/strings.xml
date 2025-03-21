@@ -636,4 +636,5 @@
     <string name="torrent_list_no_server_title">Sunucu Bulunamadı</string>
     <string name="search_result_title">Arama Sonuçları</string>
     <string name="search_start_plugins">Eklentiler</string>
+    <string name="search_result_details">Torrent Detayları</string>
 </resources>
