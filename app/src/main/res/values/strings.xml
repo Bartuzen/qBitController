@@ -612,7 +612,7 @@
     <string name="search_result_filter_reset">Reset</string>
 
     <string name="search_result_showing_count">Showing %1$d out of %2$d</string>
-    <string name="search_result_details">Details</string>
+    <string name="search_result_details">Torrent Details</string>
     <string name="search_result_size">Size: %1$s</string>
     <string name="search_result_site">Site: %1$s</string>
     <string name="search_result_seeders">Seeders</string>

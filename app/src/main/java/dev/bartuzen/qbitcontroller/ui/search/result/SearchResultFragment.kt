@@ -14,7 +14,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -253,7 +252,7 @@ private fun SearchResultScreen(
 
     when (val dialog = currentDialog) {
         is Dialog.Details -> {
-            SearchDetailsDialog(
+            DetailsDialog(
                 searchResult = dialog.searchResult,
                 onDismiss = { currentDialog = null },
                 onDownload = {
@@ -599,11 +598,13 @@ private fun SearchResultItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    ElevatedCard(modifier = modifier) {
+    ElevatedCard(
+        modifier = modifier,
+        onClick = onClick,
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable(onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             val name = if (filterSearchQuery != null) {
@@ -620,11 +621,7 @@ private fun SearchResultItem(
             }
             Text(
                 text = name,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
-                ),
-                modifier = Modifier.fillMaxWidth(),
+                style = MaterialTheme.typography.titleMedium,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -725,7 +722,7 @@ private sealed class Dialog {
 }
 
 @Composable
-private fun SearchDetailsDialog(
+private fun DetailsDialog(
     searchResult: Search.Result,
     onDismiss: () -> Unit,
     onDownload: () -> Unit,
@@ -742,7 +739,9 @@ private fun SearchDetailsDialog(
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
                     text = searchResult.fileName,
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 HorizontalDivider()
@@ -821,7 +820,7 @@ private fun SearchDetailsDialog(
 @Composable
 private fun InfoRow(icon: ImageVector, label: String, value: String, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
@@ -872,7 +871,6 @@ private fun PeerInfoCard(icon: ImageVector, count: String, label: String, color:
                 Text(
                     text = count,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
                     color = color,
                 )
             }
