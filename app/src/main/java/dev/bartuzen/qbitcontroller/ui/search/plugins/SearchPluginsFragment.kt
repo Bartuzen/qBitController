@@ -294,7 +294,7 @@ private fun SearchPluginsScreen(
             val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
