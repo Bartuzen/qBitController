@@ -677,12 +677,12 @@ private fun SearchResultItem(
                             imageVector = Icons.Outlined.ArrowUpward,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = LocalCustomColors.current.seederColor,
+                            tint = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
                         )
                         Text(
                             text = searchResult.seeders?.toString() ?: "-",
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = LocalCustomColors.current.seederColor,
+                                color = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
                                 fontWeight = FontWeight.SemiBold,
                             ),
                         )
@@ -696,12 +696,12 @@ private fun SearchResultItem(
                             imageVector = Icons.Outlined.ArrowDownward,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = LocalCustomColors.current.leecherColor,
+                            tint = harmonizeWithPrimary(LocalCustomColors.current.leecherColor),
                         )
                         Text(
                             text = searchResult.leechers?.toString() ?: "-",
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = LocalCustomColors.current.leecherColor,
+                                color = harmonizeWithPrimary(LocalCustomColors.current.leecherColor),
                                 fontWeight = FontWeight.SemiBold,
                             ),
                         )
