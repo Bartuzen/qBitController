@@ -442,7 +442,6 @@
     <string name="torrent_add_error">No se puede añadir el torrent.</string>
     <string name="torrent_files_action_rename">Renombrar</string>
     <string name="settings_auto_refresh_interval">Intervalo de actualización automática</string>
-    <string name="rss_date">Fecha: %1$s</string>
     <string name="torrent_overview_uploaded">Subido</string>
     <string name="rss_hint_feed_name">Nombre del feed</string>
     <string name="torrent_peers_flag_incoming_connection">Conexión entrante</string>
@@ -536,7 +535,6 @@
     <string name="torrent_overview_last_seen_complete">Visto por última vez</string>
     <string name="torrent_add_content_layout_original">Original</string>
     <string name="torrent_option_share_limit_global">Utilizar el límite de la cuota global</string>
-    <string name="rss_no_description">No se ha encontrado una descripción</string>
     <string name="torrent_option_share_limit_custom">Establecer un límite de cuota personalizado</string>
     <string name="search_result_showing_count">Mostrando %1$d de %2$d</string>
     <string name="torrent_add_title">Añadir un Torrent</string>
