@@ -440,9 +440,7 @@
     <string name="torrent_add_invalid_file">Ficheiro de Torrent inválido.</string>
     <string name="rss_title">RSS</string>
     <string name="rss_filter">Filtrar entradas…</string>
-    <string name="rss_date">Data: %1$s</string>
     <string name="rss_mark_as_read">Marcar como lido</string>
-    <string name="rss_no_description">Sem descrição</string>
     <string name="rss_action_add">Adicionar</string>
     <string name="rss_action_add_feed">Adicionar Fonte</string>
     <string name="rss_action_rename_feed">Renomear Fonte</string>

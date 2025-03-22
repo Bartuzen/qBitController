@@ -385,7 +385,6 @@
     <string name="torrent_add_seeding_time_limit">배포 제한 시간 (분)</string>
     <string name="torrent_add_server">서버</string>
     <string name="rss_download">내려받기</string>
-    <string name="rss_no_description">설명이 없음</string>
     <string name="rss_action_move_feed">피드 옮기기</string>
     <string name="rss_action_delete_feed">피드 삭제</string>
     <string name="rss_action_move_select_folder">폴더 선택</string>
@@ -509,7 +508,6 @@
     <string name="rss_delete_folder_error">폴더를 삭제할 수 없습니다.</string>
     <string name="rss_mark_all_articles_as_read_success">모든 문서가 성공적으로 읽음 표시되었습니다.</string>
     <string name="rss_filter">필터 목록…</string>
-    <string name="rss_date">날짜: %1$s</string>
     <string name="rss_action_rename_folder">폴더 이름 바꾸기</string>
     <string name="rss_mark_as_read">읽음으로 표시</string>
     <string name="rss_action_add_folder">폴더 추가</string>

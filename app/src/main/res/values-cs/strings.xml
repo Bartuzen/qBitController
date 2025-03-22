@@ -467,7 +467,6 @@
     <string name="torrent_add_content_layout">Rozvržení obsahu</string>
     <string name="torrent_add_content_layout_original">Originál</string>
     <string name="torrent_add_seeding_time_limit">Maximální doby seedování v minutách</string>
-    <string name="rss_date">Datum: %1$s</string>
     <string name="rss_action_move_feed">Přesunout kanál</string>
     <string name="rss_action_delete_feed">Smazat kanál</string>
     <string name="rss_action_add_folder">Přidat složku</string>
@@ -491,7 +490,6 @@
     <string name="torrent_add_download_speed_limit">Limit rychlosti stahování</string>
     <string name="rss_title">RSS</string>
     <string name="torrent_peers_flag_encrypted_traffic">Šifrovaný přenos</string>
-    <string name="rss_no_description">Nebyl nalezen žádný popis</string>
     <string name="torrent_peers_details_country">Země: %1$s</string>
     <string name="torrent_peers_action_add">Přidání peerů</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interested (local) a přiškrcený (peer)</string>
