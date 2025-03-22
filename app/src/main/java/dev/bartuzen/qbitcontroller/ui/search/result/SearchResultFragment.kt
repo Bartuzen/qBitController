@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -230,6 +231,12 @@ private fun SearchResultScreen(
                 }
             }
         }
+    }
+
+    BackHandler(enabled = isSearchMode) {
+        isSearchMode = false
+        filterQuery = TextFieldValue()
+        viewModel.setFilterQuery("")
     }
 
     val addTorrentLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->

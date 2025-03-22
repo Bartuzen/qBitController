@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -284,6 +285,12 @@ private fun RssArticlesScreen(
                 onFeedPathChanged(event.newPath)
             }
         }
+    }
+
+    BackHandler(enabled = isSearchMode) {
+        isSearchMode = false
+        searchQuery = TextFieldValue()
+        viewModel.setSearchQuery("")
     }
 
     Scaffold(
