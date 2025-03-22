@@ -133,6 +133,7 @@ import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
+import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatUri
@@ -308,13 +309,6 @@ private fun SearchResultScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    val focusRequester = remember { FocusRequester() }
-                    LaunchedEffect(isSearchMode) {
-                        if (isSearchMode) {
-                            focusRequester.requestFocus()
-                        }
-                    }
-
                     if (!isSearchMode) {
                         Text(
                             text = searchQuery.ifBlank { stringResource(R.string.search_result_title) },
@@ -322,6 +316,11 @@ private fun SearchResultScreen(
                             overflow = TextOverflow.Ellipsis,
                         )
                     } else {
+                        val focusRequester = remember { FocusRequester() }
+                        PersistentLaunchedEffect {
+                            focusRequester.requestFocus()
+                        }
+
                         BasicTextField(
                             value = filterQuery,
                             onValueChange = {
