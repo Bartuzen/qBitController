@@ -635,4 +635,7 @@
     <string name="search_result_title">Arama Sonuçları</string>
     <string name="search_start_plugins">Eklentiler</string>
     <string name="search_result_details">Torrent Detayları</string>
+    <string name="rss_details">Torrent Detayları</string>
+    <string name="rss_description">Açıklama</string>
+    <string name="rss_new">Yeni</string>
 </resources>
