@@ -270,7 +270,7 @@ class SearchResultViewModel @AssistedInject constructor(
                 }
             }
         }
-
+        delay(25)
         _isRefreshing.value = false
     }
 
