@@ -982,7 +982,7 @@ fun TorrentListScreen(
                         Box(modifier = Modifier.fillMaxSize()) {
                             LazyColumn(
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                                contentPadding = PaddingValues(horizontal = 4.dp),
+                                contentPadding = PaddingValues(horizontal = 12.dp),
                                 state = listState,
                                 modifier = Modifier.fillMaxSize(),
                             ) {
