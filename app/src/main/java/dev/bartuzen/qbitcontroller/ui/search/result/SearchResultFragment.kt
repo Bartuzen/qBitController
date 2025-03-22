@@ -252,6 +252,12 @@ private fun SearchResultScreen(
 
     when (val dialog = currentDialog) {
         is Dialog.Details -> {
+            LaunchedEffect(searchResults) {
+                if (searchResults?.contains(dialog.searchResult) != true) {
+                    currentDialog = null
+                }
+            }
+
             DetailsDialog(
                 searchResult = dialog.searchResult,
                 onDismiss = { currentDialog = null },
