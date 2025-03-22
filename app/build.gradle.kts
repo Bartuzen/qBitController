@@ -176,6 +176,8 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.svg)
 
+    implementation(libs.htmlConverter)
+
     val firebaseImplementation by configurations
     firebaseImplementation(platform(libs.firebase.bom))
     firebaseImplementation(libs.firebase.analytics)

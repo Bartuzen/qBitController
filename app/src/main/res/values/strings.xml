@@ -496,10 +496,12 @@
 
     <string name="rss_title">RSS</string>
     <string name="rss_filter">Filter entries…</string>
-    <string name="rss_date">Date: %1$s</string>
+    <string name="rss_details">Torrent Details</string>
+    <string name="rss_description">Description</string>
+    <string name="rss_new">New</string>
+    <string name="rss_read">Read</string>
     <string name="rss_download">Download</string>
     <string name="rss_mark_as_read">Mark as Read</string>
-    <string name="rss_no_description">No description found</string>
 
     <string name="rss_action_add">Add</string>
     <string name="rss_action_add_feed">Add Feed</string>

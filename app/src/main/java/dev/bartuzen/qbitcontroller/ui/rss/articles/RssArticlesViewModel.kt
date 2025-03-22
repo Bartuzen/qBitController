@@ -1,26 +1,41 @@
 package dev.bartuzen.qbitcontroller.ui.rss.articles
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeedWithData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class RssArticlesViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = RssArticlesViewModel.Factory::class)
+class RssArticlesViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted feedPath: List<String>,
+    @Assisted private val uid: String?,
+    private val savedStateHandle: SavedStateHandle,
     private val repository: RssArticlesRepository,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int, feedPath: List<String>, uid: String?): RssArticlesViewModel
+    }
+
     private val rssArticles = MutableStateFlow<List<Article>?>(null)
 
     private val eventChannel = Channel<Event>()
@@ -32,9 +47,9 @@ class RssArticlesViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    private val searchQuery = MutableStateFlow("")
+    private val searchQuery = savedStateHandle.getStateFlow("searchQuery", "")
 
-    var isInitialLoadStarted = false
+    val feedPath = savedStateHandle.getStateFlow("feedPath", feedPath)
 
     val filteredArticles = combine(rssArticles, searchQuery) { articles, searchQuery ->
         if (articles != null) {
@@ -61,16 +76,21 @@ class RssArticlesViewModel @Inject constructor(
         } else {
             articles
         }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+    init {
+        loadRssArticles()
     }
 
-    fun updateRssArticles(serverId: Int, feedPath: List<String>, uid: String?) = viewModelScope.launch {
+    fun updateRssArticles() = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
-                val (articles, newFeedPath) = parseRssFeedWithData(result.data, feedPath, uid)
+                val (articles, newFeedPath) = parseRssFeedWithData(result.data, feedPath.value, uid)
                 if (articles != null) {
                     rssArticles.value = articles
 
                     if (newFeedPath != null) {
+                        savedStateHandle["feedPath"] = newFeedPath
                         eventChannel.send(Event.FeedPathChanged(newFeedPath))
                     }
                 } else {
@@ -83,42 +103,47 @@ class RssArticlesViewModel @Inject constructor(
         }
     }
 
-    fun loadRssArticles(serverId: Int, feedPath: List<String>, uid: String?) {
+    fun loadRssArticles() {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateRssArticles(serverId, feedPath, uid).invokeOnCompletion {
+            updateRssArticles().invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssArticles(serverId: Int, feedPath: List<String>, uid: String?) {
+    fun refreshRssArticles() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateRssArticles(serverId, feedPath, uid).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateRssArticles().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?, showMessage: Boolean = true) =
-        viewModelScope.launch {
-            when (val result = repository.markAsRead(serverId, feedPath, articleId)) {
-                is RequestResult.Success -> {
-                    if (articleId == null) {
-                        eventChannel.send(Event.AllArticlesMarkedAsRead)
-                    } else {
-                        eventChannel.send(Event.ArticleMarkedAsRead(showMessage))
-                    }
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
+    fun markAsRead(feedPath: List<String>?, articleId: String?, showMessage: Boolean = true) = viewModelScope.launch {
+        val finalFeedPath = feedPath ?: this@RssArticlesViewModel.feedPath.value
+        when (val result = repository.markAsRead(serverId, finalFeedPath, articleId)) {
+            is RequestResult.Success -> {
+                if (articleId == null) {
+                    eventChannel.send(Event.AllArticlesMarkedAsRead)
+                } else {
+                    eventChannel.send(Event.ArticleMarkedAsRead(showMessage))
                 }
             }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
         }
+    }
 
-    fun refreshFeed(serverId: Int, feedPath: List<String>) = viewModelScope.launch {
-        when (val result = repository.refreshItem(serverId, feedPath)) {
+    fun markAllAsRead() = markAsRead(null, null)
+
+    fun refreshFeed() = viewModelScope.launch {
+        when (val result = repository.refreshItem(serverId, feedPath.value)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FeedRefreshed)
             }
@@ -129,7 +154,7 @@ class RssArticlesViewModel @Inject constructor(
     }
 
     fun setSearchQuery(query: String) {
-        searchQuery.value = query
+        savedStateHandle["searchQuery"] = query
     }
 
     sealed class Event {

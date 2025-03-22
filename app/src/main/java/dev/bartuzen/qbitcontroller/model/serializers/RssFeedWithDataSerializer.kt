@@ -32,7 +32,7 @@ fun parseRssFeedWithData(feeds: String, path: List<String>, uid: String?): Pair<
         }
     }
 
-    parseRssFeedWithData(node, articles, path)
+    parseRssFeedWithData(node, articles, newPath ?: path)
     articles.sortByDescending { it.date }
     return articles to newPath
 }

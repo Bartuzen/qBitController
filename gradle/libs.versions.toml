@@ -28,6 +28,7 @@ okhttp = "4.12.0"
 viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.1.5"
 coil = "2.7.0"
+htmlConverter = "1.0.3"
 firebase-bom = "33.11.0"
 ksp = "2.1.20-1.0.31"
 junit = "1.2.1"
@@ -86,6 +87,8 @@ desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref 
 
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+
+htmlConverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlConverter" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
