@@ -237,7 +237,6 @@
     <string name="rss_filter">Фільтр записів…</string>
     <string name="torrent_add_invalid_file">Торрент-файл не дійсний.</string>
     <string name="rss_title">RSS</string>
-    <string name="rss_date">Дата: %1$s</string>
     <string name="rss_action_add_folder">Додати теку</string>
     <string name="rss_action_rename_folder">Перейменувати теку</string>
     <string name="rss_action_move_folder">Перемістити теку</string>
@@ -333,7 +332,6 @@
     <string name="rss_action_rename_feed">Перейменувати стрічку</string>
     <string name="rss_action_move_feed">Перемістити стрічку</string>
     <string name="rss_mark_as_read">Позначити як прочитане</string>
-    <string name="rss_no_description">Опис не знайдено</string>
     <string name="rss_action_delete_feed">Видалити стрічку</string>
     <string name="rss_action_mark_all_as_read">Позначити все як прочитане</string>
     <string name="rss_action_refresh_all">Оновити все</string>
