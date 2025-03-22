@@ -499,7 +499,6 @@
     <string name="rss_details">Torrent Details</string>
     <string name="rss_description">Description</string>
     <string name="rss_new">New</string>
-    <string name="rss_read">Read</string>
     <string name="rss_download">Download</string>
     <string name="rss_mark_as_read">Mark as Read</string>
 
