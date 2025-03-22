@@ -665,4 +665,7 @@
     <string name="search_result_title">Результати пошуку</string>
     <string name="search_start_plugins">Плагіни</string>
     <string name="search_result_details">Деталі торрента</string>
+    <string name="rss_details">Деталі торрента</string>
+    <string name="rss_description">Опис</string>
+    <string name="rss_new">Новий</string>
 </resources>
