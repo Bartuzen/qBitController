@@ -379,9 +379,7 @@
     <string name="torrent_add_action_add_torrent">新增 Torrent</string>
     <string name="torrent_add_error">無法新增 Torrent。</string>
     <string name="rss_title">RSS</string>
-    <string name="rss_date">日期：%1$s</string>
     <string name="rss_download">下載</string>
-    <string name="rss_no_description">找不到詳細描述</string>
     <string name="rss_action_add">新增</string>
     <string name="rss_action_add_feed">新增新 Feed</string>
     <string name="rss_action_rename_feed">重新命名 Feed</string>

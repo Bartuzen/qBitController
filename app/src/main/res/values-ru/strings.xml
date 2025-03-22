@@ -69,7 +69,6 @@
     <string name="torrent_peers_flag_peer_from_dht">Пир из DHT</string>
     <string name="torrent_peers_flag_peer_from_pex">Пир из PEX</string>
     <string name="torrent_add_click_to_select_file">Нажмите чтобы выбрать файлы</string>
-    <string name="rss_no_description">Описание не найдено</string>
     <string name="rss_action_add_feed">Добавить ленту</string>
     <string name="rss_action_delete_feed">Удалить ленту</string>
     <string name="rss_all_articles">Все статьи</string>
@@ -414,7 +413,6 @@
     <string name="torrent_add_invalid_file">Торрент-файл повреждён.</string>
     <string name="rss_title">RSS</string>
     <string name="rss_filter">Фильтр записей…</string>
-    <string name="rss_date">Дата: %1$s</string>
     <string name="rss_download">Загрузить</string>
     <string name="rss_action_add">Добавить</string>
     <string name="rss_action_move_feed">Переместить ленту</string>

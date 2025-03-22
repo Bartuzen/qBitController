@@ -328,10 +328,8 @@
     <string name="rss_action_move_feed">Bildirimi Taşı</string>
     <string name="rss_action_delete_feed">Bildirimi Sil</string>
     <string name="rss_filter">Verileri filtrele…</string>
-    <string name="rss_date">Tarih: %1$s</string>
     <string name="rss_download">İndir</string>
     <string name="rss_mark_as_read">Okundu Olarak İşaretle</string>
-    <string name="rss_no_description">Açıklama bulunamadı</string>
     <string name="rss_action_add">Ekle</string>
     <string name="rss_action_add_feed">Bildirim Ekle</string>
     <string name="rss_action_rename_feed">Bildirimi Yeniden Adlandır</string>

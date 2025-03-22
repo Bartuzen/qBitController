@@ -411,10 +411,8 @@
     <string name="torrent_add_invalid_file">该 Torrent 文件无效。</string>
     <string name="rss_title">RSS</string>
     <string name="rss_filter">筛选器条目…</string>
-    <string name="rss_date">日期：%1$s</string>
     <string name="rss_download">下载</string>
     <string name="rss_mark_as_read">标记为已读</string>
-    <string name="rss_no_description">未找到详细描述</string>
     <string name="rss_action_add">添加</string>
     <string name="rss_action_add_feed">添加新订阅源</string>
     <string name="rss_action_rename_feed">重命名订阅源</string>
