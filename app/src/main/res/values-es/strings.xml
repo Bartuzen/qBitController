@@ -652,5 +652,5 @@
     <string name="torrent_list_no_server_add">Añadir servidor</string>
     <string name="search_result_title">Buscar resultados</string>
     <string name="search_start_plugins">Complementos</string>
-    <string name="search_result_details">Detalles</string>
+    <string name="search_result_details">Detalles del torrent</string>
 </resources>
