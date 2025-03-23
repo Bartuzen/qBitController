@@ -654,4 +654,11 @@
     <string name="rss_details">Detalles del torrent</string>
     <string name="rss_description">Descripción</string>
     <string name="rss_new">Nuevo</string>
+    <string name="rss_rule_item_enabled">Habilitado</string>
+    <string name="rss_rule_item_disabled">Deshabilitado</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d canal</item>
+        <item quantity="many">%1$d canales</item>
+        <item quantity="other">%1$d canales</item>
+    </plurals>
 </resources>
