@@ -651,4 +651,7 @@
     <string name="search_result_title">Buscar resultados</string>
     <string name="search_start_plugins">Complementos</string>
     <string name="search_result_details">Detalles del torrent</string>
+    <string name="rss_details">Detalles del torrent</string>
+    <string name="rss_description">Descripción</string>
+    <string name="rss_new">Nuevo</string>
 </resources>
