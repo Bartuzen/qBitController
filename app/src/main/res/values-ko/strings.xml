@@ -614,4 +614,15 @@
     <string name="rss_rule_no_feed_found">발견된 피드 없음</string>
     <string name="torrent_overview_popularity">인지도</string>
     <string name="rss_success_feed_change_url">피드 URL이 성공적으로 변경되었습니다.</string>
+    <string name="rss_details">토렌트 세부정보</string>
+    <string name="rss_description">설명</string>
+    <string name="rss_new">새로운</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="other">%1$d 피드</item>
+    </plurals>
+    <string name="search_result_details">토렌트 세부정보</string>
+    <string name="rss_rule_item_disabled">비활성화됨</string>
+    <string name="rss_rule_item_enabled">활성화됨</string>
+    <string name="search_result_title">검색 결과</string>
+    <string name="search_start_plugins">플러그인</string>
 </resources>
