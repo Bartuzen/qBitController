@@ -668,4 +668,12 @@
     <string name="rss_details">Деталі торрента</string>
     <string name="rss_description">Опис</string>
     <string name="rss_new">Новий</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d корма</item>
+        <item quantity="few">%1$d корми</item>
+        <item quantity="many">%1$d кормів</item>
+        <item quantity="other">%1$d кормів</item>
+    </plurals>
+    <string name="rss_rule_item_enabled">Увімкнено</string>
+    <string name="rss_rule_item_disabled">Вимкнено</string>
 </resources>
