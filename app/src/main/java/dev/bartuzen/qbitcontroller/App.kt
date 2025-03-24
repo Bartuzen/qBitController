@@ -1,7 +1,10 @@
 package dev.bartuzen.qbitcontroller
 
 import android.app.Application
+import android.app.UiModeManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.getSystemService
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import coil.ImageLoader
@@ -12,8 +15,8 @@ import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.SettingsManager
+import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
-import dev.bartuzen.qbitcontroller.data.toDelegate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -62,7 +65,23 @@ class App : Application(), Configuration.Provider, ImageLoaderFactory {
 
         CoroutineScope(Dispatchers.Main).launch {
             settingsManager.theme.flow.collectLatest { theme ->
-                AppCompatDelegate.setDefaultNightMode(theme.toDelegate())
+                val uiModeManager = getSystemService<UiModeManager>()
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && uiModeManager != null) {
+                    val mode = when (theme) {
+                        Theme.LIGHT -> UiModeManager.MODE_NIGHT_NO
+                        Theme.DARK -> UiModeManager.MODE_NIGHT_YES
+                        Theme.SYSTEM_DEFAULT -> UiModeManager.MODE_NIGHT_CUSTOM
+                    }
+                    uiModeManager.setApplicationNightMode(mode)
+                } else {
+                    val mode = when (theme) {
+                        Theme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                        Theme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                        Theme.SYSTEM_DEFAULT -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    }
+                    AppCompatDelegate.setDefaultNightMode(mode)
+                }
             }
         }
     }

@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
 import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
@@ -65,10 +64,4 @@ enum class SearchSort {
     SEEDERS,
     LEECHERS,
     SEARCH_ENGINE,
-}
-
-fun Theme.toDelegate() = when (this) {
-    Theme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-    Theme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-    Theme.SYSTEM_DEFAULT -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 }
