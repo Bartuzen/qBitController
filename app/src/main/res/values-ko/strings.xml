@@ -389,7 +389,7 @@
     <string name="rss_action_delete_feed">피드 삭제</string>
     <string name="rss_action_move_select_folder">폴더 선택</string>
     <string name="rss_hint_feed_name_optional">피드 이름 (선택적)</string>
-    <string name="rss_all_articles">모든 규약</string>
+    <string name="rss_all_articles">모든 RSS</string>
     <string name="rss_field_required">이 항목은 필수입니다.</string>
     <string name="rss_added_feed">피드가 성공적으로 추가되었습니다.</string>
     <string name="rss_success_feed_rename">피드 이름이 성공적으로 바뀌었습니다.</string>
