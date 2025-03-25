@@ -1316,7 +1316,7 @@ private fun TorrentItem(
                 }
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.bodyLarge.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         lineBreak = LineBreak.Paragraph,
                     ),
                 )
