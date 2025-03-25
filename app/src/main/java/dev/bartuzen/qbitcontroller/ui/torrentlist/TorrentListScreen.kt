@@ -71,7 +71,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.DriveFileMove
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FlipToBack
@@ -81,7 +80,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowDown
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowUp
-import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Pause
@@ -92,7 +90,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Sell
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.SyncAlt
 import androidx.compose.material.icons.filled.TravelExplore
 import androidx.compose.material.icons.outlined.Analytics
@@ -2192,27 +2189,6 @@ private fun TopBar(
                                     modifier = Modifier.alpha(0.78f),
                                 )
                             },
-                            trailingIcon = {
-                                AnimatedVisibility(
-                                    visible = searchQuery.isNotEmpty(),
-                                    enter = fadeIn(tween()),
-                                    exit = fadeOut(tween()),
-                                ) {
-                                    IconButton(
-                                        onClick = {
-                                            onSearchQueryChange("")
-                                        },
-                                        modifier = Modifier.focusProperties {
-                                            canFocus = canFocusNow
-                                        },
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Close,
-                                            contentDescription = null,
-                                        )
-                                    }
-                                }
-                            },
                             container = {},
                         )
                     },
@@ -2254,28 +2230,28 @@ private fun TopBar(
             }
         },
         actions = {
-            if (!isSearchMode) {
-                var showSortMenu by remember { mutableStateOf(false) }
-                val updatedServerId by rememberUpdatedState(serverId)
-                val addTorrentLauncher =
-                    rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                        if (result.resultCode == Activity.RESULT_OK) {
-                            val isAdded = result.data?.getBooleanExtra(
-                                AddTorrentActivity.Extras.IS_ADDED,
-                                false,
-                            ) == true
-                            if (isAdded) {
-                                onLoadMainData()
-                                scope.launch {
-                                    snackbarHostState.currentSnackbarData?.dismiss()
-                                    snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
-                                }
+            var showSortMenu by remember { mutableStateOf(false) }
+            val updatedServerId by rememberUpdatedState(serverId)
+            val addTorrentLauncher =
+                rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        val isAdded = result.data?.getBooleanExtra(
+                            AddTorrentActivity.Extras.IS_ADDED,
+                            false,
+                        ) == true
+                        if (isAdded) {
+                            onLoadMainData()
+                            scope.launch {
+                                snackbarHostState.currentSnackbarData?.dismiss()
+                                snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
                             }
                         }
                     }
+                }
 
-                val actionMenuItems = remember(mainData != null) {
-                    listOf(
+            val actionMenuItems = remember(mainData != null, isSearchMode, searchQuery.isNotEmpty()) {
+                listOf(
+                    if (!isSearchMode) {
                         ActionMenuItem(
                             title = context.getString(R.string.action_search),
                             icon = Icons.Filled.Search,
@@ -2283,178 +2259,188 @@ private fun TopBar(
                                 onSearchModeChange(true)
                             },
                             showAsAction = true,
-                        ),
+                        )
+                    } else {
                         ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_add_torrent),
-                            icon = Icons.Filled.Add,
+                            title = null,
+                            icon = Icons.Filled.Close,
                             onClick = {
-                                val intent = Intent(context, AddTorrentActivity::class.java).apply {
-                                    putExtra(AddTorrentActivity.Extras.SERVER_ID, updatedServerId)
-                                }
-                                addTorrentLauncher.launch(intent)
+                                onSearchQueryChange("")
                             },
+                            isHidden = searchQuery.isEmpty(),
                             showAsAction = true,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_rss),
-                            icon = Icons.Filled.RssFeed,
-                            onClick = {
-                                val intent = Intent(context, RssActivity::class.java).apply {
-                                    putExtra(RssActivity.Extras.SERVER_ID, updatedServerId)
-                                }
-                                context.startActivity(intent)
-                            },
-                            showAsAction = true,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_search_online),
-                            icon = Icons.Filled.TravelExplore,
-                            onClick = {
-                                val intent = Intent(context, SearchActivity::class.java).apply {
-                                    putExtra(SearchActivity.Extras.SERVER_ID, updatedServerId)
-                                }
-                                context.startActivity(intent)
-                            },
-                            showAsAction = true,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_statistics),
-                            icon = Icons.Outlined.Analytics,
-                            onClick = {
-                                onDialogOpen(Dialog.Statistics)
-                            },
-                            showAsAction = false,
-                            isEnabled = mainData != null,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_execution_log),
-                            icon = Icons.Filled.Description,
-                            onClick = {
-                                val intent = Intent(context, LogActivity::class.java).apply {
-                                    putExtra(LogActivity.Extras.SERVER_ID, updatedServerId)
-                                }
-                                context.startActivity(intent)
-                            },
-                            showAsAction = false,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_shutdown),
-                            icon = Icons.Filled.PowerSettingsNew,
-                            onClick = {
-                                onDialogOpen(Dialog.Shutdown)
-                            },
-                            showAsAction = false,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.torrent_list_action_sort),
-                            icon = Icons.AutoMirrored.Filled.Sort,
-                            onClick = {
-                                showSortMenu = true
-                            },
-                            showAsAction = false,
-                            trailingIcon = Icons.AutoMirrored.Filled.ArrowRight,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.main_action_settings),
-                            icon = Icons.Filled.Settings,
-                            onClick = {
-                                val intent = Intent(context, SettingsActivity::class.java)
-                                context.startActivity(intent)
-                            },
-                            showAsAction = false,
-                        ),
-                        ActionMenuItem(
-                            title = context.getString(R.string.main_action_about),
-                            icon = Icons.Filled.Info,
-                            onClick = {
-                                onDialogOpen(Dialog.About)
-                            },
-                            showAsAction = false,
-                        ),
-                    )
-                }
+                        )
+                    },
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_add_torrent),
+                        icon = Icons.Filled.Add,
+                        onClick = {
+                            val intent = Intent(context, AddTorrentActivity::class.java).apply {
+                                putExtra(AddTorrentActivity.Extras.SERVER_ID, updatedServerId)
+                            }
+                            addTorrentLauncher.launch(intent)
+                        },
+                        showAsAction = true,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_rss),
+                        icon = Icons.Filled.RssFeed,
+                        onClick = {
+                            val intent = Intent(context, RssActivity::class.java).apply {
+                                putExtra(RssActivity.Extras.SERVER_ID, updatedServerId)
+                            }
+                            context.startActivity(intent)
+                        },
+                        showAsAction = true,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_search_online),
+                        icon = Icons.Filled.TravelExplore,
+                        onClick = {
+                            val intent = Intent(context, SearchActivity::class.java).apply {
+                                putExtra(SearchActivity.Extras.SERVER_ID, updatedServerId)
+                            }
+                            context.startActivity(intent)
+                        },
+                        showAsAction = true,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_statistics),
+                        icon = Icons.Outlined.Analytics,
+                        onClick = {
+                            onDialogOpen(Dialog.Statistics)
+                        },
+                        showAsAction = false,
+                        isEnabled = mainData != null,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_execution_log),
+                        icon = Icons.Filled.Description,
+                        onClick = {
+                            val intent = Intent(context, LogActivity::class.java).apply {
+                                putExtra(LogActivity.Extras.SERVER_ID, updatedServerId)
+                            }
+                            context.startActivity(intent)
+                        },
+                        showAsAction = false,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_shutdown),
+                        icon = Icons.Filled.PowerSettingsNew,
+                        onClick = {
+                            onDialogOpen(Dialog.Shutdown)
+                        },
+                        showAsAction = false,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.torrent_list_action_sort),
+                        icon = Icons.AutoMirrored.Filled.Sort,
+                        onClick = {
+                            showSortMenu = true
+                        },
+                        showAsAction = false,
+                        trailingIcon = Icons.AutoMirrored.Filled.ArrowRight,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.main_action_settings),
+                        icon = Icons.Filled.Settings,
+                        onClick = {
+                            val intent = Intent(context, SettingsActivity::class.java)
+                            context.startActivity(intent)
+                        },
+                        showAsAction = false,
+                    ),
+                    ActionMenuItem(
+                        title = context.getString(R.string.main_action_about),
+                        icon = Icons.Filled.Info,
+                        onClick = {
+                            onDialogOpen(Dialog.About)
+                        },
+                        showAsAction = false,
+                    ),
+                )
+            }
 
-                AppBarActions(
-                    items = actionMenuItems,
-                    canFocus = canFocusNow,
+            AppBarActions(
+                items = actionMenuItems,
+                canFocus = canFocusNow,
+            )
+
+            val sortMenuScrollState = rememberScrollState()
+            LaunchedEffect(showSortMenu) {
+                if (showSortMenu) {
+                    sortMenuScrollState.scrollTo(0)
+                }
+            }
+
+            DropdownMenu(
+                expanded = showSortMenu,
+                onDismissRequest = { showSortMenu = false },
+                scrollState = sortMenuScrollState,
+                modifier = Modifier.dropdownMenuHeight(),
+            ) {
+                Text(
+                    text = stringResource(R.string.torrent_list_action_sort),
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
 
-                val sortMenuScrollState = rememberScrollState()
-                LaunchedEffect(showSortMenu) {
-                    if (showSortMenu) {
-                        sortMenuScrollState.scrollTo(0)
-                    }
-                }
-
-                DropdownMenu(
-                    expanded = showSortMenu,
-                    onDismissRequest = { showSortMenu = false },
-                    scrollState = sortMenuScrollState,
-                    modifier = Modifier.dropdownMenuHeight(),
-                ) {
-                    Text(
-                        text = stringResource(R.string.torrent_list_action_sort),
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                val sortOptions = remember {
+                    listOf(
+                        R.string.torrent_list_action_sort_name to TorrentSort.NAME,
+                        R.string.torrent_list_action_sort_status to TorrentSort.STATUS,
+                        R.string.torrent_list_action_sort_hash to TorrentSort.HASH,
+                        R.string.torrent_list_action_sort_download_speed to TorrentSort.DOWNLOAD_SPEED,
+                        R.string.torrent_list_action_sort_upload_speed to TorrentSort.UPLOAD_SPEED,
+                        R.string.torrent_list_action_sort_priority to TorrentSort.PRIORITY,
+                        R.string.torrent_list_action_sort_eta to TorrentSort.ETA,
+                        R.string.torrent_list_action_sort_size to TorrentSort.SIZE,
+                        R.string.torrent_list_action_sort_progress to TorrentSort.PROGRESS,
+                        R.string.torrent_list_action_sort_ratio to TorrentSort.RATIO,
+                        R.string.torrent_list_action_sort_connected_seeds to TorrentSort.CONNECTED_SEEDS,
+                        R.string.torrent_list_action_sort_total_seeds to TorrentSort.TOTAL_SEEDS,
+                        R.string.torrent_list_action_sort_connected_leeches to TorrentSort.CONNECTED_LEECHES,
+                        R.string.torrent_list_action_sort_total_leeches to TorrentSort.TOTAL_LEECHES,
+                        R.string.torrent_list_action_sort_addition_date to TorrentSort.ADDITION_DATE,
+                        R.string.torrent_list_action_sort_completion_date to TorrentSort.COMPLETION_DATE,
+                        R.string.torrent_list_action_sort_last_activity to TorrentSort.LAST_ACTIVITY,
                     )
-
-                    val sortOptions = remember {
-                        listOf(
-                            R.string.torrent_list_action_sort_name to TorrentSort.NAME,
-                            R.string.torrent_list_action_sort_status to TorrentSort.STATUS,
-                            R.string.torrent_list_action_sort_hash to TorrentSort.HASH,
-                            R.string.torrent_list_action_sort_download_speed to TorrentSort.DOWNLOAD_SPEED,
-                            R.string.torrent_list_action_sort_upload_speed to TorrentSort.UPLOAD_SPEED,
-                            R.string.torrent_list_action_sort_priority to TorrentSort.PRIORITY,
-                            R.string.torrent_list_action_sort_eta to TorrentSort.ETA,
-                            R.string.torrent_list_action_sort_size to TorrentSort.SIZE,
-                            R.string.torrent_list_action_sort_progress to TorrentSort.PROGRESS,
-                            R.string.torrent_list_action_sort_ratio to TorrentSort.RATIO,
-                            R.string.torrent_list_action_sort_connected_seeds to TorrentSort.CONNECTED_SEEDS,
-                            R.string.torrent_list_action_sort_total_seeds to TorrentSort.TOTAL_SEEDS,
-                            R.string.torrent_list_action_sort_connected_leeches to TorrentSort.CONNECTED_LEECHES,
-                            R.string.torrent_list_action_sort_total_leeches to TorrentSort.TOTAL_LEECHES,
-                            R.string.torrent_list_action_sort_addition_date to TorrentSort.ADDITION_DATE,
-                            R.string.torrent_list_action_sort_completion_date to TorrentSort.COMPLETION_DATE,
-                            R.string.torrent_list_action_sort_last_activity to TorrentSort.LAST_ACTIVITY,
-                        )
-                    }
-                    sortOptions.forEach { (stringId, torrentSort) ->
-                        DropdownMenuItem(
-                            text = {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    RadioButton(
-                                        selected = currentSorting == torrentSort,
-                                        onClick = null,
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(text = stringResource(stringId))
-                                }
-                            },
-                            onClick = {
-                                onTorrentSortChange(torrentSort)
-                                showSortMenu = false
-                            },
-                        )
-                    }
-                    HorizontalDivider()
+                }
+                sortOptions.forEach { (stringId, torrentSort) ->
                     DropdownMenuItem(
                         text = {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Checkbox(
-                                    checked = isReverseSorting,
-                                    onCheckedChange = null,
+                                RadioButton(
+                                    selected = currentSorting == torrentSort,
+                                    onClick = null,
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = stringResource(R.string.torrent_list_action_sort_reverse))
+                                Text(text = stringResource(stringId))
                             }
                         },
                         onClick = {
-                            onReverseSortingChange()
+                            onTorrentSortChange(torrentSort)
                             showSortMenu = false
                         },
                     )
                 }
+                HorizontalDivider()
+                DropdownMenuItem(
+                    text = {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Checkbox(
+                                checked = isReverseSorting,
+                                onCheckedChange = null,
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = stringResource(R.string.torrent_list_action_sort_reverse))
+                        }
+                    },
+                    onClick = {
+                        onReverseSortingChange()
+                        showSortMenu = false
+                    },
+                )
             }
         },
         windowInsets = WindowInsets.safeDrawing

@@ -12,8 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -91,7 +89,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -359,25 +356,6 @@ private fun SearchResultScreen(
                                             modifier = Modifier.alpha(0.78f),
                                         )
                                     },
-                                    trailingIcon = {
-                                        AnimatedVisibility(
-                                            visible = filterQuery.text.isNotEmpty(),
-                                            enter = fadeIn(tween()),
-                                            exit = fadeOut(tween()),
-                                        ) {
-                                            IconButton(
-                                                onClick = {
-                                                    filterQuery = TextFieldValue()
-                                                    viewModel.setFilterQuery("")
-                                                },
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Close,
-                                                    contentDescription = null,
-                                                )
-                                            }
-                                        }
-                                    },
                                     container = {},
                                 )
                             },
@@ -408,16 +386,29 @@ private fun SearchResultScreen(
                     }
                 },
                 actions = {
-                    if (!isSearchMode) {
-                        var showSortMenu by rememberSaveable { mutableStateOf(false) }
-                        val actionMenuItems = remember(currentSorting, isReverseSorting, isSearchContinuing) {
+                    var showSortMenu by rememberSaveable { mutableStateOf(false) }
+                    val actionMenuItems =
+                        remember(currentSorting, isReverseSorting, isSearchContinuing, isSearchMode, filterQuery.text) {
                             listOf(
-                                ActionMenuItem(
-                                    title = context.getString(R.string.action_search),
-                                    icon = Icons.Filled.Search,
-                                    onClick = { isSearchMode = true },
-                                    showAsAction = true,
-                                ),
+                                if (!isSearchMode) {
+                                    ActionMenuItem(
+                                        title = context.getString(R.string.action_search),
+                                        icon = Icons.Filled.Search,
+                                        onClick = { isSearchMode = true },
+                                        showAsAction = true,
+                                    )
+                                } else {
+                                    ActionMenuItem(
+                                        title = null,
+                                        icon = Icons.Filled.Close,
+                                        onClick = {
+                                            filterQuery = TextFieldValue()
+                                            viewModel.setFilterQuery("")
+                                        },
+                                        isHidden = filterQuery.text.isEmpty(),
+                                        showAsAction = true,
+                                    )
+                                },
                                 ActionMenuItem(
                                     title = context.getString(R.string.search_result_action_filter),
                                     icon = Icons.Filled.FilterList,
@@ -441,76 +432,75 @@ private fun SearchResultScreen(
                             )
                         }
 
-                        AppBarActions(items = actionMenuItems)
+                    AppBarActions(items = actionMenuItems)
 
-                        val sortMenuScrollState = rememberScrollState()
-                        LaunchedEffect(showSortMenu) {
-                            if (showSortMenu) {
-                                sortMenuScrollState.scrollTo(0)
-                            }
+                    val sortMenuScrollState = rememberScrollState()
+                    LaunchedEffect(showSortMenu) {
+                        if (showSortMenu) {
+                            sortMenuScrollState.scrollTo(0)
                         }
+                    }
 
-                        DropdownMenu(
-                            expanded = showSortMenu,
-                            onDismissRequest = { showSortMenu = false },
-                            scrollState = sortMenuScrollState,
-                            modifier = Modifier.dropdownMenuHeight(),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.search_result_action_sort),
-                                style = MaterialTheme.typography.labelLarge,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    DropdownMenu(
+                        expanded = showSortMenu,
+                        onDismissRequest = { showSortMenu = false },
+                        scrollState = sortMenuScrollState,
+                        modifier = Modifier.dropdownMenuHeight(),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.search_result_action_sort),
+                            style = MaterialTheme.typography.labelLarge,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        )
+
+                        val sortOptions = remember {
+                            listOf(
+                                R.string.search_result_action_sort_name to SearchSort.NAME,
+                                R.string.search_result_action_sort_size to SearchSort.SIZE,
+                                R.string.search_result_action_sort_seeders to SearchSort.SEEDERS,
+                                R.string.search_result_action_sort_leechers to SearchSort.LEECHERS,
+                                R.string.search_result_action_sort_search_engine to SearchSort.SEARCH_ENGINE,
                             )
-
-                            val sortOptions = remember {
-                                listOf(
-                                    R.string.search_result_action_sort_name to SearchSort.NAME,
-                                    R.string.search_result_action_sort_size to SearchSort.SIZE,
-                                    R.string.search_result_action_sort_seeders to SearchSort.SEEDERS,
-                                    R.string.search_result_action_sort_leechers to SearchSort.LEECHERS,
-                                    R.string.search_result_action_sort_search_engine to SearchSort.SEARCH_ENGINE,
-                                )
-                            }
-                            sortOptions.forEach { (stringId, searchSort) ->
-                                DropdownMenuItem(
-                                    text = {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                        ) {
-                                            RadioButton(
-                                                selected = currentSorting == searchSort,
-                                                onClick = null,
-                                            )
-                                            Text(text = stringResource(stringId))
-                                        }
-                                    },
-                                    onClick = {
-                                        viewModel.setSearchSort(searchSort)
-                                        showSortMenu = false
-                                    },
-                                )
-                            }
-                            HorizontalDivider()
+                        }
+                        sortOptions.forEach { (stringId, searchSort) ->
                             DropdownMenuItem(
                                 text = {
                                     Row(
                                         verticalAlignment = Alignment.CenterVertically,
                                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                                     ) {
-                                        Checkbox(
-                                            checked = isReverseSorting,
-                                            onCheckedChange = null,
+                                        RadioButton(
+                                            selected = currentSorting == searchSort,
+                                            onClick = null,
                                         )
-                                        Text(text = stringResource(R.string.search_result_action_sort_reverse))
+                                        Text(text = stringResource(stringId))
                                     }
                                 },
                                 onClick = {
-                                    viewModel.changeReverseSorting()
+                                    viewModel.setSearchSort(searchSort)
                                     showSortMenu = false
                                 },
                             )
                         }
+                        HorizontalDivider()
+                        DropdownMenuItem(
+                            text = {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                ) {
+                                    Checkbox(
+                                        checked = isReverseSorting,
+                                        onCheckedChange = null,
+                                    )
+                                    Text(text = stringResource(R.string.search_result_action_sort_reverse))
+                                }
+                            },
+                            onClick = {
+                                viewModel.changeReverseSorting()
+                                showSortMenu = false
+                            },
+                        )
                     }
                 },
                 windowInsets = WindowInsets.safeDrawing

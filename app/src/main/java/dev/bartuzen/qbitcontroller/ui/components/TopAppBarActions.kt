@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -28,12 +29,13 @@ import androidx.compose.ui.unit.dp
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 
 data class ActionMenuItem(
-    val title: String,
+    val title: String?,
     val onClick: () -> Unit,
     val showAsAction: Boolean,
     val icon: ImageVector?,
     val isEnabled: Boolean = true,
     val isVisible: Boolean = true,
+    val isHidden: Boolean = false,
     val trailingIcon: ImageVector? = null,
     val dropdownMenu: (@Composable () -> Unit)? = null,
 )
@@ -71,31 +73,43 @@ fun AppBarActions(
     }
 
     actionList.forEach { item ->
-        TooltipBox(
-            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider((-80).dp),
-            tooltip = {
-                PlainTooltip {
-                    Text(item.title)
+        if (!item.isHidden) {
+            val content = @Composable {
+                IconButton(
+                    onClick = item.onClick,
+                    enabled = item.isEnabled,
+                    modifier = Modifier.focusProperties {
+                        this.canFocus = canFocus
+                    },
+                ) {
+                    if (item.icon != null) {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = item.title,
+                        )
+                    }
                 }
-            },
-            state = rememberTooltipState(),
-            focusable = false,
-        ) {
-            IconButton(
-                onClick = item.onClick,
-                enabled = item.isEnabled,
-                modifier = Modifier.focusProperties {
-                    this.canFocus = canFocus
-                },
-            ) {
-                if (item.icon != null) {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.title,
-                    )
-                }
+                item.dropdownMenu?.invoke()
             }
-            item.dropdownMenu?.invoke()
+
+            if (item.title != null) {
+                TooltipBox(
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider((-80).dp),
+                    tooltip = {
+                        PlainTooltip {
+                            Text(item.title)
+                        }
+                    },
+                    state = rememberTooltipState(),
+                    focusable = false,
+                ) {
+                    content()
+                }
+            } else {
+                content()
+            }
+        } else {
+            Spacer(modifier = Modifier)
         }
     }
 
@@ -136,10 +150,10 @@ fun AppBarActions(
                 overflowList.forEach { item ->
                     DropdownMenuItem(
                         text = {
-                            Text(item.title)
+                            Text(item.title ?: "")
                         },
                         leadingIcon = if (item.icon != null) {
-                            @Composable {
+                            {
                                 Icon(
                                     imageVector = item.icon,
                                     contentDescription = null,
@@ -149,7 +163,7 @@ fun AppBarActions(
                             null
                         },
                         trailingIcon = if (item.trailingIcon != null) {
-                            @Composable {
+                            {
                                 Icon(
                                     imageVector = item.trailingIcon,
                                     contentDescription = null,

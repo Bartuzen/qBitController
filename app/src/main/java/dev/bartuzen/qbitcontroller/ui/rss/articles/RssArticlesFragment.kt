@@ -8,8 +8,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -341,25 +339,6 @@ private fun RssArticlesScreen(
                                             modifier = Modifier.alpha(0.78f),
                                         )
                                     },
-                                    trailingIcon = {
-                                        AnimatedVisibility(
-                                            visible = searchQuery.text.isNotEmpty(),
-                                            enter = fadeIn(tween()),
-                                            exit = fadeOut(tween()),
-                                        ) {
-                                            IconButton(
-                                                onClick = {
-                                                    searchQuery = TextFieldValue()
-                                                    viewModel.setSearchQuery("")
-                                                },
-                                            ) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Close,
-                                                    contentDescription = null,
-                                                )
-                                            }
-                                        }
-                                    },
                                     container = {},
                                 )
                             },
@@ -375,14 +354,27 @@ private fun RssArticlesScreen(
                     }
                 },
                 actions = {
-                    val actionMenuItems = remember {
+                    val actionMenuItems = remember(isSearchMode, searchQuery.text) {
                         listOf(
-                            ActionMenuItem(
-                                title = context.getString(R.string.action_search),
-                                icon = Icons.Filled.Search,
-                                onClick = { isSearchMode = true },
-                                showAsAction = true,
-                            ),
+                            if (!isSearchMode) {
+                                ActionMenuItem(
+                                    title = context.getString(R.string.action_search),
+                                    icon = Icons.Filled.Search,
+                                    onClick = { isSearchMode = true },
+                                    showAsAction = true,
+                                )
+                            } else {
+                                ActionMenuItem(
+                                    title = null,
+                                    icon = Icons.Filled.Close,
+                                    onClick = {
+                                        searchQuery = TextFieldValue()
+                                        viewModel.setSearchQuery("")
+                                    },
+                                    isHidden = searchQuery.text.isEmpty(),
+                                    showAsAction = true,
+                                )
+                            },
                             ActionMenuItem(
                                 title = context.getString(R.string.rss_action_mark_all_as_read),
                                 icon = Icons.Filled.MarkEmailRead,
@@ -398,9 +390,7 @@ private fun RssArticlesScreen(
                         )
                     }
 
-                    if (!isSearchMode) {
-                        AppBarActions(items = actionMenuItems)
-                    }
+                    AppBarActions(items = actionMenuItems)
                 },
                 windowInsets = WindowInsets.safeDrawing
                     .exclude(WindowInsets.ime)
