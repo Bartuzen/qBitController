@@ -96,10 +96,10 @@ import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 @AndroidEntryPoint
 class RssRulesFragment() : Fragment() {
@@ -188,13 +188,7 @@ private fun RssRulesScreen(
         }
     }
 
-    var currentDialog by rememberSaveable(
-        stateSaver = Saver(
-            save = { Json.encodeToString(it) },
-            restore = { Json.decodeFromString(it) },
-        ),
-    ) { mutableStateOf<RssRuleDialog?>(null) }
-
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<RssRuleDialog?>(null) }
     when (val dialog = currentDialog) {
         is RssRuleDialog.CreateRule -> {
             CreateRuleDialog(

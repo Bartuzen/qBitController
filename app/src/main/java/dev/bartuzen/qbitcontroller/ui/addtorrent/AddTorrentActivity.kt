@@ -68,10 +68,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -101,6 +99,7 @@ import dev.bartuzen.qbitcontroller.utils.getParcelableArrayListExtraCompat
 import dev.bartuzen.qbitcontroller.utils.getParcelableExtraCompat
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.showToast
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -210,12 +209,7 @@ private fun AddTorrentScreen(
     var torrentFileError by rememberSaveable { mutableStateOf<Boolean>(false) }
 
     var selectedCategory by rememberSaveable { mutableStateOf<String?>(null) }
-    val selectedTags = rememberSaveable(
-        saver = listSaver(
-            save = { it.toList() },
-            restore = { it.toMutableStateList() },
-        ),
-    ) { mutableStateListOf<String>() }
+    val selectedTags = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
 
     var startTorrent by rememberSaveable { mutableStateOf(true) }
     var skipChecking by rememberSaveable { mutableStateOf(false) }

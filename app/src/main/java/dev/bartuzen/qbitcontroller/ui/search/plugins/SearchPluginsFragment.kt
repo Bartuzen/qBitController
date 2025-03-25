@@ -66,12 +66,8 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
-import androidx.compose.runtime.toMutableStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -99,10 +95,12 @@ import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
+import dev.bartuzen.qbitcontroller.utils.stateMapSaver
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 @AndroidEntryPoint
 class SearchPluginsFragment() : Fragment() {
@@ -151,18 +149,8 @@ private fun SearchPluginsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
-    val pluginsEnabledState = rememberSaveable(
-        saver = listSaver(
-            save = { it.toList() },
-            restore = { it.toMutableStateMap() },
-        ),
-    ) { mutableStateMapOf<String, Boolean>() }
-    val pluginsToDelete = rememberSaveable(
-        saver = listSaver(
-            save = { it.toList() },
-            restore = { it.toMutableStateList() },
-        ),
-    ) { mutableStateListOf<String>() }
+    val pluginsEnabledState = rememberSaveable(saver = stateMapSaver()) { mutableStateMapOf<String, Boolean>() }
+    val pluginsToDelete = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
@@ -209,12 +197,7 @@ private fun SearchPluginsScreen(
         }
     }
 
-    var currentDialog by rememberSaveable(
-        stateSaver = Saver(
-            save = { Json.encodeToString(it) },
-            restore = { Json.decodeFromString(it) },
-        ),
-    ) { mutableStateOf<Dialog?>(null) }
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
     when (currentDialog) {
         Dialog.InstallPlugin -> {
             InstallPluginDialog(

@@ -140,6 +140,7 @@ import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatUri
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
@@ -251,13 +252,7 @@ private fun SearchResultScreen(
         }
     }
 
-    var currentDialog by rememberSaveable(
-        stateSaver = Saver(
-            save = { Json.encodeToString(it) },
-            restore = { Json.decodeFromString(it) },
-        ),
-    ) { mutableStateOf<Dialog?>(null) }
-
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
     when (val dialog = currentDialog) {
         is Dialog.Details -> {
             LaunchedEffect(searchResults) {

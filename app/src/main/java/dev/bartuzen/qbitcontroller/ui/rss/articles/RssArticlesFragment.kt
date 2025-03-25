@@ -74,7 +74,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -118,11 +117,11 @@ import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 @AndroidEntryPoint
 class RssArticlesFragment() : Fragment() {
@@ -202,41 +201,34 @@ private fun RssArticlesScreen(
     var isSearchMode by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
 
-    var currentDialog by rememberSaveable(
-        stateSaver = Saver(
-            save = { Json.encodeToString(it) },
-            restore = { Json.decodeFromString(it) },
-        ),
-    ) { mutableStateOf<Dialog?>(null) }
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
+    when (val dialog = currentDialog) {
+        is Dialog.Details -> {
+            val article = remember(articles, dialog.id) { articles?.find { it.id == dialog.id } }
 
-    currentDialog?.let { dialog ->
-        when (dialog) {
-            is Dialog.Details -> {
-                val article = remember(articles, dialog.id) { articles?.find { it.id == dialog.id } }
-
-                LaunchedEffect(article == null) {
-                    if (article == null) {
-                        currentDialog = null
-                    }
-                }
-
-                if (article != null) {
-                    DetailsDialog(
-                        article = article,
-                        onDismiss = { currentDialog = null },
-                        onDownloadClicked = {
-                            onNavigateToAddTorrent(article.torrentUrl)
-                            viewModel.markAsRead(article.path, article.id, false)
-                            currentDialog = null
-                        },
-                        onMarkAsRead = {
-                            viewModel.markAsRead(article.path, article.id)
-                            currentDialog = null
-                        },
-                    )
+            LaunchedEffect(article == null) {
+                if (article == null) {
+                    currentDialog = null
                 }
             }
+
+            if (article != null) {
+                DetailsDialog(
+                    article = article,
+                    onDismiss = { currentDialog = null },
+                    onDownloadClicked = {
+                        onNavigateToAddTorrent(article.torrentUrl)
+                        viewModel.markAsRead(article.path, article.id, false)
+                        currentDialog = null
+                    },
+                    onMarkAsRead = {
+                        viewModel.markAsRead(article.path, article.id)
+                        currentDialog = null
+                    },
+                )
+            }
         }
+        else -> {}
     }
 
     EventEffect(viewModel.eventFlow) { event ->

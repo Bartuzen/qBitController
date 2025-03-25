@@ -75,10 +75,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -109,6 +107,7 @@ import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -186,12 +185,7 @@ private fun SearchStartScreen(
     var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var selectedCategoryIndex by rememberSaveable { mutableIntStateOf(0) }
     var selectedPluginOption by rememberSaveable { mutableStateOf(PluginSelection.Enabled) }
-    val selectedPlugins = rememberSaveable(
-        saver = listSaver(
-            save = { it.toList() },
-            restore = { it.toMutableStateList() },
-        ),
-    ) { mutableStateListOf<String>() }
+    val selectedPlugins = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
