@@ -80,6 +80,7 @@ fun AppBarActions(
                 }
             },
             state = rememberTooltipState(),
+            focusable = false,
         ) {
             IconButton(
                 onClick = item.onClick,
