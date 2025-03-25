@@ -61,28 +61,41 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.DriveFileMove
+import androidx.compose.material.icons.automirrored.filled.Label
+import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.DriveFileMove
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.FlipToBack
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowDown
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowUp
+import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.PowerSettingsNew
 import androidx.compose.material.icons.filled.RssFeed
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Sell
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Sort
 import androidx.compose.material.icons.filled.SyncAlt
 import androidx.compose.material.icons.filled.TravelExplore
+import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Cached
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -1123,6 +1136,7 @@ fun TorrentListScreen(
                             listOf(
                                 ActionMenuItem(
                                     title = context.getString(R.string.main_action_settings),
+                                    icon = Icons.Filled.Settings,
                                     onClick = {
                                         val intent = Intent(context, SettingsActivity::class.java)
                                         context.startActivity(intent)
@@ -1131,6 +1145,7 @@ fun TorrentListScreen(
                                 ),
                                 ActionMenuItem(
                                     title = context.getString(R.string.main_action_about),
+                                    icon = Icons.Filled.Info,
                                     onClick = {
                                         currentDialog = Dialog.About
                                     },
@@ -2304,6 +2319,7 @@ private fun TopBar(
                         ),
                         ActionMenuItem(
                             title = context.getString(R.string.torrent_list_action_statistics),
+                            icon = Icons.Outlined.Analytics,
                             onClick = {
                                 onDialogOpen(Dialog.Statistics)
                             },
@@ -2312,6 +2328,7 @@ private fun TopBar(
                         ),
                         ActionMenuItem(
                             title = context.getString(R.string.torrent_list_action_execution_log),
+                            icon = Icons.Filled.Description,
                             onClick = {
                                 val intent = Intent(context, LogActivity::class.java).apply {
                                     putExtra(LogActivity.Extras.SERVER_ID, updatedServerId)
@@ -2322,6 +2339,7 @@ private fun TopBar(
                         ),
                         ActionMenuItem(
                             title = context.getString(R.string.torrent_list_action_shutdown),
+                            icon = Icons.Filled.PowerSettingsNew,
                             onClick = {
                                 onDialogOpen(Dialog.Shutdown)
                             },
@@ -2329,6 +2347,7 @@ private fun TopBar(
                         ),
                         ActionMenuItem(
                             title = context.getString(R.string.torrent_list_action_sort),
+                            icon = Icons.AutoMirrored.Filled.Sort,
                             onClick = {
                                 showSortMenu = true
                             },
@@ -2337,6 +2356,7 @@ private fun TopBar(
                         ),
                         ActionMenuItem(
                             title = context.getString(R.string.main_action_settings),
+                            icon = Icons.Filled.Settings,
                             onClick = {
                                 val intent = Intent(context, SettingsActivity::class.java)
                                 context.startActivity(intent)
@@ -2345,6 +2365,7 @@ private fun TopBar(
                         ),
                         ActionMenuItem(
                             title = context.getString(R.string.main_action_about),
+                            icon = Icons.Filled.Info,
                             onClick = {
                                 onDialogOpen(Dialog.About)
                             },
@@ -2621,6 +2642,7 @@ private fun TopBarSelection(
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.torrent_list_action_set_location),
+                        icon = Icons.AutoMirrored.Filled.DriveFileMove,
                         showAsAction = false,
                         onClick = {
                             onSetTorrentsLocation()
@@ -2628,6 +2650,7 @@ private fun TopBarSelection(
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.torrent_list_action_set_category),
+                        icon = Icons.AutoMirrored.Filled.Label,
                         showAsAction = false,
                         onClick = {
                             onSetTorrentsCategory()
@@ -2635,6 +2658,7 @@ private fun TopBarSelection(
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.action_select_all),
+                        icon = Icons.Filled.SelectAll,
                         showAsAction = false,
                         onClick = onClick@{
                             val newTorrents = torrents
@@ -2646,6 +2670,7 @@ private fun TopBarSelection(
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.action_select_inverse),
+                        icon = Icons.Filled.FlipToBack,
                         showAsAction = false,
                         onClick = onClick@{
                             val newTorrents = torrents

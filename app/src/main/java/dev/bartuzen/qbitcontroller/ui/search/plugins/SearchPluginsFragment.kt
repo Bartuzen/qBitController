@@ -37,7 +37,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Undo
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.rounded.Extension
@@ -259,13 +261,15 @@ private fun SearchPluginsScreen(
                             ),
                             ActionMenuItem(
                                 title = context.getString(R.string.search_plugins_action_install_plugins),
+                                icon = Icons.Filled.Add,
                                 onClick = { currentDialog = Dialog.InstallPlugin },
-                                showAsAction = false,
+                                showAsAction = true,
                             ),
                             ActionMenuItem(
                                 title = context.getString(R.string.search_plugins_action_update_plugins),
+                                icon = Icons.Filled.Update,
                                 onClick = { viewModel.updateAllPlugins() },
-                                showAsAction = false,
+                                showAsAction = true,
                             ),
                         )
                     }

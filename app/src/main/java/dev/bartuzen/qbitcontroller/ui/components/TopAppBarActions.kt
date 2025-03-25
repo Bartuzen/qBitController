@@ -31,11 +31,10 @@ data class ActionMenuItem(
     val title: String,
     val onClick: () -> Unit,
     val showAsAction: Boolean,
-    val icon: ImageVector? = null,
+    val icon: ImageVector?,
     val isEnabled: Boolean = true,
     val isVisible: Boolean = true,
     val trailingIcon: ImageVector? = null,
-    val leadingIcon: ImageVector? = null,
     val dropdownMenu: (@Composable () -> Unit)? = null,
 )
 
@@ -139,10 +138,10 @@ fun AppBarActions(
                         text = {
                             Text(item.title)
                         },
-                        leadingIcon = if (item.leadingIcon != null) {
+                        leadingIcon = if (item.icon != null) {
                             @Composable {
                                 Icon(
-                                    imageVector = item.leadingIcon,
+                                    imageVector = item.icon,
                                     contentDescription = null,
                                 )
                             }
