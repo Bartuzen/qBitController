@@ -231,7 +231,7 @@
     <string name="search_result_filter_size">大小</string>
     <string name="search_result_filter_max">最大</string>
     <string name="search_result_filter_min">最小</string>
-    <string name="search_result_leechers">下載使用者：%1$s</string>
+    <string name="search_result_leechers">下載使用者</string>
     <string name="search_result_action_sort_name">名稱</string>
     <string name="search_result_action_sort_size">大小</string>
     <string name="search_plugins_save_success">外掛程式儲存成功。</string>
@@ -608,7 +608,7 @@
     <string name="rss_rule_category">分類</string>
     <string name="rss_rule_torrent_content_layout">Torrent 內容佈局</string>
     <string name="search_title">搜尋</string>
-    <string name="search_result_seeders">做種使用者：%1$s</string>
+    <string name="search_result_seeders">做種使用者</string>
     <string name="search_plugins">外掛程式</string>
     <string name="search_result_action_sort_leechers">下載者</string>
     <string name="search_result_action_stop_search">停止搜尋</string>
@@ -616,4 +616,12 @@
     <string name="search_result_action_sort_reverse">降序</string>
     <string name="search_result_title">搜尋結果</string>
     <string name="search_start_plugins">外掛程式</string>
+    <string name="search_result_details">Torrent 詳細資料</string>
+    <string name="rss_details">Torrent 詳細資料</string>
+    <string name="rss_description">描述</string>
+    <string name="rss_rule_item_enabled">啟用</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="other">%1$d Feed</item>
+    </plurals>
+    <string name="rss_rule_item_disabled">禁用</string>
 </resources>
