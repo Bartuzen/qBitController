@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,9 +55,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -146,12 +146,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
@@ -165,7 +165,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -207,6 +206,7 @@ import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
+import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.EmptyListMessage
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
@@ -219,6 +219,7 @@ import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
+import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.adaptiveIconPainterResource
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
@@ -229,12 +230,14 @@ import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
-import kotlinx.coroutines.delay
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import java.util.SortedMap
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -261,8 +264,9 @@ fun TorrentListScreen(
     val selectedTag by viewModel.selectedTag.collectAsStateWithLifecycle()
     val selectedTracker by viewModel.selectedTracker.collectAsStateWithLifecycle()
 
-    var isSearchMode by remember { mutableStateOf(false) }
-    val selectedTorrents = remember { mutableStateListOf<String>() }
+    var isSearchMode by rememberSaveable { mutableStateOf(false) }
+    val selectedTorrents = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
+    var filterQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
 
     val scope = rememberCoroutineScope()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -279,9 +283,7 @@ fun TorrentListScreen(
     }
 
     LaunchedEffect(torrents) {
-        val removedItems = selectedTorrents
-            .filter { hash -> torrents?.find { it.hash == hash } == null }
-        selectedTorrents.removeAll(removedItems)
+        selectedTorrents.removeAll { hash -> torrents?.none { it.hash == hash } != false }
     }
 
     EventEffect(viewModel.eventFlow) { event ->
@@ -302,7 +304,7 @@ fun TorrentListScreen(
                 }
             }
 
-            TorrentListViewModel.Event.SeverChanged -> {
+            TorrentListViewModel.Event.ServerChanged -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 isSearchMode = false
                 selectedTorrents.clear()
@@ -333,7 +335,6 @@ fun TorrentListScreen(
                         ),
                     )
                 }
-                viewModel.loadMainData()
             }
 
             is TorrentListViewModel.Event.TorrentsPaused -> {
@@ -346,11 +347,6 @@ fun TorrentListScreen(
                             event.count,
                         ),
                     )
-                }
-
-                launch {
-                    delay(1000)
-                    viewModel.loadMainData()
                 }
             }
 
@@ -365,11 +361,6 @@ fun TorrentListScreen(
                         ),
                     )
                 }
-
-                launch {
-                    delay(1000)
-                    viewModel.loadMainData()
-                }
             }
 
             is TorrentListViewModel.Event.CategoryDeleted -> {
@@ -379,7 +370,6 @@ fun TorrentListScreen(
                         context.getString(R.string.torrent_list_delete_category_success, event.name),
                     )
                 }
-                viewModel.loadMainData()
             }
 
             is TorrentListViewModel.Event.TagDeleted -> {
@@ -389,7 +379,6 @@ fun TorrentListScreen(
                         context.getString(R.string.torrent_list_delete_tag_success, event.name),
                     )
                 }
-                viewModel.loadMainData()
             }
 
             TorrentListViewModel.Event.TorrentsPriorityDecreased -> {
@@ -398,11 +387,6 @@ fun TorrentListScreen(
                     snackbarHostState.showSnackbar(
                         context.getString(R.string.torrent_list_priority_decrease_success),
                     )
-                }
-
-                launch {
-                    delay(1000)
-                    viewModel.loadMainData()
                 }
             }
 
@@ -413,11 +397,6 @@ fun TorrentListScreen(
                         context.getString(R.string.torrent_list_priority_increase_success),
                     )
                 }
-
-                launch {
-                    delay(1000)
-                    viewModel.loadMainData()
-                }
             }
 
             TorrentListViewModel.Event.TorrentsPriorityMaximized -> {
@@ -426,11 +405,6 @@ fun TorrentListScreen(
                     snackbarHostState.showSnackbar(
                         context.getString(R.string.torrent_list_priority_maximize_success),
                     )
-                }
-
-                launch {
-                    delay(1000)
-                    viewModel.loadMainData()
                 }
             }
 
@@ -441,11 +415,6 @@ fun TorrentListScreen(
                         context.getString(R.string.torrent_list_priority_minimize_success),
                     )
                 }
-
-                launch {
-                    delay(1000)
-                    viewModel.loadMainData()
-                }
             }
 
             TorrentListViewModel.Event.LocationUpdated -> {
@@ -453,8 +422,6 @@ fun TorrentListScreen(
                 scope.launch {
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_location_update_success))
                 }
-
-                viewModel.loadMainData()
             }
 
             TorrentListViewModel.Event.CategoryCreated -> {
@@ -462,7 +429,6 @@ fun TorrentListScreen(
                 scope.launch {
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_list_create_category_success))
                 }
-                viewModel.loadMainData()
             }
 
             TorrentListViewModel.Event.CategoryEdited -> {
@@ -470,7 +436,6 @@ fun TorrentListScreen(
                 scope.launch {
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_list_edit_category_success))
                 }
-                viewModel.loadMainData()
             }
 
             TorrentListViewModel.Event.TagCreated -> {
@@ -478,7 +443,6 @@ fun TorrentListScreen(
                 scope.launch {
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_list_create_tag_success))
                 }
-                viewModel.loadMainData()
             }
 
             is TorrentListViewModel.Event.SpeedLimitsToggled -> {
@@ -494,7 +458,6 @@ fun TorrentListScreen(
                         )
                     }
                 }
-                viewModel.loadMainData()
             }
 
             TorrentListViewModel.Event.SpeedLimitsUpdated -> {
@@ -502,7 +465,6 @@ fun TorrentListScreen(
                 scope.launch {
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_speed_update_success))
                 }
-                viewModel.loadMainData()
             }
 
             TorrentListViewModel.Event.Shutdown -> {
@@ -517,13 +479,13 @@ fun TorrentListScreen(
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_category_update_success))
                 }
-                viewModel.loadMainData()
             }
         }
     }
 
     BackHandler(enabled = isSearchMode) {
         isSearchMode = false
+        filterQuery = TextFieldValue()
         viewModel.setSearchQuery("")
     }
 
@@ -534,14 +496,18 @@ fun TorrentListScreen(
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
-        LaunchedEffect(Unit) {
+        PersistentLaunchedEffect {
             if (servers.isNotEmpty() && permissionState.status.shouldShowRationale) {
                 permissionState.launchPermissionRequest()
             }
         }
     }
 
-    var currentDialog by remember { mutableStateOf<Dialog?>(null) }
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
+    PersistentLaunchedEffect(currentServer) {
+        currentDialog = null
+    }
+
     when (val dialog = currentDialog) {
         Dialog.CreateCategory -> {
             CreateEditCategoryDialog(
@@ -550,20 +516,23 @@ fun TorrentListScreen(
                 },
                 onConfirm = { name, savePath, downloadPathEnabled, downloadPath ->
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.createCategory(
-                            serverId = serverId,
-                            name = name,
-                            savePath = savePath,
-                            downloadPathEnabled = downloadPathEnabled,
-                            downloadPath = downloadPath,
-                        )
-                    }
+                    viewModel.createCategory(
+                        name = name,
+                        savePath = savePath,
+                        downloadPathEnabled = downloadPathEnabled,
+                        downloadPath = downloadPath,
+                    )
                 },
             )
         }
 
         is Dialog.CreateSubcategory -> {
+            LaunchedEffect(mainData?.categories) {
+                if (mainData?.categories?.find { dialog.parent == it.name } == null) {
+                    currentDialog = null
+                }
+            }
+
             CreateEditCategoryDialog(
                 isSubcategory = true,
                 onDismiss = {
@@ -571,20 +540,23 @@ fun TorrentListScreen(
                 },
                 onConfirm = { name, savePath, downloadPathEnabled, downloadPath ->
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.createCategory(
-                            serverId = serverId,
-                            name = "${dialog.parent}/$name",
-                            savePath = savePath,
-                            downloadPathEnabled = downloadPathEnabled,
-                            downloadPath = downloadPath,
-                        )
-                    }
+                    viewModel.createCategory(
+                        name = "${dialog.parent}/$name",
+                        savePath = savePath,
+                        downloadPathEnabled = downloadPathEnabled,
+                        downloadPath = downloadPath,
+                    )
                 },
             )
         }
 
         is Dialog.EditCategory -> {
+            LaunchedEffect(mainData?.categories) {
+                if (mainData?.categories?.find { dialog.category.name == it.name } == null) {
+                    currentDialog = null
+                }
+            }
+
             CreateEditCategoryDialog(
                 category = dialog.category,
                 onDismiss = {
@@ -592,20 +564,23 @@ fun TorrentListScreen(
                 },
                 onConfirm = { name, savePath, downloadPathEnabled, downloadPath ->
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.editCategory(
-                            serverId = serverId,
-                            name = name,
-                            savePath = savePath,
-                            downloadPathEnabled = downloadPathEnabled,
-                            downloadPath = downloadPath,
-                        )
-                    }
+                    viewModel.editCategory(
+                        name = name,
+                        savePath = savePath,
+                        downloadPathEnabled = downloadPathEnabled,
+                        downloadPath = downloadPath,
+                    )
                 },
             )
         }
 
         Dialog.Statistics -> {
+            LaunchedEffect(mainData == null) {
+                if (mainData == null) {
+                    currentDialog = null
+                }
+            }
+
             if (mainData != null) {
                 StatisticsDialog(
                     state = mainData.serverState,
@@ -613,12 +588,16 @@ fun TorrentListScreen(
                         currentDialog = null
                     },
                 )
-            } else {
-                currentDialog = null
             }
         }
 
         is Dialog.DeleteTag -> {
+            LaunchedEffect(mainData?.tags) {
+                if (mainData?.tags?.find { dialog.tag == it } == null) {
+                    currentDialog = null
+                }
+            }
+
             DeleteTagDialog(
                 tag = dialog.tag,
                 onDismiss = {
@@ -626,14 +605,18 @@ fun TorrentListScreen(
                 },
                 onConfirm = {
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.deleteTag(serverId, dialog.tag)
-                    }
+                    viewModel.deleteTag(dialog.tag)
                 },
             )
         }
 
         is Dialog.DeleteCategory -> {
+            LaunchedEffect(mainData?.categories) {
+                if (mainData?.categories?.find { dialog.category == it.name } == null) {
+                    currentDialog = null
+                }
+            }
+
             DeleteCategoryDialog(
                 category = dialog.category,
                 onDismiss = {
@@ -641,9 +624,7 @@ fun TorrentListScreen(
                 },
                 onConfirm = {
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.deleteCategory(serverId, dialog.category)
-                    }
+                    viewModel.deleteCategory(dialog.category)
                 },
             )
         }
@@ -655,9 +636,7 @@ fun TorrentListScreen(
                 },
                 onConfirm = { tags ->
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.createTags(serverId, tags)
-                    }
+                    viewModel.createTags(tags)
                 },
             )
         }
@@ -669,9 +648,7 @@ fun TorrentListScreen(
                 },
                 onConfirm = {
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.shutdown(serverId)
-                    }
+                    viewModel.shutdown()
                 },
             )
         }
@@ -685,6 +662,12 @@ fun TorrentListScreen(
         }
 
         is Dialog.DeleteTorrent -> {
+            LaunchedEffect(mainData?.torrents) {
+                if (mainData?.torrents?.find { dialog.hash == it.hash } == null) {
+                    currentDialog = null
+                }
+            }
+
             DeleteTorrentsDialog(
                 count = 1,
                 onDismiss = {
@@ -692,9 +675,7 @@ fun TorrentListScreen(
                 },
                 onConfirm = { deleteFiles ->
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.deleteTorrents(serverId, listOf(dialog.hash), deleteFiles)
-                    }
+                    viewModel.deleteTorrents(listOf(dialog.hash), deleteFiles)
                 },
             )
         }
@@ -713,10 +694,7 @@ fun TorrentListScreen(
                 },
                 onConfirm = { deleteFiles ->
                     currentDialog = null
-                    if (serverId != null) {
-                        viewModel.deleteTorrents(serverId, selectedTorrents.toList(), deleteFiles)
-                    }
-
+                    viewModel.deleteTorrents(selectedTorrents.toList(), deleteFiles)
                     selectedTorrents.clear()
                 },
             )
@@ -745,15 +723,10 @@ fun TorrentListScreen(
                     },
                     onConfirm = { location ->
                         currentDialog = null
-                        if (serverId != null) {
-                            viewModel.setLocation(serverId, selectedTorrents.toList(), location)
-                        }
-
+                        viewModel.setLocation(selectedTorrents.toList(), location)
                         selectedTorrents.clear()
                     },
                 )
-            } else {
-                currentDialog = null
             }
         }
 
@@ -781,19 +754,20 @@ fun TorrentListScreen(
                     },
                     onConfirm = { category ->
                         currentDialog = null
-                        if (serverId != null) {
-                            viewModel.setCategory(serverId, selectedTorrents.toList(), category)
-                        }
-
+                        viewModel.setCategory(selectedTorrents.toList(), category)
                         selectedTorrents.clear()
                     },
                 )
-            } else {
-                currentDialog = null
             }
         }
 
         Dialog.SpeedLimits -> {
+            LaunchedEffect(mainData == null) {
+                if (mainData == null) {
+                    currentDialog = null
+                }
+            }
+
             if (mainData != null) {
                 SpeedLimitsDialog(
                     currentAlternativeLimits = mainData.serverState.useAlternativeSpeedLimits,
@@ -804,19 +778,13 @@ fun TorrentListScreen(
                     },
                     onToggleAlternativeLimits = {
                         currentDialog = null
-                        if (serverId != null) {
-                            viewModel.toggleSpeedLimitsMode(serverId, mainData.serverState.useAlternativeSpeedLimits)
-                        }
+                        viewModel.toggleSpeedLimitsMode(mainData.serverState.useAlternativeSpeedLimits)
                     },
                     onSetSpeedLimits = { uploadLimit, downloadLimit ->
                         currentDialog = null
-                        if (serverId != null) {
-                            viewModel.setSpeedLimits(serverId, downloadLimit, uploadLimit)
-                        }
+                        viewModel.setSpeedLimits(downloadLimit, uploadLimit)
                     },
                 )
-            } else {
-                currentDialog = null
             }
         }
 
@@ -890,13 +858,17 @@ fun TorrentListScreen(
                         mainData = mainData,
                         isSearchMode = isSearchMode,
                         searchQuery = searchQuery,
+                        filterQuery = filterQuery,
                         currentSorting = currentSorting,
                         isReverseSorting = isReverseSorting,
                         snackbarHostState = snackbarHostState,
                         canFocusNow = drawerState.isClosed && selectedTorrents.isEmpty(),
                         onLoadMainData = { viewModel.loadMainData() },
                         onOpenDrawer = { scope.launch { drawerState.open() } },
-                        onSearchQueryChange = { viewModel.setSearchQuery(it) },
+                        onSearchQueryChange = {
+                            filterQuery = it
+                            viewModel.setSearchQuery(it.text)
+                        },
                         onSearchModeChange = { isSearchMode = it },
                         onTorrentSortChange = { viewModel.setTorrentSort(it) },
                         onReverseSortingChange = { viewModel.changeReverseSorting() },
@@ -913,21 +885,13 @@ fun TorrentListScreen(
                             selectedTorrents = selectedTorrents,
                             canFocusNow = drawerState.isClosed,
                             isQueueingEnabled = mainData?.serverState?.isQueueingEnabled == true,
-                            onPauseTorrents = { viewModel.pauseTorrents(serverId, selectedTorrents.toList()) },
-                            onResumeTorrents = { viewModel.resumeTorrents(serverId, selectedTorrents.toList()) },
+                            onPauseTorrents = { viewModel.pauseTorrents(selectedTorrents.toList()) },
+                            onResumeTorrents = { viewModel.resumeTorrents(selectedTorrents.toList()) },
                             onDeleteTorrents = { currentDialog = Dialog.DeleteSelectedTorrents },
-                            onMaximizeTorrentsPriority = {
-                                viewModel.maximizeTorrentPriority(serverId, selectedTorrents.toList())
-                            },
-                            onIncreaseTorrentsPriority = {
-                                viewModel.increaseTorrentPriority(serverId, selectedTorrents.toList())
-                            },
-                            onDecreaseTorrentsPriority = {
-                                viewModel.decreaseTorrentPriority(serverId, selectedTorrents.toList())
-                            },
-                            onMinimizeTorrentsPriority = {
-                                viewModel.minimizeTorrentPriority(serverId, selectedTorrents.toList())
-                            },
+                            onMaximizeTorrentsPriority = { viewModel.maximizeTorrentPriority(selectedTorrents.toList()) },
+                            onIncreaseTorrentsPriority = { viewModel.increaseTorrentPriority(selectedTorrents.toList()) },
+                            onDecreaseTorrentsPriority = { viewModel.decreaseTorrentPriority(selectedTorrents.toList()) },
+                            onMinimizeTorrentsPriority = { viewModel.minimizeTorrentPriority(selectedTorrents.toList()) },
                             onSetTorrentsLocation = { currentDialog = Dialog.SetSelectedTorrentsLocation },
                             onSetTorrentsCategory = { currentDialog = Dialog.SetSelectedTorrentsCategory },
                         )
@@ -938,7 +902,11 @@ fun TorrentListScreen(
                 PullToRefreshBox(
                     isRefreshing = isRefreshing,
                     onRefresh = { viewModel.refreshMainData() },
-                    modifier = Modifier.padding(innerPadding),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding)
+                        .imePadding(),
                 ) {
                     Column {
                         AnimatedNullableVisibility(
@@ -1034,8 +1002,8 @@ fun TorrentListScreen(
                                                 canFocus = drawerState.isClosed
                                             },
                                         swipeEnabled = swipeEnabled,
-                                        onPauseTorrent = { viewModel.pauseTorrents(serverId, listOf(torrent.hash)) },
-                                        onResumeTorrent = { viewModel.resumeTorrents(serverId, listOf(torrent.hash)) },
+                                        onPauseTorrent = { viewModel.pauseTorrents(listOf(torrent.hash)) },
+                                        onResumeTorrent = { viewModel.resumeTorrents(listOf(torrent.hash)) },
                                         onDeleteTorrent = { currentDialog = Dialog.DeleteTorrent(torrent.hash) },
                                     )
                                 }
@@ -1068,9 +1036,7 @@ fun TorrentListScreen(
                             AnimatedContent(
                                 emptyListState,
                                 contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .imePadding(),
+                                modifier = Modifier.fillMaxSize(),
                             ) { emptyListState ->
                                 when (emptyListState) {
                                     1 -> {
@@ -1166,6 +1132,7 @@ fun TorrentListScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding)
                     .imePadding(),
             ) {
                 EmptyListMessage(
@@ -1514,7 +1481,7 @@ private fun DrawerContent(
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
-                var showMenu by remember { mutableStateOf(false) }
+                var showMenu by rememberSaveable { mutableStateOf(false) }
 
                 DrawerItem(
                     icon = icon,
@@ -1605,7 +1572,7 @@ private fun DrawerContent(
         }
 
         item {
-            var showMenu by remember { mutableStateOf(false) }
+            var showMenu by rememberSaveable { mutableStateOf(false) }
             AnimatedVisibility(
                 visible = !areCategoriesCollapsed,
                 enter = fadeIn() + expandVertically(),
@@ -1665,7 +1632,7 @@ private fun DrawerContent(
                 enter = fadeIn() + expandVertically(),
                 exit = fadeOut() + shrinkVertically(),
             ) {
-                var showMenu by remember { mutableStateOf(false) }
+                var showMenu by rememberSaveable { mutableStateOf(false) }
 
                 DrawerItem(
                     icon = Icons.Filled.Folder,
@@ -1826,7 +1793,7 @@ private fun DrawerContent(
         }
 
         items(counts?.tagMap ?: emptyList()) { (tag, count) ->
-            var showMenu by remember { mutableStateOf(false) }
+            var showMenu by rememberSaveable { mutableStateOf(false) }
 
             AnimatedVisibility(
                 visible = !areTagsCollapsed,
@@ -2102,13 +2069,14 @@ private fun TopBar(
     mainData: MainData?,
     isSearchMode: Boolean,
     searchQuery: String,
+    filterQuery: TextFieldValue,
     currentSorting: TorrentSort,
     isReverseSorting: Boolean,
     snackbarHostState: SnackbarHostState,
     canFocusNow: Boolean,
     onLoadMainData: () -> Unit,
     onOpenDrawer: () -> Unit,
-    onSearchQueryChange: (newQuery: String) -> Unit,
+    onSearchQueryChange: (newQuery: TextFieldValue) -> Unit,
     onSearchModeChange: (newValue: Boolean) -> Unit,
     onTorrentSortChange: (newSort: TorrentSort) -> Unit,
     onReverseSortingChange: () -> Unit,
@@ -2121,13 +2089,6 @@ private fun TopBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            val focusRequester = remember { FocusRequester() }
-            LaunchedEffect(isSearchMode) {
-                if (isSearchMode) {
-                    focusRequester.requestFocus()
-                }
-            }
-
             if (!isSearchMode) {
                 Column {
                     Text(
@@ -2151,8 +2112,13 @@ private fun TopBar(
                     }
                 }
             } else {
+                val focusRequester = remember { FocusRequester() }
+                PersistentLaunchedEffect {
+                    focusRequester.requestFocus()
+                }
+
                 BasicTextField(
-                    value = searchQuery,
+                    value = filterQuery,
                     onValueChange = { newQuery ->
                         onSearchQueryChange(newQuery)
                     },
@@ -2171,7 +2137,7 @@ private fun TopBar(
                     singleLine = true,
                     decorationBox = { innerTextField ->
                         TextFieldDefaults.DecorationBox(
-                            value = searchQuery,
+                            value = filterQuery.text,
                             enabled = true,
                             innerTextField = innerTextField,
                             interactionSource = remember { MutableInteractionSource() },
@@ -2216,7 +2182,7 @@ private fun TopBar(
                 IconButton(
                     onClick = {
                         onSearchModeChange(false)
-                        onSearchQueryChange("")
+                        onSearchQueryChange(TextFieldValue())
                     },
                     modifier = Modifier.focusProperties {
                         canFocus = canFocusNow
@@ -2230,7 +2196,7 @@ private fun TopBar(
             }
         },
         actions = {
-            var showSortMenu by remember { mutableStateOf(false) }
+            var showSortMenu by rememberSaveable { mutableStateOf(false) }
             val updatedServerId by rememberUpdatedState(serverId)
             val addTorrentLauncher =
                 rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -2264,9 +2230,7 @@ private fun TopBar(
                         ActionMenuItem(
                             title = null,
                             icon = Icons.Filled.Close,
-                            onClick = {
-                                onSearchQueryChange("")
-                            },
+                            onClick = { onSearchQueryChange(TextFieldValue()) },
                             isHidden = searchQuery.isEmpty(),
                             showAsAction = true,
                         )
@@ -2472,7 +2436,7 @@ private fun TopBarSelection(
     TopAppBar(
         modifier = modifier,
         title = {
-            var selectedSize by remember { mutableIntStateOf(0) }
+            var selectedSize by rememberSaveable { mutableIntStateOf(0) }
 
             LaunchedEffect(selectedTorrents.size) {
                 if (selectedTorrents.isNotEmpty()) {
@@ -2509,7 +2473,7 @@ private fun TopBarSelection(
             }
         },
         actions = {
-            var showPriorityMenu by remember { mutableStateOf(false) }
+            var showPriorityMenu by rememberSaveable { mutableStateOf(false) }
 
             val actionMenuItems = remember(isQueueingEnabled) {
                 listOf(
@@ -2681,20 +2645,48 @@ private fun TopBarSelection(
     )
 }
 
+@Serializable
 private sealed class Dialog {
+    @Serializable
     data object CreateCategory : Dialog()
+
+    @Serializable
     data class CreateSubcategory(val parent: String) : Dialog()
+
+    @Serializable
     data class EditCategory(val category: Category) : Dialog()
+
+    @Serializable
     data class DeleteCategory(val category: String) : Dialog()
+
+    @Serializable
     data object CreateTag : Dialog()
+
+    @Serializable
     data class DeleteTag(val tag: String) : Dialog()
+
+    @Serializable
     data class DeleteTorrent(val hash: String) : Dialog()
+
+    @Serializable
     data object DeleteSelectedTorrents : Dialog()
+
+    @Serializable
     data object SetSelectedTorrentsLocation : Dialog()
+
+    @Serializable
     data object SetSelectedTorrentsCategory : Dialog()
+
+    @Serializable
     data object SpeedLimits : Dialog()
+
+    @Serializable
     data object Statistics : Dialog()
+
+    @Serializable
     data object Shutdown : Dialog()
+
+    @Serializable
     data object About : Dialog()
 }
 
@@ -2707,9 +2699,11 @@ private fun CreateEditCategoryDialog(
     category: Category? = null,
     isSubcategory: Boolean = false,
 ) {
-    var name by remember { mutableStateOf(category?.name ?: "") }
-    var savePath by remember { mutableStateOf(category?.savePath ?: "") }
-    var downloadPathEnabled by remember {
+    var name by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(category?.name ?: "")) }
+    var savePath by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(category?.savePath ?: ""))
+    }
+    var downloadPathEnabled by rememberSaveable {
         mutableStateOf(
             when (category?.downloadPath) {
                 Category.DownloadPath.Default -> null
@@ -2719,25 +2713,15 @@ private fun CreateEditCategoryDialog(
             },
         )
     }
-    var downloadPath by remember {
-        mutableStateOf(
-            (category?.downloadPath as? Category.DownloadPath.Yes)?.path ?: "",
-        )
+    var downloadPath by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue((category?.downloadPath as? Category.DownloadPath.Yes)?.path ?: ""))
     }
 
-    var isNameError by remember { mutableStateOf(false) }
-
-    val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        if (category == null) {
-            focusRequester.requestFocus()
-        }
-    }
+    var nameError by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Dialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        textHorizontalPadding = 16.dp,
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(text = stringResource(R.string.dialog_cancel))
@@ -2746,10 +2730,10 @@ private fun CreateEditCategoryDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    if (name.isNotBlank()) {
-                        onConfirm(name, savePath, downloadPathEnabled, downloadPath)
+                    if (name.text.isNotBlank()) {
+                        onConfirm(name.text, savePath.text, downloadPathEnabled, downloadPath.text)
                     } else {
-                        isNameError = true
+                        nameError = R.string.torrent_list_create_category_name_cannot_be_empty
                     }
                 },
             ) {
@@ -2768,59 +2752,56 @@ private fun CreateEditCategoryDialog(
             )
         },
         text = {
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                val focusRequester = remember { FocusRequester() }
+                PersistentLaunchedEffect {
+                    if (category == null) {
+                        focusRequester.requestFocus()
+                    }
+                }
+
                 OutlinedTextField(
                     value = name,
                     onValueChange = {
                         name = it
-                        isNameError = false
+                        nameError = null
                     },
                     readOnly = category != null,
                     label = {
-                        Text(text = stringResource(R.string.torrent_list_create_category_hint))
+                        Text(
+                            text = stringResource(R.string.torrent_list_create_category_hint),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     },
                     singleLine = true,
-                    isError = isNameError,
-                    supportingText = if (isNameError) {
-                        @Composable
-                        {
-                            Text(text = stringResource(R.string.torrent_list_create_category_name_cannot_be_empty))
-                        }
-                    } else {
-                        null
-                    },
-                    trailingIcon = if (isNameError) {
-                        @Composable
-                        {
-                            Icon(
-                                imageVector = Icons.Filled.Error,
-                                contentDescription = null,
-                            )
-                        }
-                    } else {
-                        null
-                    },
+                    isError = nameError != null,
+                    supportingText = nameError?.let { { Text(text = stringResource(it)) } },
+                    trailingIcon = nameError?.let { { Icon(imageVector = Icons.Filled.Error, contentDescription = null) } },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+
                 OutlinedTextField(
                     value = savePath,
                     onValueChange = {
                         savePath = it
                     },
                     label = {
-                        Text(text = stringResource(R.string.torrent_list_create_category_save_path_hint))
+                        Text(
+                            text = stringResource(R.string.torrent_list_create_category_save_path_hint),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     modifier = Modifier.fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
-                var expanded by remember { mutableStateOf(false) }
+                var expanded by rememberSaveable { mutableStateOf(false) }
                 ExposedDropdownMenuBox(
                     expanded = expanded,
                     onExpandedChange = {
@@ -2840,7 +2821,11 @@ private fun CreateEditCategoryDialog(
                         readOnly = true,
                         singleLine = true,
                         label = {
-                            Text(text = stringResource(R.string.torrent_list_create_category_enable_download_path_hint))
+                            Text(
+                                text = stringResource(R.string.torrent_list_create_category_enable_download_path_hint),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
                         },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     )
@@ -2887,17 +2872,30 @@ private fun CreateEditCategoryDialog(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+
                 OutlinedTextField(
                     value = downloadPath,
                     onValueChange = {
                         downloadPath = it
                     },
                     label = {
-                        Text(text = stringResource(R.string.torrent_list_create_category_download_path_hint))
+                        Text(
+                            text = stringResource(R.string.torrent_list_create_category_download_path_hint),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
                     },
                     singleLine = true,
                     enabled = downloadPathEnabled == true,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            if (name.text.isNotBlank()) {
+                                onConfirm(name.text, savePath.text, downloadPathEnabled, downloadPath.text)
+                            } else {
+                                nameError = R.string.torrent_list_create_category_name_cannot_be_empty
+                            }
+                        },
+                    ),
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -2942,18 +2940,12 @@ private fun DeleteCategoryDialog(
 
 @Composable
 private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String>) -> Unit, modifier: Modifier = Modifier) {
-    var name by remember { mutableStateOf("") }
-    var isError by remember { mutableStateOf(false) }
-
-    val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
+    var name by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    var nameError by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Dialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        textHorizontalPadding = 16.dp,
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(text = stringResource(R.string.dialog_cancel))
@@ -2962,10 +2954,10 @@ private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String
         confirmButton = {
             TextButton(
                 onClick = {
-                    if (name.isNotBlank()) {
-                        onConfirm(name.split("\n"))
+                    if (name.text.isNotBlank()) {
+                        onConfirm(name.text.split("\n"))
                     } else {
-                        isError = true
+                        nameError = R.string.torrent_list_create_tag_name_cannot_be_empty
                     }
                 },
             ) {
@@ -2976,35 +2968,43 @@ private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String
             Text(text = stringResource(R.string.torrent_list_create_tag))
         },
         text = {
+            val focusRequester = remember { FocusRequester() }
+            PersistentLaunchedEffect {
+                focusRequester.requestFocus()
+            }
+
             OutlinedTextField(
                 value = name,
                 onValueChange = {
                     name = it
-                    isError = false
+                    nameError = null
                 },
                 label = {
-                    Text(text = stringResource(R.string.torrent_list_create_tag_hint))
+                    Text(
+                        text = stringResource(R.string.torrent_list_create_tag_hint),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 },
-                isError = isError,
-                supportingText = if (isError) {
-                    @Composable
-                    {
-                        Text(text = stringResource(R.string.torrent_list_create_tag_name_cannot_be_empty))
-                    }
-                } else {
-                    null
-                },
-                trailingIcon = if (isError) {
-                    @Composable
+                isError = nameError != null,
+                supportingText = nameError?.let { { Text(text = stringResource(it)) } },
+                trailingIcon = nameError?.let {
                     {
                         Icon(
                             imageVector = Icons.Filled.Error,
                             contentDescription = null,
                         )
                     }
-                } else {
-                    null
                 },
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (name.text.isNotBlank()) {
+                            onConfirm(name.text.split("\n"))
+                        } else {
+                            nameError = R.string.torrent_list_create_tag_name_cannot_be_empty
+                        }
+                    },
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
@@ -3050,12 +3050,12 @@ private fun DeleteTorrentsDialog(
     onConfirm: (deleteFiles: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var deleteFiles by remember { mutableStateOf(false) }
+    var deleteFiles by rememberSaveable { mutableStateOf(false) }
 
     Dialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        textHorizontalPadding = 0.dp,
+        textHorizontalPadding = 16.dp,
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(text = stringResource(R.string.dialog_cancel))
@@ -3063,43 +3063,20 @@ private fun DeleteTorrentsDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = {
-                    onConfirm(deleteFiles)
-                },
+                onClick = { onConfirm(deleteFiles) },
             ) {
                 Text(text = stringResource(R.string.dialog_ok))
             }
         },
         title = {
-            Text(pluralStringResource(R.plurals.torrent_list_delete_torrents, count, count))
+            Text(text = pluralStringResource(R.plurals.torrent_list_delete_torrents, count, count))
         },
         text = {
-            Box(
-                Modifier
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(4.dp)),
-            ) {
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .toggleable(
-                            value = deleteFiles,
-                            onValueChange = { deleteFiles = !deleteFiles },
-                            role = Role.Checkbox,
-                        )
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Checkbox(
-                        checked = deleteFiles,
-                        onCheckedChange = null,
-                    )
-                    Text(
-                        text = stringResource(R.string.torrent_delete_files),
-                        modifier = Modifier.padding(start = 8.dp),
-                    )
-                }
-            }
+            CheckboxWithLabel(
+                checked = deleteFiles,
+                onCheckedChange = { deleteFiles = it },
+                label = stringResource(R.string.torrent_delete_files),
+            )
         },
     )
 }
@@ -3111,13 +3088,10 @@ private fun SetTorrentsLocationDialog(
     onConfirm: (location: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var location by remember { mutableStateOf(TextFieldValue(initialLocation ?: "", TextRange(Int.MAX_VALUE))) }
-    var isError by remember { mutableStateOf(false) }
-
-    val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+    var location by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(initialLocation ?: "", TextRange(Int.MAX_VALUE)))
     }
+    var locationError by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Dialog(
         modifier = modifier,
@@ -3133,44 +3107,54 @@ private fun SetTorrentsLocationDialog(
                     if (location.text.isNotBlank()) {
                         onConfirm(location.text)
                     } else {
-                        isError = true
+                        locationError = R.string.torrent_location_cannot_be_blank
                     }
                 },
             ) {
                 Text(text = stringResource(R.string.dialog_ok))
             }
         },
-        title = { Text(text = stringResource(R.string.torrent_list_action_set_category)) },
+        title = { Text(text = stringResource(R.string.torrent_list_action_set_location)) },
         text = {
+            val focusRequester = remember { FocusRequester() }
+            PersistentLaunchedEffect {
+                focusRequester.requestFocus()
+            }
+
             OutlinedTextField(
                 value = location,
                 onValueChange = {
                     location = it
-                    isError = false
+                    locationError = null
                 },
                 singleLine = true,
-                label = { Text(text = stringResource(R.string.torrent_list_set_location_hint)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
-                isError = isError,
-                supportingText = if (isError) {
-                    @Composable
-                    {
-                        Text(text = stringResource(R.string.torrent_location_cannot_be_blank))
-                    }
-                } else {
-                    null
+                label = {
+                    Text(
+                        text = stringResource(R.string.torrent_list_set_location_hint),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 },
-                trailingIcon = if (isError) {
-                    @Composable
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
+                isError = locationError != null,
+                supportingText = locationError?.let { { Text(text = stringResource(it)) } },
+                trailingIcon = locationError?.let {
                     {
                         Icon(
                             imageVector = Icons.Filled.Error,
                             contentDescription = null,
                         )
                     }
-                } else {
-                    null
                 },
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (location.text.isNotBlank()) {
+                            onConfirm(location.text)
+                        } else {
+                            locationError = R.string.torrent_location_cannot_be_blank
+                        }
+                    },
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
@@ -3188,7 +3172,7 @@ private fun SetTorrentsCategoryDialog(
     onConfirm: (category: String?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedCategory by remember { mutableStateOf(initialSelectedCategory) }
+    var selectedCategory by rememberSaveable { mutableStateOf(initialSelectedCategory) }
 
     Dialog(
         modifier = modifier,
@@ -3200,16 +3184,12 @@ private fun SetTorrentsCategoryDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = {
-                    onConfirm(selectedCategory)
-                },
+                onClick = { onConfirm(selectedCategory) },
             ) {
                 Text(text = stringResource(R.string.dialog_ok))
             }
         },
-        title = {
-            Text(text = stringResource(R.string.torrent_list_action_set_category))
-        },
+        title = { Text(text = stringResource(R.string.torrent_list_action_set_category)) },
         text = {
             if (categories.isNotEmpty()) {
                 FlowRow(
@@ -3228,7 +3208,10 @@ private fun SetTorrentsCategoryDialog(
                     }
                 }
             } else {
-                Text(text = stringResource(R.string.torrent_no_categories))
+                Text(
+                    text = stringResource(R.string.torrent_no_categories),
+                    color = MaterialTheme.colorScheme.error,
+                )
             }
         },
     )
@@ -3245,19 +3228,19 @@ private fun SpeedLimitsDialog(
     onSetSpeedLimits: (uploadSpeed: Int, downloadSpeed: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var alternativeLimits by remember { mutableStateOf(currentAlternativeLimits) }
+    var alternativeLimits by rememberSaveable { mutableStateOf(currentAlternativeLimits) }
 
-    var uploadSpeedLimit by remember {
+    var uploadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(currentUploadSpeedLimit.takeIf { it != 0 }?.toString() ?: ""))
     }
-    var uploadSpeedUnit by remember { mutableIntStateOf(0) }
-    var uploadSpeedError by remember { mutableStateOf(false) }
+    var uploadSpeedUnit by rememberSaveable { mutableIntStateOf(0) }
+    var uploadSpeedError by rememberSaveable { mutableStateOf<Int?>(null) }
 
-    var downloadSpeedLimit by remember {
+    var downloadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(currentDownloadSpeedLimit.takeIf { it != 0 }?.toString() ?: ""))
     }
-    var downloadSpeedUnit by remember { mutableIntStateOf(0) }
-    var downloadSpeedError by remember { mutableStateOf(false) }
+    var downloadSpeedUnit by rememberSaveable { mutableIntStateOf(0) }
+    var downloadSpeedError by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Dialog(
         modifier = modifier,
@@ -3305,10 +3288,10 @@ private fun SpeedLimitsDialog(
                         val download = convertSpeedToBytes(downloadSpeedLimit.text, downloadSpeedUnit)
 
                         if (upload == null) {
-                            uploadSpeedError = true
+                            uploadSpeedError = R.string.torrent_add_speed_limit_too_big
                         }
                         if (download == null) {
-                            downloadSpeedError = true
+                            downloadSpeedError = R.string.torrent_add_speed_limit_too_big
                         }
 
                         if (upload != null && download != null) {
@@ -3325,28 +3308,13 @@ private fun SpeedLimitsDialog(
         },
         text = {
             Column {
-                Box(modifier = Modifier.clip(RoundedCornerShape(4.dp))) {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .toggleable(
-                                value = alternativeLimits,
-                                onValueChange = { alternativeLimits = !alternativeLimits },
-                                role = Role.Checkbox,
-                            )
-                            .padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Checkbox(
-                            checked = alternativeLimits,
-                            onCheckedChange = null,
-                        )
-                        Text(
-                            text = stringResource(R.string.torrent_speed_alternative_speed_limits),
-                            modifier = Modifier.padding(start = 8.dp),
-                        )
-                    }
-                }
+                CheckboxWithLabel(
+                    checked = alternativeLimits,
+                    onCheckedChange = { alternativeLimits = it },
+                    label = stringResource(R.string.torrent_speed_alternative_speed_limits),
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
 
                 val unitTextWidth = max(
                     measureTextWidth(stringResource(R.string.size_kibibytes)),
@@ -3360,10 +3328,10 @@ private fun SpeedLimitsDialog(
                 ) {
                     OutlinedTextField(
                         value = uploadSpeedLimit,
-                        onValueChange = { textFieldValue ->
-                            if (textFieldValue.text.all { it.isDigit() }) {
-                                uploadSpeedLimit = textFieldValue
-                                uploadSpeedError = false
+                        onValueChange = {
+                            if (it.text.all { it.isDigit() }) {
+                                uploadSpeedLimit = it
+                                uploadSpeedError = null
                             }
                         },
                         label = {
@@ -3373,27 +3341,20 @@ private fun SpeedLimitsDialog(
                                 overflow = TextOverflow.Ellipsis,
                             )
                         },
-                        supportingText = if (uploadSpeedError) {
-                            @Composable
-                            {
-                                Text(text = stringResource(R.string.torrent_add_speed_limit_too_big))
-                            }
-                        } else {
-                            null
-                        },
-                        trailingIcon = if (uploadSpeedError) {
-                            @Composable
+                        supportingText = uploadSpeedError?.let { { Text(text = stringResource(it)) } },
+                        trailingIcon = uploadSpeedError?.let {
                             {
                                 Icon(
                                     imageVector = Icons.Filled.Error,
                                     contentDescription = null,
                                 )
                             }
-                        } else {
-                            null
                         },
-                        isError = uploadSpeedError,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        isError = uploadSpeedError != null,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next,
+                        ),
                         singleLine = true,
                         modifier = Modifier.weight(1f),
                         enabled = alternativeLimits == currentAlternativeLimits,
@@ -3401,7 +3362,7 @@ private fun SpeedLimitsDialog(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    var expanded by remember { mutableStateOf(false) }
+                    var expanded by rememberSaveable { mutableStateOf(false) }
                     ExposedDropdownMenuBox(
                         expanded = expanded,
                         onExpandedChange = {
@@ -3465,10 +3426,10 @@ private fun SpeedLimitsDialog(
                 ) {
                     OutlinedTextField(
                         value = downloadSpeedLimit,
-                        onValueChange = { textFieldValue ->
-                            if (textFieldValue.text.all { it.isDigit() }) {
-                                downloadSpeedLimit = textFieldValue
-                                downloadSpeedError = false
+                        onValueChange = {
+                            if (it.text.all { it.isDigit() }) {
+                                downloadSpeedLimit = it
+                                downloadSpeedError = null
                             }
                         },
                         label = {
@@ -3478,27 +3439,20 @@ private fun SpeedLimitsDialog(
                                 overflow = TextOverflow.Ellipsis,
                             )
                         },
-                        supportingText = if (downloadSpeedError) {
-                            @Composable
-                            {
-                                Text(text = stringResource(R.string.torrent_add_speed_limit_too_big))
-                            }
-                        } else {
-                            null
-                        },
-                        trailingIcon = if (downloadSpeedError) {
-                            @Composable
+                        supportingText = downloadSpeedError?.let { { Text(text = stringResource(it)) } },
+                        trailingIcon = downloadSpeedError?.let {
                             {
                                 Icon(
                                     imageVector = Icons.Filled.Error,
                                     contentDescription = null,
                                 )
                             }
-                        } else {
-                            null
                         },
-                        isError = downloadSpeedError,
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        isError = downloadSpeedError != null,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Next,
+                        ),
                         singleLine = true,
                         modifier = Modifier.weight(1f),
                         enabled = alternativeLimits == currentAlternativeLimits,
@@ -3506,7 +3460,7 @@ private fun SpeedLimitsDialog(
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    var expanded by remember { mutableStateOf(false) }
+                    var expanded by rememberSaveable { mutableStateOf(false) }
                     ExposedDropdownMenuBox(
                         expanded = expanded,
                         onExpandedChange = {
@@ -3578,59 +3532,47 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
         },
         title = { Text(text = stringResource(R.string.torrent_list_action_statistics)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedCard(
                     elevation = CardDefaults.outlinedCardElevation(0.dp),
                     colors = CardDefaults.outlinedCardColors(Color.Transparent),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Column(
-                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(12.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.stats_category_user_statistics),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_all_time_upload))
-                            Text(text = formatBytes(state.allTimeUpload))
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_all_time_download))
-                            Text(text = formatBytes(state.allTimeDownload))
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_all_time_share_ratio))
-                            Text(text = state.globalRatio)
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_session_waste))
-                            Text(text = formatBytes(state.sessionWaste))
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_connected_peers))
-                            Text(text = state.connectedPeers.toString())
-                        }
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_all_time_upload),
+                            value = formatBytes(state.allTimeUpload),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_all_time_download),
+                            value = formatBytes(state.allTimeDownload),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_all_time_share_ratio),
+                            value = state.globalRatio,
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_session_waste),
+                            value = formatBytes(state.sessionWaste),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_connected_peers),
+                            value = state.connectedPeers.toString(),
+                        )
                     }
                 }
 
@@ -3640,20 +3582,21 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Column(
-                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(12.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.stats_category_cache_statistics),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_total_buffer_size))
-                            Text(text = formatBytes(state.bufferSize))
-                        }
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_total_buffer_size),
+                            value = formatBytes(state.bufferSize),
+                        )
                     }
                 }
 
@@ -3663,57 +3606,67 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Column(
-                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(12.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.stats_category_performance_statistics),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_write_cache_overload))
-                            Text(text = stringResource(R.string.stats_percentage_format, state.writeCacheOverload))
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_read_cache_overload))
-                            Text(text = stringResource(R.string.stats_percentage_format, state.readCacheOverload))
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_queued_io_jobs))
-                            Text(text = state.queuedIOJobs.toString())
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_average_time_in_queue))
-                            Text(text = stringResource(R.string.stats_ms_format, state.averageTimeInQueue))
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(text = stringResource(R.string.stats_total_queued_size))
-                            Text(text = formatBytes(state.queuedSize))
-                        }
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_write_cache_overload),
+                            value = stringResource(R.string.stats_percentage_format, state.writeCacheOverload),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_read_cache_overload),
+                            value = stringResource(R.string.stats_percentage_format, state.readCacheOverload),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_queued_io_jobs),
+                            value = state.queuedIOJobs.toString(),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_average_time_in_queue),
+                            value = stringResource(R.string.stats_ms_format, state.averageTimeInQueue),
+                        )
+
+                        StatisticRow(
+                            label = stringResource(R.string.stats_total_queued_size),
+                            value = formatBytes(state.queuedSize),
+                        )
                     }
                 }
             }
         },
     )
+}
+
+@Composable
+private fun StatisticRow(label: String, value: String, modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
 }
 
 @Composable

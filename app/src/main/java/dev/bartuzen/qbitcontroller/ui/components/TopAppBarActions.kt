@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusProperties
@@ -193,7 +194,7 @@ fun AppBarActions(
 
 @Composable
 fun AppBarActions(items: List<ActionMenuItem>, canFocus: Boolean = true) {
-    var showOverflow by remember { mutableStateOf(false) }
+    var showOverflow by rememberSaveable { mutableStateOf(false) }
     AppBarActions(
         items = items,
         showOverflow = showOverflow,

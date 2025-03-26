@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
+import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,7 +27,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -34,6 +34,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -47,7 +48,7 @@ class TorrentListViewModel @Inject constructor(
 ) : ViewModel() {
     private var serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
 
-    val currentServerId = savedStateHandle.getStateFlow<Int?>("current_server_id", null)
+    val currentServerId = savedStateHandle.getStateFlow<Int?>("currentServerId", null)
 
     private val _currentServer = MutableStateFlow(null as ServerConfig?)
     val currentServer = _currentServer.asStateFlow()
@@ -78,17 +79,11 @@ class TorrentListViewModel @Inject constructor(
     private val _mainData = MutableStateFlow<MainData?>(null)
     val mainData = _mainData.asStateFlow()
 
-    private val _searchQuery = MutableStateFlow("")
-    private val _selectedCategory = MutableStateFlow<CategoryTag>(CategoryTag.All)
-    private val _selectedTag = MutableStateFlow<CategoryTag>(CategoryTag.All)
-    private val _selectedFilter = MutableStateFlow(TorrentFilter.ALL)
-    private val _selectedTracker = MutableStateFlow<Tracker>(Tracker.All)
-
-    val searchQuery = _searchQuery.asStateFlow()
-    val selectedFilter = _selectedFilter.asStateFlow()
-    val selectedCategory = _selectedCategory.asStateFlow()
-    val selectedTag = _selectedTag.asStateFlow()
-    val selectedTracker = _selectedTracker.asStateFlow()
+    val searchQuery = savedStateHandle.getStateFlow("searchQuery", "")
+    val selectedCategory = savedStateHandle.getStateFlow<CategoryTag>("selectedCategory", CategoryTag.All)
+    val selectedTag = savedStateHandle.getStateFlow<CategoryTag>("selectedTag", CategoryTag.All)
+    val selectedFilter = savedStateHandle.getStateFlow<TorrentFilter>("selectedFilter", TorrentFilter.ALL)
+    val selectedTracker = savedStateHandle.getStateFlow<Tracker>("selectedTracker", Tracker.All)
 
     private val serverListener = object : ServerManager.ServerListener {
         override fun onServerAddedListener(serverConfig: ServerConfig) {
@@ -117,67 +112,70 @@ class TorrentListViewModel @Inject constructor(
     fun setCurrentServer(id: Int?, forceReset: Boolean = false) {
         val oldServerId = currentServerId.value
         if (oldServerId != id || forceReset) {
-            serverScope.cancel()
-            serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
-
-            savedStateHandle["current_server_id"] = id
+            savedStateHandle["currentServerId"] = id
             _currentServer.value = if (id != null) serverManager.getServerOrNull(id) else null
 
             _mainData.value = null
-            _searchQuery.value = ""
-            _selectedCategory.value = CategoryTag.All
-            _selectedTag.value = CategoryTag.All
-            _selectedFilter.value = settingsManager.defaultTorrentStatus.value
-            _selectedTracker.value = Tracker.All
+            resetFilters(setFilterToDefault = true)
 
             viewModelScope.launch {
-                eventChannel.send(Event.SeverChanged)
+                eventChannel.send(Event.ServerChanged)
+            }
 
-                if (id != null) {
-                    loadMainData()
+            if (id != null) {
+                startAutoRefresh()
+            }
+        }
+    }
 
-                    serverScope.launch {
-                        combine(
-                            autoRefreshInterval,
-                            isNaturalLoading,
-                            isScreenActive,
-                        ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
-                            Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
-                        }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
-                            if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
-                                delay(autoRefreshInterval.seconds)
-                                loadMainData(autoRefresh = true)
-                            }
-                        }
-                    }
+    private fun startAutoRefresh() {
+        serverScope.cancel()
+        serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
+
+        loadMainData()
+        serverScope.launch {
+            combine(
+                autoRefreshInterval,
+                isNaturalLoading,
+                isScreenActive,
+            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                    delay(autoRefreshInterval.seconds)
+                    loadMainData(autoRefresh = true)
                 }
             }
         }
     }
 
     init {
-        setCurrentServer(currentServerId.value ?: getFirstServer()?.id, forceReset = true)
+        val id = currentServerId.value ?: getFirstServer()?.id
+        savedStateHandle["currentServerId"] = id
+        _currentServer.value = if (id != null) serverManager.getServerOrNull(id) else null
+        startAutoRefresh()
+
         serverManager.addServerListener(serverListener)
 
         viewModelScope.launch {
-            mainData.filterNotNull().collect { mainData ->
+            mainData.collect { mainData ->
                 selectedCategory.value.let { selectedCategory ->
                     if (selectedCategory is CategoryTag.Item &&
-                        selectedCategory.name !in mainData.categories.map { it.name }
+                        mainData?.categories?.map { it.name }?.contains(selectedCategory.name) != true
                     ) {
-                        _selectedCategory.value = CategoryTag.All
+                        setSelectedCategory(CategoryTag.All)
                     }
                 }
 
                 selectedTag.value.let { selectedTag ->
-                    if (selectedTag is CategoryTag.Item && selectedTag.name !in mainData.tags) {
-                        _selectedTag.value = CategoryTag.All
+                    if (selectedTag is CategoryTag.Item && mainData?.tags?.contains(selectedTag.name) != true) {
+                        setSelectedTag(CategoryTag.All)
                     }
                 }
 
                 selectedTracker.value.let { selectedTracker ->
-                    if (selectedTracker is Tracker.Named && selectedTracker.name !in mainData.trackers) {
-                        _selectedTracker.value = Tracker.All
+                    if (selectedTracker is Tracker.Named && mainData?.trackers?.contains(selectedTracker.name) != true) {
+                        setSelectedTracker(Tracker.All)
                     }
                 }
             }
@@ -496,7 +494,8 @@ class TorrentListViewModel @Inject constructor(
         val trackerlessCount: Int,
     )
 
-    private fun updateMainData(serverId: Int) = serverScope.launch {
+    private fun updateMainData() = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.getMainData(serverId)) {
             is RequestResult.Success -> {
                 if (isActive && currentServerId.value == serverId) {
@@ -516,7 +515,7 @@ class TorrentListViewModel @Inject constructor(
 
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updateMainData(serverId).invokeOnCompletion {
+            updateMainData().invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
@@ -527,7 +526,7 @@ class TorrentListViewModel @Inject constructor(
 
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateMainData(serverId).invokeOnCompletion {
+            updateMainData().invokeOnCompletion {
                 viewModelScope.launch {
                     delay(25)
                     _isRefreshing.value = false
@@ -536,10 +535,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteTorrents(serverId: Int, hashes: List<String>, deleteFiles: Boolean) = serverScope.launch {
+    fun deleteTorrents(hashes: List<String>, deleteFiles: Boolean) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.deleteTorrents(serverId, hashes, deleteFiles)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsDeleted(hashes.size))
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -547,10 +548,15 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun pauseTorrents(serverId: Int, hashes: List<String>) = serverScope.launch {
+    fun pauseTorrents(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.pauseTorrents(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPaused(hashes.size))
+                launch {
+                    delay(1000)
+                    loadMainData()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -558,10 +564,15 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun resumeTorrents(serverId: Int, hashes: List<String>) = serverScope.launch {
+    fun resumeTorrents(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.resumeTorrents(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsResumed(hashes.size))
+                launch {
+                    delay(1000)
+                    loadMainData()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -569,10 +580,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteCategory(serverId: Int, category: String) = serverScope.launch {
+    fun deleteCategory(category: String) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.deleteCategory(serverId, category)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.CategoryDeleted(category))
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -580,10 +593,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun deleteTag(serverId: Int, tag: String) = serverScope.launch {
+    fun deleteTag(tag: String) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.deleteTag(serverId, tag)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TagDeleted(tag))
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -591,10 +606,15 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun increaseTorrentPriority(serverId: Int, hashes: List<String>) = serverScope.launch {
+    fun increaseTorrentPriority(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.increaseTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityIncreased)
+                launch {
+                    delay(1000)
+                    loadMainData()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -606,10 +626,15 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun decreaseTorrentPriority(serverId: Int, hashes: List<String>) = serverScope.launch {
+    fun decreaseTorrentPriority(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.decreaseTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityDecreased)
+                launch {
+                    delay(1000)
+                    loadMainData()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -621,10 +646,15 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun maximizeTorrentPriority(serverId: Int, hashes: List<String>) = serverScope.launch {
+    fun maximizeTorrentPriority(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.maximizeTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityMaximized)
+                launch {
+                    delay(1000)
+                    loadMainData()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -636,10 +666,15 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun minimizeTorrentPriority(serverId: Int, hashes: List<String>) = serverScope.launch {
+    fun minimizeTorrentPriority(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.minimizeTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityMinimized)
+                launch {
+                    delay(1000)
+                    loadMainData()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -651,10 +686,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun setLocation(serverId: Int, hashes: List<String>, location: String) = serverScope.launch {
+    fun setLocation(hashes: List<String>, location: String) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.setLocation(serverId, hashes, location)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.LocationUpdated)
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -662,11 +699,13 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun createCategory(serverId: Int, name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
+    fun createCategory(name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
         serverScope.launch {
+            val serverId = currentServerId.value ?: return@launch
             when (val result = repository.createCategory(serverId, name, savePath, downloadPathEnabled, downloadPath)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.CategoryCreated)
+                    loadMainData()
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
@@ -674,11 +713,13 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
-    fun editCategory(serverId: Int, name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
+    fun editCategory(name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
         serverScope.launch {
+            val serverId = currentServerId.value ?: return@launch
             when (val result = repository.editCategory(serverId, name, savePath, downloadPathEnabled, downloadPath)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.CategoryEdited)
+                    loadMainData()
                 }
                 is RequestResult.Error -> {
                     if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -690,10 +731,12 @@ class TorrentListViewModel @Inject constructor(
             }
         }
 
-    fun createTags(serverId: Int, names: List<String>) = serverScope.launch {
+    fun createTags(names: List<String>) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.createTags(serverId, names)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TagCreated)
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -701,10 +744,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun toggleSpeedLimitsMode(serverId: Int, isCurrentLimitAlternative: Boolean) = serverScope.launch {
+    fun toggleSpeedLimitsMode(isCurrentLimitAlternative: Boolean) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.toggleSpeedLimitsMode(serverId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.SpeedLimitsToggled(!isCurrentLimitAlternative))
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -712,7 +757,8 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun shutdown(serverId: Int) = serverScope.launch {
+    fun shutdown() = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.shutdown(serverId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.Shutdown)
@@ -723,10 +769,12 @@ class TorrentListViewModel @Inject constructor(
         }
     }
 
-    fun setCategory(serverId: Int, hashes: List<String>, category: String?) = serverScope.launch {
+    fun setCategory(hashes: List<String>, category: String?) = serverScope.launch {
+        val serverId = currentServerId.value ?: return@launch
         when (val result = repository.setCategory(serverId, hashes, category)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentCategoryUpdated)
+                loadMainData()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -743,23 +791,23 @@ class TorrentListViewModel @Inject constructor(
     }
 
     fun setSearchQuery(query: String) {
-        _searchQuery.value = query
+        savedStateHandle["searchQuery"] = query
     }
 
     fun setSelectedCategory(category: CategoryTag) {
-        _selectedCategory.value = category
+        savedStateHandle["selectedCategory"] = category
     }
 
     fun setSelectedTag(tag: CategoryTag) {
-        _selectedTag.value = tag
+        savedStateHandle["selectedTag"] = tag
     }
 
     fun setSelectedFilter(filter: TorrentFilter) {
-        _selectedFilter.value = filter
+        savedStateHandle["selectedFilter"] = filter
     }
 
     fun setSelectedTracker(tracker: Tracker) {
-        _selectedTracker.value = tracker
+        savedStateHandle["selectedTracker"] = tracker
     }
 
     fun setDefaultTorrentStatus(status: TorrentFilter) {
@@ -782,15 +830,16 @@ class TorrentListViewModel @Inject constructor(
         settingsManager.areTrackersCollapsed.value = isCollapsed
     }
 
-    fun resetFilters() {
-        _searchQuery.value = ""
-        _selectedCategory.value = CategoryTag.All
-        _selectedTag.value = CategoryTag.All
-        _selectedFilter.value = TorrentFilter.ALL
-        _selectedTracker.value = Tracker.All
+    fun resetFilters(setFilterToDefault: Boolean = false) {
+        setSearchQuery("")
+        setSelectedCategory(CategoryTag.All)
+        setSelectedTag(CategoryTag.All)
+        setSelectedFilter(if (setFilterToDefault) TorrentFilter.ALL else settingsManager.defaultTorrentStatus.value)
+        setSelectedTracker(Tracker.All)
     }
 
-    fun setSpeedLimits(serverId: Int, download: Int?, upload: Int?) {
+    fun setSpeedLimits(download: Int?, upload: Int?) {
+        val serverId = currentServerId.value ?: return
         val job = Job()
 
         serverScope.launch(job) {
@@ -827,13 +876,14 @@ class TorrentListViewModel @Inject constructor(
             uploadDeferred.join()
 
             eventChannel.send(Event.SpeedLimitsUpdated)
+            loadMainData()
         }
     }
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
         data object UpdateMainDataSuccess : Event()
-        data object SeverChanged : Event()
+        data object ServerChanged : Event()
         data object QueueingNotEnabled : Event()
         data object CategoryEditingFailed : Event()
         data class TorrentsDeleted(val count: Int) : Event()
@@ -914,13 +964,15 @@ enum class TorrentFilter(val states: List<TorrentState>?) {
     ERROR(listOf(TorrentState.ERROR, TorrentState.MISSING_FILES)),
 }
 
-sealed interface CategoryTag {
+@Parcelize
+sealed interface CategoryTag : Parcelable {
     data object All : CategoryTag
     data object Uncategorized : CategoryTag
     data class Item(val name: String) : CategoryTag
 }
 
-sealed interface Tracker {
+@Parcelize
+sealed interface Tracker : Parcelable {
     data object All : Tracker
     data object Trackerless : Tracker
     data class Named(val name: String) : Tracker
