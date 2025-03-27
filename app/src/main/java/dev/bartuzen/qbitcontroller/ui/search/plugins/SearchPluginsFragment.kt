@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.search.plugins
 
+import android.R.attr.maxLines
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
@@ -455,7 +457,7 @@ private fun InstallPluginDialog(
     onConfirm: (plugins: List<String>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
+    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var error by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Dialog(
@@ -469,9 +471,16 @@ private fun InstallPluginDialog(
                     text = it
                     error = null
                 },
-                label = { Text(text = stringResource(R.string.search_plugins_install_hint)) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.search_plugins_install_hint),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
                 isError = error != null,
                 supportingText = error?.let { { Text(text = stringResource(it)) } },
+                trailingIcon = error?.let { { Icon(imageVector = Icons.Filled.Error, contentDescription = null) } },
                 maxLines = 10,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
                 modifier = Modifier.fillMaxWidth(),

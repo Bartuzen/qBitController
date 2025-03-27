@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
+import android.R.attr.singleLine
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -40,6 +41,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachFile
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.outlined.Error
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -220,12 +222,12 @@ private fun AddTorrentScreen(
     var stopConditionIndex by rememberSaveable { mutableIntStateOf(0) }
     var contentLayoutIndex by rememberSaveable { mutableIntStateOf(0) }
 
-    var savePath by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var torrentName by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var ratioLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var seedingTimeLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var uploadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
-    var downloadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue("")) }
+    var savePath by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    var torrentName by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    var ratioLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    var seedingTimeLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    var uploadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    var downloadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var upSpeedLimitUnit by rememberSaveable { mutableIntStateOf(0) }
     var dlSpeedLimitUnit by rememberSaveable { mutableIntStateOf(0) }
 
@@ -292,7 +294,7 @@ private fun AddTorrentScreen(
     }
 
     PersistentLaunchedEffect(serverId) {
-        savePath = TextFieldValue("")
+        savePath = TextFieldValue()
     }
 
     PersistentLaunchedEffect(serverData == null) {
@@ -529,8 +531,15 @@ private fun AddTorrentScreen(
                             OutlinedTextField(
                                 value = servers[serverId]?.displayName ?: "",
                                 onValueChange = {},
-                                label = { Text(text = stringResource(R.string.torrent_add_server)) },
+                                label = {
+                                    Text(
+                                        text = stringResource(R.string.torrent_add_server),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                },
                                 readOnly = true,
+                                singleLine = true,
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -583,12 +592,23 @@ private fun AddTorrentScreen(
                                 torrentLinkError = null
                             }
                         },
-                        label = { Text(text = stringResource(R.string.torrent_add_link_hint)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.torrent_add_link_hint),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 4,
                         maxLines = 4,
                         isError = torrentLinkError != null,
                         supportingText = torrentLinkError?.let { { Text(text = stringResource(it)) } },
+                        trailingIcon = torrentLinkError?.let {
+                            {
+                                Icon(imageVector = Icons.Filled.Error, contentDescription = null)
+                            }
+                        },
                     )
                 } else {
                     OutlinedCard(
@@ -708,7 +728,13 @@ private fun AddTorrentScreen(
                     onExpandedChange = { autoTmmExpanded = it },
                 ) {
                     OutlinedTextField(
-                        label = { Text(text = stringResource(R.string.torrent_add_torrent_management_mode)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.torrent_add_torrent_management_mode),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         value = when (autoTmmIndex) {
                             0 -> stringResource(R.string.torrent_add_default)
                             1 -> stringResource(R.string.torrent_add_torrent_management_mode_manual)
@@ -717,6 +743,7 @@ private fun AddTorrentScreen(
                         },
                         onValueChange = {},
                         readOnly = true,
+                        singleLine = true,
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = autoTmmExpanded) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -757,7 +784,13 @@ private fun AddTorrentScreen(
                     onExpandedChange = { stopConditionExpanded = it },
                 ) {
                     OutlinedTextField(
-                        label = { Text(text = stringResource(R.string.torrent_add_stop_condition)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.torrent_add_stop_condition),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         value = when (stopConditionIndex) {
                             0 -> stringResource(R.string.torrent_add_default)
                             1 -> stringResource(R.string.torrent_add_stop_condition_none)
@@ -767,6 +800,7 @@ private fun AddTorrentScreen(
                         },
                         onValueChange = {},
                         readOnly = true,
+                        singleLine = true,
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = stopConditionExpanded)
                         },
@@ -802,7 +836,13 @@ private fun AddTorrentScreen(
                     onExpandedChange = { contentLayoutExpanded = it },
                 ) {
                     OutlinedTextField(
-                        label = { Text(text = stringResource(R.string.torrent_add_content_layout)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.torrent_add_content_layout),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         value = when (contentLayoutIndex) {
                             0 -> stringResource(R.string.torrent_add_default)
                             1 -> stringResource(R.string.torrent_add_content_layout_original)
@@ -812,6 +852,7 @@ private fun AddTorrentScreen(
                         },
                         onValueChange = {},
                         readOnly = true,
+                        singleLine = true,
                         trailingIcon = {
                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = contentLayoutExpanded)
                         },
@@ -844,10 +885,16 @@ private fun AddTorrentScreen(
                 OutlinedTextField(
                     value = savePath,
                     onValueChange = { savePath = it },
-                    label = { Text(text = stringResource(R.string.torrent_add_save_path)) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.torrent_add_save_path),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = autoTmmIndex != 2,
-                    maxLines = 1,
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Uri,
                         imeAction = ImeAction.Next,
@@ -857,9 +904,15 @@ private fun AddTorrentScreen(
                 OutlinedTextField(
                     value = torrentName,
                     onValueChange = { torrentName = it },
-                    label = { Text(text = stringResource(R.string.torrent_add_name)) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.torrent_add_name),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
-                    maxLines = 1,
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 )
 
@@ -874,9 +927,15 @@ private fun AddTorrentScreen(
                             ratioLimit = newValue
                         }
                     },
-                    label = { Text(text = stringResource(R.string.torrent_add_ratio_limit)) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.torrent_add_ratio_limit),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
-                    maxLines = 1,
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Decimal,
                         imeAction = ImeAction.Next,
@@ -890,9 +949,15 @@ private fun AddTorrentScreen(
                             seedingTimeLimit = it
                         }
                     },
-                    label = { Text(text = stringResource(R.string.torrent_add_seeding_time_limit)) },
+                    label = {
+                        Text(
+                            text = stringResource(R.string.torrent_add_seeding_time_limit),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
-                    maxLines = 1,
+                    singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Next,
@@ -914,11 +979,22 @@ private fun AddTorrentScreen(
                                 uploadSpeedError = null
                             }
                         },
-                        label = { Text(text = stringResource(R.string.torrent_add_upload_speed_limit)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.torrent_add_upload_speed_limit),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         isError = uploadSpeedError != null,
                         supportingText = uploadSpeedError?.let { { Text(text = stringResource(it)) } },
+                        trailingIcon = uploadSpeedError?.let {
+                            {
+                                Icon(imageVector = Icons.Filled.Error, contentDescription = null)
+                            }
+                        },
                         modifier = Modifier.weight(1f),
-                        maxLines = 1,
+                        singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Next,
@@ -942,6 +1018,7 @@ private fun AddTorrentScreen(
                             },
                             onValueChange = {},
                             readOnly = true,
+                            singleLine = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = upSpeedUnitExpanded) },
                             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         )
@@ -978,11 +1055,22 @@ private fun AddTorrentScreen(
                                 downloadSpeedError = null
                             }
                         },
-                        label = { Text(text = stringResource(R.string.torrent_add_download_speed_limit)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.torrent_add_download_speed_limit),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         isError = downloadSpeedError != null,
                         supportingText = downloadSpeedError?.let { { Text(text = stringResource(it)) } },
+                        trailingIcon = downloadSpeedError?.let {
+                            {
+                                Icon(imageVector = Icons.Filled.Error, contentDescription = null)
+                            }
+                        },
                         modifier = Modifier.weight(1f),
-                        maxLines = 1,
+                        singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
                             imeAction = ImeAction.Next,
@@ -1006,6 +1094,7 @@ private fun AddTorrentScreen(
                             },
                             onValueChange = {},
                             readOnly = true,
+                            singleLine = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dlSpeedUnitExpanded) },
                             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         )

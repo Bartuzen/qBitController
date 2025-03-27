@@ -913,7 +913,13 @@ private fun FilterDialog(
                                 seedsMin = it
                             }
                         },
-                        label = { Text(text = stringResource(R.string.search_result_filter_min)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.search_result_filter_min),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -929,7 +935,13 @@ private fun FilterDialog(
                                 seedsMax = it
                             }
                         },
-                        label = { Text(text = stringResource(R.string.search_result_filter_max)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.search_result_filter_max),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -969,7 +981,13 @@ private fun FilterDialog(
                                 sizeMin = it
                             }
                         },
-                        label = { Text(text = stringResource(R.string.search_result_filter_min)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.search_result_filter_min),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -990,6 +1008,7 @@ private fun FilterDialog(
                             value = stringResource(sizeUnits[sizeMinUnit]),
                             onValueChange = {},
                             readOnly = true,
+                            singleLine = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         )
@@ -1019,7 +1038,13 @@ private fun FilterDialog(
                                 sizeMax = it
                             }
                         },
-                        label = { Text(text = stringResource(R.string.search_result_filter_max)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.search_result_filter_max),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -1040,6 +1065,7 @@ private fun FilterDialog(
                             value = stringResource(sizeUnits[sizeMaxUnit]),
                             onValueChange = {},
                             readOnly = true,
+                            singleLine = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
                         )

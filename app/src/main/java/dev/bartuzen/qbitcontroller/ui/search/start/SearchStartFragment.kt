@@ -309,7 +309,13 @@ private fun SearchStartScreen(
                                 value = searchQuery,
                                 onValueChange = { searchQuery = it },
                                 modifier = Modifier.fillMaxWidth(),
-                                label = { Text(text = stringResource(R.string.search_start_query)) },
+                                label = {
+                                    Text(
+                                        text = stringResource(R.string.search_start_query),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                },
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Filled.Search,
@@ -345,7 +351,14 @@ private fun SearchStartScreen(
                                     value = stringResource(categories[selectedCategoryIndex]),
                                     onValueChange = {},
                                     readOnly = true,
-                                    label = { Text(text = stringResource(R.string.search_start_category)) },
+                                    singleLine = true,
+                                    label = {
+                                        Text(
+                                            text = stringResource(R.string.search_start_category),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                    },
                                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                                     leadingIcon = {
                                         val icon = when (selectedCategoryIndex) {

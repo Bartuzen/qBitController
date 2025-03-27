@@ -36,6 +36,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RssFeed
 import androidx.compose.material3.DropdownMenu
@@ -78,6 +79,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -507,12 +509,17 @@ private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) ->
                     nameValue = it
                     nameError = null
                 },
-                label = { Text(text = stringResource(R.string.rss_rule_name)) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.rss_rule_name),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
                 singleLine = true,
                 isError = nameError != null,
-                supportingText = nameError?.let { error ->
-                    { Text(text = stringResource(error)) }
-                },
+                supportingText = nameError?.let { error -> { Text(text = stringResource(error)) } },
+                trailingIcon = nameError?.let { { Icon(imageVector = Icons.Filled.Error, contentDescription = null) } },
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (nameValue.text.isBlank()) {
@@ -571,12 +578,17 @@ private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
                     nameValue = it
                     nameError = null
                 },
-                label = { Text(text = stringResource(R.string.rss_rule_name)) },
+                label = {
+                    Text(
+                        text = stringResource(R.string.rss_rule_name),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
                 singleLine = true,
                 isError = nameError != null,
-                supportingText = nameError?.let { error ->
-                    { Text(text = stringResource(error)) }
-                },
+                supportingText = nameError?.let { error -> { Text(text = stringResource(error)) } },
+                trailingIcon = nameError?.let { { Icon(imageVector = Icons.Filled.Error, contentDescription = null) } },
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (nameValue.text.isBlank()) {
