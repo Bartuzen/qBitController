@@ -46,7 +46,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.rounded.Extension
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -133,7 +132,6 @@ class SearchPluginsFragment() : Fragment() {
         }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchPluginsScreen(
     serverId: Int,

@@ -42,7 +42,6 @@ import androidx.compose.material.icons.filled.RssFeed
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -140,7 +139,6 @@ class RssRulesFragment() : Fragment() {
         }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RssRulesScreen(
     serverId: Int,
@@ -486,7 +484,6 @@ private sealed class RssRuleDialog {
     data class DeleteRule(val ruleName: String) : RssRuleDialog()
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) -> Unit) {
     var nameValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
@@ -555,7 +552,6 @@ private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) ->
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm: (newName: String) -> Unit) {
     var nameValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -624,7 +620,6 @@ private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DeleteRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm: () -> Unit) {
     Dialog(

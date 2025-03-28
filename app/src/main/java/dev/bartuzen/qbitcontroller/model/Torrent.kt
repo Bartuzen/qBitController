@@ -3,7 +3,6 @@ package dev.bartuzen.qbitcontroller.model
 import dev.bartuzen.qbitcontroller.model.serializers.NullableDoubleSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.SerialName
@@ -195,7 +194,6 @@ private object PrioritySerializer : KSerializer<Int?> {
 }
 
 private object TagsSerializer : KSerializer<List<String>> {
-    @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor = listSerialDescriptor<List<String>>()
 
     override fun serialize(encoder: Encoder, value: List<String>) {
@@ -207,7 +205,6 @@ private object TagsSerializer : KSerializer<List<String>> {
     }
 }
 
-@OptIn(ExperimentalSerializationApi::class)
 @Serializable(with = TorrentStateSerializer::class)
 @KeepGeneratedSerializer
 enum class TorrentState {

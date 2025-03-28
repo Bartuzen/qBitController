@@ -60,7 +60,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -180,7 +179,6 @@ class SearchResultFragment() : Fragment() {
         }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchResultScreen(
     serverId: Int,
@@ -845,7 +843,6 @@ private fun PeerInfoCard(icon: ImageVector, count: String, label: String, color:
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FilterDialog(
     filter: SearchResultViewModel.Filter,

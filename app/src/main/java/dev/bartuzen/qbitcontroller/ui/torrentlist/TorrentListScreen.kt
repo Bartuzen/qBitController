@@ -17,7 +17,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +27,6 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -106,7 +104,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -183,7 +180,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.google.android.material.color.MaterialColors
@@ -237,7 +233,6 @@ import java.util.SortedMap
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun TorrentListScreen(
     isScreenActive: Boolean,
@@ -1159,7 +1154,6 @@ fun TorrentListScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 private fun TorrentItem(
     torrent: Torrent,
@@ -1939,7 +1933,6 @@ private fun DrawerContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DrawerServerItem(
     name: String?,
@@ -2018,7 +2011,6 @@ private fun DrawerTitleItem(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DrawerItem(
     icon: ImageVector,
@@ -2062,7 +2054,6 @@ private fun DrawerItem(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
     serverId: Int,
@@ -2382,7 +2373,6 @@ private fun TopBar(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarSelection(
     torrents: List<Torrent>?,
@@ -2659,7 +2649,6 @@ private sealed class Dialog {
     data object About : Dialog()
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CreateEditCategoryDialog(
     onDismiss: () -> Unit,
@@ -3132,7 +3121,6 @@ private fun SetTorrentsLocationDialog(
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SetTorrentsCategoryDialog(
     initialSelectedCategory: String?,
@@ -3186,7 +3174,6 @@ private fun SetTorrentsCategoryDialog(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SpeedLimitsDialog(
     currentAlternativeLimits: Boolean,
@@ -3721,7 +3708,6 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current

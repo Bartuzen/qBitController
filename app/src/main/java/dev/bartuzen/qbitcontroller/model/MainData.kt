@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.model
 
 import dev.bartuzen.qbitcontroller.utils.formatUri
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -27,7 +26,6 @@ data class MainData(
 )
 
 private object MainDataSerializer : KSerializer<MainData> {
-    @OptIn(ExperimentalSerializationApi::class)
     override val descriptor: SerialDescriptor =
         buildClassSerialDescriptor("MainData") {
             element<ServerState>("server_state")
