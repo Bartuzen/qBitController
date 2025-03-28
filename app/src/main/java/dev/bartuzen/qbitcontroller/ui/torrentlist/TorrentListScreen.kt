@@ -872,8 +872,8 @@ fun TorrentListScreen(
 
                     AnimatedVisibility(
                         visible = selectedTorrents.isNotEmpty(),
-                        enter = fadeIn() + expandVertically(),
-                        exit = fadeOut() + shrinkVertically(),
+                        enter = expandVertically(),
+                        exit = shrinkVertically(),
                     ) {
                         TopBarSelection(
                             torrents = torrents,
