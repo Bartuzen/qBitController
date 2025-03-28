@@ -2,22 +2,31 @@ package dev.bartuzen.qbitcontroller.ui.rss.feeds
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssFeedRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class RssFeedsViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = RssFeedsViewModel.Factory::class)
+class RssFeedsViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
     private val repository: RssFeedRepository,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int): RssFeedsViewModel
+    }
+
     private val _rssFeeds = MutableStateFlow<RssFeedNode?>(null)
     val rssFeeds = _rssFeeds.asStateFlow()
 
@@ -30,11 +39,11 @@ class RssFeedsViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
+    init {
+        loadRssFeeds()
+    }
 
-    val collapsedNodes: MutableSet<String> = mutableSetOf()
-
-    private fun updateRssFeeds(serverId: Int) = viewModelScope.launch {
+    private fun updateRssFeeds() = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
                 _rssFeeds.value = parseRssFeeds(result.data)
@@ -45,28 +54,35 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun loadRssFeeds(serverId: Int) {
+    fun loadRssFeeds() {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateRssFeeds(serverId).invokeOnCompletion {
+            updateRssFeeds().invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssFeeds(serverId: Int) {
+    fun refreshRssFeeds() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateRssFeeds(serverId).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateRssFeeds().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun refreshAllFeeds(serverId: Int) = viewModelScope.launch {
+    fun refreshAllFeeds() = viewModelScope.launch {
         when (val result = repository.refreshAllFeeds(serverId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.AllFeedsRefreshed)
+                viewModelScope.launch {
+                    delay(1000)
+                    loadRssFeeds()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -74,10 +90,11 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun addRssFeed(serverId: Int, url: String, path: String) = viewModelScope.launch {
+    fun addRssFeed(url: String, path: String) = viewModelScope.launch {
         when (val result = repository.addRssFeed(serverId, url, path)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FeedAdded)
+                loadRssFeeds()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -89,10 +106,11 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun addRssFolder(serverId: Int, path: String) = viewModelScope.launch {
+    fun addRssFolder(path: String) = viewModelScope.launch {
         when (val result = repository.addRssFolder(serverId, path)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FolderAdded)
+                loadRssFeeds()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -104,7 +122,7 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun renameItem(serverId: Int, from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
+    fun renameItem(from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
         when (val result = repository.moveItem(serverId, from, to)) {
             is RequestResult.Success -> {
                 if (isFeed) {
@@ -112,6 +130,7 @@ class RssFeedsViewModel @Inject constructor(
                 } else {
                     eventChannel.send(Event.FolderRenamed)
                 }
+                loadRssFeeds()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -127,7 +146,7 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun moveItem(serverId: Int, from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
+    fun moveItem(from: String, to: String, isFeed: Boolean) = viewModelScope.launch {
         when (val result = repository.moveItem(serverId, from, to)) {
             is RequestResult.Success -> {
                 if (isFeed) {
@@ -135,6 +154,7 @@ class RssFeedsViewModel @Inject constructor(
                 } else {
                     eventChannel.send(Event.FolderMoved)
                 }
+                loadRssFeeds()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -150,7 +170,7 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun deleteItem(serverId: Int, path: String, isFeed: Boolean) = viewModelScope.launch {
+    fun deleteItem(path: String, isFeed: Boolean) = viewModelScope.launch {
         when (val result = repository.removeItem(serverId, path)) {
             is RequestResult.Success -> {
                 if (isFeed) {
@@ -158,6 +178,7 @@ class RssFeedsViewModel @Inject constructor(
                 } else {
                     eventChannel.send(Event.FolderDeleted)
                 }
+                loadRssFeeds()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -173,10 +194,11 @@ class RssFeedsViewModel @Inject constructor(
         }
     }
 
-    fun setFeedUrl(serverId: Int, path: String, url: String) = viewModelScope.launch {
+    fun setFeedUrl(path: String, url: String) = viewModelScope.launch {
         when (val result = repository.setFeedUrl(serverId, path, url)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FeedUrlChanged)
+                loadRssFeeds()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))

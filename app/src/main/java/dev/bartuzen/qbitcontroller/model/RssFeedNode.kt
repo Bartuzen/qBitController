@@ -1,5 +1,8 @@
 package dev.bartuzen.qbitcontroller.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class RssFeedNode(
     val name: String,
     val feed: RssFeed?,
@@ -11,5 +14,5 @@ data class RssFeedNode(
 
     val isFolder get() = children != null
 
-    val uniqueId = "$isFeed-$level-$name"
+    val uniqueId = feed?.uid ?: "$level-$name"
 }
