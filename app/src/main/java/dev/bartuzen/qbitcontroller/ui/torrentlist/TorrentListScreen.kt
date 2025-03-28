@@ -1040,6 +1040,9 @@ fun TorrentListScreen(
                                                 viewModel.resetFilters()
                                                 isSearchMode = false
                                             },
+                                            modifier = Modifier.focusProperties {
+                                                canFocus = drawerState.isClosed
+                                            },
                                         )
                                     }
                                     2 -> {
@@ -1053,6 +1056,9 @@ fun TorrentListScreen(
                                                         context.getString(R.string.torrent_add_success),
                                                     )
                                                 }
+                                            },
+                                            modifier = Modifier.focusProperties {
+                                                canFocus = drawerState.isClosed
                                             },
                                         )
                                     }
