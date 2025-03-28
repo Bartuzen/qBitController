@@ -293,7 +293,6 @@
     <string name="torrent_trackers_add_hint">Sporere</string>
     <string name="torrent_peers_details_files">Filer: %1$s</string>
     <string name="torrent_add_tags">Etiketter</string>
-    <string name="rss_date">Dato: %1$s</string>
     <string name="rss_action_delete_feed">Slett strøm</string>
     <string name="rss_hint_feed_name_optional">Strøm-navn (valgfritt)</string>
     <string name="rss_confirm_delete_feed">Slett %1$s-strømmen\?</string>
@@ -351,7 +350,6 @@
     <string name="torrent_peers_flag_utp">µTP</string>
     <string name="torrent_error_not_found">Fant ikke torrenten.</string>
     <string name="torrent_add_stop_condition">Stoppvilkår</string>
-    <string name="rss_no_description">Fant ingen beskrivelse</string>
     <string name="rss_action_add_feed">Legg til strøm</string>
     <string name="rss_action_rename_feed">Gi strøm nytt navn</string>
     <string name="rss_action_move_feed">Flytt strøm</string>
