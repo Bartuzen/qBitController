@@ -99,6 +99,7 @@ import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
+import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -128,6 +129,7 @@ class RssRulesFragment() : Fragment() {
                             val fragment = EditRssRuleFragment(serverId, ruleName)
                             parentFragmentManager.commit {
                                 setReorderingAllowed(true)
+                                setDefaultAnimations()
                                 replace(R.id.container, fragment)
                                 addToBackStack(null)
                             }
