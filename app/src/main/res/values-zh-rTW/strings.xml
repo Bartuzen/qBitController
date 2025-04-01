@@ -624,4 +624,5 @@
         <item quantity="other">%1$d Feed</item>
     </plurals>
     <string name="rss_rule_item_disabled">禁用</string>
+    <string name="rss_new">新</string>
 </resources>
