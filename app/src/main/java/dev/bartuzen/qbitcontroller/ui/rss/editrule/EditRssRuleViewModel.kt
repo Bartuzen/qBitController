@@ -3,6 +3,9 @@ package dev.bartuzen.qbitcontroller.ui.rss.editrule
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.EditRssRuleRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
@@ -19,18 +22,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
 
-@HiltViewModel
-class EditRssRuleViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = EditRssRuleViewModel.Factory::class)
+class EditRssRuleViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted private val ruleName: String,
     private val repository: EditRssRuleRepository,
-    private val state: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int, ruleName: String): EditRssRuleViewModel
+    }
+
     private val _rssRule = MutableStateFlow<RssRule?>(null)
     val rssRule = _rssRule.asStateFlow()
 
-    val categories = state.getStateFlow<List<String>?>("categories", null)
-    val feeds = state.getStateFlow<List<Pair<String, String>>?>("feeds", null)
+    val categories = savedStateHandle.getStateFlow<List<String>?>("categories", null)
+    val feeds = savedStateHandle.getStateFlow<List<Pair<String, String>>?>("feeds", null)
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -41,14 +50,16 @@ class EditRssRuleViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
+    val isFetched = savedStateHandle.getStateFlow("isFetched", false)
 
-    val isFetched = state.getStateFlow("isFetched", false)
+    init {
+        loadData()
+    }
 
-    fun setRule(serverId: Int, name: String, rule: RssRule) = viewModelScope.launch {
+    fun setRule(rule: RssRule) = viewModelScope.launch {
         val json = Json.encodeToString(rule)
 
-        when (val result = repository.setRule(serverId, name, json)) {
+        when (val result = repository.setRule(serverId, ruleName, json)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.RuleUpdated)
             }
@@ -58,7 +69,7 @@ class EditRssRuleViewModel @Inject constructor(
         }
     }
 
-    private fun updateData(serverId: Int, ruleName: String) = viewModelScope.launch {
+    private fun updateData() = viewModelScope.launch {
         if (isFetched.value) {
             return@launch
         }
@@ -136,25 +147,25 @@ class EditRssRuleViewModel @Inject constructor(
         onFetch()
     }
 
-    fun loadData(serverId: Int, ruleName: String) {
+    private fun loadData() {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateData(serverId, ruleName).invokeOnCompletion {
+            updateData().invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
     private fun onFetch() {
-        state["isFetched"] = true
+        savedStateHandle["isFetched"] = true
     }
 
     private fun setCategories(categories: List<String>) {
-        state["categories"] = categories
+        savedStateHandle["categories"] = categories
     }
 
     private fun setFeeds(feeds: List<String>) {
-        state["feeds"] = feeds
+        savedStateHandle["feeds"] = feeds
     }
 
     sealed class Event {
