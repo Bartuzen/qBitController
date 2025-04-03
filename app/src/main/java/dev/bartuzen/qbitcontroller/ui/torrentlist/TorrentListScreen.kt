@@ -24,6 +24,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,6 +99,7 @@ import androidx.compose.material.icons.outlined.ToggleOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -1420,512 +1422,519 @@ private fun DrawerContent(
         )
     }
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        item {
-            Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
-        }
-
-        items(servers.toList()) { (id, serverConfig) ->
-            Column {
-                DrawerServerItem(
-                    name = serverConfig.name,
-                    url = serverConfig.visibleUrl,
-                    isSelected = serverId == id,
-                    onClick = {
-                        onServerSelected(id)
-                        onDrawerClose()
-                    },
-                    onLongClick = {
-                        val intent = Intent(context, SettingsActivity::class.java).apply {
-                            putExtra(SettingsActivity.Extras.EDIT_SERVER_ID, serverConfig.id)
-                        }
-                        context.startActivity(intent)
-                        onDrawerClose()
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-
-                HorizontalDivider()
+    Box(modifier = modifier.fillMaxSize()) {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            item {
+                Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
             }
-        }
 
-        item {
-            DrawerTitleItem(
-                text = stringResource(R.string.torrent_list_status),
-                isCollapsed = areStatesCollapsed,
-                onClick = {
-                    onCollapseStates()
-                },
-                modifier = Modifier.focusProperties {
-                    canFocus = isDrawerOpen
-                },
-            )
-        }
-
-        items(statuses) { (status, stringResource, icon) ->
-            AnimatedVisibility(
-                visible = !areStatesCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                var showMenu by rememberSaveable { mutableStateOf(false) }
-
-                DrawerItem(
-                    icon = icon,
-                    iconModifier = if (status == TorrentFilter.STALLED) {
-                        Modifier.graphicsLayer(scaleX = -1f, rotationZ = 90f)
-                    } else {
-                        Modifier
-                    },
-                    text = stringResource(
-                        R.string.torrent_list_status_format,
-                        stringResource(stringResource),
-                        counts?.stateCountMap?.get(status) ?: 0,
-                    ),
-                    isSelected = selectedFilter == status,
-                    onClick = {
-                        onSelectFilter(status)
-                        onDrawerClose()
-                    },
-                    onLongClick = {
-                        showMenu = true
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-                DropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = {
-                        showMenu = false
-                    },
-                    modifier = Modifier.dropdownMenuHeight(),
-                ) {
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_list_status_set_as_default))
-                        },
+            items(servers.toList()) { (id, serverConfig) ->
+                Column {
+                    DrawerServerItem(
+                        name = serverConfig.name,
+                        url = serverConfig.visibleUrl,
+                        isSelected = serverId == id,
                         onClick = {
-                            showMenu = false
+                            onServerSelected(id)
                             onDrawerClose()
-                            onSetDefaultTorrentStatus(status)
+                        },
+                        onLongClick = {
+                            val intent = Intent(context, SettingsActivity::class.java).apply {
+                                putExtra(SettingsActivity.Extras.EDIT_SERVER_ID, serverConfig.id)
+                            }
+                            context.startActivity(intent)
+                            onDrawerClose()
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
                         },
                     )
+
+                    HorizontalDivider()
                 }
             }
-        }
 
-        item {
-            HorizontalDivider()
-        }
-
-        item {
-            DrawerTitleItem(
-                text = stringResource(R.string.torrent_list_categories),
-                isCollapsed = areCategoriesCollapsed,
-                onClick = {
-                    onCollapseCategories()
-                },
-                action = {
-                    AnimatedVisibility(
-                        visible = !areCategoriesCollapsed,
-                        enter = fadeIn(),
-                        exit = fadeOut(),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .focusProperties {
-                                    canFocus = isDrawerOpen
-                                }
-                                .clickable(
-                                    indication = ripple(
-                                        bounded = false,
-                                        radius = 16.dp,
-                                    ),
-                                    interactionSource = null,
-                                ) {
-                                    onDialogOpen(Dialog.CreateCategory)
-                                    onDrawerClose()
-                                },
-                        )
-                    }
-                },
-                modifier = Modifier.focusProperties {
-                    canFocus = isDrawerOpen
-                },
-            )
-        }
-
-        item {
-            var showMenu by rememberSaveable { mutableStateOf(false) }
-            AnimatedVisibility(
-                visible = !areCategoriesCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.Folder,
-                    text = stringResource(
-                        R.string.torrent_list_category_tag_format,
-                        stringResource(R.string.torrent_list_category_tag_all),
-                        counts?.allCount ?: 0,
-                    ),
-                    isSelected = selectedCategory is CategoryTag.All,
+            item {
+                DrawerTitleItem(
+                    text = stringResource(R.string.torrent_list_status),
+                    isCollapsed = areStatesCollapsed,
                     onClick = {
-                        onSelectCategory(CategoryTag.All)
-                        onDrawerClose()
-                    },
-                    onLongClick = {
-                        showMenu = true
+                        onCollapseStates()
                     },
                     modifier = Modifier.focusProperties {
                         canFocus = isDrawerOpen
                     },
                 )
             }
-        }
 
-        item {
-            AnimatedVisibility(
-                visible = !areCategoriesCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.Folder,
-                    text = stringResource(
-                        R.string.torrent_list_category_tag_format,
-                        stringResource(R.string.torrent_list_uncategorized),
-                        counts?.uncategorizedCount ?: 0,
-                    ),
-                    isSelected = selectedCategory is CategoryTag.Uncategorized,
-                    onClick = {
-                        onSelectCategory(CategoryTag.Uncategorized)
-                        onDrawerClose()
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-            }
-        }
-
-        val areSubcategoriesEnabled = mainData?.serverState?.areSubcategoriesEnabled == true
-        items(counts?.categoryMap ?: emptyList()) { (category, count) ->
-            AnimatedVisibility(
-                visible = !areCategoriesCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                var showMenu by rememberSaveable { mutableStateOf(false) }
-
-                DrawerItem(
-                    icon = Icons.Filled.Folder,
-                    text = stringResource(
-                        R.string.torrent_list_category_tag_format,
-                        if (!areSubcategoriesEnabled) category else category.split("/").last(),
-                        count,
-                    ),
-                    isSelected = (selectedCategory as? CategoryTag.Item)?.name == category,
-                    onClick = {
-                        onSelectCategory(CategoryTag.Item(category))
-                        onDrawerClose()
-                    },
-                    onLongClick = {
-                        showMenu = true
-                    },
-                    startPadding = if (areSubcategoriesEnabled) (category.count { it == '/' } * 16).dp else 0.dp,
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-                DropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = {
-                        showMenu = false
-                    },
-                    modifier = Modifier.dropdownMenuHeight(),
+            items(statuses) { (status, stringResource, icon) ->
+                AnimatedVisibility(
+                    visible = !areStatesCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
                 ) {
-                    if (areSubcategoriesEnabled) {
+                    var showMenu by rememberSaveable { mutableStateOf(false) }
+
+                    DrawerItem(
+                        icon = icon,
+                        iconModifier = if (status == TorrentFilter.STALLED) {
+                            Modifier.graphicsLayer(scaleX = -1f, rotationZ = 90f)
+                        } else {
+                            Modifier
+                        },
+                        text = stringResource(
+                            R.string.torrent_list_status_format,
+                            stringResource(stringResource),
+                            counts?.stateCountMap?.get(status) ?: 0,
+                        ),
+                        isSelected = selectedFilter == status,
+                        onClick = {
+                            onSelectFilter(status)
+                            onDrawerClose()
+                        },
+                        onLongClick = {
+                            showMenu = true
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = {
+                            showMenu = false
+                        },
+                        modifier = Modifier.dropdownMenuHeight(),
+                    ) {
                         DropdownMenuItem(
                             text = {
-                                Text(text = stringResource(R.string.torrent_list_create_subcategory))
+                                Text(text = stringResource(R.string.torrent_list_status_set_as_default))
                             },
                             onClick = {
                                 showMenu = false
                                 onDrawerClose()
-                                onDialogOpen(Dialog.CreateSubcategory(parent = category))
+                                onSetDefaultTorrentStatus(status)
                             },
                         )
                     }
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_list_edit_category))
-                        },
+                }
+            }
+
+            item {
+                HorizontalDivider()
+            }
+
+            item {
+                DrawerTitleItem(
+                    text = stringResource(R.string.torrent_list_categories),
+                    isCollapsed = areCategoriesCollapsed,
+                    onClick = {
+                        onCollapseCategories()
+                    },
+                    action = {
+                        AnimatedVisibility(
+                            visible = !areCategoriesCollapsed,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .focusProperties {
+                                        canFocus = isDrawerOpen
+                                    }
+                                    .clickable(
+                                        indication = ripple(
+                                            bounded = false,
+                                            radius = 16.dp,
+                                        ),
+                                        interactionSource = null,
+                                    ) {
+                                        onDialogOpen(Dialog.CreateCategory)
+                                        onDrawerClose()
+                                    },
+                            )
+                        }
+                    },
+                    modifier = Modifier.focusProperties {
+                        canFocus = isDrawerOpen
+                    },
+                )
+            }
+
+            item {
+                var showMenu by rememberSaveable { mutableStateOf(false) }
+                AnimatedVisibility(
+                    visible = !areCategoriesCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.Folder,
+                        text = stringResource(
+                            R.string.torrent_list_category_tag_format,
+                            stringResource(R.string.torrent_list_category_tag_all),
+                            counts?.allCount ?: 0,
+                        ),
+                        isSelected = selectedCategory is CategoryTag.All,
                         onClick = {
-                            showMenu = false
+                            onSelectCategory(CategoryTag.All)
                             onDrawerClose()
-                            mainData?.categories?.find { it.name == category }?.let {
-                                onDialogOpen(Dialog.EditCategory(category = it))
-                            }
                         },
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_list_delete_category))
+                        onLongClick = {
+                            showMenu = true
                         },
-                        onClick = {
-                            showMenu = false
-                            onDrawerClose()
-                            onDialogOpen(Dialog.DeleteCategory(category = category))
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
                         },
                     )
                 }
             }
-        }
 
-        item {
-            HorizontalDivider()
-        }
+            item {
+                AnimatedVisibility(
+                    visible = !areCategoriesCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.Folder,
+                        text = stringResource(
+                            R.string.torrent_list_category_tag_format,
+                            stringResource(R.string.torrent_list_uncategorized),
+                            counts?.uncategorizedCount ?: 0,
+                        ),
+                        isSelected = selectedCategory is CategoryTag.Uncategorized,
+                        onClick = {
+                            onSelectCategory(CategoryTag.Uncategorized)
+                            onDrawerClose()
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                }
+            }
 
-        item {
-            DrawerTitleItem(
-                text = stringResource(R.string.torrent_list_tags),
-                isCollapsed = areTagsCollapsed,
-                onClick = {
-                    onCollapseTags()
-                },
-                action = {
-                    AnimatedVisibility(
-                        visible = !areTagsCollapsed,
-                        enter = fadeIn(),
-                        exit = fadeOut(),
+            val areSubcategoriesEnabled = mainData?.serverState?.areSubcategoriesEnabled == true
+            items(counts?.categoryMap ?: emptyList()) { (category, count) ->
+                AnimatedVisibility(
+                    visible = !areCategoriesCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    var showMenu by rememberSaveable { mutableStateOf(false) }
+
+                    DrawerItem(
+                        icon = Icons.Filled.Folder,
+                        text = stringResource(
+                            R.string.torrent_list_category_tag_format,
+                            if (!areSubcategoriesEnabled) category else category.split("/").last(),
+                            count,
+                        ),
+                        isSelected = (selectedCategory as? CategoryTag.Item)?.name == category,
+                        onClick = {
+                            onSelectCategory(CategoryTag.Item(category))
+                            onDrawerClose()
+                        },
+                        onLongClick = {
+                            showMenu = true
+                        },
+                        startPadding = if (areSubcategoriesEnabled) (category.count { it == '/' } * 16).dp else 0.dp,
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = {
+                            showMenu = false
+                        },
+                        modifier = Modifier.dropdownMenuHeight(),
                     ) {
-                        Icon(
-                            imageVector = Icons.Filled.Add,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .focusProperties {
-                                    canFocus = isDrawerOpen
-                                }
-                                .clickable(
-                                    indication = ripple(
-                                        bounded = false,
-                                        radius = 16.dp,
-                                    ),
-                                    interactionSource = null,
-                                ) {
-                                    onDialogOpen(Dialog.CreateTag)
-                                    onDrawerClose()
+                        if (areSubcategoriesEnabled) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(text = stringResource(R.string.torrent_list_create_subcategory))
                                 },
+                                onClick = {
+                                    showMenu = false
+                                    onDrawerClose()
+                                    onDialogOpen(Dialog.CreateSubcategory(parent = category))
+                                },
+                            )
+                        }
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = stringResource(R.string.torrent_list_edit_category))
+                            },
+                            onClick = {
+                                showMenu = false
+                                onDrawerClose()
+                                mainData?.categories?.find { it.name == category }?.let {
+                                    onDialogOpen(Dialog.EditCategory(category = it))
+                                }
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = stringResource(R.string.torrent_list_delete_category))
+                            },
+                            onClick = {
+                                showMenu = false
+                                onDrawerClose()
+                                onDialogOpen(Dialog.DeleteCategory(category = category))
+                            },
                         )
                     }
-                },
-                modifier = Modifier.focusProperties {
-                    canFocus = isDrawerOpen
-                },
-            )
-        }
+                }
+            }
 
-        item {
-            AnimatedVisibility(
-                visible = !areTagsCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.Sell,
-                    text = stringResource(
-                        R.string.torrent_list_category_tag_format,
-                        stringResource(R.string.torrent_list_category_tag_all),
-                        counts?.allCount ?: 0,
-                    ),
-                    isSelected = selectedTag is CategoryTag.All,
+            item {
+                HorizontalDivider()
+            }
+
+            item {
+                DrawerTitleItem(
+                    text = stringResource(R.string.torrent_list_tags),
+                    isCollapsed = areTagsCollapsed,
                     onClick = {
-                        onSelectTag(CategoryTag.All)
-                        onDrawerClose()
+                        onCollapseTags()
+                    },
+                    action = {
+                        AnimatedVisibility(
+                            visible = !areTagsCollapsed,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Add,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .focusProperties {
+                                        canFocus = isDrawerOpen
+                                    }
+                                    .clickable(
+                                        indication = ripple(
+                                            bounded = false,
+                                            radius = 16.dp,
+                                        ),
+                                        interactionSource = null,
+                                    ) {
+                                        onDialogOpen(Dialog.CreateTag)
+                                        onDrawerClose()
+                                    },
+                            )
+                        }
                     },
                     modifier = Modifier.focusProperties {
                         canFocus = isDrawerOpen
                     },
                 )
             }
-        }
 
-        item {
-            AnimatedVisibility(
-                visible = !areTagsCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.Sell,
-                    text = stringResource(
-                        R.string.torrent_list_category_tag_format,
-                        stringResource(R.string.torrent_list_untagged),
-                        counts?.untaggedCount ?: 0,
-                    ),
-                    isSelected = selectedTag is CategoryTag.Uncategorized,
-                    onClick = {
-                        onSelectTag(CategoryTag.Uncategorized)
-                        onDrawerClose()
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-            }
-        }
-
-        items(counts?.tagMap ?: emptyList()) { (tag, count) ->
-            var showMenu by rememberSaveable { mutableStateOf(false) }
-
-            AnimatedVisibility(
-                visible = !areTagsCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.Sell,
-                    text = stringResource(
-                        R.string.torrent_list_category_tag_format,
-                        tag,
-                        count,
-                    ),
-                    isSelected = (selectedTag as? CategoryTag.Item)?.name == tag,
-                    onClick = {
-                        onSelectTag(CategoryTag.Item(tag))
-                        onDrawerClose()
-                    },
-                    onLongClick = {
-                        showMenu = true
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-                DropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = {
-                        showMenu = false
-                    },
-                    modifier = Modifier.dropdownMenuHeight(),
+            item {
+                AnimatedVisibility(
+                    visible = !areTagsCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
                 ) {
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_list_delete_tag))
-                        },
+                    DrawerItem(
+                        icon = Icons.Filled.Sell,
+                        text = stringResource(
+                            R.string.torrent_list_category_tag_format,
+                            stringResource(R.string.torrent_list_category_tag_all),
+                            counts?.allCount ?: 0,
+                        ),
+                        isSelected = selectedTag is CategoryTag.All,
                         onClick = {
-                            showMenu = false
+                            onSelectTag(CategoryTag.All)
                             onDrawerClose()
-                            onDialogOpen(Dialog.DeleteTag(tag = tag))
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
                         },
                     )
                 }
             }
-        }
 
-        item {
-            HorizontalDivider()
-        }
+            item {
+                AnimatedVisibility(
+                    visible = !areTagsCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.Sell,
+                        text = stringResource(
+                            R.string.torrent_list_category_tag_format,
+                            stringResource(R.string.torrent_list_untagged),
+                            counts?.untaggedCount ?: 0,
+                        ),
+                        isSelected = selectedTag is CategoryTag.Uncategorized,
+                        onClick = {
+                            onSelectTag(CategoryTag.Uncategorized)
+                            onDrawerClose()
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                }
+            }
 
-        item {
-            DrawerTitleItem(
-                text = stringResource(R.string.torrent_list_trackers_title),
-                isCollapsed = areTrackersCollapsed,
-                onClick = {
-                    onCollapseTrackers()
-                },
-                modifier = Modifier.focusProperties {
-                    canFocus = isDrawerOpen
-                },
-            )
-        }
+            items(counts?.tagMap ?: emptyList()) { (tag, count) ->
+                var showMenu by rememberSaveable { mutableStateOf(false) }
 
-        item {
-            AnimatedVisibility(
-                visible = !areTrackersCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.LocationOn,
-                    text = stringResource(
-                        R.string.torrent_list_trackers_format,
-                        stringResource(R.string.torrent_list_trackers_all),
-                        counts?.allCount ?: 0,
-                    ),
-                    isSelected = selectedTracker is Tracker.All,
+                AnimatedVisibility(
+                    visible = !areTagsCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.Sell,
+                        text = stringResource(
+                            R.string.torrent_list_category_tag_format,
+                            tag,
+                            count,
+                        ),
+                        isSelected = (selectedTag as? CategoryTag.Item)?.name == tag,
+                        onClick = {
+                            onSelectTag(CategoryTag.Item(tag))
+                            onDrawerClose()
+                        },
+                        onLongClick = {
+                            showMenu = true
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = {
+                            showMenu = false
+                        },
+                        modifier = Modifier.dropdownMenuHeight(),
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(text = stringResource(R.string.torrent_list_delete_tag))
+                            },
+                            onClick = {
+                                showMenu = false
+                                onDrawerClose()
+                                onDialogOpen(Dialog.DeleteTag(tag = tag))
+                            },
+                        )
+                    }
+                }
+            }
+
+            item {
+                HorizontalDivider()
+            }
+
+            item {
+                DrawerTitleItem(
+                    text = stringResource(R.string.torrent_list_trackers_title),
+                    isCollapsed = areTrackersCollapsed,
                     onClick = {
-                        onSelectTracker(Tracker.All)
-                        onDrawerClose()
+                        onCollapseTrackers()
                     },
                     modifier = Modifier.focusProperties {
                         canFocus = isDrawerOpen
                     },
                 )
             }
-        }
 
-        item {
-            AnimatedVisibility(
-                visible = !areTrackersCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.LocationOn,
-                    text = stringResource(
-                        R.string.torrent_list_trackers_format,
-                        stringResource(R.string.torrent_list_trackers_trackerless),
-                        counts?.trackerlessCount ?: 0,
-                    ),
-                    isSelected = selectedTracker is Tracker.Trackerless,
-                    onClick = {
-                        onSelectTracker(Tracker.Trackerless)
-                        onDrawerClose()
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
+            item {
+                AnimatedVisibility(
+                    visible = !areTrackersCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.LocationOn,
+                        text = stringResource(
+                            R.string.torrent_list_trackers_format,
+                            stringResource(R.string.torrent_list_trackers_all),
+                            counts?.allCount ?: 0,
+                        ),
+                        isSelected = selectedTracker is Tracker.All,
+                        onClick = {
+                            onSelectTracker(Tracker.All)
+                            onDrawerClose()
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                }
+            }
+
+            item {
+                AnimatedVisibility(
+                    visible = !areTrackersCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.LocationOn,
+                        text = stringResource(
+                            R.string.torrent_list_trackers_format,
+                            stringResource(R.string.torrent_list_trackers_trackerless),
+                            counts?.trackerlessCount ?: 0,
+                        ),
+                        isSelected = selectedTracker is Tracker.Trackerless,
+                        onClick = {
+                            onSelectTracker(Tracker.Trackerless)
+                            onDrawerClose()
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                }
+            }
+
+            items(mainData?.trackers?.toList() ?: emptyList()) { (tracker, torrentHashes) ->
+                AnimatedVisibility(
+                    visible = !areTrackersCollapsed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    DrawerItem(
+                        icon = Icons.Filled.LocationOn,
+                        text = stringResource(
+                            R.string.torrent_list_trackers_format,
+                            tracker,
+                            torrentHashes.size,
+                        ),
+                        isSelected = (selectedTracker as? Tracker.Named)?.name == tracker,
+                        onClick = {
+                            onSelectTracker(Tracker.Named(tracker))
+                            onDrawerClose()
+                        },
+                        modifier = Modifier.focusProperties {
+                            canFocus = isDrawerOpen
+                        },
+                    )
+                }
+            }
+
+            item {
+                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
             }
         }
 
-        items(mainData?.trackers?.toList() ?: emptyList()) { (tracker, torrentHashes) ->
-            AnimatedVisibility(
-                visible = !areTrackersCollapsed,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically(),
-            ) {
-                DrawerItem(
-                    icon = Icons.Filled.LocationOn,
-                    text = stringResource(
-                        R.string.torrent_list_trackers_format,
-                        tracker,
-                        torrentHashes.size,
-                    ),
-                    isSelected = (selectedTracker as? Tracker.Named)?.name == tracker,
-                    onClick = {
-                        onSelectTracker(Tracker.Named(tracker))
-                        onDrawerClose()
-                    },
-                    modifier = Modifier.focusProperties {
-                        canFocus = isDrawerOpen
-                    },
-                )
-            }
-        }
-
-        item {
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
-        }
+        Spacer(
+            modifier = Modifier
+                .windowInsetsTopHeight(WindowInsets.safeDrawing)
+                .fillMaxWidth()
+                .background(DrawerDefaults.modalContainerColor.copy(alpha = if (isSystemInDarkTheme()) 0.5f else 0.9f)),
+        )
     }
 }
 
