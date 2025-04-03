@@ -285,19 +285,19 @@ private fun SearchStartScreen(
             val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
                 item {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 16.dp, start = 20.dp, end = 20.dp),
-                            verticalArrangement = Arrangement.spacedBy(20.dp),
+                                .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             OutlinedTextField(
                                 value = searchQuery,
@@ -426,8 +426,8 @@ private fun SearchStartScreen(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 8.dp, start = 20.dp, end = 20.dp),
-                            verticalArrangement = Arrangement.spacedBy(20.dp),
+                                .padding(start = 16.dp, end = 16.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Text(
                                 text = stringResource(R.string.search_start_plugins),
@@ -440,9 +440,9 @@ private fun SearchStartScreen(
                                     .fillMaxWidth()
                                     .selectableGroup()
                                     .border(
-                                        width = 1.dp,
+                                        width = OutlinedTextFieldDefaults.UnfocusedBorderThickness,
                                         color = OutlinedTextFieldDefaults.colors().unfocusedIndicatorColor,
-                                        shape = RoundedCornerShape(4.dp),
+                                        shape = OutlinedTextFieldDefaults.shape,
                                     )
                                     .padding(12.dp),
                                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -527,9 +527,9 @@ private fun PluginItem(plugin: Plugin, selectedPlugins: List<String>, onClick: (
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (plugin.name in selectedPlugins) {
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.surfaceContainerHighest
             } else {
-                MaterialTheme.colorScheme.surfaceVariant
+                MaterialTheme.colorScheme.surfaceContainer
             },
         ),
     ) {
@@ -549,11 +549,6 @@ private fun PluginItem(plugin: Plugin, selectedPlugins: List<String>, onClick: (
             Text(
                 text = plugin.fullName,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (plugin.name in selectedPlugins) {
-                    MaterialTheme.colorScheme.onPrimaryContainer
-                } else {
-                    MaterialTheme.colorScheme.onSurfaceVariant
-                },
             )
         }
     }
