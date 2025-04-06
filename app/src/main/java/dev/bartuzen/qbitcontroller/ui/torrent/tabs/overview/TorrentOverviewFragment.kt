@@ -654,7 +654,7 @@ private fun TorrentOverviewTab(
 
                             InfoRow(
                                 label = stringResource(R.string.torrent_overview_comment),
-                                value = properties.comment ?: "-",
+                                value = properties.comment,
                             )
 
                             InfoRow(
