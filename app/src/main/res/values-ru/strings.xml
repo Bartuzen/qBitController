@@ -674,4 +674,8 @@
         <item quantity="many">%1$d лент</item>
         <item quantity="other">%1$d лент</item>
     </plurals>
+    <string name="torrent_overview_piece_downloaded">Загружено</string>
+    <string name="torrent_overview_piece_downloading">Загрузка</string>
+    <string name="torrent_overview_piece_not_downloaded">Не загружено</string>
+    <string name="torrent_overview_piece_map">Карта частей</string>
 </resources>
