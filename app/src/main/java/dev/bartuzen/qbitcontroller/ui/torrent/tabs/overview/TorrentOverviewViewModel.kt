@@ -5,6 +5,9 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.SettingsManager
@@ -15,25 +18,39 @@ import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import java.io.IOException
-import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class TorrentOverviewViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = TorrentOverviewViewModel.Factory::class)
+class TorrentOverviewViewModel @AssistedInject constructor(
+    @Assisted("serverId") private val serverId: Int,
+    @Assisted("torrentHash") private val torrentHash: String,
     settingsManager: SettingsManager,
     @ApplicationContext private val context: Context,
     private val repository: TorrentOverviewRepository,
     private val notifier: TorrentDownloadedNotifier,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(
+            @Assisted("serverId") serverId: Int,
+            @Assisted("torrentHash") torrentHash: String,
+        ): TorrentOverviewViewModel
+    }
+
     private val _torrent = MutableStateFlow<Torrent?>(null)
     val torrent = _torrent.asStateFlow()
 
@@ -49,11 +66,34 @@ class TorrentOverviewViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
-
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updateTorrent(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    private val isScreenActive = MutableStateFlow(false)
+
+    init {
+        loadTorrent()
+
+        viewModelScope.launch {
+            combine(
+                autoRefreshInterval,
+                isNaturalLoading,
+                isScreenActive,
+            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                    delay(autoRefreshInterval.seconds)
+                    loadTorrent(autoRefresh = true)
+                }
+            }
+        }
+    }
+
+    fun setScreenActive(isScreenActive: Boolean) {
+        this.isScreenActive.value = isScreenActive
+    }
+
+    private fun updateTorrent() = viewModelScope.launch {
         val torrentDeferred = async {
             when (val result = repository.getTorrent(serverId, torrentHash)) {
                 is RequestResult.Success -> {
@@ -95,25 +135,28 @@ class TorrentOverviewViewModel @Inject constructor(
         notifier.checkCompleted(serverId, torrent)
     }
 
-    fun loadTorrent(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+    fun loadTorrent(autoRefresh: Boolean = false) {
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updateTorrent(serverId, torrentHash).invokeOnCompletion {
+            updateTorrent().invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
     }
 
-    fun refreshTorrent(serverId: Int, torrentHash: String) {
+    fun refreshTorrent() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateTorrent(serverId, torrentHash).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateTorrent().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun deleteTorrent(serverId: Int, torrentHash: String, deleteFiles: Boolean) = viewModelScope.launch {
+    fun deleteTorrent(deleteFiles: Boolean) = viewModelScope.launch {
         when (val result = repository.deleteTorrent(serverId, torrentHash, deleteFiles)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentDeleted)
@@ -124,10 +167,14 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun pauseTorrent(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    fun pauseTorrent() = viewModelScope.launch {
         when (val result = repository.pauseTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentPaused)
+                launch {
+                    delay(1000)
+                    loadTorrent()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -135,10 +182,14 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun resumeTorrent(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    fun resumeTorrent() = viewModelScope.launch {
         when (val result = repository.resumeTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentResumed)
+                launch {
+                    delay(1000)
+                    loadTorrent()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -147,8 +198,6 @@ class TorrentOverviewViewModel @Inject constructor(
     }
 
     fun setTorrentOptions(
-        serverId: Int,
-        torrentHash: String,
         autoTmm: Boolean?,
         savePath: String?,
         downloadPath: String?,
@@ -228,13 +277,18 @@ class TorrentOverviewViewModel @Inject constructor(
 
         if (!isErrored) {
             eventChannel.send(Event.OptionsUpdated)
+            loadTorrent()
         }
     }
 
-    fun setForceStart(serverId: Int, torrentHash: String, value: Boolean) = viewModelScope.launch {
+    fun setForceStart(value: Boolean) = viewModelScope.launch {
         when (val result = repository.setForceStart(serverId, torrentHash, value)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.ForceStartChanged(value))
+                launch {
+                    delay(1000)
+                    loadTorrent()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -242,10 +296,14 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun setSuperSeeding(serverId: Int, torrentHash: String, value: Boolean) = viewModelScope.launch {
+    fun setSuperSeeding(value: Boolean) = viewModelScope.launch {
         when (val result = repository.setSuperSeeding(serverId, torrentHash, value)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.SuperSeedingChanged(value))
+                launch {
+                    delay(1000)
+                    loadTorrent()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -253,10 +311,14 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun recheckTorrent(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    fun recheckTorrent() = viewModelScope.launch {
         when (val result = repository.recheckTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentRechecked)
+                launch {
+                    delay(1000)
+                    loadTorrent()
+                }
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -264,7 +326,7 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun reannounceTorrent(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    fun reannounceTorrent() = viewModelScope.launch {
         when (val result = repository.reannounceTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentReannounced)
@@ -275,7 +337,7 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun renameTorrent(serverId: Int, torrentHash: String, name: String) = viewModelScope.launch {
+    fun renameTorrent(name: String) = viewModelScope.launch {
         when (val result = repository.renameTorrent(serverId, torrentHash, name)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentRenamed)
@@ -290,10 +352,22 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun setCategory(serverId: Int, torrentHash: String, category: String?) = viewModelScope.launch {
-        when (val result = repository.setCategory(serverId, torrentHash, category)) {
+    private val _categories = MutableStateFlow<List<String>?>(null)
+    val categories = _categories.asStateFlow()
+
+    private val _tags = MutableStateFlow<List<String>?>(null)
+    val tags = _tags.asStateFlow()
+
+    private var categoryJob = Job()
+    private var tagJob = Job()
+
+    fun loadCategories() = viewModelScope.launch(categoryJob) {
+        when (val result = repository.getCategories(serverId)) {
             is RequestResult.Success -> {
-                eventChannel.send(Event.CategoryUpdated)
+                _categories.value = result.data.values
+                    .toList()
+                    .map { it.name }
+                    .sorted()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -301,7 +375,42 @@ class TorrentOverviewViewModel @Inject constructor(
         }
     }
 
-    fun setTags(serverId: Int, torrentHash: String, newTags: List<String>) = viewModelScope.launch {
+    fun resetCategories() {
+        categoryJob.cancel()
+        categoryJob = Job()
+        _categories.value = null
+    }
+
+    fun loadTags() = viewModelScope.launch(tagJob) {
+        when (val result = repository.getTags(serverId)) {
+            is RequestResult.Success -> {
+                _tags.value = result.data.sorted()
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
+    fun resetTags() {
+        tagJob.cancel()
+        tagJob = Job()
+        _tags.value = null
+    }
+
+    fun setCategory(category: String?) = viewModelScope.launch {
+        when (val result = repository.setCategory(serverId, torrentHash, category)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.CategoryUpdated)
+                loadTorrent()
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
+    fun setTags(newTags: List<String>) = viewModelScope.launch {
         val currentTags = torrent.value?.tags ?: emptyList()
 
         val addedTags = newTags.filter { it !in currentTags }
@@ -310,8 +419,7 @@ class TorrentOverviewViewModel @Inject constructor(
         val addedTagsDeferred = async {
             if (addedTags.isNotEmpty()) {
                 when (val result = repository.addTags(serverId, torrentHash, addedTags)) {
-                    is RequestResult.Success -> {
-                    }
+                    is RequestResult.Success -> {}
                     is RequestResult.Error -> {
                         eventChannel.send(Event.Error(result))
                         throw CancellationException()
@@ -322,8 +430,7 @@ class TorrentOverviewViewModel @Inject constructor(
         val removedTagsDeferred = async {
             if (removedTags.isNotEmpty()) {
                 when (val result = repository.removeTags(serverId, torrentHash, removedTags)) {
-                    is RequestResult.Success -> {
-                    }
+                    is RequestResult.Success -> {}
                     is RequestResult.Error -> {
                         eventChannel.send(Event.Error(result))
                         throw CancellationException()
@@ -337,11 +444,12 @@ class TorrentOverviewViewModel @Inject constructor(
             removedTagsDeferred.await()
 
             eventChannel.send(Event.TagsUpdated)
+            loadTorrent()
         } catch (_: CancellationException) {
         }
     }
 
-    fun exportTorrent(serverId: Int, torrentHash: String, fileUri: Uri) = viewModelScope.launch {
+    fun exportTorrent(fileUri: Uri) = viewModelScope.launch {
         when (val result = repository.exportTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 val isSuccessful = writeTorrentFile(fileUri, result.data)

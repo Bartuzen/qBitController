@@ -71,6 +71,34 @@ inline fun <T> AnimatedNullableVisibility(
 }
 
 @Composable
+inline fun <T> AnimatedNullableVisibility(
+    values: List<T?>,
+    modifier: Modifier = Modifier,
+    enter: EnterTransition = fadeIn() + expandIn(),
+    exit: ExitTransition = fadeOut() + shrinkOut(),
+    crossinline content: @Composable (scope: AnimatedVisibilityScope, List<T>) -> Unit,
+) {
+    val ref = remember { Ref<List<T>>() }
+    val nonNullValues = values.filterNotNull()
+
+    if (nonNullValues.size == values.size) {
+        ref.value = nonNullValues
+    }
+
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = nonNullValues.size == values.size,
+        enter = enter,
+        exit = exit,
+        content = {
+            ref.value?.let { values ->
+                content(this, values)
+            }
+        },
+    )
+}
+
+@Composable
 fun measureTextWidth(text: String, style: TextStyle = LocalTextStyle.current): Dp {
     val textMeasurer = rememberTextMeasurer()
     val widthInPixels = textMeasurer.measure(text, style).size.width
