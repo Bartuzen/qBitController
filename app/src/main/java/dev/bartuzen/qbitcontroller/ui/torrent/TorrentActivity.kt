@@ -12,7 +12,6 @@ import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersFragment
-import dev.bartuzen.qbitcontroller.ui.torrent.tabs.pieces.TorrentPiecesFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersFragment
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsFragment
 import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
@@ -53,15 +52,14 @@ class TorrentActivity : AppCompatActivity() {
         }
 
         binding.viewPager.adapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount() = 6
+            override fun getItemCount() = 5
 
             override fun createFragment(position: Int) = when (position) {
                 0 -> TorrentOverviewFragment(serverId, torrentHash, torrentName)
                 1 -> TorrentFilesFragment(serverId, torrentHash)
-                2 -> TorrentPiecesFragment(serverId, torrentHash)
-                3 -> TorrentTrackersFragment(serverId, torrentHash)
-                4 -> TorrentPeersFragment(serverId, torrentHash)
-                5 -> TorrentWebSeedsFragment(serverId, torrentHash)
+                2 -> TorrentTrackersFragment(serverId, torrentHash)
+                3 -> TorrentPeersFragment(serverId, torrentHash)
+                4 -> TorrentWebSeedsFragment(serverId, torrentHash)
                 else -> Fragment()
             }
         }.apply {
@@ -72,10 +70,9 @@ class TorrentActivity : AppCompatActivity() {
             val resId = when (position) {
                 0 -> R.string.torrent_tab_overview
                 1 -> R.string.torrent_tab_files
-                2 -> R.string.torrent_tab_pieces
-                3 -> R.string.torrent_tab_trackers
-                4 -> R.string.torrent_tab_peers
-                5 -> R.string.torrent_tab_web_seeds
+                2 -> R.string.torrent_tab_trackers
+                3 -> R.string.torrent_tab_peers
+                4 -> R.string.torrent_tab_web_seeds
                 else -> return@TabLayoutMediator
             }
 

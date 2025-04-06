@@ -232,7 +232,6 @@
 
     <string name="torrent_tab_overview">Overview</string>
     <string name="torrent_tab_files">Files</string>
-    <string name="torrent_tab_pieces">Pieces</string>
     <string name="torrent_tab_trackers">Trackers</string>
     <string name="torrent_tab_peers">Peers</string>
     <string name="torrent_tab_web_seeds">HTTP Sources</string>
@@ -301,6 +300,11 @@
     <string name="torrent_no_categories">Couldn\'t find any categories.</string>
     <string name="torrent_no_tags">Couldn\'t find any tags.</string>
 
+    <string name="torrent_overview_piece_map">Piece Map</string>
+    <string name="torrent_overview_piece_downloaded">Downloaded</string>
+    <string name="torrent_overview_piece_downloading">Downloading</string>
+    <string name="torrent_overview_piece_not_downloaded">Not downloaded</string>
+
     <string name="torrent_overview_information">Information</string>
     <string name="torrent_overview_total_size">Total Size</string>
     <string name="torrent_overview_added_on">Added On</string>
@@ -361,10 +365,6 @@
     <string name="torrent_files_file_renamed_success">File renamed successfully</string>
     <string name="torrent_files_folder_renamed_success">Folder renamed successfully</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Path is invalid or already in use.</string>
-
-    <string name="torrent_pieces">PIECES</string>
-    <string name="torrent_piece_size">PIECE SIZE</string>
-    <string name="torrent_piece_map">PIECE MAP</string>
 
     <string name="torrent_trackers_action_delete">Delete</string>
     <string name="torrent_trackers_action_add">Add Trackers</string>

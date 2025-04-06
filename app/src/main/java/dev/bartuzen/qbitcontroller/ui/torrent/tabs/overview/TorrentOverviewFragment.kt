@@ -20,9 +20,12 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -35,11 +38,14 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -51,6 +57,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -71,8 +78,11 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.ComposeView
@@ -98,6 +108,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
+import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentState
@@ -130,6 +141,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import java.text.DecimalFormatSymbols
+import kotlin.math.ceil
 
 @AndroidEntryPoint
 class TorrentOverviewFragment() : Fragment() {
@@ -210,6 +222,7 @@ private fun TorrentOverviewTab(
 
     val torrent by viewModel.torrent.collectAsStateWithLifecycle()
     val torrentProperties by viewModel.torrentProperties.collectAsStateWithLifecycle()
+    val pieces by viewModel.torrentPieces.collectAsStateWithLifecycle()
     val categories by viewModel.categories.collectAsStateWithLifecycle()
     val tags by viewModel.tags.collectAsStateWithLifecycle()
 
@@ -539,6 +552,14 @@ private fun TorrentOverviewTab(
         }
     }
 
+    var showPiecesSheet by rememberSaveable { mutableStateOf(false) }
+    if (showPiecesSheet) {
+        PiecesBottomSheet(
+            pieces = pieces ?: emptyList(),
+            onDismiss = { showPiecesSheet = false },
+        )
+    }
+
     PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = { viewModel.refreshTorrent() },
@@ -575,6 +596,31 @@ private fun TorrentOverviewTab(
                     torrent = torrent,
                     modifier = Modifier.fillMaxWidth(),
                 )
+
+                ElevatedCard(
+                    onClick = { showPiecesSheet = true },
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.torrent_overview_pieces),
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                        )
+
+                        PieceBar(
+                            pieces = pieces ?: emptyList(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(24.dp)
+                                .clip(RoundedCornerShape(4.dp)),
+                        )
+                    }
+                }
 
                 val labelWidth = listOfNotNull(
                     R.string.torrent_overview_total_size,
@@ -908,6 +954,63 @@ private fun Progress(torrent: Torrent, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+private fun PieceBar(pieces: List<PieceState>, modifier: Modifier) {
+    val pieceGroups = remember(pieces) {
+        if (pieces.isEmpty()) {
+            emptyList()
+        } else {
+            val groups = mutableListOf<Triple<PieceState, Int, Int>>()
+            var startIndex = 0
+            var currentState = pieces[0]
+
+            for (i in 1 until pieces.size) {
+                if (pieces[i] != currentState) {
+                    groups.add(Triple(currentState, startIndex, i))
+                    startIndex = i
+                    currentState = pieces[i]
+                }
+            }
+
+            groups.add(Triple(currentState, startIndex, pieces.size))
+            groups
+        }
+    }
+
+    val color = MaterialTheme.colorScheme.primary
+    Canvas(modifier = modifier) {
+        if (pieces.isEmpty()) {
+            drawRect(
+                color = color,
+                size = size,
+                alpha = 0.25f,
+            )
+            return@Canvas
+        }
+
+        val pieceWidth = size.width / pieces.size
+
+        pieceGroups.forEach { (state, startIndex, endIndex) ->
+            val x = if (layoutDirection == LayoutDirection.Rtl) {
+                size.width - (endIndex * pieceWidth)
+            } else {
+                startIndex * pieceWidth
+            }
+
+            drawRect(
+                color = color,
+                topLeft = Offset(x, 0f),
+                size = Size(width = (endIndex - startIndex) * pieceWidth, height = size.height),
+                alpha = when (state) {
+                    PieceState.NOT_DOWNLOADED -> 0.25f
+                    PieceState.DOWNLOADING -> 0.5f
+                    PieceState.DOWNLOADED -> 1f
+                },
+            )
+        }
+    }
+}
+
 private val LocalLabelWidth = staticCompositionLocalOf { 0.dp }
 
 @Composable
@@ -937,6 +1040,113 @@ private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier
         } else {
             Text(text = "-")
         }
+    }
+}
+
+@Composable
+private fun PiecesBottomSheet(pieces: List<PieceState>, onDismiss: () -> Unit, modifier: Modifier = Modifier) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top)),
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(horizontal = 12.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.torrent_overview_piece_map),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
+
+            val color = MaterialTheme.colorScheme.primary
+            FlowRow(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                LegendItem(
+                    color = color.copy(alpha = 0.25f),
+                    label = stringResource(R.string.torrent_overview_piece_not_downloaded),
+                )
+                LegendItem(
+                    color = color.copy(alpha = 0.5f),
+                    label = stringResource(R.string.torrent_overview_piece_downloading),
+                )
+                LegendItem(
+                    color = color.copy(alpha = 1f),
+                    label = stringResource(R.string.torrent_overview_piece_downloaded),
+                )
+            }
+
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                val pieceSize = 16.dp
+                val spacing = 4.dp
+                val piecesPerRow = (maxWidth / (pieceSize + spacing)).toInt().coerceAtLeast(1)
+                val rows = ceil(pieces.size.toFloat() / piecesPerRow).toInt()
+
+                LazyColumn(
+                    contentPadding = PaddingValues(bottom = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(spacing),
+                ) {
+                    items(rows) { rowIndex ->
+                        val startIndex = rowIndex * piecesPerRow
+                        val endIndex = minOf((rowIndex + 1) * piecesPerRow, pieces.size)
+                        val rowPieces = pieces.slice(startIndex until endIndex)
+
+                        Canvas(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(pieceSize),
+                        ) {
+                            val pieceSizePx = pieceSize.toPx()
+                            val spacingPx = spacing.toPx()
+
+                            val rowWidth = (pieceSize + spacing) * piecesPerRow - spacing
+                            val startPaddingPx = ((maxWidth - rowWidth) / 2).toPx()
+
+                            rowPieces.forEachIndexed { colIndex, piece ->
+                                val x = (colIndex * (pieceSizePx + spacingPx) + startPaddingPx).let {
+                                    if (layoutDirection == LayoutDirection.Rtl) size.width - pieceSizePx - it else it
+                                }
+
+                                drawRect(
+                                    color = color,
+                                    topLeft = Offset(x, 0f),
+                                    size = Size(pieceSizePx, pieceSizePx),
+                                    alpha = when (piece) {
+                                        PieceState.NOT_DOWNLOADED -> 0.25f
+                                        PieceState.DOWNLOADING -> 0.5f
+                                        PieceState.DOWNLOADED -> 1f
+                                    },
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LegendItem(color: Color, label: String, modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier,
+    ) {
+        Canvas(modifier = Modifier.size(12.dp)) {
+            drawRect(
+                color = color,
+                size = size,
+            )
+        }
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 

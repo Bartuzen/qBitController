@@ -17,6 +17,10 @@ class TorrentOverviewRepository @Inject constructor(
         service.getTorrentProperties(hash)
     }
 
+    suspend fun getPieces(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
+        service.getTorrentPieces(hash)
+    }
+
     suspend fun deleteTorrent(serverId: Int, hash: String, deleteFiles: Boolean) =
         requestManager.request(serverId) { service ->
             service.deleteTorrents(hash, deleteFiles)
