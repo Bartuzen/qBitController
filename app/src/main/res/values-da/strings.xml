@@ -163,7 +163,6 @@
     <string name="torrent_action_copy_hash_v1">Hash v1</string>
     <string name="torrent_action_copy_hash_v2">Hash v2</string>
     <string name="torrent_action_export">Eksport af .torrent</string>
-    <string name="torrent_tab_pieces">Stykker</string>
     <string name="torrent_tab_peers">Modparter</string>
     <string name="torrent_tab_web_seeds">HTTP Kilder</string>
     <string name="torrent_action_force_recheck">Tving Gentjek</string>

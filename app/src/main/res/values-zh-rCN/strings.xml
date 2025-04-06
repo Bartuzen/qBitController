@@ -188,7 +188,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">概览</string>
     <string name="torrent_tab_files">文件</string>
-    <string name="torrent_tab_pieces">区块</string>
     <string name="torrent_tab_trackers">Trackers</string>
     <string name="torrent_tab_peers">用户</string>
     <string name="torrent_tab_web_seeds">HTTP 源</string>
@@ -295,9 +294,6 @@
     <string name="torrent_files_file_renamed_success">已成功重命名文件</string>
     <string name="torrent_files_folder_renamed_success">文件夹重命名成功</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">该路径无效或已被使用。</string>
-    <string name="torrent_pieces">区块</string>
-    <string name="torrent_piece_size">区块大小</string>
-    <string name="torrent_piece_map">区块地图</string>
     <string name="torrent_trackers_action_delete">删除</string>
     <string name="torrent_trackers_action_add">添加 Trackers</string>
     <string name="torrent_trackers_edit_hint">Tracker 地址</string>

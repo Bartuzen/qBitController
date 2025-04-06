@@ -148,7 +148,6 @@
     <string name="torrent_action_copy">Copiar</string>
     <string name="torrent_action_export">Exportar .torrent</string>
     <string name="torrent_list_status_error">Erro</string>
-    <string name="torrent_tab_pieces">Peças</string>
     <string name="torrent_list_create_category_success">Categoria criada com sucesso.</string>
     <string name="torrent_list_edit_category_success">Categoria editada com sucesso.</string>
     <string name="torrent_list_create_category_download_path_yes">Sim</string>
@@ -272,7 +271,6 @@
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_action_priority">Prioridade</string>
     <string name="torrent_files_action_rename">Renomear</string>
-    <string name="torrent_piece_map">MAPA DE PARTE</string>
     <string name="torrent_trackers_action_delete">Eliminar</string>
     <string name="torrent_trackers_action_add">Adicionar Rastreadores</string>
     <string name="torrent_trackers_edit_hint">URL do Rastreador</string>
@@ -307,8 +305,6 @@
     </plurals>
     <string name="torrent_files_rename_file">Renomear Ficheiro</string>
     <string name="torrent_files_rename_folder">Renomear Pasta</string>
-    <string name="torrent_pieces">PARTES</string>
-    <string name="torrent_piece_size">TAMANHO DE PARTE</string>
     <string name="torrent_trackers_downloaded">Transferido</string>
     <string name="torrent_disable_force_start_success">Início forçado desativado com sucesso.</string>
     <string name="torrent_queueing_is_not_enabled">Fila de torrents não está activada.</string>

@@ -177,7 +177,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Genel</string>
     <string name="torrent_tab_files">Dosyalar</string>
-    <string name="torrent_tab_pieces">Parçalar</string>
     <string name="torrent_tab_trackers">İzleyiciler</string>
     <string name="torrent_tab_peers">Kişiler</string>
     <string name="torrent_tab_web_seeds">HTTP Kaynakları</string>
@@ -261,11 +260,8 @@
     <string name="torrent_files_rename_file">Dosyayı Yeniden Adlandır</string>
     <string name="torrent_files_rename_file_hint">Dosya Adı</string>
     <string name="torrent_files_rename_folder_hint">Klasör Adı</string>
-    <string name="torrent_piece_size">PARÇA BOYUTU</string>
-    <string name="torrent_piece_map">PARÇA HARİTASI</string>
     <string name="torrent_files_folder_renamed_success">Klasör başarıyla yeniden adlandırıldı</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Yol geçersiz veya zaten kullanımda.</string>
-    <string name="torrent_pieces">PARÇALAR</string>
     <string name="torrent_trackers_action_delete">Sil</string>
     <string name="torrent_trackers_action_add">İzleyici Ekle</string>
     <string name="torrent_trackers_edit_hint">İzleyici URL\'leri</string>

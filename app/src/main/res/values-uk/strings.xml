@@ -190,7 +190,6 @@
     <string name="stats_ms_format">%1$d мс</string>
     <string name="torrent_tab_overview">Огляд</string>
     <string name="torrent_tab_files">Файли</string>
-    <string name="torrent_tab_pieces">Частини</string>
     <string name="torrent_tab_trackers">Відстежувачі</string>
     <string name="torrent_tab_peers">Піри</string>
     <string name="torrent_tab_web_seeds">Вебсіди</string>
@@ -265,9 +264,6 @@
     <string name="torrent_add_download_speed_limit">Ліміт швидкості завантаження</string>
     <string name="torrent_add_upload_speed_limit">Ліміт швидкості вивантаження</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Невірний шлях або вже використовується.</string>
-    <string name="torrent_pieces">ЧАСТИНИ</string>
-    <string name="torrent_piece_size">РОЗМІР ЧАСТИНИ</string>
-    <string name="torrent_piece_map">МАПА ЧАСТИН</string>
     <string name="torrent_trackers_action_delete">Видалити</string>
     <string name="torrent_trackers_downloaded">Завантажено</string>
     <string name="torrent_trackers_action_add">Додати відстежувачі</string>

@@ -127,7 +127,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Oversikt</string>
     <string name="torrent_tab_files">Filer</string>
-    <string name="torrent_tab_pieces">Deler</string>
     <string name="torrent_tab_trackers">Sporere</string>
     <string name="torrent_tab_peers">Likemenn</string>
     <string name="torrent_tab_web_seeds">HTTP-kilder</string>
@@ -337,8 +336,6 @@
     <string name="torrent_overview_downloaded_format">%1$s (%2$s denne økten)</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_priority_update_success">Filprioritet oppdatert.</string>
-    <string name="torrent_piece_size">Delstørrelse</string>
-    <string name="torrent_piece_map">Delekart</string>
     <string name="torrent_trackers_leeches">Hentere</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_banned">Likemenn bannlyst.</string>
@@ -394,7 +391,6 @@
         <item quantity="one">%1$d sporer slettet</item>
         <item quantity="other">%1$d sporere slettet</item>
     </plurals>
-    <string name="torrent_pieces">Deler</string>
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="one">Slett %1$d sporer\?</item>
         <item quantity="other">Slett %1$d sporere\?</item>

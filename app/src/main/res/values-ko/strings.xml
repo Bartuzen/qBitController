@@ -164,7 +164,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">개요</string>
     <string name="torrent_tab_files">파일</string>
-    <string name="torrent_tab_pieces">조각</string>
     <string name="torrent_tab_web_seeds">HTTP 소스</string>
     <string name="torrent_delete">토렌트 삭제</string>
     <string name="torrent_delete_files">디스크에 있는 파일도 삭제</string>
@@ -263,8 +262,6 @@
     <string name="torrent_files_rename_file_hint">파일 이름</string>
     <string name="torrent_files_priority_update_success">파일 우선순위가 성공적으로 업데이트 되었습니다.</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">경로가 잘못되었거나 이미 사용중입니다.</string>
-    <string name="torrent_piece_size">조각 크기</string>
-    <string name="torrent_piece_map">조각 지도</string>
     <string name="torrent_trackers_edit_hint">트래커 URL</string>
     <string name="torrent_peers_details_progress">진행률: %1$s%%</string>
     <string name="torrent_peers_flag_peer_from_dht">DHT 피어</string>
@@ -312,7 +309,6 @@
     <string name="torrent_files_rename_folder_hint">폴더 이름</string>
     <string name="torrent_files_action_rename">이름 바꾸기</string>
     <string name="torrent_files_folder_renamed_success">폴더 이름이 성공적으로 바뀜</string>
-    <string name="torrent_pieces">조각</string>
     <string name="torrent_trackers_action_add">트래커 추가</string>
     <string name="torrent_trackers_message">메시지: %1$s</string>
     <string name="torrent_trackers_downloaded">내려받음</string>

@@ -309,7 +309,6 @@
     <string name="torrent_list_priority_minimize_success">Перемещён в конец очереди.</string>
     <string name="torrent_tab_overview">Обзор</string>
     <string name="torrent_tab_files">Файлы</string>
-    <string name="torrent_tab_pieces">Части</string>
     <string name="torrent_tab_trackers">Трекеры</string>
     <string name="torrent_tab_peers">Пиры</string>
     <string name="torrent_tab_web_seeds">Веб-сиды</string>
@@ -358,9 +357,6 @@
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">Приоритет загрузки</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Путь загрузки неверный или уже занят.</string>
-    <string name="torrent_pieces">ЧАСТИ</string>
-    <string name="torrent_piece_size">РАЗМЕР ЧАСТЕЙ</string>
-    <string name="torrent_piece_map">КАРТА ЧАСТЕЙ</string>
     <string name="torrent_trackers_peers">Пиры</string>
     <string name="torrent_trackers_message">Сообщение: %1$s</string>
     <string name="torrent_trackers_add_hint">Трекеры</string>

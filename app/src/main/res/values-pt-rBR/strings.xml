@@ -228,7 +228,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_list_status_error">Erro</string>
     <string name="torrent_tab_files">Arquivos</string>
-    <string name="torrent_tab_pieces">Pedaços</string>
     <string name="torrent_tab_overview">Geral</string>
     <string name="torrent_tab_trackers">Rastreadores</string>
     <string name="torrent_tab_peers">Peers</string>
@@ -321,9 +320,6 @@
     <string name="torrent_files_priority_update_success">Arquivos prioritários atualizados com sucesso.</string>
     <string name="torrent_files_file_renamed_success">Arquivo renomeado com sucesso</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">O caminho é inválido ou já esta em uso.</string>
-    <string name="torrent_pieces">PEDAÇOS</string>
-    <string name="torrent_piece_size">TAMANHO DOS PEDAÇOS</string>
-    <string name="torrent_piece_map">MAPA DOS PEDAÇOS</string>
     <string name="torrent_trackers_action_delete">Excluir</string>
     <string name="torrent_trackers_action_add">Adicionar rastreadores</string>
     <string name="torrent_trackers_edit_hint">URL do rastreador</string>
