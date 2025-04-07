@@ -657,4 +657,8 @@
         <item quantity="many">%1$d canales</item>
         <item quantity="other">%1$d canales</item>
     </plurals>
+    <string name="torrent_overview_piece_downloaded">Descargado</string>
+    <string name="torrent_overview_piece_not_downloaded">No descargado</string>
+    <string name="torrent_overview_piece_downloading">Descargando</string>
+    <string name="torrent_overview_piece_map">Mapa de piezas</string>
 </resources>
