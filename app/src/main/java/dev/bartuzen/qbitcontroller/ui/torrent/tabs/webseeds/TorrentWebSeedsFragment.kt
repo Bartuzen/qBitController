@@ -153,6 +153,9 @@ private fun TorrentWebSeedsTab(
             ) { webSeed ->
                 WebSeedItem(
                     webSeed = webSeed,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItem(),
                 )
             }
             item {
@@ -186,9 +189,7 @@ private fun TorrentWebSeedsTab(
 
 @Composable
 private fun WebSeedItem(webSeed: String, modifier: Modifier = Modifier) {
-    ElevatedCard(
-        modifier = modifier.fillMaxWidth(),
-    ) {
+    ElevatedCard(modifier = modifier) {
         Text(
             text = webSeed,
             style = MaterialTheme.typography.titleMedium,
