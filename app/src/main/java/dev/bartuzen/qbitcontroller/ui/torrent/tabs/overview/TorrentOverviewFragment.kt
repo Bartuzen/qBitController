@@ -105,6 +105,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
@@ -255,7 +256,7 @@ private fun TorrentOverviewTab(
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menuInflater.inflate(R.menu.torrent, menu)
 
-                    scope.launch {
+                    fragment.lifecycleScope.launch {
                         viewModel.torrent.collectLatest { torrent ->
                             val tags = menu.findItem(R.id.menu_tags)
                             val resume = menu.findItem(R.id.menu_resume)
