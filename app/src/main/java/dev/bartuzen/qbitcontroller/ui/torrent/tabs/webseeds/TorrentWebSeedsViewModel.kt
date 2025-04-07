@@ -2,22 +2,35 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentWebSeedsRepository
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class TorrentWebSeedsViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = TorrentWebSeedsViewModel.Factory::class)
+class TorrentWebSeedsViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentWebSeedsRepository,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int, torrentHash: String): TorrentWebSeedsViewModel
+    }
+
     private val _webSeeds = MutableStateFlow<List<String>?>(null)
     val webSeeds = _webSeeds.asStateFlow()
 
@@ -30,11 +43,34 @@ class TorrentWebSeedsViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
-
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updateWebSeeds(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    private val isScreenActive = MutableStateFlow(false)
+
+    init {
+        loadWebSeeds()
+
+        viewModelScope.launch {
+            combine(
+                autoRefreshInterval,
+                isNaturalLoading,
+                isScreenActive,
+            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                    delay(autoRefreshInterval.seconds)
+                    loadWebSeeds(autoRefresh = true)
+                }
+            }
+        }
+    }
+
+    fun setScreenActive(isScreenActive: Boolean) {
+        this.isScreenActive.value = isScreenActive
+    }
+
+    private fun updateWebSeeds() = viewModelScope.launch {
         when (val result = repository.getWebSeeds(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 _webSeeds.value = result.data.map { it.url }
@@ -49,20 +85,23 @@ class TorrentWebSeedsViewModel @Inject constructor(
         }
     }
 
-    fun loadWebSeeds(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+    private fun loadWebSeeds(autoRefresh: Boolean = false) {
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updateWebSeeds(serverId, torrentHash).invokeOnCompletion {
+            updateWebSeeds().invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
     }
 
-    fun refreshWebSeeds(serverId: Int, torrentHash: String) {
+    fun refreshWebSeeds() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateWebSeeds(serverId, torrentHash).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateWebSeeds().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
