@@ -672,4 +672,8 @@
     </plurals>
     <string name="rss_rule_item_enabled">Увімкнено</string>
     <string name="rss_rule_item_disabled">Вимкнено</string>
+    <string name="torrent_overview_piece_map">Шматкова карта</string>
+    <string name="torrent_overview_piece_downloaded">Завантажено</string>
+    <string name="torrent_overview_piece_downloading">Завантаження</string>
+    <string name="torrent_overview_piece_not_downloaded">Не завантажено</string>
 </resources>
