@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
-import android.R.attr.singleLine
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle

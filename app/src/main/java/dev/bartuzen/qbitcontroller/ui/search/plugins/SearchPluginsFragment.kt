@@ -1,6 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.search.plugins
 
-import android.R.attr.maxLines
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
