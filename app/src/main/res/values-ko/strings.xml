@@ -310,7 +310,6 @@
     <string name="torrent_files_action_rename">이름 바꾸기</string>
     <string name="torrent_files_folder_renamed_success">폴더 이름이 성공적으로 바뀜</string>
     <string name="torrent_trackers_action_add">트래커 추가</string>
-    <string name="torrent_trackers_message">메시지: %1$s</string>
     <string name="torrent_trackers_downloaded">내려받음</string>
     <string name="torrent_trackers_add_hint">트래커</string>
     <string name="torrent_trackers_action_edit">트래커 수정</string>
@@ -330,12 +329,10 @@
     <string name="torrent_peers_details_flags">플래그: %1$s</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">관심 있음 (피어) / 혼잡 해소됨 (로컬)</string>
     <string name="torrent_trackers_edited">트래커가 성공적으로 수정되었습니다.</string>
-    <string name="torrent_trackers_cannot_delete_default">기본 트래커를 삭제할 수 없습니다.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_flags">플래그: %1$s</string>
     <string name="torrent_peers_country">국가: %1$s</string>
     <string name="torrent_peers_connection">연결: %1$s</string>
-    <string name="torrent_trackers_cannot_edit_default">기본 트래커를 수정할 수 없습니다.</string>
     <string name="torrent_peers_action_ban">피어 차단</string>
     <string name="torrent_peers_add_hint">피어</string>
     <string name="torrent_peers_action_add">피어 추가</string>

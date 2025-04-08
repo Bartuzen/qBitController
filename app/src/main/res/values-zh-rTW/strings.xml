@@ -109,7 +109,6 @@
     <string name="torrent_files_rename_file">重新命名檔案</string>
     <string name="torrent_trackers_peers">使用者</string>
     <string name="torrent_trackers_downloaded">已下載</string>
-    <string name="torrent_trackers_message">消息：%1$s</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="other">是否確認要封鎖 %1$d 名使用者？</item>
     </plurals>
@@ -504,7 +503,6 @@
         <item quantity="other">已選擇 %1$d 個 Tracker</item>
     </plurals>
     <string name="torrent_trackers_edited">已成功編輯 Tracker。</string>
-    <string name="torrent_trackers_cannot_delete_default">你無法刪除預設 Trackers。</string>
     <string name="torrent_peers_country">地區：%1$s</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_connection">連接：%1$s</string>
@@ -596,7 +594,6 @@
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="other">是否確認要刪除 %1$d 個 Tracker？</item>
     </plurals>
-    <string name="torrent_trackers_cannot_edit_default">你無法編輯預設 Trackers。</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="other">封鎖 %1$d 名使用者</item>
     </plurals>

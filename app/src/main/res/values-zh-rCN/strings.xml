@@ -301,7 +301,6 @@
     <string name="torrent_trackers_seeds">种子</string>
     <string name="torrent_trackers_leeches">下载</string>
     <string name="torrent_trackers_downloaded">已下载</string>
-    <string name="torrent_trackers_message">消息：%1$s</string>
     <string name="torrent_trackers_add_hint">Trackers</string>
     <string name="torrent_trackers_action_edit">编辑 Tracker</string>
     <plurals name="torrent_trackers_delete_title">
@@ -316,8 +315,6 @@
     <string name="torrent_trackers_added">已成功添加 Trackers。</string>
     <string name="torrent_trackers_deleted">已成功删除 Trackers。</string>
     <string name="torrent_trackers_edited">已成功编辑 Tracker。</string>
-    <string name="torrent_trackers_cannot_delete_default">你无法删除默认 Trackers。</string>
-    <string name="torrent_trackers_cannot_edit_default">你无法编辑默认 Trackers。</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker 地址不得为空。</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">地区：%1$s</string>

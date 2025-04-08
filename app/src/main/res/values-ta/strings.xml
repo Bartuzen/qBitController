@@ -89,7 +89,6 @@
     <string name="torrent_trackers_seeds">விதைகள்</string>
     <string name="torrent_trackers_leeches">லீச்சச்</string>
     <string name="torrent_trackers_downloaded">பதிவிறக்கம்</string>
-    <string name="torrent_trackers_message">செய்தி: %1$s</string>
     <string name="torrent_trackers_action_edit">டிராக்கரைத் திருத்து</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">%1$d டிராக்கரை நீக்கு</item>
@@ -106,8 +105,6 @@
     <string name="torrent_trackers_added">டிராக்கர்கள் வெற்றிகரமாக சேர்க்கப்பட்டன.</string>
     <string name="torrent_trackers_deleted">டிராக்கர்கள் வெற்றிகரமாக நீக்கப்பட்டன.</string>
     <string name="torrent_trackers_edited">டிராக்கர் வெற்றிகரமாக திருத்தப்பட்டது.</string>
-    <string name="torrent_trackers_cannot_delete_default">இயல்புநிலை டிராக்கர்களை நீக்க முடியாது.</string>
-    <string name="torrent_trackers_cannot_edit_default">இயல்புநிலை டிராக்கர்களை நீங்கள் திருத்த முடியாது.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">நாடு: %1$s</string>
     <string name="torrent_peers_connection">இணைப்பு: %1$s</string>

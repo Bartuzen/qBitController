@@ -266,7 +266,6 @@
     <string name="torrent_overview_downloaded">Transferido</string>
     <string name="torrent_overview_peers_format">%1$d (%2$d total)</string>
     <string name="torrent_overview_wasted">Desperdício</string>
-    <string name="torrent_trackers_message">Mensagem: %1$s</string>
     <string name="torrent_files_priority_do_not_download">Não Transferir</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_action_priority">Prioridade</string>
@@ -369,7 +368,6 @@
     <string name="torrent_peers_flag_peer_from_lsd">Fonte do LSD</string>
     <string name="torrent_peers_flag_encrypted_traffic">Tráfico encriptado</string>
     <string name="torrent_export_error">Não foi possível exportar torrent.</string>
-    <string name="torrent_trackers_cannot_delete_default">Não pode eliminar rastreadores padrão.</string>
     <string name="torrent_tags_update_success">Etiquetas atualizadas com sucesso.</string>
     <string name="torrent_enable_force_start_success">Inicio forçado activado com sucesso.</string>
     <string name="torrent_option_download_speed_limit">Limite de Velocidade de Transferência (KiB/s)</string>
@@ -389,7 +387,6 @@
     <string name="torrent_peers_add_hint">Pares</string>
     <string name="torrent_peers_details_downloaded">Transferido: %1$s</string>
     <string name="torrent_trackers_added">Rastreadores atualizados com sucesso.</string>
-    <string name="torrent_trackers_cannot_edit_default">Não pode editar rastreadores padrão.</string>
     <string name="torrent_peers_details_connection">Ligação: %1$s</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="one">Tem a certeza que quer banir %1$d peer?</item>

@@ -358,7 +358,6 @@
     <string name="torrent_files_action_priority">Приоритет загрузки</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Путь загрузки неверный или уже занят.</string>
     <string name="torrent_trackers_peers">Пиры</string>
-    <string name="torrent_trackers_message">Сообщение: %1$s</string>
     <string name="torrent_trackers_add_hint">Трекеры</string>
     <string name="torrent_trackers_action_edit">Изменение трекера</string>
     <plurals name="torrent_trackers_delete_title">
@@ -369,7 +368,6 @@
     </plurals>
     <string name="torrent_trackers_added">Трекеры добавлены успешно.</string>
     <string name="torrent_trackers_edited">Трекер изменён успешно.</string>
-    <string name="torrent_trackers_cannot_edit_default">Нельзя редактировать трекеры по умолчанию.</string>
     <string name="torrent_peers_country">Страна: %1$s</string>
     <string name="torrent_peers_connection">Соединения: %1$s</string>
     <string name="torrent_peers_add_hint">Пиры</string>
@@ -613,7 +611,6 @@
     </plurals>
     <string name="torrent_trackers_action_delete">Удалить</string>
     <string name="torrent_trackers_downloaded">Загружено</string>
-    <string name="torrent_trackers_cannot_delete_default">Нельзя удалить трекеры по умолчанию.</string>
     <string name="torrent_peers_details_flags">Флаги: %1$s</string>
     <string name="torrent_peers_details_client">Клиент: %1$s</string>
     <string name="torrent_peers_details_peer_id_client">ИД Клиента: %1$s</string>

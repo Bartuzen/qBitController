@@ -270,8 +270,6 @@
     <string name="torrent_trackers_peers">Kişi</string>
     <string name="torrent_trackers_seeds">Gönderen</string>
     <string name="torrent_trackers_edited">İzleyici başarıyla düzenlendi.</string>
-    <string name="torrent_trackers_cannot_delete_default">Varsayılan izleyicileri silemezsiniz.</string>
-    <string name="torrent_trackers_cannot_edit_default">Varsayılan izleyicileri düzenleyemezsiniz.</string>
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="one">%1$d izleyiciyi silmek istediğinizden emin misiniz\?</item>
         <item quantity="other"/>
@@ -489,7 +487,6 @@
     <string name="torrent_files_rename_folder">Klasörü Yeniden Adlandır</string>
     <string name="torrent_files_priority_update_success">Dosya önceliği başarıyla güncellendi.</string>
     <string name="torrent_files_file_renamed_success">Dosya başarıyla yeniden adlandırıldı</string>
-    <string name="torrent_trackers_message">İleti: %1$s</string>
     <string name="torrent_trackers_add_hint">İzleyiciler</string>
     <string name="torrent_trackers_action_edit">İzleyiciyi Düzenle</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>

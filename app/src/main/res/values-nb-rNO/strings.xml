@@ -183,7 +183,6 @@
     <string name="torrent_trackers_peers">Likemenn</string>
     <string name="torrent_trackers_seeds">Delere</string>
     <string name="torrent_trackers_downloaded">Nedlastet</string>
-    <string name="torrent_trackers_message">Melding: %1$s</string>
     <string name="torrent_trackers_action_edit">Rediger sporer</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">Slett %1$d sporer</item>
@@ -375,7 +374,6 @@
     <string name="torrent_action_force_start">Påtving start</string>
     <string name="torrent_tags_update_success">Etiketter oppdatert.</string>
     <string name="torrent_export_error">Kunne ikke eksportere torrent.</string>
-    <string name="torrent_trackers_cannot_edit_default">Du kan ikke redigere forvalgte sporere.</string>
     <string name="torrent_peers_details_download_speed">Nedlastingshastighet: %1$s</string>
     <string name="torrent_peers_details_downloaded">Nedlastet: %1$s</string>
     <string name="torrent_add_sequential_download">Last ned i sekvensiell rekkefølge</string>

@@ -275,10 +275,8 @@
         <item quantity="many">Вибрано %1$d відстежувачів</item>
         <item quantity="other">Вибрано %1$d відстежувачів</item>
     </plurals>
-    <string name="torrent_trackers_message">Повідомлення: %1$s</string>
     <string name="torrent_trackers_add_hint">Відстежувачі</string>
     <string name="torrent_trackers_action_edit">Редагувати відстежувачі</string>
-    <string name="torrent_trackers_cannot_edit_default">Ви не можете редагувати типові відстежувачі.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Адреса відстежувача не повинна бути пустою.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">Країна: %1$s</string>
@@ -392,7 +390,6 @@
     <string name="rss_confirm_delete_folder">Ви упевнені, що хочете видалити %1$s теку?</string>
     <string name="rss_action_move_select_folder">Виберіть теку</string>
     <string name="torrent_trackers_leeches">Лічери</string>
-    <string name="torrent_trackers_cannot_delete_default">Ви не можете видалити типові відстежувачі.</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Зацікавлений (клієнт) та зайнятий (пір)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">Зацікавлений (пір) та не зайнятий (клієнт)</string>
     <string name="rss_feed_not_found">RSS канал не знайдено.</string>

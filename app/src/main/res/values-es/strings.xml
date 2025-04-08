@@ -425,7 +425,6 @@
     <string name="rss_add_feed_error">No se puede añadir el feed.</string>
     <string name="torrent_add_save_path">Guarda la ruta</string>
     <string name="rss_success_folder_move">Se ha movido una carpeta correctamente.</string>
-    <string name="torrent_trackers_message">Mensaje: %1$s</string>
     <string name="search_result_filter_seeds">Semillas</string>
     <string name="rss_rule_apply_rule_to_feeds">Aplicar una regla a los feeds</string>
     <string name="torrent_overview_last_activity">Última actividad</string>
@@ -444,7 +443,6 @@
     <string name="rss_hint_feed_name">Nombre del feed</string>
     <string name="torrent_peers_flag_incoming_connection">Conexión entrante</string>
     <string name="settings_server_path">Ruta</string>
-    <string name="torrent_trackers_cannot_delete_default">No se pueden eliminar los rastreadores predeterminados.</string>
     <string name="rss_action_rename_feed">Renombrar el feed</string>
     <string name="torrent_add_upload_speed_limit">Límite de la velocidad de subida</string>
     <string name="rss_rename_feed_error">No se puede cambiar el nombre del feed.</string>
@@ -482,7 +480,6 @@
     <string name="torrent_peers_flag_peer_from_dht">Par de DHT</string>
     <string name="torrent_files_rename_file">Cambiar el nombre del archivo</string>
     <string name="settings_server_advanced_basic_auth_username">Usuario</string>
-    <string name="torrent_trackers_cannot_edit_default">No se pueden editar los rastreadores predeterminados.</string>
     <string name="search_result_seeders">Semillas</string>
     <string name="torrent_peers_details_upload_speed">Velocidad de subida: %1$s</string>
     <string name="torrent_add_content_layout_no_subfolder">No crear subcarpeta</string>

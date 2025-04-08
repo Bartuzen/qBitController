@@ -282,7 +282,6 @@
     <string name="torrent_trackers_seeds">Zdroje</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_add_hint">Trackery</string>
-    <string name="torrent_trackers_cannot_delete_default">Nemůžete smazat výchozí trackery.</string>
     <string name="torrent_trackers_url_cannot_be_empty">URL trackeru nesmí být prázdná.</string>
     <string name="torrent_peers_country">Země: %1$s</string>
     <string name="torrent_peers_connection">Připojení: %1$s</string>
@@ -317,7 +316,6 @@
     <string name="torrent_files_error_path_is_invalid_or_in_use">Cesta je neplatná nebo používána.</string>
     <string name="torrent_files_folder_renamed_success">Složka přejmenována úspěšně</string>
     <string name="torrent_trackers_downloaded">Staženo</string>
-    <string name="torrent_trackers_message">Zpráva: %1$s</string>
     <string name="torrent_trackers_action_edit">Upravit tracker</string>
     <string name="torrent_trackers_deleted">Trackery smazány úspěšně.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
@@ -354,7 +352,6 @@
     <string name="torrent_files_priority_maximum">Maximální</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_trackers_added">Trackery přidány úspěšně.</string>
-    <string name="torrent_trackers_cannot_edit_default">Nemůžete upravit výchozí trackery.</string>
     <string name="torrent_peers_flags">Vlajky: %1$s</string>
     <plurals name="torrent_add_files_selected">
         <item quantity="one">%1$d soubor zvolen</item>

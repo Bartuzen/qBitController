@@ -191,8 +191,6 @@
     <string name="torrent_trackers_added">Trackers tilføjet.</string>
     <string name="torrent_trackers_deleted">Trackers slettet.</string>
     <string name="torrent_trackers_edited">Tracker redigeret.</string>
-    <string name="torrent_trackers_cannot_delete_default">Du kan ikke slette standard trackere.</string>
-    <string name="torrent_trackers_cannot_edit_default">Du kan ikke redigere standardtrackere.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker URL kan ikke være tomt.</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d fil valgt</item>
@@ -481,7 +479,6 @@
     <string name="search_start_category_anime">Anime</string>
     <string name="settings_servers">Servere</string>
     <string name="torrent_overview_transfer">Overfør</string>
-    <string name="torrent_trackers_message">Besked: %1$s</string>
     <string name="torrent_add_stop_condition_none">Ingen</string>
     <string name="speed_kibibytes_per_second">KiB/s</string>
     <string name="speed_mebibytes_per_second">MiB/s</string>
