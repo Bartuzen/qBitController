@@ -2,25 +2,38 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTrackersRepository
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class TorrentTrackersViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = TorrentTrackersViewModel.Factory::class)
+class TorrentTrackersViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentTrackersRepository,
 ) : ViewModel() {
-    private val _torrentTrackers = MutableStateFlow<List<TorrentTracker>?>(null)
-    val torrentTrackers = _torrentTrackers.asStateFlow()
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int, torrentHash: String): TorrentTrackersViewModel
+    }
+
+    private val _trackers = MutableStateFlow<List<TorrentTracker>?>(null)
+    val trackers = _trackers.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -31,14 +44,37 @@ class TorrentTrackersViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
-
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updateTrackers(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    private val isScreenActive = MutableStateFlow(false)
+
+    init {
+        loadTrackers()
+
+        viewModelScope.launch {
+            combine(
+                autoRefreshInterval,
+                isNaturalLoading,
+                isScreenActive,
+            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                    delay(autoRefreshInterval.seconds)
+                    loadTrackers(autoRefresh = true)
+                }
+            }
+        }
+    }
+
+    fun setScreenActive(isScreenActive: Boolean) {
+        this.isScreenActive.value = isScreenActive
+    }
+
+    private fun updateTrackers() = viewModelScope.launch {
         when (val result = repository.getTrackers(serverId, torrentHash)) {
             is RequestResult.Success -> {
-                _torrentTrackers.value = result.data
+                _trackers.value = result.data
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
@@ -50,28 +86,32 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun loadTrackers(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+    private fun loadTrackers(autoRefresh: Boolean = false) {
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updateTrackers(serverId, torrentHash).invokeOnCompletion {
+            updateTrackers().invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
     }
 
-    fun refreshTrackers(serverId: Int, torrentHash: String) {
+    fun refreshTrackers() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateTrackers(serverId, torrentHash).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateTrackers().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun addTrackers(serverId: Int, hash: String, urls: List<String>) = viewModelScope.launch {
-        when (val result = repository.addTrackers(serverId, hash, urls)) {
+    fun addTrackers(urls: List<String>) = viewModelScope.launch {
+        when (val result = repository.addTrackers(serverId, torrentHash, urls)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TrackersAdded)
+                loadTrackers()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
@@ -83,10 +123,11 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun deleteTrackers(serverId: Int, hash: String, urls: List<String>) = viewModelScope.launch {
-        when (val result = repository.deleteTrackers(serverId, hash, urls)) {
+    fun deleteTrackers(urls: List<String>) = viewModelScope.launch {
+        when (val result = repository.deleteTrackers(serverId, torrentHash, urls)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TrackersDeleted)
+                loadTrackers()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
@@ -98,10 +139,11 @@ class TorrentTrackersViewModel @Inject constructor(
         }
     }
 
-    fun editTracker(serverId: Int, hash: String, tracker: String, newUrl: String) = viewModelScope.launch {
-        when (val result = repository.editTrackers(serverId, hash, tracker, newUrl)) {
+    fun editTracker(tracker: String, newUrl: String) = viewModelScope.launch {
+        when (val result = repository.editTrackers(serverId, torrentHash, tracker, newUrl)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TrackerEdited)
+                loadTrackers()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {

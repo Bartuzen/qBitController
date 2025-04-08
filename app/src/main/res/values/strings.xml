@@ -373,7 +373,6 @@
     <string name="torrent_trackers_seeds">Seeds</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_downloaded">Downloaded</string>
-    <string name="torrent_trackers_message">Message: %1$s</string>
     <string name="torrent_trackers_add_hint">Trackers</string>
     <string name="torrent_trackers_action_edit">Edit Tracker</string>
     <plurals name="torrent_trackers_delete_title">
@@ -391,8 +390,6 @@
     <string name="torrent_trackers_added">Trackers added successfully.</string>
     <string name="torrent_trackers_deleted">Trackers deleted successfully.</string>
     <string name="torrent_trackers_edited">Tracker edited successfully.</string>
-    <string name="torrent_trackers_cannot_delete_default">You can\'t delete default trackers.</string>
-    <string name="torrent_trackers_cannot_edit_default">You can\'t edit default trackers.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker URL cannot be empty.</string>
 
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
