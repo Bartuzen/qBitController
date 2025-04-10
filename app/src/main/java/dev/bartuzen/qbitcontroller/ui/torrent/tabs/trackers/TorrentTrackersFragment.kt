@@ -535,8 +535,6 @@ private fun StatItem(label: String, value: Int?, icon: ImageVector, modifier: Mo
             text = label,
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
         )
     }
 }
