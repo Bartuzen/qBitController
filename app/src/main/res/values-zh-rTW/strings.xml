@@ -618,4 +618,8 @@
     </plurals>
     <string name="rss_rule_item_disabled">禁用</string>
     <string name="rss_new">新</string>
+    <string name="torrent_overview_piece_map">區塊圖</string>
+    <string name="torrent_overview_piece_downloaded">已下載</string>
+    <string name="torrent_overview_piece_downloading">下載中</string>
+    <string name="torrent_overview_piece_not_downloaded">未下載</string>
 </resources>
