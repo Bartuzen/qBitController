@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -96,6 +98,34 @@ inline fun <T> AnimatedNullableVisibility(
             }
         },
     )
+}
+
+@Composable
+inline fun <T> AnimatedListVisibility(
+    items: List<T>,
+    modifier: Modifier = Modifier,
+    enter: EnterTransition = fadeIn() + expandIn(),
+    exit: ExitTransition = fadeOut() + shrinkOut(),
+    crossinline content: @Composable AnimatedVisibilityScope.(List<T>) -> Unit,
+) {
+    val displayedItems = remember { mutableStateOf(items) }
+
+    LaunchedEffect(items) {
+        if (items.isNotEmpty()) {
+            displayedItems.value = items
+        }
+    }
+
+    val visibleItems = displayedItems.value
+
+    AnimatedVisibility(
+        modifier = modifier,
+        visible = items.isNotEmpty(),
+        enter = enter,
+        exit = exit,
+    ) {
+        content(this, visibleItems)
+    }
 }
 
 @Composable

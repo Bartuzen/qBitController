@@ -182,6 +182,7 @@ dependencies {
     coreLibraryDesugaring(libs.desugar)
 
     implementation(libs.coil)
+    implementation(libs.coil.okhttp)
     implementation(libs.coil.svg)
 
     implementation(libs.htmlConverter)

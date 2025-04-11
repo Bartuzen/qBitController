@@ -173,7 +173,7 @@
     <string name="stats_queued_io_jobs">Kuyruğa Alınmış G/Ç İşi</string>
     <string name="stats_average_time_in_queue">Kuyruktaki Ortalama Süre</string>
     <string name="stats_total_queued_size">Toplam Kuyruğa Alınmış Boyut</string>
-    <string name="stats_percentage_format">%%%1$s</string>
+    <string name="percentage_format">%%%1$s</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Genel</string>
     <string name="torrent_tab_files">Dosyalar</string>
@@ -281,7 +281,6 @@
     <string name="torrent_trackers_added">İzleyiciler başarıyla eklendi.</string>
     <string name="torrent_trackers_deleted">İzleyiciler başarıyla silindi.</string>
     <string name="torrent_trackers_url_cannot_be_empty">İzleyici URL\'si boş olamaz.</string>
-    <string name="torrent_peers_country">Ülke: %1$s</string>
     <string name="torrent_peers_add_hint">Kişiler</string>
     <string name="torrent_add_link_hint">Magnet veya HTTP Bağlantısı</string>
     <string name="torrent_error_not_found">Torrent bulunamadı.</string>
@@ -490,8 +489,6 @@
     <string name="torrent_trackers_add_hint">İzleyiciler</string>
     <string name="torrent_trackers_action_edit">İzleyiciyi Düzenle</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
-    <string name="torrent_peers_connection">Bağlantı: %1$s</string>
-    <string name="torrent_peers_flags">İşaretler: %1$s</string>
     <string name="torrent_peers_action_add">Kişi Ekle</string>
     <string name="torrent_peers_action_ban">Kişi Yasakla</string>
     <plurals name="torrent_peers_ban_title">
@@ -505,17 +502,17 @@
     <string name="torrent_peers_added">Kişiler başarıyla eklendi.</string>
     <string name="torrent_peers_banned">Kişiler başarıyla yasaklandı.</string>
     <string name="torrent_peers_invalid">Girilen kişiler geçerli değildir.</string>
-    <string name="torrent_peers_details_country">Ülke: %1$s</string>
-    <string name="torrent_peers_details_connection">Bağlantı: %1$s</string>
-    <string name="torrent_peers_details_client">İstemci: %1$s</string>
-    <string name="torrent_peers_details_peer_id_client">Kişi Kimliği İstemcisi: %1$s</string>
-    <string name="torrent_peers_details_progress">İlerleme: %%%1$s</string>
-    <string name="torrent_peers_details_download_speed">İndirme Hızı: %1$s</string>
-    <string name="torrent_peers_details_upload_speed">Gönderme Hızı: %1$s</string>
-    <string name="torrent_peers_details_downloaded">İndirilen: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Gönderilen: %1$s</string>
-    <string name="torrent_peers_details_relevance">Uygunluk: %%%1$s</string>
-    <string name="torrent_peers_details_files">Dosyalar: %1$s</string>
+    <string name="torrent_peers_details_country">Ülke</string>
+    <string name="torrent_peers_details_connection">Bağlantı</string>
+    <string name="torrent_peers_details_client">İstemci</string>
+    <string name="torrent_peers_details_peer_id_client">Kişi Kimliği İstemcisi</string>
+    <string name="torrent_peers_details_progress">İlerleme</string>
+    <string name="torrent_peers_details_download_speed">İndirme Hızı</string>
+    <string name="torrent_peers_details_upload_speed">Gönderme Hızı</string>
+    <string name="torrent_peers_details_downloaded">İndirilen</string>
+    <string name="torrent_peers_details_uploaded">Gönderilen</string>
+    <string name="torrent_peers_details_relevance">Uygunluk</string>
+    <string name="torrent_peers_details_section_files">Dosyalar</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">İlgilenen (kişi) ve sıkışan (yerel)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">İlgilenen (kişi) ve sıkışmayan (yerel)</string>
@@ -582,7 +579,7 @@
         <item quantity="one">%1$d kişiyi yasaklamak istediğinize emin misiniz\?</item>
         <item quantity="other"/>
     </plurals>
-    <string name="torrent_peers_details_flags">İşaretler: %1$s</string>
+    <string name="torrent_peers_details_section_flags">İşaretler</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">İlgilenen (yerel) ve sıkışan (kişi)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">İlgilenen (yerel) ve sıkışmayan (kişi)</string>
     <string name="torrent_peers_flag_incoming_connection">Gelen bağlantı</string>

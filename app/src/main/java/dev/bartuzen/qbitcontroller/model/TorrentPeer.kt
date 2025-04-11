@@ -16,6 +16,7 @@ data class TorrentPeer(
     val connection: String,
 
     @SerialName("country_code")
+    @Serializable(with = NullableStringSerializer::class)
     val countryCode: String?,
 
     @SerialName("ip")
@@ -57,7 +58,9 @@ data class TorrentPeer(
     @SerialName("files")
     @Serializable(with = PeerFilesSerializer::class)
     val files: List<String> = emptyList(),
-)
+) {
+    val address = "$ip:$port"
+}
 
 private object PeerFlagSerializer : KSerializer<List<PeerFlag>> {
     override val descriptor: SerialDescriptor = ListSerializer(String.serializer()).descriptor

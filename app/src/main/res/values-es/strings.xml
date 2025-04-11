@@ -167,7 +167,7 @@
     <string name="torrent_list_status_active">Activos</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
     <string name="torrent_list_action_priority_maximize">Maximizar Prioridad</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="stats_category_user_statistics">Estadísticas de Usuario</string>
     <string name="torrent_status_completed">Completados</string>
     <string name="error_api">La API devolvió un error: %1$d</string>
@@ -284,9 +284,9 @@
     <string name="torrent_overview_seeds">Semillas</string>
     <string name="settings_server_name">Nombre</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s en esta sesión)</string>
-    <string name="torrent_peers_details_uploaded">Cargado: %1$s</string>
+    <string name="torrent_peers_details_uploaded">Cargado</string>
     <string name="search_result_action_sort_search_engine">Motor de búsqueda</string>
-    <string name="torrent_peers_details_flags">Banderas: %1$s</string>
+    <string name="torrent_peers_details_section_flags">Banderas</string>
     <string name="rss_action_add_feed">Añadir feed</string>
     <string name="rss_action_add">Añadir</string>
     <string name="torrent_option_share_limit_disable">Desactivar el límite de la cuota</string>
@@ -390,12 +390,12 @@
     <string name="search_plugins_action_save">Guardar</string>
     <string name="settings_title">Ajustes</string>
     <string name="torrent_files_priority_normal">Normal</string>
-    <string name="torrent_peers_details_country">País: %1$s</string>
+    <string name="torrent_peers_details_country">País</string>
     <string name="settings_server_test_configuration">Configuración de prueba</string>
     <string name="torrent_trackers_downloaded">Descargado</string>
     <string name="torrent_add_prioritize_first_last_piece">Descargue primero la primera y la última pieza</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">La ruta no es válida o ya está en uso.</string>
-    <string name="torrent_peers_details_client">Cliente: %1$s</string>
+    <string name="torrent_peers_details_client">Cliente</string>
     <string name="rss_move_folder_error">No se ha podido mover la carpeta.</string>
     <string name="search_start_category_music">Música</string>
     <string name="torrent_add_link_cannot_be_empty">El enlace no puede estar vacío.</string>
@@ -408,7 +408,6 @@
     <string name="rss_rule_category">Categoría</string>
     <string name="rss_success_feed_move">Se ha movido el feed correctamente.</string>
     <string name="search_plugins">Plugins</string>
-    <string name="torrent_peers_country">País: %1$s</string>
     <string name="search_result_site">Página: %1$s</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="one">Prohibir %1$d par</item>
@@ -454,7 +453,7 @@
     <string name="settings_server_host">Host</string>
     <string name="torrent_add_ratio_limit">Límite de la relación</string>
     <string name="rss_rule_name">Nombre de la regla</string>
-    <string name="torrent_peers_details_downloaded">Descargado: %1$s</string>
+    <string name="torrent_peers_details_downloaded">Descargado</string>
     <string name="rss_delete_feed_error">No se puede borrar el feed.</string>
     <string name="torrent_peers_flag_peer_snubbed">Desairado por sus pares</string>
     <string name="rss_delete_folder_error">No se ha podido borrar la carpeta.</string>
@@ -481,7 +480,7 @@
     <string name="torrent_files_rename_file">Cambiar el nombre del archivo</string>
     <string name="settings_server_advanced_basic_auth_username">Usuario</string>
     <string name="search_result_seeders">Semillas</string>
-    <string name="torrent_peers_details_upload_speed">Velocidad de subida: %1$s</string>
+    <string name="torrent_peers_details_upload_speed">Velocidad de subida</string>
     <string name="torrent_add_content_layout_no_subfolder">No crear subcarpeta</string>
     <string name="torrent_peers_add_hint">Pares</string>
     <string name="torrent_add_speed_limit_too_big">El límite de velocidad es demasiado grande.</string>
@@ -493,7 +492,7 @@
     <string name="torrent_add_start_torrent">Iniciar torrent</string>
     <string name="rss_rule_episode_filter">Filtro para los episodios</string>
     <string name="torrent_overview_wasted">Desperdiciado</string>
-    <string name="torrent_peers_details_connection">Conexión: %1$s</string>
+    <string name="torrent_peers_details_connection">Conexión</string>
     <string name="rss_action_mark_all_as_read">Marcar todo como leído</string>
     <string name="rss_rule_delete">Borrar la regla</string>
     <string name="settings_theme">Tema</string>
@@ -506,7 +505,7 @@
     <string name="torrent_files_rename_folder">Cambiar el nombre de la carpeta</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Interesados (locales) y no interesados (pares)</string>
     <string name="rss_rule_enabled">Activado</string>
-    <string name="torrent_peers_details_download_speed">Velocidad de la descarga: %1$s</string>
+    <string name="torrent_peers_details_download_speed">Velocidad de la descarga</string>
     <string name="rss_rule_action_save">Guardar una regla</string>
     <string name="settings_server_action_save">Guardar</string>
     <plurals name="torrent_peers_ban_desc">
@@ -522,7 +521,7 @@
     <string name="search_result_action_sort_seeders">Semilleros</string>
     <string name="search_result_action_sort_name">Nombre</string>
     <string name="torrent_option_share_limit">Límites de uso compartido de los torrents</string>
-    <string name="torrent_peers_details_relevance">Importancia: %1$s%%</string>
+    <string name="torrent_peers_details_relevance">Importancia</string>
     <string name="torrent_files_file_renamed_success">Archivo renombrado correctamente</string>
     <string name="settings_theme_dark">Oscuro</string>
     <string name="torrent_trackers_peers">Pares</string>
@@ -537,7 +536,7 @@
     <string name="rss_success_folder_rename">Se ha renombrado una carpeta correctamente.</string>
     <string name="torrent_add_server">Servidor</string>
     <string name="search_result_action_sort_reverse">Invertir</string>
-    <string name="torrent_peers_details_files">Archivos: %1$s</string>
+    <string name="torrent_peers_details_section_files">Archivos</string>
     <string name="torrent_add_content_layout_subfolder">Crear una subcarpeta</string>
     <string name="rss_action_rename_folder">Cambiar el nombre de la carpeta</string>
     <string name="search_result_no_browser">No encuentro ningún navegador.</string>
@@ -551,7 +550,7 @@
     <string name="rss_rule_action_create">Crear una regla</string>
     <string name="search_result_action_stop_search">Detener la búsqueda</string>
     <string name="torrent_peers_banned">Pares vetados con éxito.</string>
-    <string name="torrent_peers_details_progress">Progreso: %1$s%%</string>
+    <string name="torrent_peers_details_progress">Progreso</string>
     <string name="rss_success_feed_delete">Se ha borrado el feed correctamente.</string>
     <string name="rss_rules">Descargador de RSS</string>
     <string name="rss_hint_folder_name">Nombre de la carpeta</string>
@@ -561,7 +560,6 @@
     <string name="settings_server_port">Puerto</string>
     <string name="settings_server_advanced_basic_auth_enabled">Activado</string>
     <string name="search_start_plugins_enabled">Plugins activados</string>
-    <string name="torrent_peers_flags">Banderas: %1$s</string>
     <string name="settings_server_action_delete">Borrar</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s en esta sesión)</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Desinteresado (local) y desocupado (par)</string>
@@ -575,8 +573,7 @@
     <string name="torrent_overview_transfer">Transferencia</string>
     <string name="torrent_trackers_added">Rastreadores añadidos correctamente.</string>
     <string name="search_result_filter_results">Filtrar los resultados…</string>
-    <string name="torrent_peers_details_peer_id_client">ID del par cliente: %1$s</string>
-    <string name="torrent_peers_connection">Conexión: %1$s</string>
+    <string name="torrent_peers_details_peer_id_client">ID del par cliente</string>
     <string name="search_result_action_sort_size">Tamaño</string>
     <string name="rss_download">Descargar</string>
     <string name="search_result_filter_size">Tamaño</string>

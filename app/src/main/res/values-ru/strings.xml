@@ -35,8 +35,8 @@
     <string name="eta_hours">%1$s ч</string>
     <string name="speed_format">%1$s %2$s</string>
     <string name="torrent_peers_banned">Пиры успешно заблокированы.</string>
-    <string name="torrent_peers_details_country">Страна: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Отдано: %1$s</string>
+    <string name="torrent_peers_details_country">Страна</string>
+    <string name="torrent_peers_details_uploaded">Отдано</string>
     <plurals name="torrent_peers_selected">
         <item quantity="one">%1$d пир выбран</item>
         <item quantity="few">%1$d пира выбрано</item>
@@ -49,13 +49,13 @@
         <item quantity="many">Вы хотите заблокировать %1$d пиров?</item>
         <item quantity="other">Вы хотите заблокировать %1$d пиров?</item>
     </plurals>
-    <string name="torrent_peers_details_downloaded">Загружено: %1$s</string>
+    <string name="torrent_peers_details_downloaded">Загружено</string>
     <string name="torrent_peers_flag_encrypted_handshake">Шифрованное рукопожатие</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Заинтересован (пир) и занят (клиент)</string>
-    <string name="torrent_peers_details_files">Файлы: %1$s</string>
+    <string name="torrent_peers_details_section_files">Файлы</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
-    <string name="torrent_peers_details_connection">Соединения: %1$s</string>
-    <string name="torrent_peers_details_progress">Прогресс: %1$s%%</string>
+    <string name="torrent_peers_details_connection">Соединения</string>
+    <string name="torrent_peers_details_progress">Прогресс</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Заинтересован (клиент) и не занят (пир)</string>
     <string name="torrent_peers_flag_not_interested_peer_unchoked_local">Не заинтересован (пир) и не занят (клиент)</string>
     <string name="torrent_peers_flag_peer_snubbed">Уснувший пир</string>
@@ -368,8 +368,6 @@
     </plurals>
     <string name="torrent_trackers_added">Трекеры добавлены успешно.</string>
     <string name="torrent_trackers_edited">Трекер изменён успешно.</string>
-    <string name="torrent_peers_country">Страна: %1$s</string>
-    <string name="torrent_peers_connection">Соединения: %1$s</string>
     <string name="torrent_peers_add_hint">Пиры</string>
     <string name="torrent_peers_action_ban">Блокировка пиров</string>
     <plurals name="torrent_peers_ban_title">
@@ -378,8 +376,8 @@
         <item quantity="many">Заблокировать %1$d пиров</item>
         <item quantity="other">Заблокировать %1$d пиров</item>
     </plurals>
-    <string name="torrent_peers_details_download_speed">Скорость загрузки: %1$s</string>
-    <string name="torrent_peers_details_relevance">Годность: %1$s%%</string>
+    <string name="torrent_peers_details_download_speed">Скорость загрузки</string>
+    <string name="torrent_peers_details_relevance">Годность</string>
     <string name="torrent_peers_flag_encrypted_traffic">Шифрованный трафик</string>
     <string name="torrent_error_not_found">Торрент не найден.</string>
     <string name="torrent_add_title">Добавить торрент</string>
@@ -511,7 +509,7 @@
     <string name="stats_total_buffer_size">Общий размер буфера</string>
     <string name="stats_write_cache_overload">Перегрузка кэша записи</string>
     <string name="stats_average_time_in_queue">Среднее время в очереди</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_ms_format">%1$d мс</string>
     <string name="torrent_list_priority_maximize_success">Перемещён в начало очереди.</string>
@@ -571,7 +569,6 @@
     <string name="torrent_overview_added_on">Добавлено</string>
     <string name="torrent_no_categories">Не удалось найти ни одной категории.</string>
     <string name="torrent_overview_information">Информация</string>
-    <string name="torrent_peers_flags">Флаги: %1$s</string>
     <string name="torrent_peers_action_add">Добавить пиров</string>
     <string name="torrent_overview_comment">Комментарий</string>
     <string name="torrent_overview_hash_v2">Инфо-хеш v2</string>
@@ -587,7 +584,7 @@
     <string name="torrent_files_priority_high">Высокий</string>
     <string name="torrent_files_priority_maximum">Максимальный</string>
     <string name="torrent_files_folder_renamed_success">Папка успешно переименована</string>
-    <string name="torrent_peers_details_upload_speed">Скорость отдачи: %1$s</string>
+    <string name="torrent_peers_details_upload_speed">Скорость отдачи</string>
     <string name="torrent_peers_added">Пиры успешно добавлены.</string>
     <string name="torrent_peers_invalid">Введённые пиры не валидны.</string>
     <string name="torrent_peers_flag_utp">µTP</string>
@@ -611,9 +608,9 @@
     </plurals>
     <string name="torrent_trackers_action_delete">Удалить</string>
     <string name="torrent_trackers_downloaded">Загружено</string>
-    <string name="torrent_peers_details_flags">Флаги: %1$s</string>
-    <string name="torrent_peers_details_client">Клиент: %1$s</string>
-    <string name="torrent_peers_details_peer_id_client">ИД Клиента: %1$s</string>
+    <string name="torrent_peers_details_section_flags">Флаги</string>
+    <string name="torrent_peers_details_client">Клиент</string>
+    <string name="torrent_peers_details_peer_id_client">ИД Клиента</string>
     <string name="torrent_add_prioritize_first_last_piece">Загружать крайние части первыми</string>
     <string name="search_result_action_sort_leechers">Личеры</string>
     <string name="search_result_action_sort_search_engine">Поисковая система</string>

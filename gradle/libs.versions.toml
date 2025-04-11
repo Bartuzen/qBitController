@@ -27,7 +27,7 @@ retrofit = "2.11.0"
 okhttp = "4.12.0"
 viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.1.5"
-coil = "2.7.0"
+coil = "3.1.0"
 htmlConverter = "1.0.3"
 firebase-bom = "33.12.0"
 ksp = "2.1.20-1.0.32"
@@ -85,8 +85,9 @@ viewBindingPropertyDelegate-noReflection = { group = "com.github.kirich1409", na
 
 desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
 
-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+coil = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
+coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 
 htmlConverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlConverter" }
 

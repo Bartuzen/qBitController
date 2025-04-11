@@ -22,10 +22,10 @@
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_add_hint">Peers</string>
     <string name="torrent_peers_invalid">Os peers inseridos não são válidos.</string>
-    <string name="torrent_peers_details_country">País: %1$s</string>
-    <string name="torrent_peers_details_connection">Conexão: %1$s</string>
-    <string name="torrent_peers_details_flags">Bandeiras: %1$s</string>
-    <string name="torrent_peers_details_files">Arquivos: %1$s</string>
+    <string name="torrent_peers_details_country">País</string>
+    <string name="torrent_peers_details_connection">Conexão</string>
+    <string name="torrent_peers_details_section_flags">Bandeiras</string>
+    <string name="torrent_peers_details_section_files">Arquivos</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_peer_unchoked_local">Não interessados (peer) e não paralisados (locais)</string>
     <string name="search_start_category_software">Programas</string>
@@ -224,7 +224,7 @@
     <string name="stats_queued_io_jobs">Trabalhos de E/S na fila</string>
     <string name="stats_average_time_in_queue">Tempo médio na fila</string>
     <string name="stats_total_queued_size">Tamanho total na fila</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_list_status_error">Erro</string>
     <string name="torrent_tab_files">Arquivos</string>
@@ -343,9 +343,6 @@
     <string name="torrent_trackers_deleted">Rastreadores excluídos com sucesso.</string>
     <string name="torrent_trackers_edited">Rastreador editado com sucesso.</string>
     <string name="torrent_trackers_url_cannot_be_empty">A URL do rastreador não pode estar vazia.</string>
-    <string name="torrent_peers_country">País: %1$s</string>
-    <string name="torrent_peers_connection">Conexão: %1$s</string>
-    <string name="torrent_peers_flags">Bandeiras: %1$s</string>
     <string name="torrent_peers_action_add">Adicionar peers</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="one">Banir %1$d peer</item>
@@ -364,14 +361,14 @@
     </plurals>
     <string name="torrent_peers_added">Peers adicionados com sucesso.</string>
     <string name="torrent_peers_banned">Peers banidos com sucesso.</string>
-    <string name="torrent_peers_details_client">Cliente: %1$s</string>
-    <string name="torrent_peers_details_peer_id_client">Peer ID do cliente: %1$s</string>
-    <string name="torrent_peers_details_progress">Progresso: %1$s%%</string>
-    <string name="torrent_peers_details_download_speed">Velocidade de download: %1$s</string>
-    <string name="torrent_peers_details_upload_speed">Velocidade de upload: %1$s</string>
-    <string name="torrent_peers_details_downloaded">Transferido: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Enviado: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevância: %1$s%%</string>
+    <string name="torrent_peers_details_client">Cliente</string>
+    <string name="torrent_peers_details_peer_id_client">Peer ID do cliente</string>
+    <string name="torrent_peers_details_progress">Progresso</string>
+    <string name="torrent_peers_details_download_speed">Velocidade de download</string>
+    <string name="torrent_peers_details_upload_speed">Velocidade de upload</string>
+    <string name="torrent_peers_details_downloaded">Transferido</string>
+    <string name="torrent_peers_details_uploaded">Enviado</string>
+    <string name="torrent_peers_details_relevance">Relevância</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interessados (locais) e paralisados (peer)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Interessados (locais) e não paralisados (peer)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interessados (peer) e paralisados (locais)</string>

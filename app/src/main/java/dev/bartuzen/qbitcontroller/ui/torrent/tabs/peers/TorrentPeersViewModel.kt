@@ -3,8 +3,11 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.ImageLoader
-import coil.imageLoader
+import coil3.ImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.ServerManager
@@ -14,22 +17,32 @@ import dev.bartuzen.qbitcontroller.model.TorrentPeer
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class TorrentPeersViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = TorrentPeersViewModel.Factory::class)
+class TorrentPeersViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentPeersRepository,
     private val serverManager: ServerManager,
     private val requestManager: RequestManager,
     @ApplicationContext private val context: Context,
 ) : ViewModel() {
-    private val _torrentPeers = MutableStateFlow<List<TorrentPeer>?>(null)
-    val torrentPeers = _torrentPeers.asStateFlow()
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int, torrentHash: String): TorrentPeersViewModel
+    }
+
+    private val _peers = MutableStateFlow<List<TorrentPeer>?>(null)
+    val peers = _peers.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -40,16 +53,46 @@ class TorrentPeersViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
+    private val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
+    private val isScreenActive = MutableStateFlow(false)
 
-    private var imageLoader: ImageLoader? = null
+    val imageLoader: ImageLoader = ImageLoader.Builder(context)
+        .components {
+            add(
+                OkHttpNetworkFetcherFactory(
+                    callFactory = requestManager.getOkHttpClient(serverId),
+                ),
+            )
+        }.build()
 
-    private fun updatePeers(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    init {
+        loadPeers()
+
+        viewModelScope.launch {
+            combine(
+                autoRefreshInterval,
+                isNaturalLoading,
+                isScreenActive,
+            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                    delay(autoRefreshInterval.seconds)
+                    loadPeers(autoRefresh = true)
+                }
+            }
+        }
+    }
+
+    fun setScreenActive(isScreenActive: Boolean) {
+        this.isScreenActive.value = isScreenActive
+    }
+
+    private fun updatePeers() = viewModelScope.launch {
         when (val result = repository.getPeers(serverId, torrentHash)) {
             is RequestResult.Success -> {
-                _torrentPeers.value = result.data.peers.values.toList()
+                _peers.value = result.data.peers.values.toList()
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
@@ -61,28 +104,35 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
-    fun loadPeers(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+    private fun loadPeers(autoRefresh: Boolean = false) {
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updatePeers(serverId, torrentHash).invokeOnCompletion {
+            updatePeers().invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
     }
 
-    fun refreshPeers(serverId: Int, torrentHash: String) {
+    fun refreshPeers() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updatePeers(serverId, torrentHash).invokeOnCompletion {
-                _isRefreshing.value = false
+            updatePeers().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun addPeers(serverId: Int, torrentHash: String, peers: List<String>) = viewModelScope.launch {
+    fun addPeers(peers: List<String>) = viewModelScope.launch {
         when (val result = repository.addPeers(serverId, torrentHash, peers)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.PeersAdded)
+                launch {
+                    delay(1000)
+                    loadPeers()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 400) {
@@ -94,10 +144,11 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
-    fun banPeers(serverId: Int, peers: List<String>) = viewModelScope.launch {
+    fun banPeers(peers: List<String>) = viewModelScope.launch {
         when (val result = repository.banPeers(serverId, peers)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.PeersBanned)
+                loadPeers()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))
@@ -105,20 +156,7 @@ class TorrentPeersViewModel @Inject constructor(
         }
     }
 
-    fun getFlagUrl(serverId: Int, countryCode: String) =
-        "${serverManager.getServer(serverId).url}images/flags/$countryCode.svg"
-
-    fun getImageLoader(serverId: Int) = imageLoader.let { imageLoader ->
-        if (imageLoader == null) {
-            val loader = context.imageLoader.newBuilder()
-                .okHttpClient(requestManager.getOkHttpClient(serverId))
-                .build()
-            this@TorrentPeersViewModel.imageLoader = loader
-            loader
-        } else {
-            imageLoader
-        }
-    }
+    fun getFlagUrl(countryCode: String) = "${serverManager.getServer(serverId).url}images/flags/$countryCode.svg"
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()

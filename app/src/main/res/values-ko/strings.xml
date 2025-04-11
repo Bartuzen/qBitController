@@ -36,7 +36,7 @@
     <string name="stats_category_performance_statistics">성능 통계</string>
     <string name="stats_all_time_share_ratio">전체 시간 공유 비율</string>
     <string name="stats_total_queued_size">총 대기열 크기</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="torrent_tab_trackers">트래커</string>
     <string name="torrent_tab_peers">피어</string>
     <string name="torrent_deleted_success">토렌트가 성공적으로 삭제되었습니다.</string>
@@ -263,7 +263,7 @@
     <string name="torrent_files_priority_update_success">파일 우선순위가 성공적으로 업데이트 되었습니다.</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">경로가 잘못되었거나 이미 사용중입니다.</string>
     <string name="torrent_trackers_edit_hint">트래커 URL</string>
-    <string name="torrent_peers_details_progress">진행률: %1$s%%</string>
+    <string name="torrent_peers_details_progress">진행률</string>
     <string name="torrent_peers_flag_peer_from_dht">DHT 피어</string>
     <string name="torrent_peers_flag_peer_from_pex">PEX 피어</string>
     <string name="torrent_option_share_limit_custom">사용자 지정 공유 제한 설정</string>
@@ -326,13 +326,10 @@
         <item quantity="other">%1$d개의 피어 선택됨</item>
     </plurals>
     <string name="torrent_peers_banned">피어가 성공적으로 차단되었습니다.</string>
-    <string name="torrent_peers_details_flags">플래그: %1$s</string>
+    <string name="torrent_peers_details_section_flags">플래그</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">관심 있음 (피어) / 혼잡 해소됨 (로컬)</string>
     <string name="torrent_trackers_edited">트래커가 성공적으로 수정되었습니다.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
-    <string name="torrent_peers_flags">플래그: %1$s</string>
-    <string name="torrent_peers_country">국가: %1$s</string>
-    <string name="torrent_peers_connection">연결: %1$s</string>
     <string name="torrent_peers_action_ban">피어 차단</string>
     <string name="torrent_peers_add_hint">피어</string>
     <string name="torrent_peers_action_add">피어 추가</string>
@@ -343,17 +340,17 @@
         <item quantity="other">%1$d개의 피어를 차단하시겠습니까?</item>
     </plurals>
     <string name="torrent_peers_invalid">입력된 피어가 유효하지 않습니다.</string>
-    <string name="torrent_peers_details_connection">연결: %1$s</string>
+    <string name="torrent_peers_details_connection">연결</string>
     <string name="torrent_peers_added">피어가 성공적으로 추가되었습니다.</string>
-    <string name="torrent_peers_details_country">국가: %1$s</string>
-    <string name="torrent_peers_details_client">클라이언트: %1$s</string>
-    <string name="torrent_peers_details_relevance">관련성: %1$s%%</string>
-    <string name="torrent_peers_details_uploaded">올려줌: %1$s</string>
-    <string name="torrent_peers_details_peer_id_client">피어 ID 클라이언트: %1$s</string>
-    <string name="torrent_peers_details_download_speed">내려받기 속도: %1$s</string>
-    <string name="torrent_peers_details_upload_speed">올려주기 속도: %1$s</string>
-    <string name="torrent_peers_details_downloaded">내려받음: %1$s</string>
-    <string name="torrent_peers_details_files">파일: %1$s</string>
+    <string name="torrent_peers_details_country">국가</string>
+    <string name="torrent_peers_details_client">클라이언트</string>
+    <string name="torrent_peers_details_relevance">관련성</string>
+    <string name="torrent_peers_details_uploaded">올려줌</string>
+    <string name="torrent_peers_details_peer_id_client">피어 ID 클라이언트</string>
+    <string name="torrent_peers_details_download_speed">내려받기 속도</string>
+    <string name="torrent_peers_details_upload_speed">올려주기 속도</string>
+    <string name="torrent_peers_details_downloaded">내려받음</string>
+    <string name="torrent_peers_details_section_files">파일</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">관심 있음 (로컬) / 혼잡 (피어)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">관심 있음 (피어) / 혼잡 (로컬)</string>

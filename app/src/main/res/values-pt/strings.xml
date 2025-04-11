@@ -136,7 +136,7 @@
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_connected_peers">Pares Ligados</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_files">Ficheiros</string>
     <string name="torrent_delete">Torrent Eliminado</string>
@@ -338,9 +338,6 @@
     <string name="torrent_trackers_deleted">Rastreadores eliminados com sucesso.</string>
     <string name="torrent_trackers_edited">Rastreador editado com sucesso.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
-    <string name="torrent_peers_country">País: %1$s</string>
-    <string name="torrent_peers_connection">Ligação: %1$s</string>
-    <string name="torrent_peers_flags">Bandeiras: %1$s</string>
     <string name="torrent_peers_action_add">Adicionar Pares</string>
     <string name="torrent_peers_action_ban">Banir Pares</string>
     <plurals name="torrent_peers_ban_title">
@@ -356,13 +353,13 @@
     <string name="torrent_peers_added">Pares atualizados com sucesso.</string>
     <string name="torrent_peers_banned">Pares banidos com sucesso.</string>
     <string name="torrent_peers_invalid">Os pares inseridos não são válidos.</string>
-    <string name="torrent_peers_details_country">País: %1$s</string>
-    <string name="torrent_peers_details_peer_id_client">ID do client da fonte: %1$s</string>
-    <string name="torrent_peers_details_download_speed">Velocidade de Transferência: %1$s</string>
-    <string name="torrent_peers_details_upload_speed">Velocidade de Envio: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Enviado: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevância: %1$s%%</string>
-    <string name="torrent_peers_details_files">Ficheiros: %1$s</string>
+    <string name="torrent_peers_details_country">País</string>
+    <string name="torrent_peers_details_peer_id_client">ID do client da fonte</string>
+    <string name="torrent_peers_details_download_speed">Velocidade de Transferência</string>
+    <string name="torrent_peers_details_upload_speed">Velocidade de Envio</string>
+    <string name="torrent_peers_details_uploaded">Enviado</string>
+    <string name="torrent_peers_details_relevance">Relevância</string>
+    <string name="torrent_peers_details_section_files">Ficheiros</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_peer_from_dht">Fonte do DHT</string>
     <string name="torrent_peers_flag_peer_from_lsd">Fonte do LSD</string>
@@ -371,11 +368,11 @@
     <string name="torrent_tags_update_success">Etiquetas atualizadas com sucesso.</string>
     <string name="torrent_enable_force_start_success">Inicio forçado activado com sucesso.</string>
     <string name="torrent_option_download_speed_limit">Limite de Velocidade de Transferência (KiB/s)</string>
-    <string name="torrent_peers_details_flags">Bandeiras: %1$s</string>
+    <string name="torrent_peers_details_section_flags">Bandeiras</string>
     <string name="torrent_peers_flag_peer_from_pex">Fonte do PEX</string>
     <string name="torrent_option_share_limit_total_minutes">Minutos Totais</string>
     <string name="torrent_trackers_url_cannot_be_empty">URL do rastreador não pode ficar vazio.</string>
-    <string name="torrent_peers_details_progress">Progresso: %1$s%%</string>
+    <string name="torrent_peers_details_progress">Progresso</string>
     <string name="torrent_location_cannot_be_blank">Localização não pode ser em branco.</string>
     <string name="torrent_rename_name_cannot_be_blank">Nome do torrent não pode ser em branco.</string>
     <string name="torrent_files_folder_renamed_success">Pasta renomeada com sucesso</string>
@@ -385,15 +382,15 @@
         <item quantity="other">Tem a certeza que quer eliminar %1$d rastreadores?</item>
     </plurals>
     <string name="torrent_peers_add_hint">Pares</string>
-    <string name="torrent_peers_details_downloaded">Transferido: %1$s</string>
+    <string name="torrent_peers_details_downloaded">Transferido</string>
     <string name="torrent_trackers_added">Rastreadores atualizados com sucesso.</string>
-    <string name="torrent_peers_details_connection">Ligação: %1$s</string>
+    <string name="torrent_peers_details_connection">Ligação</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="one">Tem a certeza que quer banir %1$d peer?</item>
         <item quantity="many">Tem a certeza que quer banir %1$d peers?</item>
         <item quantity="other">Tem a certeza que quer banir %1$d peers?</item>
     </plurals>
-    <string name="torrent_peers_details_client">Cliente: %1$s</string>
+    <string name="torrent_peers_details_client">Cliente</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interessado (peer) e condicionado (local)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">Interessado (fonte) e descondicionado (local)</string>
     <string name="torrent_peers_flag_optimistic_unchoke">Descondicionado optimista</string>

@@ -123,7 +123,7 @@
     <string name="torrent_list_status_error">Feil</string>
     <string name="stats_category_user_statistics">Brukerstatistikk</string>
     <string name="stats_category_performance_statistics">Ytelsesstatistikk</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Oversikt</string>
     <string name="torrent_tab_files">Filer</string>
@@ -188,9 +188,6 @@
         <item quantity="one">Slett %1$d sporer</item>
         <item quantity="other">Slett %1$d sporere</item>
     </plurals>
-    <string name="torrent_peers_country">Land: %1$s</string>
-    <string name="torrent_peers_connection">Tilkobling: %1$s</string>
-    <string name="torrent_peers_flags">Flagg: %1$s</string>
     <string name="torrent_peers_action_add">Legg til likemenn</string>
     <string name="torrent_peers_action_ban">Bannlys likemenn</string>
     <string name="torrent_peers_add_hint">Likemenn</string>
@@ -198,10 +195,10 @@
         <item quantity="one">%1$d likemann valgt</item>
         <item quantity="other">%1$d likemenn valgt</item>
     </plurals>
-    <string name="torrent_peers_details_country">Land: %1$s</string>
-    <string name="torrent_peers_details_connection">Tilkobling: %1$s</string>
-    <string name="torrent_peers_details_flags">Flagg. %1$s</string>
-    <string name="torrent_peers_details_client">Klient: %1$s</string>
+    <string name="torrent_peers_details_country">Land</string>
+    <string name="torrent_peers_details_connection">Tilkobling</string>
+    <string name="torrent_peers_details_section_flags">Flagg</string>
+    <string name="torrent_peers_details_client">Klient</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_add_category">Kategori</string>
     <string name="torrent_add_start_torrent">Start torrent</string>
@@ -289,7 +286,7 @@
     <string name="torrent_trackers_action_add">Legg til sporere</string>
     <string name="torrent_trackers_edit_hint">Sporer-nettadresse</string>
     <string name="torrent_trackers_add_hint">Sporere</string>
-    <string name="torrent_peers_details_files">Filer: %1$s</string>
+    <string name="torrent_peers_details_section_files">Filer</string>
     <string name="torrent_add_tags">Etiketter</string>
     <string name="rss_action_delete_feed">Slett strøm</string>
     <string name="rss_hint_feed_name_optional">Strøm-navn (valgfritt)</string>
@@ -340,9 +337,9 @@
     <string name="torrent_peers_banned">Likemenn bannlyst.</string>
     <string name="torrent_peers_added">Likemenn tillagt.</string>
     <string name="torrent_peers_invalid">Angitte likemenn er ikke gyldige.</string>
-    <string name="torrent_peers_details_upload_speed">Opplastingshastighet: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Opplastet: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevans: %1$s%%</string>
+    <string name="torrent_peers_details_upload_speed">Opplastingshastighet</string>
+    <string name="torrent_peers_details_uploaded">Opplastet</string>
+    <string name="torrent_peers_details_relevance">Relevans</string>
     <string name="torrent_peers_flag_utp">µTP</string>
     <string name="torrent_error_not_found">Fant ikke torrenten.</string>
     <string name="torrent_add_stop_condition">Stoppvilkår</string>
@@ -374,8 +371,8 @@
     <string name="torrent_action_force_start">Påtving start</string>
     <string name="torrent_tags_update_success">Etiketter oppdatert.</string>
     <string name="torrent_export_error">Kunne ikke eksportere torrent.</string>
-    <string name="torrent_peers_details_download_speed">Nedlastingshastighet: %1$s</string>
-    <string name="torrent_peers_details_downloaded">Nedlastet: %1$s</string>
+    <string name="torrent_peers_details_download_speed">Nedlastingshastighet</string>
+    <string name="torrent_peers_details_downloaded">Nedlastet</string>
     <string name="torrent_add_sequential_download">Last ned i sekvensiell rekkefølge</string>
     <string name="torrent_rename_success">Torrentnavn oppdatert.</string>
     <string name="torrent_no_categories">Fant ingen kategorier.</string>
@@ -394,7 +391,7 @@
         <item quantity="other">Slett %1$d sporere\?</item>
     </plurals>
     <string name="torrent_trackers_url_cannot_be_empty">Sporer-nettadressen må fylles ut.</string>
-    <string name="torrent_peers_details_progress">Framdrift: %1$s%%</string>
+    <string name="torrent_peers_details_progress">Framdrift</string>
     <string name="torrent_peers_flag_peer_from_pex">Likemann fra PEX</string>
     <string name="torrent_peers_flag_peer_from_lsd">Likemann fra LSD</string>
     <string name="torrent_add_button_file">Fil</string>

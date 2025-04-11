@@ -138,7 +138,7 @@
     <string name="stats_queued_io_jobs">Lavori I/O in coda</string>
     <string name="stats_average_time_in_queue">Tempo Medio in Coda</string>
     <string name="stats_total_queued_size">Dimensione Totale in Coda</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Generale</string>
     <string name="torrent_tab_files">Contenuto</string>

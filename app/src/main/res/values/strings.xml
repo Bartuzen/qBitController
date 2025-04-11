@@ -45,6 +45,8 @@
     <string name="speed_mebibytes_per_second">MiB/s</string>
     <string name="speed_gibibytes_per_second">GiB/s</string>
 
+    <string name="percentage_format">%1$s%%</string>
+
     <string name="error_invalid_credentials">Invalid username or password.</string>
     <string name="error_banned">You have been banned because of too many failed login attempts.</string>
     <string name="error_cannot_connect">Cannot connect to server.</string>
@@ -227,7 +229,6 @@
     <string name="stats_average_time_in_queue">Average Time In Queue</string>
     <string name="stats_total_queued_size">Total Queued Size</string>
 
-    <string name="stats_percentage_format">%1$s%%</string>
     <string name="stats_ms_format">%1$d ms</string>
 
     <string name="torrent_tab_overview">Overview</string>
@@ -393,9 +394,6 @@
     <string name="torrent_trackers_url_cannot_be_empty">Tracker URL cannot be empty.</string>
 
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
-    <string name="torrent_peers_country">Country: %1$s</string>
-    <string name="torrent_peers_connection">Connection: %1$s</string>
-    <string name="torrent_peers_flags">Flags: %1$s</string>
     <string name="torrent_peers_action_add">Add Peers</string>
     <string name="torrent_peers_action_ban">Ban Peers</string>
     <string name="torrent_peers_add_hint">Peers</string>
@@ -415,20 +413,22 @@
     <string name="torrent_peers_banned">Peers banned successfully.</string>
     <string name="torrent_peers_invalid">Entered peers are not valid.</string>
 
-    <string name="torrent_peers_details_country">Country: %1$s</string>
-    <string name="torrent_peers_details_connection">Connection: %1$s</string>
-    <string name="torrent_peers_details_flags">Flags: %1$s</string>
-    <string name="torrent_peers_details_client">Client: %1$s</string>
-    <string name="torrent_peers_details_peer_id_client">Peer ID Client: %1$s</string>
-    <string name="torrent_peers_details_progress">Progress: %1$s%%</string>
-    <string name="torrent_peers_details_download_speed">Download Speed: %1$s</string>
-    <string name="torrent_peers_details_upload_speed">Upload Speed: %1$s</string>
-    <string name="torrent_peers_details_downloaded">Downloaded: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Uploaded: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevance: %1$s%%</string>
-    <string name="torrent_peers_details_files">Files: %1$s</string>
+    <string name="torrent_peers_details_section_overview">Peer Overview</string>
+    <string name="torrent_peers_details_section_transfer">Transfer Statistics</string>
+    <string name="torrent_peers_details_section_flags">Flags</string>
+    <string name="torrent_peers_details_section_files">Files</string>
 
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
+    <string name="torrent_peers_details_country">Country</string>
+    <string name="torrent_peers_details_connection">Connection</string>
+    <string name="torrent_peers_details_client">Client</string>
+    <string name="torrent_peers_details_peer_id_client">Peer ID Client</string>
+    <string name="torrent_peers_details_progress">Progress</string>
+    <string name="torrent_peers_details_download_speed">Download Speed</string>
+    <string name="torrent_peers_details_upload_speed">Upload Speed</string>
+    <string name="torrent_peers_details_downloaded">Downloaded</string>
+    <string name="torrent_peers_details_uploaded">Uploaded</string>
+    <string name="torrent_peers_details_relevance">Relevance</string>
+
     <string name="torrent_peers_flag_interested_local_choked_peer">Interested (local) and choked (peer)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Interested (local) and unchoked (peer)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interested (peer) and choked (local)</string>

@@ -3576,12 +3576,12 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
 
                         StatisticRow(
                             label = stringResource(R.string.stats_write_cache_overload),
-                            value = stringResource(R.string.stats_percentage_format, state.writeCacheOverload),
+                            value = stringResource(R.string.percentage_format, state.writeCacheOverload),
                         )
 
                         StatisticRow(
                             label = stringResource(R.string.stats_read_cache_overload),
-                            value = stringResource(R.string.stats_percentage_format, state.readCacheOverload),
+                            value = stringResource(R.string.percentage_format, state.readCacheOverload),
                         )
 
                         StatisticRow(

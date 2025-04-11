@@ -145,7 +145,7 @@
     <string name="stats_category_user_statistics">Brugerstatistik</string>
     <string name="stats_category_cache_statistics">Cachestatistik</string>
     <string name="stats_category_performance_statistics">Præstationsstatistikker</string>
-    <string name="stats_percentage_format">%1$s%%</string>
+    <string name="percentage_format">%1$s%%</string>
     <string name="torrent_tab_trackers">Trackers</string>
     <string name="torrent_delete">Slet Torrent</string>
     <string name="torrent_delete_files">Fjern også filerne på harddisken</string>
@@ -209,14 +209,14 @@
         <item quantity="one">Er du sikker på, at du vil slette %1$d tracker?</item>
         <item quantity="other">Er du sikker på, at du vil slette %1$d trackere?</item>
     </plurals>
-    <string name="torrent_peers_details_country">Land: %1$s</string>
-    <string name="torrent_peers_details_connection">Forbindelse: %1$s</string>
-    <string name="torrent_peers_details_client">Klient: %1$s</string>
-    <string name="torrent_peers_details_progress">Fremskridt: %1$s%%</string>
-    <string name="torrent_peers_details_download_speed">Download Hastighed: %1$s</string>
-    <string name="torrent_peers_details_uploaded">Uploadet: %1$s</string>
-    <string name="torrent_peers_details_relevance">Relevans: %1$s%%</string>
-    <string name="torrent_peers_details_files">Filer: %1$s</string>
+    <string name="torrent_peers_details_country">Land</string>
+    <string name="torrent_peers_details_connection">Forbindelse</string>
+    <string name="torrent_peers_details_client">Klient</string>
+    <string name="torrent_peers_details_progress">Fremskridt</string>
+    <string name="torrent_peers_details_download_speed">Download Hastighed</string>
+    <string name="torrent_peers_details_uploaded">Uploadet</string>
+    <string name="torrent_peers_details_relevance">Relevans</string>
+    <string name="torrent_peers_details_section_files">Filer</string>
     <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_encrypted_traffic">Krypteret trafik</string>
     <string name="torrent_peers_flag_encrypted_handshake">Krypteret håndtryk</string>
@@ -226,8 +226,6 @@
     <string name="torrent_add_link_hint">Magnet eller HTTP Link</string>
     <string name="torrent_peers_add_hint">Modparter</string>
     <string name="torrent_add_button_url">URL</string>
-    <string name="torrent_peers_connection">Forbindelse: %1$s</string>
-    <string name="torrent_peers_flags">Flag: %1$s</string>
     <string name="torrent_add_action_add_torrent">Tilføj Torrent</string>
     <string name="torrent_add_server">Server</string>
     <string name="torrent_add_no_server">Ingen servere fundet.</string>
@@ -433,7 +431,7 @@
     <string name="torrent_files_file_renamed_success">Fil omdøbt med succes</string>
     <string name="torrent_files_folder_renamed_success">Mappe omdøbt med succes</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Sti er ugyldig eller allerede i brug.</string>
-    <string name="torrent_peers_details_flags">Flag: %1$s</string>
+    <string name="torrent_peers_details_section_flags">Flag</string>
     <string name="torrent_add_click_to_select_file">Klik for at vælge en fil</string>
     <string name="torrent_add_start_torrent">Start torrent</string>
     <string name="torrent_add_skip_hash_checking">Spring hash kontrol over</string>
@@ -442,8 +440,8 @@
     <string name="rss_move_feed_error">Kunne ikke flytte feed.</string>
     <string name="rss_rules">RSS Downloader</string>
     <string name="torrent_overview_comment">Kommentar</string>
-    <string name="torrent_peers_details_upload_speed">Upload hastighed: %1$s</string>
-    <string name="torrent_peers_details_downloaded">Downloadet: %1$s</string>
+    <string name="torrent_peers_details_upload_speed">Upload hastighed</string>
+    <string name="torrent_peers_details_downloaded">Downloadet</string>
     <string name="torrent_add_category">Kategori</string>
     <string name="torrent_add_tags">Tags</string>
     <string name="torrent_add_torrent_management_mode_manual">Manuel</string>
@@ -487,7 +485,6 @@
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="settings_theme">Tema</string>
     <string name="torrent_overview_time_active">Tid Aktiv</string>
-    <string name="torrent_peers_country">Land: %1$s</string>
     <string name="torrent_add_stop_condition_metadata_received">Metadata modtaget</string>
     <string name="settings_theme_light">Lys</string>
     <string name="settings_theme_dark">Mørk</string>

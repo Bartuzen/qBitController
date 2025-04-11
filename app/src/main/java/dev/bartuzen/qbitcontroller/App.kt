@@ -7,9 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.decode.SvgDecoder
 import com.google.android.material.color.DynamicColors
 import dagger.Lazy
 import dagger.hilt.android.HiltAndroidApp
@@ -24,7 +21,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application(), Configuration.Provider, ImageLoaderFactory {
+class App : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
 
@@ -43,12 +40,6 @@ class App : Application(), Configuration.Provider, ImageLoaderFactory {
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
-
-    override fun newImageLoader() = ImageLoader.Builder(this)
-        .components {
-            add(SvgDecoder.Factory())
-        }
-        .build()
 
     override fun onCreate() {
         super.onCreate()
