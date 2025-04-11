@@ -669,4 +669,6 @@
     <string name="torrent_overview_piece_downloaded">Завантажено</string>
     <string name="torrent_overview_piece_downloading">Завантаження</string>
     <string name="torrent_overview_piece_not_downloaded">Не завантажено</string>
+    <string name="torrent_peers_details_section_overview">Огляд колег</string>
+    <string name="torrent_peers_details_section_transfer">Статистика трансферів</string>
 </resources>
