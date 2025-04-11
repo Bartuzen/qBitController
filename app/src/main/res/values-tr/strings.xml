@@ -513,7 +513,6 @@
     <string name="torrent_peers_details_uploaded">Gönderilen</string>
     <string name="torrent_peers_details_relevance">Uygunluk</string>
     <string name="torrent_peers_details_section_files">Dosyalar</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">İlgilenen (kişi) ve sıkışan (yerel)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">İlgilenen (kişi) ve sıkışmayan (yerel)</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">İlgilenmeyen (yerel) ve sıkışmayan (kişi)</string>

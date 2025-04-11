@@ -130,7 +130,6 @@
     <string name="torrent_peers_details_downloaded">பதிவிறக்கம்</string>
     <string name="torrent_peers_details_uploaded">பதிவேற்றப்பட்டது</string>
     <string name="torrent_peers_details_relevance">பொருத்தமானது</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">ஆர்வமுள்ள (உள்ளூர்) மற்றும் மூச்சுத் திணறல் (பியர்)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">ஆர்வமுள்ள (உள்ளூர்) மற்றும் தேர்வு செய்யப்படாத (பியர்)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">ஆர்வம் (பியர்) மற்றும் மூச்சுத் திணறல் (உள்ளூர்)</string>
