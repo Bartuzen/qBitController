@@ -127,7 +127,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Oversikt</string>
     <string name="torrent_tab_files">Filer</string>
-    <string name="torrent_tab_pieces">Deler</string>
     <string name="torrent_tab_trackers">Sporere</string>
     <string name="torrent_tab_peers">Likemenn</string>
     <string name="torrent_tab_web_seeds">HTTP-kilder</string>
@@ -184,7 +183,6 @@
     <string name="torrent_trackers_peers">Likemenn</string>
     <string name="torrent_trackers_seeds">Delere</string>
     <string name="torrent_trackers_downloaded">Nedlastet</string>
-    <string name="torrent_trackers_message">Melding: %1$s</string>
     <string name="torrent_trackers_action_edit">Rediger sporer</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">Slett %1$d sporer</item>
@@ -293,7 +291,6 @@
     <string name="torrent_trackers_add_hint">Sporere</string>
     <string name="torrent_peers_details_files">Filer: %1$s</string>
     <string name="torrent_add_tags">Etiketter</string>
-    <string name="rss_date">Dato: %1$s</string>
     <string name="rss_action_delete_feed">Slett strøm</string>
     <string name="rss_hint_feed_name_optional">Strøm-navn (valgfritt)</string>
     <string name="rss_confirm_delete_feed">Slett %1$s-strømmen\?</string>
@@ -338,8 +335,6 @@
     <string name="torrent_overview_downloaded_format">%1$s (%2$s denne økten)</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_priority_update_success">Filprioritet oppdatert.</string>
-    <string name="torrent_piece_size">Delstørrelse</string>
-    <string name="torrent_piece_map">Delekart</string>
     <string name="torrent_trackers_leeches">Hentere</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_banned">Likemenn bannlyst.</string>
@@ -351,7 +346,6 @@
     <string name="torrent_peers_flag_utp">µTP</string>
     <string name="torrent_error_not_found">Fant ikke torrenten.</string>
     <string name="torrent_add_stop_condition">Stoppvilkår</string>
-    <string name="rss_no_description">Fant ingen beskrivelse</string>
     <string name="rss_action_add_feed">Legg til strøm</string>
     <string name="rss_action_rename_feed">Gi strøm nytt navn</string>
     <string name="rss_action_move_feed">Flytt strøm</string>
@@ -380,7 +374,6 @@
     <string name="torrent_action_force_start">Påtving start</string>
     <string name="torrent_tags_update_success">Etiketter oppdatert.</string>
     <string name="torrent_export_error">Kunne ikke eksportere torrent.</string>
-    <string name="torrent_trackers_cannot_edit_default">Du kan ikke redigere forvalgte sporere.</string>
     <string name="torrent_peers_details_download_speed">Nedlastingshastighet: %1$s</string>
     <string name="torrent_peers_details_downloaded">Nedlastet: %1$s</string>
     <string name="torrent_add_sequential_download">Last ned i sekvensiell rekkefølge</string>
@@ -396,7 +389,6 @@
         <item quantity="one">%1$d sporer slettet</item>
         <item quantity="other">%1$d sporere slettet</item>
     </plurals>
-    <string name="torrent_pieces">Deler</string>
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="one">Slett %1$d sporer\?</item>
         <item quantity="other">Slett %1$d sporere\?</item>

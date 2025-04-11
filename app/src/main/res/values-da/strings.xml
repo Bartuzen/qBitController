@@ -163,7 +163,6 @@
     <string name="torrent_action_copy_hash_v1">Hash v1</string>
     <string name="torrent_action_copy_hash_v2">Hash v2</string>
     <string name="torrent_action_export">Eksport af .torrent</string>
-    <string name="torrent_tab_pieces">Stykker</string>
     <string name="torrent_tab_peers">Modparter</string>
     <string name="torrent_tab_web_seeds">HTTP Kilder</string>
     <string name="torrent_action_force_recheck">Tving Gentjek</string>
@@ -192,8 +191,6 @@
     <string name="torrent_trackers_added">Trackers tilføjet.</string>
     <string name="torrent_trackers_deleted">Trackers slettet.</string>
     <string name="torrent_trackers_edited">Tracker redigeret.</string>
-    <string name="torrent_trackers_cannot_delete_default">Du kan ikke slette standard trackere.</string>
-    <string name="torrent_trackers_cannot_edit_default">Du kan ikke redigere standardtrackere.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker URL kan ikke være tomt.</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d fil valgt</item>
@@ -241,9 +238,7 @@
     <string name="torrent_add_error">Kan ikke tilføje torrent.</string>
     <string name="torrent_add_invalid_file">Torrent-filen er ugyldig.</string>
     <string name="rss_title">RSS</string>
-    <string name="rss_date">Dato: %1$s</string>
     <string name="rss_mark_as_read">Markér som læst</string>
-    <string name="rss_no_description">Ingen beskrivelse fundet</string>
     <string name="rss_action_add">Tilføj</string>
     <string name="rss_action_add_feed">Tilføj feed</string>
     <string name="rss_action_rename_feed">Omdøb Feed</string>
@@ -484,7 +479,6 @@
     <string name="search_start_category_anime">Anime</string>
     <string name="settings_servers">Servere</string>
     <string name="torrent_overview_transfer">Overfør</string>
-    <string name="torrent_trackers_message">Besked: %1$s</string>
     <string name="torrent_add_stop_condition_none">Ingen</string>
     <string name="speed_kibibytes_per_second">KiB/s</string>
     <string name="speed_mebibytes_per_second">MiB/s</string>

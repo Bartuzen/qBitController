@@ -188,7 +188,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">概览</string>
     <string name="torrent_tab_files">文件</string>
-    <string name="torrent_tab_pieces">区块</string>
     <string name="torrent_tab_trackers">Trackers</string>
     <string name="torrent_tab_peers">用户</string>
     <string name="torrent_tab_web_seeds">HTTP 源</string>
@@ -295,9 +294,6 @@
     <string name="torrent_files_file_renamed_success">已成功重命名文件</string>
     <string name="torrent_files_folder_renamed_success">文件夹重命名成功</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">该路径无效或已被使用。</string>
-    <string name="torrent_pieces">区块</string>
-    <string name="torrent_piece_size">区块大小</string>
-    <string name="torrent_piece_map">区块地图</string>
     <string name="torrent_trackers_action_delete">删除</string>
     <string name="torrent_trackers_action_add">添加 Trackers</string>
     <string name="torrent_trackers_edit_hint">Tracker 地址</string>
@@ -305,7 +301,6 @@
     <string name="torrent_trackers_seeds">种子</string>
     <string name="torrent_trackers_leeches">下载</string>
     <string name="torrent_trackers_downloaded">已下载</string>
-    <string name="torrent_trackers_message">消息：%1$s</string>
     <string name="torrent_trackers_add_hint">Trackers</string>
     <string name="torrent_trackers_action_edit">编辑 Tracker</string>
     <plurals name="torrent_trackers_delete_title">
@@ -320,8 +315,6 @@
     <string name="torrent_trackers_added">已成功添加 Trackers。</string>
     <string name="torrent_trackers_deleted">已成功删除 Trackers。</string>
     <string name="torrent_trackers_edited">已成功编辑 Tracker。</string>
-    <string name="torrent_trackers_cannot_delete_default">你无法删除默认 Trackers。</string>
-    <string name="torrent_trackers_cannot_edit_default">你无法编辑默认 Trackers。</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker 地址不得为空。</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">地区：%1$s</string>
@@ -411,10 +404,8 @@
     <string name="torrent_add_invalid_file">该 Torrent 文件无效。</string>
     <string name="rss_title">RSS</string>
     <string name="rss_filter">筛选器条目…</string>
-    <string name="rss_date">日期：%1$s</string>
     <string name="rss_download">下载</string>
     <string name="rss_mark_as_read">标记为已读</string>
-    <string name="rss_no_description">未找到详细描述</string>
     <string name="rss_action_add">添加</string>
     <string name="rss_action_add_feed">添加新订阅源</string>
     <string name="rss_action_rename_feed">重命名订阅源</string>
@@ -509,8 +500,8 @@
     <string name="search_result_showing_count">正在显示 %1$d / %2$d</string>
     <string name="search_result_size">大小：%1$s</string>
     <string name="search_result_site">网站：%1$s</string>
-    <string name="search_result_seeders">做种用户：%1$s</string>
-    <string name="search_result_leechers">下载用户：%1$s</string>
+    <string name="search_result_seeders">做种者</string>
+    <string name="search_result_leechers">下载者</string>
     <string name="search_result_open_description">打开描述</string>
     <string name="search_result_download">下载</string>
     <string name="search_result_stop_success">搜索已停止。</string>
@@ -617,4 +608,19 @@
     <string name="torrent_list_no_server_title">没有可用的服务器</string>
     <string name="torrent_list_no_server_description">您还没有添加任何服务器。 添加一个即可开始。</string>
     <string name="torrent_list_no_server_add">添加服务器</string>
+    <string name="torrent_overview_piece_not_downloaded">未下载</string>
+    <string name="torrent_overview_piece_map">区块图</string>
+    <string name="torrent_overview_piece_downloaded">已下载</string>
+    <string name="torrent_overview_piece_downloading">下载中</string>
+    <string name="rss_details">Torrent 详情</string>
+    <string name="rss_description">描述</string>
+    <string name="rss_rule_item_enabled">已启用</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="other">%1$d 个订阅源</item>
+    </plurals>
+    <string name="rss_new">新</string>
+    <string name="rss_rule_item_disabled">已禁用</string>
+    <string name="search_result_details">Torrent 详情</string>
+    <string name="search_result_title">搜索结果</string>
+    <string name="search_start_plugins">插件</string>
 </resources>

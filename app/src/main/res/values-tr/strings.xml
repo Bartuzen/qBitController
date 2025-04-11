@@ -177,7 +177,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Genel</string>
     <string name="torrent_tab_files">Dosyalar</string>
-    <string name="torrent_tab_pieces">Parçalar</string>
     <string name="torrent_tab_trackers">İzleyiciler</string>
     <string name="torrent_tab_peers">Kişiler</string>
     <string name="torrent_tab_web_seeds">HTTP Kaynakları</string>
@@ -261,11 +260,8 @@
     <string name="torrent_files_rename_file">Dosyayı Yeniden Adlandır</string>
     <string name="torrent_files_rename_file_hint">Dosya Adı</string>
     <string name="torrent_files_rename_folder_hint">Klasör Adı</string>
-    <string name="torrent_piece_size">PARÇA BOYUTU</string>
-    <string name="torrent_piece_map">PARÇA HARİTASI</string>
     <string name="torrent_files_folder_renamed_success">Klasör başarıyla yeniden adlandırıldı</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Yol geçersiz veya zaten kullanımda.</string>
-    <string name="torrent_pieces">PARÇALAR</string>
     <string name="torrent_trackers_action_delete">Sil</string>
     <string name="torrent_trackers_action_add">İzleyici Ekle</string>
     <string name="torrent_trackers_edit_hint">İzleyici URL\'leri</string>
@@ -274,8 +270,6 @@
     <string name="torrent_trackers_peers">Kişi</string>
     <string name="torrent_trackers_seeds">Gönderen</string>
     <string name="torrent_trackers_edited">İzleyici başarıyla düzenlendi.</string>
-    <string name="torrent_trackers_cannot_delete_default">Varsayılan izleyicileri silemezsiniz.</string>
-    <string name="torrent_trackers_cannot_edit_default">Varsayılan izleyicileri düzenleyemezsiniz.</string>
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="one">%1$d izleyiciyi silmek istediğinizden emin misiniz\?</item>
         <item quantity="other"/>
@@ -328,10 +322,8 @@
     <string name="rss_action_move_feed">Bildirimi Taşı</string>
     <string name="rss_action_delete_feed">Bildirimi Sil</string>
     <string name="rss_filter">Verileri filtrele…</string>
-    <string name="rss_date">Tarih: %1$s</string>
     <string name="rss_download">İndir</string>
     <string name="rss_mark_as_read">Okundu Olarak İşaretle</string>
-    <string name="rss_no_description">Açıklama bulunamadı</string>
     <string name="rss_action_add">Ekle</string>
     <string name="rss_action_add_feed">Bildirim Ekle</string>
     <string name="rss_action_rename_feed">Bildirimi Yeniden Adlandır</string>
@@ -495,7 +487,6 @@
     <string name="torrent_files_rename_folder">Klasörü Yeniden Adlandır</string>
     <string name="torrent_files_priority_update_success">Dosya önceliği başarıyla güncellendi.</string>
     <string name="torrent_files_file_renamed_success">Dosya başarıyla yeniden adlandırıldı</string>
-    <string name="torrent_trackers_message">İleti: %1$s</string>
     <string name="torrent_trackers_add_hint">İzleyiciler</string>
     <string name="torrent_trackers_action_edit">İzleyiciyi Düzenle</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
@@ -636,4 +627,10 @@
     <string name="torrent_list_no_server_title">Sunucu Bulunamadı</string>
     <string name="search_result_title">Arama Sonuçları</string>
     <string name="search_start_plugins">Eklentiler</string>
+    <string name="search_result_details">Torrent Detayları</string>
+    <string name="rss_details">Torrent Detayları</string>
+    <string name="rss_description">Açıklama</string>
+    <string name="rss_new">Yeni</string>
+    <string name="rss_rule_item_enabled">Etkin</string>
+    <string name="rss_rule_item_disabled">Devre dışı</string>
 </resources>

@@ -231,7 +231,6 @@
     <string name="stats_percentage_format">%1$s%%</string>
     <string name="torrent_tab_files">Soubory</string>
     <string name="torrent_tab_peers">Peery</string>
-    <string name="torrent_tab_pieces">Části</string>
     <string name="torrent_tab_trackers">Trackery</string>
     <string name="torrent_delete">Smazat torrent</string>
     <string name="torrent_delete_files">Též trvale smazat soubory na disku</string>
@@ -283,7 +282,6 @@
     <string name="torrent_trackers_seeds">Zdroje</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_add_hint">Trackery</string>
-    <string name="torrent_trackers_cannot_delete_default">Nemůžete smazat výchozí trackery.</string>
     <string name="torrent_trackers_url_cannot_be_empty">URL trackeru nesmí být prázdná.</string>
     <string name="torrent_peers_country">Země: %1$s</string>
     <string name="torrent_peers_connection">Připojení: %1$s</string>
@@ -293,7 +291,6 @@
     <string name="torrent_rename_success">Jméno torrentu úspěšně změněno.</string>
     <string name="torrent_no_tags">Nebyly nalezeny žádné štítky.</string>
     <string name="torrent_overview_last_activity">Poslední aktivita</string>
-    <string name="torrent_pieces">ČÁSTI</string>
     <string name="torrent_overview_information">Informace</string>
     <string name="torrent_overview_total_size">Celková velikost</string>
     <string name="torrent_overview_added_on">Přidáno</string>
@@ -319,7 +316,6 @@
     <string name="torrent_files_error_path_is_invalid_or_in_use">Cesta je neplatná nebo používána.</string>
     <string name="torrent_files_folder_renamed_success">Složka přejmenována úspěšně</string>
     <string name="torrent_trackers_downloaded">Staženo</string>
-    <string name="torrent_trackers_message">Zpráva: %1$s</string>
     <string name="torrent_trackers_action_edit">Upravit tracker</string>
     <string name="torrent_trackers_deleted">Trackery smazány úspěšně.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
@@ -327,9 +323,7 @@
     <string name="torrent_overview_private_no">Ne</string>
     <string name="torrent_overview_downloaded">Staženo</string>
     <string name="torrent_files_action_priority">Priorita</string>
-    <string name="torrent_piece_size">VELIKOST ČÁSTI</string>
     <string name="torrent_files_priority_update_success">Priorita souboru změněna úspěšně.</string>
-    <string name="torrent_piece_map">MAPA ČÁSTÍ</string>
     <string name="torrent_trackers_action_delete">Smazat</string>
     <string name="torrent_trackers_action_add">Přidat trackery</string>
     <string name="torrent_trackers_edit_hint">URL trackeru</string>
@@ -358,7 +352,6 @@
     <string name="torrent_files_priority_maximum">Maximální</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_trackers_added">Trackery přidány úspěšně.</string>
-    <string name="torrent_trackers_cannot_edit_default">Nemůžete upravit výchozí trackery.</string>
     <string name="torrent_peers_flags">Vlajky: %1$s</string>
     <plurals name="torrent_add_files_selected">
         <item quantity="one">%1$d soubor zvolen</item>
@@ -467,7 +460,6 @@
     <string name="torrent_add_content_layout">Rozvržení obsahu</string>
     <string name="torrent_add_content_layout_original">Originál</string>
     <string name="torrent_add_seeding_time_limit">Maximální doby seedování v minutách</string>
-    <string name="rss_date">Datum: %1$s</string>
     <string name="rss_action_move_feed">Přesunout kanál</string>
     <string name="rss_action_delete_feed">Smazat kanál</string>
     <string name="rss_action_add_folder">Přidat složku</string>
@@ -491,7 +483,6 @@
     <string name="torrent_add_download_speed_limit">Limit rychlosti stahování</string>
     <string name="rss_title">RSS</string>
     <string name="torrent_peers_flag_encrypted_traffic">Šifrovaný přenos</string>
-    <string name="rss_no_description">Nebyl nalezen žádný popis</string>
     <string name="torrent_peers_details_country">Země: %1$s</string>
     <string name="torrent_peers_action_add">Přidání peerů</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interested (local) a přiškrcený (peer)</string>

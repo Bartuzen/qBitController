@@ -190,7 +190,6 @@
     <string name="stats_ms_format">%1$d мс</string>
     <string name="torrent_tab_overview">Огляд</string>
     <string name="torrent_tab_files">Файли</string>
-    <string name="torrent_tab_pieces">Частини</string>
     <string name="torrent_tab_trackers">Відстежувачі</string>
     <string name="torrent_tab_peers">Піри</string>
     <string name="torrent_tab_web_seeds">Вебсіди</string>
@@ -237,7 +236,6 @@
     <string name="rss_filter">Фільтр записів…</string>
     <string name="torrent_add_invalid_file">Торрент-файл не дійсний.</string>
     <string name="rss_title">RSS</string>
-    <string name="rss_date">Дата: %1$s</string>
     <string name="rss_action_add_folder">Додати теку</string>
     <string name="rss_action_rename_folder">Перейменувати теку</string>
     <string name="rss_action_move_folder">Перемістити теку</string>
@@ -266,9 +264,6 @@
     <string name="torrent_add_download_speed_limit">Ліміт швидкості завантаження</string>
     <string name="torrent_add_upload_speed_limit">Ліміт швидкості вивантаження</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Невірний шлях або вже використовується.</string>
-    <string name="torrent_pieces">ЧАСТИНИ</string>
-    <string name="torrent_piece_size">РОЗМІР ЧАСТИНИ</string>
-    <string name="torrent_piece_map">МАПА ЧАСТИН</string>
     <string name="torrent_trackers_action_delete">Видалити</string>
     <string name="torrent_trackers_downloaded">Завантажено</string>
     <string name="torrent_trackers_action_add">Додати відстежувачі</string>
@@ -280,10 +275,8 @@
         <item quantity="many">Вибрано %1$d відстежувачів</item>
         <item quantity="other">Вибрано %1$d відстежувачів</item>
     </plurals>
-    <string name="torrent_trackers_message">Повідомлення: %1$s</string>
     <string name="torrent_trackers_add_hint">Відстежувачі</string>
     <string name="torrent_trackers_action_edit">Редагувати відстежувачі</string>
-    <string name="torrent_trackers_cannot_edit_default">Ви не можете редагувати типові відстежувачі.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Адреса відстежувача не повинна бути пустою.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">Країна: %1$s</string>
@@ -333,7 +326,6 @@
     <string name="rss_action_rename_feed">Перейменувати стрічку</string>
     <string name="rss_action_move_feed">Перемістити стрічку</string>
     <string name="rss_mark_as_read">Позначити як прочитане</string>
-    <string name="rss_no_description">Опис не знайдено</string>
     <string name="rss_action_delete_feed">Видалити стрічку</string>
     <string name="rss_action_mark_all_as_read">Позначити все як прочитане</string>
     <string name="rss_action_refresh_all">Оновити все</string>
@@ -398,7 +390,6 @@
     <string name="rss_confirm_delete_folder">Ви упевнені, що хочете видалити %1$s теку?</string>
     <string name="rss_action_move_select_folder">Виберіть теку</string>
     <string name="torrent_trackers_leeches">Лічери</string>
-    <string name="torrent_trackers_cannot_delete_default">Ви не можете видалити типові відстежувачі.</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Зацікавлений (клієнт) та зайнятий (пір)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">Зацікавлений (пір) та не зайнятий (клієнт)</string>
     <string name="rss_feed_not_found">RSS канал не знайдено.</string>
@@ -666,4 +657,20 @@
     <string name="torrent_list_no_server_description">Ви ще не додали жодного сервера. Додайте один, щоб почати.</string>
     <string name="search_result_title">Результати пошуку</string>
     <string name="search_start_plugins">Плагіни</string>
+    <string name="search_result_details">Деталі торрента</string>
+    <string name="rss_details">Деталі торрента</string>
+    <string name="rss_description">Опис</string>
+    <string name="rss_new">Новий</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d корма</item>
+        <item quantity="few">%1$d корми</item>
+        <item quantity="many">%1$d кормів</item>
+        <item quantity="other">%1$d кормів</item>
+    </plurals>
+    <string name="rss_rule_item_enabled">Увімкнено</string>
+    <string name="rss_rule_item_disabled">Вимкнено</string>
+    <string name="torrent_overview_piece_map">Шматкова карта</string>
+    <string name="torrent_overview_piece_downloaded">Завантажено</string>
+    <string name="torrent_overview_piece_downloading">Завантаження</string>
+    <string name="torrent_overview_piece_not_downloaded">Не завантажено</string>
 </resources>

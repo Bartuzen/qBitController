@@ -164,7 +164,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">개요</string>
     <string name="torrent_tab_files">파일</string>
-    <string name="torrent_tab_pieces">조각</string>
     <string name="torrent_tab_web_seeds">HTTP 소스</string>
     <string name="torrent_delete">토렌트 삭제</string>
     <string name="torrent_delete_files">디스크에 있는 파일도 삭제</string>
@@ -174,8 +173,8 @@
     <string name="torrent_action_resume">이어받기</string>
     <string name="torrent_action_options">토렌트 옵션</string>
     <string name="torrent_action_tags">태그 설정</string>
-    <string name="torrent_action_force_recheck">강제 다시 사</string>
-    <string name="torrent_action_force_reannounce">강제 다시림</string>
+    <string name="torrent_action_force_recheck">강제 재확인</string>
+    <string name="torrent_action_force_reannounce">강제 재알림</string>
     <string name="torrent_action_super_seeding">초도 배포</string>
     <string name="torrent_action_copy">복사</string>
     <string name="torrent_action_copy_name">이름</string>
@@ -263,8 +262,6 @@
     <string name="torrent_files_rename_file_hint">파일 이름</string>
     <string name="torrent_files_priority_update_success">파일 우선순위가 성공적으로 업데이트 되었습니다.</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">경로가 잘못되었거나 이미 사용중입니다.</string>
-    <string name="torrent_piece_size">조각 크기</string>
-    <string name="torrent_piece_map">조각 지도</string>
     <string name="torrent_trackers_edit_hint">트래커 URL</string>
     <string name="torrent_peers_details_progress">진행률: %1$s%%</string>
     <string name="torrent_peers_flag_peer_from_dht">DHT 피어</string>
@@ -312,9 +309,7 @@
     <string name="torrent_files_rename_folder_hint">폴더 이름</string>
     <string name="torrent_files_action_rename">이름 바꾸기</string>
     <string name="torrent_files_folder_renamed_success">폴더 이름이 성공적으로 바뀜</string>
-    <string name="torrent_pieces">조각</string>
     <string name="torrent_trackers_action_add">트래커 추가</string>
-    <string name="torrent_trackers_message">메시지: %1$s</string>
     <string name="torrent_trackers_downloaded">내려받음</string>
     <string name="torrent_trackers_add_hint">트래커</string>
     <string name="torrent_trackers_action_edit">트래커 수정</string>
@@ -334,12 +329,10 @@
     <string name="torrent_peers_details_flags">플래그: %1$s</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">관심 있음 (피어) / 혼잡 해소됨 (로컬)</string>
     <string name="torrent_trackers_edited">트래커가 성공적으로 수정되었습니다.</string>
-    <string name="torrent_trackers_cannot_delete_default">기본 트래커를 삭제할 수 없습니다.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_flags">플래그: %1$s</string>
     <string name="torrent_peers_country">국가: %1$s</string>
     <string name="torrent_peers_connection">연결: %1$s</string>
-    <string name="torrent_trackers_cannot_edit_default">기본 트래커를 수정할 수 없습니다.</string>
     <string name="torrent_peers_action_ban">피어 차단</string>
     <string name="torrent_peers_add_hint">피어</string>
     <string name="torrent_peers_action_add">피어 추가</string>
@@ -385,12 +378,11 @@
     <string name="torrent_add_seeding_time_limit">배포 제한 시간 (분)</string>
     <string name="torrent_add_server">서버</string>
     <string name="rss_download">내려받기</string>
-    <string name="rss_no_description">설명이 없음</string>
     <string name="rss_action_move_feed">피드 옮기기</string>
     <string name="rss_action_delete_feed">피드 삭제</string>
     <string name="rss_action_move_select_folder">폴더 선택</string>
     <string name="rss_hint_feed_name_optional">피드 이름 (선택적)</string>
-    <string name="rss_all_articles">모든 규약</string>
+    <string name="rss_all_articles">모든 RSS</string>
     <string name="rss_field_required">이 항목은 필수입니다.</string>
     <string name="rss_added_feed">피드가 성공적으로 추가되었습니다.</string>
     <string name="rss_success_feed_rename">피드 이름이 성공적으로 바뀌었습니다.</string>
@@ -509,7 +501,6 @@
     <string name="rss_delete_folder_error">폴더를 삭제할 수 없습니다.</string>
     <string name="rss_mark_all_articles_as_read_success">모든 문서가 성공적으로 읽음 표시되었습니다.</string>
     <string name="rss_filter">필터 목록…</string>
-    <string name="rss_date">날짜: %1$s</string>
     <string name="rss_action_rename_folder">폴더 이름 바꾸기</string>
     <string name="rss_mark_as_read">읽음으로 표시</string>
     <string name="rss_action_add_folder">폴더 추가</string>
@@ -616,4 +607,15 @@
     <string name="rss_rule_no_feed_found">발견된 피드 없음</string>
     <string name="torrent_overview_popularity">인지도</string>
     <string name="rss_success_feed_change_url">피드 URL이 성공적으로 변경되었습니다.</string>
+    <string name="rss_details">토렌트 세부정보</string>
+    <string name="rss_description">설명</string>
+    <string name="rss_new">새로운</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="other">%1$d 피드</item>
+    </plurals>
+    <string name="search_result_details">토렌트 세부정보</string>
+    <string name="rss_rule_item_disabled">비활성화됨</string>
+    <string name="rss_rule_item_enabled">활성화됨</string>
+    <string name="search_result_title">검색 결과</string>
+    <string name="search_start_plugins">플러그인</string>
 </resources>

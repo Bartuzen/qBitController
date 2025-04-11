@@ -228,7 +228,6 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_list_status_error">Erro</string>
     <string name="torrent_tab_files">Arquivos</string>
-    <string name="torrent_tab_pieces">Pedaços</string>
     <string name="torrent_tab_overview">Geral</string>
     <string name="torrent_tab_trackers">Rastreadores</string>
     <string name="torrent_tab_peers">Peers</string>
@@ -321,9 +320,6 @@
     <string name="torrent_files_priority_update_success">Arquivos prioritários atualizados com sucesso.</string>
     <string name="torrent_files_file_renamed_success">Arquivo renomeado com sucesso</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">O caminho é inválido ou já esta em uso.</string>
-    <string name="torrent_pieces">PEDAÇOS</string>
-    <string name="torrent_piece_size">TAMANHO DOS PEDAÇOS</string>
-    <string name="torrent_piece_map">MAPA DOS PEDAÇOS</string>
     <string name="torrent_trackers_action_delete">Excluir</string>
     <string name="torrent_trackers_action_add">Adicionar rastreadores</string>
     <string name="torrent_trackers_edit_hint">URL do rastreador</string>
@@ -331,7 +327,6 @@
     <string name="torrent_trackers_seeds">Seeds</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_downloaded">Transferido</string>
-    <string name="torrent_trackers_message">Mensagem: %1$s</string>
     <string name="torrent_trackers_add_hint">Rastreadores</string>
     <string name="torrent_trackers_action_edit">Editar rastreador</string>
     <plurals name="torrent_trackers_delete_title">
@@ -347,8 +342,6 @@
     <string name="torrent_trackers_added">Rastreadores adicionados com sucesso.</string>
     <string name="torrent_trackers_deleted">Rastreadores excluídos com sucesso.</string>
     <string name="torrent_trackers_edited">Rastreador editado com sucesso.</string>
-    <string name="torrent_trackers_cannot_delete_default">Você não pode excluir rastreadores padrão.</string>
-    <string name="torrent_trackers_cannot_edit_default">Você não pode editar rastreadores padrão.</string>
     <string name="torrent_trackers_url_cannot_be_empty">A URL do rastreador não pode estar vazia.</string>
     <string name="torrent_peers_country">País: %1$s</string>
     <string name="torrent_peers_connection">Conexão: %1$s</string>
@@ -419,10 +412,8 @@
     <string name="torrent_add_invalid_file">O arquivo torrent é inválido.</string>
     <string name="rss_title">RSS</string>
     <string name="rss_filter">Entradas de filtro…</string>
-    <string name="rss_date">Data: %1$s</string>
     <string name="rss_download">Download</string>
     <string name="rss_mark_as_read">Marcar como lido</string>
-    <string name="rss_no_description">Descrição não encontrada</string>
     <string name="rss_action_add_feed">Adicionar feed</string>
     <string name="rss_action_rename_feed">Renomear feed</string>
     <string name="rss_action_move_feed">Mover feed</string>

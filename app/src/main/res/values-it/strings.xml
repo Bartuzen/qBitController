@@ -245,7 +245,6 @@
     <string name="stats_total_buffer_size">Dimensione Buffer Totale</string>
     <string name="stats_write_cache_overload">Sovraccarico Cache Scrittura</string>
     <string name="stats_read_cache_overload">Sovraccarico Cache Lettura</string>
-    <string name="torrent_tab_pieces">Pezzi</string>
     <string name="torrent_action_pause">Pausa</string>
     <string name="torrent_action_delete">Elimina</string>
     <string name="torrent_action_force_recheck">Forza Ricontrollo</string>
@@ -303,9 +302,6 @@
     <string name="torrent_files_file_renamed_success">File rinominato con successo</string>
     <string name="torrent_files_folder_renamed_success">Cartella rinominata con successo</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">Percorso invalido o già in uso.</string>
-    <string name="torrent_piece_map">MAPPA DELLE PARTI</string>
-    <string name="torrent_pieces">PARTI</string>
-    <string name="torrent_piece_size">DIMENSIONE PARTE</string>
     <string name="torrent_overview_private">Privato</string>
     <string name="torrent_overview_private_yes">Sì</string>
     <string name="torrent_files_rename_folder">Rinomina Cartella</string>

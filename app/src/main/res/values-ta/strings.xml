@@ -84,15 +84,11 @@
     <string name="torrent_files_rename_folder_hint">கோப்புறை பெயர்</string>
     <string name="torrent_files_priority_update_success">கோப்புகளின் முன்னுரிமை வெற்றிகரமாக புதுப்பிக்கப்பட்டது.</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">பாதை தவறானது அல்லது ஏற்கனவே பயன்பாட்டில் உள்ளது.</string>
-    <string name="torrent_pieces">துண்டுகள்</string>
-    <string name="torrent_piece_size">துண்டு அளவு</string>
-    <string name="torrent_piece_map">துண்டு வரைபடம்</string>
     <string name="torrent_trackers_edit_hint">டிராக்கர் முகவரி</string>
     <string name="torrent_trackers_peers">சகாக்கள்</string>
     <string name="torrent_trackers_seeds">விதைகள்</string>
     <string name="torrent_trackers_leeches">லீச்சச்</string>
     <string name="torrent_trackers_downloaded">பதிவிறக்கம்</string>
-    <string name="torrent_trackers_message">செய்தி: %1$s</string>
     <string name="torrent_trackers_action_edit">டிராக்கரைத் திருத்து</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">%1$d டிராக்கரை நீக்கு</item>
@@ -109,8 +105,6 @@
     <string name="torrent_trackers_added">டிராக்கர்கள் வெற்றிகரமாக சேர்க்கப்பட்டன.</string>
     <string name="torrent_trackers_deleted">டிராக்கர்கள் வெற்றிகரமாக நீக்கப்பட்டன.</string>
     <string name="torrent_trackers_edited">டிராக்கர் வெற்றிகரமாக திருத்தப்பட்டது.</string>
-    <string name="torrent_trackers_cannot_delete_default">இயல்புநிலை டிராக்கர்களை நீக்க முடியாது.</string>
-    <string name="torrent_trackers_cannot_edit_default">இயல்புநிலை டிராக்கர்களை நீங்கள் திருத்த முடியாது.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_country">நாடு: %1$s</string>
     <string name="torrent_peers_connection">இணைப்பு: %1$s</string>
@@ -325,7 +319,6 @@
     <string name="stats_ms_format">%1$d MS</string>
     <string name="torrent_tab_overview">கண்ணோட்டம்</string>
     <string name="torrent_tab_files">கோப்புகள்</string>
-    <string name="torrent_tab_pieces">துண்டுகள்</string>
     <string name="torrent_tab_trackers">டிராக்கர்கள்</string>
     <string name="torrent_tab_peers">சகாக்கள்</string>
     <string name="torrent_tab_web_seeds">HTTP ஆதாரங்கள்</string>
@@ -415,7 +408,6 @@
     <string name="torrent_add_link_cannot_be_empty">இணைப்பு காலியாக இருக்க முடியாது.</string>
     <string name="rss_title">ஆர்.எச்.எச்</string>
     <string name="rss_filter">உள்ளீடுகளை வடிகட்டவும்…</string>
-    <string name="rss_date">தேதி: %1$s</string>
     <string name="rss_action_add">கூட்டு</string>
     <string name="rss_action_rename_folder">கோப்புறை மறுபெயரிடுங்கள்</string>
     <string name="rss_action_refresh">புதுப்பிப்பு</string>
@@ -497,7 +489,6 @@
     <string name="rss_mark_as_read">படித்தபடி குறி</string>
     <string name="torrent_add_error">டொரெண்டை சேர்க்க முடியவில்லை.</string>
     <string name="torrent_add_invalid_file">டொரண்ட் கோப்பு தவறானது.</string>
-    <string name="rss_no_description">எந்த விளக்கமும் கிடைக்கவில்லை</string>
     <string name="rss_action_add_feed">ஊட்டத்தைச் சேர்க்கவும்</string>
     <string name="rss_action_rename_feed">ஊட்டத்தை மறுபெயரிடுங்கள்</string>
     <string name="rss_action_edit_feed_url">தீவன முகவரி ஐத் திருத்தவும்</string>

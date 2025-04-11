@@ -109,7 +109,6 @@
     <string name="torrent_files_rename_file">重新命名檔案</string>
     <string name="torrent_trackers_peers">使用者</string>
     <string name="torrent_trackers_downloaded">已下載</string>
-    <string name="torrent_trackers_message">消息：%1$s</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="other">是否確認要封鎖 %1$d 名使用者？</item>
     </plurals>
@@ -190,7 +189,6 @@
     <string name="torrent_files_action_priority">優先程度</string>
     <string name="torrent_files_rename_folder">重新命名資料夾</string>
     <string name="torrent_files_rename_file_hint">檔案名稱</string>
-    <string name="torrent_pieces">區塊</string>
     <string name="torrent_trackers_leeches">下載</string>
     <string name="torrent_trackers_seeds">種子</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker 位址不得為空。</string>
@@ -231,7 +229,7 @@
     <string name="search_result_filter_size">大小</string>
     <string name="search_result_filter_max">最大</string>
     <string name="search_result_filter_min">最小</string>
-    <string name="search_result_leechers">下載使用者：%1$s</string>
+    <string name="search_result_leechers">下載使用者</string>
     <string name="search_result_action_sort_name">名稱</string>
     <string name="search_result_action_sort_size">大小</string>
     <string name="search_plugins_save_success">外掛程式儲存成功。</string>
@@ -297,7 +295,6 @@
     <string name="stats_percentage_format">%1$s%%</string>
     <string name="torrent_tab_files">檔案</string>
     <string name="torrent_resumed_success">已成功恢復該 Torrent。</string>
-    <string name="torrent_tab_pieces">區塊</string>
     <string name="torrent_tab_trackers">Trackers</string>
     <string name="torrent_recheck_success">已成功重新校驗該 Torrent。</string>
     <string name="torrent_reannounce_success">已成功重新彙報該 Torrent。</string>
@@ -366,8 +363,6 @@
     <string name="settings_server_password_min_character">密碼長度至少為 6 個字串。</string>
     <string name="stats_read_cache_overload">讀取快取超載</string>
     <string name="torrent_overview_availability">可用性</string>
-    <string name="torrent_piece_size">區塊大小</string>
-    <string name="torrent_piece_map">區塊地圖</string>
     <string name="torrent_trackers_action_delete">刪除</string>
     <plurals name="torrent_peers_selected">
         <item quantity="other">已選擇 %1$d 名使用者</item>
@@ -379,9 +374,7 @@
     <string name="torrent_add_action_add_torrent">新增 Torrent</string>
     <string name="torrent_add_error">無法新增 Torrent。</string>
     <string name="rss_title">RSS</string>
-    <string name="rss_date">日期：%1$s</string>
     <string name="rss_download">下載</string>
-    <string name="rss_no_description">找不到詳細描述</string>
     <string name="rss_action_add">新增</string>
     <string name="rss_action_add_feed">新增新 Feed</string>
     <string name="rss_action_rename_feed">重新命名 Feed</string>
@@ -510,7 +503,6 @@
         <item quantity="other">已選擇 %1$d 個 Tracker</item>
     </plurals>
     <string name="torrent_trackers_edited">已成功編輯 Tracker。</string>
-    <string name="torrent_trackers_cannot_delete_default">你無法刪除預設 Trackers。</string>
     <string name="torrent_peers_country">地區：%1$s</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_connection">連接：%1$s</string>
@@ -602,7 +594,6 @@
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="other">是否確認要刪除 %1$d 個 Tracker？</item>
     </plurals>
-    <string name="torrent_trackers_cannot_edit_default">你無法編輯預設 Trackers。</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="other">封鎖 %1$d 名使用者</item>
     </plurals>
@@ -610,7 +601,7 @@
     <string name="rss_rule_category">分類</string>
     <string name="rss_rule_torrent_content_layout">Torrent 內容佈局</string>
     <string name="search_title">搜尋</string>
-    <string name="search_result_seeders">做種使用者：%1$s</string>
+    <string name="search_result_seeders">做種使用者</string>
     <string name="search_plugins">外掛程式</string>
     <string name="search_result_action_sort_leechers">下載者</string>
     <string name="search_result_action_stop_search">停止搜尋</string>
@@ -618,4 +609,17 @@
     <string name="search_result_action_sort_reverse">降序</string>
     <string name="search_result_title">搜尋結果</string>
     <string name="search_start_plugins">外掛程式</string>
+    <string name="search_result_details">Torrent 詳細資料</string>
+    <string name="rss_details">Torrent 詳細資料</string>
+    <string name="rss_description">描述</string>
+    <string name="rss_rule_item_enabled">啟用</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="other">%1$d Feed</item>
+    </plurals>
+    <string name="rss_rule_item_disabled">禁用</string>
+    <string name="rss_new">新</string>
+    <string name="torrent_overview_piece_map">區塊圖</string>
+    <string name="torrent_overview_piece_downloaded">已下載</string>
+    <string name="torrent_overview_piece_downloading">下載中</string>
+    <string name="torrent_overview_piece_not_downloaded">未下載</string>
 </resources>

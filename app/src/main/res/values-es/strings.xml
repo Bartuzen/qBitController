@@ -99,7 +99,6 @@
     <string name="torrent_list_status_downloading">Descargando</string>
     <string name="stats_average_time_in_queue">Tiempo Promedio en Cola</string>
     <string name="torrent_list_status">Estado</string>
-    <string name="torrent_tab_pieces">Piezas</string>
     <string name="torrent_resumed_success">Torrent reanudado con éxito.</string>
     <string name="torrent_list_create_category_download_path_yes">Sí</string>
     <string name="stats_ms_format">%1$d ms</string>
@@ -315,7 +314,6 @@
     <string name="torrent_add_success">Torrent añadido correctamente.</string>
     <string name="search_start_category_anime">Anime</string>
     <string name="settings_language_system_default">Predeterminado del sistema</string>
-    <string name="torrent_pieces">PIEZAS</string>
     <string name="rss_rule_create_success">Regla RSS creada correctamente.</string>
     <string name="rss_feed_not_found">No se ha encontrado el feed RSS.</string>
     <string name="settings_server_password_min_character">La contraseña debe tener al menos 6 caracteres.</string>
@@ -427,7 +425,6 @@
     <string name="rss_add_feed_error">No se puede añadir el feed.</string>
     <string name="torrent_add_save_path">Guarda la ruta</string>
     <string name="rss_success_folder_move">Se ha movido una carpeta correctamente.</string>
-    <string name="torrent_trackers_message">Mensaje: %1$s</string>
     <string name="search_result_filter_seeds">Semillas</string>
     <string name="rss_rule_apply_rule_to_feeds">Aplicar una regla a los feeds</string>
     <string name="torrent_overview_last_activity">Última actividad</string>
@@ -442,12 +439,10 @@
     <string name="torrent_add_error">No se puede añadir el torrent.</string>
     <string name="torrent_files_action_rename">Renombrar</string>
     <string name="settings_auto_refresh_interval">Intervalo de actualización automática</string>
-    <string name="rss_date">Fecha: %1$s</string>
     <string name="torrent_overview_uploaded">Subido</string>
     <string name="rss_hint_feed_name">Nombre del feed</string>
     <string name="torrent_peers_flag_incoming_connection">Conexión entrante</string>
     <string name="settings_server_path">Ruta</string>
-    <string name="torrent_trackers_cannot_delete_default">No se pueden eliminar los rastreadores predeterminados.</string>
     <string name="rss_action_rename_feed">Renombrar el feed</string>
     <string name="torrent_add_upload_speed_limit">Límite de la velocidad de subida</string>
     <string name="rss_rename_feed_error">No se puede cambiar el nombre del feed.</string>
@@ -485,9 +480,7 @@
     <string name="torrent_peers_flag_peer_from_dht">Par de DHT</string>
     <string name="torrent_files_rename_file">Cambiar el nombre del archivo</string>
     <string name="settings_server_advanced_basic_auth_username">Usuario</string>
-    <string name="torrent_trackers_cannot_edit_default">No se pueden editar los rastreadores predeterminados.</string>
     <string name="search_result_seeders">Semillas</string>
-    <string name="torrent_piece_map">MAPA DE LA PIEZA</string>
     <string name="torrent_peers_details_upload_speed">Velocidad de subida: %1$s</string>
     <string name="torrent_add_content_layout_no_subfolder">No crear subcarpeta</string>
     <string name="torrent_peers_add_hint">Pares</string>
@@ -536,7 +529,6 @@
     <string name="torrent_overview_last_seen_complete">Visto por última vez</string>
     <string name="torrent_add_content_layout_original">Original</string>
     <string name="torrent_option_share_limit_global">Utilizar el límite de la cuota global</string>
-    <string name="rss_no_description">No se ha encontrado una descripción</string>
     <string name="torrent_option_share_limit_custom">Establecer un límite de cuota personalizado</string>
     <string name="search_result_showing_count">Mostrando %1$d de %2$d</string>
     <string name="torrent_add_title">Añadir un Torrent</string>
@@ -586,7 +578,6 @@
     <string name="torrent_peers_details_peer_id_client">ID del par cliente: %1$s</string>
     <string name="torrent_peers_connection">Conexión: %1$s</string>
     <string name="search_result_action_sort_size">Tamaño</string>
-    <string name="torrent_piece_size">TAMAÑO DE LA PIEZA</string>
     <string name="rss_download">Descargar</string>
     <string name="search_result_filter_size">Tamaño</string>
     <plurals name="torrent_trackers_delete_desc">
@@ -652,4 +643,19 @@
     <string name="torrent_list_no_server_add">Añadir servidor</string>
     <string name="search_result_title">Buscar resultados</string>
     <string name="search_start_plugins">Complementos</string>
+    <string name="search_result_details">Detalles del torrent</string>
+    <string name="rss_details">Detalles del torrent</string>
+    <string name="rss_description">Descripción</string>
+    <string name="rss_new">Nuevo</string>
+    <string name="rss_rule_item_enabled">Habilitado</string>
+    <string name="rss_rule_item_disabled">Deshabilitado</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d canal</item>
+        <item quantity="many">%1$d canales</item>
+        <item quantity="other">%1$d canales</item>
+    </plurals>
+    <string name="torrent_overview_piece_downloaded">Descargado</string>
+    <string name="torrent_overview_piece_not_downloaded">No descargado</string>
+    <string name="torrent_overview_piece_downloading">Descargando</string>
+    <string name="torrent_overview_piece_map">Mapa de piezas</string>
 </resources>
