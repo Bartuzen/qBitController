@@ -341,7 +341,6 @@
         <item quantity="many">Ви упевнені, що хочете забанити %1$d пірів?</item>
         <item quantity="other">Ви упевнені, що хочете забанити %1$d пірів?</item>
     </plurals>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_encrypted_handshake">Зашифроване рукостискання</string>
     <string name="torrent_add_button_file">Файл</string>
     <plurals name="torrent_add_files_selected">

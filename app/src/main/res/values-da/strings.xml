@@ -217,7 +217,6 @@
     <string name="torrent_peers_details_uploaded">Uploadet</string>
     <string name="torrent_peers_details_relevance">Relevans</string>
     <string name="torrent_peers_details_section_files">Filer</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_encrypted_traffic">Krypteret trafik</string>
     <string name="torrent_peers_flag_encrypted_handshake">Krypteret håndtryk</string>
     <string name="torrent_peers_flag_utp">µTP</string>

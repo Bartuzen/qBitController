@@ -351,7 +351,6 @@
     <string name="torrent_peers_details_upload_speed">올려주기 속도</string>
     <string name="torrent_peers_details_downloaded">내려받음</string>
     <string name="torrent_peers_details_section_files">파일</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">관심 있음 (로컬) / 혼잡 (피어)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">관심 있음 (피어) / 혼잡 (로컬)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">관심 있음 (로컬) / 혼잡 해소됨 (피어)</string>

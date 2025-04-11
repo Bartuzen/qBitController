@@ -344,7 +344,6 @@
     <string name="torrent_peers_details_uploaded">已上传</string>
     <string name="torrent_peers_details_relevance">文件关联</string>
     <string name="torrent_peers_details_section_files">文件</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">您：期待下载╱他：拒绝上传</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">您：期待下载╱他：同意上传</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">他：期待下载╱您：拒绝上传</string>
