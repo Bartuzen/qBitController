@@ -364,7 +364,6 @@
     <string name="torrent_peers_details_uploaded">Odesláno</string>
     <string name="torrent_peers_details_relevance">Důležitost</string>
     <string name="torrent_peers_details_section_files">Soubory</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Not interested (místní) a nepřiškrcený (peer)</string>
     <string name="torrent_peers_flag_incoming_connection">Příchozí spojení</string>
     <string name="torrent_peers_flag_peer_from_pex">Peer z PEX</string>

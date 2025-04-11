@@ -360,7 +360,6 @@
     <string name="torrent_peers_details_uploaded">Enviado</string>
     <string name="torrent_peers_details_relevance">Relevância</string>
     <string name="torrent_peers_details_section_files">Ficheiros</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_peer_from_dht">Fonte do DHT</string>
     <string name="torrent_peers_flag_peer_from_lsd">Fonte do LSD</string>
     <string name="torrent_peers_flag_encrypted_traffic">Tráfico encriptado</string>

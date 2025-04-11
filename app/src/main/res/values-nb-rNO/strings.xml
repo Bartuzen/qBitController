@@ -199,7 +199,6 @@
     <string name="torrent_peers_details_connection">Tilkobling</string>
     <string name="torrent_peers_details_section_flags">Flagg</string>
     <string name="torrent_peers_details_client">Klient</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_add_category">Kategori</string>
     <string name="torrent_add_start_torrent">Start torrent</string>
     <string name="torrent_add_torrent_management_mode_manual">Manuell</string>

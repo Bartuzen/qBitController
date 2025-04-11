@@ -568,7 +568,6 @@
     <string name="torrent_trackers_action_edit">Editar el rastreador</string>
     <string name="rss_rule_use_global_settings">Utilizar los ajustes globales</string>
     <string name="settings_server_advanced_basic_auth_password">Contraseña</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_status_checking_resume_data">Comprobación el resumen de los datos</string>
     <string name="torrent_overview_transfer">Transferencia</string>
     <string name="torrent_trackers_added">Rastreadores añadidos correctamente.</string>
