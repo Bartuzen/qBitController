@@ -26,7 +26,6 @@
     <string name="torrent_peers_details_connection">Conexão</string>
     <string name="torrent_peers_details_section_flags">Bandeiras</string>
     <string name="torrent_peers_details_section_files">Arquivos</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_peer_unchoked_local">Não interessados (peer) e não paralisados (locais)</string>
     <string name="search_start_category_software">Programas</string>
     <string name="search_start_category_anime">Animes</string>

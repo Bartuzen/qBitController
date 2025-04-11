@@ -53,7 +53,6 @@
     <string name="torrent_peers_flag_encrypted_handshake">Шифрованное рукопожатие</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Заинтересован (пир) и занят (клиент)</string>
     <string name="torrent_peers_details_section_files">Файлы</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_details_connection">Соединения</string>
     <string name="torrent_peers_details_progress">Прогресс</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Заинтересован (клиент) и не занят (пир)</string>
