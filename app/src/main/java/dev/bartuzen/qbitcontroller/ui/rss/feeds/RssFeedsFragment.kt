@@ -196,7 +196,7 @@ private fun RssFeedsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var movingItemId by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<String?>(null) }
-    val collapsedNodes = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
+    val expandedNodes = rememberSaveable(saver = stateListSaver()) { mutableStateListOf("0-/") }
 
     val movingItem by remember(movingItemId, rssFeeds) { mutableStateOf(movingItemId?.let { findNodeById(rssFeeds, it) }) }
 
@@ -601,9 +601,9 @@ private fun RssFeedsScreen(
                 .consumeWindowInsets(innerPadding)
                 .imePadding(),
         ) {
-            val flattenedNodes = remember(rssFeeds, collapsedNodes.toList()) {
+            val flattenedNodes = remember(rssFeeds, expandedNodes.toList()) {
                 rssFeeds?.let { node ->
-                    processNodes(node, collapsedNodes)
+                    processNodes(node, expandedNodes)
                 }
             }
 
@@ -620,7 +620,7 @@ private fun RssFeedsScreen(
                 ) { node ->
                     FeedItem(
                         feedNode = node,
-                        isCollapsed = node.uniqueId in collapsedNodes,
+                        isExpanded = node.uniqueId in expandedNodes,
                         isMoving = movingItemId == node.uniqueId,
                         onClick = {
                             if (movingItem == null) {
@@ -635,10 +635,10 @@ private fun RssFeedsScreen(
                             }
                         },
                         onToggleExpand = {
-                            if (node.uniqueId in collapsedNodes) {
-                                collapsedNodes.remove(node.uniqueId)
+                            if (node.uniqueId in expandedNodes) {
+                                expandedNodes.remove(node.uniqueId)
                             } else {
-                                collapsedNodes.add(node.uniqueId)
+                                expandedNodes.add(node.uniqueId)
                             }
                         },
                         onRename = { currentDialog = Dialog.RenameFeedFolder(node.uniqueId) },
@@ -686,7 +686,7 @@ private fun RssFeedsScreen(
 @Composable
 private fun FeedItem(
     feedNode: RssFeedNode,
-    isCollapsed: Boolean,
+    isExpanded: Boolean,
     isMoving: Boolean,
     onClick: () -> Unit,
     onToggleExpand: () -> Unit,
@@ -708,14 +708,13 @@ private fun FeedItem(
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.padding(start = (feedNode.level * 24).dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    start = (feedNode.level * 24).dp,
                     end = 12.dp,
                     top = 12.dp,
                     bottom = 12.dp,
@@ -724,7 +723,7 @@ private fun FeedItem(
             if (feedNode.children?.isNotEmpty() == true) {
                 IconButton(onClick = onToggleExpand) {
                     val rotation by animateFloatAsState(
-                        targetValue = if (!isCollapsed) 0f else -90f,
+                        targetValue = if (isExpanded) 0f else -90f,
                     )
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowDown,
@@ -1251,7 +1250,7 @@ private fun EditFeedUrlDialog(
     )
 }
 
-private fun processNodes(rootNode: RssFeedNode, collapsedNodes: List<String>): List<RssFeedNode> {
+private fun processNodes(rootNode: RssFeedNode, expandedNodes: List<String>): List<RssFeedNode> {
     val result = mutableListOf<RssFeedNode>()
     val stack = ArrayDeque<RssFeedNode>()
     stack.add(rootNode)
@@ -1260,7 +1259,7 @@ private fun processNodes(rootNode: RssFeedNode, collapsedNodes: List<String>): L
         val node = stack.removeLast()
         result.add(node)
 
-        if (node.uniqueId !in collapsedNodes && node.children != null) {
+        if (node.uniqueId in expandedNodes && node.children != null) {
             node.children.asReversed().forEach { grandChild ->
                 stack.add(grandChild)
             }
