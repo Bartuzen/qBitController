@@ -671,4 +671,6 @@
     <string name="torrent_overview_piece_downloading">Загрузка</string>
     <string name="torrent_overview_piece_not_downloaded">Не загружено</string>
     <string name="torrent_overview_piece_map">Карта частей</string>
+    <string name="torrent_peers_details_section_overview">Обзор пиров</string>
+    <string name="torrent_peers_details_section_transfer">Статистика торрентов</string>
 </resources>
