@@ -654,4 +654,6 @@
     <string name="torrent_overview_piece_not_downloaded">No descargado</string>
     <string name="torrent_overview_piece_downloading">Descargando</string>
     <string name="torrent_overview_piece_map">Mapa de piezas</string>
+    <string name="torrent_peers_details_section_transfer">Estadísticas de transferencia</string>
+    <string name="torrent_peers_details_section_overview">Resumen de pares</string>
 </resources>
