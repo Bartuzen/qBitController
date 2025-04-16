@@ -617,7 +617,6 @@
     <string name="settings_server_advanced_doh">DNS через HTTPS (DoH)</string>
     <string name="settings_server_connection_success">Підключено до сервера успішно.</string>
     <string name="settings_server_username_min_character">Ім\'я користувача має складатися не менше ніж з 3 символів.</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Каталог: </b>]]> %1$s</string>
     <string name="torrent_disable_super_seeding_success">Суперпосадку успішно вимкнено.</string>
     <string name="torrent_queueing_is_not_enabled">Торрент-черга не ввімкнена.</string>
     <string name="torrent_option_automatic_torrent_management">Автоматичне керування торрентами</string>

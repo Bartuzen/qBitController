@@ -453,7 +453,6 @@
     <string name="notification_torrent_downloaded">டொரண்ட் பதிவிறக்கம்</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
     <string name="eta_days_hours">%1$sd %2$sh</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>அடைவு: </b>]]> %1$s</string>
     <string name="torrent_peers_flag_encrypted_handshake">மறைகுறியாக்கப்பட்ட ஏண்ட்சேக்</string>
     <string name="torrent_error_not_found">டோரண்ட் கண்டுபிடிக்கப்படவில்லை.</string>
     <string name="torrent_add_title">டொரண்ட் சேர்க்கவும்</string>

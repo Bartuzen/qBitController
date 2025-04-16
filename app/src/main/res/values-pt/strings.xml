@@ -294,7 +294,6 @@
     <string name="torrent_overview_connections">Ligações</string>
     <string name="torrent_overview_connections_format">%1$d (%2$d max)</string>
     <string name="torrent_overview_seeds">Sementes</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Directório: </b>]]> %1$s</string>
     <string name="torrent_files_priority_mixed">Misto</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <plurals name="torrent_files_selected">

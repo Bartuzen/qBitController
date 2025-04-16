@@ -346,7 +346,6 @@
     <string name="torrent_overview_created_by">Vytvořil/a</string>
     <string name="torrent_files_priority_high">Vysoká</string>
     <string name="torrent_files_priority_normal">Normální</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Složka:</b>]]>%1$s</string>
     <string name="torrent_files_priority_maximum">Maximální</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_trackers_added">Trackery přidány úspěšně.</string>
