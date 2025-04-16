@@ -341,7 +341,6 @@
     <string name="torrent_overview_availability">Availability</string>
     <string name="torrent_overview_popularity">Popularity</string>
 
-    <string name="torrent_files_directory_format"><![CDATA[<b>Directory: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">Do Not Download</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_priority_high">High</string>

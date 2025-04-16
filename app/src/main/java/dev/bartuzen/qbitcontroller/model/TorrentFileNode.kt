@@ -1,95 +1,193 @@
 package dev.bartuzen.qbitcontroller.model
 
-data class TorrentFileNode(
-    val name: String,
-    val file: TorrentFile?,
-    val separator: String,
-    val children: MutableList<TorrentFileNode>?,
-) {
-    val isFile get() = children == null
+sealed class TorrentFileNode(
+    open val name: String,
+    open val separator: String,
+    open val level: Int,
+    open val path: String,
+    open val priority: TorrentFilePriority?,
+    open val size: Long,
+    open val downloadedSize: Long,
+    open val progress: Double,
+) : Comparable<TorrentFileNode> {
+    override fun compareTo(other: TorrentFileNode): Int {
+        if (this is Folder && other is File) return -1
+        if (this is File && other is Folder) return 1
 
-    val isFolder get() = children != null
-
-    fun findChildNode(childList: ArrayDeque<String>): TorrentFileNode? {
-        var currentNode = this
-        for (child in childList) {
-            currentNode = currentNode.children?.find { it.name == child } ?: return null
-        }
-        return currentNode
+        return this.name.compareTo(other.name, ignoreCase = true)
     }
 
-    fun getFolderProperties(): FolderProperties {
-        var size = 0L
-        var downloadedSize = 0L
-        var priority: TorrentFilePriority? = null
-        var isMixedPriority = false
+    data class File(
+        private val file: TorrentFile,
+        override val name: String,
+        override val separator: String,
+        override val level: Int,
+        override val path: String,
+    ) : TorrentFileNode(
+        name = name,
+        separator = separator,
+        level = level,
+        path = path,
+        priority = file.priority,
+        size = file.size,
+        downloadedSize = (file.progress * file.size).toLong(),
+        progress = file.progress,
+    ) {
+        val index = file.index
+    }
 
-        children?.forEach { node ->
-            if (node.file != null) {
-                if (node.file.priority != TorrentFilePriority.DO_NOT_DOWNLOAD) {
-                    size += node.file.size
-                    downloadedSize += (node.file.progress * node.file.size).toLong()
-                }
-
-                if (!isMixedPriority) {
-                    if (priority == null) {
-                        priority = node.file.priority
-                    } else if (priority != node.file.priority) {
-                        priority = null
-                        isMixedPriority = true
-                    }
-                }
-            } else {
-                val properties = node.getFolderProperties()
-                size += properties.size
-                downloadedSize += properties.downloadedSize
-
-                if (!isMixedPriority) {
-                    if (properties.priority == null) {
-                        priority = null
-                        isMixedPriority = true
-                    } else if (priority == null) {
-                        priority = properties.priority
-                    } else if (priority != properties.priority) {
-                        priority = null
-                        isMixedPriority = true
-                    }
-                }
+    data class Folder(
+        override val name: String,
+        override val separator: String,
+        override val level: Int,
+        override val path: String,
+        val children: MutableList<TorrentFileNode> = mutableListOf(),
+    ) : TorrentFileNode(name, separator, level, path, null, 0, 0, 0.0) {
+        override val size: Long by lazy {
+            children.sumOf { node ->
+                if (node.priority != TorrentFilePriority.DO_NOT_DOWNLOAD) node.size else 0
             }
         }
 
-        return FolderProperties(size, downloadedSize, priority)
-    }
+        override val downloadedSize: Long by lazy {
+            children.sumOf { node ->
+                if (node.priority != TorrentFilePriority.DO_NOT_DOWNLOAD) node.downloadedSize else 0
+            }
+        }
 
-    companion object {
-        fun fromFileList(fileList: Collection<TorrentFile>): TorrentFileNode {
-            val separator = if (fileList.any { it.name.contains("/") }) "/" else "\\"
+        override val progress by lazy { (downloadedSize / size.toDouble()).takeUnless { it.isNaN() } ?: 1.0 }
 
-            val node = TorrentFileNode("", null, separator, mutableListOf())
+        override val priority: TorrentFilePriority? by lazy {
+            var currentPriority: TorrentFilePriority? = null
+            var isMixedPriority = false
 
-            fileList.forEach { file ->
-                val pathList = file.name.split(separator)
-                var currentNode = node
+            for (node in children) {
+                val nodePriority = node.priority
 
-                for ((i, pathItem) in pathList.withIndex()) {
-                    if (i == pathList.lastIndex) {
-                        currentNode.children?.add(TorrentFileNode(pathItem, file, separator, null))
-                    } else {
-                        currentNode = currentNode.children?.find { it.name == pathItem } ?: currentNode.children.let {
-                            val newFile = TorrentFileNode(pathItem, null, separator, mutableListOf())
-                            it?.add(newFile)
-                            newFile
+                if (nodePriority == null) {
+                    isMixedPriority = true
+                    break
+                }
+
+                if (currentPriority == null) {
+                    currentPriority = nodePriority
+                } else if (currentPriority != nodePriority) {
+                    isMixedPriority = true
+                    break
+                }
+            }
+
+            if (isMixedPriority) null else currentPriority
+        }
+
+        fun findChildNode(path: String): TorrentFileNode? {
+            if (path.isEmpty()) return this
+
+            val pathItems = path.split(separator)
+            var currentNode: TorrentFileNode = this
+
+            for (i in 0 until pathItems.size - 1) {
+                if (currentNode is Folder) {
+                    currentNode = currentNode.children.find { it.name == pathItems[i] } ?: return null
+                } else {
+                    return null
+                }
+            }
+
+            return if (currentNode is Folder) {
+                currentNode.children.find { it.name == pathItems.last() }
+            } else {
+                null
+            }
+        }
+
+        fun findAllFiles(paths: List<String>): List<File> {
+            val result = mutableListOf<File>()
+
+            for (path in paths) {
+                val node = findChildNode(path) ?: continue
+
+                when (node) {
+                    is File -> result.add(node)
+                    is Folder -> {
+                        val folderQueue = ArrayDeque<Folder>()
+                        folderQueue.add(node)
+
+                        while (folderQueue.isNotEmpty()) {
+                            val currentFolder = folderQueue.removeFirst()
+
+                            for (child in currentFolder.children) {
+                                when (child) {
+                                    is File -> result.add(child)
+                                    is Folder -> folderQueue.add(child)
+                                }
+                            }
                         }
                     }
                 }
             }
-            return node
+
+            return result
+        }
+    }
+
+    companion object {
+        fun fromFileList(fileList: Collection<TorrentFile>): Folder {
+            val separator = if (fileList.any { it.name.contains("/") }) "/" else "\\"
+
+            val rootNode = Folder(
+                name = "",
+                separator = separator,
+                level = 0,
+                path = "",
+            )
+
+            fileList.forEach { file ->
+                val pathList = file.name.split(separator)
+                var currentNode = rootNode
+
+                for ((i, pathItem) in pathList.withIndex()) {
+                    if (i == pathList.lastIndex) {
+                        currentNode.children.add(
+                            File(
+                                name = pathItem,
+                                file = file,
+                                separator = separator,
+                                level = i + 1,
+                                path = pathList.joinToString("/"),
+                            ),
+                        )
+                    } else {
+                        val existingNode = currentNode.children.find { it.name == pathItem } as? Folder
+                        currentNode = existingNode ?: Folder(
+                            name = pathItem,
+                            separator = separator,
+                            level = i + 1,
+                            path = pathList.take(i + 1).joinToString("/"),
+                        ).also {
+                            currentNode.children.add(it)
+                        }
+                    }
+                }
+            }
+
+            sortNodeTree(rootNode)
+
+            return rootNode
+        }
+
+        private fun sortNodeTree(rootNode: Folder) {
+            val stack = ArrayDeque<Folder>()
+            stack.add(rootNode)
+
+            while (stack.isNotEmpty()) {
+                val node = stack.removeFirst()
+                node.children.sort()
+
+                node.children.filterIsInstance<Folder>().forEach { folder ->
+                    stack.add(folder)
+                }
+            }
         }
     }
 }
-
-data class FolderProperties(
-    val size: Long,
-    val downloadedSize: Long,
-    val priority: TorrentFilePriority?,
-)

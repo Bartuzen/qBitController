@@ -2,45 +2,107 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import android.os.Bundle
 import android.view.ActionMode
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.view.ViewGroup
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.viewpager2.widget.ViewPager2
-import by.kirich1409.viewbindingdelegate.viewBinding
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.databinding.ActivityTorrentBinding
-import dev.bartuzen.qbitcontroller.databinding.DialogRenameFileFolderBinding
-import dev.bartuzen.qbitcontroller.databinding.FragmentTorrentFilesBinding
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
-import dev.bartuzen.qbitcontroller.utils.applySafeDrawingInsets
+import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
+import dev.bartuzen.qbitcontroller.utils.EventEffect
+import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.floorToDecimal
+import dev.bartuzen.qbitcontroller.utils.formatBytes
+import dev.bartuzen.qbitcontroller.utils.formatFilePriority
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.launchAndCollectIn
-import dev.bartuzen.qbitcontroller.utils.launchAndCollectLatestIn
-import dev.bartuzen.qbitcontroller.utils.setNegativeButton
-import dev.bartuzen.qbitcontroller.utils.setPositiveButton
-import dev.bartuzen.qbitcontroller.utils.setTextWithoutAnimation
-import dev.bartuzen.qbitcontroller.utils.showDialog
+import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.showSnackbar
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.view
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.isActive
+import kotlinx.serialization.Serializable
 
 @AndroidEntryPoint
 class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
-    private val binding by viewBinding(FragmentTorrentFilesBinding::bind)
-    private val activityBinding by viewBinding(ActivityTorrentBinding::bind, viewProvider = { requireActivity().view })
-
-    private val viewModel: TorrentFilesViewModel by viewModels()
-
     private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
     private val torrentHash get() = arguments?.getString("torrentHash")!!
 
@@ -51,21 +113,70 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
         )
     }
 
-    private lateinit var onPageChange: ViewPager2.OnPageChangeCallback
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                AppTheme {
+                    var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }
+                    DisposableEffect(Unit) {
+                        val observer = LifecycleEventObserver { _, event ->
+                            currentLifecycle = event.targetState
+                        }
+                        lifecycle.addObserver(observer)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.progressIndicator.applySafeDrawingInsets(top = false, bottom = false)
-        binding.recyclerFiles.applySafeDrawingInsets(top = false)
+                        onDispose {
+                            lifecycle.removeObserver(observer)
+                        }
+                    }
 
-        var actionMode: ActionMode? = null
-        val adapter = TorrentFilesAdapter().apply {
-            onClick { file ->
-                if (file.isFolder) {
-                    viewModel.goToFolder(file.name)
+                    TorrentFilesTab(
+                        fragment = this@TorrentFilesFragment,
+                        serverId = serverId,
+                        torrentHash = torrentHash,
+                        isScreenActive = currentLifecycle.isAtLeast(Lifecycle.State.RESUMED),
+                    )
                 }
             }
-            onSelectionModeStart {
-                actionMode = requireActivity().startActionMode(object : ActionMode.Callback {
+        }
+}
+
+@Composable
+private fun TorrentFilesTab(
+    fragment: TorrentFilesFragment,
+    serverId: Int,
+    torrentHash: String,
+    isScreenActive: Boolean,
+    modifier: Modifier = Modifier,
+    viewModel: TorrentFilesViewModel = hiltViewModel(
+        creationCallback = { factory: TorrentFilesViewModel.Factory ->
+            factory.create(serverId, torrentHash)
+        },
+    ),
+) {
+    val activity = fragment.requireActivity()
+    val context = LocalContext.current
+
+    val filesNode by viewModel.filesNode.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val isNaturalLoading by viewModel.isNaturalLoading.collectAsStateWithLifecycle()
+
+    val expandedNodes = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
+    val selectedFiles = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
+    var actionMode by remember { mutableStateOf<ActionMode?>(null) }
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
+
+    val flattenedNodes = remember(filesNode, expandedNodes.toList()) {
+        filesNode?.let { node ->
+            processNodes(node, expandedNodes)
+        }
+    }
+    val updatedFlattenedNodes by rememberUpdatedState(flattenedNodes)
+
+    LaunchedEffect(selectedFiles.isNotEmpty()) {
+        if (selectedFiles.isNotEmpty()) {
+            actionMode = activity.startActionMode(
+                object : ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
                         mode.menuInflater.inflate(R.menu.torrent_files_selection, menu)
                         return true
@@ -77,236 +188,432 @@ class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
                         when (item.itemId) {
                             R.id.menu_priority_do_not_download -> {
                                 viewModel.setFilePriority(
-                                    serverId = serverId,
-                                    hash = torrentHash,
-                                    files = getSelectedFiles(),
+                                    filePaths = selectedFiles.toList(),
                                     priority = TorrentFilePriority.DO_NOT_DOWNLOAD,
                                 )
-                                finishSelection()
                                 actionMode?.finish()
                             }
                             R.id.menu_priority_normal -> {
                                 viewModel.setFilePriority(
-                                    serverId = serverId,
-                                    hash = torrentHash,
-                                    files = getSelectedFiles(),
+                                    filePaths = selectedFiles.toList(),
                                     priority = TorrentFilePriority.NORMAL,
                                 )
-                                finishSelection()
                                 actionMode?.finish()
                             }
                             R.id.menu_priority_high -> {
                                 viewModel.setFilePriority(
-                                    serverId = serverId,
-                                    hash = torrentHash,
-                                    files = getSelectedFiles(),
+                                    filePaths = selectedFiles.toList(),
                                     priority = TorrentFilePriority.HIGH,
                                 )
-                                finishSelection()
                                 actionMode?.finish()
                             }
                             R.id.menu_priority_maximum -> {
                                 viewModel.setFilePriority(
-                                    serverId = serverId,
-                                    hash = torrentHash,
-                                    files = getSelectedFiles(),
+                                    filePaths = selectedFiles.toList(),
                                     priority = TorrentFilePriority.MAXIMUM,
                                 )
-                                finishSelection()
                                 actionMode?.finish()
                             }
                             R.id.menu_rename -> {
-                                val key = selectedItems.firstOrNull() ?: return true
-                                val fileName = key.drop(1)
-                                val isFile = key.startsWith("1")
-
-                                val nodeStack = viewModel.nodeStack.value
-                                val separator = viewModel.torrentFiles.value?.separator ?: return true
-
-                                val root = if (nodeStack.isNotEmpty()) {
-                                    val folderList = mutableListOf<String>()
-                                    for (folder in nodeStack) {
-                                        folderList.add(folder)
-                                    }
-                                    folderList.joinToString(separator) + separator
-                                } else {
-                                    ""
-                                }
-
-                                showRenameFileFolderDialog(
-                                    name = "$root$fileName",
-                                    isFile = isFile,
-                                    onSuccess = {
-                                        finishSelection()
-                                        actionMode?.finish()
-                                    },
-                                )
+                                currentDialog = Dialog.Rename
                             }
                             R.id.menu_select_all -> {
-                                selectAll()
+                                val newFiles = updatedFlattenedNodes
+                                    ?.filter { it.path !in selectedFiles }
+                                    ?.map { it.path }
+                                    ?: return false
+                                selectedFiles.addAll(newFiles)
                             }
                             R.id.menu_select_inverse -> {
-                                selectInverse()
+                                val newFiles = updatedFlattenedNodes
+                                    ?.filter { it.path !in selectedFiles }
+                                    ?.map { it.path }
+                                    ?: return false
+                                selectedFiles.clear()
+                                selectedFiles.addAll(newFiles)
                             }
                             else -> return false
                         }
+
                         return true
                     }
 
                     override fun onDestroyActionMode(mode: ActionMode) {
-                        finishSelection()
                         actionMode = null
+                        selectedFiles.clear()
                     }
-                })
+                },
+            )
+        } else {
+            actionMode?.finish()
+        }
+    }
+
+    LaunchedEffect(selectedFiles.size == 1) {
+        actionMode?.menu?.findItem(R.id.menu_rename)?.isEnabled = selectedFiles.size == 1
+    }
+
+    LaunchedEffect(selectedFiles.size) {
+        if (selectedFiles.isNotEmpty()) {
+            actionMode?.title = context.resources.getQuantityString(
+                R.plurals.torrent_files_selected,
+                selectedFiles.size,
+                selectedFiles.size,
+            )
+        }
+    }
+
+    LaunchedEffect(flattenedNodes?.toList()) {
+        selectedFiles.removeAll { path -> flattenedNodes?.find { it.path == path } == null }
+    }
+
+    LaunchedEffect(isScreenActive) {
+        viewModel.setScreenActive(isScreenActive)
+        if (!isScreenActive) {
+            actionMode?.finish()
+        }
+    }
+
+    EventEffect(viewModel.eventFlow) { event ->
+        when (event) {
+            is TorrentFilesViewModel.Event.Error -> {
+                fragment.showSnackbar(getErrorMessage(context, event.error), view = activity.view)
             }
-            onSelectionModeEnd {
-                actionMode?.finish()
+            TorrentFilesViewModel.Event.TorrentNotFound -> {
+                fragment.showSnackbar(R.string.torrent_error_not_found, view = activity.view)
             }
-            onUpdateSelection {
-                val itemCount = selectedItemCount
-                if (itemCount != 0) {
-                    actionMode?.title = resources.getQuantityString(
-                        R.plurals.torrent_files_selected,
-                        itemCount,
-                        itemCount,
+            TorrentFilesViewModel.Event.PathIsInvalidOrInUse -> {
+                fragment.showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use, view = activity.view)
+            }
+            TorrentFilesViewModel.Event.FilePriorityUpdated -> {
+                fragment.showSnackbar(R.string.torrent_files_priority_update_success, view = activity.view)
+            }
+            TorrentFilesViewModel.Event.FileRenamed -> {
+                fragment.showSnackbar(R.string.torrent_files_file_renamed_success, view = activity.view)
+            }
+            TorrentFilesViewModel.Event.FolderRenamed -> {
+                fragment.showSnackbar(R.string.torrent_files_folder_renamed_success, view = activity.view)
+            }
+        }
+    }
+
+    when (currentDialog) {
+        is Dialog.Rename -> {
+            val file = remember(filesNode, selectedFiles.toList()) {
+                if (selectedFiles.size == 1) {
+                    filesNode?.findChildNode(selectedFiles.first())
+                } else {
+                    null
+                }
+            }
+
+            LaunchedEffect(file == null) {
+                if (file == null) {
+                    currentDialog = null
+                }
+            }
+
+            if (file != null) {
+                RenameDialog(
+                    initialName = file.name,
+                    isFile = file is TorrentFileNode.File,
+                    onDismiss = { currentDialog = null },
+                    onRename = { newName ->
+                        val separator = file.separator
+                        val newPath = if (file.path.contains(separator)) {
+                            "${file.path.substringBeforeLast(separator)}$separator$newName"
+                        } else {
+                            newName
+                        }
+                        when (file) {
+                            is TorrentFileNode.File -> viewModel.renameFile(file.path, newPath)
+                            is TorrentFileNode.Folder -> viewModel.renameFolder(file.path, newPath)
+                        }
+                        currentDialog = null
+                        actionMode?.finish()
+                    },
+                )
+            }
+        }
+        else -> {}
+    }
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = { viewModel.refreshFiles() },
+        modifier = modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+            .imePadding(),
+    ) {
+        val listState = rememberLazyListState()
+        LazyColumn(
+            state = listState,
+            contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            items(
+                items = flattenedNodes ?: emptyList(),
+                key = { it.path },
+            ) { node ->
+                FileItem(
+                    fileNode = node,
+                    selected = node.path in selectedFiles,
+                    expanded = node.path in expandedNodes,
+                    onClick = {
+                        if (selectedFiles.isNotEmpty()) {
+                            if (node.path !in selectedFiles) {
+                                selectedFiles += node.path
+                            } else {
+                                selectedFiles -= node.path
+                            }
+                        }
+                    },
+                    onLongClick = {
+                        if (node.path !in selectedFiles) {
+                            selectedFiles += node.path
+                        } else {
+                            selectedFiles -= node.path
+                        }
+                    },
+                    onToggleExpand = {
+                        if (node.path in expandedNodes) {
+                            expandedNodes.remove(node.path)
+                        } else {
+                            expandedNodes.add(node.path)
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateItem(),
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            }
+        }
+
+        SideEffect {
+            if (!listState.isScrollInProgress) {
+                listState.requestScrollToItem(
+                    index = listState.firstVisibleItemIndex,
+                    scrollOffset = listState.firstVisibleItemScrollOffset,
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = isNaturalLoading == true,
+            enter = expandVertically(tween(durationMillis = 500)),
+            exit = shrinkVertically(tween(durationMillis = 500)),
+        ) {
+            LinearProgressIndicator(
+                strokeCap = StrokeCap.Butt,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.TopCenter),
+            )
+        }
+    }
+}
+
+@Composable
+private fun FileItem(
+    fileNode: TorrentFileNode,
+    selected: Boolean,
+    expanded: Boolean,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onToggleExpand: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ElevatedCard(
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Unspecified,
+        ),
+        modifier = modifier.padding(start = ((fileNode.level - 1) * 12).dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                )
+                .padding(
+                    end = 16.dp,
+                    top = 12.dp,
+                    bottom = 12.dp,
+                ),
+        ) {
+            if (fileNode is TorrentFileNode.Folder) {
+                IconButton(onClick = onToggleExpand) {
+                    val rotation by animateFloatAsState(
+                        targetValue = if (expanded) 0f else -90f,
                     )
-                    actionMode?.menu?.findItem(R.id.menu_rename)?.isEnabled = itemCount == 1
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowDown,
+                        contentDescription = null,
+                        modifier = Modifier.rotate(rotation),
+                    )
                 }
-            }
-        }
-        val backButtonAdapter = TorrentFilesBackButtonAdapter(
-            onClick = {
-                viewModel.goBack()
-            },
-        )
-        binding.recyclerFiles.adapter = ConcatAdapter(backButtonAdapter, adapter)
-
-        onPageChange = object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageScrollStateChanged(state: Int) {
-                actionMode?.finish()
-            }
-        }
-        activityBinding.viewPager.registerOnPageChangeCallback(onPageChange)
-
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.refreshFiles(serverId, torrentHash)
-        }
-
-        if (!viewModel.isInitialLoadStarted) {
-            viewModel.isInitialLoadStarted = true
-            viewModel.loadFiles(serverId, torrentHash)
-        }
-
-        binding.progressIndicator.setVisibilityAfterHide(View.GONE)
-        viewModel.isNaturalLoading.launchAndCollectLatestIn(viewLifecycleOwner) { isNaturalLoading ->
-            if (isNaturalLoading == true) {
-                binding.progressIndicator.show()
             } else {
-                binding.progressIndicator.hide()
+                Spacer(modifier = Modifier.size(48.dp))
             }
-        }
 
-        viewModel.isRefreshing.launchAndCollectLatestIn(viewLifecycleOwner) { isRefreshing ->
-            binding.swipeRefresh.isRefreshing = isRefreshing
-        }
-
-        combine(viewModel.nodeStack, viewModel.torrentFiles) { nodeStack, torrentFiles ->
-            if (torrentFiles != null) {
-                nodeStack to torrentFiles
-            } else {
-                null
-            }
-        }.filterNotNull().launchAndCollectLatestIn(viewLifecycleOwner) { (nodeStack, torrentFiles) ->
-            val fileList = torrentFiles.findChildNode(nodeStack)?.children?.sortedWith(
-                compareBy<TorrentFileNode> { it.isFile }
-                    .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name },
+            Icon(
+                imageVector = if (fileNode is TorrentFileNode.File) {
+                    Icons.AutoMirrored.Filled.InsertDriveFile
+                } else {
+                    Icons.Filled.Folder
+                },
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp),
             )
-            if (fileList != null) {
-                adapter.submitList(fileList) {
-                    if (nodeStack.isNotEmpty()) {
-                        backButtonAdapter.currentDirectory = nodeStack.joinToString(torrentFiles.separator)
-                    } else {
-                        backButtonAdapter.currentDirectory = null
-                    }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = fileNode.name,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+
+                val progressColor by animateColorAsState(
+                    targetValue = harmonizeWithPrimary(
+                        when (fileNode.priority) {
+                            TorrentFilePriority.DO_NOT_DOWNLOAD -> LocalCustomColors.current.filePriorityDoNotDownload
+                            TorrentFilePriority.NORMAL -> LocalCustomColors.current.filePriorityNormal
+                            TorrentFilePriority.HIGH -> LocalCustomColors.current.filePriorityHigh
+                            TorrentFilePriority.MAXIMUM -> LocalCustomColors.current.filePriorityMaximum
+                            null -> LocalCustomColors.current.filePriorityMixed
+                        },
+                    ),
+                    animationSpec = tween(),
+                )
+                val trackColor = progressColor.copy(alpha = MaterialColors.ALPHA_DISABLED)
+
+                val progressAnimated by animateFloatAsState(
+                    targetValue = fileNode.progress.toFloat(),
+                    animationSpec = tween(),
+                )
+                LinearProgressIndicator(
+                    progress = { progressAnimated },
+                    color = progressColor,
+                    trackColor = trackColor,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                val priorityText = fileNode.priority?.let { formatFilePriority(it) }
+                    ?: stringResource(R.string.torrent_files_priority_mixed)
+
+                val progressText = if (fileNode.progress < 1) {
+                    (fileNode.progress * 100).floorToDecimal(1).toString()
+                } else {
+                    "100"
                 }
-            } else {
-                viewModel.goToRoot()
+                Text(
+                    text = stringResource(
+                        R.string.torrent_files_details_format,
+                        priorityText,
+                        formatBytes(fileNode.downloadedSize),
+                        formatBytes(fileNode.size),
+                        progressText,
+                    ),
+                )
             }
         }
+    }
+}
 
-        viewModel.autoRefreshInterval.launchAndCollectLatestIn(viewLifecycleOwner, Lifecycle.State.RESUMED) { interval ->
-            if (interval != 0) {
-                while (isActive) {
-                    delay(interval * 1000L)
-                    if (isActive && actionMode == null) {
-                        viewModel.loadFiles(serverId, torrentHash, autoRefresh = true)
-                    }
-                }
-            }
-        }
+private fun processNodes(rootNode: TorrentFileNode, expandedNodes: List<String>): List<TorrentFileNode> {
+    val result = mutableListOf<TorrentFileNode>()
+    val stack = ArrayDeque<TorrentFileNode>()
+    stack.add(rootNode)
 
-        viewModel.eventFlow.launchAndCollectIn(viewLifecycleOwner) { event ->
-            when (event) {
-                is TorrentFilesViewModel.Event.Error -> {
-                    showSnackbar(getErrorMessage(requireContext(), event.error), view = requireActivity().view)
-                }
-                TorrentFilesViewModel.Event.TorrentNotFound -> {
-                    showSnackbar(R.string.torrent_error_not_found, view = requireActivity().view)
-                }
-                TorrentFilesViewModel.Event.PathIsInvalidOrInUse -> {
-                    showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use, view = requireActivity().view)
-                }
-                TorrentFilesViewModel.Event.FilePriorityUpdated -> {
-                    showSnackbar(R.string.torrent_files_priority_update_success, view = requireActivity().view)
-                    viewModel.loadFiles(serverId, torrentHash)
-                }
-                TorrentFilesViewModel.Event.FileRenamed -> {
-                    showSnackbar(R.string.torrent_files_file_renamed_success, view = requireActivity().view)
-                    viewModel.loadFiles(serverId, torrentHash)
-                }
-                TorrentFilesViewModel.Event.FolderRenamed -> {
-                    showSnackbar(R.string.torrent_files_folder_renamed_success, view = requireActivity().view)
-                    viewModel.loadFiles(serverId, torrentHash)
-                }
+    while (stack.isNotEmpty()) {
+        val node = stack.removeLast()
+        result.add(node)
+
+        if ((node.level == 0 || node.path in expandedNodes) && node is TorrentFileNode.Folder) {
+            node.children.asReversed().forEach { grandChild ->
+                stack.add(grandChild)
             }
         }
     }
 
-    private fun showRenameFileFolderDialog(name: String, isFile: Boolean, onSuccess: () -> Unit) {
-        showDialog(DialogRenameFileFolderBinding::inflate) { binding ->
-            binding.inputLayoutName.setTextWithoutAnimation(name)
-            binding.inputLayoutName.setHint(
-                if (isFile) {
-                    R.string.torrent_files_rename_file_hint
+    return result.drop(1)
+}
+
+@Serializable
+private sealed class Dialog {
+    @Serializable
+    data object Rename : Dialog()
+}
+
+@Composable
+private fun RenameDialog(
+    initialName: String,
+    isFile: Boolean,
+    onDismiss: () -> Unit,
+    onRename: (newName: String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var name by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(initialName, TextRange(Int.MAX_VALUE)))
+    }
+
+    Dialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = if (isFile) {
+                    stringResource(R.string.torrent_files_rename_file)
                 } else {
-                    R.string.torrent_files_rename_folder_hint
+                    stringResource(R.string.torrent_files_rename_folder)
                 },
             )
-
-            setTitle(
-                if (isFile) {
-                    R.string.torrent_files_rename_file
-                } else {
-                    R.string.torrent_files_rename_folder
-                },
-            )
-            setPositiveButton { _, _ ->
-                val newName = binding.editName.text.toString()
-
-                if (isFile) {
-                    viewModel.renameFile(serverId, torrentHash, name, newName)
-                } else {
-                    viewModel.renameFolder(serverId, torrentHash, name, newName)
-                }
-                onSuccess()
+        },
+        text = {
+            val focusRequester = remember { FocusRequester() }
+            PersistentLaunchedEffect {
+                focusRequester.requestFocus()
             }
-            setNegativeButton()
-        }
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        activityBinding.viewPager.unregisterOnPageChangeCallback(onPageChange)
-    }
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = {
+                    Text(
+                        text = if (isFile) {
+                            stringResource(R.string.torrent_files_rename_file_hint)
+                        } else {
+                            stringResource(R.string.torrent_files_rename_folder_hint)
+                        },
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+                singleLine = true,
+                keyboardActions = KeyboardActions(
+                    onDone = { onRename(name.text) },
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onRename(name.text) },
+            ) {
+                Text(text = stringResource(R.string.dialog_ok))
+            }
+        },
+    )
 }

@@ -150,10 +150,4 @@
     <color name="torrent_state_paused_uploading">#8250DF</color>
     <color name="torrent_state_queued">#7D4E00</color>
     <color name="torrent_state_error">#CF222E</color>
-
-    <color name="file_priority_do_not_download">#57606A</color>
-    <color name="file_priority_normal">#2DA44E</color>
-    <color name="file_priority_high">#FF5722</color>
-    <color name="file_priority_maximum">#CF222E</color>
-    <color name="file_priority_mixed">#03A9F4</color>
 </resources>

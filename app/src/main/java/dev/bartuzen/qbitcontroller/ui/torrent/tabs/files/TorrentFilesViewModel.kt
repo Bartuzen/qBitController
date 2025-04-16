@@ -2,31 +2,39 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentFilesRepository
-import dev.bartuzen.qbitcontroller.model.TorrentFile
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class TorrentFilesViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = TorrentFilesViewModel.Factory::class)
+class TorrentFilesViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int,
+    @Assisted private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentFilesRepository,
 ) : ViewModel() {
-    private val _torrentFiles = MutableStateFlow<TorrentFileNode?>(null)
-    val torrentFiles = _torrentFiles.asStateFlow()
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int, torrentHash: String): TorrentFilesViewModel
+    }
 
-    private val _nodeStack = MutableStateFlow(ArrayDeque<String>())
-    val nodeStack = _nodeStack.asStateFlow()
+    private val _filesNode = MutableStateFlow<TorrentFileNode.Folder?>(null)
+    val filesNode = _filesNode.asStateFlow()
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -37,11 +45,34 @@ class TorrentFilesViewModel @Inject constructor(
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing = _isRefreshing.asStateFlow()
 
-    var isInitialLoadStarted = false
-
     val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
-    private fun updateFiles(serverId: Int, torrentHash: String) = viewModelScope.launch {
+    private val isScreenActive = MutableStateFlow(false)
+
+    init {
+        loadFiles()
+
+        viewModelScope.launch {
+            combine(
+                autoRefreshInterval,
+                isNaturalLoading,
+                isScreenActive,
+            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                    delay(autoRefreshInterval.seconds)
+                    loadFiles(autoRefresh = true)
+                }
+            }
+        }
+    }
+
+    fun setScreenActive(isScreenActive: Boolean) {
+        this.isScreenActive.value = isScreenActive
+    }
+
+    private fun updateFiles() = viewModelScope.launch {
         when (val result = repository.getFiles(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 // Older API versions do not return file index, so we are creating them manually
@@ -55,7 +86,7 @@ class TorrentFilesViewModel @Inject constructor(
                     }
                 }
 
-                _torrentFiles.value = TorrentFileNode.fromFileList(files)
+                _filesNode.value = TorrentFileNode.fromFileList(files)
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 404) {
@@ -67,40 +98,49 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
-    fun loadFiles(serverId: Int, torrentHash: String, autoRefresh: Boolean = false) {
+    private fun loadFiles(autoRefresh: Boolean = false) {
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
-            updateFiles(serverId, torrentHash).invokeOnCompletion {
+            updateFiles().invokeOnCompletion {
                 _isNaturalLoading.value = null
             }
         }
     }
 
-    fun refreshFiles(serverId: Int, torrentHash: String) {
+    fun refreshFiles() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateFiles(serverId, torrentHash).invokeOnCompletion {
-                _isRefreshing.value = false
+            updateFiles().invokeOnCompletion {
+                viewModelScope.launch {
+                    delay(25)
+                    _isRefreshing.value = false
+                }
             }
         }
     }
 
-    fun setFilePriority(serverId: Int, hash: String, files: List<TorrentFile>, priority: TorrentFilePriority) =
-        viewModelScope.launch {
-            when (val result = repository.setFilePriority(serverId, hash, files.map { it.index }, priority)) {
-                is RequestResult.Success -> {
-                    eventChannel.send(Event.FilePriorityUpdated)
-                }
-                is RequestResult.Error -> {
-                    eventChannel.send(Event.Error(result))
-                }
+    fun setFilePriority(filePaths: List<String>, priority: TorrentFilePriority) = viewModelScope.launch {
+        val rootNode = filesNode.value ?: return@launch
+        val fileIndices = rootNode.findAllFiles(filePaths).map { it.index }
+        when (val result = repository.setFilePriority(serverId, torrentHash, fileIndices, priority)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.FilePriorityUpdated)
+                loadFiles()
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
+    }
 
-    fun renameFile(serverId: Int, hash: String, file: String, newName: String) = viewModelScope.launch {
-        when (val result = repository.renameFile(serverId, hash, file, newName)) {
+    fun renameFile(file: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameFile(serverId, torrentHash, file, newName)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FileRenamed)
+                launch {
+                    delay(1000)
+                    loadFiles()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -112,10 +152,14 @@ class TorrentFilesViewModel @Inject constructor(
         }
     }
 
-    fun renameFolder(serverId: Int, hash: String, folder: String, newName: String) = viewModelScope.launch {
-        when (val result = repository.renameFolder(serverId, hash, folder, newName)) {
+    fun renameFolder(folder: String, newName: String) = viewModelScope.launch {
+        when (val result = repository.renameFolder(serverId, torrentHash, folder, newName)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.FolderRenamed)
+                launch {
+                    delay(1000)
+                    loadFiles()
+                }
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {
@@ -124,28 +168,6 @@ class TorrentFilesViewModel @Inject constructor(
                     eventChannel.send(Event.Error(result))
                 }
             }
-        }
-    }
-
-    fun goToFolder(node: String) {
-        _nodeStack.update { stack ->
-            ArrayDeque(stack).apply {
-                addLast(node)
-            }
-        }
-    }
-
-    fun goBack() {
-        _nodeStack.update { stack ->
-            ArrayDeque(stack).apply {
-                removeLastOrNull()
-            }
-        }
-    }
-
-    fun goToRoot() {
-        _nodeStack.update {
-            ArrayDeque()
         }
     }
 

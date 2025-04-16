@@ -227,6 +227,12 @@ val logInfoLight = Color(0xFF0969DA)
 val logWarningLight = Color(0xFFBC4C00)
 val logCriticalLight = Color(0xFFCF222E)
 
+val filePriorityDoNotDownloadLight = Color(0xFF57606A)
+val filePriorityNormalLight = Color(0xFF2DA44E)
+val filePriorityHighLight = Color(0xFFFF5722)
+val filePriorityMaximumLight = Color(0xFFCF222E)
+val filePriorityMixedLight = Color(0xFF03A9F4)
+
 val seederColorDark = Color(0xFF66BB6A)
 val leecherColorDark = Color(0xFF42A5F5)
 
@@ -235,6 +241,12 @@ val logInfoDark = Color(0xFF58A6FF)
 val logWarningDark = Color(0xFFDB6D28)
 val logCriticalDark = Color(0xFFF85149)
 
+val filePriorityDoNotDownloadDark = Color(0xFF8B949E)
+val filePriorityNormalDark = Color(0xFF238636)
+val filePriorityHighDark = Color(0xFFE17B5A)
+val filePriorityMaximumDark = Color(0xFFF85149)
+val filePriorityMixedDark = Color(0xFF03A9F4)
+
 data class CustomColors(
     val seederColor: Color = Color.Unspecified,
     val leecherColor: Color = Color.Unspecified,
@@ -242,6 +254,11 @@ data class CustomColors(
     val logInfo: Color = Color.Unspecified,
     val logWarning: Color = Color.Unspecified,
     val logCritical: Color = Color.Unspecified,
+    val filePriorityDoNotDownload: Color = Color.Unspecified,
+    val filePriorityNormal: Color = Color.Unspecified,
+    val filePriorityHigh: Color = Color.Unspecified,
+    val filePriorityMaximum: Color = Color.Unspecified,
+    val filePriorityMixed: Color = Color.Unspecified,
 )
 
 val LocalCustomColors = staticCompositionLocalOf { CustomColors() }
@@ -253,6 +270,11 @@ val lightCustomColors = CustomColors(
     logInfo = logInfoLight,
     logWarning = logWarningLight,
     logCritical = logCriticalLight,
+    filePriorityDoNotDownload = filePriorityDoNotDownloadLight,
+    filePriorityNormal = filePriorityNormalLight,
+    filePriorityHigh = filePriorityHighLight,
+    filePriorityMaximum = filePriorityMaximumLight,
+    filePriorityMixed = filePriorityMixedLight,
 )
 
 val darkCustomColors = CustomColors(
@@ -262,4 +284,9 @@ val darkCustomColors = CustomColors(
     logInfo = logInfoDark,
     logWarning = logWarningDark,
     logCritical = logCriticalDark,
+    filePriorityDoNotDownload = filePriorityDoNotDownloadDark,
+    filePriorityNormal = filePriorityNormalDark,
+    filePriorityHigh = filePriorityHighDark,
+    filePriorityMaximum = filePriorityMaximumDark,
+    filePriorityMixed = filePriorityMixedDark,
 )
