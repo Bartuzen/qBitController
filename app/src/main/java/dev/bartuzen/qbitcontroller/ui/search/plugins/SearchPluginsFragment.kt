@@ -350,7 +350,7 @@ private fun PluginItem(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

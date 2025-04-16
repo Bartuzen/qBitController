@@ -708,14 +708,14 @@ private fun FeedItem(
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(containerColor = containerColor),
         onClick = onClick,
-        modifier = modifier.padding(start = (feedNode.level * 24).dp),
+        modifier = modifier.padding(start = (feedNode.level * 12).dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    end = 12.dp,
+                    end = 8.dp,
                     top = 12.dp,
                     bottom = 12.dp,
                 ),
@@ -750,7 +750,7 @@ private fun FeedItem(
                 modifier = Modifier.weight(1f),
             )
 
-            Box(modifier = Modifier.padding(start = 8.dp)) {
+            Box {
                 var showMenu by rememberSaveable { mutableStateOf(false) }
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
