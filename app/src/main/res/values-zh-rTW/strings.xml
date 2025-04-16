@@ -307,7 +307,6 @@
     <string name="torrent_enable_force_start_success">已成功啟用強制開始。</string>
     <string name="torrent_overview_connections">連接</string>
     <string name="torrent_overview_connections_format">%1$d（最大%2$d）</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>目錄：</b>]]> %1$s</string>
     <string name="torrent_peers_invalid">輸入的使用者不正確。</string>
     <string name="torrent_peers_details_connection">連接</string>
     <string name="torrent_peers_details_section_flags">標誌</string>

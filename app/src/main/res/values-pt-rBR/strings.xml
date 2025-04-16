@@ -300,7 +300,6 @@
     <string name="torrent_overview_seeds_format">%1$d (%2$d total)</string>
     <string name="torrent_overview_peers">Peers</string>
     <string name="torrent_overview_wasted">Perdidos</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Diretório: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">Não fazer download</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_priority_high">Alto</string>
