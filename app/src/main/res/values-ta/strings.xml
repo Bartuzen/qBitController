@@ -130,7 +130,6 @@
     <string name="torrent_peers_details_downloaded">பதிவிறக்கம்</string>
     <string name="torrent_peers_details_uploaded">பதிவேற்றப்பட்டது</string>
     <string name="torrent_peers_details_relevance">பொருத்தமானது</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">ஆர்வமுள்ள (உள்ளூர்) மற்றும் மூச்சுத் திணறல் (பியர்)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">ஆர்வமுள்ள (உள்ளூர்) மற்றும் தேர்வு செய்யப்படாத (பியர்)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">ஆர்வம் (பியர்) மற்றும் மூச்சுத் திணறல் (உள்ளூர்)</string>
@@ -454,7 +453,6 @@
     <string name="notification_torrent_downloaded">டொரண்ட் பதிவிறக்கம்</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
     <string name="eta_days_hours">%1$sd %2$sh</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>அடைவு: </b>]]> %1$s</string>
     <string name="torrent_peers_flag_encrypted_handshake">மறைகுறியாக்கப்பட்ட ஏண்ட்சேக்</string>
     <string name="torrent_error_not_found">டோரண்ட் கண்டுபிடிக்கப்படவில்லை.</string>
     <string name="torrent_add_title">டொரண்ட் சேர்க்கவும்</string>

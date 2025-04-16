@@ -346,7 +346,6 @@
     <string name="torrent_overview_created_by">Vytvořil/a</string>
     <string name="torrent_files_priority_high">Vysoká</string>
     <string name="torrent_files_priority_normal">Normální</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Složka:</b>]]>%1$s</string>
     <string name="torrent_files_priority_maximum">Maximální</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_trackers_added">Trackery přidány úspěšně.</string>
@@ -364,7 +363,6 @@
     <string name="torrent_peers_details_uploaded">Odesláno</string>
     <string name="torrent_peers_details_relevance">Důležitost</string>
     <string name="torrent_peers_details_section_files">Soubory</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Not interested (místní) a nepřiškrcený (peer)</string>
     <string name="torrent_peers_flag_incoming_connection">Příchozí spojení</string>
     <string name="torrent_peers_flag_peer_from_pex">Peer z PEX</string>

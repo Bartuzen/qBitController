@@ -26,7 +26,6 @@
     <string name="torrent_peers_details_connection">Conexão</string>
     <string name="torrent_peers_details_section_flags">Bandeiras</string>
     <string name="torrent_peers_details_section_files">Arquivos</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_peer_unchoked_local">Não interessados (peer) e não paralisados (locais)</string>
     <string name="search_start_category_software">Programas</string>
     <string name="search_start_category_anime">Animes</string>
@@ -301,7 +300,6 @@
     <string name="torrent_overview_seeds_format">%1$d (%2$d total)</string>
     <string name="torrent_overview_peers">Peers</string>
     <string name="torrent_overview_wasted">Perdidos</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Diretório: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">Não fazer download</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_priority_high">Alto</string>

@@ -298,7 +298,6 @@
     <string name="torrent_overview_connections">연결</string>
     <string name="torrent_overview_peers_format">%1$d (전체 %2$d)</string>
     <string name="torrent_overview_connections_format">%1$d (최대 %2$d)</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>디렉터리: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">내려받지 않음</string>
     <string name="torrent_files_priority_normal">보통</string>
     <string name="torrent_files_priority_high">높음</string>
@@ -351,7 +350,6 @@
     <string name="torrent_peers_details_upload_speed">올려주기 속도</string>
     <string name="torrent_peers_details_downloaded">내려받음</string>
     <string name="torrent_peers_details_section_files">파일</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">관심 있음 (로컬) / 혼잡 (피어)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">관심 있음 (피어) / 혼잡 (로컬)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">관심 있음 (로컬) / 혼잡 해소됨 (피어)</string>
