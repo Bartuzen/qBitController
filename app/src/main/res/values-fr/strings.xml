@@ -294,4 +294,8 @@
     <string name="torrent_add_ratio_limit">Limite de ratio</string>
     <string name="torrent_add_seeding_time_limit">Temps limite de partage (Minutes)</string>
     <string name="torrent_add_name">Nom du torrent</string>
+    <string name="torrent_action_copy_hash_v1">Hash v1</string>
+    <string name="torrent_action_copy_hash_v2">Hash v2</string>
+    <string name="torrent_option_sequential_download">Télécharger dans l\'ordre séquentiel</string>
+    <string name="stats_read_cache_overload">Surcharge du tampon de lecture</string>
 </resources>
