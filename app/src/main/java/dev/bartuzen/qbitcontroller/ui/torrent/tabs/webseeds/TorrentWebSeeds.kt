@@ -1,8 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -29,80 +26,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
-import dev.bartuzen.qbitcontroller.utils.view
-
-@AndroidEntryPoint
-class TorrentWebSeedsFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val torrentHash get() = arguments?.getString("torrentHash")!!
-
-    constructor(serverId: Int, torrentHash: String) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "torrentHash" to torrentHash,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }
-                    DisposableEffect(Unit) {
-                        val observer = LifecycleEventObserver { _, event ->
-                            currentLifecycle = event.targetState
-                        }
-                        lifecycle.addObserver(observer)
-
-                        onDispose {
-                            lifecycle.removeObserver(observer)
-                        }
-                    }
-
-                    TorrentWebSeedsTab(
-                        fragment = this@TorrentWebSeedsFragment,
-                        serverId = serverId,
-                        torrentHash = torrentHash,
-                        isScreenActive = currentLifecycle.isAtLeast(Lifecycle.State.RESUMED),
-                    )
-                }
-            }
-        }
-}
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 @Composable
-private fun TorrentWebSeedsTab(
-    fragment: TorrentWebSeedsFragment,
+fun TorrentWebSeedsTab(
     serverId: Int,
     torrentHash: String,
     isScreenActive: Boolean,
+    snackbarEventFlow: MutableSharedFlow<String>,
     modifier: Modifier = Modifier,
     viewModel: TorrentWebSeedsViewModel = hiltViewModel(
         creationCallback = { factory: TorrentWebSeedsViewModel.Factory ->
@@ -110,7 +54,6 @@ private fun TorrentWebSeedsTab(
         },
     ),
 ) {
-    val activity = fragment.requireActivity()
     val context = LocalContext.current
 
     val webSeeds by viewModel.webSeeds.collectAsStateWithLifecycle()
@@ -124,10 +67,10 @@ private fun TorrentWebSeedsTab(
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is TorrentWebSeedsViewModel.Event.Error -> {
-                fragment.showSnackbar(getErrorMessage(context, event.error), view = activity.view)
+                snackbarEventFlow.emit(getErrorMessage(context, event.error))
             }
             TorrentWebSeedsViewModel.Event.TorrentNotFound -> {
-                fragment.showSnackbar(R.string.torrent_error_not_found, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_error_not_found))
             }
         }
     }

@@ -1,11 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
-import android.os.Bundle
-import android.view.ActionMode
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -33,12 +27,22 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
+import androidx.compose.material.icons.filled.DoNotDisturbAlt
+import androidx.compose.material.icons.filled.DriveFileRenameOutline
+import androidx.compose.material.icons.filled.FlipToBack
 import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.HorizontalRule
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowUp
+import androidx.compose.material.icons.filled.PriorityHigh
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,14 +53,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -66,87 +68,43 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.material.color.MaterialColors
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
+import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.ui.icons.Priority
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
+import dev.bartuzen.qbitcontroller.ui.torrent.SelectionData
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatFilePriority
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
-import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class TorrentFilesFragment() : Fragment(R.layout.fragment_torrent_files) {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val torrentHash get() = arguments?.getString("torrentHash")!!
-
-    constructor(serverId: Int, torrentHash: String) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "torrentHash" to torrentHash,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }
-                    DisposableEffect(Unit) {
-                        val observer = LifecycleEventObserver { _, event ->
-                            currentLifecycle = event.targetState
-                        }
-                        lifecycle.addObserver(observer)
-
-                        onDispose {
-                            lifecycle.removeObserver(observer)
-                        }
-                    }
-
-                    TorrentFilesTab(
-                        fragment = this@TorrentFilesFragment,
-                        serverId = serverId,
-                        torrentHash = torrentHash,
-                        isScreenActive = currentLifecycle.isAtLeast(Lifecycle.State.RESUMED),
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun TorrentFilesTab(
-    fragment: TorrentFilesFragment,
+fun TorrentFilesTab(
     serverId: Int,
     torrentHash: String,
     isScreenActive: Boolean,
+    snackbarEventFlow: MutableSharedFlow<String>,
+    selectionActionsEventFlow: MutableSharedFlow<Pair<Int, SelectionData?>>,
     modifier: Modifier = Modifier,
     viewModel: TorrentFilesViewModel = hiltViewModel(
         creationCallback = { factory: TorrentFilesViewModel.Factory ->
@@ -154,7 +112,6 @@ private fun TorrentFilesTab(
         },
     ),
 ) {
-    val activity = fragment.requireActivity()
     val context = LocalContext.current
 
     val filesNode by viewModel.filesNode.collectAsStateWithLifecycle()
@@ -163,7 +120,6 @@ private fun TorrentFilesTab(
 
     val expandedNodes = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
     val selectedFiles = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
-    var actionMode by remember { mutableStateOf<ActionMode?>(null) }
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
 
     val flattenedNodes = remember(filesNode, expandedNodes.toList()) {
@@ -171,95 +127,144 @@ private fun TorrentFilesTab(
             processNodes(node, expandedNodes)
         }
     }
-    val updatedFlattenedNodes by rememberUpdatedState(flattenedNodes)
 
-    LaunchedEffect(selectedFiles.isNotEmpty()) {
-        if (selectedFiles.isNotEmpty()) {
-            actionMode = activity.startActionMode(
-                object : ActionMode.Callback {
-                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.torrent_files_selection, menu)
-                        return true
+    var showPriorityMenu by rememberSaveable { mutableStateOf(false) }
+    val selectionActionMenuItems = listOf(
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_files_action_priority),
+            icon = Icons.Outlined.Priority,
+            onClick = { showPriorityMenu = true },
+            showAsAction = true,
+            dropdownMenu = {
+                val scrollState = rememberScrollState()
+                PersistentLaunchedEffect(showPriorityMenu) {
+                    if (showPriorityMenu) {
+                        scrollState.scrollTo(0)
                     }
+                }
 
-                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
-
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-                        when (item.itemId) {
-                            R.id.menu_priority_do_not_download -> {
-                                viewModel.setFilePriority(
-                                    filePaths = selectedFiles.toList(),
-                                    priority = TorrentFilePriority.DO_NOT_DOWNLOAD,
-                                )
-                                actionMode?.finish()
-                            }
-                            R.id.menu_priority_normal -> {
-                                viewModel.setFilePriority(
-                                    filePaths = selectedFiles.toList(),
-                                    priority = TorrentFilePriority.NORMAL,
-                                )
-                                actionMode?.finish()
-                            }
-                            R.id.menu_priority_high -> {
-                                viewModel.setFilePriority(
-                                    filePaths = selectedFiles.toList(),
-                                    priority = TorrentFilePriority.HIGH,
-                                )
-                                actionMode?.finish()
-                            }
-                            R.id.menu_priority_maximum -> {
-                                viewModel.setFilePriority(
-                                    filePaths = selectedFiles.toList(),
-                                    priority = TorrentFilePriority.MAXIMUM,
-                                )
-                                actionMode?.finish()
-                            }
-                            R.id.menu_rename -> {
-                                currentDialog = Dialog.Rename
-                            }
-                            R.id.menu_select_all -> {
-                                val newFiles = updatedFlattenedNodes
-                                    ?.filter { it.path !in selectedFiles }
-                                    ?.map { it.path }
-                                    ?: return false
-                                selectedFiles.addAll(newFiles)
-                            }
-                            R.id.menu_select_inverse -> {
-                                val newFiles = updatedFlattenedNodes
-                                    ?.filter { it.path !in selectedFiles }
-                                    ?.map { it.path }
-                                    ?: return false
-                                selectedFiles.clear()
-                                selectedFiles.addAll(newFiles)
-                            }
-                            else -> return false
-                        }
-
-                        return true
-                    }
-
-                    override fun onDestroyActionMode(mode: ActionMode) {
-                        actionMode = null
-                        selectedFiles.clear()
-                    }
-                },
-            )
-        } else {
-            actionMode?.finish()
-        }
-    }
-
-    LaunchedEffect(selectedFiles.size == 1) {
-        actionMode?.menu?.findItem(R.id.menu_rename)?.isEnabled = selectedFiles.size == 1
-    }
+                DropdownMenu(
+                    expanded = showPriorityMenu,
+                    onDismissRequest = { showPriorityMenu = false },
+                    scrollState = scrollState,
+                    modifier = Modifier.dropdownMenuHeight(),
+                ) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_files_priority_do_not_download))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.DoNotDisturbAlt, contentDescription = null)
+                        },
+                        onClick = {
+                            viewModel.setFilePriority(
+                                filePaths = selectedFiles.toList(),
+                                priority = TorrentFilePriority.DO_NOT_DOWNLOAD,
+                            )
+                            showPriorityMenu = false
+                            selectedFiles.clear()
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_files_priority_normal))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.HorizontalRule, contentDescription = null)
+                        },
+                        onClick = {
+                            viewModel.setFilePriority(
+                                filePaths = selectedFiles.toList(),
+                                priority = TorrentFilePriority.NORMAL,
+                            )
+                            showPriorityMenu = false
+                            selectedFiles.clear()
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_files_priority_high))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.KeyboardDoubleArrowUp, contentDescription = null)
+                        },
+                        onClick = {
+                            viewModel.setFilePriority(
+                                filePaths = selectedFiles.toList(),
+                                priority = TorrentFilePriority.HIGH,
+                            )
+                            showPriorityMenu = false
+                            selectedFiles.clear()
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_files_priority_maximum))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.PriorityHigh, contentDescription = null)
+                        },
+                        onClick = {
+                            viewModel.setFilePriority(
+                                filePaths = selectedFiles.toList(),
+                                priority = TorrentFilePriority.MAXIMUM,
+                            )
+                            showPriorityMenu = false
+                            selectedFiles.clear()
+                        },
+                    )
+                }
+            },
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.torrent_files_action_rename),
+            icon = Icons.Filled.DriveFileRenameOutline,
+            onClick = { currentDialog = Dialog.Rename },
+            showAsAction = true,
+            isEnabled = selectedFiles.size == 1,
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.action_select_all),
+            icon = Icons.Filled.SelectAll,
+            showAsAction = false,
+            onClick = onClick@{
+                val newFiles = flattenedNodes
+                    ?.filter { it.path !in selectedFiles }
+                    ?.map { it.path }
+                    ?: return@onClick
+                selectedFiles.addAll(newFiles)
+            },
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.action_select_inverse),
+            icon = Icons.Filled.FlipToBack,
+            showAsAction = false,
+            onClick = onClick@{
+                val newFiles = flattenedNodes
+                    ?.filter { it.path !in selectedFiles }
+                    ?.map { it.path }
+                    ?: return@onClick
+                selectedFiles.clear()
+                selectedFiles.addAll(newFiles)
+            },
+        ),
+    )
 
     LaunchedEffect(selectedFiles.size) {
         if (selectedFiles.isNotEmpty()) {
-            actionMode?.title = context.resources.getQuantityString(
-                R.plurals.torrent_files_selected,
-                selectedFiles.size,
-                selectedFiles.size,
+            selectionActionsEventFlow.emit(
+                1 to SelectionData(
+                    title = context.resources.getQuantityString(
+                        R.plurals.torrent_files_selected,
+                        selectedFiles.size,
+                        selectedFiles.size,
+                    ),
+                    actionMenuItems = selectionActionMenuItems,
+                    onCancel = { selectedFiles.clear() },
+                ),
             )
+        } else {
+            selectionActionsEventFlow.emit(1 to null)
         }
     }
 
@@ -269,30 +274,27 @@ private fun TorrentFilesTab(
 
     LaunchedEffect(isScreenActive) {
         viewModel.setScreenActive(isScreenActive)
-        if (!isScreenActive) {
-            actionMode?.finish()
-        }
     }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is TorrentFilesViewModel.Event.Error -> {
-                fragment.showSnackbar(getErrorMessage(context, event.error), view = activity.view)
+                snackbarEventFlow.emit(getErrorMessage(context, event.error))
             }
             TorrentFilesViewModel.Event.TorrentNotFound -> {
-                fragment.showSnackbar(R.string.torrent_error_not_found, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_error_not_found))
             }
             TorrentFilesViewModel.Event.PathIsInvalidOrInUse -> {
-                fragment.showSnackbar(R.string.torrent_files_error_path_is_invalid_or_in_use, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_files_error_path_is_invalid_or_in_use))
             }
             TorrentFilesViewModel.Event.FilePriorityUpdated -> {
-                fragment.showSnackbar(R.string.torrent_files_priority_update_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_files_priority_update_success))
             }
             TorrentFilesViewModel.Event.FileRenamed -> {
-                fragment.showSnackbar(R.string.torrent_files_file_renamed_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_files_file_renamed_success))
             }
             TorrentFilesViewModel.Event.FolderRenamed -> {
-                fragment.showSnackbar(R.string.torrent_files_folder_renamed_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_files_folder_renamed_success))
             }
         }
     }
@@ -330,7 +332,7 @@ private fun TorrentFilesTab(
                             is TorrentFileNode.Folder -> viewModel.renameFolder(file.path, newPath)
                         }
                         currentDialog = null
-                        actionMode?.finish()
+                        selectedFiles.clear()
                     },
                 )
             }

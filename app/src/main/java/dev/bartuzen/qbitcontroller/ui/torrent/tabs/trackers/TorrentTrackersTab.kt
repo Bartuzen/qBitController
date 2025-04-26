@@ -1,12 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
-import android.os.Bundle
-import android.view.ActionMode
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -35,8 +28,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.FlipToBack
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.FileDownload
@@ -53,7 +51,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -69,85 +66,41 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
+import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.ui.torrent.SelectionData
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
-import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class TorrentTrackersFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val torrentHash get() = arguments?.getString("torrentHash")!!
-
-    constructor(serverId: Int, torrentHash: String) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "torrentHash" to torrentHash,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }
-                    DisposableEffect(Unit) {
-                        val observer = LifecycleEventObserver { _, event ->
-                            currentLifecycle = event.targetState
-                        }
-                        lifecycle.addObserver(observer)
-
-                        onDispose {
-                            lifecycle.removeObserver(observer)
-                        }
-                    }
-
-                    TorrentTrackersTab(
-                        fragment = this@TorrentTrackersFragment,
-                        serverId = serverId,
-                        torrentHash = torrentHash,
-                        isScreenActive = currentLifecycle == Lifecycle.State.RESUMED,
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun TorrentTrackersTab(
-    fragment: TorrentTrackersFragment,
+fun TorrentTrackersTab(
     serverId: Int,
     torrentHash: String,
     isScreenActive: Boolean,
+    snackbarEventFlow: MutableSharedFlow<String>,
+    actionsEventFlow: MutableSharedFlow<Pair<Int, List<ActionMenuItem>>>,
+    selectionActionsEventFlow: MutableSharedFlow<Pair<Int, SelectionData?>>,
     modifier: Modifier = Modifier,
     viewModel: TorrentTrackersViewModel = hiltViewModel(
         creationCallback = { factory: TorrentTrackersViewModel.Factory ->
@@ -155,7 +108,6 @@ private fun TorrentTrackersTab(
         },
     ),
 ) {
-    val activity = fragment.requireActivity()
     val context = LocalContext.current
 
     val trackers by viewModel.trackers.collectAsStateWithLifecycle()
@@ -163,94 +115,79 @@ private fun TorrentTrackersTab(
     val isNaturalLoading by viewModel.isNaturalLoading.collectAsStateWithLifecycle()
 
     val selectedTrackers = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
-    var actionMode by remember { mutableStateOf<ActionMode?>(null) }
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
 
-    LaunchedEffect(Unit) {
-        activity.addMenuProvider(
-            object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.torrent_trackers, menu)
-                }
+    val actions = listOf(
+        ActionMenuItem(
+            title = context.getString(R.string.torrent_trackers_action_add),
+            icon = Icons.Filled.Add,
+            onClick = { currentDialog = Dialog.Add },
+            showAsAction = true,
+        ),
+    )
 
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    when (menuItem.itemId) {
-                        R.id.menu_add -> {
-                            currentDialog = Dialog.Add
-                        }
-                        else -> return false
-                    }
-
-                    return true
-                }
-            },
-            fragment.viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
-        )
-    }
-
-    LaunchedEffect(selectedTrackers.isNotEmpty()) {
-        if (selectedTrackers.isNotEmpty()) {
-            actionMode = activity.startActionMode(
-                object : ActionMode.Callback {
-                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.torrent_trackers_selection, menu)
-                        return true
-                    }
-
-                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
-
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-                        when (item.itemId) {
-                            R.id.menu_delete -> {
-                                currentDialog = Dialog.Delete
-                            }
-                            R.id.menu_edit -> {
-                                currentDialog = Dialog.Edit
-                            }
-                            R.id.menu_select_all -> {
-                                val newTrackers = trackers
-                                    ?.filter { it.url !in selectedTrackers && it.tier != null }
-                                    ?.map { it.url }
-                                    ?: return false
-                                selectedTrackers.addAll(newTrackers)
-                            }
-                            R.id.menu_select_inverse -> {
-                                val newTrackers = trackers
-                                    ?.filter { it.url !in selectedTrackers && it.tier != null }
-                                    ?.map { it.url }
-                                    ?: return false
-                                selectedTrackers.clear()
-                                selectedTrackers.addAll(newTrackers)
-                            }
-                            else -> return false
-                        }
-
-                        return true
-                    }
-
-                    override fun onDestroyActionMode(mode: ActionMode) {
-                        actionMode = null
-                        selectedTrackers.clear()
-                    }
-                },
-            )
-        } else {
-            actionMode?.finish()
+    LaunchedEffect(actions) {
+        launch {
+            actionsEventFlow.emit(2 to actions)
         }
     }
 
-    LaunchedEffect(selectedTrackers.size == 1) {
-        actionMode?.menu?.findItem(R.id.menu_edit)?.isEnabled = selectedTrackers.size == 1
-    }
+    val selectionActionMenuItems = listOf(
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_trackers_action_delete),
+            icon = Icons.Filled.Delete,
+            onClick = { currentDialog = Dialog.Delete },
+            showAsAction = true,
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.torrent_trackers_action_edit),
+            icon = Icons.Filled.DriveFileRenameOutline,
+            onClick = { currentDialog = Dialog.Edit },
+            showAsAction = true,
+            isEnabled = selectedTrackers.size == 1,
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.action_select_all),
+            icon = Icons.Filled.SelectAll,
+            showAsAction = false,
+            onClick = onClick@{
+                val newTrackers = trackers
+                    ?.filter { it.url !in selectedTrackers && it.tier != null }
+                    ?.map { it.url }
+                    ?: return@onClick
+                selectedTrackers.addAll(newTrackers)
+            },
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.action_select_inverse),
+            icon = Icons.Filled.FlipToBack,
+            showAsAction = false,
+            onClick = onClick@{
+                val newTrackers = trackers
+                    ?.filter { it.url !in selectedTrackers && it.tier != null }
+                    ?.map { it.url }
+                    ?: return@onClick
+                selectedTrackers.clear()
+                selectedTrackers.addAll(newTrackers)
+            },
+        ),
+    )
 
     LaunchedEffect(selectedTrackers.size) {
         if (selectedTrackers.isNotEmpty()) {
-            actionMode?.title = context.resources.getQuantityString(
-                R.plurals.torrent_trackers_selected,
-                selectedTrackers.size,
-                selectedTrackers.size,
+            selectionActionsEventFlow.emit(
+                2 to SelectionData(
+                    title = context.resources.getQuantityString(
+                        R.plurals.torrent_trackers_selected,
+                        selectedTrackers.size,
+                        selectedTrackers.size,
+                    ),
+                    actionMenuItems = selectionActionMenuItems,
+                    onCancel = { selectedTrackers.clear() },
+                ),
             )
+        } else {
+            selectionActionsEventFlow.emit(2 to null)
         }
     }
 
@@ -260,27 +197,24 @@ private fun TorrentTrackersTab(
 
     LaunchedEffect(isScreenActive) {
         viewModel.setScreenActive(isScreenActive)
-        if (!isScreenActive) {
-            actionMode?.finish()
-        }
     }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is TorrentTrackersViewModel.Event.Error -> {
-                fragment.showSnackbar(getErrorMessage(context, event.error), view = activity.view)
+                snackbarEventFlow.emit(getErrorMessage(context, event.error))
             }
             TorrentTrackersViewModel.Event.TorrentNotFound -> {
-                fragment.showSnackbar(R.string.torrent_error_not_found, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_error_not_found))
             }
             TorrentTrackersViewModel.Event.TrackersAdded -> {
-                fragment.showSnackbar(R.string.torrent_trackers_added, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_trackers_added))
             }
             TorrentTrackersViewModel.Event.TrackersDeleted -> {
-                fragment.showSnackbar(R.string.torrent_trackers_deleted, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_trackers_deleted))
             }
             TorrentTrackersViewModel.Event.TrackerEdited -> {
-                fragment.showSnackbar(R.string.torrent_trackers_edited, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_trackers_edited))
             }
         }
     }
@@ -308,7 +242,7 @@ private fun TorrentTrackersTab(
                 onDelete = {
                     viewModel.deleteTrackers(selectedTrackers.toList())
                     currentDialog = null
-                    actionMode?.finish()
+                    selectedTrackers.clear()
                 },
             )
         }
@@ -631,13 +565,15 @@ fun EditSelectedTrackerDialog(
     onEdit: (url: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var url by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(initialUrl)) }
+    var url by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue(initialUrl, TextRange(Int.MAX_VALUE)))
+    }
     var error by rememberSaveable { mutableStateOf<Int?>(null) }
 
     Dialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.torrent_trackers_action_add)) },
+        title = { Text(text = stringResource(R.string.torrent_trackers_action_edit)) },
         text = {
             val focusRequester = remember { FocusRequester() }
             PersistentLaunchedEffect {

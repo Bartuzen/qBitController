@@ -2268,7 +2268,12 @@ private fun TopBar(
                             showSortMenu = true
                         },
                         showAsAction = false,
-                        trailingIcon = Icons.AutoMirrored.Filled.ArrowRight,
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowRight,
+                                contentDescription = null,
+                            )
+                        },
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.main_action_settings),

@@ -42,7 +42,7 @@ fun <T> Flow<T>.launchAndCollectLatestIn(
 fun <T : Any> EventEffect(
     eventFlow: Flow<T>,
     lifeCycleState: Lifecycle.State = Lifecycle.State.STARTED,
-    collector: CoroutineScope.(T) -> Unit,
+    collector: suspend CoroutineScope.(T) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 

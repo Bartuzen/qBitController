@@ -36,7 +36,7 @@ data class ActionMenuItem(
     val isEnabled: Boolean = true,
     val isVisible: Boolean = true,
     val isHidden: Boolean = false,
-    val trailingIcon: ImageVector? = null,
+    val trailingIcon: (@Composable () -> Unit)? = null,
     val dropdownMenu: (@Composable () -> Unit)? = null,
 )
 
@@ -161,16 +161,7 @@ fun AppBarActions(
                         } else {
                             null
                         },
-                        trailingIcon = if (item.trailingIcon != null) {
-                            {
-                                Icon(
-                                    imageVector = item.trailingIcon,
-                                    contentDescription = null,
-                                )
-                            }
-                        } else {
-                            null
-                        },
+                        trailingIcon = item.trailingIcon,
                         onClick = {
                             item.onClick()
                             onOverflowVisibilityChange(false)

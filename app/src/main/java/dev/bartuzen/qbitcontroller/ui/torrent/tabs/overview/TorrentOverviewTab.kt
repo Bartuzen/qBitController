@@ -1,16 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 
-import android.app.Activity
-import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -51,8 +42,28 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.Label
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.FileDownload
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Start
+import androidx.compose.material.icons.filled.Title
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -65,13 +76,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -85,10 +94,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
@@ -98,32 +105,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.coerceAtMost
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.color.MaterialColors
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentState
+import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
 import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.RadioButtonWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
-import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.copyToClipboard
+import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -135,80 +135,22 @@ import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
-import dev.bartuzen.qbitcontroller.utils.view
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import java.text.DecimalFormatSymbols
 import kotlin.math.ceil
 
-@AndroidEntryPoint
-class TorrentOverviewFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val torrentHash get() = arguments?.getString("torrentHash")!!
-    private var torrentName
-        get() = arguments?.getString("torrentName")
-        set(value) {
-            arguments = bundleOf(
-                "serverId" to serverId,
-                "torrentHash" to torrentHash,
-                "torrentName" to value,
-            )
-        }
-
-    constructor(serverId: Int, torrentHash: String, torrentName: String?) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "torrentHash" to torrentHash,
-            "torrentName" to torrentName,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }
-                    DisposableEffect(Unit) {
-                        val observer = LifecycleEventObserver { _, event ->
-                            currentLifecycle = event.targetState
-                        }
-                        lifecycle.addObserver(observer)
-
-                        onDispose {
-                            lifecycle.removeObserver(observer)
-                        }
-                    }
-
-                    TorrentOverviewTab(
-                        fragment = this@TorrentOverviewFragment,
-                        serverId = serverId,
-                        torrentHash = torrentHash,
-                        initialTorrentName = torrentName,
-                        isScreenActive = currentLifecycle.isAtLeast(Lifecycle.State.RESUMED),
-                        onDeleteTorrent = {
-                            val intent = Intent().apply {
-                                putExtra(TorrentActivity.Extras.TORRENT_DELETED, true)
-                            }
-                            requireActivity().setResult(Activity.RESULT_OK, intent)
-                            requireActivity().finish()
-                        },
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun TorrentOverviewTab(
-    fragment: TorrentOverviewFragment,
+fun TorrentOverviewTab(
     serverId: Int,
     torrentHash: String,
     initialTorrentName: String?,
     isScreenActive: Boolean,
+    snackbarEventFlow: MutableSharedFlow<String>,
+    titleEventFlow: MutableSharedFlow<String>,
+    actionsEventFlow: MutableSharedFlow<Pair<Int, List<ActionMenuItem>>>,
     onDeleteTorrent: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TorrentOverviewViewModel = hiltViewModel(
@@ -217,9 +159,7 @@ private fun TorrentOverviewTab(
         },
     ),
 ) {
-    val activity = fragment.requireActivity()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     val torrent by viewModel.torrent.collectAsStateWithLifecycle()
     val torrentProperties by viewModel.torrentProperties.collectAsStateWithLifecycle()
@@ -229,8 +169,8 @@ private fun TorrentOverviewTab(
 
     val torrentName by rememberSaveable(torrent?.name) { mutableStateOf(torrent?.name ?: initialTorrentName) }
     LaunchedEffect(torrentName) {
-        torrentName?.let { torrentName ->
-            (activity as AppCompatActivity).supportActionBar?.title = torrentName
+        launch {
+            torrentName?.let { titleEventFlow.emit(it) }
         }
     }
 
@@ -250,196 +190,272 @@ private fun TorrentOverviewTab(
 
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
 
-    LaunchedEffect(Unit) {
-        activity.addMenuProvider(
-            object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.torrent, menu)
-
-                    fragment.lifecycleScope.launch {
-                        viewModel.torrent.collectLatest { torrent ->
-                            val tags = menu.findItem(R.id.menu_tags)
-                            val resume = menu.findItem(R.id.menu_resume)
-                            val pause = menu.findItem(R.id.menu_pause)
-                            val torrentOptions = menu.findItem(R.id.menu_options)
-                            val reannounce = menu.findItem(R.id.menu_reannounce)
-                            val forceStart = menu.findItem(R.id.menu_force_start)
-                            val superSeeding = menu.findItem(R.id.menu_super_seeding)
-                            val copy = menu.findItem(R.id.menu_copy)
-                            val copyHashV1 = menu.findItem(R.id.menu_copy_hash_v1)
-                            val copyHashV2 = menu.findItem(R.id.menu_copy_hash_v2)
-
-                            tags.isEnabled = torrent != null
-                            torrentOptions.isEnabled = torrent != null
-                            forceStart.isEnabled = torrent != null
-                            superSeeding.isEnabled = torrent != null
-                            copy.isEnabled = torrent != null
-                            copyHashV1.isEnabled = torrent?.hashV1 != null
-                            copyHashV2.isEnabled = torrent?.hashV2 != null
-
-                            reannounce.isEnabled = torrent != null &&
-                                when (torrent.state) {
-                                    TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP,
-                                    TorrentState.QUEUED_DL, TorrentState.ERROR, TorrentState.CHECKING_UP,
-                                    TorrentState.CHECKING_DL,
-                                    -> false
-
-                                    else -> true
-                                }
-
-                            if (torrent != null) {
-                                val isPaused = when (torrent.state) {
-                                    TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
-                                    TorrentState.MISSING_FILES, TorrentState.ERROR,
-                                    -> true
-
-                                    else -> false
-                                }
-                                resume.isVisible = isPaused
-                                pause.isVisible = !isPaused
-
-                                forceStart.isChecked = torrent.isForceStartEnabled
-                                superSeeding.isChecked = torrent.isSuperSeedingEnabled
-                            }
-                        }
-                    }
-                }
-
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    when (menuItem.itemId) {
-                        R.id.menu_pause -> {
-                            viewModel.pauseTorrent()
-                        }
-                        R.id.menu_resume -> {
-                            viewModel.resumeTorrent()
-                        }
-                        R.id.menu_delete -> {
-                            currentDialog = Dialog.Delete
-                        }
-                        R.id.menu_options -> {
-                            currentDialog = Dialog.Options
-                        }
-                        R.id.menu_category -> {
-                            currentDialog = Dialog.SetCategory
-                        }
-                        R.id.menu_tags -> {
-                            currentDialog = Dialog.SetTags
-                        }
-                        R.id.menu_rename -> {
-                            currentDialog = Dialog.Rename
-                        }
-                        R.id.menu_recheck -> {
-                            currentDialog = Dialog.Recheck
-                        }
-                        R.id.menu_reannounce -> {
-                            viewModel.reannounceTorrent()
-                        }
-                        R.id.menu_force_start -> {
-                            val isEnabled = viewModel.torrent.value?.isForceStartEnabled ?: return true
-                            viewModel.setForceStart(!isEnabled)
-                        }
-                        R.id.menu_super_seeding -> {
-                            val isEnabled = viewModel.torrent.value?.isSuperSeedingEnabled ?: return true
-                            viewModel.setSuperSeeding(!isEnabled)
-                        }
-                        R.id.menu_copy_name -> {
-                            val torrent = viewModel.torrent.value
-                            if (torrent != null) {
-                                context.copyToClipboard(torrent.name)
-                            }
-                        }
-                        R.id.menu_copy_hash_v1 -> {
-                            val torrent = viewModel.torrent.value
-                            if (torrent?.hashV1 != null) {
-                                context.copyToClipboard(torrent.hashV1)
-                            }
-                        }
-                        R.id.menu_copy_hash_v2 -> {
-                            val torrent = viewModel.torrent.value
-                            if (torrent?.hashV2 != null) {
-                                context.copyToClipboard(torrent.hashV2)
-                            }
-                        }
-                        R.id.menu_copy_magnet -> {
-                            val torrent = viewModel.torrent.value
-                            if (torrent != null) {
-                                context.copyToClipboard(torrent.magnetUri)
-                            }
-                        }
-                        R.id.menu_export -> {
-                            val torrentName = viewModel.torrent.value?.name ?: return true
-                            exportActivity.launch("$torrentName.torrent")
-                        }
-                        else -> return false
-                    }
-                    return true
+    var showCopyMenu by rememberSaveable { mutableStateOf(false) }
+    val actions = listOfNotNull(
+        when (torrent?.state) {
+            null -> null
+            TorrentState.PAUSED_DL, TorrentState.PAUSED_UP,
+            TorrentState.MISSING_FILES, TorrentState.ERROR,
+            -> ActionMenuItem(
+                title = stringResource(R.string.torrent_action_resume),
+                onClick = { viewModel.resumeTorrent() },
+                showAsAction = true,
+                icon = Icons.Filled.PlayArrow,
+            )
+            else -> ActionMenuItem(
+                title = stringResource(R.string.torrent_action_pause),
+                onClick = { viewModel.pauseTorrent() },
+                showAsAction = true,
+                icon = Icons.Filled.Pause,
+            )
+        },
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_delete),
+            onClick = { currentDialog = Dialog.Delete },
+            showAsAction = true,
+            icon = Icons.Filled.Delete,
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_options),
+            onClick = { currentDialog = Dialog.Options },
+            showAsAction = false,
+            icon = Icons.Filled.Settings,
+            isEnabled = torrent != null,
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_category),
+            onClick = { currentDialog = Dialog.SetCategory },
+            showAsAction = false,
+            icon = Icons.Filled.Folder,
+            isEnabled = torrent != null,
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_tags),
+            onClick = { currentDialog = Dialog.SetTags },
+            showAsAction = false,
+            icon = Icons.AutoMirrored.Filled.Label,
+            isEnabled = torrent != null,
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_rename_torrent),
+            onClick = { currentDialog = Dialog.Rename },
+            showAsAction = false,
+            icon = Icons.Filled.DriveFileRenameOutline,
+            isEnabled = torrent != null,
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_force_recheck),
+            onClick = { currentDialog = Dialog.Recheck },
+            showAsAction = false,
+            icon = Icons.Filled.Refresh,
+            isEnabled = torrent != null,
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_force_reannounce),
+            onClick = { viewModel.reannounceTorrent() },
+            showAsAction = false,
+            icon = Icons.AutoMirrored.Filled.Send,
+            isEnabled = when (torrent?.state) {
+                TorrentState.PAUSED_UP, TorrentState.PAUSED_DL, TorrentState.QUEUED_UP,
+                TorrentState.QUEUED_DL, TorrentState.ERROR, TorrentState.CHECKING_UP,
+                TorrentState.CHECKING_DL, null,
+                -> false
+                else -> true
+            },
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_force_start),
+            onClick = {
+                val isEnabled = torrent?.isForceStartEnabled
+                if (isEnabled != null) {
+                    viewModel.setForceStart(!isEnabled)
                 }
             },
-            fragment.viewLifecycleOwner,
-        )
+            showAsAction = false,
+            icon = Icons.Filled.Start,
+            isEnabled = torrent != null,
+            trailingIcon = {
+                Checkbox(
+                    checked = torrent?.isForceStartEnabled == true,
+                    onCheckedChange = null,
+                )
+            },
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_super_seeding),
+            onClick = {
+                val isEnabled = torrent?.isSuperSeedingEnabled
+                if (isEnabled != null) {
+                    viewModel.setSuperSeeding(!isEnabled)
+                }
+            },
+            showAsAction = false,
+            icon = Icons.Filled.Star,
+            isEnabled = torrent != null,
+            trailingIcon = {
+                Checkbox(
+                    checked = torrent?.isSuperSeedingEnabled == true,
+                    onCheckedChange = null,
+                )
+            },
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_copy),
+            onClick = { showCopyMenu = true },
+            showAsAction = false,
+            icon = Icons.Filled.ContentCopy,
+            isEnabled = torrent != null,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowRight,
+                    contentDescription = null,
+                )
+            },
+            dropdownMenu = {
+                val scrollState = rememberScrollState()
+                PersistentLaunchedEffect(showCopyMenu) {
+                    if (showCopyMenu) {
+                        scrollState.scrollTo(0)
+                    }
+                }
+
+                DropdownMenu(
+                    expanded = showCopyMenu,
+                    onDismissRequest = { showCopyMenu = false },
+                    scrollState = scrollState,
+                    modifier = Modifier.dropdownMenuHeight(),
+                ) {
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_action_copy_name))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.Title, contentDescription = null)
+                        },
+                        onClick = {
+                            torrent?.name?.let { context.copyToClipboard(it) }
+                            showCopyMenu = false
+                        },
+                        enabled = torrent?.name != null,
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_action_copy_hash_v1))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.Key, contentDescription = null)
+                        },
+                        onClick = {
+                            torrent?.hashV1?.let { context.copyToClipboard(it) }
+                            showCopyMenu = false
+                        },
+                        enabled = torrent?.hashV1 != null,
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_action_copy_hash_v2))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.Key, contentDescription = null)
+                        },
+                        onClick = {
+                            torrent?.hashV2?.let { context.copyToClipboard(it) }
+                            showCopyMenu = false
+                        },
+                        enabled = torrent?.hashV2 != null,
+                    )
+                    DropdownMenuItem(
+                        text = {
+                            Text(text = stringResource(R.string.torrent_action_copy_magnet_uri))
+                        },
+                        leadingIcon = {
+                            Icon(imageVector = Icons.Filled.Link, contentDescription = null)
+                        },
+                        onClick = {
+                            torrent?.magnetUri?.let { context.copyToClipboard(it) }
+                            showCopyMenu = false
+                        },
+                        enabled = torrent?.magnetUri != null,
+                    )
+                }
+            },
+        ),
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_action_export),
+            onClick = {
+                torrent?.name?.let { exportActivity.launch("$it.torrent") }
+            },
+            showAsAction = false,
+            icon = Icons.Filled.FileDownload,
+            isEnabled = torrent != null,
+        ),
+    )
+
+    LaunchedEffect(actions) {
+        launch {
+            actionsEventFlow.emit(0 to actions)
+        }
     }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is TorrentOverviewViewModel.Event.Error -> {
-                fragment.showSnackbar(getErrorMessage(context, event.error), view = activity.view)
+                snackbarEventFlow.emit(getErrorMessage(context, event.error))
             }
             TorrentOverviewViewModel.Event.TorrentNotFound -> {
-                fragment.showSnackbar(R.string.torrent_error_not_found, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_error_not_found))
             }
             TorrentOverviewViewModel.Event.TorrentDeleted -> {
                 onDeleteTorrent()
             }
             TorrentOverviewViewModel.Event.TorrentPaused -> {
-                fragment.showSnackbar(R.string.torrent_paused_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_paused_success))
             }
             TorrentOverviewViewModel.Event.TorrentResumed -> {
-                fragment.showSnackbar(R.string.torrent_resumed_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_resumed_success))
             }
             TorrentOverviewViewModel.Event.OptionsUpdated -> {
-                fragment.showSnackbar(R.string.torrent_option_update_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_option_update_success))
             }
             TorrentOverviewViewModel.Event.TorrentRechecked -> {
-                fragment.showSnackbar(R.string.torrent_recheck_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_recheck_success))
             }
             TorrentOverviewViewModel.Event.TorrentReannounced -> {
-                fragment.showSnackbar(R.string.torrent_reannounce_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_reannounce_success))
             }
             TorrentOverviewViewModel.Event.TorrentRenamed -> {
-                fragment.showSnackbar(R.string.torrent_rename_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_rename_success))
                 viewModel.loadTorrent()
             }
             is TorrentOverviewViewModel.Event.ForceStartChanged -> {
-                fragment.showSnackbar(
+                snackbarEventFlow.emit(
                     if (event.isEnabled) {
-                        R.string.torrent_enable_force_start_success
+                        context.getString(R.string.torrent_enable_force_start_success)
                     } else {
-                        R.string.torrent_disable_force_start_success
+                        context.getString(R.string.torrent_disable_force_start_success)
                     },
-                    view = activity.view,
                 )
             }
             is TorrentOverviewViewModel.Event.SuperSeedingChanged -> {
-                fragment.showSnackbar(
+                snackbarEventFlow.emit(
                     if (event.isEnabled) {
-                        R.string.torrent_enable_super_seeding_success
+                        context.getString(R.string.torrent_enable_super_seeding_success)
                     } else {
-                        R.string.torrent_disable_super_seeding_success
+                        context.getString(R.string.torrent_disable_super_seeding_success)
                     },
-                    view = activity.view,
                 )
             }
             TorrentOverviewViewModel.Event.CategoryUpdated -> {
-                fragment.showSnackbar(R.string.torrent_category_update_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_category_update_success))
             }
             TorrentOverviewViewModel.Event.TagsUpdated -> {
-                fragment.showSnackbar(R.string.torrent_tags_update_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_tags_update_success))
             }
             TorrentOverviewViewModel.Event.TorrentExported -> {
-                fragment.showSnackbar(R.string.torrent_export_success, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_export_success))
             }
             TorrentOverviewViewModel.Event.TorrentExportError -> {
-                fragment.showSnackbar(R.string.torrent_export_error, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_export_error))
             }
         }
     }

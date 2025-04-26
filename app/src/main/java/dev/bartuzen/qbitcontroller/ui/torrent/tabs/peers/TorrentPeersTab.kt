@@ -1,12 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers
 
-import android.os.Bundle
-import android.view.ActionMode
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -35,7 +28,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DoNotDisturbAlt
 import androidx.compose.material.icons.filled.Flag
+import androidx.compose.material.icons.filled.FlipToBack
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Downloading
@@ -52,7 +49,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -68,9 +64,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -79,21 +73,16 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.ImageLoader
 import coil3.compose.AsyncImage
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.PeerFlag
 import dev.bartuzen.qbitcontroller.model.TorrentPeer
+import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.ui.torrent.SelectionData
 import dev.bartuzen.qbitcontroller.utils.AnimatedListVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -103,57 +92,19 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.getCountryName
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
-import dev.bartuzen.qbitcontroller.utils.showSnackbar
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
-import dev.bartuzen.qbitcontroller.utils.view
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class TorrentPeersFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val torrentHash get() = arguments?.getString("torrentHash")!!
-
-    constructor(serverId: Int, torrentHash: String) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "torrentHash" to torrentHash,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    var currentLifecycle by remember { mutableStateOf(lifecycle.currentState) }
-                    DisposableEffect(Unit) {
-                        val observer = LifecycleEventObserver { _, event ->
-                            currentLifecycle = event.targetState
-                        }
-                        lifecycle.addObserver(observer)
-
-                        onDispose {
-                            lifecycle.removeObserver(observer)
-                        }
-                    }
-
-                    TorrentPeersTab(
-                        fragment = this@TorrentPeersFragment,
-                        serverId = serverId,
-                        torrentHash = torrentHash,
-                        isScreenActive = currentLifecycle == Lifecycle.State.RESUMED,
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun TorrentPeersTab(
-    fragment: TorrentPeersFragment,
+fun TorrentPeersTab(
     serverId: Int,
     torrentHash: String,
     isScreenActive: Boolean,
+    snackbarEventFlow: MutableSharedFlow<String>,
+    actionsEventFlow: MutableSharedFlow<Pair<Int, List<ActionMenuItem>>>,
+    selectionActionsEventFlow: MutableSharedFlow<Pair<Int, SelectionData?>>,
     modifier: Modifier = Modifier,
     viewModel: TorrentPeersViewModel = hiltViewModel(
         creationCallback = { factory: TorrentPeersViewModel.Factory ->
@@ -161,7 +112,6 @@ private fun TorrentPeersTab(
         },
     ),
 ) {
-    val activity = fragment.requireActivity()
     val context = LocalContext.current
 
     val peers by viewModel.peers.collectAsStateWithLifecycle()
@@ -169,87 +119,72 @@ private fun TorrentPeersTab(
     val isNaturalLoading by viewModel.isNaturalLoading.collectAsStateWithLifecycle()
 
     val selectedPeers = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
-    var actionMode by remember { mutableStateOf<ActionMode?>(null) }
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
 
-    LaunchedEffect(Unit) {
-        activity.addMenuProvider(
-            object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.torrent_peers, menu)
-                }
+    val actions = listOf(
+        ActionMenuItem(
+            title = context.getString(R.string.torrent_peers_action_add),
+            icon = Icons.Filled.Add,
+            onClick = { currentDialog = Dialog.Add },
+            showAsAction = true,
+        ),
+    )
 
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    when (menuItem.itemId) {
-                        R.id.menu_add -> {
-                            currentDialog = Dialog.Add
-                        }
-                        else -> return false
-                    }
-
-                    return true
-                }
-            },
-            fragment.viewLifecycleOwner,
-            Lifecycle.State.RESUMED,
-        )
-    }
-
-    LaunchedEffect(selectedPeers.isNotEmpty()) {
-        if (selectedPeers.isNotEmpty()) {
-            actionMode = activity.startActionMode(
-                object : ActionMode.Callback {
-                    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.torrent_peers_selection, menu)
-                        return true
-                    }
-
-                    override fun onPrepareActionMode(mode: ActionMode, menu: Menu) = false
-
-                    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-                        when (item.itemId) {
-                            R.id.menu_ban_peers -> {
-                                currentDialog = Dialog.Ban
-                            }
-                            R.id.menu_select_all -> {
-                                val newPeers = peers
-                                    ?.filter { it.address !in selectedPeers }
-                                    ?.map { it.address }
-                                    ?: return false
-                                selectedPeers.addAll(newPeers)
-                            }
-                            R.id.menu_select_inverse -> {
-                                val newPeers = peers
-                                    ?.filter { it.address !in selectedPeers }
-                                    ?.map { it.address }
-                                    ?: return false
-                                selectedPeers.clear()
-                                selectedPeers.addAll(newPeers)
-                            }
-                            else -> return false
-                        }
-
-                        return true
-                    }
-
-                    override fun onDestroyActionMode(mode: ActionMode) {
-                        actionMode = null
-                        selectedPeers.clear()
-                    }
-                },
-            )
-        } else {
-            actionMode?.finish()
+    LaunchedEffect(actions) {
+        launch {
+            actionsEventFlow.emit(3 to actions)
         }
     }
 
+    val selectionActionMenuItems = listOf(
+        ActionMenuItem(
+            title = stringResource(R.string.torrent_peers_action_ban),
+            icon = Icons.Filled.DoNotDisturbAlt,
+            onClick = { currentDialog = Dialog.Ban },
+            showAsAction = true,
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.action_select_all),
+            icon = Icons.Filled.SelectAll,
+            showAsAction = false,
+            onClick = onClick@{
+                val newPeers = peers
+                    ?.filter { it.address !in selectedPeers }
+                    ?.map { it.address }
+                    ?: return@onClick
+                selectedPeers.addAll(newPeers)
+            },
+        ),
+        ActionMenuItem(
+            title = context.getString(R.string.action_select_inverse),
+            icon = Icons.Filled.FlipToBack,
+            showAsAction = false,
+            onClick = onClick@{
+                val newPeers = peers
+                    ?.filter { it.address !in selectedPeers }
+                    ?.map { it.address }
+                    ?: return@onClick
+                selectedPeers.clear()
+                selectedPeers.addAll(newPeers)
+            },
+        ),
+    )
+
     LaunchedEffect(selectedPeers.size) {
         if (selectedPeers.isNotEmpty()) {
-            actionMode?.title = context.resources.getQuantityString(
-                R.plurals.torrent_peers_selected,
-                selectedPeers.size,
-                selectedPeers.size,
+            selectionActionsEventFlow.emit(
+                3 to SelectionData(
+                    title = context.resources.getQuantityString(
+                        R.plurals.torrent_peers_selected,
+                        selectedPeers.size,
+                        selectedPeers.size,
+                    ),
+                    actionMenuItems = selectionActionMenuItems,
+                    onCancel = { selectedPeers.clear() },
+                ),
             )
+        } else {
+            selectionActionsEventFlow.emit(3 to null)
         }
     }
 
@@ -259,27 +194,24 @@ private fun TorrentPeersTab(
 
     LaunchedEffect(isScreenActive) {
         viewModel.setScreenActive(isScreenActive)
-        if (!isScreenActive) {
-            actionMode?.finish()
-        }
     }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
             is TorrentPeersViewModel.Event.Error -> {
-                fragment.showSnackbar(getErrorMessage(context, event.error), view = activity.view)
+                snackbarEventFlow.emit(getErrorMessage(context, event.error))
             }
             TorrentPeersViewModel.Event.TorrentNotFound -> {
-                fragment.showSnackbar(R.string.torrent_error_not_found, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_error_not_found))
             }
             TorrentPeersViewModel.Event.PeersInvalid -> {
-                fragment.showSnackbar(R.string.torrent_peers_invalid, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_peers_invalid))
             }
             TorrentPeersViewModel.Event.PeersBanned -> {
-                fragment.showSnackbar(R.string.torrent_peers_banned, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_peers_banned))
             }
             TorrentPeersViewModel.Event.PeersAdded -> {
-                fragment.showSnackbar(R.string.torrent_peers_added, view = activity.view)
+                snackbarEventFlow.emit(context.getString(R.string.torrent_peers_added))
             }
         }
     }
@@ -307,7 +239,7 @@ private fun TorrentPeersTab(
                 onBan = {
                     viewModel.banPeers(selectedPeers.toList())
                     currentDialog = null
-                    actionMode?.finish()
+                    selectedPeers.clear()
                 },
             )
         }

@@ -379,7 +379,12 @@ private fun SearchResultScreen(
                                     icon = Icons.AutoMirrored.Filled.Sort,
                                     onClick = { showSortMenu = true },
                                     showAsAction = true,
-                                    trailingIcon = Icons.AutoMirrored.Filled.ArrowRight,
+                                    trailingIcon = {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Filled.ArrowRight,
+                                            contentDescription = null,
+                                        )
+                                    },
                                 ),
                                 ActionMenuItem(
                                     title = context.getString(R.string.search_result_action_stop_search),
