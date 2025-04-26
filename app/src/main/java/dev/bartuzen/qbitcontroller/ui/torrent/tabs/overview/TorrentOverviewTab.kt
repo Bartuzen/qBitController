@@ -585,6 +585,14 @@ fun TorrentOverviewTab(
             .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
             .imePadding(),
     ) {
+        if (torrent == null || torrentProperties == null || torrentName == null) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+            )
+        }
+
         AnimatedNullableVisibility(
             values = listOf(torrent, torrentProperties, torrentName),
             enter = fadeIn(),
