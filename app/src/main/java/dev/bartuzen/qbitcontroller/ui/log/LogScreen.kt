@@ -130,7 +130,7 @@ fun LogScreen(
         val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = { viewModel.refreshRssFeed() },
+            onRefresh = { viewModel.refreshLogs() },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)

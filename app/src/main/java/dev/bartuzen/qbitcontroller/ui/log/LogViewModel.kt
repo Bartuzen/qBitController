@@ -41,10 +41,10 @@ class LogViewModel @AssistedInject constructor(
     var isInitialLoadStarted = false
 
     init {
-        loadRssFeed()
+        loadLogs()
     }
 
-    private fun updateLog() = viewModelScope.launch {
+    private fun updateLogs() = viewModelScope.launch {
         when (val result = repository.getLog(serverId)) {
             is RequestResult.Success -> {
                 _logs.value = result.data.reversed()
@@ -55,19 +55,19 @@ class LogViewModel @AssistedInject constructor(
         }
     }
 
-    fun loadRssFeed() {
+    fun loadLogs() {
         if (!isLoading.value) {
             _isLoading.value = true
-            updateLog().invokeOnCompletion {
+            updateLogs().invokeOnCompletion {
                 _isLoading.value = false
             }
         }
     }
 
-    fun refreshRssFeed() {
+    fun refreshLogs() {
         if (!isRefreshing.value) {
             _isRefreshing.value = true
-            updateLog().invokeOnCompletion {
+            updateLogs().invokeOnCompletion {
                 viewModelScope.launch {
                     delay(25)
                     _isRefreshing.value = false
