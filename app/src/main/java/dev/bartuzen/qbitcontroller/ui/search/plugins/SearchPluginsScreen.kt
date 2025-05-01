@@ -1,8 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.search.plugins
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -70,27 +67,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Plugin
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
@@ -100,37 +91,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class SearchPluginsFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-
-    constructor(serverId: Int) : this() {
-        arguments = bundleOf("serverId" to serverId)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    SearchPluginsScreen(
-                        serverId = serverId,
-                        onNavigateBack = {
-                            if (parentFragmentManager.backStackEntryCount > 0) {
-                                parentFragmentManager.popBackStack()
-                            } else {
-                                requireActivity().finish()
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun SearchPluginsScreen(
+fun SearchPluginsScreen(
     serverId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,

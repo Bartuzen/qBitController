@@ -21,29 +21,13 @@
 
         <activity
             android:name=".ui.main.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <activity android:name=".ui.torrent.TorrentActivity" />
-
-        <activity
-            android:name=".ui.settings.SettingsActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.addtorrent.AddTorrentActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -81,17 +65,14 @@
         </activity>
 
         <activity
-            android:name=".ui.rss.RssActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-
-        <activity
-            android:name=".ui.search.SearchActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".ui.log.LogActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

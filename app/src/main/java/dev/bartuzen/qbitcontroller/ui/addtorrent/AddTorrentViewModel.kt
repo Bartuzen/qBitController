@@ -1,9 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
 import android.content.Context
-import android.net.Uri
 import android.os.Parcelable
 import android.provider.MediaStore
+import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -89,7 +89,7 @@ class AddTorrentViewModel @AssistedInject constructor(
     fun addTorrent(
         serverId: Int,
         links: List<String>?,
-        fileUris: List<Uri>?,
+        fileUris: List<String>?,
         savePath: String?,
         category: String?,
         tags: List<String>,
@@ -113,7 +113,8 @@ class AddTorrentViewModel @AssistedInject constructor(
                 fileUris?.mapNotNull {
                     withContext(Dispatchers.IO) {
                         val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
-                        val fileName = context.contentResolver.query(it, projection, null, null, null)?.use { metaCursor ->
+                        val uri = it.toUri()
+                        val fileName = context.contentResolver.query(uri, projection, null, null, null)?.use { metaCursor ->
                             if (metaCursor.moveToFirst()) {
                                 metaCursor.getString(0)
                             } else {
@@ -121,7 +122,7 @@ class AddTorrentViewModel @AssistedInject constructor(
                             }
                         }
 
-                        val content = context.contentResolver.openInputStream(it).use { stream ->
+                        val content = context.contentResolver.openInputStream(uri).use { stream ->
                             stream?.readBytes()
                         }
 
@@ -166,7 +167,7 @@ class AddTorrentViewModel @AssistedInject constructor(
             ) {
                 is RequestResult.Success -> {
                     if (result.data == "Ok.") {
-                        eventChannel.send(Event.TorrentAdded)
+                        eventChannel.send(Event.TorrentAdded(serverId))
                     } else {
                         eventChannel.send(Event.TorrentAddError)
                     }
@@ -276,7 +277,7 @@ class AddTorrentViewModel @AssistedInject constructor(
         data class FileReadError(val error: String) : Event()
         data object InvalidTorrentFile : Event()
         data object TorrentAddError : Event()
-        data object TorrentAdded : Event()
+        data class TorrentAdded(val serverId: Int) : Event()
     }
 }
 

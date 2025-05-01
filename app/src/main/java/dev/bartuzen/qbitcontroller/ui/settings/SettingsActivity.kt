@@ -14,9 +14,9 @@ import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 @AndroidEntryPoint
 class SettingsActivity : AppCompatActivity() {
     object Extras {
-        const val MOVE_TO_ADD_SERVER = "dev.bartuzen.qbitcontroller.MOVE_TO_ADD_SERVER"
+        const val MoveToAddServer = "dev.bartuzen.qbitcontroller.MOVE_TO_ADD_SERVER"
 
-        const val EDIT_SERVER_ID = "dev.bartuzen.qbitcontroller.EDIT_SERVER_ID"
+        const val EditServerId = "dev.bartuzen.qbitcontroller.EDIT_SERVER_ID"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +39,8 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        val moveToAddServer = intent.getBooleanExtra(Extras.MOVE_TO_ADD_SERVER, false)
-        val editServerConfigId = intent.getIntExtra(Extras.EDIT_SERVER_ID, -1)
+        val moveToAddServer = intent.getBooleanExtra(Extras.MoveToAddServer, false)
+        val editServerConfigId = intent.getIntExtra(Extras.EditServerId, -1)
 
         if (savedInstanceState == null) {
             if (moveToAddServer) {

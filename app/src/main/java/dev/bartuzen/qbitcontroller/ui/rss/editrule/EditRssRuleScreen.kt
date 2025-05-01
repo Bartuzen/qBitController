@@ -1,8 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.rss.editrule
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -55,69 +52,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class EditRssRuleFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val ruleName get() = arguments?.getString("ruleName")!!
-
-    constructor(serverId: Int, ruleName: String) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "ruleName" to ruleName,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    EditRssRuleScreen(
-                        serverId = serverId,
-                        ruleName = ruleName,
-                        onNavigateBack = {
-                            if (parentFragmentManager.backStackEntryCount > 0) {
-                                parentFragmentManager.popBackStack()
-                            } else {
-                                requireActivity().finish()
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun EditRssRuleScreen(
+fun EditRssRuleScreen(
     serverId: Int,
     ruleName: String,
     onNavigateBack: () -> Unit,

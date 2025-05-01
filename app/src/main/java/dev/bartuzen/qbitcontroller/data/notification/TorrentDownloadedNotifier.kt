@@ -14,7 +14,8 @@ import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.main.MainActivity
-import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
+import dev.bartuzen.qbitcontroller.ui.torrent.TorrentKeys
+import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListKeys
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -109,11 +110,12 @@ class TorrentDownloadedNotifier @Inject constructor(
     }
 
     private fun sendNotification(serverId: Int, torrent: Torrent) {
-        val torrentIntent = Intent(context, TorrentActivity::class.java).apply {
-            putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
-            putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
-            putExtra(TorrentActivity.Extras.TORRENT_NAME, torrent.name)
+        val torrentIntent = Intent(context, MainActivity::class.java).apply {
+            putExtra(TorrentKeys.ServerId, serverId)
+            putExtra(TorrentKeys.TorrentHash, torrent.hash)
+            putExtra(TorrentKeys.TorrentName, torrent.name)
 
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             action = torrent.hash
         }
 
@@ -142,7 +144,7 @@ class TorrentDownloadedNotifier @Inject constructor(
 
     private fun sendSummaryNotification(serverId: Int) {
         val mainIntent = Intent(context, MainActivity::class.java).apply {
-            putExtra(MainActivity.Extras.SERVER_ID, serverId)
+            putExtra(TorrentListKeys.ServerId, serverId)
 
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }

@@ -1,12 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -192,7 +189,6 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.ServerState
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
-import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
@@ -203,11 +199,7 @@ import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.ui.icons.Priority
-import dev.bartuzen.qbitcontroller.ui.log.LogActivity
-import dev.bartuzen.qbitcontroller.ui.rss.RssActivity
-import dev.bartuzen.qbitcontroller.ui.search.SearchActivity
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
-import dev.bartuzen.qbitcontroller.ui.torrent.TorrentActivity
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -233,10 +225,21 @@ import java.util.SortedMap
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
+object TorrentListKeys {
+    const val ServerId = "torrentList.serverId"
+}
+
 @Composable
 fun TorrentListScreen(
     isScreenActive: Boolean,
     serverIdFlow: Flow<Int>,
+    addTorrentFlow: Flow<Int>,
+    deleteTorrentFlow: Flow<Unit>,
+    onNavigateToTorrent: (serverId: Int, torrentHash: String, torrentName: String) -> Unit,
+    onNavigateToAddTorrent: (serverId: Int) -> Unit,
+    onNavigateToRss: (serverId: Int) -> Unit,
+    onNavigateToSearch: (serverId: Int) -> Unit,
+    onNavigateToLog: (serverId: Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TorrentListViewModel = hiltViewModel(),
 ) {
@@ -270,6 +273,27 @@ fun TorrentListScreen(
 
     LaunchedEffect(isScreenActive) {
         viewModel.setScreenActive(isScreenActive)
+    }
+
+    LaunchedEffect(Unit) {
+        addTorrentFlow.collect { serverId ->
+            viewModel.setCurrentServer(serverId)
+            snackbarHostState.currentSnackbarData?.dismiss()
+            scope.launch {
+                snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
+            }
+            viewModel.loadMainData()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        deleteTorrentFlow.collect {
+            snackbarHostState.currentSnackbarData?.dismiss()
+            scope.launch {
+                snackbarHostState.showSnackbar(context.getString(R.string.torrent_deleted_success))
+            }
+            viewModel.loadMainData()
+        }
     }
 
     LaunchedEffect(torrents) {
@@ -851,9 +875,7 @@ fun TorrentListScreen(
                         filterQuery = filterQuery,
                         currentSorting = currentSorting,
                         isReverseSorting = isReverseSorting,
-                        snackbarHostState = snackbarHostState,
                         canFocusNow = drawerState.isClosed && selectedTorrents.isEmpty(),
-                        onLoadMainData = { viewModel.loadMainData() },
                         onOpenDrawer = { scope.launch { drawerState.open() } },
                         onSearchQueryChange = {
                             filterQuery = it
@@ -863,6 +885,10 @@ fun TorrentListScreen(
                         onTorrentSortChange = { viewModel.setTorrentSort(it) },
                         onReverseSortingChange = { viewModel.changeReverseSorting() },
                         onDialogOpen = { currentDialog = it },
+                        onNavigateToAddTorrent = onNavigateToAddTorrent,
+                        onNavigateToRss = onNavigateToRss,
+                        onNavigateToSearch = onNavigateToSearch,
+                        onNavigateToLog = onNavigateToLog,
                     )
 
                     AnimatedVisibility(
@@ -927,25 +953,6 @@ fun TorrentListScreen(
 
                         val listState = rememberLazyListState()
                         val swipeEnabled by viewModel.areTorrentSwipeActionsEnabled.collectAsStateWithLifecycle()
-                        val torrentLauncher = rememberLauncherForActivityResult(
-                            ActivityResultContracts.StartActivityForResult(),
-                        ) { result ->
-                            if (result.resultCode == Activity.RESULT_OK) {
-                                val isTorrentDeleted = result.data?.getBooleanExtra(
-                                    TorrentActivity.Extras.TORRENT_DELETED,
-                                    false,
-                                ) == true
-                                if (isTorrentDeleted) {
-                                    snackbarHostState.currentSnackbarData?.dismiss()
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            context.getString(R.string.torrent_deleted_success),
-                                        )
-                                    }
-                                    viewModel.loadMainData()
-                                }
-                            }
-                        }
 
                         Box(modifier = Modifier.fillMaxSize()) {
                             LazyColumn(
@@ -970,12 +977,7 @@ fun TorrentListScreen(
                                                     selectedTorrents -= torrent.hash
                                                 }
                                             } else {
-                                                val intent = Intent(context, TorrentActivity::class.java).apply {
-                                                    putExtra(TorrentActivity.Extras.SERVER_ID, serverId)
-                                                    putExtra(TorrentActivity.Extras.TORRENT_HASH, torrent.hash)
-                                                    putExtra(TorrentActivity.Extras.TORRENT_NAME, torrent.name)
-                                                }
-                                                torrentLauncher.launch(intent)
+                                                onNavigateToTorrent(serverId, torrent.hash, torrent.name)
                                             }
                                         },
                                         onLongClick = {
@@ -1043,15 +1045,9 @@ fun TorrentListScreen(
                                     2 -> {
                                         NoTorrentsMessage(
                                             serverId = serverId,
-                                            onTorrentAdded = {
-                                                viewModel.loadMainData()
-                                                scope.launch {
-                                                    snackbarHostState.currentSnackbarData?.dismiss()
-                                                    snackbarHostState.showSnackbar(
-                                                        context.getString(R.string.torrent_add_success),
-                                                    )
-                                                }
-                                            },
+                                            onNavigateToAddTorrent = onNavigateToAddTorrent,
+                                            onNavigateToRss = onNavigateToRss,
+                                            onNavigateToSearch = onNavigateToSearch,
                                             modifier = Modifier.focusProperties {
                                                 canFocus = drawerState.isClosed
                                             },
@@ -1137,7 +1133,7 @@ fun TorrentListScreen(
                         Button(
                             onClick = {
                                 val intent = Intent(context, SettingsActivity::class.java).apply {
-                                    putExtra(SettingsActivity.Extras.MOVE_TO_ADD_SERVER, true)
+                                    putExtra(SettingsActivity.Extras.MoveToAddServer, true)
                                 }
                                 context.startActivity(intent)
                             },
@@ -1440,7 +1436,7 @@ private fun DrawerContent(
                         },
                         onLongClick = {
                             val intent = Intent(context, SettingsActivity::class.java).apply {
-                                putExtra(SettingsActivity.Extras.EDIT_SERVER_ID, serverConfig.id)
+                                putExtra(SettingsActivity.Extras.EditServerId, serverConfig.id)
                             }
                             context.startActivity(intent)
                             onDrawerClose()
@@ -2069,15 +2065,17 @@ private fun TopBar(
     filterQuery: TextFieldValue,
     currentSorting: TorrentSort,
     isReverseSorting: Boolean,
-    snackbarHostState: SnackbarHostState,
     canFocusNow: Boolean,
-    onLoadMainData: () -> Unit,
     onOpenDrawer: () -> Unit,
     onSearchQueryChange: (newQuery: TextFieldValue) -> Unit,
     onSearchModeChange: (newValue: Boolean) -> Unit,
     onTorrentSortChange: (newSort: TorrentSort) -> Unit,
     onReverseSortingChange: () -> Unit,
     onDialogOpen: (dialog: Dialog) -> Unit,
+    onNavigateToAddTorrent: (serverId: Int) -> Unit,
+    onNavigateToRss: (serverId: Int) -> Unit,
+    onNavigateToSearch: (serverId: Int) -> Unit,
+    onNavigateToLog: (serverId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -2163,22 +2161,6 @@ private fun TopBar(
         actions = {
             var showSortMenu by rememberSaveable { mutableStateOf(false) }
             val updatedServerId by rememberUpdatedState(serverId)
-            val addTorrentLauncher =
-                rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                    if (result.resultCode == Activity.RESULT_OK) {
-                        val isAdded = result.data?.getBooleanExtra(
-                            AddTorrentActivity.Extras.IS_ADDED,
-                            false,
-                        ) == true
-                        if (isAdded) {
-                            onLoadMainData()
-                            scope.launch {
-                                snackbarHostState.currentSnackbarData?.dismiss()
-                                snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
-                            }
-                        }
-                    }
-                }
 
             val actionMenuItems = remember(mainData != null, isSearchMode, searchQuery.isNotEmpty()) {
                 listOf(
@@ -2203,34 +2185,19 @@ private fun TopBar(
                     ActionMenuItem(
                         title = context.getString(R.string.torrent_list_action_add_torrent),
                         icon = Icons.Filled.Add,
-                        onClick = {
-                            val intent = Intent(context, AddTorrentActivity::class.java).apply {
-                                putExtra(AddTorrentActivity.Extras.SERVER_ID, updatedServerId)
-                            }
-                            addTorrentLauncher.launch(intent)
-                        },
+                        onClick = { onNavigateToAddTorrent(updatedServerId) },
                         showAsAction = true,
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.torrent_list_action_rss),
                         icon = Icons.Filled.RssFeed,
-                        onClick = {
-                            val intent = Intent(context, RssActivity::class.java).apply {
-                                putExtra(RssActivity.Extras.SERVER_ID, updatedServerId)
-                            }
-                            context.startActivity(intent)
-                        },
+                        onClick = { onNavigateToRss(updatedServerId) },
                         showAsAction = true,
                     ),
                     ActionMenuItem(
                         title = context.getString(R.string.torrent_list_action_search_online),
                         icon = Icons.Filled.TravelExplore,
-                        onClick = {
-                            val intent = Intent(context, SearchActivity::class.java).apply {
-                                putExtra(SearchActivity.Extras.SERVER_ID, updatedServerId)
-                            }
-                            context.startActivity(intent)
-                        },
+                        onClick = { onNavigateToSearch(updatedServerId) },
                         showAsAction = true,
                     ),
                     ActionMenuItem(
@@ -2245,12 +2212,7 @@ private fun TopBar(
                     ActionMenuItem(
                         title = context.getString(R.string.torrent_list_action_execution_log),
                         icon = Icons.Filled.Description,
-                        onClick = {
-                            val intent = Intent(context, LogActivity::class.java).apply {
-                                putExtra(LogActivity.Extras.SERVER_ID, updatedServerId)
-                            }
-                            context.startActivity(intent)
-                        },
+                        onClick = { onNavigateToLog(updatedServerId) },
                         showAsAction = false,
                     ),
                     ActionMenuItem(
@@ -3715,17 +3677,13 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
-    val addTorrentLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val isAdded = result.data?.getBooleanExtra(AddTorrentActivity.Extras.IS_ADDED, false) == true
-            if (isAdded) {
-                onTorrentAdded()
-            }
-        }
-    }
-
+private fun NoTorrentsMessage(
+    serverId: Int,
+    onNavigateToAddTorrent: (serverId: Int) -> Unit,
+    onNavigateToRss: (serverId: Int) -> Unit,
+    onNavigateToSearch: (serverId: Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     EmptyListMessage(
         icon = Icons.Default.Download,
         title = stringResource(R.string.torrent_list_empty_title),
@@ -3736,32 +3694,17 @@ private fun NoTorrentsMessage(serverId: Int, onTorrentAdded: () -> Unit, modifie
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             ) {
                 OutlinedButton(
-                    onClick = {
-                        val intent = Intent(context, RssActivity::class.java).apply {
-                            putExtra(RssActivity.Extras.SERVER_ID, serverId)
-                        }
-                        context.startActivity(intent)
-                    },
+                    onClick = { onNavigateToRss(serverId) },
                 ) {
                     Text(text = stringResource(R.string.torrent_list_empty_rss))
                 }
                 OutlinedButton(
-                    onClick = {
-                        val intent = Intent(context, SearchActivity::class.java).apply {
-                            putExtra(SearchActivity.Extras.SERVER_ID, serverId)
-                        }
-                        context.startActivity(intent)
-                    },
+                    onClick = { onNavigateToSearch(serverId) },
                 ) {
                     Text(text = stringResource(R.string.torrent_list_empty_search))
                 }
                 Button(
-                    onClick = {
-                        val intent = Intent(context, AddTorrentActivity::class.java).apply {
-                            putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
-                        }
-                        addTorrentLauncher.launch(intent)
-                    },
+                    onClick = { onNavigateToAddTorrent(serverId) },
                 ) {
                     Text(text = stringResource(R.string.torrent_list_empty_add))
                 }

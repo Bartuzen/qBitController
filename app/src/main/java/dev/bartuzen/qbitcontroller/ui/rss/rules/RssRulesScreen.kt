@@ -1,8 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.rss.rules
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -66,9 +63,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -77,69 +72,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.rss.editrule.EditRssRuleFragment
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
-import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class RssRulesFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-
-    constructor(serverId: Int) : this() {
-        arguments = bundleOf("serverId" to serverId)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    RssRulesScreen(
-                        serverId = serverId,
-                        onNavigateBack = {
-                            if (parentFragmentManager.backStackEntryCount > 0) {
-                                parentFragmentManager.popBackStack()
-                            } else {
-                                requireActivity().finish()
-                            }
-                        },
-                        onNavigateToEditRule = { ruleName ->
-                            val fragment = EditRssRuleFragment(serverId, ruleName)
-                            parentFragmentManager.commit {
-                                setReorderingAllowed(true)
-                                setDefaultAnimations()
-                                replace(R.id.container, fragment)
-                                addToBackStack(null)
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun RssRulesScreen(
+fun RssRulesScreen(
     serverId: Int,
     onNavigateBack: () -> Unit,
     onNavigateToEditRule: (ruleName: String) -> Unit,

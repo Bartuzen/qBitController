@@ -1,9 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.log
 
-import android.os.Bundle
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -61,12 +57,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.LogType
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.formatDate
@@ -74,36 +68,8 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class LogActivity : AppCompatActivity() {
-    object Extras {
-        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
-        if (serverId == -1) {
-            finish()
-            return
-        }
-
-        setContent {
-            AppTheme {
-                LogScreen(
-                    serverId = serverId,
-                    onNavigateBack = { finish() },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-        }
-    }
-}
-
 @Composable
-private fun LogScreen(
+fun LogScreen(
     serverId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,

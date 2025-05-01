@@ -1,8 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.rss.feeds
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -82,9 +79,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
@@ -94,92 +89,32 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesFragment
-import dev.bartuzen.qbitcontroller.ui.rss.rules.RssRulesFragment
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
-import dev.bartuzen.qbitcontroller.utils.setDefaultAnimations
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class RssFeedsFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-
-    constructor(serverId: Int) : this() {
-        arguments = bundleOf("serverId" to serverId)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    RssFeedsScreen(
-                        serverId = serverId,
-                        onNavigateBack = {
-                            if (parentFragmentManager.backStackEntryCount > 0) {
-                                parentFragmentManager.popBackStack()
-                            } else {
-                                requireActivity().finish()
-                            }
-                        },
-                        onNavigateToArticles = { feedPath, uid ->
-                            parentFragmentManager.commit {
-                                setReorderingAllowed(true)
-                                setDefaultAnimations()
-                                val fragment = RssArticlesFragment(serverId, feedPath, uid)
-                                replace(R.id.container, fragment)
-                                addToBackStack(null)
-                            }
-                        },
-                        onNavigateToRules = {
-                            parentFragmentManager.commit {
-                                setReorderingAllowed(true)
-                                setDefaultAnimations()
-                                val fragment = RssRulesFragment(serverId)
-                                replace(R.id.container, fragment)
-                                addToBackStack(null)
-                            }
-                        },
-                        setFragmentResultListener = { key, callback ->
-                            setFragmentResultListener(key) { _, bundle ->
-                                callback(bundle)
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun RssFeedsScreen(
+fun RssFeedsScreen(
     serverId: Int,
+    articleUpdateFlow: Flow<Unit>,
     onNavigateBack: () -> Unit,
     onNavigateToArticles: (feedPath: List<String>, uid: String?) -> Unit,
     onNavigateToRules: () -> Unit,
-    setFragmentResultListener: (key: String, callback: (Bundle) -> Unit) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RssFeedsViewModel = hiltViewModel(
         creationCallback = { factory: RssFeedsViewModel.Factory ->
@@ -199,6 +134,12 @@ private fun RssFeedsScreen(
     val expandedNodes = rememberSaveable(saver = stateListSaver()) { mutableStateListOf("0-/") }
 
     val movingItem by remember(movingItemId, rssFeeds) { mutableStateOf(movingItemId?.let { findNodeById(rssFeeds, it) }) }
+
+    LaunchedEffect(articleUpdateFlow) {
+        articleUpdateFlow.collect { article ->
+            viewModel.loadRssFeeds()
+        }
+    }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
@@ -439,15 +380,6 @@ private fun RssFeedsScreen(
             }
         }
         else -> {}
-    }
-
-    LaunchedEffect(Unit) {
-        setFragmentResultListener("rssArticlesResult") { bundle ->
-            val isUpdated = bundle.getBoolean("isUpdated", false)
-            if (isUpdated) {
-                viewModel.loadRssFeeds()
-            }
-        }
     }
 
     LaunchedEffect(movingItemId, rssFeeds) {

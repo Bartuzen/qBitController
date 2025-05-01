@@ -1,9 +1,5 @@
 package dev.bartuzen.qbitcontroller.ui.rss.articles
 
-import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -73,9 +69,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -85,23 +79,17 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Article
-import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.formatDate
@@ -109,65 +97,21 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
-@AndroidEntryPoint
-class RssArticlesFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val feedPath get() = arguments?.getStringArrayList("feedPath")!!
-    private val uid get() = arguments?.getString("uid")
-
-    constructor(serverId: Int, feedPath: List<String>, feedUid: String?) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "feedPath" to ArrayList(feedPath),
-            "uid" to feedUid,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    RssArticlesScreen(
-                        serverId = serverId,
-                        feedPath = feedPath,
-                        uid = uid,
-                        onFeedPathChanged = { newPath ->
-                            setFragmentResult(
-                                requestKey = "rssArticlesResult",
-                                result = bundleOf("isUpdated" to true),
-                            )
-                        },
-                        onNavigateBack = {
-                            if (parentFragmentManager.backStackEntryCount > 0) {
-                                parentFragmentManager.popBackStack()
-                            } else {
-                                requireActivity().finish()
-                            }
-                        },
-                        onNavigateToAddTorrent = { torrentUrl ->
-                            val intent = Intent(context, AddTorrentActivity::class.java).apply {
-                                putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
-                                putExtra(AddTorrentActivity.Extras.TORRENT_URL, torrentUrl)
-                            }
-                            startActivity(intent)
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        }
+object RssArticlesKeys {
+    const val IsUpdated = "rssArticles.isUpdated"
 }
 
 @Composable
-private fun RssArticlesScreen(
+fun RssArticlesScreen(
     serverId: Int,
     feedPath: List<String>,
     uid: String?,
-    onFeedPathChanged: (newPath: List<String>) -> Unit,
+    addTorrentFlow: Flow<Unit>,
+    onFeedPathChange: () -> Unit,
     onNavigateBack: () -> Unit,
     onNavigateToAddTorrent: (torrentUrl: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -188,6 +132,15 @@ private fun RssArticlesScreen(
 
     var isSearchMode by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+
+    LaunchedEffect(addTorrentFlow) {
+        addTorrentFlow.collect {
+            snackbarHostState.currentSnackbarData?.dismiss()
+            scope.launch {
+                snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
+            }
+        }
+    }
 
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
     when (val dialog = currentDialog) {
@@ -262,7 +215,7 @@ private fun RssArticlesScreen(
                 }
             }
             is RssArticlesViewModel.Event.FeedPathChanged -> {
-                onFeedPathChanged(event.newPath)
+                onFeedPathChange()
             }
         }
     }

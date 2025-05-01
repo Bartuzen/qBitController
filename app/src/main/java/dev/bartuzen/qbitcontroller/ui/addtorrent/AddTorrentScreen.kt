@@ -1,15 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -79,9 +73,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
@@ -89,100 +83,27 @@ import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
 import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.getParcelableArrayListExtraCompat
-import dev.bartuzen.qbitcontroller.utils.getParcelableExtraCompat
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
-import dev.bartuzen.qbitcontroller.utils.showToast
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.DecimalFormatSymbols
 
-@AndroidEntryPoint
-class AddTorrentActivity : AppCompatActivity() {
-    object Extras {
-        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
-        const val TORRENT_URL = "dev.bartuzen.qbitcontroller.TORRENT_URL"
-
-        const val IS_ADDED = "dev.bartuzen.qbitcontroller.IS_ADDED"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1).takeIf { it != -1 }
-
-        var torrentUrl = intent.getStringExtra(Extras.TORRENT_URL)
-        var torrentFileUris: List<Uri>? = null
-
-        if (torrentUrl == null) {
-            when (intent.action) {
-                Intent.ACTION_VIEW -> intent.data?.let { uri ->
-                    when (uri.scheme) {
-                        "magnet" -> torrentUrl = uri.toString()
-                        "content" -> torrentFileUris = listOf(uri)
-                    }
-                }
-                Intent.ACTION_SEND -> {
-                    when (intent.type) {
-                        "text/plain" -> intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
-                            torrentUrl = text
-                        }
-                        "application/x-bittorrent" -> intent.getParcelableExtraCompat<Uri>(Intent.EXTRA_STREAM)?.let { uri ->
-                            torrentFileUris = listOf(uri)
-                        }
-                    }
-                }
-                Intent.ACTION_SEND_MULTIPLE -> {
-                    when (intent.type) {
-                        "application/x-bittorrent" -> intent.getParcelableArrayListExtraCompat<Uri>(
-                            Intent.EXTRA_STREAM,
-                        )?.let { uris ->
-                            torrentFileUris = uris
-                        }
-                    }
-                }
-            }
-        }
-
-        setContent {
-            AppTheme {
-                AddTorrentScreen(
-                    initialServerId = serverId,
-                    torrentUrl = torrentUrl,
-                    torrentFileUris = torrentFileUris,
-                    onNavigateBack = { finish() },
-                    onTorrentAdded = {
-                        if (intent.data == null) {
-                            val resultIntent = Intent().apply {
-                                putExtra(Extras.IS_ADDED, true)
-                            }
-                            setResult(RESULT_OK, resultIntent)
-                        } else {
-                            showToast(R.string.torrent_add_success)
-                        }
-                        finish()
-                    },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-        }
-    }
+object AddTorrentKeys {
+    const val TorrentAdded = "addTorrent.torrentAdded"
 }
 
 @Composable
-private fun AddTorrentScreen(
+fun AddTorrentScreen(
     initialServerId: Int?,
     torrentUrl: String?,
-    torrentFileUris: List<Uri>?,
+    torrentFileUris: List<String>?,
     onNavigateBack: () -> Unit,
-    onTorrentAdded: () -> Unit,
+    onAddTorrent: (serverId: Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddTorrentViewModel = hiltViewModel(
         creationCallback = { factory: AddTorrentViewModel.Factory ->
@@ -201,7 +122,7 @@ private fun AddTorrentScreen(
     }
     var torrentLinkError by rememberSaveable { mutableStateOf<Int?>(null) }
 
-    var torrentFileUris by rememberSaveable { mutableStateOf<List<Uri>>(torrentFileUris ?: emptyList()) }
+    var torrentFileUris by rememberSaveable { mutableStateOf<List<String>>(torrentFileUris ?: emptyList()) }
     var torrentsFileName by rememberSaveable { mutableStateOf<String?>(null) }
     var torrentFileError by rememberSaveable { mutableStateOf<Boolean>(false) }
 
@@ -267,9 +188,9 @@ private fun AddTorrentScreen(
                     snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_invalid_file))
                 }
             }
-            AddTorrentViewModel.Event.TorrentAdded -> {
+            is AddTorrentViewModel.Event.TorrentAdded -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
-                onTorrentAdded()
+                onAddTorrent(event.serverId)
             }
             AddTorrentViewModel.Event.NoServersFound -> {
                 Toast.makeText(context, R.string.torrent_add_no_server, Toast.LENGTH_LONG).show()
@@ -304,7 +225,7 @@ private fun AddTorrentScreen(
         contract = ActivityResultContracts.OpenMultipleDocuments(),
     ) { uris ->
         if (uris.isNotEmpty()) {
-            torrentFileUris = uris
+            torrentFileUris = uris.map { it.toString() }
             torrentFileError = false
         }
     }
@@ -317,7 +238,7 @@ private fun AddTorrentScreen(
             1 -> {
                 withContext(Dispatchers.IO) {
                     val projection = arrayOf(MediaStore.MediaColumns.DISPLAY_NAME)
-                    context.contentResolver.query(torrentFileUris.single(), projection, null, null, null)
+                    context.contentResolver.query(torrentFileUris.single().toUri(), projection, null, null, null)
                         ?.use { metaCursor ->
                             if (metaCursor.moveToFirst()) {
                                 torrentsFileName = metaCursor.getString(0)

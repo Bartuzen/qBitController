@@ -1,14 +1,8 @@
 package dev.bartuzen.qbitcontroller.ui.search.result
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -92,9 +86,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -105,21 +97,16 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.SearchSort
 import dev.bartuzen.qbitcontroller.model.Search
-import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentActivity
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -132,57 +119,20 @@ import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-@AndroidEntryPoint
-class SearchResultFragment() : Fragment() {
-    private val serverId get() = arguments?.getInt("serverId", -1).takeIf { it != -1 }!!
-    private val searchQuery get() = arguments?.getString("searchQuery")!!
-    private val category get() = arguments?.getString("category")!!
-    private val plugins get() = arguments?.getString("plugins")!!
-
-    constructor(serverId: Int, searchQuery: String, category: String, plugins: String) : this() {
-        arguments = bundleOf(
-            "serverId" to serverId,
-            "searchQuery" to searchQuery,
-            "category" to category,
-            "plugins" to plugins,
-        )
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        ComposeView(requireContext()).apply {
-            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            setContent {
-                AppTheme {
-                    SearchResultScreen(
-                        serverId = serverId,
-                        searchQuery = searchQuery,
-                        category = category,
-                        plugins = plugins,
-                        onNavigateBack = {
-                            if (parentFragmentManager.backStackEntryCount > 0) {
-                                parentFragmentManager.popBackStack()
-                            } else {
-                                requireActivity().finish()
-                            }
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        }
-}
-
 @Composable
-private fun SearchResultScreen(
+fun SearchResultScreen(
     serverId: Int,
     searchQuery: String,
     category: String,
     plugins: String,
+    addTorrentFlow: Flow<Unit>,
     onNavigateBack: () -> Unit,
+    onNavigateToAddTorrent: (torrentUrl: String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchResultViewModel = hiltViewModel(
         creationCallback = { factory: SearchResultViewModel.Factory ->
@@ -203,6 +153,15 @@ private fun SearchResultScreen(
 
     var filterQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var isSearchMode by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(addTorrentFlow) {
+        addTorrentFlow.collect {
+            snackbarHostState.currentSnackbarData?.dismiss()
+            scope.launch {
+                snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
+            }
+        }
+    }
 
     EventEffect(viewModel.eventFlow) { event ->
         when (event) {
@@ -227,18 +186,6 @@ private fun SearchResultScreen(
         viewModel.setFilterQuery("")
     }
 
-    val addTorrentLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val isAdded = result.data?.getBooleanExtra(AddTorrentActivity.Extras.IS_ADDED, false) == true
-            if (isAdded) {
-                snackbarHostState.currentSnackbarData?.dismiss()
-                scope.launch {
-                    snackbarHostState.showSnackbar(context.getString(R.string.torrent_add_success))
-                }
-            }
-        }
-    }
-
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
     when (val dialog = currentDialog) {
         is Dialog.Details -> {
@@ -252,11 +199,7 @@ private fun SearchResultScreen(
                 searchResult = dialog.searchResult,
                 onDismiss = { currentDialog = null },
                 onDownload = {
-                    val intent = Intent(context, AddTorrentActivity::class.java).apply {
-                        putExtra(AddTorrentActivity.Extras.SERVER_ID, serverId)
-                        putExtra(AddTorrentActivity.Extras.TORRENT_URL, dialog.searchResult.fileUrl)
-                    }
-                    addTorrentLauncher.launch(intent)
+                    onNavigateToAddTorrent(dialog.searchResult.fileUrl)
                     currentDialog = null
                 },
                 onOpenDescription = {

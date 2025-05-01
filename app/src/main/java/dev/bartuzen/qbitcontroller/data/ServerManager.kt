@@ -22,7 +22,7 @@ class ServerManager @Inject constructor(
     }
 
     private fun readServerConfigs() = json.decodeFromString<Map<Int, ServerConfig>>(
-        sharedPref.getString(Keys.SERVER_CONFIGS, null) ?: "{}",
+        sharedPref.getString(Keys.ServerConfigs, null) ?: "{}",
     ).toSortedMap()
 
     private val _serversFlow = MutableStateFlow(readServerConfigs())
@@ -35,14 +35,14 @@ class ServerManager @Inject constructor(
 
     suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
-        val serverId = sharedPref.getInt(Keys.LAST_SERVER_ID, -1) + 1
+        val serverId = sharedPref.getInt(Keys.LastServerId, -1) + 1
 
         val newServerConfig = serverConfig.copy(id = serverId)
         serverConfigs[serverId] = newServerConfig
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, json.encodeToString(serverConfigs.toMap()))
-            .putInt(Keys.LAST_SERVER_ID, serverId)
+            .putString(Keys.ServerConfigs, json.encodeToString(serverConfigs.toMap()))
+            .putInt(Keys.LastServerId, serverId)
             .commit()
 
         if (isSuccess) {
@@ -56,7 +56,7 @@ class ServerManager @Inject constructor(
         serverConfigs[serverConfig.id] = serverConfig
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, json.encodeToString(serverConfigs.toMap()))
+            .putString(Keys.ServerConfigs, json.encodeToString(serverConfigs.toMap()))
             .commit()
 
         if (isSuccess) {
@@ -71,7 +71,7 @@ class ServerManager @Inject constructor(
         serverConfigs.remove(serverId)
 
         val isSuccess = sharedPref.edit()
-            .putString(Keys.SERVER_CONFIGS, json.encodeToString(serverConfigs.toMap()))
+            .putString(Keys.ServerConfigs, json.encodeToString(serverConfigs.toMap()))
             .commit()
 
         if (isSuccess) {
@@ -97,7 +97,7 @@ class ServerManager @Inject constructor(
     }
 
     private object Keys {
-        const val SERVER_CONFIGS = "serverConfigs"
-        const val LAST_SERVER_ID = "lastServerId"
+        const val ServerConfigs = "serverConfigs"
+        const val LastServerId = "lastServerId"
     }
 }

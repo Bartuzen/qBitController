@@ -1,18 +1,12 @@
 package dev.bartuzen.qbitcontroller.ui.torrent
 
-import android.content.Intent
-import android.os.Bundle
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -48,13 +42,11 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.PrimaryScrollableTabRow
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
-import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersTab
@@ -65,52 +57,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class TorrentActivity : AppCompatActivity() {
-    object Extras {
-        const val SERVER_ID = "dev.bartuzen.qbitcontroller.SERVER_ID"
-        const val TORRENT_HASH = "dev.bartuzen.qbitcontroller.TORRENT_HASH"
-        const val TORRENT_NAME = "dev.bartuzen.qbitcontroller.TORRENT_NAME"
+object TorrentKeys {
+    const val ServerId = "torrent.serverId"
+    const val TorrentHash = "torrent.torrentHash"
+    const val TorrentName = "torrent.torrentName"
 
-        const val TORRENT_DELETED = "dev.bartuzen.qbitcontroller.TORRENT_DELETED"
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        val serverId = intent.getIntExtra(Extras.SERVER_ID, -1)
-        val torrentHash = intent.getStringExtra(Extras.TORRENT_HASH)
-        val torrentName = intent.getStringExtra(Extras.TORRENT_NAME)
-
-        if (serverId == -1 || torrentHash == null) {
-            finish()
-            return
-        }
-
-        setContent {
-            AppTheme {
-                TorrentScreen(
-                    serverId = serverId,
-                    torrentHash = torrentHash,
-                    torrentName = torrentName,
-                    onNavigateBack = { finish() },
-                    onDeleteTorrent = {
-                        val intent = Intent().apply {
-                            putExtra(Extras.TORRENT_DELETED, true)
-                        }
-                        setResult(RESULT_OK, intent)
-                        finish()
-                    },
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
-        }
-    }
+    const val TorrentDeleted = "torrent.torrentDeleted"
 }
 
 @Composable
-private fun TorrentScreen(
+fun TorrentScreen(
     serverId: Int,
     torrentHash: String,
     torrentName: String?,

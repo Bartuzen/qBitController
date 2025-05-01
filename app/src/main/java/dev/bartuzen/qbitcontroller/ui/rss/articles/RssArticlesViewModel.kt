@@ -49,7 +49,7 @@ class RssArticlesViewModel @AssistedInject constructor(
 
     private val searchQuery = savedStateHandle.getStateFlow("searchQuery", "")
 
-    val feedPath = savedStateHandle.getStateFlow("feedPath", feedPath)
+    val feedPath = savedStateHandle.getStateFlow("feedPath!", feedPath)
 
     val filteredArticles = combine(rssArticles, searchQuery) { articles, searchQuery ->
         if (articles != null) {
@@ -90,8 +90,8 @@ class RssArticlesViewModel @AssistedInject constructor(
                     rssArticles.value = articles
 
                     if (newFeedPath != null) {
-                        savedStateHandle["feedPath"] = newFeedPath
-                        eventChannel.send(Event.FeedPathChanged(newFeedPath))
+                        savedStateHandle["feedPath!"] = newFeedPath
+                        eventChannel.send(Event.FeedPathChanged)
                     }
                 } else {
                     eventChannel.send(Event.RssFeedNotFound)
@@ -163,6 +163,6 @@ class RssArticlesViewModel @AssistedInject constructor(
         data class ArticleMarkedAsRead(val showMessage: Boolean) : Event()
         data object AllArticlesMarkedAsRead : Event()
         data object FeedRefreshed : Event()
-        data class FeedPathChanged(val newPath: List<String>) : Event()
+        data object FeedPathChanged : Event()
     }
 }
