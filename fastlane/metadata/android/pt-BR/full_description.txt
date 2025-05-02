@@ -1,0 +1,13 @@
+Um aplicativo livre e de código aberto para controlar o qBittorrent nos seus servidores.
+
+Recursos:
+
+- Gerencie vários servidores do qBittorrent
+- Adicione torrents usando links magnet ou por arquivos
+- Veja informações detalhadas sobre os torrents
+- Realize ações variadas como pausar, retomar, apagar, e muito mais
+- Organize os torrents pelo nome, tamanho, progresso, velocidade de download/envio, ou outros
+- Filtre os torrents pelo seu estado, categoria, etiqueta, e rastreadores
+- Gerencie categorias e etiquetas
+- Veja feeds do RSS, crie regras de download automático
+- Pesquise torrents online
