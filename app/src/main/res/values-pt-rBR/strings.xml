@@ -103,11 +103,11 @@
     <string name="language_code">pt-BR</string>
     <string name="share_add_torrent">Adicionar torrent</string>
     <string name="torrent_status_missing_files">Arquivos ausentes</string>
-    <string name="torrent_status_seeding">Seeding</string>
+    <string name="torrent_status_seeding">Semeando</string>
     <string name="torrent_status_paused">Pausado</string>
     <string name="torrent_status_stalled">Parado</string>
     <string name="torrent_status_checking">Verificando</string>
-    <string name="torrent_status_force_seeding">[F] Seeding</string>
+    <string name="torrent_status_force_seeding">[F] Semeando</string>
     <string name="torrent_status_downloading">Baixando</string>
     <string name="torrent_status_downloading_metadata">Baixando metadados</string>
     <string name="torrent_status_force_downloading_metadata">[F] Baixando metadados</string>
@@ -200,7 +200,7 @@
     <string name="torrent_list_delete_tag_success">Tag %1$s excluída com sucesso.</string>
     <string name="torrent_list_create_tag_success">Tag criada com sucesso.</string>
     <string name="torrent_list_status_downloading">Baixando</string>
-    <string name="torrent_list_status_seeding">Seeding</string>
+    <string name="torrent_list_status_seeding">Semeando</string>
     <string name="torrent_list_status_completed">Concluído</string>
     <string name="torrent_list_status_resumed">Retomado</string>
     <string name="torrent_list_status_paused">Pausado</string>
@@ -260,7 +260,7 @@
     <string name="torrent_action_force_recheck">Forçar nova verificação</string>
     <string name="torrent_action_force_reannounce">Forçar reaviso</string>
     <string name="torrent_action_force_start">Forçar início</string>
-    <string name="torrent_action_super_seeding">Super Seeding</string>
+    <string name="torrent_action_super_seeding">Modo super seeding</string>
     <string name="torrent_action_copy">Copiar</string>
     <string name="torrent_action_copy_name">Nome</string>
     <string name="torrent_action_copy_hash_v1">Hash v1</string>
@@ -307,7 +307,7 @@
     <string name="torrent_files_priority_mixed">Misto</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">Prioridade</string>
-    <string name="torrent_overview_time_active_seeding_time_format">%1$s (seeded em %2$s)</string>
+    <string name="torrent_overview_time_active_seeding_time_format">%1$s (semeado por %2$s)</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d arquivo selecionado</item>
         <item quantity="many">%1$d arquivos selecionados</item>
@@ -416,7 +416,7 @@
     <string name="rss_action_add_folder">Adicionar pasta</string>
     <string name="rss_action_rename_folder">Renomear pasta</string>
     <string name="rss_action_move_folder">Mover pasta</string>
-    <string name="torrent_add_seeding_time_limit">Limitar tempo de Seed (em minutos)</string>
+    <string name="torrent_add_seeding_time_limit">Limite de tempo de semeamento (em minutos)</string>
     <string name="rss_hint_feed_url">URL do Feed</string>
     <string name="rss_hint_feed_name_optional">Nome do feed (opcional)</string>
     <string name="rss_hint_feed_name">Nome do feed</string>
