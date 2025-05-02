@@ -77,4 +77,7 @@
     <string name="torrent_list_action_sort">Sortuj</string>
     <string name="speed_kibibytes_per_second">KiB/s</string>
     <string name="speed_bytes_per_second">B/s</string>
+    <string name="eta_minutes_seconds">%1$sm %2$ss</string>
+    <string name="eta_hours_minutes">%1$sg %2$ss</string>
+    <string name="eta_days_hours">%1$sd %2$sg</string>
 </resources>
