@@ -7,6 +7,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -31,6 +32,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,7 +44,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -151,6 +152,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
@@ -173,6 +175,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -296,8 +299,8 @@ fun TorrentListScreen(
         }
     }
 
-    LaunchedEffect(torrents) {
-        selectedTorrents.removeAll { hash -> torrents?.none { it.hash == hash } != false }
+    LaunchedEffect(mainData?.torrents) {
+        selectedTorrents.removeAll { hash -> mainData?.torrents?.none { it.hash == hash } != false }
     }
 
     EventEffect(viewModel.eventFlow) { event ->
@@ -851,15 +854,31 @@ fun TorrentListScreen(
                 }
             },
         ) {
+            var bottomBarHeight by remember { mutableStateOf(0.dp) }
+            var bottomBarState = remember { MutableTransitionState(selectedTorrents.isNotEmpty()) }
+
+            LaunchedEffect(selectedTorrents.isNotEmpty()) {
+                bottomBarState.targetState = selectedTorrents.isNotEmpty()
+            }
+
+            LaunchedEffect(bottomBarState.isIdle, bottomBarState.currentState) {
+                if (bottomBarState.isIdle && !bottomBarState.currentState) {
+                    bottomBarHeight = 0.dp
+                }
+            }
+
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 contentWindowInsets = WindowInsets.safeDrawing.only(
                     WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
                 ),
                 snackbarHost = {
+                    val bottomPadding =
+                        (WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding() - bottomBarHeight)
+                            .coerceAtLeast(0.dp)
                     SwipeableSnackbarHost(
                         hostState = snackbarHostState,
-                        modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
+                        modifier = Modifier.padding(bottom = bottomPadding),
                     )
                 },
                 topBar = {
@@ -875,7 +894,7 @@ fun TorrentListScreen(
                         filterQuery = filterQuery,
                         currentSorting = currentSorting,
                         isReverseSorting = isReverseSorting,
-                        canFocusNow = drawerState.isClosed && selectedTorrents.isEmpty(),
+                        canFocusNow = drawerState.isClosed,
                         onOpenDrawer = { scope.launch { drawerState.open() } },
                         onSearchQueryChange = {
                             filterQuery = it
@@ -890,13 +909,18 @@ fun TorrentListScreen(
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToLog = onNavigateToLog,
                     )
-
+                },
+                bottomBar = {
+                    val density = LocalDensity.current
                     AnimatedVisibility(
-                        visible = selectedTorrents.isNotEmpty(),
+                        visibleState = bottomBarState,
                         enter = expandVertically(),
                         exit = shrinkVertically(),
+                        modifier = Modifier.onGloballyPositioned {
+                            bottomBarHeight = with(density) { it.size.height.toDp() }
+                        },
                     ) {
-                        TopBarSelection(
+                        BottomBarSelection(
                             torrents = torrents,
                             selectedTorrents = selectedTorrents,
                             canFocusNow = drawerState.isClosed,
@@ -2345,7 +2369,7 @@ private fun TopBar(
 }
 
 @Composable
-private fun TopBarSelection(
+private fun BottomBarSelection(
     torrents: List<Torrent>?,
     selectedTorrents: SnapshotStateList<String>,
     canFocusNow: Boolean,
@@ -2397,7 +2421,7 @@ private fun TopBarSelection(
                 },
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    imageVector = Icons.Filled.Close,
                     contentDescription = null,
                 )
             }
@@ -2569,7 +2593,7 @@ private fun TopBarSelection(
                 canFocus = canFocusNow,
             )
         },
-        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
+        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
     )
 }
 

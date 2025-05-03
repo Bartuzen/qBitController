@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -16,13 +17,13 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -75,57 +76,62 @@ fun TorrentWebSeedsTab(
         }
     }
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = { viewModel.refreshWebSeeds() },
-        modifier = modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-            .imePadding(),
-    ) {
-        val listState = rememberLazyListState()
-        LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { viewModel.refreshWebSeeds() },
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding(),
         ) {
-            items(
-                items = webSeeds ?: emptyList(),
-                key = { it },
-            ) { webSeed ->
-                WebSeedItem(
-                    webSeed = webSeed,
+            val listState = rememberLazyListState()
+            LazyColumn(
+                state = listState,
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(
+                    items = webSeeds ?: emptyList(),
+                    key = { it },
+                ) { webSeed ->
+                    WebSeedItem(
+                        webSeed = webSeed,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                }
+            }
+
+            SideEffect {
+                if (!listState.isScrollInProgress) {
+                    listState.requestScrollToItem(
+                        index = listState.firstVisibleItemIndex,
+                        scrollOffset = listState.firstVisibleItemScrollOffset,
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isNaturalLoading == true,
+                enter = expandVertically(tween(durationMillis = 500)),
+                exit = shrinkVertically(tween(durationMillis = 500)),
+            ) {
+                LinearProgressIndicator(
+                    strokeCap = StrokeCap.Butt,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItem(),
+                        .align(Alignment.TopCenter),
                 )
             }
-            item {
-                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
-            }
-        }
-
-        SideEffect {
-            if (!listState.isScrollInProgress) {
-                listState.requestScrollToItem(
-                    index = listState.firstVisibleItemIndex,
-                    scrollOffset = listState.firstVisibleItemScrollOffset,
-                )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = isNaturalLoading == true,
-            enter = expandVertically(tween(durationMillis = 500)),
-            exit = shrinkVertically(tween(durationMillis = 500)),
-        ) {
-            LinearProgressIndicator(
-                strokeCap = StrokeCap.Butt,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter),
-            )
         }
     }
 }

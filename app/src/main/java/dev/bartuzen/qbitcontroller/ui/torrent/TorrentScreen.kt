@@ -1,18 +1,18 @@
 package dev.bartuzen.qbitcontroller.ui.torrent
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.snap
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -26,7 +26,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,7 +40,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
@@ -52,7 +53,6 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsTab
-import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -80,7 +80,7 @@ fun TorrentScreen(
     val snackbarEventFlow = remember { MutableSharedFlow<String>() }
     val titleEventFlow = remember { MutableSharedFlow<String>() }
     val actionsEventFlow = remember { MutableSharedFlow<Pair<Int, List<ActionMenuItem>>>() }
-    val selectionActionsEventFlow = remember { MutableSharedFlow<Pair<Int, SelectionData?>>() }
+    val bottomBarStateEventFlow = remember { MutableSharedFlow<Triple<Int, Dp, Boolean>>() }
 
     val tabTitles = listOf(
         stringResource(R.string.torrent_tab_overview),
@@ -91,13 +91,7 @@ fun TorrentScreen(
     )
 
     val pagerState = rememberPagerState(pageCount = { tabTitles.size })
-
-    var selectionActionMenuItems = remember { mutableStateMapOf<Int, SelectionData>() }
-    val currentSelectionActionMenuItems = selectionActionMenuItems[pagerState.currentPage]
-
-    BackHandler(enabled = currentSelectionActionMenuItems != null) {
-        currentSelectionActionMenuItems?.onCancel()
-    }
+    var bottomBarHeights = remember { mutableStateMapOf<Int, Pair<Dp, Boolean>>() }
 
     Scaffold(
         modifier = modifier,
@@ -119,12 +113,8 @@ fun TorrentScreen(
             }
 
             LaunchedEffect(Unit) {
-                selectionActionsEventFlow.collect { (index, selectionData) ->
-                    if (selectionData != null) {
-                        selectionActionMenuItems[index] = selectionData
-                    } else {
-                        selectionActionMenuItems -= index
-                    }
+                bottomBarStateEventFlow.collectLatest { (index, height, isAnimating) ->
+                    bottomBarHeights[index] = height to isAnimating
                 }
             }
 
@@ -153,41 +143,22 @@ fun TorrentScreen(
                     AppBarActions(items = items)
                 },
             )
-
-            AnimatedNullableVisibility(
-                value = currentSelectionActionMenuItems,
-                enter = expandVertically(),
-                exit = shrinkVertically(),
-            ) { _, (title, actionMenuItems, onCancel) ->
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = title,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    ),
-                    navigationIcon = {
-                        IconButton(onClick = onCancel) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = null,
-                            )
-                        }
-                    },
-                    actions = {
-                        AppBarActions(items = actionMenuItems)
-                    },
-                )
-            }
         },
         snackbarHost = {
+            val isAnimating = bottomBarHeights[pagerState.currentPage]?.second == true
+
+            val bottomPadding = max(
+                WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding(),
+                (bottomBarHeights[pagerState.currentPage]?.first ?: 0.dp),
+            )
+            val bottomPaddingAnimated by animateDpAsState(
+                targetValue = bottomPadding,
+                animationSpec = if (isAnimating) snap() else tween(),
+            )
+
             SwipeableSnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
+                modifier = Modifier.padding(bottom = bottomPaddingAnimated),
             )
         },
     ) { innerPadding ->
@@ -248,7 +219,7 @@ fun TorrentScreen(
                         torrentHash = torrentHash,
                         isScreenActive = pagerState.currentPage == 1,
                         snackbarEventFlow = snackbarEventFlow,
-                        selectionActionsEventFlow = selectionActionsEventFlow,
+                        bottomBarStateEventFlow = bottomBarStateEventFlow,
                     )
                     2 -> TorrentTrackersTab(
                         serverId = serverId,
@@ -256,7 +227,7 @@ fun TorrentScreen(
                         isScreenActive = pagerState.currentPage == 2,
                         snackbarEventFlow = snackbarEventFlow,
                         actionsEventFlow = actionsEventFlow,
-                        selectionActionsEventFlow = selectionActionsEventFlow,
+                        bottomBarStateEventFlow = bottomBarStateEventFlow,
                     )
                     3 -> TorrentPeersTab(
                         serverId = serverId,
@@ -264,7 +235,7 @@ fun TorrentScreen(
                         isScreenActive = pagerState.currentPage == 3,
                         snackbarEventFlow = snackbarEventFlow,
                         actionsEventFlow = actionsEventFlow,
-                        selectionActionsEventFlow = selectionActionsEventFlow,
+                        bottomBarStateEventFlow = bottomBarStateEventFlow,
                     )
                     4 -> TorrentWebSeedsTab(
                         serverId = serverId,
@@ -277,9 +248,3 @@ fun TorrentScreen(
         }
     }
 }
-
-data class SelectionData(
-    val title: String,
-    val actionMenuItems: List<ActionMenuItem>,
-    val onCancel: () -> Unit,
-)

@@ -1,6 +1,8 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -21,7 +24,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -29,6 +31,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.Error
@@ -43,20 +46,26 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -66,7 +75,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -75,14 +86,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
+import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
-import dev.bartuzen.qbitcontroller.ui.torrent.SelectionData
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -100,7 +112,7 @@ fun TorrentTrackersTab(
     isScreenActive: Boolean,
     snackbarEventFlow: MutableSharedFlow<String>,
     actionsEventFlow: MutableSharedFlow<Pair<Int, List<ActionMenuItem>>>,
-    selectionActionsEventFlow: MutableSharedFlow<Pair<Int, SelectionData?>>,
+    bottomBarStateEventFlow: MutableSharedFlow<Triple<Int, Dp, Boolean>>,
     modifier: Modifier = Modifier,
     viewModel: TorrentTrackersViewModel = hiltViewModel(
         creationCallback = { factory: TorrentTrackersViewModel.Factory ->
@@ -109,6 +121,7 @@ fun TorrentTrackersTab(
     ),
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val trackers by viewModel.trackers.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
@@ -132,71 +145,16 @@ fun TorrentTrackersTab(
         }
     }
 
-    val selectionActionMenuItems = listOf(
-        ActionMenuItem(
-            title = stringResource(R.string.torrent_trackers_action_delete),
-            icon = Icons.Filled.Delete,
-            onClick = { currentDialog = Dialog.Delete },
-            showAsAction = true,
-        ),
-        ActionMenuItem(
-            title = context.getString(R.string.torrent_trackers_action_edit),
-            icon = Icons.Filled.DriveFileRenameOutline,
-            onClick = { currentDialog = Dialog.Edit },
-            showAsAction = true,
-            isEnabled = selectedTrackers.size == 1,
-        ),
-        ActionMenuItem(
-            title = context.getString(R.string.action_select_all),
-            icon = Icons.Filled.SelectAll,
-            showAsAction = false,
-            onClick = onClick@{
-                val newTrackers = trackers
-                    ?.filter { it.url !in selectedTrackers && it.tier != null }
-                    ?.map { it.url }
-                    ?: return@onClick
-                selectedTrackers.addAll(newTrackers)
-            },
-        ),
-        ActionMenuItem(
-            title = context.getString(R.string.action_select_inverse),
-            icon = Icons.Filled.FlipToBack,
-            showAsAction = false,
-            onClick = onClick@{
-                val newTrackers = trackers
-                    ?.filter { it.url !in selectedTrackers && it.tier != null }
-                    ?.map { it.url }
-                    ?: return@onClick
-                selectedTrackers.clear()
-                selectedTrackers.addAll(newTrackers)
-            },
-        ),
-    )
-
-    LaunchedEffect(selectedTrackers.size) {
-        if (selectedTrackers.isNotEmpty()) {
-            selectionActionsEventFlow.emit(
-                2 to SelectionData(
-                    title = context.resources.getQuantityString(
-                        R.plurals.torrent_trackers_selected,
-                        selectedTrackers.size,
-                        selectedTrackers.size,
-                    ),
-                    actionMenuItems = selectionActionMenuItems,
-                    onCancel = { selectedTrackers.clear() },
-                ),
-            )
-        } else {
-            selectionActionsEventFlow.emit(2 to null)
-        }
-    }
-
     LaunchedEffect(trackers) {
         selectedTrackers.removeAll { url -> trackers?.none { it.url == url } != false }
     }
 
     LaunchedEffect(isScreenActive) {
         viewModel.setScreenActive(isScreenActive)
+    }
+
+    BackHandler(enabled = selectedTrackers.isNotEmpty()) {
+        selectedTrackers.clear()
     }
 
     EventEffect(viewModel.eventFlow) { event ->
@@ -267,76 +225,189 @@ fun TorrentTrackersTab(
         null -> {}
     }
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = { viewModel.refreshTrackers() },
-        modifier = modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-            .imePadding(),
-    ) {
-        val listState = rememberLazyListState()
-        LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+        bottomBar = {
+            var bottomBarHeight by remember { mutableStateOf(0.dp) }
+            val visibleState = remember { MutableTransitionState(selectedTrackers.isNotEmpty()) }
+
+            LaunchedEffect(selectedTrackers.isNotEmpty()) {
+                visibleState.targetState = selectedTrackers.isNotEmpty()
+            }
+
+            LaunchedEffect(visibleState.isIdle, visibleState.currentState) {
+                if (visibleState.isIdle && !visibleState.currentState) {
+                    bottomBarHeight = 0.dp
+                }
+            }
+
+            LaunchedEffect(bottomBarHeight, visibleState.isIdle) {
+                bottomBarStateEventFlow.emit(
+                    Triple(2, bottomBarHeight, !visibleState.isIdle),
+                )
+            }
+
+            val density = LocalDensity.current
+            AnimatedVisibility(
+                visibleState = visibleState,
+                enter = expandVertically(),
+                exit = shrinkVertically(),
+                modifier = Modifier.onGloballyPositioned {
+                    bottomBarHeight = with(density) { it.size.height.toDp() }
+                },
+            ) {
+                TopAppBar(
+                    title = {
+                        var selectedSize by rememberSaveable { mutableIntStateOf(0) }
+
+                        LaunchedEffect(selectedTrackers.size) {
+                            if (selectedTrackers.isNotEmpty()) {
+                                selectedSize = selectedTrackers.size
+                            }
+                        }
+
+                        Text(
+                            text = pluralStringResource(
+                                R.plurals.torrent_trackers_selected,
+                                selectedSize,
+                                selectedSize,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { selectedTrackers.clear() }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    actions = {
+                        val actionMenuItems = listOf(
+                            ActionMenuItem(
+                                title = stringResource(R.string.torrent_trackers_action_delete),
+                                icon = Icons.Filled.Delete,
+                                onClick = { currentDialog = Dialog.Delete },
+                                showAsAction = true,
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.torrent_trackers_action_edit),
+                                icon = Icons.Filled.DriveFileRenameOutline,
+                                onClick = { currentDialog = Dialog.Edit },
+                                showAsAction = true,
+                                isEnabled = selectedTrackers.size == 1,
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.action_select_all),
+                                icon = Icons.Filled.SelectAll,
+                                showAsAction = false,
+                                onClick = onClick@{
+                                    val newTrackers = trackers
+                                        ?.filter { it.url !in selectedTrackers && it.tier != null }
+                                        ?.map { it.url }
+                                        ?: return@onClick
+                                    selectedTrackers.addAll(newTrackers)
+                                },
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.action_select_inverse),
+                                icon = Icons.Filled.FlipToBack,
+                                showAsAction = false,
+                                onClick = onClick@{
+                                    val newTrackers = trackers
+                                        ?.filter { it.url !in selectedTrackers && it.tier != null }
+                                        ?.map { it.url }
+                                        ?: return@onClick
+                                    selectedTrackers.clear()
+                                    selectedTrackers.addAll(newTrackers)
+                                },
+                            ),
+                        )
+
+                        AppBarActions(items = actionMenuItems)
+                    },
+                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+                )
+            }
+        },
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { viewModel.refreshTrackers() },
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding(),
         ) {
-            items(
-                items = trackers ?: emptyList(),
-                key = { if (it.tier == null) "0${it.url}" else "1${it.url}" },
-            ) { tracker ->
-                TrackerItem(
-                    tracker = tracker,
-                    selected = tracker.url in selectedTrackers,
-                    selectable = tracker.tier != null,
-                    onClick = {
-                        if (selectedTrackers.isNotEmpty()) {
+            val listState = rememberLazyListState()
+            LazyColumn(
+                state = listState,
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(
+                    items = trackers ?: emptyList(),
+                    key = { if (it.tier == null) "0${it.url}" else "1${it.url}" },
+                ) { tracker ->
+                    TrackerItem(
+                        tracker = tracker,
+                        selected = tracker.url in selectedTrackers,
+                        selectable = tracker.tier != null,
+                        onClick = {
+                            if (selectedTrackers.isNotEmpty()) {
+                                if (tracker.url !in selectedTrackers) {
+                                    selectedTrackers += tracker.url
+                                } else {
+                                    selectedTrackers -= tracker.url
+                                }
+                            }
+                        },
+                        onLongClick = {
                             if (tracker.url !in selectedTrackers) {
                                 selectedTrackers += tracker.url
                             } else {
                                 selectedTrackers -= tracker.url
                             }
-                        }
-                    },
-                    onLongClick = {
-                        if (tracker.url !in selectedTrackers) {
-                            selectedTrackers += tracker.url
-                        } else {
-                            selectedTrackers -= tracker.url
-                        }
-                    },
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                }
+            }
+
+            SideEffect {
+                if (!listState.isScrollInProgress) {
+                    listState.requestScrollToItem(
+                        index = listState.firstVisibleItemIndex,
+                        scrollOffset = listState.firstVisibleItemScrollOffset,
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isNaturalLoading == true,
+                enter = expandVertically(tween(durationMillis = 500)),
+                exit = shrinkVertically(tween(durationMillis = 500)),
+            ) {
+                LinearProgressIndicator(
+                    strokeCap = StrokeCap.Butt,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItem(),
+                        .align(Alignment.TopCenter),
                 )
             }
-
-            item {
-                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
-            }
-        }
-
-        SideEffect {
-            if (!listState.isScrollInProgress) {
-                listState.requestScrollToItem(
-                    index = listState.firstVisibleItemIndex,
-                    scrollOffset = listState.firstVisibleItemScrollOffset,
-                )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = isNaturalLoading == true,
-            enter = expandVertically(tween(durationMillis = 500)),
-            exit = shrinkVertically(tween(durationMillis = 500)),
-        ) {
-            LinearProgressIndicator(
-                strokeCap = StrokeCap.Butt,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter),
-            )
         }
     }
 }

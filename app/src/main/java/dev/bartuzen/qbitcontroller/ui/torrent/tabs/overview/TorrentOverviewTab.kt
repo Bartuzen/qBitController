@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -71,6 +72,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -577,308 +579,313 @@ fun TorrentOverviewTab(
         )
     }
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = { viewModel.refreshTorrent() },
-        modifier = modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-            .imePadding(),
-    ) {
-        if (torrent == null || torrentProperties == null || torrentName == null) {
-            Spacer(
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { viewModel.refreshTorrent() },
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding(),
+        ) {
+            if (torrent == null || torrentProperties == null || torrentName == null) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                )
+            }
+
+            AnimatedNullableVisibility(
+                values = listOf(torrent, torrentProperties, torrentName),
+                enter = fadeIn(),
+                exit = fadeOut(),
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
-            )
-        }
+            ) { _, value ->
+                val torrent = value[0] as Torrent
+                val properties = value[1] as TorrentProperties
+                val torrentName = value[2] as String
 
-        AnimatedNullableVisibility(
-            values = listOf(torrent, torrentProperties, torrentName),
-            enter = fadeIn(),
-            exit = fadeOut(),
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-        ) { _, value ->
-            val torrent = value[0] as Torrent
-            val properties = value[1] as TorrentProperties
-            val torrentName = value[2] as String
-
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 8.dp, end = 8.dp, top = 8.dp),
-            ) {
-                Text(
-                    text = torrentName,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                )
-
-                Progress(
-                    torrent = torrent,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
-                ElevatedCard(
-                    onClick = { showPiecesSheet = true },
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 8.dp, end = 8.dp, top = 8.dp),
                 ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp),
+                    Text(
+                        text = torrentName,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                    )
+
+                    Progress(
+                        torrent = torrent,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+
+                    ElevatedCard(
+                        onClick = { showPiecesSheet = true },
                     ) {
-                        Text(
-                            text = stringResource(R.string.torrent_overview_pieces),
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                        )
-
-                        PieceBar(
-                            pieces = pieces ?: emptyList(),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(24.dp)
-                                .clip(RoundedCornerShape(4.dp)),
-                        )
-                    }
-                }
-
-                val labelWidth = listOfNotNull(
-                    R.string.torrent_overview_total_size,
-                    R.string.torrent_overview_added_on,
-                    if (torrent.isPrivate != null) R.string.torrent_overview_private else null,
-                    R.string.torrent_overview_hash_v1,
-                    R.string.torrent_overview_hash_v2,
-                    R.string.torrent_option_save_path,
-                    R.string.torrent_overview_comment,
-                    R.string.torrent_overview_pieces,
-                    R.string.torrent_overview_completed_on,
-                    R.string.torrent_overview_created_by,
-                    R.string.torrent_overview_created_on,
-
-                    R.string.torrent_overview_time_active,
-                    R.string.torrent_overview_downloaded,
-                    R.string.torrent_overview_uploaded,
-                    R.string.torrent_overview_reannounce_in,
-                    R.string.torrent_overview_last_activity,
-                    R.string.torrent_overview_last_seen_complete,
-                    R.string.torrent_overview_connections,
-                    R.string.torrent_overview_seeds,
-                    R.string.torrent_overview_peers,
-                    R.string.torrent_overview_wasted,
-                    R.string.torrent_overview_availability,
-                    if (torrent.popularity != null) R.string.torrent_overview_popularity else null,
-                ).maxOf { measureTextWidth(stringResource(it)) }
-
-                CompositionLocalProvider(LocalLabelWidth provides labelWidth) {
-                    ElevatedCard {
                         Column(
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 8.dp),
+                                .padding(start = 12.dp, end = 12.dp, top = 8.dp, bottom = 12.dp),
                         ) {
                             Text(
-                                text = stringResource(R.string.torrent_overview_information),
+                                text = stringResource(R.string.torrent_overview_pieces),
                                 color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                             )
 
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_total_size),
-                                value = properties.totalSize?.let { formatBytes(it) },
+                            PieceBar(
+                                pieces = pieces ?: emptyList(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(24.dp)
+                                    .clip(RoundedCornerShape(4.dp)),
                             )
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_added_on),
-                                value = formatDate(properties.additionDate),
-                            )
+                        }
+                    }
 
-                            if (torrent.isPrivate != null) {
+                    val labelWidth = listOfNotNull(
+                        R.string.torrent_overview_total_size,
+                        R.string.torrent_overview_added_on,
+                        if (torrent.isPrivate != null) R.string.torrent_overview_private else null,
+                        R.string.torrent_overview_hash_v1,
+                        R.string.torrent_overview_hash_v2,
+                        R.string.torrent_option_save_path,
+                        R.string.torrent_overview_comment,
+                        R.string.torrent_overview_pieces,
+                        R.string.torrent_overview_completed_on,
+                        R.string.torrent_overview_created_by,
+                        R.string.torrent_overview_created_on,
+
+                        R.string.torrent_overview_time_active,
+                        R.string.torrent_overview_downloaded,
+                        R.string.torrent_overview_uploaded,
+                        R.string.torrent_overview_reannounce_in,
+                        R.string.torrent_overview_last_activity,
+                        R.string.torrent_overview_last_seen_complete,
+                        R.string.torrent_overview_connections,
+                        R.string.torrent_overview_seeds,
+                        R.string.torrent_overview_peers,
+                        R.string.torrent_overview_wasted,
+                        R.string.torrent_overview_availability,
+                        if (torrent.popularity != null) R.string.torrent_overview_popularity else null,
+                    ).maxOf { measureTextWidth(stringResource(it)) }
+
+                    CompositionLocalProvider(LocalLabelWidth provides labelWidth) {
+                        ElevatedCard {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.torrent_overview_information),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                )
+
                                 InfoRow(
-                                    label = stringResource(R.string.torrent_overview_private),
-                                    value = if (torrent.isPrivate) {
-                                        stringResource(R.string.torrent_overview_private_yes)
+                                    label = stringResource(R.string.torrent_overview_total_size),
+                                    value = properties.totalSize?.let { formatBytes(it) },
+                                )
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_added_on),
+                                    value = formatDate(properties.additionDate),
+                                )
+
+                                if (torrent.isPrivate != null) {
+                                    InfoRow(
+                                        label = stringResource(R.string.torrent_overview_private),
+                                        value = if (torrent.isPrivate) {
+                                            stringResource(R.string.torrent_overview_private_yes)
+                                        } else {
+                                            stringResource(R.string.torrent_overview_private_no)
+                                        },
+                                    )
+                                }
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_hash_v1),
+                                    value = torrent.hashV1,
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_hash_v2),
+                                    value = torrent.hashV2,
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_option_save_path),
+                                    value = properties.savePath,
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_comment),
+                                    value = properties.comment,
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_pieces),
+                                    value = if (properties.piecesCount != null && properties.pieceSize != null) {
+                                        stringResource(
+                                            R.string.torrent_overview_pieces_format,
+                                            properties.piecesCount,
+                                            formatBytes(properties.pieceSize),
+                                            properties.piecesHave,
+                                        )
                                     } else {
-                                        stringResource(R.string.torrent_overview_private_no)
+                                        null
                                     },
                                 )
-                            }
 
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_hash_v1),
-                                value = torrent.hashV1,
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_hash_v2),
-                                value = torrent.hashV2,
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_option_save_path),
-                                value = properties.savePath,
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_comment),
-                                value = properties.comment,
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_pieces),
-                                value = if (properties.piecesCount != null && properties.pieceSize != null) {
-                                    stringResource(
-                                        R.string.torrent_overview_pieces_format,
-                                        properties.piecesCount,
-                                        formatBytes(properties.pieceSize),
-                                        properties.piecesHave,
-                                    )
-                                } else {
-                                    null
-                                },
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_completed_on),
-                                value = properties.completionDate?.let { formatDate(it) },
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_created_by),
-                                value = properties.createdBy,
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_created_on),
-                                value = properties.creationDate?.let { formatDate(it) },
-                            )
-                        }
-                    }
-
-                    ElevatedCard {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 8.dp),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.torrent_overview_transfer),
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.align(Alignment.CenterHorizontally),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_time_active),
-                                value = if (torrent.seedingTime > 0) {
-                                    stringResource(
-                                        R.string.torrent_overview_time_active_seeding_time_format,
-                                        formatSeconds(torrent.timeActive),
-                                        formatSeconds(torrent.seedingTime),
-                                    )
-                                } else {
-                                    formatSeconds(torrent.timeActive)
-                                },
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_downloaded),
-                                value = stringResource(
-                                    R.string.torrent_overview_downloaded_format,
-                                    formatBytes(torrent.downloaded),
-                                    formatBytes(torrent.downloadedSession),
-                                ),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_uploaded),
-                                value = stringResource(
-                                    R.string.torrent_overview_uploaded_format,
-                                    formatBytes(torrent.uploaded),
-                                    formatBytes(torrent.uploadedSession),
-                                ),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_reannounce_in),
-                                value = formatSeconds(properties.nextReannounce),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_last_activity),
-                                value = formatDate(torrent.lastActivity),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_last_seen_complete),
-                                value = torrent.lastSeenComplete?.let { formatDate(it) },
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_connections),
-                                value = stringResource(
-                                    R.string.torrent_overview_connections_format,
-                                    properties.connections,
-                                    properties.connectionsLimit,
-                                ),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_seeds),
-                                value = stringResource(
-                                    R.string.torrent_overview_seeds_format,
-                                    properties.seeds,
-                                    properties.seedsTotal,
-                                ),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_peers),
-                                value = stringResource(
-                                    R.string.torrent_overview_peers_format,
-                                    properties.peers,
-                                    properties.peersTotal,
-                                ),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_wasted),
-                                value = formatBytes(properties.wasted),
-                            )
-
-                            InfoRow(
-                                label = stringResource(R.string.torrent_overview_availability),
-                                value = torrent.availability?.floorToDecimal(3)?.toString(),
-                            )
-                            if (torrent.popularity != null) {
                                 InfoRow(
-                                    label = stringResource(R.string.torrent_overview_popularity),
-                                    value = torrent.popularity.floorToDecimal(2).toString(),
+                                    label = stringResource(R.string.torrent_overview_completed_on),
+                                    value = properties.completionDate?.let { formatDate(it) },
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_created_by),
+                                    value = properties.createdBy,
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_created_on),
+                                    value = properties.creationDate?.let { formatDate(it) },
                                 )
                             }
                         }
+
+                        ElevatedCard {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.torrent_overview_transfer),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_time_active),
+                                    value = if (torrent.seedingTime > 0) {
+                                        stringResource(
+                                            R.string.torrent_overview_time_active_seeding_time_format,
+                                            formatSeconds(torrent.timeActive),
+                                            formatSeconds(torrent.seedingTime),
+                                        )
+                                    } else {
+                                        formatSeconds(torrent.timeActive)
+                                    },
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_downloaded),
+                                    value = stringResource(
+                                        R.string.torrent_overview_downloaded_format,
+                                        formatBytes(torrent.downloaded),
+                                        formatBytes(torrent.downloadedSession),
+                                    ),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_uploaded),
+                                    value = stringResource(
+                                        R.string.torrent_overview_uploaded_format,
+                                        formatBytes(torrent.uploaded),
+                                        formatBytes(torrent.uploadedSession),
+                                    ),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_reannounce_in),
+                                    value = formatSeconds(properties.nextReannounce),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_last_activity),
+                                    value = formatDate(torrent.lastActivity),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_last_seen_complete),
+                                    value = torrent.lastSeenComplete?.let { formatDate(it) },
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_connections),
+                                    value = stringResource(
+                                        R.string.torrent_overview_connections_format,
+                                        properties.connections,
+                                        properties.connectionsLimit,
+                                    ),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_seeds),
+                                    value = stringResource(
+                                        R.string.torrent_overview_seeds_format,
+                                        properties.seeds,
+                                        properties.seedsTotal,
+                                    ),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_peers),
+                                    value = stringResource(
+                                        R.string.torrent_overview_peers_format,
+                                        properties.peers,
+                                        properties.peersTotal,
+                                    ),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_wasted),
+                                    value = formatBytes(properties.wasted),
+                                )
+
+                                InfoRow(
+                                    label = stringResource(R.string.torrent_overview_availability),
+                                    value = torrent.availability?.floorToDecimal(3)?.toString(),
+                                )
+                                if (torrent.popularity != null) {
+                                    InfoRow(
+                                        label = stringResource(R.string.torrent_overview_popularity),
+                                        value = torrent.popularity.floorToDecimal(2).toString(),
+                                    )
+                                }
+                            }
+                        }
                     }
+
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                 }
-
-                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
             }
-        }
 
-        AnimatedVisibility(
-            visible = isNaturalLoading == true,
-            enter = expandVertically(tween(durationMillis = 500)),
-            exit = shrinkVertically(tween(durationMillis = 500)),
-        ) {
-            LinearProgressIndicator(
-                strokeCap = StrokeCap.Butt,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter),
-            )
+            AnimatedVisibility(
+                visible = isNaturalLoading == true,
+                enter = expandVertically(tween(durationMillis = 500)),
+                exit = shrinkVertically(tween(durationMillis = 500)),
+            ) {
+                LinearProgressIndicator(
+                    strokeCap = StrokeCap.Butt,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.TopCenter),
+                )
+            }
         }
     }
 }

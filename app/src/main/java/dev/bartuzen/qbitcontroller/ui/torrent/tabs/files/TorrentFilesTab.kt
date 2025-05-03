@@ -1,7 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.files
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
@@ -23,7 +26,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -31,6 +33,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.InsertDriveFile
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DoNotDisturbAlt
 import androidx.compose.material.icons.filled.DriveFileRenameOutline
 import androidx.compose.material.icons.filled.FlipToBack
@@ -49,13 +52,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,11 +75,15 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -81,10 +92,10 @@ import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentFileNode
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
+import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.icons.Priority
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
-import dev.bartuzen.qbitcontroller.ui.torrent.SelectionData
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
@@ -104,7 +115,7 @@ fun TorrentFilesTab(
     torrentHash: String,
     isScreenActive: Boolean,
     snackbarEventFlow: MutableSharedFlow<String>,
-    selectionActionsEventFlow: MutableSharedFlow<Pair<Int, SelectionData?>>,
+    bottomBarStateEventFlow: MutableSharedFlow<Triple<Int, Dp, Boolean>>,
     modifier: Modifier = Modifier,
     viewModel: TorrentFilesViewModel = hiltViewModel(
         creationCallback = { factory: TorrentFilesViewModel.Factory ->
@@ -128,152 +139,16 @@ fun TorrentFilesTab(
         }
     }
 
-    var showPriorityMenu by rememberSaveable { mutableStateOf(false) }
-    val selectionActionMenuItems = listOf(
-        ActionMenuItem(
-            title = stringResource(R.string.torrent_files_action_priority),
-            icon = Icons.Outlined.Priority,
-            onClick = { showPriorityMenu = true },
-            showAsAction = true,
-            dropdownMenu = {
-                val scrollState = rememberScrollState()
-                PersistentLaunchedEffect(showPriorityMenu) {
-                    if (showPriorityMenu) {
-                        scrollState.scrollTo(0)
-                    }
-                }
-
-                DropdownMenu(
-                    expanded = showPriorityMenu,
-                    onDismissRequest = { showPriorityMenu = false },
-                    scrollState = scrollState,
-                    modifier = Modifier.dropdownMenuHeight(),
-                ) {
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_files_priority_do_not_download))
-                        },
-                        leadingIcon = {
-                            Icon(imageVector = Icons.Filled.DoNotDisturbAlt, contentDescription = null)
-                        },
-                        onClick = {
-                            viewModel.setFilePriority(
-                                filePaths = selectedFiles.toList(),
-                                priority = TorrentFilePriority.DO_NOT_DOWNLOAD,
-                            )
-                            showPriorityMenu = false
-                            selectedFiles.clear()
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_files_priority_normal))
-                        },
-                        leadingIcon = {
-                            Icon(imageVector = Icons.Filled.HorizontalRule, contentDescription = null)
-                        },
-                        onClick = {
-                            viewModel.setFilePriority(
-                                filePaths = selectedFiles.toList(),
-                                priority = TorrentFilePriority.NORMAL,
-                            )
-                            showPriorityMenu = false
-                            selectedFiles.clear()
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_files_priority_high))
-                        },
-                        leadingIcon = {
-                            Icon(imageVector = Icons.Filled.KeyboardDoubleArrowUp, contentDescription = null)
-                        },
-                        onClick = {
-                            viewModel.setFilePriority(
-                                filePaths = selectedFiles.toList(),
-                                priority = TorrentFilePriority.HIGH,
-                            )
-                            showPriorityMenu = false
-                            selectedFiles.clear()
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = stringResource(R.string.torrent_files_priority_maximum))
-                        },
-                        leadingIcon = {
-                            Icon(imageVector = Icons.Filled.PriorityHigh, contentDescription = null)
-                        },
-                        onClick = {
-                            viewModel.setFilePriority(
-                                filePaths = selectedFiles.toList(),
-                                priority = TorrentFilePriority.MAXIMUM,
-                            )
-                            showPriorityMenu = false
-                            selectedFiles.clear()
-                        },
-                    )
-                }
-            },
-        ),
-        ActionMenuItem(
-            title = context.getString(R.string.torrent_files_action_rename),
-            icon = Icons.Filled.DriveFileRenameOutline,
-            onClick = { currentDialog = Dialog.Rename },
-            showAsAction = true,
-            isEnabled = selectedFiles.size == 1,
-        ),
-        ActionMenuItem(
-            title = context.getString(R.string.action_select_all),
-            icon = Icons.Filled.SelectAll,
-            showAsAction = false,
-            onClick = onClick@{
-                val newFiles = flattenedNodes
-                    ?.filter { it.path !in selectedFiles }
-                    ?.map { it.path }
-                    ?: return@onClick
-                selectedFiles.addAll(newFiles)
-            },
-        ),
-        ActionMenuItem(
-            title = context.getString(R.string.action_select_inverse),
-            icon = Icons.Filled.FlipToBack,
-            showAsAction = false,
-            onClick = onClick@{
-                val newFiles = flattenedNodes
-                    ?.filter { it.path !in selectedFiles }
-                    ?.map { it.path }
-                    ?: return@onClick
-                selectedFiles.clear()
-                selectedFiles.addAll(newFiles)
-            },
-        ),
-    )
-
-    LaunchedEffect(selectedFiles.size) {
-        if (selectedFiles.isNotEmpty()) {
-            selectionActionsEventFlow.emit(
-                1 to SelectionData(
-                    title = context.resources.getQuantityString(
-                        R.plurals.torrent_files_selected,
-                        selectedFiles.size,
-                        selectedFiles.size,
-                    ),
-                    actionMenuItems = selectionActionMenuItems,
-                    onCancel = { selectedFiles.clear() },
-                ),
-            )
-        } else {
-            selectionActionsEventFlow.emit(1 to null)
-        }
-    }
-
     LaunchedEffect(flattenedNodes?.toList()) {
         selectedFiles.removeAll { path -> flattenedNodes?.find { it.path == path } == null }
     }
 
     LaunchedEffect(isScreenActive) {
         viewModel.setScreenActive(isScreenActive)
+    }
+
+    BackHandler(enabled = selectedFiles.isNotEmpty()) {
+        selectedFiles.clear()
     }
 
     EventEffect(viewModel.eventFlow) { event ->
@@ -340,83 +215,280 @@ fun TorrentFilesTab(
         else -> {}
     }
 
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = { viewModel.refreshFiles() },
-        modifier = modifier
-            .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-            .imePadding(),
-    ) {
-        val listState = rememberLazyListState()
-        LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
+        bottomBar = {
+            var bottomBarHeight by remember { mutableStateOf(0.dp) }
+            val visibleState = remember { MutableTransitionState(selectedFiles.isNotEmpty()) }
+
+            LaunchedEffect(selectedFiles.isNotEmpty()) {
+                visibleState.targetState = selectedFiles.isNotEmpty()
+            }
+
+            LaunchedEffect(visibleState.isIdle, visibleState.currentState) {
+                if (visibleState.isIdle && !visibleState.currentState) {
+                    bottomBarHeight = 0.dp
+                }
+            }
+
+            LaunchedEffect(bottomBarHeight, visibleState.isIdle) {
+                bottomBarStateEventFlow.emit(
+                    Triple(1, bottomBarHeight, !visibleState.isIdle),
+                )
+            }
+
+            val density = LocalDensity.current
+            AnimatedVisibility(
+                visibleState = visibleState,
+                enter = expandVertically(),
+                exit = shrinkVertically(),
+                modifier = Modifier.onGloballyPositioned {
+                    bottomBarHeight = with(density) { it.size.height.toDp() }
+                },
+            ) {
+                TopAppBar(
+                    title = {
+                        var selectedSize by rememberSaveable { mutableIntStateOf(0) }
+
+                        LaunchedEffect(selectedFiles.size) {
+                            if (selectedFiles.isNotEmpty()) {
+                                selectedSize = selectedFiles.size
+                            }
+                        }
+
+                        Text(
+                            text = pluralStringResource(
+                                R.plurals.torrent_files_selected,
+                                selectedSize,
+                                selectedSize,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { selectedFiles.clear() }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    actions = {
+                        var showPriorityMenu by rememberSaveable { mutableStateOf(false) }
+                        val actionMenuItems = listOf(
+                            ActionMenuItem(
+                                title = stringResource(R.string.torrent_files_action_priority),
+                                icon = Icons.Outlined.Priority,
+                                onClick = { showPriorityMenu = true },
+                                showAsAction = true,
+                                dropdownMenu = {
+                                    val scrollState = rememberScrollState()
+                                    PersistentLaunchedEffect(showPriorityMenu) {
+                                        if (showPriorityMenu) {
+                                            scrollState.scrollTo(0)
+                                        }
+                                    }
+
+                                    DropdownMenu(
+                                        expanded = showPriorityMenu,
+                                        onDismissRequest = { showPriorityMenu = false },
+                                        scrollState = scrollState,
+                                        modifier = Modifier.dropdownMenuHeight(),
+                                    ) {
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(text = stringResource(R.string.torrent_files_priority_do_not_download))
+                                            },
+                                            leadingIcon = {
+                                                Icon(imageVector = Icons.Filled.DoNotDisturbAlt, contentDescription = null)
+                                            },
+                                            onClick = {
+                                                viewModel.setFilePriority(
+                                                    filePaths = selectedFiles.toList(),
+                                                    priority = TorrentFilePriority.DO_NOT_DOWNLOAD,
+                                                )
+                                                showPriorityMenu = false
+                                                selectedFiles.clear()
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(text = stringResource(R.string.torrent_files_priority_normal))
+                                            },
+                                            leadingIcon = {
+                                                Icon(imageVector = Icons.Filled.HorizontalRule, contentDescription = null)
+                                            },
+                                            onClick = {
+                                                viewModel.setFilePriority(
+                                                    filePaths = selectedFiles.toList(),
+                                                    priority = TorrentFilePriority.NORMAL,
+                                                )
+                                                showPriorityMenu = false
+                                                selectedFiles.clear()
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(text = stringResource(R.string.torrent_files_priority_high))
+                                            },
+                                            leadingIcon = {
+                                                Icon(
+                                                    imageVector = Icons.Filled.KeyboardDoubleArrowUp,
+                                                    contentDescription = null,
+                                                )
+                                            },
+                                            onClick = {
+                                                viewModel.setFilePriority(
+                                                    filePaths = selectedFiles.toList(),
+                                                    priority = TorrentFilePriority.HIGH,
+                                                )
+                                                showPriorityMenu = false
+                                                selectedFiles.clear()
+                                            },
+                                        )
+                                        DropdownMenuItem(
+                                            text = {
+                                                Text(text = stringResource(R.string.torrent_files_priority_maximum))
+                                            },
+                                            leadingIcon = {
+                                                Icon(imageVector = Icons.Filled.PriorityHigh, contentDescription = null)
+                                            },
+                                            onClick = {
+                                                viewModel.setFilePriority(
+                                                    filePaths = selectedFiles.toList(),
+                                                    priority = TorrentFilePriority.MAXIMUM,
+                                                )
+                                                showPriorityMenu = false
+                                                selectedFiles.clear()
+                                            },
+                                        )
+                                    }
+                                },
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.torrent_files_action_rename),
+                                icon = Icons.Filled.DriveFileRenameOutline,
+                                onClick = { currentDialog = Dialog.Rename },
+                                showAsAction = true,
+                                isEnabled = selectedFiles.size == 1,
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.action_select_all),
+                                icon = Icons.Filled.SelectAll,
+                                showAsAction = false,
+                                onClick = onClick@{
+                                    val newFiles = flattenedNodes
+                                        ?.filter { it.path !in selectedFiles }
+                                        ?.map { it.path }
+                                        ?: return@onClick
+                                    selectedFiles.addAll(newFiles)
+                                },
+                            ),
+                            ActionMenuItem(
+                                title = context.getString(R.string.action_select_inverse),
+                                icon = Icons.Filled.FlipToBack,
+                                showAsAction = false,
+                                onClick = onClick@{
+                                    val newFiles = flattenedNodes
+                                        ?.filter { it.path !in selectedFiles }
+                                        ?.map { it.path }
+                                        ?: return@onClick
+                                    selectedFiles.clear()
+                                    selectedFiles.addAll(newFiles)
+                                },
+                            ),
+                        )
+
+                        AppBarActions(items = actionMenuItems)
+                    },
+                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+                )
+            }
+        },
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = { viewModel.refreshFiles() },
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
+                .imePadding(),
         ) {
-            items(
-                items = flattenedNodes ?: emptyList(),
-                key = { it.path },
-            ) { node ->
-                FileItem(
-                    fileNode = node,
-                    selected = node.path in selectedFiles,
-                    expanded = node.path in expandedNodes,
-                    onClick = {
-                        if (selectedFiles.isNotEmpty()) {
+            val listState = rememberLazyListState()
+            LazyColumn(
+                state = listState,
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(
+                    items = flattenedNodes ?: emptyList(),
+                    key = { it.path },
+                ) { node ->
+                    FileItem(
+                        fileNode = node,
+                        selected = node.path in selectedFiles,
+                        expanded = node.path in expandedNodes,
+                        onClick = {
+                            if (selectedFiles.isNotEmpty()) {
+                                if (node.path !in selectedFiles) {
+                                    selectedFiles += node.path
+                                } else {
+                                    selectedFiles -= node.path
+                                }
+                            }
+                        },
+                        onLongClick = {
                             if (node.path !in selectedFiles) {
                                 selectedFiles += node.path
                             } else {
                                 selectedFiles -= node.path
                             }
-                        }
-                    },
-                    onLongClick = {
-                        if (node.path !in selectedFiles) {
-                            selectedFiles += node.path
-                        } else {
-                            selectedFiles -= node.path
-                        }
-                    },
-                    onToggleExpand = {
-                        if (node.path in expandedNodes) {
-                            expandedNodes.remove(node.path)
-                        } else {
-                            expandedNodes.add(node.path)
-                        }
-                    },
+                        },
+                        onToggleExpand = {
+                            if (node.path in expandedNodes) {
+                                expandedNodes.remove(node.path)
+                            } else {
+                                expandedNodes.add(node.path)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
+                    )
+                }
+
+                item {
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                }
+            }
+
+            SideEffect {
+                if (!listState.isScrollInProgress) {
+                    listState.requestScrollToItem(
+                        index = listState.firstVisibleItemIndex,
+                        scrollOffset = listState.firstVisibleItemScrollOffset,
+                    )
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isNaturalLoading == true,
+                enter = expandVertically(tween(durationMillis = 500)),
+                exit = shrinkVertically(tween(durationMillis = 500)),
+            ) {
+                LinearProgressIndicator(
+                    strokeCap = StrokeCap.Butt,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItem(),
+                        .align(Alignment.TopCenter),
                 )
             }
-
-            item {
-                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
-            }
-        }
-
-        SideEffect {
-            if (!listState.isScrollInProgress) {
-                listState.requestScrollToItem(
-                    index = listState.firstVisibleItemIndex,
-                    scrollOffset = listState.firstVisibleItemScrollOffset,
-                )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = isNaturalLoading == true,
-            enter = expandVertically(tween(durationMillis = 500)),
-            exit = shrinkVertically(tween(durationMillis = 500)),
-        ) {
-            LinearProgressIndicator(
-                strokeCap = StrokeCap.Butt,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.TopCenter),
-            )
         }
     }
 }
