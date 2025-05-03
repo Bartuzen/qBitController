@@ -1034,6 +1034,7 @@ fun TorrentListScreen(
                                     1 -> {
                                         NoResultsMessage(
                                             onResetFilters = {
+                                                filterQuery = TextFieldValue()
                                                 viewModel.resetFilters()
                                                 isSearchMode = false
                                             },
