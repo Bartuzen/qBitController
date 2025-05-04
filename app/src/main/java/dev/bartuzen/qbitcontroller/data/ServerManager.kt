@@ -1,11 +1,17 @@
 package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
+import com.russhwolf.settings.SharedPreferencesSettings
+import com.russhwolf.settings.coroutines.getStringFlow
+import com.russhwolf.settings.get
+import com.russhwolf.settings.set
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
@@ -15,18 +21,19 @@ import javax.inject.Singleton
 class ServerManager @Inject constructor(
     @ApplicationContext context: Context,
 ) {
-    private val sharedPref = context.getSharedPreferences("servers", Context.MODE_PRIVATE)
+    private val settings = SharedPreferencesSettings(context.getSharedPreferences("servers", Context.MODE_PRIVATE))
 
     private val json = Json {
         ignoreUnknownKeys = true
     }
 
     private fun readServerConfigs() = json.decodeFromString<Map<Int, ServerConfig>>(
-        sharedPref.getString(Keys.ServerConfigs, null) ?: "{}",
+        settings.getStringOrNull(Keys.ServerConfigs) ?: "{}",
     ).toSortedMap()
 
-    private val _serversFlow = MutableStateFlow(readServerConfigs())
-    val serversFlow = _serversFlow.asStateFlow()
+    val serversFlow = settings.getStringFlow(Keys.ServerConfigs, "{}")
+        .map { json.decodeFromString<Map<Int, ServerConfig>>(it).toSortedMap() }
+        .stateIn(CoroutineScope(Dispatchers.Default), SharingStarted.Eagerly, sortedMapOf())
 
     fun getServer(serverId: Int) =
         serversFlow.value[serverId] ?: throw IllegalStateException("Couldn't find server with id $serverId")
@@ -35,34 +42,24 @@ class ServerManager @Inject constructor(
 
     suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
-        val serverId = sharedPref.getInt(Keys.LastServerId, -1) + 1
+        val serverId = settings[Keys.LastServerId, -1] + 1
 
         val newServerConfig = serverConfig.copy(id = serverId)
         serverConfigs[serverId] = newServerConfig
 
-        val isSuccess = sharedPref.edit()
-            .putString(Keys.ServerConfigs, json.encodeToString(serverConfigs.toMap()))
-            .putInt(Keys.LastServerId, serverId)
-            .commit()
+        settings[Keys.ServerConfigs] = json.encodeToString(serverConfigs.toMap())
+        settings[Keys.LastServerId] = serverId
 
-        if (isSuccess) {
-            _serversFlow.value = serverConfigs
-            listeners.forEach { it.onServerAddedListener(newServerConfig) }
-        }
+        listeners.forEach { it.onServerAddedListener(newServerConfig) }
     }
 
     suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = readServerConfigs()
         serverConfigs[serverConfig.id] = serverConfig
 
-        val isSuccess = sharedPref.edit()
-            .putString(Keys.ServerConfigs, json.encodeToString(serverConfigs.toMap()))
-            .commit()
+        settings[Keys.ServerConfigs] = json.encodeToString(serverConfigs.toMap())
 
-        if (isSuccess) {
-            _serversFlow.value = serverConfigs
-            listeners.forEach { it.onServerChangedListener(serverConfig) }
-        }
+        listeners.forEach { it.onServerChangedListener(serverConfig) }
     }
 
     suspend fun removeServer(serverId: Int) = withContext(Dispatchers.IO) {
@@ -70,14 +67,9 @@ class ServerManager @Inject constructor(
         val serverConfig = serverConfigs[serverId] ?: return@withContext
         serverConfigs.remove(serverId)
 
-        val isSuccess = sharedPref.edit()
-            .putString(Keys.ServerConfigs, json.encodeToString(serverConfigs.toMap()))
-            .commit()
+        settings[Keys.ServerConfigs] = json.encodeToString(serverConfigs.toMap())
 
-        if (isSuccess) {
-            _serversFlow.value = serverConfigs
-            listeners.forEach { it.onServerRemovedListener(serverConfig) }
-        }
+        listeners.forEach { it.onServerRemovedListener(serverConfig) }
     }
 
     private val listeners = mutableListOf<ServerListener>()

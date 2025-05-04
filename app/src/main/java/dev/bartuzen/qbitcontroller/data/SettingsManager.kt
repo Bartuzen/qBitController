@@ -1,10 +1,9 @@
 package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
+import com.russhwolf.settings.SharedPreferencesSettings
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
-import dev.bartuzen.qbitcontroller.utils.sharedpreferences.enumPreference
-import dev.bartuzen.qbitcontroller.utils.sharedpreferences.primitivePreference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,24 +11,24 @@ import javax.inject.Singleton
 class SettingsManager @Inject constructor(
     @ApplicationContext context: Context,
 ) {
-    private val sharedPref = context.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    private val settings = SharedPreferencesSettings(context.getSharedPreferences("settings", Context.MODE_PRIVATE))
 
-    val theme = enumPreference(sharedPref, "theme", Theme.SYSTEM_DEFAULT, Theme::valueOf)
-    val sort = enumPreference(sharedPref, "sort", TorrentSort.NAME, TorrentSort::valueOf)
-    val isReverseSorting = primitivePreference(sharedPref, "isReverseSorting", false)
-    val connectionTimeout = primitivePreference(sharedPref, "connectionTimeout", 10)
-    val autoRefreshInterval = primitivePreference(sharedPref, "autoRefreshInterval", 0)
-    val notificationCheckInterval = primitivePreference(sharedPref, "notificationCheckInterval", 15)
-    val areTorrentSwipeActionsEnabled = primitivePreference(sharedPref, "areTorrentSwipeActionsEnabled", true)
+    val theme = preference(settings, "theme", Theme.SYSTEM_DEFAULT)
+    val sort = preference(settings, "sort", TorrentSort.NAME)
+    val isReverseSorting = preference(settings, "isReverseSorting", false)
+    val connectionTimeout = preference(settings, "connectionTimeout", 10)
+    val autoRefreshInterval = preference(settings, "autoRefreshInterval", 0)
+    val notificationCheckInterval = preference(settings, "notificationCheckInterval", 15)
+    val areTorrentSwipeActionsEnabled = preference(settings, "areTorrentSwipeActionsEnabled", true)
 
-    val defaultTorrentStatus = enumPreference(sharedPref, "defaultTorrentState", TorrentFilter.ALL, TorrentFilter::valueOf)
-    val areStatesCollapsed = primitivePreference(sharedPref, "areStatesCollapsed", false)
-    val areCategoriesCollapsed = primitivePreference(sharedPref, "areCategoriesCollapsed", false)
-    val areTagsCollapsed = primitivePreference(sharedPref, "areTagsCollapsed", false)
-    val areTrackersCollapsed = primitivePreference(sharedPref, "areTrackersCollapsed", false)
+    val defaultTorrentStatus = preference(settings, "defaultTorrentState", TorrentFilter.ALL)
+    val areStatesCollapsed = preference(settings, "areStatesCollapsed", false)
+    val areCategoriesCollapsed = preference(settings, "areCategoriesCollapsed", false)
+    val areTagsCollapsed = preference(settings, "areTagsCollapsed", false)
+    val areTrackersCollapsed = preference(settings, "areTrackersCollapsed", false)
 
-    val searchSort = enumPreference(sharedPref, "searchSort", SearchSort.NAME, SearchSort::valueOf)
-    val isReverseSearchSorting = primitivePreference(sharedPref, "isReverseSearchSort", false)
+    val searchSort = preference(settings, "searchSort", SearchSort.NAME)
+    val isReverseSearchSorting = preference(settings, "isReverseSearchSort", false)
 }
 
 enum class Theme {

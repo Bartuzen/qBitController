@@ -101,6 +101,7 @@ android {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-opt-in=com.russhwolf.settings.ExperimentalSettingsApi",
         )
     }
 
@@ -186,6 +187,9 @@ dependencies {
     implementation(libs.coil.svg)
 
     implementation(libs.htmlConverter)
+
+    implementation(libs.multiplatformSettings)
+    implementation(libs.multiplatformSettings.coroutines)
 
     val firebaseImplementation by configurations
     firebaseImplementation(platform(libs.firebase.bom))

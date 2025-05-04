@@ -7,7 +7,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.edit
+import com.russhwolf.settings.SharedPreferencesSettings
+import com.russhwolf.settings.set
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.ServerManager
@@ -31,7 +32,8 @@ class TorrentDownloadedNotifier @Inject constructor(
         explicitNulls = false
     }
 
-    private val sharedPref = context.getSharedPreferences("torrents", Context.MODE_PRIVATE)
+    private val torrentStateStorage =
+        SharedPreferencesSettings(context.getSharedPreferences("torrents", Context.MODE_PRIVATE))
 
     private val completedStates = listOf(
         TorrentState.UPLOADING,
@@ -53,17 +55,16 @@ class TorrentDownloadedNotifier @Inject constructor(
         TorrentState.STALLED_DL,
     )
 
-    private val notificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     fun checkCompleted(serverId: Int, torrentList: List<Torrent>) {
         if (!areNotificationsEnabled()) {
-            clearSharedPref()
+            clearStorage()
             return
         }
 
         if (!isNotificationChannelEnabled("channel_server_${serverId}_downloaded")) {
-            removeServerFromSharedPref(serverId)
+            removeServerFromStorage(serverId)
             return
         }
 
@@ -86,12 +87,12 @@ class TorrentDownloadedNotifier @Inject constructor(
 
     fun checkCompleted(serverId: Int, torrent: Torrent) {
         if (!areNotificationsEnabled()) {
-            clearSharedPref()
+            clearStorage()
             return
         }
 
         if (!isNotificationChannelEnabled("channel_server_${serverId}_downloaded")) {
-            removeServerFromSharedPref(serverId)
+            removeServerFromStorage(serverId)
             return
         }
 
@@ -187,15 +188,13 @@ class TorrentDownloadedNotifier @Inject constructor(
     }
 
     private fun getTorrents(serverId: Int): Map<String, TorrentState>? {
-        val json = sharedPref.getString("server_$serverId", null)
+        val json = torrentStateStorage.getStringOrNull("server_$serverId")
         return if (json != null) this.json.decodeFromString(json) else null
     }
 
     private fun setTorrents(serverId: Int, torrents: Map<String, TorrentState>) {
         val json = json.encodeToString(torrents)
-        sharedPref.edit {
-            putString("server_$serverId", json)
-        }
+        torrentStateStorage["server_$serverId"] = json
     }
 
     private fun setTorrent(serverId: Int, torrent: Torrent) {
@@ -207,27 +206,23 @@ class TorrentDownloadedNotifier @Inject constructor(
         setTorrents(serverId, torrents)
     }
 
-    private fun getSavedServers() = sharedPref.all.map { (key, _) ->
-        key.replace("server_", "").toIntOrNull()
-    }.filterNotNull()
-
-    private fun clearSharedPref() {
-        sharedPref.edit {
-            clear()
-        }
+    private fun getSavedServers() = torrentStateStorage.keys.mapNotNull {
+        it.replace("server_", "").toIntOrNull()
     }
 
-    private fun removeServerFromSharedPref(serverId: Int) {
-        sharedPref.edit {
-            remove("server_$serverId")
-        }
+    private fun clearStorage() {
+        torrentStateStorage.clear()
+    }
+
+    private fun removeServerFromStorage(serverId: Int) {
+        torrentStateStorage.remove("server_$serverId")
     }
 
     fun discardRemovedServers() {
         val servers = serverManager.serversFlow.value
         getSavedServers().forEach { serverId ->
             if (serverId !in servers) {
-                removeServerFromSharedPref(serverId)
+                removeServerFromStorage(serverId)
             }
         }
     }
