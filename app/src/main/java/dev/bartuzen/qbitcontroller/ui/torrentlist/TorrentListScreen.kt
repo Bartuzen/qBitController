@@ -514,7 +514,7 @@ fun TorrentListScreen(
         val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
 
         PersistentLaunchedEffect {
-            if (servers.isNotEmpty() && permissionState.status.shouldShowRationale) {
+            if (servers.isNotEmpty() && !permissionState.status.shouldShowRationale) {
                 permissionState.launchPermissionRequest()
             }
         }
