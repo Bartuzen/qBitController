@@ -91,23 +91,23 @@
     <string name="torrent_list_action_set_location">Konum Ayarla</string>
     <plurals name="torrent_list_delete_torrents">
         <item quantity="one">%1$d Torrent Sil</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d Torrent Sil</item>
     </plurals>
     <plurals name="torrent_list_torrents_delete_success">
         <item quantity="one">%1$d torrent başarıyla silindi.</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d torrent başarıyla silindi.</item>
     </plurals>
     <plurals name="torrent_list_torrents_pause_success">
         <item quantity="one">%1$d torrent başarıyla duraklatıldı.</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d torrent başarıyla duraklatıldı.</item>
     </plurals>
     <plurals name="torrent_list_torrents_resume_success">
         <item quantity="one">%1$d torrent başarıyla devam ettirildi.</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d torrent başarıyla devam ettirildi.</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
         <item quantity="one">%1$d torrent seçildi</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d torrent seçildi</item>
     </plurals>
     <string name="torrent_list_search_torrents">Torrent ara…</string>
     <string name="torrent_list_free_space">Boş alan: %1$s</string>
@@ -252,7 +252,7 @@
     <string name="torrent_overview_downloaded">İndirilen</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d dosya seçildi</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d dosya seçildi</item>
     </plurals>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %%%4$s</string>
     <string name="torrent_files_action_priority">Öncelik</string>
@@ -271,12 +271,12 @@
     <string name="torrent_trackers_seeds">Gönderen</string>
     <string name="torrent_trackers_edited">İzleyici başarıyla düzenlendi.</string>
     <plurals name="torrent_trackers_delete_desc">
-        <item quantity="one">%1$d izleyiciyi silmek istediğinizden emin misiniz\?</item>
-        <item quantity="other"/>
+        <item quantity="one">%1$d izleyiciyi silmek istediğinizden emin misiniz?</item>
+        <item quantity="other">%1$d izleyiciyi silmek istediğinizden emin misiniz?</item>
     </plurals>
     <plurals name="torrent_trackers_selected">
         <item quantity="one">%1$d izleyici seçildi</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d izleyici seçildi</item>
     </plurals>
     <string name="torrent_trackers_added">İzleyiciler başarıyla eklendi.</string>
     <string name="torrent_trackers_deleted">İzleyiciler başarıyla silindi.</string>
@@ -420,18 +420,18 @@
     <string name="search_plugins_update_success">Bütün eklentiler başarıyla güncellendi.</string>
     <plurals name="settings_connection_timeout_description">
         <item quantity="one">%1$d saniye</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d saniye</item>
     </plurals>
     <string name="settings_auto_refresh_interval">Otomatik yenileme aralığı</string>
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d saniye</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d saniye</item>
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">Torrent kaydırma eylemlerini etkinleştir</string>
     <string name="settings_notification_check_interval">Bildirim kontrol aralığı</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="one">%1$d dakika</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d dakika</item>
     </plurals>
     <string name="settings_theme">Tema</string>
     <string name="settings_theme_light">Aydınlık</string>
@@ -477,7 +477,6 @@
     <string name="torrent_overview_seeds_format">%1$d (toplam %2$d)</string>
     <string name="torrent_overview_peers">Kişi</string>
     <string name="torrent_overview_wasted">Boşa Giden</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Dizin: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">İndirme Yapma</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_priority_high">Yüksek</string>
@@ -493,11 +492,11 @@
     <string name="torrent_peers_action_ban">Kişi Yasakla</string>
     <plurals name="torrent_peers_ban_title">
         <item quantity="one">%1$d Kişiyi Yasakla</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d Kişiyi Yasakla</item>
     </plurals>
     <plurals name="torrent_peers_selected">
         <item quantity="one">%1$d kişi seçildi</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d kişi seçildi</item>
     </plurals>
     <string name="torrent_peers_added">Kişiler başarıyla eklendi.</string>
     <string name="torrent_peers_banned">Kişiler başarıyla yasaklandı.</string>
@@ -513,7 +512,6 @@
     <string name="torrent_peers_details_uploaded">Gönderilen</string>
     <string name="torrent_peers_details_relevance">Uygunluk</string>
     <string name="torrent_peers_details_section_files">Dosyalar</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">İlgilenen (kişi) ve sıkışan (yerel)</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">İlgilenen (kişi) ve sıkışmayan (yerel)</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">İlgilenmeyen (yerel) ve sıkışmayan (kişi)</string>
@@ -573,11 +571,11 @@
     <string name="torrent_overview_peers_format">%1$d (toplam %2$d)</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">%1$d İzleyiciyi Sil</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d İzleyiciyi Sil</item>
     </plurals>
     <plurals name="torrent_peers_ban_desc">
-        <item quantity="one">%1$d kişiyi yasaklamak istediğinize emin misiniz\?</item>
-        <item quantity="other"/>
+        <item quantity="one">%1$d kişiyi yasaklamak istediğinize emin misiniz?</item>
+        <item quantity="other">%1$d kişiyi yasaklamak istediğinize emin misiniz?</item>
     </plurals>
     <string name="torrent_peers_details_section_flags">İşaretler</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">İlgilenen (yerel) ve sıkışan (kişi)</string>
@@ -599,7 +597,7 @@
     <string name="settings_server_advanced_doh">HTTPS üzerinden DNS (DoH)</string>
     <plurals name="torrent_add_files_selected">
         <item quantity="one">%1$d dosya seçildi</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d dosya seçildi</item>
     </plurals>
     <string name="torrent_overview_private">Özel</string>
     <string name="torrent_overview_private_yes">Evet</string>

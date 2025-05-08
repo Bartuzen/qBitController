@@ -341,7 +341,6 @@
         <item quantity="many">Ви упевнені, що хочете забанити %1$d пірів?</item>
         <item quantity="other">Ви упевнені, що хочете забанити %1$d пірів?</item>
     </plurals>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_encrypted_handshake">Зашифроване рукостискання</string>
     <string name="torrent_add_button_file">Файл</string>
     <plurals name="torrent_add_files_selected">
@@ -618,7 +617,6 @@
     <string name="settings_server_advanced_doh">DNS через HTTPS (DoH)</string>
     <string name="settings_server_connection_success">Підключено до сервера успішно.</string>
     <string name="settings_server_username_min_character">Ім\'я користувача має складатися не менше ніж з 3 символів.</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Каталог: </b>]]> %1$s</string>
     <string name="torrent_disable_super_seeding_success">Суперпосадку успішно вимкнено.</string>
     <string name="torrent_queueing_is_not_enabled">Торрент-черга не ввімкнена.</string>
     <string name="torrent_option_automatic_torrent_management">Автоматичне керування торрентами</string>
@@ -670,4 +668,6 @@
     <string name="torrent_overview_piece_downloaded">Завантажено</string>
     <string name="torrent_overview_piece_downloading">Завантаження</string>
     <string name="torrent_overview_piece_not_downloaded">Не завантажено</string>
+    <string name="torrent_peers_details_section_overview">Огляд колег</string>
+    <string name="torrent_peers_details_section_transfer">Статистика трансферів</string>
 </resources>

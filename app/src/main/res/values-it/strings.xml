@@ -286,7 +286,6 @@
     <string name="torrent_overview_uploaded_format">%1$s (%2$s in questa sessione)</string>
     <string name="torrent_overview_seeds_format">%1$d (%2$d totali)</string>
     <string name="torrent_overview_reannounce_in">Riannuncio In</string>
-    <string name="torrent_files_directory_format"><b>Cartella: </b> %1$s</string>
     <string name="torrent_overview_wasted">Sprecati</string>
     <string name="torrent_files_priority_normal">Normale</string>
     <string name="torrent_files_priority_high">Alta</string>

@@ -26,7 +26,6 @@
     <string name="torrent_peers_details_connection">Conexão</string>
     <string name="torrent_peers_details_section_flags">Bandeiras</string>
     <string name="torrent_peers_details_section_files">Arquivos</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_peer_unchoked_local">Não interessados (peer) e não paralisados (locais)</string>
     <string name="search_start_category_software">Programas</string>
     <string name="search_start_category_anime">Animes</string>
@@ -104,11 +103,11 @@
     <string name="language_code">pt-BR</string>
     <string name="share_add_torrent">Adicionar torrent</string>
     <string name="torrent_status_missing_files">Arquivos ausentes</string>
-    <string name="torrent_status_seeding">Seeding</string>
+    <string name="torrent_status_seeding">Semeando</string>
     <string name="torrent_status_paused">Pausado</string>
     <string name="torrent_status_stalled">Parado</string>
     <string name="torrent_status_checking">Verificando</string>
-    <string name="torrent_status_force_seeding">[F] Seeding</string>
+    <string name="torrent_status_force_seeding">[F] Semeando</string>
     <string name="torrent_status_downloading">Baixando</string>
     <string name="torrent_status_downloading_metadata">Baixando metadados</string>
     <string name="torrent_status_force_downloading_metadata">[F] Baixando metadados</string>
@@ -190,7 +189,7 @@
     <string name="torrent_list_edit_category_error">Falha na edição da categoria.</string>
     <string name="torrent_list_create_category_hint">Nome da categoria</string>
     <string name="torrent_list_create_category_save_path_hint">Salvar caminho</string>
-    <string name="torrent_list_create_category_enable_download_path_hint">Habilitar caminho de download</string>
+    <string name="torrent_list_create_category_enable_download_path_hint">Ativar caminho de download</string>
     <string name="torrent_list_create_category_download_path_hint">Caminho de download</string>
     <string name="torrent_list_create_category_download_path_default">Padrão</string>
     <string name="torrent_list_create_category_download_path_no">Não</string>
@@ -201,7 +200,7 @@
     <string name="torrent_list_delete_tag_success">Tag %1$s excluída com sucesso.</string>
     <string name="torrent_list_create_tag_success">Tag criada com sucesso.</string>
     <string name="torrent_list_status_downloading">Baixando</string>
-    <string name="torrent_list_status_seeding">Seeding</string>
+    <string name="torrent_list_status_seeding">Semeando</string>
     <string name="torrent_list_status_completed">Concluído</string>
     <string name="torrent_list_status_resumed">Retomado</string>
     <string name="torrent_list_status_paused">Pausado</string>
@@ -244,7 +243,7 @@
     <string name="torrent_option_download_speed_limit">Limite de velocidade para downloads (KB/s)</string>
     <string name="torrent_option_share_limit">Limitar compartilhamento de torrent</string>
     <string name="torrent_option_share_limit_global">Usar limite de compartilhamento global</string>
-    <string name="torrent_option_share_limit_disable">Desabilitar limite de compartilhamento</string>
+    <string name="torrent_option_share_limit_disable">Desativar limite de compartilhamento</string>
     <string name="torrent_option_share_limit_custom">Definir limite de compartilhamento personalizado</string>
     <string name="torrent_option_share_limit_ratio">Proporção</string>
     <string name="torrent_option_prioritize_first_last_piece">Fazer download da primeira e as últimas peças primeiro</string>
@@ -261,7 +260,7 @@
     <string name="torrent_action_force_recheck">Forçar nova verificação</string>
     <string name="torrent_action_force_reannounce">Forçar reaviso</string>
     <string name="torrent_action_force_start">Forçar início</string>
-    <string name="torrent_action_super_seeding">Super Seeding</string>
+    <string name="torrent_action_super_seeding">Modo super seeding</string>
     <string name="torrent_action_copy">Copiar</string>
     <string name="torrent_action_copy_name">Nome</string>
     <string name="torrent_action_copy_hash_v1">Hash v1</string>
@@ -271,7 +270,7 @@
     <string name="torrent_enable_force_start_success">\"Forçar início\" ativado com sucesso.</string>
     <string name="torrent_disable_force_start_success">\"Forçar início\" desativado com sucesso.</string>
     <string name="torrent_disable_super_seeding_success">\"Super seeding\" desativado com sucesso.</string>
-    <string name="torrent_queueing_is_not_enabled">A fila de torrent não está habilitada.</string>
+    <string name="torrent_queueing_is_not_enabled">A fila de torrent não está ativada.</string>
     <string name="torrent_option_automatic_torrent_management">Gerenciamento automático de torrents</string>
     <string name="torrent_option_update_success">Opções do torrent atualizadas com sucesso.</string>
     <string name="torrent_export_success">Torrent exportado com sucesso.</string>
@@ -301,7 +300,6 @@
     <string name="torrent_overview_seeds_format">%1$d (%2$d total)</string>
     <string name="torrent_overview_peers">Peers</string>
     <string name="torrent_overview_wasted">Perdidos</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Diretório: </b>]]> %1$s</string>
     <string name="torrent_files_priority_do_not_download">Não fazer download</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_files_priority_high">Alto</string>
@@ -309,7 +307,7 @@
     <string name="torrent_files_priority_mixed">Misto</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">Prioridade</string>
-    <string name="torrent_overview_time_active_seeding_time_format">%1$s (seeded em %2$s)</string>
+    <string name="torrent_overview_time_active_seeding_time_format">%1$s (semeado por %2$s)</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d arquivo selecionado</item>
         <item quantity="many">%1$d arquivos selecionados</item>
@@ -418,7 +416,7 @@
     <string name="rss_action_add_folder">Adicionar pasta</string>
     <string name="rss_action_rename_folder">Renomear pasta</string>
     <string name="rss_action_move_folder">Mover pasta</string>
-    <string name="torrent_add_seeding_time_limit">Limitar tempo de Seed (em minutos)</string>
+    <string name="torrent_add_seeding_time_limit">Limite de tempo de semeamento (em minutos)</string>
     <string name="rss_hint_feed_url">URL do Feed</string>
     <string name="rss_hint_feed_name_optional">Nome do feed (opcional)</string>
     <string name="rss_hint_feed_name">Nome do feed</string>
@@ -450,7 +448,7 @@
     <string name="rss_rule_rename_success">Regra do RSS renomeada com sucesso.</string>
     <string name="rss_rule_delete_success">Regra do RSS excluída com sucesso.</string>
     <string name="rss_rule_name_cannot_be_empty">O nome não pode estar vazio.</string>
-    <string name="rss_rule_enabled">Habilitado</string>
+    <string name="rss_rule_enabled">Ativado</string>
     <string name="rss_rule_use_regular_expressions">Usar expressões regulares</string>
     <string name="rss_rule_must_contain">Deve conter</string>
     <string name="rss_rule_category">Categoria</string>
@@ -468,7 +466,7 @@
     <string name="search_start_query">Consulta de pesquisa</string>
     <string name="search_start_category">Categoria</string>
     <string name="search_start_category_tv_shows">Séries</string>
-    <string name="search_start_plugins_enabled">Plugins habilitados</string>
+    <string name="search_start_plugins_enabled">Plugins ativados</string>
     <string name="search_start_plugins_all">Todos os plugins</string>
     <string name="search_start_plugins_select">Selecionar plugins</string>
     <string name="search_start_action_start">Iniciar pesquisa</string>
@@ -495,13 +493,13 @@
     <string name="search_result_action_sort_reverse">Reverter</string>
     <string name="search_result_action_stop_search">Parar de pesquisar</string>
     <string name="search_plugins">Plugins</string>
-    <string name="settings_disabled">Desabilitado</string>
+    <string name="settings_disabled">Desativado</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="one">%1$d minuto</item>
         <item quantity="many">%1$d minutos</item>
         <item quantity="other">%1$d minutos</item>
     </plurals>
-    <string name="settings_enable_torrent_swipe_actions">Habilitar ações de deslizar para torrent</string>
+    <string name="settings_enable_torrent_swipe_actions">Ativar ações de deslizar no torrent</string>
     <string name="settings_theme">Tema</string>
     <string name="settings_theme_light">Claro</string>
     <string name="settings_theme_dark">Escuro</string>
@@ -521,7 +519,7 @@
     <string name="settings_server_action_delete">Excluir</string>
     <string name="settings_server_action_save">Salvar</string>
     <string name="settings_server_action_advanced_settings">Configurações avançadas</string>
-    <string name="settings_server_advanced_basic_auth_enabled">Habilitado</string>
+    <string name="settings_server_advanced_basic_auth_enabled">Ativado</string>
     <string name="settings_server_advanced_basic_auth_username">Usuário</string>
     <string name="settings_server_add_success">O servidor foi adicionado com sucesso.</string>
     <string name="settings_server_edit_success">O servidor foi editado com sucesso.</string>
@@ -630,4 +628,31 @@
     <string name="torrent_list_no_result_title">Nenhum Resultado Encontrado</string>
     <string name="torrent_list_empty_add">Adicionar Torrent</string>
     <string name="torrent_list_no_result_description">Nenhum torrent corresponde aos seus filtros atuais. Tente ajustar seus filtros ou o critério de busca.</string>
+    <string name="torrent_list_no_server_add">Adicionar servidor</string>
+    <string name="rss_rule_no_feed_found">Nenhum feed encontrado</string>
+    <string name="torrent_overview_availability">Disponibilidade</string>
+    <string name="torrent_overview_popularity">Popularidade</string>
+    <string name="torrent_overview_piece_map">Mapa de pedaços</string>
+    <string name="torrent_overview_piece_downloaded">Baixado</string>
+    <string name="rss_details">Detalhes do torrent</string>
+    <string name="search_result_details">Detalhes do torrent</string>
+    <string name="rss_rule_item_disabled">Desativado</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d feed</item>
+        <item quantity="many">%1$d de feeds</item>
+        <item quantity="other">%1$d feeds</item>
+    </plurals>
+    <string name="torrent_overview_piece_downloading">Baixando</string>
+    <string name="torrent_overview_piece_not_downloaded">Não baixado</string>
+    <string name="rss_success_feed_change_url">URL do feed alterada com sucesso.</string>
+    <string name="torrent_list_no_server_title">Nenhum servidor disponível</string>
+    <string name="torrent_list_no_server_description">Você não adicionou nenhum servidor ainda. Adicione um para começar.</string>
+    <string name="torrent_peers_details_section_transfer">Estatísticas de transferência</string>
+    <string name="rss_description">Descrição</string>
+    <string name="rss_new">Novo</string>
+    <string name="torrent_peers_details_section_overview">Visualização de peers</string>
+    <string name="rss_action_edit_feed_url">Editar URL do feed</string>
+    <string name="rss_rule_item_enabled">Ativado</string>
+    <string name="search_start_plugins">Plugins</string>
+    <string name="search_result_title">Resultados da pesquisa</string>
 </resources>

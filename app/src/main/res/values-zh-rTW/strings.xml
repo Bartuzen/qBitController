@@ -193,7 +193,6 @@
     <string name="torrent_trackers_seeds">種子</string>
     <string name="torrent_trackers_url_cannot_be_empty">Tracker 位址不得為空。</string>
     <string name="torrent_peers_details_section_files">檔案</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">您：期待下載╱他：拒絕上傳</string>
     <string name="torrent_peers_flag_not_interested_peer_unchoked_local">他：不想下載╱您：同意上傳</string>
     <string name="torrent_peers_flag_optimistic_unchoke">多傳者優先</string>
@@ -308,7 +307,6 @@
     <string name="torrent_enable_force_start_success">已成功啟用強制開始。</string>
     <string name="torrent_overview_connections">連接</string>
     <string name="torrent_overview_connections_format">%1$d（最大%2$d）</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>目錄：</b>]]> %1$s</string>
     <string name="torrent_peers_invalid">輸入的使用者不正確。</string>
     <string name="torrent_peers_details_connection">連接</string>
     <string name="torrent_peers_details_section_flags">標誌</string>

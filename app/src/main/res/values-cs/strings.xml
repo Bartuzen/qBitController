@@ -112,7 +112,7 @@
     <string name="torrent_list_trackers_trackerless">Bez trackeru</string>
     <string name="torrent_speed_limits_title">Limity rychlosti</string>
     <string name="torrent_speed_alternative_speed_limits">Alternativní limity rychlosti</string>
-    <string name="torrent_speed_upload_limit">Limit rychlosti sdílení</string>
+    <string name="torrent_speed_upload_limit">Limit sdílení</string>
     <string name="torrent_speed_update_success">Limity rychlosti úspěšně aktualizovány.</string>
     <string name="torrent_list_switch_speed_limit_alternative_success">Přepnuto na alternativní rychlostní limity.</string>
     <string name="torrent_list_switch_speed_limit_regular_success">Přepnuto na běžné rychlostní limity.</string>
@@ -196,7 +196,7 @@
     <string name="torrent_list_edit_category">Upravit kategorii</string>
     <string name="torrent_list_create_category_name_cannot_be_empty">Jméno kategorie nemůže být prázdné.</string>
     <string name="torrent_list_tags">Štítky</string>
-    <string name="torrent_speed_download_limit">Limit rychlosti stahování</string>
+    <string name="torrent_speed_download_limit">Limit stahování</string>
     <string name="torrent_list_status_active">Aktivní</string>
     <string name="torrent_list_status_error">Chyba</string>
     <string name="torrent_list_priority_increase_success">Priorita zvýšena úspěšně.</string>
@@ -346,7 +346,6 @@
     <string name="torrent_overview_created_by">Vytvořil/a</string>
     <string name="torrent_files_priority_high">Vysoká</string>
     <string name="torrent_files_priority_normal">Normální</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Složka:</b>]]>%1$s</string>
     <string name="torrent_files_priority_maximum">Maximální</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_trackers_added">Trackery přidány úspěšně.</string>
@@ -364,7 +363,6 @@
     <string name="torrent_peers_details_uploaded">Odesláno</string>
     <string name="torrent_peers_details_relevance">Důležitost</string>
     <string name="torrent_peers_details_section_files">Soubory</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">Not interested (místní) a nepřiškrcený (peer)</string>
     <string name="torrent_peers_flag_incoming_connection">Příchozí spojení</string>
     <string name="torrent_peers_flag_peer_from_pex">Peer z PEX</string>
@@ -636,4 +634,12 @@
     <string name="rss_action_edit_feed_url">Upravit URL kanálu</string>
     <string name="rss_success_feed_change_url">URL kanálu změněna úspěšně.</string>
     <string name="rss_rule_no_feed_found">Zádný kanál nenalezen</string>
+    <string name="torrent_overview_piece_map">Mapa částí</string>
+    <string name="rss_description">Popis</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d kanál</item>
+        <item quantity="few">%1$d kanály</item>
+        <item quantity="other">%1$d kanálů</item>
+    </plurals>
+    <string name="search_result_title">Výsledky hledání</string>
 </resources>

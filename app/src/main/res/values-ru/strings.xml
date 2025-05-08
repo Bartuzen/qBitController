@@ -53,7 +53,6 @@
     <string name="torrent_peers_flag_encrypted_handshake">Шифрованное рукопожатие</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Заинтересован (пир) и занят (клиент)</string>
     <string name="torrent_peers_details_section_files">Файлы</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_peers_details_connection">Соединения</string>
     <string name="torrent_peers_details_progress">Прогресс</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Заинтересован (клиент) и не занят (пир)</string>
@@ -352,7 +351,6 @@
     <string name="torrent_overview_connections_format">%1$d (%2$d макс.)</string>
     <string name="torrent_overview_seeds">Сиды</string>
     <string name="torrent_overview_wasted">Потеряно</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Папка: </b>]]> %1$s</string>
     <string name="torrent_files_priority_mixed">Смешанный</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">Приоритет загрузки</string>
@@ -672,4 +670,6 @@
     <string name="torrent_overview_piece_downloading">Загрузка</string>
     <string name="torrent_overview_piece_not_downloaded">Не загружено</string>
     <string name="torrent_overview_piece_map">Карта частей</string>
+    <string name="torrent_peers_details_section_overview">Обзор пиров</string>
+    <string name="torrent_peers_details_section_transfer">Статистика торрентов</string>
 </resources>

@@ -457,7 +457,6 @@
     <string name="rss_delete_feed_error">No se puede borrar el feed.</string>
     <string name="torrent_peers_flag_peer_snubbed">Desairado por sus pares</string>
     <string name="rss_delete_folder_error">No se ha podido borrar la carpeta.</string>
-    <string name="torrent_files_directory_format"><![CDATA[<b>Directorio: </b>]]> %1$s</string>
     <string name="settings_enable_torrent_swipe_actions">Habilitar deslizar</string>
     <string name="search_plugins_install_success">Los plugins se han instalado correctamente.</string>
     <string name="rss_mark_all_articles_as_read_success">Todos los artículos marcados como leídos.</string>
@@ -568,7 +567,6 @@
     <string name="torrent_trackers_action_edit">Editar el rastreador</string>
     <string name="rss_rule_use_global_settings">Utilizar los ajustes globales</string>
     <string name="settings_server_advanced_basic_auth_password">Contraseña</string>
-    <string name="torrent_peers_flag_format">%1$s: %2$s</string>
     <string name="torrent_status_checking_resume_data">Comprobación el resumen de los datos</string>
     <string name="torrent_overview_transfer">Transferencia</string>
     <string name="torrent_trackers_added">Rastreadores añadidos correctamente.</string>
@@ -655,4 +653,6 @@
     <string name="torrent_overview_piece_not_downloaded">No descargado</string>
     <string name="torrent_overview_piece_downloading">Descargando</string>
     <string name="torrent_overview_piece_map">Mapa de piezas</string>
+    <string name="torrent_peers_details_section_transfer">Estadísticas de transferencia</string>
+    <string name="torrent_peers_details_section_overview">Resumen de pares</string>
 </resources>
