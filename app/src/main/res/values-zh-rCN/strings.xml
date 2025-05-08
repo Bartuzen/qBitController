@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">qBitController</string>
     <string name="language_code">zh</string>
     <string name="share_add_torrent">添加种子</string>
     <string name="torrent_status_error">错误</string>

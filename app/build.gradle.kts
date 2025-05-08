@@ -133,10 +133,6 @@ if (isFirebaseEnabled) {
 dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.recyclerView)
-    implementation(libs.androidx.constraintLayout)
-    implementation(libs.androidx.swipeRefreshLayout)
-    implementation(libs.androidx.fragment)
     implementation(libs.androidx.lifecycle.viewModel)
 
     implementation(libs.material)
@@ -175,8 +171,6 @@ dependencies {
     implementation(libs.retrofit.converter.kotlinxSerialization)
 
     implementation(libs.okhttp.doh)
-
-    implementation(libs.viewBindingPropertyDelegate.noReflection)
 
     coreLibraryDesugaring(libs.desugar)
 

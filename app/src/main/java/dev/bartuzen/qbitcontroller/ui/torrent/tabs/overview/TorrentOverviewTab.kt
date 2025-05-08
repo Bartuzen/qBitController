@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview
 
+import android.content.ClipData
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
@@ -83,6 +84,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -96,6 +98,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.ClipEntry
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -124,7 +128,6 @@ import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
-import dev.bartuzen.qbitcontroller.utils.copyToClipboard
 import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
@@ -162,6 +165,7 @@ fun TorrentOverviewTab(
     ),
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val torrent by viewModel.torrent.collectAsStateWithLifecycle()
     val torrentProperties by viewModel.torrentProperties.collectAsStateWithLifecycle()
@@ -321,6 +325,13 @@ fun TorrentOverviewTab(
                     }
                 }
 
+                val clipboard = LocalClipboard.current
+                fun String.copyToClipboard() {
+                    scope.launch {
+                        clipboard.setClipEntry(ClipEntry(ClipData.newPlainText(null, this@copyToClipboard)))
+                    }
+                }
+
                 DropdownMenu(
                     expanded = showCopyMenu,
                     onDismissRequest = { showCopyMenu = false },
@@ -335,7 +346,7 @@ fun TorrentOverviewTab(
                             Icon(imageVector = Icons.Filled.Title, contentDescription = null)
                         },
                         onClick = {
-                            torrent?.name?.let { context.copyToClipboard(it) }
+                            torrent?.name?.copyToClipboard()
                             showCopyMenu = false
                         },
                         enabled = torrent?.name != null,
@@ -348,7 +359,7 @@ fun TorrentOverviewTab(
                             Icon(imageVector = Icons.Filled.Key, contentDescription = null)
                         },
                         onClick = {
-                            torrent?.hashV1?.let { context.copyToClipboard(it) }
+                            torrent?.hashV1?.copyToClipboard()
                             showCopyMenu = false
                         },
                         enabled = torrent?.hashV1 != null,
@@ -361,7 +372,7 @@ fun TorrentOverviewTab(
                             Icon(imageVector = Icons.Filled.Key, contentDescription = null)
                         },
                         onClick = {
-                            torrent?.hashV2?.let { context.copyToClipboard(it) }
+                            torrent?.hashV2?.copyToClipboard()
                             showCopyMenu = false
                         },
                         enabled = torrent?.hashV2 != null,
@@ -374,7 +385,7 @@ fun TorrentOverviewTab(
                             Icon(imageVector = Icons.Filled.Link, contentDescription = null)
                         },
                         onClick = {
-                            torrent?.magnetUri?.let { context.copyToClipboard(it) }
+                            torrent?.magnetUri?.copyToClipboard()
                             showCopyMenu = false
                         },
                         enabled = torrent?.magnetUri != null,

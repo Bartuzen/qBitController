@@ -47,9 +47,6 @@ class EditRssRuleViewModel @AssistedInject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing = _isRefreshing.asStateFlow()
-
     val isFetched = savedStateHandle.getStateFlow("isFetched", false)
 
     init {

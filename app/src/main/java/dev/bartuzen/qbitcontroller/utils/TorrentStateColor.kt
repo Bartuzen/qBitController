@@ -1,13 +1,11 @@
 package dev.bartuzen.qbitcontroller.utils
 
-import android.content.Context
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentState
+import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 
-fun getTorrentStateColor(context: Context, state: TorrentState) = context.getColorCompat(
+@Composable
+fun getTorrentStateColor(state: TorrentState) = harmonizeWithPrimary(
     when (state) {
         TorrentState.DOWNLOADING,
         TorrentState.FORCED_DL,
@@ -18,38 +16,35 @@ fun getTorrentStateColor(context: Context, state: TorrentState) = context.getCol
         TorrentState.CHECKING_RESUME_DATA,
         TorrentState.MOVING,
         -> {
-            R.color.torrent_state_downloading
+            LocalCustomColors.current.torrentStateDownloading
         }
         TorrentState.STALLED_DL -> {
-            R.color.torrent_state_stalled_downloading
+            LocalCustomColors.current.torrentStateStalledDownloading
         }
         TorrentState.STALLED_UP -> {
-            R.color.torrent_state_stalled_uploading
+            LocalCustomColors.current.torrentStateStalledUploading
         }
         TorrentState.UPLOADING,
         TorrentState.FORCED_UP,
         -> {
-            R.color.torrent_state_uploading
+            LocalCustomColors.current.torrentStateUploading
         }
         TorrentState.PAUSED_DL -> {
-            R.color.torrent_state_paused_downloading
+            LocalCustomColors.current.torrentStatePausedDownloading
         }
         TorrentState.PAUSED_UP -> {
-            R.color.torrent_state_paused_uploading
+            LocalCustomColors.current.torrentStatePausedUploading
         }
         TorrentState.QUEUED_DL,
         TorrentState.QUEUED_UP,
         -> {
-            R.color.torrent_state_queued
+            LocalCustomColors.current.torrentStateQueued
         }
         TorrentState.ERROR,
         TorrentState.MISSING_FILES,
         TorrentState.UNKNOWN,
         -> {
-            R.color.torrent_state_error
+            LocalCustomColors.current.torrentStateError
         }
     },
 )
-
-@Composable
-fun getTorrentStateColor(state: TorrentState) = Color(getTorrentStateColor(LocalContext.current, state))

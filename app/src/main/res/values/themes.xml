@@ -47,18 +47,8 @@
         <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest</item>
-
-        <item name="materialCardViewStyle">@style/Widget.Material3.CardView.Elevated</item>
-        <item name="snackbarTextViewStyle">@style/AppTheme.SnackbarTextViewStyle</item>
-
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionBarTheme">@style/ThemeOverlay.Material3.ActionBar</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base" />
-
-    <style name="AppTheme.SnackbarTextViewStyle" parent="Widget.Material3.Snackbar.TextView">
-        <item name="android:maxLines">15</item>
-    </style>
 
 </resources>

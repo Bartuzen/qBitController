@@ -511,8 +511,6 @@ class TorrentListViewModel @Inject constructor(
     }
 
     fun loadMainData(autoRefresh: Boolean = false) {
-        val serverId = currentServerId.value ?: return
-
         if (isNaturalLoading.value == null) {
             _isNaturalLoading.value = !autoRefresh
             updateMainData().invokeOnCompletion {
@@ -522,8 +520,6 @@ class TorrentListViewModel @Inject constructor(
     }
 
     fun refreshMainData() {
-        val serverId = currentServerId.value ?: return
-
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateMainData().invokeOnCompletion {
