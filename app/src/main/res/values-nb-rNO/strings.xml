@@ -258,7 +258,7 @@
     <string name="search_result_action_stop_search">Stopp søk</string>
     <string name="search_plugins">Programtillegg</string>
     <string name="settings_title">Innstillinger</string>
-    <string name="settings_servers">Tjener</string>
+    <string name="settings_category_servers">Tjener</string>
     <string name="settings_add_new_server">Legg til ny tjener</string>
     <string name="settings_disabled">Avskrudd</string>
     <string name="settings_server_title_add">Legg til tjener</string>
@@ -418,7 +418,7 @@
     <string name="rss_rule_delete_confirm">Slett %1$s-regelen\?</string>
     <string name="rss_rule_episode_filter">Episodefilter</string>
     <string name="settings_server_edit_success">Tjener redigert.</string>
-    <string name="settings_server_required_field">Påkrevd felt.</string>
+    <string name="error_required_field">Påkrevd felt.</string>
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d sekund</item>
         <item quantity="other">%1$d sekunder</item>

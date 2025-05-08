@@ -373,7 +373,7 @@
     <string name="rss_confirm_delete_feed">¿Seguro que quieres borrar el feed %1$s?</string>
     <string name="torrent_files_priority_high">Alta</string>
     <string name="search_result_open_description">Abrir la descripción</string>
-    <string name="settings_server_required_field">Campo obligatorio.</string>
+    <string name="error_required_field">Campo obligatorio.</string>
     <string name="rss_rule_rename">Cambiar el nombre de la regla</string>
     <string name="settings_server_remove_success">El servidor se ha eliminado correctamente.</string>
     <string name="settings_theme_system_default">Predeterminado del sistema</string>
@@ -553,7 +553,7 @@
     <string name="rss_success_feed_delete">Se ha borrado el feed correctamente.</string>
     <string name="rss_rules">Descargador de RSS</string>
     <string name="rss_hint_folder_name">Nombre de la carpeta</string>
-    <string name="settings_servers">Servidores</string>
+    <string name="settings_category_servers">Servidores</string>
     <string name="rss_all_articles">Todos los artículos</string>
     <string name="settings_disabled">Desactivado</string>
     <string name="settings_server_port">Puerto</string>

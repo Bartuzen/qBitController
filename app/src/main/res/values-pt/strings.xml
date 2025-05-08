@@ -544,7 +544,7 @@
     <string name="search_plugins_action_install_plugins">Instalar Plugins</string>
     <string name="execution_log_title">Registo de Execução</string>
     <string name="settings_title">Definições</string>
-    <string name="settings_servers">Servidores</string>
+    <string name="settings_category_servers">Servidores</string>
     <string name="settings_add_new_server">Adicionar novo servidor</string>
     <string name="settings_connection_timeout">Ligação expirada</string>
     <string name="settings_auto_refresh_interval">Intervalo de atualização automática</string>
@@ -575,7 +575,7 @@
     <string name="settings_server_advanced_basic_auth_username">Nome de Utilizador</string>
     <string name="settings_server_advanced_doh">DNS por HTTPS (DoH)</string>
     <string name="settings_server_add_success">O servidor adicionado com sucesso.</string>
-    <string name="settings_server_required_field">Este campo é obrigatório.</string>
+    <string name="error_required_field">Este campo é obrigatório.</string>
     <string name="settings_server_port_must_be_between">Porta deve estar entre 1 e 65535.</string>
     <string name="settings_server_password_min_character">Palavra-passe deve ter pelo menos 6 caracteres.</string>
     <string name="settings_server_url_configuration_not_valid">A configuração de URL inserida é inválida.</string>

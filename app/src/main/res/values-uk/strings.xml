@@ -400,7 +400,7 @@
     <string name="search_start_category_tv_shows">телешоу</string>
     <string name="search_result_filter_results">Фільтрувати результати…</string>
     <string name="settings_title">Налаштування</string>
-    <string name="settings_servers">Сервери</string>
+    <string name="settings_category_servers">Сервери</string>
     <string name="torrent_option_share_limit_total_minutes">Загальна кількість хвилин</string>
     <string name="torrent_option_share_limit_inactive_minutes">Хвилини неактивності</string>
     <string name="torrent_category_update_success">Категорію успішно оновлено.</string>
@@ -547,7 +547,7 @@
     <string name="settings_server_advanced_basic_auth_enabled">Увімкнено</string>
     <string name="settings_server_advanced_basic_auth_username">Ім\'я користувача</string>
     <string name="settings_server_advanced_basic_auth_password">Пароль</string>
-    <string name="settings_server_required_field">Це поле є обов\'язковим для заповнення.</string>
+    <string name="error_required_field">Це поле є обов\'язковим для заповнення.</string>
     <string name="settings_server_password_min_character">Пароль має бути не менше 6 символів.</string>
     <string name="settings_server_url_configuration_not_valid">Введена конфігурація URL-адреси недійсна.</string>
     <string name="notification_channel_download_completed">Завантаження завершено</string>

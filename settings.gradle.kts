@@ -13,6 +13,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://gitlab.com/api/v4/projects/69663547/packages/maven")
     }
 }
 

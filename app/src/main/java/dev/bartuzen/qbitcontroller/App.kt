@@ -34,7 +34,9 @@ class App : Application(), Configuration.Provider {
     lateinit var configMigrator: ConfigMigrator
 
     @Inject
-    lateinit var notificationManager: AppNotificationManager
+    @Suppress("ktlint:standard:backing-property-naming")
+    lateinit var _notificationManager: Lazy<AppNotificationManager>
+    private val notificationManager: AppNotificationManager get() = _notificationManager.get()
 
     override val workManagerConfiguration
         get() = Configuration.Builder()

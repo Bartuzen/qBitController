@@ -12,6 +12,10 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import dev.bartuzen.qbitcontroller.R
+import me.zhanghai.compose.preference.LocalPreferenceTheme
+import me.zhanghai.compose.preference.preferenceTheme
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -260,6 +264,10 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean =
             LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             LocalContentColor provides MaterialTheme.colorScheme.onBackground,
             LocalCustomColors provides customColorsPalette,
+            LocalPreferenceTheme provides preferenceTheme(
+                dialogOkText = stringResource(R.string.dialog_ok),
+                dialogCancelText = stringResource(R.string.dialog_cancel),
+            ),
             content = content,
         )
     }

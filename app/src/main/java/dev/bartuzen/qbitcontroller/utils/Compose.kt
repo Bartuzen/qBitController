@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -224,4 +225,11 @@ fun Modifier.dropdownMenuHeight() = if (Build.VERSION.SDK_INT >= Build.VERSION_C
     heightIn(max = availableHeight)
 } else {
     this
+}
+
+fun Modifier.fillWidthOfParent(parentPadding: Dp) = this.layout { measurable, constraints ->
+    val placeable = measurable.measure(constraints.copy(maxWidth = constraints.maxWidth + parentPadding.roundToPx()))
+    layout(placeable.width, placeable.height) {
+        placeable.place(0, 0)
+    }
 }

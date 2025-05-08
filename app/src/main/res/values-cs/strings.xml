@@ -579,7 +579,7 @@
     <string name="execution_log_title">Záznamy programu</string>
     <string name="settings_title">Nastavení</string>
     <string name="settings_other">Ostatní</string>
-    <string name="settings_servers">Servery</string>
+    <string name="settings_category_servers">Servery</string>
     <string name="settings_disabled">Vypnuto</string>
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d sekunda</item>
@@ -595,7 +595,7 @@
     <string name="settings_server_url_configuration_not_valid">Zadaná URL konfigurace není platná.</string>
     <string name="settings_server_connection_success">Připojení k serveru úspěšné.</string>
     <string name="rss_rule_delete">Smazat pravidlo</string>
-    <string name="settings_server_required_field">Toto pole je povinné.</string>
+    <string name="error_required_field">Toto pole je povinné.</string>
     <string name="search_result_action_sort_leechers">Leecheři</string>
     <string name="search_result_action_sort_search_engine">Vyhledávač</string>
     <string name="search_result_action_stop_search">Zastavit vyhledávání</string>

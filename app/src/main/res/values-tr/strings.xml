@@ -450,7 +450,7 @@
     <string name="settings_server_advanced_basic_auth">Temel Kimlik Doğrulama</string>
     <string name="settings_server_advanced_basic_auth_enabled">Etkin</string>
     <string name="settings_server_remove_success">Sunucu başarıyla kaldırıldı.</string>
-    <string name="settings_server_required_field">Bu alan gereklidir.</string>
+    <string name="error_required_field">Bu alan gereklidir.</string>
     <string name="settings_server_port_must_be_between">Port 1 ile 65535 arasında olmalıdır.</string>
     <string name="settings_server_username_min_character">Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır.</string>
     <string name="settings_server_password_min_character">Şifre en az 6 karakter olmalıdır.</string>
@@ -549,7 +549,7 @@
     <string name="execution_log_title">Çalıştırma Günlüğü</string>
     <string name="settings_title">Ayarlar</string>
     <string name="settings_connection_timeout">Bağlantı zaman aşımı</string>
-    <string name="settings_servers">Sunucular</string>
+    <string name="settings_category_servers">Sunucular</string>
     <string name="settings_add_new_server">Yeni sunucu ekle</string>
     <string name="settings_other">Diğer</string>
     <string name="settings_disabled">Devre Dışı</string>

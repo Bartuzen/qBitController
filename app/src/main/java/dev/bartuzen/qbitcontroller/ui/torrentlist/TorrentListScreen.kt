@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.torrentlist
 
 import android.Manifest
-import android.content.Intent
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
@@ -202,7 +201,6 @@ import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.ui.icons.Priority
-import dev.bartuzen.qbitcontroller.ui.settings.SettingsActivity
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -243,6 +241,8 @@ fun TorrentListScreen(
     onNavigateToRss: (serverId: Int) -> Unit,
     onNavigateToSearch: (serverId: Int) -> Unit,
     onNavigateToLog: (serverId: Int) -> Unit,
+    onNavigateToSettings: () -> Unit,
+    onNavigateToAddEditServer: (serverId: Int?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TorrentListViewModel = hiltViewModel(),
 ) {
@@ -850,6 +850,7 @@ fun TorrentListScreen(
                         onSelectCategory = { viewModel.setSelectedCategory(it) },
                         onSelectTag = { viewModel.setSelectedTag(it) },
                         onSelectTracker = { viewModel.setSelectedTracker(it) },
+                        onNavigateToEditServer = onNavigateToAddEditServer,
                     )
                 }
             },
@@ -908,6 +909,7 @@ fun TorrentListScreen(
                         onNavigateToRss = onNavigateToRss,
                         onNavigateToSearch = onNavigateToSearch,
                         onNavigateToLog = onNavigateToLog,
+                        onNavigateToSettings = onNavigateToSettings,
                     )
                 },
                 bottomBar = {
@@ -1117,10 +1119,7 @@ fun TorrentListScreen(
                                 ActionMenuItem(
                                     title = context.getString(R.string.main_action_settings),
                                     icon = Icons.Filled.Settings,
-                                    onClick = {
-                                        val intent = Intent(context, SettingsActivity::class.java)
-                                        context.startActivity(intent)
-                                    },
+                                    onClick = onNavigateToSettings,
                                     showAsAction = false,
                                 ),
                                 ActionMenuItem(
@@ -1156,12 +1155,7 @@ fun TorrentListScreen(
                     description = stringResource(R.string.torrent_list_no_server_description),
                     actionButton = {
                         Button(
-                            onClick = {
-                                val intent = Intent(context, SettingsActivity::class.java).apply {
-                                    putExtra(SettingsActivity.Extras.MoveToAddServer, true)
-                                }
-                                context.startActivity(intent)
-                            },
+                            onClick = { onNavigateToAddEditServer(null) },
                         ) {
                             Text(text = stringResource(R.string.torrent_list_no_server_add))
                         }
@@ -1419,9 +1413,9 @@ private fun DrawerContent(
     onSelectCategory: (category: CategoryTag) -> Unit,
     onSelectTag: (tag: CategoryTag) -> Unit,
     onSelectTracker: (tracker: Tracker) -> Unit,
+    onNavigateToEditServer: (serverId: Int?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val statuses = remember {
         listOf(
             Triple(TorrentFilter.ALL, R.string.torrent_list_status_all, Icons.Outlined.FilterAlt),
@@ -1460,10 +1454,7 @@ private fun DrawerContent(
                             onDrawerClose()
                         },
                         onLongClick = {
-                            val intent = Intent(context, SettingsActivity::class.java).apply {
-                                putExtra(SettingsActivity.Extras.EditServerId, serverConfig.id)
-                            }
-                            context.startActivity(intent)
+                            onNavigateToEditServer(id)
                             onDrawerClose()
                         },
                         modifier = Modifier.focusProperties {
@@ -2101,6 +2092,7 @@ private fun TopBar(
     onNavigateToRss: (serverId: Int) -> Unit,
     onNavigateToSearch: (serverId: Int) -> Unit,
     onNavigateToLog: (serverId: Int) -> Unit,
+    onNavigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -2265,10 +2257,7 @@ private fun TopBar(
                     ActionMenuItem(
                         title = context.getString(R.string.main_action_settings),
                         icon = Icons.Filled.Settings,
-                        onClick = {
-                            val intent = Intent(context, SettingsActivity::class.java)
-                            context.startActivity(intent)
-                        },
+                        onClick = { onNavigateToSettings() },
                         showAsAction = false,
                     ),
                     ActionMenuItem(

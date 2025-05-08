@@ -138,7 +138,6 @@ dependencies {
     implementation(libs.androidx.constraintLayout)
     implementation(libs.androidx.swipeRefreshLayout)
     implementation(libs.androidx.fragment)
-    implementation(libs.androidx.preference)
     implementation(libs.androidx.lifecycle.viewModel)
 
     implementation(libs.material)
@@ -187,6 +186,8 @@ dependencies {
     implementation(libs.coil.svg)
 
     implementation(libs.htmlConverter)
+
+    implementation(libs.composePreferences)
 
     implementation(libs.multiplatformSettings)
     implementation(libs.multiplatformSettings.coroutines)

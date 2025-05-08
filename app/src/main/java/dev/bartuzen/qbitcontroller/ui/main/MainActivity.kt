@@ -1,7 +1,9 @@
 package dev.bartuzen.qbitcontroller.ui.main
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -25,8 +27,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
+import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
 import dev.bartuzen.qbitcontroller.ui.log.LogScreen
@@ -38,6 +43,16 @@ import dev.bartuzen.qbitcontroller.ui.rss.rules.RssRulesScreen
 import dev.bartuzen.qbitcontroller.ui.search.plugins.SearchPluginsScreen
 import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultScreen
 import dev.bartuzen.qbitcontroller.ui.search.start.SearchStartScreen
+import dev.bartuzen.qbitcontroller.ui.settings.SettingsScreen
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerKeys
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerResult
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerScreen
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsKeys
+import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsScreen
+import dev.bartuzen.qbitcontroller.ui.settings.appearance.AppearanceSettingsScreen
+import dev.bartuzen.qbitcontroller.ui.settings.general.GeneralSettingsScreen
+import dev.bartuzen.qbitcontroller.ui.settings.network.NetworkSettingsScreen
+import dev.bartuzen.qbitcontroller.ui.settings.servers.ServersScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentKeys
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentScreen
@@ -46,10 +61,12 @@ import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListScreen
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getParcelableArrayListExtraCompat
 import dev.bartuzen.qbitcontroller.utils.getParcelableExtraCompat
+import dev.bartuzen.qbitcontroller.utils.serializableNavType
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -73,6 +90,18 @@ class MainActivity : AppCompatActivity() {
 
                 PersistentLaunchedEffect {
                     onNewIntent(intent)
+                }
+
+                var showNotificationPermission by remember { mutableStateOf(false) }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    val permissionState = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+
+                    LaunchedEffect(showNotificationPermission) {
+                        if (showNotificationPermission && !permissionState.status.shouldShowRationale) {
+                            permissionState.launchPermissionRequest()
+                        }
+                        showNotificationPermission = false
+                    }
                 }
 
                 val transitionDuration = 400
@@ -156,6 +185,12 @@ class MainActivity : AppCompatActivity() {
                             },
                             onNavigateToLog = { serverId ->
                                 navController.navigate(Destination.Log(serverId))
+                            },
+                            onNavigateToSettings = {
+                                navController.navigate(Destination.Settings.Main)
+                            },
+                            onNavigateToAddEditServer = { serverId ->
+                                navController.navigate(Destination.Settings.AddEditServer(serverId))
                             },
                         )
                     }
@@ -322,6 +357,116 @@ class MainActivity : AppCompatActivity() {
                             onNavigateBack = { navController.navigateUp() },
                         )
                     }
+
+                    composable<Destination.Settings.Main> {
+                        SettingsScreen(
+                            onNavigateBack = { navController.navigateUp() },
+                            onNavigateToServerSettings = {
+                                navController.navigate(Destination.Settings.Server)
+                            },
+                            onNavigateToGeneralSettings = {
+                                navController.navigate(Destination.Settings.General)
+                            },
+                            onNavigateToAppearanceSettings = {
+                                navController.navigate(Destination.Settings.Appearance)
+                            },
+                            onNavigateToNetworkSettings = {
+                                navController.navigate(Destination.Settings.Network)
+                            },
+                        )
+                    }
+
+                    composable<Destination.Settings.Server> {
+                        val addEditServerChannel = remember { Channel<AddEditServerResult>() }
+                        val addEditServerResult = it.savedStateHandle.get<AddEditServerResult>(AddEditServerKeys.Result)
+                        LaunchedEffect(addEditServerResult) {
+                            if (addEditServerResult != null) {
+                                addEditServerChannel.send(addEditServerResult)
+                                it.savedStateHandle.remove<AddEditServerResult>(AddEditServerKeys.Result)
+                            }
+                        }
+
+                        ServersScreen(
+                            addEditServerFlow = addEditServerChannel.receiveAsFlow(),
+                            onNavigateBack = { navController.navigateUp() },
+                            onNavigateToAddEditServer = { serverId ->
+                                navController.navigate(Destination.Settings.AddEditServer(serverId))
+                            },
+                        )
+                    }
+
+                    composable<Destination.Settings.AddEditServer> {
+                        val args = it.toRoute<Destination.Settings.AddEditServer>()
+
+                        val advancedSettingsChannel = remember { Channel<ServerConfig.AdvancedSettings>() }
+                        val advancedSettings = it.savedStateHandle.get<ServerConfig.AdvancedSettings?>(
+                            AdvancedServerSettingsKeys.AdvancedSettings,
+                        )
+                        LaunchedEffect(advancedSettings) {
+                            if (advancedSettings != null) {
+                                advancedSettingsChannel.send(advancedSettings)
+
+                                it.savedStateHandle.remove<ServerConfig.AdvancedSettings?>(
+                                    AdvancedServerSettingsKeys.AdvancedSettings,
+                                )
+                            }
+                        }
+
+                        AddEditServerScreen(
+                            serverId = args.serverId,
+                            advancedSettingsFlow = advancedSettingsChannel.receiveAsFlow(),
+                            onNavigateBack = { result ->
+                                navController.previousBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set(AddEditServerKeys.Result, result)
+
+                                navController.navigateUp()
+
+                                if (result == AddEditServerResult.Add) {
+                                    showNotificationPermission = true
+                                }
+                            },
+                            onNavigateToAdvancedSettings = { advancedSettings ->
+                                navController.navigate(Destination.Settings.Advanced(advancedSettings))
+                            },
+                        )
+                    }
+
+                    composable<Destination.Settings.Advanced>(
+                        typeMap = mapOf(
+                            typeOf<ServerConfig.AdvancedSettings>() to
+                                serializableNavType<ServerConfig.AdvancedSettings>(),
+                        ),
+                    ) {
+                        val args = it.toRoute<Destination.Settings.Advanced>()
+                        AdvancedServerSettingsScreen(
+                            advancedSettings = args.advancedSettings,
+                            onNavigateBack = { navController.navigateUp() },
+                            onUpdate = { advancedSettings ->
+                                navController.previousBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set(AdvancedServerSettingsKeys.AdvancedSettings, advancedSettings)
+                            },
+                        )
+                    }
+
+                    composable<Destination.Settings.General> {
+                        GeneralSettingsScreen(
+                            onNavigateBack = { navController.navigateUp() },
+                        )
+                    }
+
+                    composable<Destination.Settings.Appearance> {
+                        AppearanceSettingsScreen(
+                            onNavigateBack = { navController.navigateUp() },
+                        )
+                    }
+
+                    composable<Destination.Settings.Network> {
+                        NetworkSettingsScreen(
+                            onNavigateBack = { navController.navigateUp() },
+                        )
+                    }
                 }
             }
         }
@@ -335,6 +480,10 @@ class MainActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+
+        if (intent.action == Intent.ACTION_APPLICATION_PREFERENCES) {
+            navController?.navigate(Destination.Settings.Main)
+        }
 
         var torrentUrl: String? = null
         var torrentFileUris: List<Uri>? = null

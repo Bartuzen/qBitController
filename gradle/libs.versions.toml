@@ -12,7 +12,6 @@ androidx-recyclerView = "1.4.0"
 androidx-constraintLayout = "2.2.1"
 androidx-swipeRefreshLayout = "1.1.0"
 androidx-fragment = "1.8.6"
-androidx-preference = "1.2.1"
 androidx-lifecycle-viewModel = "2.8.7"
 compose-bom = "2025.04.01"
 compose-navigation = "2.8.9"
@@ -29,6 +28,7 @@ viewBindingPropertyDelegate = "1.5.9"
 desugar = "2.1.5"
 coil = "3.1.0"
 htmlConverter = "1.0.3"
+composePreference = "2.0.0"
 multiplatorm-settings = "1.3.0"
 firebase-bom = "33.13.0"
 ksp = "2.1.20-2.0.0"
@@ -45,7 +45,6 @@ androidx-recyclerView = { group = "androidx.recyclerview", name = "recyclerview"
 androidx-constraintLayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintLayout" }
 androidx-swipeRefreshLayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "androidx-swipeRefreshLayout" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
-androidx-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidx-preference" }
 androidx-lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle-viewModel" }
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -91,6 +90,8 @@ coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "
 coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 
 htmlConverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlConverter" }
+
+composePreferences = { module = "dev.bartuzen:composepreference", version.ref = "composePreference" }
 
 multiplatformSettings = { module="com.russhwolf:multiplatform-settings", version.ref= "multiplatorm-settings" }
 multiplatformSettings-coroutines = { module="com.russhwolf:multiplatform-settings-coroutines", version.ref= "multiplatorm-settings" }

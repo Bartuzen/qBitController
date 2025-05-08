@@ -57,6 +57,10 @@
     <string name="error_unknown">Unknown error: %1$s</string>
     <string name="error_api">API returned an error: %1$d</string>
 
+    <string name="error_required_field">This field is required.</string>
+    <string name="error_invalid_interval">Must be between %1$d and %2$d.</string>
+    <string name="error_invalid_interval_optional">Must be between %1$d and %2$d, or leave blank to disable.</string>
+
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
 
@@ -649,9 +653,12 @@
     <string name="execution_log_title">Execution Log</string>
 
     <string name="settings_title">Settings</string>
-    <string name="settings_servers">Servers</string>
-    <string name="settings_add_new_server">Add new server</string>
-    <string name="settings_other">Other</string>
+
+    <string name="settings_category_servers">Servers</string>
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_appearance">Appearance</string>
+    <string name="settings_category_network">Network</string>
+
     <string name="settings_disabled">Disabled</string>
     <string name="settings_connection_timeout">Connection timeout</string>
     <plurals name="settings_connection_timeout_description">
@@ -676,12 +683,16 @@
     <string name="settings_language">Language</string>
     <string name="settings_language_system_default">System Default</string>
 
+    <string name="settings_servers_add_server">Add Server</string>
+    <string name="settings_servers_no_server_configured">No Server Configured</string>
+
     <string name="settings_server_title_add">Add Server</string>
     <string name="settings_server_title_edit">Edit Server</string>
+    <string name="settings_server_server_info">Server Information</string>
+    <string name="settings_server_credentials">Credentials</string>
     <string name="settings_server_name">Name</string>
-    <string name="settings_server_host">Host</string>
-    <string name="settings_server_port">Port</string>
-    <string name="settings_server_path">Path</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_url_examples">Examples: %1$s</string>
     <string name="settings_server_username">Username</string>
     <string name="settings_server_password">Password</string>
     <string name="settings_server_trust_self_signed_certificates">Trust self-signed certificates</string>
@@ -691,6 +702,7 @@
     <string name="settings_server_action_save">Save</string>
     <string name="settings_server_action_advanced_settings">Advanced Settings</string>
 
+    <string name="settings_server_advanced_title">Advanced Settings</string>
     <string name="settings_server_advanced_basic_auth">Basic Authentication</string>
     <string name="settings_server_advanced_basic_auth_enabled">Enabled</string>
     <string name="settings_server_advanced_basic_auth_username">Username</string>
@@ -712,11 +724,9 @@
     <string name="settings_server_add_success">Server has been added successfully.</string>
     <string name="settings_server_edit_success">Server has been edited successfully.</string>
     <string name="settings_server_remove_success">Server has been removed successfully.</string>
-    <string name="settings_server_required_field">This field is required.</string>
-    <string name="settings_server_port_must_be_between">Port must be between 1 and 65535.</string>
+    <string name="settings_server_invalid_url">The URL format is invalid.</string>
     <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
-    <string name="settings_server_url_configuration_not_valid">Entered URL configuration is not valid.</string>
     <string name="settings_server_connection_success">Connected to server successfully.</string>
 
     <string name="about_description">qBitController allows you to control qBittorrent from an Android device.\n\nFor more detailed information and source code: %1$s</string>

@@ -521,7 +521,7 @@
     <string name="search_plugins_action_update_plugins">更新插件</string>
     <string name="execution_log_title">运行日志</string>
     <string name="settings_title">设置</string>
-    <string name="settings_servers">服务器</string>
+    <string name="settings_category_servers">服务器</string>
     <string name="settings_add_new_server">添加新服务器</string>
     <string name="settings_other">其他</string>
     <string name="settings_disabled">已禁用</string>
@@ -562,7 +562,7 @@
     <string name="settings_server_add_success">已成功添加服务器。</string>
     <string name="settings_server_edit_success">已成功编辑服务器。</string>
     <string name="settings_server_remove_success">已成功移除服务器。</string>
-    <string name="settings_server_required_field">该字段不得为空。</string>
+    <string name="error_required_field">该字段不得为空。</string>
     <string name="settings_server_port_must_be_between">端口必须介于 1 和 65535 之间。</string>
     <string name="settings_server_username_min_character">用户名长度至少为 3 个字符。</string>
     <string name="settings_server_password_min_character">密码长度至少为 6 个字符。</string>

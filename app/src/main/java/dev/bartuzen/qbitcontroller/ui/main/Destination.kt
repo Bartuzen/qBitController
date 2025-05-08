@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.main
 
+import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.serialization.Serializable
 
 sealed class Destination {
@@ -44,4 +45,27 @@ sealed class Destination {
 
     @Serializable
     data class Log(val serverId: Int) : Destination()
+
+    sealed class Settings {
+        @Serializable
+        data object Main : Destination()
+
+        @Serializable
+        data object Server : Destination()
+
+        @Serializable
+        data class AddEditServer(val serverId: Int?) : Destination()
+
+        @Serializable
+        data class Advanced(val advancedSettings: ServerConfig.AdvancedSettings) : Destination()
+
+        @Serializable
+        data object General : Destination()
+
+        @Serializable
+        data object Appearance : Destination()
+
+        @Serializable
+        data object Network : Destination()
+    }
 }

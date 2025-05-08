@@ -352,7 +352,7 @@
         <item quantity="one">%1$d minut</item>
         <item quantity="other">%1$d minutter</item>
     </plurals>
-    <string name="settings_server_required_field">Dette felt er påkrævet.</string>
+    <string name="error_required_field">Dette felt er påkrævet.</string>
     <string name="settings_server_connection_success">Server tilsluttet.</string>
     <string name="settings_server_add_success">Server tilføjet.</string>
     <string name="settings_server_edit_success">Server er blevet redigeret.</string>
@@ -474,7 +474,7 @@
     <string name="torrent_trackers_downloaded">Downloadet</string>
     <string name="torrent_add_torrent_management_mode_auto">Automatisk</string>
     <string name="search_start_category_anime">Anime</string>
-    <string name="settings_servers">Servere</string>
+    <string name="settings_category_servers">Servere</string>
     <string name="torrent_overview_transfer">Overfør</string>
     <string name="torrent_add_stop_condition_none">Ingen</string>
     <string name="speed_kibibytes_per_second">KiB/s</string>

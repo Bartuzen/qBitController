@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.model
 
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -9,53 +10,58 @@ import kotlinx.serialization.Serializable
 data class ServerConfig(
     val id: Int,
     val name: String?,
-    val protocol: Protocol,
-    val host: String,
-    val port: Int?,
-    val path: String?,
+    val url: String,
     val username: String?,
     val password: String?,
-    val trustSelfSignedCertificates: Boolean = false,
-    val basicAuth: BasicAuth = BasicAuth(false, null, null),
-    val dnsOverHttps: DnsOverHttps? = null,
+    val advanced: AdvancedSettings = AdvancedSettings(),
 ) : Parcelable {
-    val url: String
-        get() {
-            val url = "${protocol.toString().lowercase()}://$visibleUrl"
-            return if (!url.endsWith("/")) {
-                "$url/"
-            } else {
-                url
-            }
+    companion object {
+        val protocolRegex = Regex("^https?://")
+    }
+
+    @IgnoredOnParcel
+    val requestUrl = buildString {
+        if (!url.contains("://")) {
+            append("http://")
         }
 
-    val visibleUrl
-        get() = buildString {
-            append(host)
-            port?.let { port ->
-                append(":$port")
-            }
-            path?.let { path ->
-                append("/$path")
-            }
-        }
+        append(url)
 
-    val displayName
-        get() = name ?: visibleUrl
+        if (!url.endsWith("/")) {
+            append("/")
+        }
+    }
+
+    @IgnoredOnParcel
+    val visibleUrl = url.replace(protocolRegex, "")
+
+    @IgnoredOnParcel
+    val displayName = name ?: visibleUrl
+
+    @IgnoredOnParcel
+    val protocol = if (url.substringBefore("://", "").equals("https", ignoreCase = true)) Protocol.HTTPS else Protocol.HTTP
+
+    @Parcelize
+    @Serializable
+    data class AdvancedSettings(
+        val trustSelfSignedCertificates: Boolean = false,
+        val basicAuth: BasicAuth = BasicAuth(false, null, null),
+        val dnsOverHttps: DnsOverHttps? = null,
+    ) : Parcelable {
+        @Parcelize
+        @Serializable
+        data class BasicAuth(
+            val isEnabled: Boolean,
+            val username: String?,
+            val password: String?,
+        ) : Parcelable
+    }
 }
 
 enum class Protocol {
     HTTP,
     HTTPS,
 }
-
-@Parcelize
-@Serializable
-data class BasicAuth(
-    val isEnabled: Boolean,
-    val username: String?,
-    val password: String?,
-) : Parcelable
 
 // https://github.com/mihonapp/mihon/blob/main/core/common/src/main/kotlin/eu/kanade/tachiyomi/network/DohProviders.kt
 enum class DnsOverHttps(val url: String, val bootstrapDnsHosts: List<String>) {

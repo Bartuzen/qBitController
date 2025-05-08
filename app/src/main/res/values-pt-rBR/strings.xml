@@ -46,7 +46,7 @@
     <string name="search_plugins_action_install_plugins">Instalar plugins</string>
     <string name="search_plugins_action_update_plugins">Atualizar plugins</string>
     <string name="settings_title">Configurações</string>
-    <string name="settings_servers">Servidores</string>
+    <string name="settings_category_servers">Servidores</string>
     <string name="settings_add_new_server">Adicionar novo servidor</string>
     <string name="settings_other">Outros</string>
     <plurals name="settings_connection_timeout_description">
@@ -524,7 +524,7 @@
     <string name="settings_server_add_success">O servidor foi adicionado com sucesso.</string>
     <string name="settings_server_edit_success">O servidor foi editado com sucesso.</string>
     <string name="settings_server_remove_success">O servidor foi removido com sucesso.</string>
-    <string name="settings_server_required_field">Campo obrigatório.</string>
+    <string name="error_required_field">Campo obrigatório.</string>
     <string name="settings_server_port_must_be_between">A porta deve estar entre 1 e 65535.</string>
     <string name="settings_server_username_min_character">O nome de usuário deve ter pelo menos 3 caracteres.</string>
     <string name="settings_server_password_min_character">A senha deve ter pelo menos 6 caracteres.</string>

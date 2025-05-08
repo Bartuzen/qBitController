@@ -81,12 +81,12 @@ class RequestManager @Inject constructor(
         addInterceptor(timeoutInterceptor)
         addInterceptor(userAgentInterceptor)
 
-        val basicAuth = serverConfig.basicAuth
+        val basicAuth = serverConfig.advanced.basicAuth
         if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
             addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
         }
 
-        if (serverConfig.protocol == Protocol.HTTPS && serverConfig.trustSelfSignedCertificates) {
+        if (serverConfig.protocol == Protocol.HTTPS && serverConfig.advanced.trustSelfSignedCertificates) {
             val sslContext = SSLContext.getInstance("SSL")
             sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
             sslSocketFactory(sslContext.socketFactory, trustAllManager)
@@ -95,11 +95,11 @@ class RequestManager @Inject constructor(
 
         retryOnConnectionFailure(true)
 
-        if (serverConfig.dnsOverHttps != null) {
+        if (serverConfig.advanced.dnsOverHttps != null) {
             val dns = DnsOverHttps.Builder().apply {
                 client(this@clientBuilder.build())
-                url(serverConfig.dnsOverHttps.url.toHttpUrl())
-                bootstrapDnsHosts(serverConfig.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) })
+                url(serverConfig.advanced.dnsOverHttps.url.toHttpUrl())
+                bootstrapDnsHosts(serverConfig.advanced.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) })
             }.build()
 
             dns(dns)
@@ -112,7 +112,7 @@ class RequestManager @Inject constructor(
     }
 
     fun buildTorrentService(serverConfig: ServerConfig, okHttpClient: OkHttpClient) = Retrofit.Builder()
-        .baseUrl(serverConfig.url)
+        .baseUrl(serverConfig.requestUrl)
         .client(okHttpClient)
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))

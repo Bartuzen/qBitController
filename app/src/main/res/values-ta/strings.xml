@@ -449,7 +449,7 @@
     <string name="settings_server_advanced_basic_auth_enabled">இயக்கப்பட்டது</string>
     <string name="settings_server_add_success">சேவையகம் வெற்றிகரமாக சேர்க்கப்பட்டுள்ளது.</string>
     <string name="settings_server_remove_success">சேவையகம் வெற்றிகரமாக அகற்றப்பட்டுள்ளது.</string>
-    <string name="settings_server_required_field">இந்த புலம் தேவை.</string>
+    <string name="error_required_field">இந்த புலம் தேவை.</string>
     <string name="notification_torrent_downloaded">டொரண்ட் பதிவிறக்கம்</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
     <string name="eta_days_hours">%1$sd %2$sh</string>
@@ -578,7 +578,7 @@
     <string name="search_plugins_action_update_plugins">செருகுநிரல்களைப் புதுப்பிக்கவும்</string>
     <string name="execution_log_title">சாவுஒறுப்பு பதிவு</string>
     <string name="settings_title">அமைப்புகள்</string>
-    <string name="settings_servers">சேவையகங்கள்</string>
+    <string name="settings_category_servers">சேவையகங்கள்</string>
     <string name="settings_add_new_server">புதிய சேவையகத்தைச் சேர்க்கவும்</string>
     <string name="settings_other">மற்றொன்று</string>
     <string name="settings_disabled">முடக்கப்பட்டது</string>

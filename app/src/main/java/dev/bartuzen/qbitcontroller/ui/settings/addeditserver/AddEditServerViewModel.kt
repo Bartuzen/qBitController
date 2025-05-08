@@ -2,6 +2,9 @@ package dev.bartuzen.qbitcontroller.ui.settings.addeditserver
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -17,13 +20,18 @@ import kotlinx.coroutines.launch
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import javax.inject.Inject
 
-@HiltViewModel
-class AddEditServerViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = AddEditServerViewModel.Factory::class)
+class AddEditServerViewModel @AssistedInject constructor(
+    @Assisted private val serverId: Int?,
     private val serverManager: ServerManager,
     private val requestManager: RequestManager,
 ) : ViewModel() {
+    @AssistedFactory
+    interface Factory {
+        fun create(serverId: Int?): AddEditServerViewModel
+    }
+
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
@@ -32,7 +40,7 @@ class AddEditServerViewModel @Inject constructor(
 
     private var testJob: Job? = null
 
-    fun getServerConfig(serverId: Int) = serverManager.getServer(serverId)
+    val serverConfig = serverId?.let { serverManager.getServer(it) }
 
     fun addServer(serverConfig: ServerConfig) = viewModelScope.launch {
         serverManager.addServer(serverConfig)

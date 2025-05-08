@@ -234,7 +234,7 @@
     <string name="search_plugins_save_success">外掛程式儲存成功。</string>
     <string name="search_plugins_install_success">外掛程式安裝成功。</string>
     <string name="settings_title">設定</string>
-    <string name="settings_servers">伺服器</string>
+    <string name="settings_category_servers">伺服器</string>
     <string name="execution_log_title">執行日誌</string>
     <string name="settings_server_trust_self_signed_certificates">信任自簽名證書</string>
     <string name="torrent_status_force_downloading">[F] 下載</string>
@@ -580,7 +580,7 @@
     <string name="settings_server_add_success">已成功新增伺服器。</string>
     <string name="settings_server_edit_success">已成功編輯伺服器。</string>
     <string name="settings_server_remove_success">已成功移除伺服器。</string>
-    <string name="settings_server_required_field">該欄位不得為空。</string>
+    <string name="error_required_field">該欄位不得為空。</string>
     <string name="notification_torrent_downloaded">種子已下載</string>
     <string name="torrent_overview_popularity">流行度</string>
     <string name="torrent_files_priority_maximum">最高</string>
