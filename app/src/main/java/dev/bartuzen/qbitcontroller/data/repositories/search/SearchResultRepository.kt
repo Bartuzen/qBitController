@@ -1,11 +1,8 @@
 package dev.bartuzen.qbitcontroller.data.repositories.search
 
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SearchResultRepository @Inject constructor(
+class SearchResultRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun startSearch(serverId: Int, pattern: String, category: String, plugins: String) =

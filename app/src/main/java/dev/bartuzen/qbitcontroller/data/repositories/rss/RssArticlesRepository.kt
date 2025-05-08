@@ -1,11 +1,8 @@
 package dev.bartuzen.qbitcontroller.data.repositories.rss
 
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RssArticlesRepository @Inject constructor(
+class RssArticlesRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun getRssFeeds(serverId: Int) = requestManager.request(serverId) { service ->

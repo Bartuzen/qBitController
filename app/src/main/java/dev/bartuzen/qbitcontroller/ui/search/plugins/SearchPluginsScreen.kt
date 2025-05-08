@@ -74,7 +74,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Plugin
@@ -90,17 +89,15 @@ import dev.bartuzen.qbitcontroller.utils.stateMapSaver
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SearchPluginsScreen(
     serverId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchPluginsViewModel = hiltViewModel(
-        creationCallback = { factory: SearchPluginsViewModel.Factory ->
-            factory.create(serverId)
-        },
-    ),
+    viewModel: SearchPluginsViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val plugins by viewModel.plugins.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()

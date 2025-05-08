@@ -27,17 +27,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.app.NotificationManagerCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import me.zhanghai.compose.preference.SwitchPreference
 import me.zhanghai.compose.preference.TextFieldPreference
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun GeneralSettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: GeneralSettingsViewModel = hiltViewModel(),
+    viewModel: GeneralSettingsViewModel = koinViewModel(),
 ) {
     Scaffold(
         modifier = modifier,

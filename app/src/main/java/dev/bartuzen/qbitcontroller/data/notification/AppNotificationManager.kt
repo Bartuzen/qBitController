@@ -13,22 +13,18 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
 
-@Singleton
-class AppNotificationManager @Inject constructor(
+class AppNotificationManager(
     private val serverManager: ServerManager,
     private val settingsManager: SettingsManager,
-    @ApplicationContext private val context: Context,
+    private val context: Context,
 ) {
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

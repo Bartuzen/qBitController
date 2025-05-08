@@ -2,10 +2,6 @@ package dev.bartuzen.qbitcontroller.ui.search.start
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchStartRepository
 import dev.bartuzen.qbitcontroller.model.Plugin
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -16,16 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = SearchStartViewModel.Factory::class)
-class SearchStartViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
+class SearchStartViewModel(
+    private val serverId: Int,
     private val repository: SearchStartRepository,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int): SearchStartViewModel
-    }
-
     private val _plugins = MutableStateFlow<List<Plugin>?>(null)
     val plugins = _plugins.asStateFlow()
 

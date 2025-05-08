@@ -5,11 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil3.ImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPeersRepository
@@ -26,21 +21,15 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel(assistedFactory = TorrentPeersViewModel.Factory::class)
-class TorrentPeersViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
-    @Assisted private val torrentHash: String,
+class TorrentPeersViewModel(
+    private val serverId: Int,
+    private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentPeersRepository,
     private val serverManager: ServerManager,
     private val requestManager: RequestManager,
-    @ApplicationContext private val context: Context,
+    context: Context,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int, torrentHash: String): TorrentPeersViewModel
-    }
-
     private val _peers = MutableStateFlow<List<TorrentPeer>?>(null)
     val peers = _peers.asStateFlow()
 

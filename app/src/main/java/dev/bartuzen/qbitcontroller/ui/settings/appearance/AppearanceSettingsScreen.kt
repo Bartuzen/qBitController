@@ -25,12 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.os.LocaleListCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.Theme
 import me.zhanghai.compose.preference.ListPreference
 import me.zhanghai.compose.preference.Preference
+import org.koin.compose.viewmodel.koinViewModel
 import org.xmlpull.v1.XmlPullParser
 import java.util.Locale
 
@@ -38,7 +38,7 @@ import java.util.Locale
 fun AppearanceSettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AppearanceSettingsViewModel = hiltViewModel(),
+    viewModel: AppearanceSettingsViewModel = koinViewModel(),
 ) {
     Scaffold(
         modifier = modifier,

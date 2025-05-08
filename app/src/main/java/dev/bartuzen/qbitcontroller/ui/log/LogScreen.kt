@@ -55,7 +55,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Log
@@ -67,17 +66,15 @@ import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun LogScreen(
     serverId: Int,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: LogViewModel = hiltViewModel(
-        creationCallback = { factory: LogViewModel.Factory ->
-            factory.create(serverId)
-        },
-    ),
+    viewModel: LogViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val logs by viewModel.logs.collectAsStateWithLifecycle()
     val context = LocalContext.current

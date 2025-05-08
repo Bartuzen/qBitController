@@ -4,19 +4,15 @@ import android.content.Context
 import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.get
 import com.russhwolf.settings.set
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ServerManager @Inject constructor(
-    @ApplicationContext context: Context,
+class ServerManager(
+    context: Context,
 ) {
     private val settings = SharedPreferencesSettings(context.getSharedPreferences("servers", Context.MODE_PRIVATE))
 

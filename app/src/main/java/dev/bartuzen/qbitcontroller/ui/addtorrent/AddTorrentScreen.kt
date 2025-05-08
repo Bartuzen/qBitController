@@ -75,7 +75,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
@@ -92,6 +91,8 @@ import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 import java.text.DecimalFormatSymbols
 
 object AddTorrentKeys {
@@ -106,11 +107,7 @@ fun AddTorrentScreen(
     onNavigateBack: () -> Unit,
     onAddTorrent: (serverId: Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AddTorrentViewModel = hiltViewModel(
-        creationCallback = { factory: AddTorrentViewModel.Factory ->
-            factory.create(initialServerId)
-        },
-    ),
+    viewModel: AddTorrentViewModel = koinViewModel(parameters = { parametersOf(initialServerId) }),
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

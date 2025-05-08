@@ -4,7 +4,6 @@ import android.content.Context
 import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.get
 import com.russhwolf.settings.set
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.booleanOrNull
@@ -12,12 +11,9 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class ConfigMigrator @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ConfigMigrator(
+    private val context: Context,
 ) {
     private val currentVersion = 4
 

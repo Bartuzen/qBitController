@@ -3,10 +3,6 @@ package dev.bartuzen.qbitcontroller.ui.rss.articles
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeedWithData
@@ -23,19 +19,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = RssArticlesViewModel.Factory::class)
-class RssArticlesViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
-    @Assisted feedPath: List<String>,
-    @Assisted private val uid: String?,
+class RssArticlesViewModel(
+    private val serverId: Int,
+    feedPath: List<String>,
+    private val uid: String?,
     private val savedStateHandle: SavedStateHandle,
     private val repository: RssArticlesRepository,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int, feedPath: List<String>, uid: String?): RssArticlesViewModel
-    }
-
     private val rssArticles = MutableStateFlow<List<Article>?>(null)
 
     private val eventChannel = Channel<Event>()

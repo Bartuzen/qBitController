@@ -89,7 +89,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
@@ -107,6 +106,8 @@ import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun RssFeedsScreen(
@@ -116,11 +117,7 @@ fun RssFeedsScreen(
     onNavigateToArticles: (feedPath: List<String>, uid: String?) -> Unit,
     onNavigateToRules: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RssFeedsViewModel = hiltViewModel(
-        creationCallback = { factory: RssFeedsViewModel.Factory ->
-            factory.create(serverId)
-        },
-    ),
+    viewModel: RssFeedsViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val rssFeeds by viewModel.rssFeeds.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()

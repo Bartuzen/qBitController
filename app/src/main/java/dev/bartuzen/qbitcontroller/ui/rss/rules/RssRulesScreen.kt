@@ -72,7 +72,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.RssRule
@@ -87,6 +86,8 @@ import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun RssRulesScreen(
@@ -94,11 +95,7 @@ fun RssRulesScreen(
     onNavigateBack: () -> Unit,
     onNavigateToEditRule: (ruleName: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RssRulesViewModel = hiltViewModel(
-        creationCallback = { factory: RssRulesViewModel.Factory ->
-            factory.create(serverId)
-        },
-    ),
+    viewModel: RssRulesViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val rssRules by viewModel.rssRules.collectAsStateWithLifecycle()
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()

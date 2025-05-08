@@ -79,7 +79,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.HtmlStyle
 import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
@@ -100,6 +99,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 object RssArticlesKeys {
     const val IsUpdated = "rssArticles.isUpdated"
@@ -115,11 +116,7 @@ fun RssArticlesScreen(
     onNavigateBack: () -> Unit,
     onNavigateToAddTorrent: (torrentUrl: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: RssArticlesViewModel = hiltViewModel(
-        creationCallback = { factory: RssArticlesViewModel.Factory ->
-            factory.create(serverId, feedPath, uid)
-        },
-    ),
+    viewModel: RssArticlesViewModel = koinViewModel(parameters = { parametersOf(serverId, feedPath, uid) }),
 ) {
     val articles by viewModel.filteredArticles.collectAsStateWithLifecycle()
     val feedPath by viewModel.feedPath.collectAsStateWithLifecycle()

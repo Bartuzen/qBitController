@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.TorrentSort
@@ -35,11 +34,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import kotlinx.parcelize.Parcelize
-import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel
-class TorrentListViewModel @Inject constructor(
+class TorrentListViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val serverManager: ServerManager,
     private val repository: TorrentListRepository,

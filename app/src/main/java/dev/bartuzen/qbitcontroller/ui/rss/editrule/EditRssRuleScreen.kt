@@ -59,7 +59,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.RssRule
@@ -72,6 +71,8 @@ import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun EditRssRuleScreen(
@@ -79,11 +80,7 @@ fun EditRssRuleScreen(
     ruleName: String,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EditRssRuleViewModel = hiltViewModel(
-        creationCallback = { factory: EditRssRuleViewModel.Factory ->
-            factory.create(serverId, ruleName)
-        },
-    ),
+    viewModel: EditRssRuleViewModel = koinViewModel(parameters = { parametersOf(serverId, ruleName) }),
 ) {
     val rssRule by viewModel.rssRule.collectAsStateWithLifecycle()
     val categories by viewModel.categories.collectAsStateWithLifecycle()

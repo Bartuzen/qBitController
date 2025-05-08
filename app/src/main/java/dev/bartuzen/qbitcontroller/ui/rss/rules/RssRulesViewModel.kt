@@ -2,10 +2,6 @@ package dev.bartuzen.qbitcontroller.ui.rss.rules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssRulesRepository
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -16,16 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = RssRulesViewModel.Factory::class)
-class RssRulesViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
+class RssRulesViewModel(
+    private val serverId: Int,
     private val repository: RssRulesRepository,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int): RssRulesViewModel
-    }
-
     private val _rssRules = MutableStateFlow<Map<String, RssRule>?>(null)
     val rssRules = _rssRules.asStateFlow()
 

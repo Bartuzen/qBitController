@@ -97,7 +97,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.SearchSort
@@ -123,6 +122,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SearchResultScreen(
@@ -134,11 +135,8 @@ fun SearchResultScreen(
     onNavigateBack: () -> Unit,
     onNavigateToAddTorrent: (torrentUrl: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchResultViewModel = hiltViewModel(
-        creationCallback = { factory: SearchResultViewModel.Factory ->
-            factory.create(serverId, searchQuery, category, plugins)
-        },
-    ),
+    viewModel: SearchResultViewModel =
+        koinViewModel(parameters = { parametersOf(serverId, searchQuery, category, plugins) }),
 ) {
     val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
     val searchCount by viewModel.searchCount.collectAsStateWithLifecycle()

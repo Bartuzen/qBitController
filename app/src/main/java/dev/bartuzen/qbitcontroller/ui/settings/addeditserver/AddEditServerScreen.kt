@@ -73,7 +73,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.ServerConfig
@@ -87,6 +86,8 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 object AddEditServerKeys {
     const val Result = "addEditServer.result"
@@ -99,11 +100,7 @@ fun AddEditServerScreen(
     onNavigateBack: (result: AddEditServerResult?) -> Unit,
     onNavigateToAdvancedSettings: (advancedSettings: AdvancedSettings) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AddEditServerViewModel = hiltViewModel(
-        creationCallback = { factory: AddEditServerViewModel.Factory ->
-            factory.create(serverId)
-        },
-    ),
+    viewModel: AddEditServerViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

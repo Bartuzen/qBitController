@@ -4,10 +4,6 @@ import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SearchSort
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchResultRepository
@@ -31,26 +27,15 @@ import kotlinx.coroutines.withContext
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
-@HiltViewModel(assistedFactory = SearchResultViewModel.Factory::class)
-class SearchResultViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
-    @Assisted("searchQuery") private val searchQuery: String,
-    @Assisted("category") private val category: String,
-    @Assisted("plugins") private val plugins: String,
+class SearchResultViewModel(
+    private val serverId: Int,
+    private val searchQuery: String,
+    private val category: String,
+    private val plugins: String,
     private val repository: SearchResultRepository,
     private val settingsManager: SettingsManager,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            serverId: Int,
-            @Assisted("searchQuery") searchQuery: String,
-            @Assisted("category") category: String,
-            @Assisted("plugins") plugins: String,
-        ): SearchResultViewModel
-    }
-
     private val searchResult = MutableStateFlow<Search?>(null)
 
     private val filterQuery = savedStateHandle.getStateFlow("filterQuery", "")

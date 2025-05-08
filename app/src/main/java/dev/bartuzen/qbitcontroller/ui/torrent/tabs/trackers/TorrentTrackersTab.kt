@@ -87,7 +87,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
@@ -103,6 +102,8 @@ import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun TorrentTrackersTab(
@@ -113,11 +114,7 @@ fun TorrentTrackersTab(
     actionsEventFlow: MutableSharedFlow<Pair<Int, List<ActionMenuItem>>>,
     bottomBarStateEventFlow: MutableSharedFlow<Triple<Int, Dp, Boolean>>,
     modifier: Modifier = Modifier,
-    viewModel: TorrentTrackersViewModel = hiltViewModel(
-        creationCallback = { factory: TorrentTrackersViewModel.Factory ->
-            factory.create(serverId, torrentHash)
-        },
-    ),
+    viewModel: TorrentTrackersViewModel = koinViewModel(parameters = { parametersOf(serverId, torrentHash) }),
 ) {
     val context = LocalContext.current
 

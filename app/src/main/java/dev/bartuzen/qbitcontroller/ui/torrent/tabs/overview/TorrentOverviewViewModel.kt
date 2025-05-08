@@ -5,11 +5,6 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
@@ -35,23 +30,14 @@ import okhttp3.ResponseBody
 import java.io.IOException
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel(assistedFactory = TorrentOverviewViewModel.Factory::class)
-class TorrentOverviewViewModel @AssistedInject constructor(
-    @Assisted("serverId") private val serverId: Int,
-    @Assisted("torrentHash") private val torrentHash: String,
+class TorrentOverviewViewModel(
+    private val serverId: Int,
+    private val torrentHash: String,
     settingsManager: SettingsManager,
-    @ApplicationContext private val context: Context,
+    private val context: Context,
     private val repository: TorrentOverviewRepository,
     private val notifier: TorrentDownloadedNotifier,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(
-            @Assisted("serverId") serverId: Int,
-            @Assisted("torrentHash") torrentHash: String,
-        ): TorrentOverviewViewModel
-    }
-
     private val _torrent = MutableStateFlow<Torrent?>(null)
     val torrent = _torrent.asStateFlow()
 

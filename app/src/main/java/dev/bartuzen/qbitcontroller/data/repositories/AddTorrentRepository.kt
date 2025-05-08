@@ -6,11 +6,8 @@ import dev.bartuzen.qbitcontroller.network.RequestResult
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class AddTorrentRepository @Inject constructor(
+class AddTorrentRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun addTorrent(

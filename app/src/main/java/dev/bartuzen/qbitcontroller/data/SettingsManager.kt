@@ -2,14 +2,10 @@ package dev.bartuzen.qbitcontroller.data
 
 import android.content.Context
 import com.russhwolf.settings.SharedPreferencesSettings
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class SettingsManager @Inject constructor(
-    @ApplicationContext context: Context,
+class SettingsManager(
+    context: Context,
 ) {
     private val settings = SharedPreferencesSettings(context.getSharedPreferences("settings", Context.MODE_PRIVATE))
 

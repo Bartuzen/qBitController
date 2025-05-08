@@ -2,10 +2,6 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTrackersRepository
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
@@ -20,18 +16,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel(assistedFactory = TorrentTrackersViewModel.Factory::class)
-class TorrentTrackersViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
-    @Assisted private val torrentHash: String,
+class TorrentTrackersViewModel(
+    private val serverId: Int,
+    private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentTrackersRepository,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int, torrentHash: String): TorrentTrackersViewModel
-    }
-
     private val _trackers = MutableStateFlow<List<TorrentTracker>?>(null)
     val trackers = _trackers.asStateFlow()
 

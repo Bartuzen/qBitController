@@ -2,11 +2,8 @@ package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TorrentOverviewRepository @Inject constructor(
+class TorrentOverviewRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun getTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->

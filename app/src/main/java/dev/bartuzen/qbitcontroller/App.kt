@@ -5,49 +5,40 @@ import android.app.UiModeManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.getSystemService
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.work.Configuration
 import com.google.android.material.color.DynamicColors
-import dagger.Lazy
-import dagger.hilt.android.HiltAndroidApp
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
+import dev.bartuzen.qbitcontroller.ui.di.appModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.context.startKoin
 
-@HiltAndroidApp
-class App : Application(), Configuration.Provider {
-    @Inject
-    lateinit var workerFactory: HiltWorkerFactory
-
-    @Inject
-    @Suppress("ktlint:standard:backing-property-naming")
-    lateinit var _settingsManager: Lazy<SettingsManager>
-    private val settingsManager: SettingsManager get() = _settingsManager.get()
-
-    @Inject
-    lateinit var configMigrator: ConfigMigrator
-
-    @Inject
-    @Suppress("ktlint:standard:backing-property-naming")
-    lateinit var _notificationManager: Lazy<AppNotificationManager>
-    private val notificationManager: AppNotificationManager get() = _notificationManager.get()
-
-    override val workManagerConfiguration
-        get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
-
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            androidContext(this@App)
+            workManagerFactory()
+            androidLogger()
+            modules(appModule)
+        }
+
         DynamicColors.applyToActivitiesIfAvailable(this)
 
+        val configMigrator by inject<ConfigMigrator>()
         configMigrator.run()
+
+        val settingsManager by inject<SettingsManager>()
+        val notificationManager by inject<AppNotificationManager>()
 
         notificationManager.updateChannels()
         CoroutineScope(Dispatchers.Main).launch {

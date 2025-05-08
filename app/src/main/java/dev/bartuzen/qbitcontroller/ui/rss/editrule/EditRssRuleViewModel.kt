@@ -3,10 +3,6 @@ package dev.bartuzen.qbitcontroller.ui.rss.editrule
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.rss.EditRssRuleRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.RssRule
@@ -23,18 +19,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-@HiltViewModel(assistedFactory = EditRssRuleViewModel.Factory::class)
-class EditRssRuleViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
-    @Assisted private val ruleName: String,
+class EditRssRuleViewModel(
+    private val serverId: Int,
+    private val ruleName: String,
     private val repository: EditRssRuleRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int, ruleName: String): EditRssRuleViewModel
-    }
-
     private val _rssRule = MutableStateFlow<RssRule?>(null)
     val rssRule = _rssRule.asStateFlow()
 

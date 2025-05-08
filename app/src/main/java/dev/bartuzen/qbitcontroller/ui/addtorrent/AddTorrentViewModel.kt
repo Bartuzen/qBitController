@@ -7,11 +7,6 @@ import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -31,19 +26,13 @@ import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import java.io.FileNotFoundException
 
-@HiltViewModel(assistedFactory = AddTorrentViewModel.Factory::class)
-class AddTorrentViewModel @AssistedInject constructor(
-    @ApplicationContext private val context: Context,
-    @Assisted initialServerId: Int?,
+class AddTorrentViewModel(
+    initialServerId: Int?,
+    private val context: Context,
     private val savedStateHandle: SavedStateHandle,
     private val repository: AddTorrentRepository,
     private val serverManager: ServerManager,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(initialServerId: Int?): AddTorrentViewModel
-    }
-
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 

@@ -85,7 +85,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.material.color.MaterialColors
 import dev.bartuzen.qbitcontroller.R
@@ -108,6 +107,8 @@ import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun TorrentFilesTab(
@@ -117,11 +118,7 @@ fun TorrentFilesTab(
     snackbarEventFlow: MutableSharedFlow<String>,
     bottomBarStateEventFlow: MutableSharedFlow<Triple<Int, Dp, Boolean>>,
     modifier: Modifier = Modifier,
-    viewModel: TorrentFilesViewModel = hiltViewModel(
-        creationCallback = { factory: TorrentFilesViewModel.Factory ->
-            factory.create(serverId, torrentHash)
-        },
-    ),
+    viewModel: TorrentFilesViewModel = koinViewModel(parameters = { parametersOf(serverId, torrentHash) }),
 ) {
     val context = LocalContext.current
 

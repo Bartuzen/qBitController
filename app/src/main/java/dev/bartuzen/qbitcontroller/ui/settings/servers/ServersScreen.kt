@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
@@ -39,6 +38,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import me.zhanghai.compose.preference.Preference
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ServersScreen(
@@ -46,7 +46,7 @@ fun ServersScreen(
     onNavigateBack: () -> Unit,
     onNavigateToAddEditServer: (serverId: Int?) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ServersViewModel = hiltViewModel(),
+    viewModel: ServersViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()

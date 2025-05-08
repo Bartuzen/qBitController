@@ -9,8 +9,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlin.parcelize)
-    alias(libs.plugins.hilt)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.compose.compiler)
@@ -150,8 +148,6 @@ dependencies {
 
     implementation(libs.compose.navigation)
 
-    implementation(libs.compose.hilt)
-
     implementation(libs.accompanist.permissions)
 
     implementation(libs.coroutines.core)
@@ -160,11 +156,13 @@ dependencies {
     implementation(libs.kotlinxSerialization)
 
     implementation(libs.work.runtime)
-    implementation(libs.work.hilt.core)
-    ksp(libs.work.hilt.compiler)
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.androidx.workManager)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewModel)
+    implementation(libs.koin.compose.viewModel.navigation)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.scalars)

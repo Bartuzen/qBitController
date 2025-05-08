@@ -29,7 +29,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import dagger.hilt.android.AndroidEntryPoint
 import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
@@ -65,13 +64,11 @@ import dev.bartuzen.qbitcontroller.utils.serializableNavType
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 import kotlin.reflect.typeOf
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var notificationManager: AppNotificationManager
+    private val notificationManager by inject<AppNotificationManager>()
 
     private val serverIdChannel = Channel<Int>()
 

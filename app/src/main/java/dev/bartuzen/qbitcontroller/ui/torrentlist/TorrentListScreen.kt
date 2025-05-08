@@ -177,7 +177,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
@@ -222,6 +221,7 @@ import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.SortedMap
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -244,7 +244,7 @@ fun TorrentListScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToAddEditServer: (serverId: Int?) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: TorrentListViewModel = hiltViewModel(),
+    viewModel: TorrentListViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
 

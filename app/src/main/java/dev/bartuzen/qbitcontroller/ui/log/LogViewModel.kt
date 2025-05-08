@@ -2,10 +2,6 @@ package dev.bartuzen.qbitcontroller.ui.log
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.repositories.log.LogRepository
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -16,16 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = LogViewModel.Factory::class)
-class LogViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
+class LogViewModel(
+    private val serverId: Int,
     private val repository: LogRepository,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int): LogViewModel
-    }
-
     private val _logs = MutableStateFlow<List<Log>?>(null)
     val logs = _logs.asStateFlow()
 

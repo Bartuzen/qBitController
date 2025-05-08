@@ -35,12 +35,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import kotlinx.coroutines.flow.MutableSharedFlow
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun TorrentWebSeedsTab(
@@ -49,11 +50,7 @@ fun TorrentWebSeedsTab(
     isScreenActive: Boolean,
     snackbarEventFlow: MutableSharedFlow<String>,
     modifier: Modifier = Modifier,
-    viewModel: TorrentWebSeedsViewModel = hiltViewModel(
-        creationCallback = { factory: TorrentWebSeedsViewModel.Factory ->
-            factory.create(serverId, torrentHash)
-        },
-    ),
+    viewModel: TorrentWebSeedsViewModel = koinViewModel(parameters = { parametersOf(serverId, torrentHash) }),
 ) {
     val context = LocalContext.current
 

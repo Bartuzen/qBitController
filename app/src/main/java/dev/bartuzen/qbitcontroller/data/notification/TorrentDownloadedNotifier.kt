@@ -9,7 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.set
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.Torrent
@@ -18,12 +17,9 @@ import dev.bartuzen.qbitcontroller.ui.main.MainActivity
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentKeys
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListKeys
 import kotlinx.serialization.json.Json
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TorrentDownloadedNotifier @Inject constructor(
-    @ApplicationContext private val context: Context,
+class TorrentDownloadedNotifier(
+    private val context: Context,
     private val serverManager: ServerManager,
 ) {
     private val json = Json {

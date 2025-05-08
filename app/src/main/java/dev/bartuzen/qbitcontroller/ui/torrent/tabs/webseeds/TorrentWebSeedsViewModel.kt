@@ -2,10 +2,6 @@ package dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentWebSeedsRepository
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -19,18 +15,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-@HiltViewModel(assistedFactory = TorrentWebSeedsViewModel.Factory::class)
-class TorrentWebSeedsViewModel @AssistedInject constructor(
-    @Assisted private val serverId: Int,
-    @Assisted private val torrentHash: String,
+class TorrentWebSeedsViewModel(
+    private val serverId: Int,
+    private val torrentHash: String,
     settingsManager: SettingsManager,
     private val repository: TorrentWebSeedsRepository,
 ) : ViewModel() {
-    @AssistedFactory
-    interface Factory {
-        fun create(serverId: Int, torrentHash: String): TorrentWebSeedsViewModel
-    }
-
     private val _webSeeds = MutableStateFlow<List<String>?>(null)
     val webSeeds = _webSeeds.asStateFlow()
 

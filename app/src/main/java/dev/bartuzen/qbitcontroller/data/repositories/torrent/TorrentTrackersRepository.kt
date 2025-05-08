@@ -3,11 +3,8 @@ package dev.bartuzen.qbitcontroller.data.repositories.torrent
 import android.net.Uri
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class TorrentTrackersRepository @Inject constructor(
+class TorrentTrackersRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun getTrackers(serverId: Int, hash: String) = requestManager.request(serverId) { service ->

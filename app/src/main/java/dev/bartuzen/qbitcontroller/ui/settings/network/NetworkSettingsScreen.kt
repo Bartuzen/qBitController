@@ -25,16 +25,16 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import me.zhanghai.compose.preference.TextFieldPreference
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NetworkSettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: NetworkSettingsViewModel = hiltViewModel(),
+    viewModel: NetworkSettingsViewModel = koinViewModel(),
 ) {
     Scaffold(
         modifier = modifier,

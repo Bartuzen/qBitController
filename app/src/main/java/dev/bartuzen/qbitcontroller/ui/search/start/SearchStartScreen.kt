@@ -81,7 +81,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.R
 import dev.bartuzen.qbitcontroller.model.Plugin
@@ -93,6 +92,8 @@ import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @Composable
 fun SearchStartScreen(
@@ -101,11 +102,7 @@ fun SearchStartScreen(
     onNavigateToPlugins: () -> Unit,
     onNavigateToSearchResult: (searchQuery: String, category: String, plugins: String) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchStartViewModel = hiltViewModel(
-        creationCallback = { factory: SearchStartViewModel.Factory ->
-            factory.create(serverId)
-        },
-    ),
+    viewModel: SearchStartViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val plugins by viewModel.plugins.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

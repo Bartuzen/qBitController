@@ -26,12 +26,9 @@ import java.net.UnknownHostException
 import java.security.SecureRandom
 import java.time.Duration
 import java.time.Instant
-import javax.inject.Inject
-import javax.inject.Singleton
 import javax.net.ssl.SSLContext
 
-@Singleton
-class RequestManager @Inject constructor(
+class RequestManager(
     private val serverManager: ServerManager,
     private val timeoutInterceptor: TimeoutInterceptor,
     private val userAgentInterceptor: UserAgentInterceptor,
