@@ -517,12 +517,10 @@
     <string name="search_result_action_sort_name">Jméno</string>
     <string name="search_result_action_sort_size">Velikost</string>
     <string name="search_result_action_sort_seeders">Seedeři</string>
-    <string name="settings_add_new_server">Přidat nový server</string>
     <string name="settings_server_title_edit">Upravit server</string>
     <string name="settings_server_test_configuration">Otestovat konfiguraci</string>
     <string name="settings_server_action_delete">Smazat</string>
     <string name="settings_server_remove_success">Server odebrán úspěšně.</string>
-    <string name="settings_server_port_must_be_between">Port musí být mezi 1 a 65535.</string>
     <string name="search_plugins_cannot_be_empty">Pluginy nesmí být prázdné.</string>
     <string name="search_plugins_action_save">Uložit</string>
     <string name="rss_rules">Stahování RSS</string>
@@ -578,7 +576,6 @@
     <string name="search_plugins_action_update_plugins">Aktualizovat pluginy</string>
     <string name="execution_log_title">Záznamy programu</string>
     <string name="settings_title">Nastavení</string>
-    <string name="settings_other">Ostatní</string>
     <string name="settings_category_servers">Servery</string>
     <string name="settings_disabled">Vypnuto</string>
     <plurals name="settings_auto_refresh_interval_description">
@@ -592,7 +589,6 @@
     <string name="settings_server_password">Heslo</string>
     <string name="settings_server_advanced_basic_auth_enabled">Zapnuto</string>
     <string name="settings_server_advanced_basic_auth_username">Uživatelské jméno</string>
-    <string name="settings_server_url_configuration_not_valid">Zadaná URL konfigurace není platná.</string>
     <string name="settings_server_connection_success">Připojení k serveru úspěšné.</string>
     <string name="rss_rule_delete">Smazat pravidlo</string>
     <string name="error_required_field">Toto pole je povinné.</string>
@@ -616,10 +612,7 @@
     <string name="settings_theme_system_default">Výchozí nastavení systému</string>
     <string name="settings_language">Jazyk</string>
     <string name="settings_server_title_add">Přidat server</string>
-    <string name="settings_server_host">Hostitel</string>
     <string name="settings_server_name">Jméno</string>
-    <string name="settings_server_port">Port</string>
-    <string name="settings_server_path">Cesta</string>
     <string name="settings_server_username">Uživatelské jméno</string>
     <string name="settings_server_trust_self_signed_certificates">Důvěřovat certifikátům podepsaným sám sebou</string>
     <string name="about_description">qBitController dovoluje ovládání qBittorrent z Android zařízení.\n\nPro více informací a zdrojový kód: %1$s</string>

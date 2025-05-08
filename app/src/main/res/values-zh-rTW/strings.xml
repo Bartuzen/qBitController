@@ -142,7 +142,6 @@
     <string name="search_plugins_action_save">儲存</string>
     <string name="search_plugins_update_success">外掛程式已全部成功更新。</string>
     <string name="search_plugins_cannot_be_empty">外掛程式不能為空。</string>
-    <string name="settings_add_new_server">新增新伺服器</string>
     <string name="search_plugins_action_install_plugins">安裝外掛程式</string>
     <string name="search_plugins_action_update_plugins">更新外掛程式</string>
     <string name="settings_disabled">已禁用</string>
@@ -151,7 +150,6 @@
         <item quantity="other">%1$d 秒</item>
     </plurals>
     <string name="settings_server_test_configuration">測試連接</string>
-    <string name="settings_server_url_configuration_not_valid">輸入的位址配置不正確。</string>
     <string name="settings_server_connection_success">已成功連接到伺服器。</string>
     <string name="about_description">qBitController 是一款能從 Android 裝置中遠端控制 qBittorrent 的軟體。\n\n您可從此處獲取更多詳細資訊以及原始碼： %1$s</string>
     <string name="notification_channel_download_completed">下載完成</string>
@@ -355,8 +353,6 @@
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">啟用滑動操作</string>
     <string name="settings_server_name">名稱</string>
-    <string name="settings_server_host">主機名稱</string>
-    <string name="settings_server_port_must_be_between">通訊埠必須介於 1 和 65535 之間。</string>
     <string name="settings_server_username_min_character">使用者名長度至少為 3 個字串。</string>
     <string name="settings_server_password_min_character">密碼長度至少為 6 個字串。</string>
     <string name="stats_read_cache_overload">讀取快取超載</string>
@@ -389,7 +385,6 @@
     <string name="rss_mark_all_articles_as_read_success">已成功標記所有文章為已讀。</string>
     <string name="search_result_action_sort">排序</string>
     <string name="search_result_action_sort_seeders">做種者</string>
-    <string name="settings_other">其它</string>
     <string name="torrent_status_queued">排隊</string>
     <string name="torrent_status_stalled">等待</string>
     <string name="torrent_status_checking_resume_data">校驗恢復資料</string>
@@ -565,8 +560,6 @@
     <string name="settings_language">語言</string>
     <string name="settings_language_system_default">系統預設</string>
     <string name="settings_server_title_add">新增伺服器</string>
-    <string name="settings_server_port">通訊埠</string>
-    <string name="settings_server_path">子路徑</string>
     <string name="settings_server_username">使用者名稱</string>
     <string name="settings_server_password">密碼</string>
     <string name="settings_server_action_delete">刪除</string>

@@ -438,7 +438,6 @@
     <string name="rss_success_feed_move">Канал успішно переміщено.</string>
     <string name="rss_success_folder_rename">Папку успішно перейменовано.</string>
     <string name="search_start_category">Категорія</string>
-    <string name="settings_server_path">шлях</string>
     <string name="settings_server_username">Ім\'я користувача</string>
     <string name="settings_server_password">Пароль</string>
     <string name="notification_torrent_downloaded">Торрент завантажено</string>
@@ -447,8 +446,6 @@
     <string name="search_result_filter_seeds">Насіння</string>
     <string name="settings_server_test_configuration">Конфігурація тесту</string>
     <string name="search_result_filter_min">Хв</string>
-    <string name="settings_add_new_server">Додати новий сервер</string>
-    <string name="settings_other">інше</string>
     <string name="torrent_overview_added_on">Додано</string>
     <string name="torrent_overview_hash_v1">Хеш v1</string>
     <string name="torrent_overview_hash_v2">Хеш v2</string>
@@ -542,14 +539,12 @@
     <string name="settings_theme_light">світло</string>
     <string name="settings_server_title_edit">Редагувати сервер</string>
     <string name="settings_server_name">Ім\'я</string>
-    <string name="settings_server_host">Хост</string>
     <string name="settings_server_advanced_basic_auth">Базова автентифікація</string>
     <string name="settings_server_advanced_basic_auth_enabled">Увімкнено</string>
     <string name="settings_server_advanced_basic_auth_username">Ім\'я користувача</string>
     <string name="settings_server_advanced_basic_auth_password">Пароль</string>
     <string name="error_required_field">Це поле є обов\'язковим для заповнення.</string>
     <string name="settings_server_password_min_character">Пароль має бути не менше 6 символів.</string>
-    <string name="settings_server_url_configuration_not_valid">Введена конфігурація URL-адреси недійсна.</string>
     <string name="notification_channel_download_completed">Завантаження завершено</string>
     <string name="torrent_overview_private">Приватний</string>
     <string name="search_start_category_music">музика</string>
@@ -593,10 +588,8 @@
     <string name="settings_theme_dark">Темний</string>
     <string name="settings_server_add_success">Сервер успішно додано.</string>
     <string name="settings_language_system_default">Системне за замовчуванням</string>
-    <string name="settings_server_port">Порт</string>
     <string name="settings_server_trust_self_signed_certificates">Довірчі самопідписані сертифікати</string>
     <string name="settings_server_action_save">зберегти</string>
-    <string name="settings_server_port_must_be_between">Порт має бути від 1 до 65535.</string>
     <string name="settings_server_action_advanced_settings">Розширені налаштування</string>
     <string name="settings_server_edit_success">Сервер успішно відредаговано.</string>
     <string name="settings_server_remove_success">Сервер успішно видалено.</string>

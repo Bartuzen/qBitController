@@ -47,8 +47,6 @@
     <string name="search_plugins_action_update_plugins">Atualizar plugins</string>
     <string name="settings_title">Configurações</string>
     <string name="settings_category_servers">Servidores</string>
-    <string name="settings_add_new_server">Adicionar novo servidor</string>
-    <string name="settings_other">Outros</string>
     <plurals name="settings_connection_timeout_description">
         <item quantity="one">%1$d segundo</item>
         <item quantity="many">%1$d segundos</item>
@@ -56,7 +54,6 @@
     </plurals>
     <string name="settings_notification_check_interval">Intervalo de verificação de notificações</string>
     <string name="settings_server_advanced_basic_auth">Autenticação básica</string>
-    <string name="settings_server_url_configuration_not_valid">A configuração de URL inserida não é válida.</string>
     <string name="settings_connection_timeout">Tempo limite da conexão</string>
     <string name="settings_auto_refresh_interval">Intervalo de atualização automática</string>
     <string name="settings_server_advanced_basic_auth_password">Senha</string>
@@ -509,9 +506,6 @@
     <string name="settings_server_title_add">Adicionar servidor</string>
     <string name="settings_server_title_edit">Editar servidor</string>
     <string name="settings_server_name">Nome</string>
-    <string name="settings_server_host">Host</string>
-    <string name="settings_server_port">Porta</string>
-    <string name="settings_server_path">Caminho</string>
     <string name="settings_server_username">Usuário</string>
     <string name="settings_server_password">Senha</string>
     <string name="settings_server_trust_self_signed_certificates">Confiar em certificados auto-assinados</string>
@@ -525,7 +519,6 @@
     <string name="settings_server_edit_success">O servidor foi editado com sucesso.</string>
     <string name="settings_server_remove_success">O servidor foi removido com sucesso.</string>
     <string name="error_required_field">Campo obrigatório.</string>
-    <string name="settings_server_port_must_be_between">A porta deve estar entre 1 e 65535.</string>
     <string name="settings_server_username_min_character">O nome de usuário deve ter pelo menos 3 caracteres.</string>
     <string name="settings_server_password_min_character">A senha deve ter pelo menos 6 caracteres.</string>
     <string name="settings_server_connection_success">Conectado ao servidor com sucesso.</string>

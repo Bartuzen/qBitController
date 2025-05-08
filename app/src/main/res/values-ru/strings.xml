@@ -143,7 +143,6 @@
         <item quantity="other">%1$d секунд</item>
     </plurals>
     <string name="settings_notification_check_interval">Интервал проверки уведомлений</string>
-    <string name="settings_server_host">Хост</string>
     <string name="settings_server_edit_success">Сервер успешно отредактирован.</string>
     <string name="settings_theme">Тема</string>
     <string name="settings_theme_dark">Тёмная</string>
@@ -151,9 +150,7 @@
     <string name="settings_server_title_add">Добавить сервер</string>
     <string name="settings_server_action_save">Сохранить</string>
     <string name="settings_server_name">Имя</string>
-    <string name="settings_server_port">Порт</string>
     <string name="settings_server_password">Пароль</string>
-    <string name="settings_server_path">Путь</string>
     <string name="settings_server_advanced_basic_auth_username">Пользователь</string>
     <string name="settings_server_username">Пользователь</string>
     <string name="settings_server_action_delete">Удалить</string>
@@ -185,10 +182,7 @@
     <string name="search_plugins_action_install_plugins">Установить плагины</string>
     <string name="execution_log_title">Журнал работы</string>
     <string name="settings_title">Настройки</string>
-    <string name="settings_add_new_server">Добавить новый сервер</string>
     <string name="settings_category_servers">Серверы</string>
-    <string name="settings_other">Другое</string>
-    <string name="settings_server_url_configuration_not_valid">Введенная конфигурация URL недопустима.</string>
     <plurals name="torrent_list_torrents_pause_success">
         <item quantity="one">%1$d торрент успешно остановлен.</item>
         <item quantity="few">%1$d торрента успешно остановлено.</item>
@@ -465,7 +459,6 @@
     <string name="settings_theme_light">Светлая</string>
     <string name="settings_theme_system_default">Системная</string>
     <string name="error_required_field">Это обязательное поле.</string>
-    <string name="settings_server_port_must_be_between">Порт должен быть между 1 и 65535.</string>
     <string name="settings_server_username_min_character">Имя пользователя не должно быть короче 3 символов.</string>
     <string name="settings_server_password_min_character">Пароль не должен быть короче 6 символов.</string>
     <string name="settings_server_connection_success">Подключение к серверу успешно.</string>
