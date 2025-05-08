@@ -94,7 +94,6 @@ htmlConverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", v
 composePreferences = { module = "dev.bartuzen:composepreference", version.ref = "composePreference" }
 
 multiplatformSettings = { module="com.russhwolf:multiplatform-settings", version.ref= "multiplatorm-settings" }
-multiplatformSettings-coroutines = { module="com.russhwolf:multiplatform-settings-coroutines", version.ref= "multiplatorm-settings" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
