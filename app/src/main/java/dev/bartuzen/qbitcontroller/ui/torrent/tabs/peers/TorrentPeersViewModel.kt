@@ -156,7 +156,7 @@ class TorrentPeersViewModel @AssistedInject constructor(
         }
     }
 
-    fun getFlagUrl(countryCode: String) = "${serverManager.getServer(serverId).url}images/flags/$countryCode.svg"
+    fun getFlagUrl(countryCode: String) = "${serverManager.getServer(serverId).requestUrl}images/flags/$countryCode.svg"
 
     sealed class Event {
         data class Error(val error: RequestResult.Error) : Event()
