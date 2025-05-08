@@ -663,4 +663,17 @@
     <string name="torrent_overview_piece_not_downloaded">Не завантажено</string>
     <string name="torrent_peers_details_section_overview">Огляд колег</string>
     <string name="torrent_peers_details_section_transfer">Статистика трансферів</string>
+    <string name="settings_servers_no_server_configured">Сервер не налаштовано</string>
+    <string name="settings_server_url">URL</string>
+    <string name="error_invalid_interval">Має бути між %1$d та %2$d.</string>
+    <string name="settings_category_general">Загальне</string>
+    <string name="settings_category_appearance">Зовнішній вигляд</string>
+    <string name="settings_category_network">Мережа</string>
+    <string name="settings_servers_add_server">Додати сервер</string>
+    <string name="settings_server_server_info">Інформація про сервер</string>
+    <string name="settings_server_advanced_title">Розширені налаштування</string>
+    <string name="settings_server_invalid_url">Формат URL-адреси недійсний.</string>
+    <string name="error_invalid_interval_optional">Має бути між %1$d та %2$d, або залиште поле порожнім, щоб вимкнути.</string>
+    <string name="settings_server_credentials">Облікові дані</string>
+    <string name="settings_server_url_examples">Приклади: %1$s</string>
 </resources>
