@@ -648,4 +648,17 @@
     <string name="torrent_overview_piece_map">Mapa de piezas</string>
     <string name="torrent_peers_details_section_transfer">Estadísticas de transferencia</string>
     <string name="torrent_peers_details_section_overview">Resumen de pares</string>
+    <string name="settings_category_appearance">Apariencia</string>
+    <string name="settings_servers_add_server">Añadir servidor</string>
+    <string name="settings_servers_no_server_configured">Ningún servidor configurado</string>
+    <string name="settings_server_advanced_title">Opciones avanzadas</string>
+    <string name="error_invalid_interval_optional">Debe estar entre %1$d y %2$d, o dejar en blanco para deshabilitar.</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_invalid_url">El formato URL es inválido.</string>
+    <string name="error_invalid_interval">Debe estar entre %1$d y %2$d.</string>
+    <string name="settings_server_credentials">Credenciales</string>
+    <string name="settings_server_server_info">Información del servidor</string>
+    <string name="settings_server_url_examples">Ejemplos: %1$s</string>
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_network">Red</string>
 </resources>
