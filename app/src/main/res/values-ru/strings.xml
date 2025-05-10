@@ -156,7 +156,7 @@
     <string name="settings_server_action_delete">Удалить</string>
     <string name="settings_server_trust_self_signed_certificates">Доверять само-подписаным сертификатам</string>
     <string name="settings_server_test_configuration">Проверить конфигурацию</string>
-    <string name="settings_server_action_advanced_settings">Продвинутые настройки</string>
+    <string name="settings_server_action_advanced_settings">Расширенные настройки</string>
     <string name="settings_server_advanced_basic_auth_enabled">Включить</string>
     <string name="settings_server_advanced_basic_auth">Базовая аутентификация</string>
     <string name="settings_server_add_success">Сервер успешно добавлен.</string>
@@ -668,4 +668,14 @@
     <string name="error_invalid_interval">Значение должно быть между %1$d и %2$d.</string>
     <string name="settings_category_general">Общие</string>
     <string name="error_invalid_interval_optional">Значение должно быть между %1$d и %2$d, или оставьте пустым для отключения.</string>
+    <string name="settings_category_appearance">Оформление</string>
+    <string name="settings_category_network">Сеть</string>
+    <string name="settings_servers_add_server">Добавить сервер</string>
+    <string name="settings_server_server_info">Информация о сервере</string>
+    <string name="settings_server_credentials">Учётные данные</string>
+    <string name="settings_server_url_examples">Примеры: %1$s</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_advanced_title">Расширенные настройки</string>
+    <string name="settings_server_invalid_url">Неверный формат URL.</string>
+    <string name="settings_servers_no_server_configured">Нет настроенного сервера</string>
 </resources>
