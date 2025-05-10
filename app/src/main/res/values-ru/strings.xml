@@ -665,4 +665,7 @@
     <string name="torrent_overview_piece_map">Карта частей</string>
     <string name="torrent_peers_details_section_overview">Обзор пиров</string>
     <string name="torrent_peers_details_section_transfer">Статистика торрентов</string>
+    <string name="error_invalid_interval">Значение должно быть между %1$d и %2$d.</string>
+    <string name="settings_category_general">Общие</string>
+    <string name="error_invalid_interval_optional">Значение должно быть между %1$d и %2$d, или оставьте пустым для отключения.</string>
 </resources>
