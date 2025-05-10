@@ -224,7 +224,7 @@
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_list_status_error">Erro</string>
     <string name="torrent_tab_files">Arquivos</string>
-    <string name="torrent_tab_overview">Geral</string>
+    <string name="torrent_tab_overview">Resumo</string>
     <string name="torrent_tab_trackers">Rastreadores</string>
     <string name="torrent_tab_peers">Peers</string>
     <string name="torrent_tab_web_seeds">Fontes HTTP</string>
@@ -648,4 +648,17 @@
     <string name="rss_rule_item_enabled">Ativado</string>
     <string name="search_start_plugins">Plugins</string>
     <string name="search_result_title">Resultados da pesquisa</string>
+    <string name="settings_category_appearance">Aparência</string>
+    <string name="settings_server_credentials">Credenciais</string>
+    <string name="settings_server_url_examples">Exemplos: %1$s</string>
+    <string name="error_invalid_interval">Deve estar entre %1$d e %2$d.</string>
+    <string name="settings_server_url">URL</string>
+    <string name="error_invalid_interval_optional">Deve estar entre %1$d e %2$d, ou deixar em branco para desabilitar.</string>
+    <string name="settings_category_network">Rede</string>
+    <string name="settings_servers_no_server_configured">Não há servidor configurado</string>
+    <string name="settings_category_general">Geral</string>
+    <string name="settings_servers_add_server">Adicionar servidor</string>
+    <string name="settings_server_server_info">Informações do servidor</string>
+    <string name="settings_server_advanced_title">Configurações avançadas</string>
+    <string name="settings_server_invalid_url">O formato do URL é inválido.</string>
 </resources>
