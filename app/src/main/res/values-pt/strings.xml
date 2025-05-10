@@ -202,7 +202,6 @@
     <string name="torrent_list_delete_tag_success">Tag %1$s eliminada com sucesso.</string>
     <string name="torrent_option_download_path">Localização de Transferências</string>
     <string name="torrent_add_save_path">Guardar Em</string>
-    <string name="settings_server_path">Localização</string>
     <string name="error_no_data">Sem resposta do servidor.</string>
     <string name="error_timeout">Ligação expirada.</string>
     <string name="torrent_list_create_category_download_path_default">Padrão</string>
@@ -545,7 +544,6 @@
     <string name="execution_log_title">Registo de Execução</string>
     <string name="settings_title">Definições</string>
     <string name="settings_category_servers">Servidores</string>
-    <string name="settings_add_new_server">Adicionar novo servidor</string>
     <string name="settings_connection_timeout">Ligação expirada</string>
     <string name="settings_auto_refresh_interval">Intervalo de atualização automática</string>
     <string name="settings_notification_check_interval">Intervalo de verificação de notificação</string>
@@ -561,8 +559,6 @@
     <string name="settings_language">Língua</string>
     <string name="settings_server_title_edit">Editar Servidor</string>
     <string name="settings_server_name">Nome</string>
-    <string name="settings_server_host">Servidor</string>
-    <string name="settings_server_port">Porta</string>
     <string name="settings_server_username">Nome de utilizador</string>
     <string name="settings_server_password">Palavra-passe</string>
     <string name="settings_server_trust_self_signed_certificates">Confiar em certificados auto-assinados</string>
@@ -576,9 +572,7 @@
     <string name="settings_server_advanced_doh">DNS por HTTPS (DoH)</string>
     <string name="settings_server_add_success">O servidor adicionado com sucesso.</string>
     <string name="error_required_field">Este campo é obrigatório.</string>
-    <string name="settings_server_port_must_be_between">Porta deve estar entre 1 e 65535.</string>
     <string name="settings_server_password_min_character">Palavra-passe deve ter pelo menos 6 caracteres.</string>
-    <string name="settings_server_url_configuration_not_valid">A configuração de URL inserida é inválida.</string>
     <string name="notification_channel_download_completed">Transferência completada</string>
     <string name="notification_torrent_downloaded">Torrent transferido</string>
     <string name="rss_confirm_delete_folder">Tem a certeza que quer eliminar a pasta %1$s?</string>
@@ -600,7 +594,6 @@
     <string name="search_title">Pesquisar</string>
     <string name="search_result_action_sort">Ordenar</string>
     <string name="rss_rule_use_smart_episode_filter">Usar Filtro de Episódio Inteligente</string>
-    <string name="settings_other">Outros</string>
     <string name="rss_rule_saved_successfully">Regra gravada com sucesso.</string>
     <string name="settings_server_edit_success">O servidor editado com sucesso.</string>
     <string name="settings_server_remove_success">O servidor removido com sucesso.</string>

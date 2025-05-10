@@ -440,8 +440,6 @@
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">토렌트 스와이프 액션 활성화</string>
     <string name="settings_theme_system_default">시스템 기본</string>
-    <string name="settings_server_port">포트 번호</string>
-    <string name="settings_server_path">경로</string>
     <string name="settings_server_username">사용자 이름</string>
     <string name="settings_server_password">비밀번호</string>
     <string name="settings_server_trust_self_signed_certificates">자체 서명된 인증서 신뢰하기</string>
@@ -453,7 +451,6 @@
     <string name="settings_server_add_success">서버가 성공적으로 추가되었습니다.</string>
     <string name="settings_server_edit_success">서버가 성공적으로 수정되었습니다.</string>
     <string name="settings_server_remove_success">서버가 성공적으로 제거되었습니다.</string>
-    <string name="settings_server_port_must_be_between">포트 번호는 1-65535 사이여야 합니다.</string>
     <string name="torrent_add_category">범주</string>
     <string name="torrent_add_link_hint">마그넷 또는 HTTP 링크</string>
     <plurals name="torrent_add_files_selected">
@@ -561,9 +558,7 @@
     <string name="search_plugins_install_hint">URL 또는 로컬 경로</string>
     <string name="search_plugins_update_success">모든 플러그인이 성공적으로 업데이트되었습니다.</string>
     <string name="search_plugins_action_update_plugins">플러그인 업데이트</string>
-    <string name="settings_add_new_server">새로운 서버 추가</string>
     <string name="settings_disabled">비활성화됨</string>
-    <string name="settings_other">기타</string>
     <string name="settings_server_action_save">저장</string>
     <string name="settings_auto_refresh_interval">자동 새로고침 주기</string>
     <string name="settings_theme">테마</string>
@@ -571,7 +566,6 @@
     <string name="settings_language">언어</string>
     <string name="settings_server_name">이름</string>
     <string name="settings_theme_dark">어두움</string>
-    <string name="settings_server_host">호스트</string>
     <string name="settings_language_system_default">시스템 기본</string>
     <string name="settings_server_title_add">서버 추가</string>
     <string name="settings_server_title_edit">서버 수정</string>
@@ -580,7 +574,6 @@
     <string name="settings_server_advanced_basic_auth_username">사용자 이름</string>
     <string name="settings_server_connection_success">서버에 성공적으로 연결되었습니다.</string>
     <string name="error_required_field">이 항목은 필수입니다.</string>
-    <string name="settings_server_url_configuration_not_valid">입력한 URL 구성은 유효하지 않습니다.</string>
     <string name="settings_server_username_min_character">사용자 이름은 최소한 3글자 이상이여야 합니다.</string>
     <string name="settings_server_password_min_character">비밀번호는 최소한 6글자 이상이여야 합니다.</string>
     <string name="about_description">qBitController는 당신이 안드로이드 기기에서 qBittorrent를 제어하게 해줍니다.\n\n더 자세한 정보와 소스코드: %1$s</string>

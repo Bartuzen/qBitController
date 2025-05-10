@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="settings_server_password">Jelszó</string>
-    <string name="settings_server_host">Hoszt</string>
     <string name="settings_server_name">Név</string>
     <string name="settings_language_system_default">Rendszer Alapbeállítás</string>
     <string name="search_plugins_install_success">Pluginok sikeresen telepítve.</string>
     <string name="error_invalid_credentials">Hibás felhasználónév vagy jelszó.</string>
     <string name="search_plugins_update_success">Összes plugin sikeresen frissítve.</string>
-    <string name="settings_server_port">Port</string>
     <string name="search_plugins_cannot_be_empty">Plugin nem maradhat üresen.</string>
-    <string name="settings_server_path">Útvonal</string>
     <string name="settings_server_title_add">Szerver hozzáadása</string>
     <string name="settings_server_title_edit">Szerkesztés</string>
     <string name="settings_language">Nyelv</string>

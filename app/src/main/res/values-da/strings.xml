@@ -320,7 +320,6 @@
     <string name="search_result_action_stop_search">Stop Søgning</string>
     <string name="execution_log_title">Udførelseslog</string>
     <string name="settings_connection_timeout">Forbindelse afbrudt</string>
-    <string name="settings_add_new_server">Tilføj ny server</string>
     <string name="settings_auto_refresh_interval">Automatisk opdateringsinterval</string>
     <string name="search_plugins_install_hint">URL eller lokal mappe</string>
     <plurals name="settings_connection_timeout_description">
@@ -332,8 +331,6 @@
         <item quantity="other">%1$d sekunder</item>
     </plurals>
     <string name="search_plugins_update_success">Alle plugins opdateret.</string>
-    <string name="settings_server_port">Port</string>
-    <string name="settings_server_path">Sti</string>
     <string name="settings_server_username">Brugernavn</string>
     <string name="settings_server_password">Adgangskode</string>
     <string name="settings_server_action_delete">Slet</string>
@@ -357,8 +354,6 @@
     <string name="settings_server_add_success">Server tilføjet.</string>
     <string name="settings_server_edit_success">Server er blevet redigeret.</string>
     <string name="settings_server_remove_success">Server er blevet fjernet.</string>
-    <string name="settings_server_url_configuration_not_valid">Indtastede URL-konfiguration er ikke gyldig.</string>
-    <string name="settings_server_port_must_be_between">Porten skal være mellem 1 og 65535.</string>
     <string name="settings_server_username_min_character">Brugernavn skal være på mindst 3 tegn.</string>
     <string name="settings_server_password_min_character">Adgangskode skal være på mindst 6 tegn.</string>
     <string name="share_add_torrent">Tilføj Torrent</string>
@@ -480,7 +475,6 @@
     <string name="speed_kibibytes_per_second">KiB/s</string>
     <string name="speed_mebibytes_per_second">MiB/s</string>
     <string name="search_start_category_books">Bøger</string>
-    <string name="settings_other">Andre</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="settings_theme">Tema</string>
     <string name="torrent_overview_time_active">Tid Aktiv</string>
@@ -494,7 +488,6 @@
     <string name="settings_server_name">Navn</string>
     <string name="torrent_overview_uploaded">Uploadet</string>
     <string name="torrent_add_content_layout_original">Original</string>
-    <string name="settings_server_host">Vært</string>
     <string name="torrent_add_content_layout_subfolder">Opret undermapper</string>
     <string name="settings_server_advanced_basic_auth_password">Adgangskode</string>
     <string name="torrent_overview_last_activity">Sidste aktivitet</string>
