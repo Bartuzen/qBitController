@@ -610,4 +610,16 @@
     <string name="torrent_overview_piece_downloaded">已下載</string>
     <string name="torrent_overview_piece_downloading">下載中</string>
     <string name="torrent_overview_piece_not_downloaded">未下載</string>
+    <string name="settings_category_network">網路</string>
+    <string name="settings_server_invalid_url">該 URL 格式無效。</string>
+    <string name="settings_server_url_examples">例如：%1$s</string>
+    <string name="settings_server_advanced_title">進階設定</string>
+    <string name="settings_category_appearance">外觀</string>
+    <string name="settings_category_general">一般</string>
+    <string name="error_invalid_interval">必須在 %1$d 與 %2$d 之間。</string>
+    <string name="error_invalid_interval_optional">必須在 %1$d 與 %2$d 之間，或留空以禁用。</string>
+    <string name="settings_servers_add_server">新增伺服器</string>
+    <string name="settings_servers_no_server_configured">沒有伺服器組態</string>
+    <string name="settings_server_server_info">伺服器資訊</string>
+    <string name="torrent_peers_details_section_transfer">傳輸狀態</string>
 </resources>
