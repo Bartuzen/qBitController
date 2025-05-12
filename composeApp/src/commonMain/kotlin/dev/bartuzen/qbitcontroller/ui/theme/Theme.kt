@@ -9,6 +9,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.unit.sp
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import me.zhanghai.compose.preference.LocalPreferenceTheme
 import me.zhanghai.compose.preference.preferenceTheme
@@ -100,14 +101,19 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean =
     val customColorsPalette = if (darkTheme) darkCustomColors else lightCustomColors
 
     MaterialTheme(colorScheme = colorScheme) {
+        val preferenceTheme = preferenceTheme(
+            dialogOkText = stringResource(Res.string.dialog_ok),
+            dialogCancelText = stringResource(Res.string.dialog_cancel),
+            titleTextStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 16.sp),
+            summaryTextStyle = MaterialTheme.typography.bodySmall,
+            iconColor = MaterialTheme.colorScheme.primary,
+        )
+
         CompositionLocalProvider(
             LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             LocalContentColor provides MaterialTheme.colorScheme.onBackground,
             LocalCustomColors provides customColorsPalette,
-            LocalPreferenceTheme provides preferenceTheme(
-                dialogOkText = stringResource(Res.string.dialog_ok),
-                dialogCancelText = stringResource(Res.string.dialog_cancel),
-            ),
+            LocalPreferenceTheme provides preferenceTheme,
             content = content,
         )
     }
