@@ -27,7 +27,7 @@ android {
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     }
 
-    targetProjectPath = ":app"
+    targetProjectPath = ":composeApp"
 
     flavorDimensions += listOf("firebase")
     productFlavors {

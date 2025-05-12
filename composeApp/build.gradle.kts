@@ -1,0 +1,257 @@
+@file:Suppress("UnstableApiUsage")
+
+import android.databinding.tool.ext.joinToCamelCaseAsVar
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jmailen.gradle.kotlinter.tasks.ConfigurableKtLintTask
+import java.io.FileInputStream
+import java.util.Locale
+import java.util.Properties
+
+plugins {
+    alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.baselineprofile)
+    alias(libs.plugins.buildConfig)
+
+    id("dev.bartuzen.qbitcontroller.language")
+}
+
+kotlin {
+    androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+        }
+    }
+
+    jvm("desktop")
+
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-Xexpect-actual-classes",
+            "-Xcontext-parameters",
+            "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
+            "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
+            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+        )
+    }
+
+    sourceSets {
+        val commonMain by getting {
+            kotlin.srcDir(layout.buildDirectory.file("generated/kotlin"))
+
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewModel)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(compose.materialIconsExtended)
+
+                implementation(libs.compose.ui.util)
+                implementation(libs.compose.ui.backHandler)
+
+                implementation(libs.compose.navigation)
+
+                implementation(libs.coroutines.core)
+
+                implementation(libs.kotlinxSerialization)
+
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewModel)
+                implementation(libs.koin.compose.viewModel.navigation)
+
+                implementation(libs.retrofit)
+                implementation(libs.retrofit.converter.scalars)
+                implementation(libs.retrofit.converter.kotlinxSerialization)
+
+                implementation(libs.okhttp.doh)
+
+                implementation(libs.coil)
+                implementation(libs.coil.okhttp)
+                implementation(libs.coil.svg)
+
+                implementation(libs.htmlConverter)
+
+                implementation(libs.composePreferences)
+
+                implementation(libs.multiplatformSettings)
+
+                implementation(libs.materialKolor)
+
+                implementation(libs.fileKit.core)
+                implementation(libs.fileKit.dialogs)
+            }
+        }
+
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutines.swing)
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(compose.preview)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.coroutines.android)
+
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.workManager)
+
+                implementation(libs.material)
+
+                implementation(libs.androidx.profileinstaller)
+
+                implementation(libs.accompanist.permissions)
+
+                implementation(libs.work.runtime)
+            }
+        }
+    }
+}
+
+val appVersion = "1.1.1"
+val appVersionCode = 21
+
+buildConfig {
+    buildConfigField("Version", appVersion)
+    buildConfigField("SourceCodeUrl", "https://github.com/Bartuzen/qBitController")
+}
+
+android {
+    namespace = "dev.bartuzen.qbitcontroller"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "dev.bartuzen.qbitcontroller"
+        minSdk = 21
+        targetSdk = 35
+        versionCode = appVersionCode
+        versionName = appVersion
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            isDefault = true
+        }
+
+        release {
+            postprocessing {
+                isRemoveUnusedCode = true
+                isRemoveUnusedResources = true
+                isObfuscate = false
+                isOptimizeCode = true
+            }
+
+            signingConfig = signingConfigs.create("release")
+        }
+    }
+
+    flavorDimensions += "firebase"
+    productFlavors {
+        create("free") {
+            dimension = "firebase"
+            isDefault = true
+        }
+        create("firebase") {
+            dimension = "firebase"
+        }
+    }
+
+    signingConfigs {
+        getByName("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            val keystoreProperties = Properties()
+
+            if (keystorePropertiesFile.exists()) {
+                keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+            }
+
+            fun getProperty(vararg name: String): String? {
+                val propertyName = name.toList().joinToCamelCaseAsVar()
+                val envName = "QBITCONTROLLER_" + name.joinToString("_").uppercase(Locale.US)
+                return keystoreProperties.getProperty(propertyName) ?: System.getenv(envName)
+            }
+
+            storeFile = getProperty("store", "file")?.let { file(it) }
+            storePassword = getProperty("store", "password")
+            keyAlias = getProperty("key", "alias")
+            keyPassword = getProperty("key", "password")
+        }
+    }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    lint {
+        disable += listOf("MissingTranslation", "ExtraTranslation")
+    }
+
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring(libs.desugar)
+    debugImplementation(compose.uiTooling)
+    baselineProfile(project(":baselineProfile"))
+
+    val firebaseImplementation by configurations
+    firebaseImplementation(platform(libs.firebase.bom))
+    firebaseImplementation(libs.firebase.analytics)
+    firebaseImplementation(libs.firebase.crashlytics)
+}
+
+val isFirebaseEnabled = gradle.startParameter.taskRequests.any { task ->
+    task.args.any { arg ->
+        arg.contains("Firebase")
+    }
+}
+if (isFirebaseEnabled) {
+    apply(plugin = libs.plugins.firebase.googleServices.get().pluginId)
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
+}
+
+compose.desktop {
+    application {
+        mainClass = "dev.bartuzen.qbitcontroller.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "dev.bartuzen.qbitcontroller"
+            packageVersion = appVersion
+        }
+    }
+}
+
+tasks.withType<ConfigurableKtLintTask> {
+    source = source
+        .minus(fileTree("build"))
+        .minus(fileTree("src/commonMain/kotlin/dev/bartuzen/qbitcontroller/utils/SavedStateHandle.kt")) // Remove when ktlint supports context parameters
+        .asFileTree
+}
+

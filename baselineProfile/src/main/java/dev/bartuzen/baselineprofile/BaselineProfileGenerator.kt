@@ -18,7 +18,7 @@ class BaselineProfileGenerator {
     fun generate() {
         rule.collect(
             packageName = InstrumentationRegistry.getArguments().getString("targetAppId")!!,
-            includeInStartupProfile = true
+            includeInStartupProfile = true,
         ) {
             pressHome()
             startActivityAndWait()

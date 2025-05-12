@@ -58,3 +58,4 @@ google-services.json
 
 # Generated
 locales_config.xml
+/composeApp/src/androidMain/res/values*/strings_generated.xml

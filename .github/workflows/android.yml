@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Debug APK
-          path: app/build/outputs/apk/free/debug/app-free-debug.apk
+          path: composeApp/build/outputs/apk/free/debug/composeApp-free-debug.apk
 
   check-codestyle:
     runs-on: ubuntu-latest
