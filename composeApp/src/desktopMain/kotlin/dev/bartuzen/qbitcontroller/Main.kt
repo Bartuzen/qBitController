@@ -1,15 +1,21 @@
 package dev.bartuzen.qbitcontroller
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.data.SettingsManager
+import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.di.appModule
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.app_name
 import java.awt.Color
@@ -24,7 +30,15 @@ fun main() = application {
                 modules(appModule)
             },
         ) {
-            AppTheme {
+            val settingsManager = koinInject<SettingsManager>()
+            val theme by settingsManager.theme.flow.collectAsStateWithLifecycle()
+            val darkTheme = when (theme) {
+                Theme.LIGHT -> false
+                Theme.DARK -> true
+                Theme.SYSTEM_DEFAULT -> isSystemInDarkTheme()
+            }
+
+            AppTheme(darkTheme = darkTheme) {
                 val backgroundColor = MaterialTheme.colorScheme.background
                 LaunchedEffect(backgroundColor) {
                     window.background = Color(backgroundColor.toArgb())
