@@ -259,13 +259,10 @@
     <string name="search_plugins">Programtillegg</string>
     <string name="settings_title">Innstillinger</string>
     <string name="settings_category_servers">Tjener</string>
-    <string name="settings_add_new_server">Legg til ny tjener</string>
     <string name="settings_disabled">Avskrudd</string>
     <string name="settings_server_title_add">Legg til tjener</string>
     <string name="settings_server_title_edit">Rediger tjener</string>
     <string name="settings_server_name">Navn</string>
-    <string name="settings_server_host">Vert</string>
-    <string name="settings_server_port">Port</string>
     <string name="settings_server_username">Brukernavn</string>
     <string name="settings_server_password">Passord</string>
     <string name="settings_server_test_configuration">Test oppsett</string>
@@ -299,7 +296,6 @@
     <string name="settings_theme_light">Lys</string>
     <string name="settings_theme_dark">Mørk</string>
     <string name="settings_theme_system_default">Systemforvalg</string>
-    <string name="settings_server_path">Sti</string>
     <string name="settings_server_trust_self_signed_certificates">Tiltro selv-signerte sertifikater</string>
     <string name="settings_server_remove_success">Tjener fjernet.</string>
     <string name="eta_minutes">%1$sm</string>
@@ -432,7 +428,6 @@
     <string name="language_code">nob</string>
     <string name="search_plugins_action_save">Lagre</string>
     <string name="search_plugins_action_update_plugins">Oppdater programtillegg</string>
-    <string name="settings_other">Annet</string>
     <string name="rss_rule_not_found">Fant ikke regel.</string>
     <string name="search_plugins_action_install_plugins">Installer programtillegg</string>
     <string name="torrent_overview_wasted">Bortkastet</string>

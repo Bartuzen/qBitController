@@ -279,7 +279,6 @@
     <string name="rss_success_feed_rename">Se ha renombrado el feed correctamente.</string>
     <string name="torrent_files_folder_renamed_success">Carpeta renombrada correctamente</string>
     <string name="torrent_trackers_deleted">Rastreadores borrados correctamente.</string>
-    <string name="settings_add_new_server">Añadir un servidor nuevo</string>
     <string name="torrent_peers_added">Pares añadidos con éxito.</string>
     <string name="torrent_overview_seeds">Semillas</string>
     <string name="settings_server_name">Nombre</string>
@@ -310,7 +309,6 @@
     <string name="torrent_add_action_add_torrent">Añadir un torrent</string>
     <string name="rss_action_refresh">Refrescar</string>
     <string name="rss_mark_as_read">Marcar como leído</string>
-    <string name="settings_server_port_must_be_between">El puerto debe estar comprendido entre 1 y 65535.</string>
     <string name="torrent_add_success">Torrent añadido correctamente.</string>
     <string name="search_start_category_anime">Anime</string>
     <string name="settings_language_system_default">Predeterminado del sistema</string>
@@ -320,7 +318,6 @@
     <string name="rss_mark_article_as_read_success">Artículo marcado como leído.</string>
     <string name="search_result_stop_success">Búsqueda detenida con éxito.</string>
     <string name="torrent_add_stop_condition_files_checked">Archivos verificados</string>
-    <string name="settings_server_url_configuration_not_valid">La configuración de la dirección URL introducida no es válida.</string>
     <string name="torrent_add_stop_condition">Condición de la parada</string>
     <string name="torrent_add_stop_condition_none">Ninguno</string>
     <plurals name="torrent_trackers_delete_title">
@@ -429,7 +426,6 @@
     <string name="torrent_overview_last_activity">Última actividad</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="rss_rule_delete_confirm">¿Está seguro de que desea eliminar la regla %1$s?</string>
-    <string name="settings_other">Otros</string>
     <string name="rss_rule_not_found">No se pude encontrar la regla.</string>
     <string name="rss_rule_rename_success">Se ha cambiado el nombre de la regla RSS.</string>
     <string name="torrent_add_torrent_management_mode">Modo de gestión de torrents</string>
@@ -441,7 +437,6 @@
     <string name="torrent_overview_uploaded">Subido</string>
     <string name="rss_hint_feed_name">Nombre del feed</string>
     <string name="torrent_peers_flag_incoming_connection">Conexión entrante</string>
-    <string name="settings_server_path">Ruta</string>
     <string name="rss_action_rename_feed">Renombrar el feed</string>
     <string name="torrent_add_upload_speed_limit">Límite de la velocidad de subida</string>
     <string name="rss_rename_feed_error">No se puede cambiar el nombre del feed.</string>
@@ -450,7 +445,6 @@
     <string name="search_plugins_action_install_plugins">Instalar plugins</string>
     <string name="rss_rule_name_cannot_be_empty">El nombre no puede estar vacío.</string>
     <string name="settings_server_username">Usuario</string>
-    <string name="settings_server_host">Host</string>
     <string name="torrent_add_ratio_limit">Límite de la relación</string>
     <string name="rss_rule_name">Nombre de la regla</string>
     <string name="torrent_peers_details_downloaded">Descargado</string>
@@ -556,7 +550,6 @@
     <string name="settings_category_servers">Servidores</string>
     <string name="rss_all_articles">Todos los artículos</string>
     <string name="settings_disabled">Desactivado</string>
-    <string name="settings_server_port">Puerto</string>
     <string name="settings_server_advanced_basic_auth_enabled">Activado</string>
     <string name="search_start_plugins_enabled">Plugins activados</string>
     <string name="settings_server_action_delete">Borrar</string>
@@ -655,4 +648,17 @@
     <string name="torrent_overview_piece_map">Mapa de piezas</string>
     <string name="torrent_peers_details_section_transfer">Estadísticas de transferencia</string>
     <string name="torrent_peers_details_section_overview">Resumen de pares</string>
+    <string name="settings_category_appearance">Apariencia</string>
+    <string name="settings_servers_add_server">Añadir servidor</string>
+    <string name="settings_servers_no_server_configured">Ningún servidor configurado</string>
+    <string name="settings_server_advanced_title">Opciones avanzadas</string>
+    <string name="error_invalid_interval_optional">Debe estar entre %1$d y %2$d, o dejar en blanco para deshabilitar.</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_invalid_url">El formato URL es inválido.</string>
+    <string name="error_invalid_interval">Debe estar entre %1$d y %2$d.</string>
+    <string name="settings_server_credentials">Credenciales</string>
+    <string name="settings_server_server_info">Información del servidor</string>
+    <string name="settings_server_url_examples">Ejemplos: %1$s</string>
+    <string name="settings_category_general">General</string>
+    <string name="settings_category_network">Red</string>
 </resources>

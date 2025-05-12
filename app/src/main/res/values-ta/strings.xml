@@ -579,8 +579,6 @@
     <string name="execution_log_title">சாவுஒறுப்பு பதிவு</string>
     <string name="settings_title">அமைப்புகள்</string>
     <string name="settings_category_servers">சேவையகங்கள்</string>
-    <string name="settings_add_new_server">புதிய சேவையகத்தைச் சேர்க்கவும்</string>
-    <string name="settings_other">மற்றொன்று</string>
     <string name="settings_disabled">முடக்கப்பட்டது</string>
     <string name="settings_connection_timeout">இணைப்பு நேரம் முடிந்தது</string>
     <string name="settings_notification_check_interval">அறிவிப்பு சோதனை இடைவெளி</string>
@@ -597,10 +595,6 @@
     <string name="settings_server_title_add">சேவையகத்தைச் சேர்க்கவும்</string>
     <string name="settings_server_title_edit">சேவையகத்தைத் திருத்து</string>
     <string name="settings_server_name">பெயர்</string>
-    <string name="settings_server_url_configuration_not_valid">உள்ளிட்ட முகவரி உள்ளமைவு செல்லுபடியாகாது.</string>
-    <string name="settings_server_host">விருந்தோம்பி</string>
-    <string name="settings_server_port">துறைமுகம்</string>
-    <string name="settings_server_path">பாதை</string>
     <string name="settings_server_username">பயனர்பெயர்</string>
     <string name="settings_server_password">கடவுச்சொல்</string>
     <string name="settings_server_trust_self_signed_certificates">தன்வய கையொப்பமிடப்பட்ட சான்றிதழ்களை நம்புங்கள்</string>
@@ -612,7 +606,6 @@
     <string name="settings_server_advanced_basic_auth_password">கடவுச்சொல்</string>
     <string name="settings_server_advanced_doh">Https (doh) க்கு மேல் dns</string>
     <string name="settings_server_edit_success">சேவையகம் வெற்றிகரமாக திருத்தப்பட்டுள்ளது.</string>
-    <string name="settings_server_port_must_be_between">துறைமுகம் 1 முதல் 65535 வரை இருக்க வேண்டும்.</string>
     <string name="settings_server_username_min_character">பயனர்பெயர் குறைந்தது 3 எழுத்துக்கள் நீளமாக இருக்க வேண்டும்.</string>
     <string name="settings_server_password_min_character">கடவுச்சொல் குறைந்தது 6 எழுத்துக்கள் நீளமாக இருக்க வேண்டும்.</string>
     <string name="settings_server_connection_success">சேவையகத்துடன் வெற்றிகரமாக இணைக்கப்பட்டுள்ளது.</string>

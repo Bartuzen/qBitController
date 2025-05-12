@@ -437,9 +437,6 @@
     <string name="settings_theme_light">Aydınlık</string>
     <string name="settings_server_title_edit">Sunucuyu Düzenle</string>
     <string name="settings_server_name">Ad</string>
-    <string name="settings_server_host">Adres</string>
-    <string name="settings_server_port">Port</string>
-    <string name="settings_server_path">Yol</string>
     <string name="settings_server_username">Kullanıcı adı</string>
     <string name="settings_server_password">Şifre</string>
     <string name="settings_server_trust_self_signed_certificates">Kendi imzalı sertifikalara güven</string>
@@ -451,10 +448,8 @@
     <string name="settings_server_advanced_basic_auth_enabled">Etkin</string>
     <string name="settings_server_remove_success">Sunucu başarıyla kaldırıldı.</string>
     <string name="error_required_field">Bu alan gereklidir.</string>
-    <string name="settings_server_port_must_be_between">Port 1 ile 65535 arasında olmalıdır.</string>
     <string name="settings_server_username_min_character">Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır.</string>
     <string name="settings_server_password_min_character">Şifre en az 6 karakter olmalıdır.</string>
-    <string name="settings_server_url_configuration_not_valid">Girilen URL yapılandırması geçerli değil.</string>
     <string name="settings_server_connection_success">Sunucuya başarıyla bağlanıldı.</string>
     <string name="notification_channel_download_completed">İndirme tamamlandı</string>
     <string name="torrent_option_share_limit_global">Genel paylaşım sınırlarını kullan</string>
@@ -550,8 +545,6 @@
     <string name="settings_title">Ayarlar</string>
     <string name="settings_connection_timeout">Bağlantı zaman aşımı</string>
     <string name="settings_category_servers">Sunucular</string>
-    <string name="settings_add_new_server">Yeni sunucu ekle</string>
-    <string name="settings_other">Diğer</string>
     <string name="settings_disabled">Devre Dışı</string>
     <string name="settings_theme_dark">Karanlık</string>
     <string name="settings_theme_system_default">Sistem Varsayılanı</string>
