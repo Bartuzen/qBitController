@@ -20,7 +20,7 @@
     </plurals>
     <string name="torrent_peers_action_ban">Banir peers</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
-    <string name="torrent_peers_add_hint">Peers</string>
+    <string name="torrent_peers_add_hint">Pares</string>
     <string name="torrent_peers_invalid">Os peers inseridos não são válidos.</string>
     <string name="torrent_peers_details_country">País</string>
     <string name="torrent_peers_details_connection">Conexão</string>
@@ -226,7 +226,7 @@
     <string name="torrent_tab_files">Arquivos</string>
     <string name="torrent_tab_overview">Resumo</string>
     <string name="torrent_tab_trackers">Rastreadores</string>
-    <string name="torrent_tab_peers">Peers</string>
+    <string name="torrent_tab_peers">Pares</string>
     <string name="torrent_tab_web_seeds">Fontes HTTP</string>
     <string name="torrent_delete">Excluir torrent</string>
     <string name="torrent_delete_files">Excluir também os arquivos no disco rígido</string>
@@ -295,7 +295,7 @@
     <string name="torrent_overview_connections_format">%1$d (%2$d máx.)</string>
     <string name="torrent_overview_seeds">Seeds</string>
     <string name="torrent_overview_seeds_format">%1$d (%2$d total)</string>
-    <string name="torrent_overview_peers">Peers</string>
+    <string name="torrent_overview_peers">Pares</string>
     <string name="torrent_overview_wasted">Perdidos</string>
     <string name="torrent_files_priority_do_not_download">Não fazer download</string>
     <string name="torrent_files_priority_normal">Normal</string>
@@ -318,7 +318,7 @@
     <string name="torrent_trackers_action_delete">Excluir</string>
     <string name="torrent_trackers_action_add">Adicionar rastreadores</string>
     <string name="torrent_trackers_edit_hint">URL do rastreador</string>
-    <string name="torrent_trackers_peers">Peers</string>
+    <string name="torrent_trackers_peers">Pares</string>
     <string name="torrent_trackers_seeds">Seeds</string>
     <string name="torrent_trackers_leeches">Leeches</string>
     <string name="torrent_trackers_downloaded">Transferido</string>
