@@ -19,3 +19,7 @@ inline fun <reified T> SavedStateHandle.getSerializableStateFlow(key: String, in
         .map { Json.decodeFromString<T>(it) }
         .stateIn(viewModel.viewModelScope, SharingStarted.Eagerly, Json.decodeFromString(value))
 }
+
+inline fun <reified T> SavedStateHandle.getSerializable(key: String) = get<String>(key)?.let { Json.decodeFromString<T>(it) }
+
+inline fun <reified T> SavedStateHandle.setSerializable(key: String, value: T?) = set(key, Json.encodeToString(value))

@@ -46,8 +46,10 @@ import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentKeys
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentScreen
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListScreen
+import dev.bartuzen.qbitcontroller.utils.getSerializable
 import dev.bartuzen.qbitcontroller.utils.notificationPermissionLauncher
 import dev.bartuzen.qbitcontroller.utils.serializableNavType
+import dev.bartuzen.qbitcontroller.utils.setSerializable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.koin.compose.koinInject
@@ -356,7 +358,7 @@ fun MainScreen(navController: NavHostController = rememberNavController(), serve
                 val args = it.toRoute<Destination.Settings.AddEditServer>()
 
                 val advancedSettingsChannel = remember { Channel<ServerConfig.AdvancedSettings>() }
-                val advancedSettings = it.savedStateHandle.get<ServerConfig.AdvancedSettings?>(
+                val advancedSettings = it.savedStateHandle.getSerializable<ServerConfig.AdvancedSettings?>(
                     AdvancedServerSettingsKeys.AdvancedSettings,
                 )
                 LaunchedEffect(advancedSettings) {
@@ -402,7 +404,7 @@ fun MainScreen(navController: NavHostController = rememberNavController(), serve
                     onUpdate = { advancedSettings ->
                         navController.previousBackStackEntry
                             ?.savedStateHandle
-                            ?.set(AdvancedServerSettingsKeys.AdvancedSettings, advancedSettings)
+                            ?.setSerializable(AdvancedServerSettingsKeys.AdvancedSettings, advancedSettings)
                     },
                 )
             }
