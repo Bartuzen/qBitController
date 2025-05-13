@@ -294,7 +294,7 @@
     <string name="torrent_files_error_path_is_invalid_or_in_use">该路径无效或已被使用。</string>
     <string name="torrent_trackers_action_delete">删除</string>
     <string name="torrent_trackers_action_add">添加 Trackers</string>
-    <string name="torrent_trackers_edit_hint">Tracker 地址</string>
+    <string name="torrent_trackers_edit_hint">Tracker URL</string>
     <string name="torrent_trackers_peers">用户</string>
     <string name="torrent_trackers_seeds">种子</string>
     <string name="torrent_trackers_leeches">下载</string>
@@ -313,7 +313,7 @@
     <string name="torrent_trackers_added">已成功添加 Trackers。</string>
     <string name="torrent_trackers_deleted">已成功删除 Trackers。</string>
     <string name="torrent_trackers_edited">已成功编辑 Tracker。</string>
-    <string name="torrent_trackers_url_cannot_be_empty">Tracker 地址不得为空。</string>
+    <string name="torrent_trackers_url_cannot_be_empty">Tracker URL 不得为空。</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_action_add">添加用户</string>
     <string name="torrent_peers_action_ban">封禁用户</string>
@@ -359,7 +359,7 @@
     <string name="torrent_peers_flag_utp">µTP</string>
     <string name="torrent_error_not_found">Torrent 未找到。</string>
     <string name="torrent_add_title">添加 Torrent</string>
-    <string name="torrent_add_button_url">链接</string>
+    <string name="torrent_add_button_url">URL</string>
     <string name="torrent_add_button_file">文件</string>
     <string name="torrent_add_link_hint">磁力或 HTTP 链接</string>
     <string name="torrent_add_click_to_select_file">单击此处来选择文件</string>
@@ -610,4 +610,19 @@
     <string name="search_result_details">Torrent 详情</string>
     <string name="search_result_title">搜索结果</string>
     <string name="search_start_plugins">插件</string>
+    <string name="error_invalid_interval">必须介于 %1$d 和 %2$d 之间。</string>
+    <string name="settings_category_general">常规</string>
+    <string name="error_invalid_interval_optional">必须介于 %1$d 和 %2$d 之间，或留空以禁用。</string>
+    <string name="torrent_peers_details_section_overview">用户概览</string>
+    <string name="torrent_peers_details_section_transfer">传输统计</string>
+    <string name="settings_category_appearance">外观</string>
+    <string name="settings_category_network">网络</string>
+    <string name="settings_servers_add_server">添加服务器</string>
+    <string name="settings_servers_no_server_configured">未配置服务器</string>
+    <string name="settings_server_server_info">服务器信息</string>
+    <string name="settings_server_credentials">凭据</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_url_examples">示例：%1$s</string>
+    <string name="settings_server_advanced_title">高级设置</string>
+    <string name="settings_server_invalid_url">URL 格式无效。</string>
 </resources>
