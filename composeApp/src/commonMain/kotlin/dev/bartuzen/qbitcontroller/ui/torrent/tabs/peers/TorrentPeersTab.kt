@@ -196,7 +196,7 @@ fun TorrentPeersTab(
         viewModel.setScreenActive(isScreenActive)
     }
 
-    BackHandler(enabled = selectedPeers.isNotEmpty()) {
+    BackHandler(enabled = isScreenActive && selectedPeers.isNotEmpty()) {
         selectedPeers.clear()
     }
 

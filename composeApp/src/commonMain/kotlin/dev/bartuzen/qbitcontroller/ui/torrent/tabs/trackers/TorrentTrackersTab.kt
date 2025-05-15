@@ -168,7 +168,7 @@ fun TorrentTrackersTab(
         viewModel.setScreenActive(isScreenActive)
     }
 
-    BackHandler(enabled = selectedTrackers.isNotEmpty()) {
+    BackHandler(enabled = isScreenActive && selectedTrackers.isNotEmpty()) {
         selectedTrackers.clear()
     }
 

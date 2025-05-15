@@ -164,7 +164,7 @@ fun TorrentFilesTab(
         viewModel.setScreenActive(isScreenActive)
     }
 
-    BackHandler(enabled = selectedFiles.isNotEmpty()) {
+    BackHandler(enabled = isScreenActive && selectedFiles.isNotEmpty()) {
         selectedFiles.clear()
     }
 
