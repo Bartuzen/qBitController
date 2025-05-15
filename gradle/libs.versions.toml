@@ -1,7 +1,7 @@
 [versions]
 compose-multiplatform = "1.8.0"
 agp = "8.10.0"
-kotlin = "2.2.0-Beta2"
+kotlin = "2.1.21"
 kotlinter = "5.0.2"
 gradleVersions = "0.52.0"
 firebase-googleServices = "4.4.2"
