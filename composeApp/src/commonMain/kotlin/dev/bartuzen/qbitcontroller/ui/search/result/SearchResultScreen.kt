@@ -104,7 +104,6 @@ import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
-import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatUri
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
@@ -382,7 +381,6 @@ fun SearchResultScreen(
                         expanded = showSortMenu,
                         onDismissRequest = { showSortMenu = false },
                         scrollState = sortMenuScrollState,
-                        modifier = Modifier.dropdownMenuHeight(),
                     ) {
                         Text(
                             text = stringResource(Res.string.search_result_action_sort),

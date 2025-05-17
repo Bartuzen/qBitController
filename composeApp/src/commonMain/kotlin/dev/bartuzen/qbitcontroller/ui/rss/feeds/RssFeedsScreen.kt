@@ -95,7 +95,6 @@ import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
-import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
@@ -475,7 +474,6 @@ fun RssFeedsScreen(
                                     expanded = showAddMenu,
                                     onDismissRequest = { showAddMenu = false },
                                     scrollState = scrollState,
-                                    modifier = Modifier.dropdownMenuHeight(),
                                 ) {
                                     DropdownMenuItem(
                                         text = {

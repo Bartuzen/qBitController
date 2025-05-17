@@ -93,7 +93,6 @@ import dev.bartuzen.qbitcontroller.ui.icons.Priority
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
-import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatFilePriority
@@ -314,7 +313,6 @@ fun TorrentFilesTab(
                                         expanded = showPriorityMenu,
                                         onDismissRequest = { showPriorityMenu = false },
                                         scrollState = scrollState,
-                                        modifier = Modifier.dropdownMenuHeight(),
                                     ) {
                                         DropdownMenuItem(
                                             text = {

@@ -120,7 +120,6 @@ import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
-import dev.bartuzen.qbitcontroller.utils.dropdownMenuHeight
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -421,7 +420,6 @@ fun TorrentOverviewTab(
                     expanded = showCopyMenu,
                     onDismissRequest = { showCopyMenu = false },
                     scrollState = scrollState,
-                    modifier = Modifier.dropdownMenuHeight(),
                 ) {
                     DropdownMenuItem(
                         text = {

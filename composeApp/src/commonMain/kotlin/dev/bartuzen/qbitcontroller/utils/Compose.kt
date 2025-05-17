@@ -174,10 +174,6 @@ fun rememberReplaceAndApplyStyle(text: String, oldValue: String, newValue: Strin
         }
     }
 
-// https://issuetracker.google.com/issues/382564794
-@Composable
-expect fun Modifier.dropdownMenuHeight(): Modifier
-
 fun Modifier.fillWidthOfParent(parentPadding: Dp) = this.layout { measurable, constraints ->
     val placeable = measurable.measure(constraints.copy(maxWidth = constraints.maxWidth + parentPadding.roundToPx()))
     layout(placeable.width, placeable.height) {
