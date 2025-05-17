@@ -619,4 +619,9 @@
     <string name="settings_enable_torrent_swipe_actions">Activar ações de gestos de torrent</string>
     <string name="settings_server_username_min_character">Nome de utilizador deve ter pelo menos 3 caracteres.</string>
     <string name="settings_server_connection_success">Ligação ao servidor bem sucedida.</string>
+    <string name="error_invalid_interval_optional">Deve estar entre %1$d e %2$d ou deixe em branco para desativar.</string>
+    <string name="error_invalid_interval">Deve estar entre %1$d e %2$d.</string>
+    <string name="torrent_list_no_server_title">Nenhum servidor disponível</string>
+    <string name="torrent_list_no_server_description">Você ainda não adicionou nenhum servidor. Adicione um para começar.</string>
+    <string name="torrent_list_no_server_add">Adicionar Servidor</string>
 </resources>
