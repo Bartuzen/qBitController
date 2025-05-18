@@ -1,9 +1,11 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -438,68 +440,63 @@ fun AddTorrentScreen(
             ) {
                 val servers by viewModel.servers.collectAsStateWithLifecycle()
                 if (initialServerId == null && servers.size > 1) {
-                    Row(
+                    var expanded by remember { mutableStateOf(false) }
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded },
                         modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        var expanded by remember { mutableStateOf(false) }
-                        ExposedDropdownMenuBox(
-                            expanded = expanded,
-                            onExpandedChange = { expanded = !expanded },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            OutlinedTextField(
-                                value = servers[serverId]?.displayName ?: "",
-                                onValueChange = {},
-                                label = {
-                                    Text(
-                                        text = stringResource(Res.string.torrent_add_server),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                    )
-                                },
-                                readOnly = true,
-                                singleLine = true,
-                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                            )
+                        OutlinedTextField(
+                            value = servers[serverId]?.displayName ?: "",
+                            onValueChange = {},
+                            label = {
+                                Text(
+                                    text = stringResource(Res.string.torrent_add_server),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            },
+                            readOnly = true,
+                            singleLine = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                        )
 
-                            ExposedDropdownMenu(
-                                expanded = expanded,
-                                onDismissRequest = { expanded = false },
-                            ) {
-                                servers.forEach { (id, server) ->
-                                    DropdownMenuItem(
-                                        text = { Text(text = server.displayName) },
-                                        onClick = {
-                                            expanded = false
-                                            viewModel.setServerId(id)
-                                        },
-                                    )
-                                }
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                        ) {
+                            servers.forEach { (id, server) ->
+                                DropdownMenuItem(
+                                    text = { Text(text = server.displayName) },
+                                    onClick = {
+                                        expanded = false
+                                        viewModel.setServerId(id)
+                                    },
+                                )
                             }
                         }
                     }
                 }
 
-                SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                    SegmentedButton(
-                        selected = isUrlMode,
-                        onClick = { isUrlMode = true },
-                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(text = stringResource(Res.string.torrent_add_button_url))
-                    }
-                    SegmentedButton(
-                        selected = !isUrlMode,
-                        onClick = { isUrlMode = false },
-                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                        modifier = Modifier.weight(1f),
-                    ) {
-                        Text(text = stringResource(Res.string.torrent_add_button_file))
+                if (torrentUrl == null && torrentFileUris == null) {
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                        SegmentedButton(
+                            selected = isUrlMode,
+                            onClick = { isUrlMode = true },
+                            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
+                        ) {
+                            Text(text = stringResource(Res.string.torrent_add_button_url))
+                        }
+                        SegmentedButton(
+                            selected = !isUrlMode,
+                            onClick = { isUrlMode = false },
+                            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
+                        ) {
+                            Text(text = stringResource(Res.string.torrent_add_button_file))
+                        }
                     }
                 }
 
@@ -522,6 +519,7 @@ fun AddTorrentScreen(
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 4,
                         maxLines = 4,
+                        readOnly = torrentUrl != null,
                         isError = torrentLinkError != null,
                         supportingText = torrentLinkError?.let { { Text(text = stringResource(it)) } },
                         trailingIcon = torrentLinkError?.let {
@@ -531,24 +529,40 @@ fun AddTorrentScreen(
                         },
                     )
                 } else {
+                    val borderColor by animateColorAsState(
+                        targetValue = if (torrentFileError) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.outlineVariant
+                        },
+                        animationSpec = tween(durationMillis = 150),
+                    )
+
                     OutlinedCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                scope.launch {
-                                    val files = FileKit.openFilePicker(
-                                        mode = FileKitMode.Multiple(),
-                                        type = FileKitType.File("torrent"),
-                                    )
-                                    if (files?.isNotEmpty() == true) {
-                                        torrentFiles = files
-                                        torrentFileError = false
-                                    }
-                                }
-                            },
+                        border = BorderStroke(1.dp, borderColor),
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Row(
-                            modifier = Modifier.padding(16.dp),
+                            modifier = Modifier
+                                .then(
+                                    if (torrentFileUris == null) {
+                                        Modifier.clickable {
+                                            scope.launch {
+                                                val files = FileKit.openFilePicker(
+                                                    mode = FileKitMode.Multiple(),
+                                                    type = FileKitType.File("torrent"),
+                                                )
+                                                if (files?.isNotEmpty() == true) {
+                                                    torrentFiles = files
+                                                    torrentFileError = false
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        Modifier
+                                    },
+                                )
+                                .padding(16.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
