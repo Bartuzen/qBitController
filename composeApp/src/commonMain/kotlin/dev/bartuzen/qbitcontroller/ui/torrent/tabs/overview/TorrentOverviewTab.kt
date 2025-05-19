@@ -421,6 +421,12 @@ fun TorrentOverviewTab(
                     onDismissRequest = { showCopyMenu = false },
                     scrollState = scrollState,
                 ) {
+                    Text(
+                        text = stringResource(Res.string.torrent_action_copy),
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    )
+
                     DropdownMenuItem(
                         text = {
                             Text(text = stringResource(Res.string.torrent_action_copy_name))
