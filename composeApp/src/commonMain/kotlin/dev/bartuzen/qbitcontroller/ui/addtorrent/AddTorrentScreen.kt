@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.addtorrent
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -595,62 +596,70 @@ fun AddTorrentScreen(
 
                 Text(text = stringResource(Res.string.torrent_add_category))
 
-                if (isLoading) {
-                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                } else if (serverData?.categoryList?.isNotEmpty() == true) {
-                    FlowRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        serverData?.categoryList?.forEach { category ->
-                            CategoryChip(
-                                category = category,
-                                isSelected = selectedCategory == category,
-                                onClick = {
-                                    selectedCategory = if (selectedCategory == category) null else category
-                                },
-                            )
+                AnimatedContent(
+                    targetState = isLoading to serverData?.categoryList,
+                ) { (isLoading, categoryList) ->
+                    when {
+                        isLoading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+
+                        categoryList?.isNotEmpty() == true -> FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            categoryList.forEach { category ->
+                                CategoryChip(
+                                    category = category,
+                                    isSelected = selectedCategory == category,
+                                    onClick = {
+                                        selectedCategory = if (selectedCategory == category) null else category
+                                    },
+                                )
+                            }
                         }
+
+                        else -> Text(
+                            text = stringResource(Res.string.torrent_no_categories),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
                     }
-                } else {
-                    Text(
-                        text = stringResource(Res.string.torrent_no_categories),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                    )
                 }
 
                 Text(text = stringResource(Res.string.torrent_add_tags))
 
-                if (isLoading) {
-                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                } else if (serverData?.tagList?.isNotEmpty() == true) {
-                    FlowRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        serverData?.tagList?.forEach { tag ->
-                            TagChip(
-                                tag = tag,
-                                isSelected = selectedTags.contains(tag),
-                                onClick = {
-                                    if (selectedTags.contains(tag)) {
-                                        selectedTags.remove(tag)
-                                    } else {
-                                        selectedTags.add(tag)
-                                    }
-                                },
-                            )
+                AnimatedContent(
+                    targetState = isLoading to serverData?.tagList,
+                ) { (isLoading, tagList) ->
+                    when {
+                        isLoading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+
+                        tagList?.isNotEmpty() == true -> FlowRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            tagList.forEach { tag ->
+                                TagChip(
+                                    tag = tag,
+                                    isSelected = selectedTags.contains(tag),
+                                    onClick = {
+                                        if (selectedTags.contains(tag)) {
+                                            selectedTags.remove(tag)
+                                        } else {
+                                            selectedTags.add(tag)
+                                        }
+                                    },
+                                )
+                            }
                         }
+
+                        else -> Text(
+                            text = stringResource(Res.string.torrent_no_tags),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error,
+                        )
                     }
-                } else {
-                    Text(
-                        text = stringResource(Res.string.torrent_no_tags),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error,
-                    )
                 }
 
                 CheckboxWithLabel(
