@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 import me.zhanghai.compose.preference.Preference
 import org.koin.compose.viewmodel.koinViewModel
 import qbitcontroller.composeapp.generated.resources.Res
+import qbitcontroller.composeapp.generated.resources.settings_category_servers
 import qbitcontroller.composeapp.generated.resources.settings_server_add_success
 import qbitcontroller.composeapp.generated.resources.settings_server_edit_success
 import qbitcontroller.composeapp.generated.resources.settings_server_remove_success
@@ -79,7 +80,7 @@ fun ServersScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(Res.string.settings_servers_add_server),
+                        text = stringResource(Res.string.settings_category_servers),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
