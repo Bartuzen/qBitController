@@ -98,7 +98,6 @@ import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatFilePriority
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
-import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
@@ -575,15 +574,13 @@ private fun FileItem(
                 )
 
                 val progressColor by animateColorAsState(
-                    targetValue = harmonizeWithPrimary(
-                        when (fileNode.priority) {
-                            TorrentFilePriority.DO_NOT_DOWNLOAD -> LocalCustomColors.current.filePriorityDoNotDownload
-                            TorrentFilePriority.NORMAL -> LocalCustomColors.current.filePriorityNormal
-                            TorrentFilePriority.HIGH -> LocalCustomColors.current.filePriorityHigh
-                            TorrentFilePriority.MAXIMUM -> LocalCustomColors.current.filePriorityMaximum
-                            null -> LocalCustomColors.current.filePriorityMixed
-                        },
-                    ),
+                    targetValue = when (fileNode.priority) {
+                        TorrentFilePriority.DO_NOT_DOWNLOAD -> LocalCustomColors.current.filePriorityDoNotDownload
+                        TorrentFilePriority.NORMAL -> LocalCustomColors.current.filePriorityNormal
+                        TorrentFilePriority.HIGH -> LocalCustomColors.current.filePriorityHigh
+                        TorrentFilePriority.MAXIMUM -> LocalCustomColors.current.filePriorityMaximum
+                        null -> LocalCustomColors.current.filePriorityMixed
+                    },
                     animationSpec = tween(),
                 )
                 val trackColor = progressColor.copy(alpha = 0.38f)

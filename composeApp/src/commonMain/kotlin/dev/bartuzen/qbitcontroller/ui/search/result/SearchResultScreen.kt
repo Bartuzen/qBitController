@@ -116,7 +116,6 @@ import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatUri
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
-import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
@@ -735,12 +734,12 @@ private fun SearchResultItem(
                             imageVector = Icons.Outlined.ArrowUpward,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
+                            tint = LocalCustomColors.current.seederColor,
                         )
                         Text(
                             text = searchResult.seeders?.toString() ?: "-",
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
+                                color = LocalCustomColors.current.seederColor,
                                 fontWeight = FontWeight.SemiBold,
                             ),
                         )
@@ -754,12 +753,12 @@ private fun SearchResultItem(
                             imageVector = Icons.Outlined.ArrowDownward,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = harmonizeWithPrimary(LocalCustomColors.current.leecherColor),
+                            tint = LocalCustomColors.current.leecherColor,
                         )
                         Text(
                             text = searchResult.leechers?.toString() ?: "-",
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = harmonizeWithPrimary(LocalCustomColors.current.leecherColor),
+                                color = LocalCustomColors.current.leecherColor,
                                 fontWeight = FontWeight.SemiBold,
                             ),
                         )
@@ -827,14 +826,14 @@ private fun DetailsDialog(
                             icon = Icons.Outlined.ArrowUpward,
                             count = searchResult.seeders?.toString() ?: "-",
                             label = stringResource(Res.string.search_result_seeders),
-                            color = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
+                            color = LocalCustomColors.current.seederColor,
                         )
 
                         PeerInfoCard(
                             icon = Icons.Outlined.ArrowDownward,
                             count = searchResult.leechers?.toString() ?: "-",
                             label = stringResource(Res.string.search_result_leechers),
-                            color = harmonizeWithPrimary(LocalCustomColors.current.leecherColor),
+                            color = LocalCustomColors.current.leecherColor,
                         )
                     }
                 }
@@ -991,13 +990,13 @@ private fun FilterDialog(
                     Icon(
                         imageVector = Icons.Outlined.ArrowUpward,
                         contentDescription = null,
-                        tint = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
+                        tint = LocalCustomColors.current.seederColor,
                         modifier = Modifier.size(20.dp),
                     )
                     Text(
                         text = stringResource(Res.string.search_result_filter_seeds),
                         style = MaterialTheme.typography.titleMedium,
-                        color = harmonizeWithPrimary(LocalCustomColors.current.seederColor),
+                        color = LocalCustomColors.current.seederColor,
                     )
                 }
 

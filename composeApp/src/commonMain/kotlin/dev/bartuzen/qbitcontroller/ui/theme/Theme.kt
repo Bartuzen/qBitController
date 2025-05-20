@@ -98,8 +98,6 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean =
     val colorScheme = (if (dynamicColor) getDynamicColorScheme(darkTheme) else null)
         ?: if (darkTheme) darkScheme else lightScheme
 
-    val customColorsPalette = if (darkTheme) darkCustomColors else lightCustomColors
-
     MaterialTheme(colorScheme = colorScheme) {
         val preferenceTheme = preferenceTheme(
             dialogOkText = stringResource(Res.string.dialog_ok),
@@ -110,6 +108,7 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean =
             useTextButtonForDialogConfirmation = false,
         )
 
+        val customColorsPalette = if (darkTheme) darkCustomColors else lightCustomColors
         CompositionLocalProvider(
             LocalTextStyle provides MaterialTheme.typography.bodyMedium,
             LocalContentColor provides MaterialTheme.colorScheme.onBackground,

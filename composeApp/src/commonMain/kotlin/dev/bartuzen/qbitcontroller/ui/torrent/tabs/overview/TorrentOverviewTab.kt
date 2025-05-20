@@ -131,7 +131,6 @@ import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
-import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
@@ -1062,7 +1061,7 @@ private fun Progress(torrent: Torrent, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(4.dp))
 
             val progressColor by animateColorAsState(
-                targetValue = harmonizeWithPrimary(getTorrentStateColor(torrent.state)),
+                targetValue = getTorrentStateColor(torrent.state),
                 animationSpec = tween(),
             )
             val trackColor = progressColor.copy(alpha = 0.38f)

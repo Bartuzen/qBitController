@@ -61,7 +61,6 @@ import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
-import dev.bartuzen.qbitcontroller.utils.harmonizeWithPrimary
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -186,13 +185,11 @@ fun LogScreen(
 @Composable
 fun LogItem(log: Log, modifier: Modifier = Modifier) {
     val logColor = when (log.type) {
-        LogType.NORMAL -> null
+        LogType.NORMAL -> LocalContentColor.current
         LogType.INFO -> LocalCustomColors.current.logInfo
         LogType.WARNING -> LocalCustomColors.current.logWarning
         LogType.CRITICAL -> LocalCustomColors.current.logCritical
-    }?.let { color ->
-        harmonizeWithPrimary(color)
-    } ?: LocalContentColor.current
+    }
 
     ElevatedCard(modifier = modifier) {
         Row(

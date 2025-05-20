@@ -1,7 +1,10 @@
 package dev.bartuzen.qbitcontroller.ui.theme
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import com.materialkolor.ktx.harmonize
 
 val primaryLight = Color(0xFF415F91)
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -75,52 +78,6 @@ val surfaceContainerDark = Color(0xFF1D2024)
 val surfaceContainerHighDark = Color(0xFF282A2F)
 val surfaceContainerHighestDark = Color(0xFF33353A)
 
-val torrentStateDownloadingLight = Color(0xFF1A7F37)
-val torrentStateStalledDownloadingLight = Color(0xFF2DA44E)
-val torrentStateStalledUploadingLight = Color(0xFF0969DA)
-val torrentStateUploadingLight = Color(0xFF7BB5F9)
-val torrentStatePausedDownloadingLight = Color(0xFF57606A)
-val torrentStatePausedUploadingLight = Color(0xFF8250DF)
-val torrentStateQueuedLight = Color(0xFF7D4E00)
-val torrentStateErrorLight = errorLight
-
-val seederColorLight = Color(0xFF388E3C)
-val leecherColorLight = Color(0xFF1976D2)
-
-val logTimestampLight = Color(0xFF6E7781)
-val logInfoLight = Color(0xFF0969DA)
-val logWarningLight = Color(0xFFBC4C00)
-val logCriticalLight = Color(0xFFCF222E)
-
-val filePriorityDoNotDownloadLight = Color(0xFF57606A)
-val filePriorityNormalLight = Color(0xFF2DA44E)
-val filePriorityHighLight = Color(0xFFFF5722)
-val filePriorityMaximumLight = Color(0xFFCF222E)
-val filePriorityMixedLight = Color(0xFF03A9F4)
-
-val torrentStateDownloadingDark = Color(0xFF3FB950)
-val torrentStateStalledDownloadingDark = Color(0xFF238636)
-val torrentStateStalledUploadingDark = Color(0xFF1F6FEB)
-val torrentStateUploadingDark = Color(0xFF58A6FF)
-val torrentStatePausedDownloadingDark = Color(0xFF8B949E)
-val torrentStatePausedUploadingDark = Color(0xFFA371F7)
-val torrentStateQueuedDark = Color(0xFF845306)
-val torrentStateErrorDark = errorDark
-
-val seederColorDark = Color(0xFF66BB6A)
-val leecherColorDark = Color(0xFF42A5F5)
-
-val logTimestampDark = Color(0xFF6E7681)
-val logInfoDark = Color(0xFF58A6FF)
-val logWarningDark = Color(0xFFDB6D28)
-val logCriticalDark = Color(0xFFF85149)
-
-val filePriorityDoNotDownloadDark = Color(0xFF8B949E)
-val filePriorityNormalDark = Color(0xFF238636)
-val filePriorityHighDark = Color(0xFFE17B5A)
-val filePriorityMaximumDark = Color(0xFFF85149)
-val filePriorityMixedDark = Color(0xFF03A9F4)
-
 data class CustomColors(
     val torrentStateDownloading: Color = Color.Unspecified,
     val torrentStateStalledDownloading: Color = Color.Unspecified,
@@ -145,46 +102,53 @@ data class CustomColors(
 
 val LocalCustomColors = staticCompositionLocalOf { CustomColors() }
 
-val lightCustomColors = CustomColors(
-    torrentStateDownloading = torrentStateDownloadingLight,
-    torrentStateStalledDownloading = torrentStateStalledDownloadingLight,
-    torrentStateStalledUploading = torrentStateStalledUploadingLight,
-    torrentStateUploading = torrentStateUploadingLight,
-    torrentStatePausedDownloading = torrentStatePausedDownloadingLight,
-    torrentStatePausedUploading = torrentStatePausedUploadingLight,
-    torrentStateQueued = torrentStateQueuedLight,
-    torrentStateError = torrentStateErrorLight,
-    seederColor = seederColorLight,
-    leecherColor = leecherColorLight,
-    logTimestamp = logTimestampLight,
-    logInfo = logInfoLight,
-    logWarning = logWarningLight,
-    logCritical = logCriticalLight,
-    filePriorityDoNotDownload = filePriorityDoNotDownloadLight,
-    filePriorityNormal = filePriorityNormalLight,
-    filePriorityHigh = filePriorityHighLight,
-    filePriorityMaximum = filePriorityMaximumLight,
-    filePriorityMixed = filePriorityMixedLight,
-)
+val lightCustomColors
+    @Composable
+    get() = CustomColors(
+        torrentStateDownloading = harmonizeWithPrimary(Color(0xFF1A7F37)),
+        torrentStateStalledDownloading = harmonizeWithPrimary(Color(0xFF2DA44E)),
+        torrentStateStalledUploading = harmonizeWithPrimary(Color(0xFF0969DA)),
+        torrentStateUploading = harmonizeWithPrimary(Color(0xFF7BB5F9)),
+        torrentStatePausedDownloading = harmonizeWithPrimary(Color(0xFF57606A)),
+        torrentStatePausedUploading = harmonizeWithPrimary(Color(0xFF8250DF)),
+        torrentStateQueued = harmonizeWithPrimary(Color(0xFF7D4E00)),
+        torrentStateError = MaterialTheme.colorScheme.error,
+        seederColor = harmonizeWithPrimary(Color(0xFF388E3C)),
+        leecherColor = harmonizeWithPrimary(Color(0xFF1976D2)),
+        logTimestamp = harmonizeWithPrimary(Color(0xFF6E7781)),
+        logInfo = harmonizeWithPrimary(Color(0xFF0969DA)),
+        logWarning = harmonizeWithPrimary(Color(0xFFBC4C00)),
+        logCritical = harmonizeWithPrimary(Color(0xFFCF222E)),
+        filePriorityDoNotDownload = harmonizeWithPrimary(Color(0xFF57606A)),
+        filePriorityNormal = harmonizeWithPrimary(Color(0xFF2DA44E)),
+        filePriorityHigh = harmonizeWithPrimary(Color(0xFFFF5722)),
+        filePriorityMaximum = harmonizeWithPrimary(Color(0xFFCF222E)),
+        filePriorityMixed = harmonizeWithPrimary(Color(0xFF03A9F4)),
+    )
 
-val darkCustomColors = CustomColors(
-    torrentStateDownloading = torrentStateDownloadingDark,
-    torrentStateStalledDownloading = torrentStateStalledDownloadingDark,
-    torrentStateStalledUploading = torrentStateStalledUploadingDark,
-    torrentStateUploading = torrentStateUploadingDark,
-    torrentStatePausedDownloading = torrentStatePausedDownloadingDark,
-    torrentStatePausedUploading = torrentStatePausedUploadingDark,
-    torrentStateQueued = torrentStateQueuedDark,
-    torrentStateError = torrentStateErrorDark,
-    seederColor = seederColorDark,
-    leecherColor = leecherColorDark,
-    logTimestamp = logTimestampDark,
-    logInfo = logInfoDark,
-    logWarning = logWarningDark,
-    logCritical = logCriticalDark,
-    filePriorityDoNotDownload = filePriorityDoNotDownloadDark,
-    filePriorityNormal = filePriorityNormalDark,
-    filePriorityHigh = filePriorityHighDark,
-    filePriorityMaximum = filePriorityMaximumDark,
-    filePriorityMixed = filePriorityMixedDark,
-)
+val darkCustomColors
+    @Composable
+    get() = CustomColors(
+        torrentStateDownloading = harmonizeWithPrimary(Color(0xFF3FB950)),
+        torrentStateStalledDownloading = harmonizeWithPrimary(Color(0xFF238636)),
+        torrentStateStalledUploading = harmonizeWithPrimary(Color(0xFF1F6FEB)),
+        torrentStateUploading = harmonizeWithPrimary(Color(0xFF58A6FF)),
+        torrentStatePausedDownloading = harmonizeWithPrimary(Color(0xFF8B949E)),
+        torrentStatePausedUploading = harmonizeWithPrimary(Color(0xFFA371F7)),
+        torrentStateQueued = harmonizeWithPrimary(Color(0xFF845306)),
+        torrentStateError = MaterialTheme.colorScheme.error,
+        seederColor = harmonizeWithPrimary(Color(0xFF66BB6A)),
+        leecherColor = harmonizeWithPrimary(Color(0xFF42A5F5)),
+        logTimestamp = harmonizeWithPrimary(Color(0xFF6E7681)),
+        logInfo = harmonizeWithPrimary(Color(0xFF58A6FF)),
+        logWarning = harmonizeWithPrimary(Color(0xFFDB6D28)),
+        logCritical = harmonizeWithPrimary(Color(0xFFF85149)),
+        filePriorityDoNotDownload = harmonizeWithPrimary(Color(0xFF8B949E)),
+        filePriorityNormal = harmonizeWithPrimary(Color(0xFF238636)),
+        filePriorityHigh = harmonizeWithPrimary(Color(0xFFE17B5A)),
+        filePriorityMaximum = harmonizeWithPrimary(Color(0xFFF85149)),
+        filePriorityMixed = harmonizeWithPrimary(Color(0xFF03A9F4)),
+    )
+
+@Composable
+private fun harmonizeWithPrimary(color: Color) = color.harmonize(MaterialTheme.colorScheme.primary)
