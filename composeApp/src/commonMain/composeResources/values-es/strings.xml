@@ -661,4 +661,16 @@
     <string name="settings_server_url_examples">Ejemplos: %1$s</string>
     <string name="settings_category_general">General</string>
     <string name="settings_category_network">Red</string>
+    <string name="rss_action_download">Descargar</string>
+    <string name="search_result_action_download">Descargar</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent seleccionado</item>
+        <item quantity="many">%1$d torrent seleccionados</item>
+        <item quantity="other">%1$d torrent seleccionados</item>
+    </plurals>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent seleccionado</item>
+        <item quantity="many">%1$d torrent seleccionados</item>
+        <item quantity="other">%1$d torrent seleccionados</item>
+    </plurals>
 </resources>
