@@ -677,4 +677,18 @@
     <string name="settings_server_advanced_title">Расширенные настройки</string>
     <string name="settings_server_invalid_url">Неверный формат URL.</string>
     <string name="settings_servers_no_server_configured">Нет настроенного сервера</string>
+    <string name="rss_action_download">Загрузить</string>
+    <string name="search_result_action_download">Загрузить</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d торрент выбран</item>
+        <item quantity="few">%1$d торрента выбрано</item>
+        <item quantity="many">%1$d торрентов выбрано</item>
+        <item quantity="other">%1$d торрентов выбрано</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d торрент выбран</item>
+        <item quantity="few">%1$d торрента выбрано</item>
+        <item quantity="many">%1$d торрентов выбрано</item>
+        <item quantity="other">%1$d торрентов выбрано</item>
+    </plurals>
 </resources>
