@@ -333,7 +333,6 @@
     <string name="rss_hint_feed_name_optional">Назва стрічки (необов\'язково)</string>
     <string name="rss_hint_folder_name">Назва теки</string>
     <string name="rss_all_articles">Усі статті</string>
-    <string name="rss_field_required">Це поле обов\'язкове.</string>
     <string name="rss_added_feed">Стрічку успішно додано.</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="one">Ви упевнені, що хочете забанити %1$d пір?</item>

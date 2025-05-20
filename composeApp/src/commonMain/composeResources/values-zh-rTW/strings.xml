@@ -127,7 +127,6 @@
     <string name="rss_hint_feed_name">Feed 名稱</string>
     <string name="rss_hint_folder_name">資料夾名稱</string>
     <string name="rss_all_articles">所有文章</string>
-    <string name="rss_field_required">該欄位不得為空。</string>
     <string name="rss_refresh_all_feeds_success">已成功更新所有 Feed。</string>
     <string name="rss_rule_use_smart_episode_filter">使用智慧劇集篩選</string>
     <string name="rss_rule_no_feed_found">找不到訂閱</string>
