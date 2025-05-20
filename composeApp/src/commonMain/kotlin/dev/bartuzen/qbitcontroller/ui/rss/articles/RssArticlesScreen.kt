@@ -1,10 +1,12 @@
 package dev.bartuzen.qbitcontroller.ui.rss.articles
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +26,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -32,6 +34,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.MarkEmailRead
 import androidx.compose.material.icons.filled.Refresh
@@ -53,11 +56,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,7 +74,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -76,6 +85,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.HtmlStyle
@@ -93,15 +103,18 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.pluralStringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.action_search
+import qbitcontroller.composeapp.generated.resources.rss_action_download
 import qbitcontroller.composeapp.generated.resources.rss_action_mark_all_as_read
 import qbitcontroller.composeapp.generated.resources.rss_action_refresh
 import qbitcontroller.composeapp.generated.resources.rss_all_articles
@@ -115,6 +128,7 @@ import qbitcontroller.composeapp.generated.resources.rss_mark_article_as_read_su
 import qbitcontroller.composeapp.generated.resources.rss_mark_as_read
 import qbitcontroller.composeapp.generated.resources.rss_new
 import qbitcontroller.composeapp.generated.resources.rss_refresh_feed_success
+import qbitcontroller.composeapp.generated.resources.rss_torrents_selected
 import qbitcontroller.composeapp.generated.resources.torrent_add_success
 
 object RssArticlesKeys {
@@ -143,6 +157,7 @@ fun RssArticlesScreen(
 
     var isSearchMode by rememberSaveable { mutableStateOf(false) }
     var searchQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
+    val selectedArticles = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
 
     LaunchedEffect(addTorrentFlow) {
         addTorrentFlow.collect {
@@ -237,6 +252,27 @@ fun RssArticlesScreen(
         viewModel.setSearchQuery("")
     }
 
+    BackHandler(enabled = selectedArticles.isNotEmpty()) {
+        selectedArticles.clear()
+    }
+
+    LaunchedEffect(articles) {
+        selectedArticles.removeAll { articleId -> articles?.none { it.id == articleId } != false }
+    }
+
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    var bottomBarState = remember { MutableTransitionState(selectedArticles.isNotEmpty()) }
+
+    LaunchedEffect(selectedArticles.isNotEmpty()) {
+        bottomBarState.targetState = selectedArticles.isNotEmpty()
+    }
+
+    LaunchedEffect(bottomBarState.isIdle, bottomBarState.currentState) {
+        if (bottomBarState.isIdle && !bottomBarState.currentState) {
+            bottomBarHeight = 0.dp
+        }
+    }
+
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(
@@ -316,10 +352,78 @@ fun RssArticlesScreen(
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
+        bottomBar = {
+            val density = LocalDensity.current
+            AnimatedVisibility(
+                visibleState = bottomBarState,
+                enter = expandVertically(),
+                exit = shrinkVertically(),
+                modifier = Modifier.onGloballyPositioned {
+                    bottomBarHeight = with(density) { it.size.height.toDp() }
+                },
+            ) {
+                TopAppBar(
+                    title = {
+                        var selectedSize by rememberSaveable { mutableIntStateOf(0) }
+
+                        LaunchedEffect(selectedArticles.size) {
+                            if (selectedArticles.isNotEmpty()) {
+                                selectedSize = selectedArticles.size
+                            }
+                        }
+
+                        Text(
+                            text = pluralStringResource(
+                                Res.plurals.rss_torrents_selected,
+                                selectedSize,
+                                selectedSize,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { selectedArticles.clear() }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    actions = {
+                        val actionMenuItems = listOf(
+                            ActionMenuItem(
+                                title = stringResource(Res.string.rss_action_download),
+                                onClick = {
+                                    articles?.let { articles ->
+                                        onNavigateToAddTorrent(
+                                            articles
+                                                .filter { it.id in selectedArticles }
+                                                .joinToString("\n") { it.torrentUrl },
+                                        )
+                                    }
+                                },
+                                showAsAction = true,
+                                icon = Icons.Filled.Download,
+                            ),
+                        )
+
+                        AppBarActions(items = actionMenuItems)
+                    },
+                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+                )
+            }
+        },
         snackbarHost = {
+            val bottomPadding =
+                (WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding() - bottomBarHeight)
+                    .coerceAtLeast(0.dp)
             SwipeableSnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
+                modifier = Modifier.padding(bottom = bottomPadding),
             )
         },
     ) { innerPadding ->
@@ -345,8 +449,26 @@ fun RssArticlesScreen(
                 ) { article ->
                     ArticleItem(
                         article = article,
+                        selected = article.id in selectedArticles,
                         searchQuery = searchQuery.text.ifEmpty { null },
-                        onClick = { currentDialog = Dialog.Details(article.id) },
+                        onClick = {
+                            if (selectedArticles.isNotEmpty()) {
+                                if (article.id !in selectedArticles) {
+                                    selectedArticles += article.id
+                                } else {
+                                    selectedArticles -= article.id
+                                }
+                            } else {
+                                currentDialog = Dialog.Details(article.id)
+                            }
+                        },
+                        onLongClick = {
+                            if (article.id !in selectedArticles) {
+                                selectedArticles += article.id
+                            } else {
+                                selectedArticles -= article.id
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateItem(),
@@ -384,14 +506,31 @@ fun RssArticlesScreen(
 }
 
 @Composable
-private fun ArticleItem(article: Article, searchQuery: String?, onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun ArticleItem(
+    article: Article,
+    selected: Boolean,
+    searchQuery: String?,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     ElevatedCard(
-        onClick = onClick,
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = if (selected) {
+                MaterialTheme.colorScheme.surfaceContainerHigh
+            } else {
+                Color.Unspecified
+            },
+        ),
         modifier = modifier,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                )
                 .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {

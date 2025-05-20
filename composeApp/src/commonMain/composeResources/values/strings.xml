@@ -516,6 +516,12 @@
     <string name="rss_action_refresh_all">Refresh All</string>
     <string name="rss_action_refresh">Refresh</string>
     <string name="rss_action_move_select_folder">Select a folder</string>
+    <string name="rss_action_download">Download</string>
+
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent selected</item>
+        <item quantity="other">%1$d torrents selected</item>
+    </plurals>
 
     <string name="rss_hint_feed_url">Feed URL</string>
     <string name="rss_hint_feed_name_optional">Feed Name (Optional)</string>
