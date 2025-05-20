@@ -83,7 +83,6 @@
     <string name="rss_action_refresh_all">Atualizar todos</string>
     <string name="rss_action_mark_all_as_read">Marcar tudo como lido</string>
     <string name="rss_action_refresh">Atualizar</string>
-    <string name="rss_field_required">Campo obrigatório.</string>
     <string name="rss_move_feed_error">Não foi possível mover o feed.</string>
     <string name="rss_rename_folder_error">Não foi possível renomear a pasta.</string>
     <string name="rss_mark_all_articles_as_read_success">Todos os artigos marcados como lidos com sucesso.</string>
