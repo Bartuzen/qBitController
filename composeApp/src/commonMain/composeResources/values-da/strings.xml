@@ -456,7 +456,6 @@
     <string name="torrent_overview_created_by">Oprettet af</string>
     <string name="torrent_trackers_seeds">Seedere</string>
     <string name="torrent_add_default">Standard</string>
-    <string name="rss_field_required">Dette felt er påkrævet.</string>
     <string name="rss_confirm_delete_folder">Er du sikker på, at du vil slette mappe %1$s?</string>
     <string name="rss_rule_delete">Slet Regel</string>
     <string name="rss_rule_episode_filter">Episode Filter</string>

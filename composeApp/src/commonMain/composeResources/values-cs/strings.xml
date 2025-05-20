@@ -461,7 +461,6 @@
     <string name="rss_action_refresh_all">Aktualizovat vše</string>
     <string name="rss_action_delete_folder">Smazat složku</string>
     <string name="rss_all_articles">Všechny články</string>
-    <string name="rss_field_required">Toto pole je povinné.</string>
     <string name="rss_confirm_delete_feed">Opravdu chcete smazat kanál %1$s?</string>
     <string name="rss_success_feed_move">Kanál přesunut úspěšně.</string>
     <string name="rss_success_feed_delete">Kanál smazán úspěšně.</string>
