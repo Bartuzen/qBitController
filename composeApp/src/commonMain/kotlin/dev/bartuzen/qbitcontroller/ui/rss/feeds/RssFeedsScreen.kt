@@ -111,6 +111,7 @@ import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
+import qbitcontroller.composeapp.generated.resources.error_required_field
 import qbitcontroller.composeapp.generated.resources.rss_action_add
 import qbitcontroller.composeapp.generated.resources.rss_action_add_feed
 import qbitcontroller.composeapp.generated.resources.rss_action_add_folder
@@ -130,7 +131,6 @@ import qbitcontroller.composeapp.generated.resources.rss_confirm_delete_feed
 import qbitcontroller.composeapp.generated.resources.rss_confirm_delete_folder
 import qbitcontroller.composeapp.generated.resources.rss_delete_feed_error
 import qbitcontroller.composeapp.generated.resources.rss_delete_folder_error
-import qbitcontroller.composeapp.generated.resources.rss_field_required
 import qbitcontroller.composeapp.generated.resources.rss_hint_feed_name
 import qbitcontroller.composeapp.generated.resources.rss_hint_feed_name_optional
 import qbitcontroller.composeapp.generated.resources.rss_hint_feed_url
@@ -913,7 +913,7 @@ private fun AddFeedDialog(
                             if (feedUrl.text.isNotBlank()) {
                                 onAddFeed(feedUrl.text, feedName.text.ifBlank { null })
                             } else {
-                                urlError = Res.string.rss_field_required
+                                urlError = Res.string.error_required_field
                             }
                         },
                     ),
@@ -927,7 +927,7 @@ private fun AddFeedDialog(
                     if (feedUrl.text.isNotBlank()) {
                         onAddFeed(feedUrl.text, feedName.text.ifBlank { null })
                     } else {
-                        urlError = Res.string.rss_field_required
+                        urlError = Res.string.error_required_field
                     }
                 },
             ) {
@@ -979,7 +979,7 @@ private fun AddFolderDialog(onDismiss: () -> Unit, onAddFolder: (name: String) -
                         if (folderName.text.isNotBlank()) {
                             onAddFolder(folderName.text)
                         } else {
-                            nameError = Res.string.rss_field_required
+                            nameError = Res.string.error_required_field
                         }
                     },
                 ),
@@ -994,7 +994,7 @@ private fun AddFolderDialog(onDismiss: () -> Unit, onAddFolder: (name: String) -
                     if (folderName.text.isNotBlank()) {
                         onAddFolder(folderName.text)
                     } else {
-                        nameError = Res.string.rss_field_required
+                        nameError = Res.string.error_required_field
                     }
                 },
             ) {
@@ -1065,7 +1065,7 @@ private fun RenameFeedFolderDialog(
                         if (name.text.isNotBlank()) {
                             onRename(name.text)
                         } else {
-                            nameError = Res.string.rss_field_required
+                            nameError = Res.string.error_required_field
                         }
                     },
                 ),
@@ -1080,7 +1080,7 @@ private fun RenameFeedFolderDialog(
                     if (name.text.isNotBlank()) {
                         onRename(name.text)
                     } else {
-                        nameError = Res.string.rss_field_required
+                        nameError = Res.string.error_required_field
                     }
                 },
             ) {
@@ -1187,7 +1187,7 @@ private fun EditFeedUrlDialog(
                         if (url.text.isNotBlank()) {
                             onEditUrl(url.text)
                         } else {
-                            urlError = Res.string.rss_field_required
+                            urlError = Res.string.error_required_field
                         }
                     },
                 ),
@@ -1202,7 +1202,7 @@ private fun EditFeedUrlDialog(
                     if (url.text.isNotBlank()) {
                         onEditUrl(url.text)
                     } else {
-                        urlError = Res.string.rss_field_required
+                        urlError = Res.string.error_required_field
                     }
                 },
             ) {
