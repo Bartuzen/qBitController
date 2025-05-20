@@ -1456,29 +1456,31 @@ private fun SetCategoryDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = stringResource(Res.string.torrent_action_category)) },
         text = {
-            if (categories == null) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            } else if (categories.isNotEmpty()) {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    categories.forEach { category ->
-                        CategoryChip(
-                            category = category,
-                            isSelected = selectedCategory == category,
-                            onClick = {
-                                selectedCategory = if (selectedCategory != category) category else null
-                            },
-                        )
+            AnimatedContent(targetState = categories) { categories ->
+                when {
+                    categories == null -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+
+                    categories.isEmpty() -> Text(
+                        text = stringResource(Res.string.torrent_no_categories),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+
+                    else -> FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        categories.forEach { category ->
+                            CategoryChip(
+                                category = category,
+                                isSelected = selectedCategory == category,
+                                onClick = {
+                                    selectedCategory = if (selectedCategory != category) category else null
+                                },
+                            )
+                        }
                     }
                 }
-            } else {
-                Text(
-                    text = stringResource(Res.string.torrent_no_categories),
-                    color = MaterialTheme.colorScheme.error,
-                )
             }
         },
         confirmButton = {
@@ -1517,33 +1519,35 @@ private fun SetTagsDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = stringResource(Res.string.torrent_action_tags)) },
         text = {
-            if (tags == null) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-            } else if (tags.isNotEmpty()) {
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    tags.forEach { tag ->
-                        TagChip(
-                            tag = tag,
-                            isSelected = selectedTags.contains(tag),
-                            onClick = {
-                                if (selectedTags.contains(tag)) {
-                                    selectedTags.remove(tag)
-                                } else {
-                                    selectedTags.add(tag)
-                                }
-                            },
-                        )
+            AnimatedContent(targetState = tags) { tags ->
+                when {
+                    tags == null -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+
+                    tags.isEmpty() -> Text(
+                        text = stringResource(Res.string.torrent_no_tags),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+
+                    else -> FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        tags.forEach { tag ->
+                            TagChip(
+                                tag = tag,
+                                isSelected = selectedTags.contains(tag),
+                                onClick = {
+                                    if (selectedTags.contains(tag)) {
+                                        selectedTags.remove(tag)
+                                    } else {
+                                        selectedTags.add(tag)
+                                    }
+                                },
+                            )
+                        }
                     }
                 }
-            } else {
-                Text(
-                    text = stringResource(Res.string.torrent_no_tags),
-                    color = MaterialTheme.colorScheme.error,
-                )
             }
         },
         confirmButton = {
