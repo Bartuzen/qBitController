@@ -618,6 +618,11 @@
     <string name="search_result_filter_max">Max</string>
     <string name="search_result_filter_reset">Reset</string>
 
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent selected</item>
+        <item quantity="other">%1$d torrents selected</item>
+    </plurals>
+
     <string name="search_result_showing_count">Showing %1$d out of %2$d</string>
     <string name="search_result_details">Torrent Details</string>
     <string name="search_result_size">Size: %1$s</string>
@@ -638,6 +643,7 @@
     <string name="search_result_action_sort_search_engine">Search Engine</string>
     <string name="search_result_action_sort_reverse">Reverse</string>
     <string name="search_result_action_stop_search">Stop Search</string>
+    <string name="search_result_action_download">Download</string>
 
     <string name="search_plugins">Plugins</string>
     <string name="search_plugins_install_hint">URL or local directory</string>

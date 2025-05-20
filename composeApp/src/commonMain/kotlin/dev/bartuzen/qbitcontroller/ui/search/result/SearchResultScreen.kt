@@ -1,9 +1,11 @@
 package dev.bartuzen.qbitcontroller.ui.search.result
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +25,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -33,6 +35,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ArrowDownward
@@ -65,12 +68,14 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -84,6 +89,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -92,6 +99,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.data.SearchSort
@@ -113,17 +121,20 @@ import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
+import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.jetbrains.compose.resources.pluralStringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.action_search
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
+import qbitcontroller.composeapp.generated.resources.search_result_action_download
 import qbitcontroller.composeapp.generated.resources.search_result_action_filter
 import qbitcontroller.composeapp.generated.resources.search_result_action_sort
 import qbitcontroller.composeapp.generated.resources.search_result_action_sort_leechers
@@ -150,6 +161,7 @@ import qbitcontroller.composeapp.generated.resources.search_result_site
 import qbitcontroller.composeapp.generated.resources.search_result_size
 import qbitcontroller.composeapp.generated.resources.search_result_stop_success
 import qbitcontroller.composeapp.generated.resources.search_result_title
+import qbitcontroller.composeapp.generated.resources.search_result_torrents_selected
 import qbitcontroller.composeapp.generated.resources.size_bytes
 import qbitcontroller.composeapp.generated.resources.size_exbibytes
 import qbitcontroller.composeapp.generated.resources.size_gibibytes
@@ -184,6 +196,7 @@ fun SearchResultScreen(
 
     var filterQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var isSearchMode by rememberSaveable { mutableStateOf(false) }
+    val selectedTorrents = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
 
     LaunchedEffect(addTorrentFlow) {
         addTorrentFlow.collect {
@@ -215,6 +228,10 @@ fun SearchResultScreen(
         isSearchMode = false
         filterQuery = TextFieldValue()
         viewModel.setFilterQuery("")
+    }
+
+    BackHandler(enabled = selectedTorrents.isNotEmpty()) {
+        selectedTorrents.clear()
     }
 
     var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
@@ -263,6 +280,19 @@ fun SearchResultScreen(
             )
         }
         null -> {}
+    }
+
+    var bottomBarHeight by remember { mutableStateOf(0.dp) }
+    var bottomBarState = remember { MutableTransitionState(selectedTorrents.isNotEmpty()) }
+
+    LaunchedEffect(selectedTorrents.isNotEmpty()) {
+        bottomBarState.targetState = selectedTorrents.isNotEmpty()
+    }
+
+    LaunchedEffect(bottomBarState.isIdle, bottomBarState.currentState) {
+        if (bottomBarState.isIdle && !bottomBarState.currentState) {
+            bottomBarHeight = 0.dp
+        }
     }
 
     Scaffold(
@@ -441,10 +471,76 @@ fun SearchResultScreen(
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
+        bottomBar = {
+            val density = LocalDensity.current
+            AnimatedVisibility(
+                visibleState = bottomBarState,
+                enter = expandVertically(),
+                exit = shrinkVertically(),
+                modifier = Modifier.onGloballyPositioned {
+                    bottomBarHeight = with(density) { it.size.height.toDp() }
+                },
+            ) {
+                TopAppBar(
+                    title = {
+                        var selectedSize by rememberSaveable { mutableIntStateOf(0) }
+
+                        LaunchedEffect(selectedTorrents.size) {
+                            if (selectedTorrents.isNotEmpty()) {
+                                selectedSize = selectedTorrents.size
+                            }
+                        }
+
+                        Text(
+                            text = pluralStringResource(
+                                Res.plurals.search_result_torrents_selected,
+                                selectedSize,
+                                selectedSize,
+                            ),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    ),
+                    navigationIcon = {
+                        IconButton(onClick = { selectedTorrents.clear() }) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    actions = {
+                        val actionMenuItems = listOf(
+                            ActionMenuItem(
+                                title = stringResource(Res.string.search_result_action_download),
+                                onClick = {
+                                    onNavigateToAddTorrent(
+                                        selectedTorrents.joinToString("\n") {
+                                            Json.decodeFromString<Search.Result>(it).fileUrl
+                                        },
+                                    )
+                                },
+                                showAsAction = true,
+                                icon = Icons.Filled.Download,
+                            ),
+                        )
+
+                        AppBarActions(items = actionMenuItems)
+                    },
+                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+                )
+            }
+        },
         snackbarHost = {
+            val bottomPadding =
+                (WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding() - bottomBarHeight)
+                    .coerceAtLeast(0.dp)
             SwipeableSnackbarHost(
                 hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
+                modifier = Modifier.padding(bottom = bottomPadding),
             )
         },
     ) { innerPadding ->
@@ -482,8 +578,28 @@ fun SearchResultScreen(
                     ) { searchResult ->
                         SearchResultItem(
                             searchResult = searchResult,
+                            selected = Json.encodeToString(searchResult) in selectedTorrents,
                             filterSearchQuery = filterQuery.text.ifEmpty { null },
-                            onClick = { currentDialog = Dialog.Details(searchResult) },
+                            onClick = {
+                                if (selectedTorrents.isNotEmpty()) {
+                                    val searchJson = Json.encodeToString(searchResult)
+                                    if (searchJson !in selectedTorrents) {
+                                        selectedTorrents += searchJson
+                                    } else {
+                                        selectedTorrents -= searchJson
+                                    }
+                                } else {
+                                    currentDialog = Dialog.Details(searchResult)
+                                }
+                            },
+                            onLongClick = {
+                                val searchJson = Json.encodeToString(searchResult)
+                                if (searchJson !in selectedTorrents) {
+                                    selectedTorrents += searchJson
+                                } else {
+                                    selectedTorrents -= searchJson
+                                }
+                            },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .animateItem(),
@@ -524,17 +640,29 @@ fun SearchResultScreen(
 @Composable
 private fun SearchResultItem(
     searchResult: Search.Result,
+    selected: Boolean,
     filterSearchQuery: String?,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
+        colors = CardDefaults.elevatedCardColors(
+            containerColor = if (selected) {
+                MaterialTheme.colorScheme.surfaceContainerHigh
+            } else {
+                Color.Unspecified
+            },
+        ),
         modifier = modifier,
-        onClick = onClick,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick,
+                )
                 .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             val name = if (filterSearchQuery != null) {
