@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -517,7 +518,9 @@ fun AddTorrentScreen(
                                 overflow = TextOverflow.Ellipsis,
                             )
                         },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateContentSize(),
                         minLines = 4,
                         maxLines = 4,
                         readOnly = torrentUrl != null,
@@ -957,7 +960,9 @@ fun AddTorrentScreen(
                                 Icon(imageVector = Icons.Filled.Error, contentDescription = null)
                             }
                         },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .animateContentSize(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,
@@ -1033,7 +1038,9 @@ fun AddTorrentScreen(
                                 Icon(imageVector = Icons.Filled.Error, contentDescription = null)
                             }
                         },
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .animateContentSize(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number,

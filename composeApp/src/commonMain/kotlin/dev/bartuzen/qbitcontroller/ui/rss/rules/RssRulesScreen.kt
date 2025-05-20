@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.rss.rules
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -486,6 +487,7 @@ private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) ->
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },
@@ -554,6 +556,7 @@ private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },

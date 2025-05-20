@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.settings.general
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -122,7 +123,9 @@ fun GeneralSettingsScreen(
                                 keyboardActions = KeyboardActions { onOk() },
                                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 singleLine = true,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .animateContentSize(),
                             )
                         },
                         onDialogStateChange = { error = null },

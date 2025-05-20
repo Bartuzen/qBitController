@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -695,6 +696,7 @@ fun EditSelectedTrackerDialog(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },

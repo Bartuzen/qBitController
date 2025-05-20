@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.torrentlist
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -2850,6 +2851,7 @@ private fun CreateEditCategoryDialog(
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     modifier = Modifier
                         .fillMaxWidth()
+                        .animateContentSize()
                         .focusRequester(focusRequester),
                 )
 
@@ -3076,6 +3078,7 @@ private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },
@@ -3226,6 +3229,7 @@ private fun SetTorrentsLocationDialog(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },
@@ -3423,7 +3427,9 @@ private fun SpeedLimitsDialog(
                             imeAction = ImeAction.Next,
                         ),
                         singleLine = true,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .animateContentSize(),
                         enabled = alternativeLimits == currentAlternativeLimits,
                     )
 
@@ -3521,7 +3527,9 @@ private fun SpeedLimitsDialog(
                             imeAction = ImeAction.Next,
                         ),
                         singleLine = true,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .animateContentSize(),
                         enabled = alternativeLimits == currentAlternativeLimits,
                     )
 

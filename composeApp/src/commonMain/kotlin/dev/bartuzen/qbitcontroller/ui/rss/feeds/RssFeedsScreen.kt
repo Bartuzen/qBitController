@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.ui.rss.feeds
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -894,6 +895,7 @@ private fun AddFeedDialog(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
+                        .animateContentSize()
                         .focusRequester(focusRequester),
                 )
 
@@ -985,6 +987,7 @@ private fun AddFolderDialog(onDismiss: () -> Unit, onAddFolder: (name: String) -
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },
@@ -1071,6 +1074,7 @@ private fun RenameFeedFolderDialog(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },
@@ -1193,6 +1197,7 @@ private fun EditFeedUrlDialog(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .animateContentSize()
                     .focusRequester(focusRequester),
             )
         },
