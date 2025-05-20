@@ -379,7 +379,6 @@
     <string name="settings_notification_check_interval">Intervalo de comprobación de las notificaciones</string>
     <string name="torrent_add_tags">Etiquetas</string>
     <string name="torrent_add_skip_hash_checking">Omitir la comprobación del hash</string>
-    <string name="rss_field_required">Campo obligatorio.</string>
     <string name="rss_rule_delete_success">Regla RSS eliminada correctamente.</string>
     <string name="torrent_files_rename_folder_hint">Nombre de la carpeta</string>
     <string name="rss_title">RSS</string>

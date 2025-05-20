@@ -336,7 +336,6 @@
     <string name="rss_hint_feed_url">Bildirim URL\'si</string>
     <string name="rss_all_articles">Bütün Makaleler</string>
     <string name="rss_added_feed">Bildirim başarıyla eklendi.</string>
-    <string name="rss_field_required">Bu alan gereklidir.</string>
     <string name="rss_confirm_delete_feed">%1$s bildirimini silmek istediğinizden emin misiniz\?</string>
     <string name="rss_confirm_delete_folder">%1$s klasörünü silmek istediğinizden emin misiniz\?</string>
     <string name="rss_add_feed_error">Bildirim eklenemedi.</string>

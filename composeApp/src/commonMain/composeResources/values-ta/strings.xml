@@ -409,7 +409,6 @@
     <string name="rss_action_refresh">புதுப்பிப்பு</string>
     <string name="rss_action_move_select_folder">ஒரு கோப்புறையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="rss_hint_feed_url">முகவரி க்கு உணவளிக்கவும்</string>
-    <string name="rss_field_required">இந்த புலம் தேவை.</string>
     <string name="rss_confirm_delete_feed">ஊட்டத்தை %1$s ஐ நீக்க விரும்புகிறீர்களா?</string>
     <string name="rss_success_feed_change_url">தீவனம் முகவரி வெற்றிகரமாக மாறியது.</string>
     <string name="rss_success_feed_move">ஊட்டம் வெற்றிகரமாக நகர்ந்தது.</string>

@@ -417,7 +417,6 @@
     <string name="rss_hint_feed_name">订阅源名称</string>
     <string name="rss_hint_folder_name">文件夹名称</string>
     <string name="rss_all_articles">所有文章</string>
-    <string name="rss_field_required">该字段不得为空。</string>
     <string name="rss_confirm_delete_feed">是否确定要删除订阅源 %1$s？</string>
     <string name="rss_confirm_delete_folder">是否确定要删除文件夹 %1$s？</string>
     <string name="rss_added_feed">已成功添加订阅源。</string>

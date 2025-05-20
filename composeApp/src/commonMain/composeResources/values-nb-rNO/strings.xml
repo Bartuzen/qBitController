@@ -224,7 +224,6 @@
     <string name="rss_action_mark_all_as_read">Marker alle som lest</string>
     <string name="rss_hint_folder_name">Mappenavn</string>
     <string name="rss_all_articles">Alle artikler</string>
-    <string name="rss_field_required">Dette feltet er påkrevd.</string>
     <string name="rss_success_folder_move">Mappe flyttet.</string>
     <string name="rss_success_folder_delete">Mappe slettet.</string>
     <string name="rss_add_folder_error">Kunne ikke legge til mappe.</string>

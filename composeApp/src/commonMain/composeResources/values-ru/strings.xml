@@ -77,7 +77,6 @@
     <string name="rss_action_refresh_all">Обновить всё</string>
     <string name="rss_success_folder_delete">Папка успешно удалена.</string>
     <string name="rss_add_folder_error">Не удалось добавить папку.</string>
-    <string name="rss_field_required">Это поле обязательно.</string>
     <string name="rss_confirm_delete_feed">Уверены, что хотите удалить ленту %1$s\?</string>
     <string name="rss_success_folder_add">Папка добавлена успешно.</string>
     <string name="rss_rename_folder_error">Не удалось переименовать папку.</string>
