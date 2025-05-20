@@ -446,7 +446,6 @@
     <string name="rss_hint_feed_name">Nome da Fonte</string>
     <string name="rss_hint_folder_name">Nome da Pasta</string>
     <string name="rss_all_articles">Todos os Artigos</string>
-    <string name="rss_field_required">Este campo é obrigatório.</string>
     <string name="torrent_add_click_to_select_file">Clique para selecionar um ficheiro</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Interessado (local) e condicionado (peer)</string>
     <string name="torrent_add_button_url">URL</string>
