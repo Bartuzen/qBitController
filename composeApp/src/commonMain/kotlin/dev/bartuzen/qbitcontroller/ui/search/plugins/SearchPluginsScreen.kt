@@ -39,6 +39,7 @@ import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material.icons.rounded.Extension
+import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -448,7 +449,7 @@ private fun InstallPluginDialog(
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (text.text.isNotBlank()) {
                         onConfirm(text.text.split("\n"))

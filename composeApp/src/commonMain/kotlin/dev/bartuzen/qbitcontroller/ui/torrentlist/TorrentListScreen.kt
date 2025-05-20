@@ -2797,7 +2797,7 @@ private fun CreateEditCategoryDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (name.text.isNotBlank()) {
                         onConfirm(name.text, savePath.text, downloadPathEnabled, downloadPath.text)
@@ -3000,7 +3000,7 @@ private fun DeleteCategoryDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            Button(onClick = onConfirm) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -3021,7 +3021,7 @@ private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (name.text.isNotBlank()) {
                         onConfirm(name.text.split("\n"))
@@ -3105,7 +3105,7 @@ private fun DeleteTagDialog(tag: String, onDismiss: () -> Unit, onConfirm: () ->
             }
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            Button(onClick = onConfirm) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -3131,7 +3131,7 @@ private fun DeleteTorrentsDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = { onConfirm(deleteFiles) },
             ) {
                 Text(text = stringResource(Res.string.dialog_ok))
@@ -3171,7 +3171,7 @@ private fun SetTorrentsLocationDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (location.text.isNotBlank()) {
                         onConfirm(location.text)
@@ -3251,7 +3251,7 @@ private fun SetTorrentsCategoryDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = { onConfirm(selectedCategory) },
             ) {
                 Text(text = stringResource(Res.string.dialog_ok))
@@ -3319,7 +3319,7 @@ private fun SpeedLimitsDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (currentAlternativeLimits != alternativeLimits) {
                         onToggleAlternativeLimits()
@@ -3593,7 +3593,7 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
         onDismissRequest = onDismiss,
         textHorizontalPadding = 8.dp,
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            Button(onClick = onDismiss) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -3753,7 +3753,7 @@ private fun ShutdownDialog(onDismiss: () -> Unit, onConfirm: () -> Unit, modifie
             }
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            Button(onClick = onConfirm) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -3809,7 +3809,7 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            Button(onClick = onDismiss) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },

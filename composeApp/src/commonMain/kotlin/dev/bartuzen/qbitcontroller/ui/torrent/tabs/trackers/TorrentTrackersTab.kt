@@ -41,6 +41,7 @@ import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.People
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
@@ -608,7 +609,7 @@ fun AddTrackersDialog(onDismiss: () -> Unit, onAdd: (urls: List<String>) -> Unit
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     onAdd(urls.text.split("\n"))
                 },
@@ -632,7 +633,7 @@ fun DeleteSelectedTrackersDialog(count: Int, onDismiss: () -> Unit, onDelete: ()
         title = { Text(text = pluralStringResource(Res.plurals.torrent_trackers_delete_title, count, count)) },
         text = { Text(text = pluralStringResource(Res.plurals.torrent_trackers_delete_desc, count, count)) },
         confirmButton = {
-            TextButton(onClick = onDelete) {
+            Button(onClick = onDelete) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -698,7 +699,7 @@ fun EditSelectedTrackerDialog(
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (url.text.isNotBlank()) {
                         onEdit(url.text)

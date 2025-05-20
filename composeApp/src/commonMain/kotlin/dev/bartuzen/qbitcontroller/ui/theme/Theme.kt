@@ -107,6 +107,7 @@ fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean =
             titleTextStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 16.sp),
             summaryTextStyle = MaterialTheme.typography.bodySmall,
             iconColor = MaterialTheme.colorScheme.primary,
+            useTextButtonForDialogConfirmation = false,
         )
 
         CompositionLocalProvider(

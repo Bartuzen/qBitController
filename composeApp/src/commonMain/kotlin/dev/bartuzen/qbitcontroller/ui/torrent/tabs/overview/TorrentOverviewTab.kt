@@ -59,6 +59,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material.icons.filled.Title
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
@@ -1331,7 +1332,7 @@ private fun DeleteDialog(onDismiss: () -> Unit, onDelete: (deleteFiles: Boolean)
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = { onDelete(deleteFiles) },
             ) {
                 Text(text = stringResource(Res.string.dialog_ok))
@@ -1353,7 +1354,7 @@ private fun RecheckDialog(onDismiss: () -> Unit, onRecheck: () -> Unit, modifier
         title = { Text(text = stringResource(Res.string.torrent_action_force_recheck)) },
         text = { Text(text = stringResource(Res.string.torrent_force_recheck_confirm)) },
         confirmButton = {
-            TextButton(onClick = onRecheck) {
+            Button(onClick = onRecheck) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -1419,7 +1420,7 @@ private fun RenameDialog(
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (name.text.isNotBlank()) {
                         onRename(name.text)
@@ -1480,7 +1481,7 @@ private fun SetCategoryDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (categories != null) {
                         onConfirm(selectedCategory)
@@ -1545,7 +1546,7 @@ private fun SetTagsDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (tags != null) {
                         onConfirm(selectedTags)
@@ -1906,7 +1907,7 @@ fun TorrentOptionsDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     val autoTmm = if (torrent.isAutomaticTorrentManagementEnabled != isAutoTmmEnabled) {
                         isAutoTmmEnabled

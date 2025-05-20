@@ -39,6 +39,7 @@ import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Downloading
 import androidx.compose.material.icons.outlined.Speed
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
@@ -664,7 +665,7 @@ private fun AddPeersDialog(onDismiss: () -> Unit, onAdd: (peers: List<String>) -
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     onAdd(text.text.split("\n"))
                 },
@@ -688,7 +689,7 @@ private fun BanPeersDialog(count: Int, onDismiss: () -> Unit, onBan: () -> Unit,
         title = { Text(text = pluralStringResource(Res.plurals.torrent_peers_ban_title, count, count)) },
         text = { Text(text = pluralStringResource(Res.plurals.torrent_peers_ban_desc, count, count)) },
         confirmButton = {
-            TextButton(onClick = onBan) {
+            Button(onClick = onBan) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -885,7 +886,7 @@ private fun PeerDetailsDialog(peer: TorrentPeer, onDismiss: () -> Unit, modifier
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) {
+            Button(onClick = onDismiss) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },

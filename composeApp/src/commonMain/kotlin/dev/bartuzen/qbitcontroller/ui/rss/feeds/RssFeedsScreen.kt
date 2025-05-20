@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.RssFeed
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -921,7 +922,7 @@ private fun AddFeedDialog(
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (feedUrl.text.isNotBlank()) {
                         onAddFeed(feedUrl.text, feedName.text.ifBlank { null })
@@ -988,7 +989,7 @@ private fun AddFolderDialog(onDismiss: () -> Unit, onAddFolder: (name: String) -
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (folderName.text.isNotBlank()) {
                         onAddFolder(folderName.text)
@@ -1074,7 +1075,7 @@ private fun RenameFeedFolderDialog(
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (name.text.isNotBlank()) {
                         onRename(name.text)
@@ -1129,7 +1130,7 @@ private fun DeleteFeedFolderDialog(
             )
         },
         confirmButton = {
-            TextButton(onClick = onDelete) {
+            Button(onClick = onDelete) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
@@ -1196,7 +1197,7 @@ private fun EditFeedUrlDialog(
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (url.text.isNotBlank()) {
                         onEditUrl(url.text)

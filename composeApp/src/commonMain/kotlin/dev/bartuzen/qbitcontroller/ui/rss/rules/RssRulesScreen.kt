@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.RssFeed
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
@@ -489,7 +490,7 @@ private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) ->
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (nameValue.text.isBlank()) {
                         nameError = Res.string.rss_rule_name_cannot_be_empty
@@ -557,7 +558,7 @@ private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
             )
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     if (nameValue.text.isBlank()) {
                         nameError = Res.string.rss_rule_name_cannot_be_empty
@@ -592,7 +593,7 @@ private fun DeleteRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
             Text(text = description)
         },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
+            Button(onClick = onConfirm) {
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },

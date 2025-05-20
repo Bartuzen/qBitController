@@ -1196,7 +1196,7 @@ private fun FilterDialog(
                     Text(text = stringResource(Res.string.dialog_cancel))
                 }
 
-                TextButton(
+                Button(
                     onClick = {
                         val newFilter = SearchResultViewModel.Filter(
                             seedsMin = seedsMin.text.toIntOrNull(),
