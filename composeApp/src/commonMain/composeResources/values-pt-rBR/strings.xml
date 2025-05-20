@@ -660,4 +660,16 @@
     <string name="settings_server_server_info">Informações do servidor</string>
     <string name="settings_server_advanced_title">Configurações avançadas</string>
     <string name="settings_server_invalid_url">O formato do URL é inválido.</string>
+    <string name="rss_action_download">Download</string>
+    <string name="search_result_action_download">Download</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent selecionado</item>
+        <item quantity="many">%1$d torrents selecionados</item>
+        <item quantity="other">%1$d torrents selecionados</item>
+    </plurals>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent selecionado</item>
+        <item quantity="many">%1$d torrents selecionados</item>
+        <item quantity="other">%1$d torrents selecionados</item>
+    </plurals>
 </resources>
