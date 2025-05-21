@@ -254,4 +254,3 @@ tasks.withType<ConfigurableKtLintTask> {
         .minus(fileTree("src/commonMain/kotlin/dev/bartuzen/qbitcontroller/utils/SavedStateHandle.kt")) // Remove when ktlint supports context parameters
         .asFileTree
 }
-
