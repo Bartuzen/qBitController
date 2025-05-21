@@ -47,6 +47,7 @@ fun AppBarActions(
     showOverflow: Boolean,
     onOverflowVisibilityChange: (visible: Boolean) -> Unit,
     canFocus: Boolean = true,
+    bottom: Boolean = false,
 ) {
     LaunchedEffect(canFocus, showOverflow) {
         if (!canFocus && showOverflow) {
@@ -93,8 +94,9 @@ fun AppBarActions(
             }
 
             if (item.title != null) {
+                val position = if (!bottom) (-72).dp else 0.dp
                 TooltipBox(
-                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider((-80).dp),
+                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(position),
                     tooltip = {
                         PlainTooltip {
                             Text(item.title)
@@ -183,13 +185,14 @@ fun AppBarActions(
 }
 
 @Composable
-fun AppBarActions(items: List<ActionMenuItem>, canFocus: Boolean = true) {
+fun AppBarActions(items: List<ActionMenuItem>, canFocus: Boolean = true, bottom: Boolean = false) {
     var showOverflow by rememberSaveable { mutableStateOf(false) }
     AppBarActions(
         items = items,
         showOverflow = showOverflow,
         onOverflowVisibilityChange = { showOverflow = it },
         canFocus = canFocus,
+        bottom = bottom,
     )
 }
 

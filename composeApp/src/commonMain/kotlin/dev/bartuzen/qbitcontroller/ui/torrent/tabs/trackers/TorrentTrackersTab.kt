@@ -346,7 +346,7 @@ fun TorrentTrackersTab(
                             ),
                         )
 
-                        AppBarActions(items = actionMenuItems)
+                        AppBarActions(items = actionMenuItems, bottom = true)
                     },
                     windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
                 )

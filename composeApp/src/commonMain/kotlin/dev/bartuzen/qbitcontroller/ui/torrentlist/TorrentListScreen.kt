@@ -2710,6 +2710,7 @@ private fun BottomBarSelection(
             AppBarActions(
                 items = actionMenuItems,
                 canFocus = canFocusNow,
+                bottom = true,
             )
         },
         windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
