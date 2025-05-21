@@ -387,6 +387,75 @@ fun SearchResultScreen(
                                     contentDescription = null,
                                 )
                             },
+                            dropdownMenu = {
+                                val scrollState = rememberScrollState()
+                                LaunchedEffect(showSortMenu) {
+                                    if (showSortMenu) {
+                                        scrollState.scrollTo(0)
+                                    }
+                                }
+
+                                DropdownMenu(
+                                    expanded = showSortMenu,
+                                    onDismissRequest = { showSortMenu = false },
+                                    scrollState = scrollState,
+                                ) {
+                                    Text(
+                                        text = stringResource(Res.string.search_result_action_sort),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                    )
+
+                                    val sortOptions = remember {
+                                        listOf(
+                                            Res.string.search_result_action_sort_name to SearchSort.NAME,
+                                            Res.string.search_result_action_sort_size to SearchSort.SIZE,
+                                            Res.string.search_result_action_sort_seeders to SearchSort.SEEDERS,
+                                            Res.string.search_result_action_sort_leechers to SearchSort.LEECHERS,
+                                            Res.string.search_result_action_sort_search_engine to SearchSort.SEARCH_ENGINE,
+                                        )
+                                    }
+                                    sortOptions.forEach { (stringId, searchSort) ->
+                                        DropdownMenuItem(
+                                            text = {
+                                                Row(
+                                                    verticalAlignment = Alignment.CenterVertically,
+                                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                                ) {
+                                                    RadioButton(
+                                                        selected = currentSorting == searchSort,
+                                                        onClick = null,
+                                                    )
+                                                    Text(text = stringResource(stringId))
+                                                }
+                                            },
+                                            onClick = {
+                                                viewModel.setSearchSort(searchSort)
+                                                showSortMenu = false
+                                            },
+                                        )
+                                    }
+                                    HorizontalDivider()
+                                    DropdownMenuItem(
+                                        text = {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically,
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                            ) {
+                                                Checkbox(
+                                                    checked = isReverseSorting,
+                                                    onCheckedChange = null,
+                                                )
+                                                Text(text = stringResource(Res.string.search_result_action_sort_reverse))
+                                            }
+                                        },
+                                        onClick = {
+                                            viewModel.changeReverseSorting()
+                                            showSortMenu = false
+                                        },
+                                    )
+                                }
+                            },
                         ),
                         ActionMenuItem(
                             title = stringResource(Res.string.search_result_action_stop_search),
@@ -398,74 +467,6 @@ fun SearchResultScreen(
                     )
 
                     AppBarActions(items = actionMenuItems)
-
-                    val sortMenuScrollState = rememberScrollState()
-                    LaunchedEffect(showSortMenu) {
-                        if (showSortMenu) {
-                            sortMenuScrollState.scrollTo(0)
-                        }
-                    }
-
-                    DropdownMenu(
-                        expanded = showSortMenu,
-                        onDismissRequest = { showSortMenu = false },
-                        scrollState = sortMenuScrollState,
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.search_result_action_sort),
-                            style = MaterialTheme.typography.labelLarge,
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        )
-
-                        val sortOptions = remember {
-                            listOf(
-                                Res.string.search_result_action_sort_name to SearchSort.NAME,
-                                Res.string.search_result_action_sort_size to SearchSort.SIZE,
-                                Res.string.search_result_action_sort_seeders to SearchSort.SEEDERS,
-                                Res.string.search_result_action_sort_leechers to SearchSort.LEECHERS,
-                                Res.string.search_result_action_sort_search_engine to SearchSort.SEARCH_ENGINE,
-                            )
-                        }
-                        sortOptions.forEach { (stringId, searchSort) ->
-                            DropdownMenuItem(
-                                text = {
-                                    Row(
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    ) {
-                                        RadioButton(
-                                            selected = currentSorting == searchSort,
-                                            onClick = null,
-                                        )
-                                        Text(text = stringResource(stringId))
-                                    }
-                                },
-                                onClick = {
-                                    viewModel.setSearchSort(searchSort)
-                                    showSortMenu = false
-                                },
-                            )
-                        }
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                ) {
-                                    Checkbox(
-                                        checked = isReverseSorting,
-                                        onCheckedChange = null,
-                                    )
-                                    Text(text = stringResource(Res.string.search_result_action_sort_reverse))
-                                }
-                            },
-                            onClick = {
-                                viewModel.changeReverseSorting()
-                                showSortMenu = false
-                            },
-                        )
-                    }
                 },
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )

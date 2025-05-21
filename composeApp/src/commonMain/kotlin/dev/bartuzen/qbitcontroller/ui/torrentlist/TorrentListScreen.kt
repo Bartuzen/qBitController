@@ -2389,6 +2389,83 @@ private fun TopBar(
                             contentDescription = null,
                         )
                     },
+                    dropdownMenu = {
+                        val scrollState = rememberScrollState()
+                        LaunchedEffect(showSortMenu) {
+                            if (showSortMenu) {
+                                scrollState.scrollTo(0)
+                            }
+                        }
+
+                        DropdownMenu(
+                            expanded = showSortMenu,
+                            onDismissRequest = { showSortMenu = false },
+                            scrollState = scrollState,
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.torrent_list_action_sort),
+                                style = MaterialTheme.typography.labelLarge,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            )
+
+                            val sortOptions = remember {
+                                listOf(
+                                    Res.string.torrent_list_action_sort_name to TorrentSort.NAME,
+                                    Res.string.torrent_list_action_sort_status to TorrentSort.STATUS,
+                                    Res.string.torrent_list_action_sort_hash to TorrentSort.HASH,
+                                    Res.string.torrent_list_action_sort_download_speed to TorrentSort.DOWNLOAD_SPEED,
+                                    Res.string.torrent_list_action_sort_upload_speed to TorrentSort.UPLOAD_SPEED,
+                                    Res.string.torrent_list_action_sort_priority to TorrentSort.PRIORITY,
+                                    Res.string.torrent_list_action_sort_eta to TorrentSort.ETA,
+                                    Res.string.torrent_list_action_sort_size to TorrentSort.SIZE,
+                                    Res.string.torrent_list_action_sort_progress to TorrentSort.PROGRESS,
+                                    Res.string.torrent_list_action_sort_ratio to TorrentSort.RATIO,
+                                    Res.string.torrent_list_action_sort_connected_seeds to TorrentSort.CONNECTED_SEEDS,
+                                    Res.string.torrent_list_action_sort_total_seeds to TorrentSort.TOTAL_SEEDS,
+                                    Res.string.torrent_list_action_sort_connected_leeches to TorrentSort.CONNECTED_LEECHES,
+                                    Res.string.torrent_list_action_sort_total_leeches to TorrentSort.TOTAL_LEECHES,
+                                    Res.string.torrent_list_action_sort_addition_date to TorrentSort.ADDITION_DATE,
+                                    Res.string.torrent_list_action_sort_completion_date to TorrentSort.COMPLETION_DATE,
+                                    Res.string.torrent_list_action_sort_last_activity to TorrentSort.LAST_ACTIVITY,
+                                )
+                            }
+                            sortOptions.forEach { (stringId, torrentSort) ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            RadioButton(
+                                                selected = currentSorting == torrentSort,
+                                                onClick = null,
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Text(text = stringResource(stringId))
+                                        }
+                                    },
+                                    onClick = {
+                                        onTorrentSortChange(torrentSort)
+                                        showSortMenu = false
+                                    },
+                                )
+                            }
+                            HorizontalDivider()
+                            DropdownMenuItem(
+                                text = {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Checkbox(
+                                            checked = isReverseSorting,
+                                            onCheckedChange = null,
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Text(text = stringResource(Res.string.torrent_list_action_sort_reverse))
+                                    }
+                                },
+                                onClick = {
+                                    onReverseSortingChange()
+                                    showSortMenu = false
+                                },
+                            )
+                        }
+                    },
                 ),
                 ActionMenuItem(
                     title = stringResource(Res.string.main_action_settings),
@@ -2410,82 +2487,6 @@ private fun TopBar(
                 items = actionMenuItems,
                 canFocus = canFocusNow,
             )
-
-            val sortMenuScrollState = rememberScrollState()
-            LaunchedEffect(showSortMenu) {
-                if (showSortMenu) {
-                    sortMenuScrollState.scrollTo(0)
-                }
-            }
-
-            DropdownMenu(
-                expanded = showSortMenu,
-                onDismissRequest = { showSortMenu = false },
-                scrollState = sortMenuScrollState,
-            ) {
-                Text(
-                    text = stringResource(Res.string.torrent_list_action_sort),
-                    style = MaterialTheme.typography.labelLarge,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                )
-
-                val sortOptions = remember {
-                    listOf(
-                        Res.string.torrent_list_action_sort_name to TorrentSort.NAME,
-                        Res.string.torrent_list_action_sort_status to TorrentSort.STATUS,
-                        Res.string.torrent_list_action_sort_hash to TorrentSort.HASH,
-                        Res.string.torrent_list_action_sort_download_speed to TorrentSort.DOWNLOAD_SPEED,
-                        Res.string.torrent_list_action_sort_upload_speed to TorrentSort.UPLOAD_SPEED,
-                        Res.string.torrent_list_action_sort_priority to TorrentSort.PRIORITY,
-                        Res.string.torrent_list_action_sort_eta to TorrentSort.ETA,
-                        Res.string.torrent_list_action_sort_size to TorrentSort.SIZE,
-                        Res.string.torrent_list_action_sort_progress to TorrentSort.PROGRESS,
-                        Res.string.torrent_list_action_sort_ratio to TorrentSort.RATIO,
-                        Res.string.torrent_list_action_sort_connected_seeds to TorrentSort.CONNECTED_SEEDS,
-                        Res.string.torrent_list_action_sort_total_seeds to TorrentSort.TOTAL_SEEDS,
-                        Res.string.torrent_list_action_sort_connected_leeches to TorrentSort.CONNECTED_LEECHES,
-                        Res.string.torrent_list_action_sort_total_leeches to TorrentSort.TOTAL_LEECHES,
-                        Res.string.torrent_list_action_sort_addition_date to TorrentSort.ADDITION_DATE,
-                        Res.string.torrent_list_action_sort_completion_date to TorrentSort.COMPLETION_DATE,
-                        Res.string.torrent_list_action_sort_last_activity to TorrentSort.LAST_ACTIVITY,
-                    )
-                }
-                sortOptions.forEach { (stringId, torrentSort) ->
-                    DropdownMenuItem(
-                        text = {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                RadioButton(
-                                    selected = currentSorting == torrentSort,
-                                    onClick = null,
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = stringResource(stringId))
-                            }
-                        },
-                        onClick = {
-                            onTorrentSortChange(torrentSort)
-                            showSortMenu = false
-                        },
-                    )
-                }
-                HorizontalDivider()
-                DropdownMenuItem(
-                    text = {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(
-                                checked = isReverseSorting,
-                                onCheckedChange = null,
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = stringResource(Res.string.torrent_list_action_sort_reverse))
-                        }
-                    },
-                    onClick = {
-                        onReverseSortingChange()
-                        showSortMenu = false
-                    },
-                )
-            }
         },
         windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
     )
