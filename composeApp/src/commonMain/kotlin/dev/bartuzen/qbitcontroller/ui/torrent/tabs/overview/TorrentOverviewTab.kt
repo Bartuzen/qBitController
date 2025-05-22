@@ -1997,5 +1997,10 @@ fun TorrentOptionsDialog(
                 Text(text = stringResource(Res.string.dialog_ok))
             }
         },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(Res.string.dialog_cancel))
+            }
+        },
     )
 }
