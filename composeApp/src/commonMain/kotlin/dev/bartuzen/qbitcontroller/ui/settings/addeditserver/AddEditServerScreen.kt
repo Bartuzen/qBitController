@@ -339,8 +339,10 @@ fun AddEditServerScreen(
                 OutlinedTextField(
                     value = url,
                     onValueChange = {
+                        if (it.text != url.text) {
+                            urlError = null
+                        }
                         url = it
-                        urlError = null
                     },
                     label = {
                         Text(

@@ -506,10 +506,10 @@ fun AddTorrentScreen(
                     OutlinedTextField(
                         value = torrentLinkText,
                         onValueChange = {
-                            torrentLinkText = it
-                            if (torrentLinkError != null && it.text.isNotBlank()) {
+                            if (it.text != torrentLinkText.text) {
                                 torrentLinkError = null
                             }
+                            torrentLinkText = it
                         },
                         label = {
                             Text(
@@ -942,8 +942,10 @@ fun AddTorrentScreen(
                         value = uploadSpeedLimit,
                         onValueChange = {
                             if (it.text.all { it.isDigit() }) {
+                                if (it.text != uploadSpeedLimit.text) {
+                                    uploadSpeedError = null
+                                }
                                 uploadSpeedLimit = it
-                                uploadSpeedError = null
                             }
                         },
                         label = {
@@ -1020,8 +1022,10 @@ fun AddTorrentScreen(
                         value = downloadSpeedLimit,
                         onValueChange = {
                             if (it.text.all { it.isDigit() }) {
+                                if (it.text != downloadSpeedLimit.text) {
+                                    downloadSpeedError = null
+                                }
                                 downloadSpeedLimit = it
-                                downloadSpeedError = null
                             }
                         },
                         label = {

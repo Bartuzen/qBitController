@@ -1391,8 +1391,10 @@ private fun RenameDialog(
             OutlinedTextField(
                 value = name,
                 onValueChange = {
+                    if (it.text != name.text) {
+                        error = null
+                    }
                     name = it
-                    error = null
                 },
                 label = {
                     Text(

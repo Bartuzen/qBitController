@@ -2834,8 +2834,10 @@ private fun CreateEditCategoryDialog(
                 OutlinedTextField(
                     value = name,
                     onValueChange = {
+                        if (it.text != name.text) {
+                            nameError = null
+                        }
                         name = it
-                        nameError = null
                     },
                     readOnly = category != null,
                     label = {
@@ -3048,8 +3050,10 @@ private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String
             OutlinedTextField(
                 value = name,
                 onValueChange = {
+                    if (it.text != name.text) {
+                        nameError = null
+                    }
                     name = it
-                    nameError = null
                 },
                 label = {
                     Text(
@@ -3197,8 +3201,10 @@ private fun SetTorrentsLocationDialog(
             OutlinedTextField(
                 value = location,
                 onValueChange = {
+                    if (it.text != location.text) {
+                        locationError = null
+                    }
                     location = it
-                    locationError = null
                 },
                 singleLine = true,
                 label = {
@@ -3402,8 +3408,10 @@ private fun SpeedLimitsDialog(
                         value = uploadSpeedLimit,
                         onValueChange = {
                             if (it.text.all { it.isDigit() }) {
+                                if (it.text != uploadSpeedLimit.text) {
+                                    uploadSpeedError = null
+                                }
                                 uploadSpeedLimit = it
-                                uploadSpeedError = null
                             }
                         },
                         label = {
@@ -3502,8 +3510,10 @@ private fun SpeedLimitsDialog(
                         value = downloadSpeedLimit,
                         onValueChange = {
                             if (it.text.all { it.isDigit() }) {
+                                if (it.text != downloadSpeedLimit.text) {
+                                    downloadSpeedError = null
+                                }
                                 downloadSpeedLimit = it
-                                downloadSpeedError = null
                             }
                         },
                         label = {

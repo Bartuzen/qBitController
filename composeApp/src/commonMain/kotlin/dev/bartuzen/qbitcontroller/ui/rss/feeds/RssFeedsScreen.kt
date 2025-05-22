@@ -875,8 +875,10 @@ private fun AddFeedDialog(
                 OutlinedTextField(
                     value = feedUrl,
                     onValueChange = {
+                        if (it.text != feedUrl.text) {
+                            urlError = null
+                        }
                         feedUrl = it
-                        urlError = null
                     },
                     label = {
                         Text(
@@ -962,8 +964,10 @@ private fun AddFolderDialog(onDismiss: () -> Unit, onAddFolder: (name: String) -
             OutlinedTextField(
                 value = folderName,
                 onValueChange = {
+                    if (it.text != folderName.text) {
+                        nameError = null
+                    }
                     folderName = it
-                    nameError = null
                 },
                 label = {
                     Text(
@@ -1045,8 +1049,10 @@ private fun RenameFeedFolderDialog(
             OutlinedTextField(
                 value = name,
                 onValueChange = {
+                    if (it.text != name.text) {
+                        nameError = null
+                    }
                     name = it
-                    nameError = null
                 },
                 label = {
                     Text(
@@ -1171,8 +1177,10 @@ private fun EditFeedUrlDialog(
             OutlinedTextField(
                 value = url,
                 onValueChange = {
+                    if (it.text != url.text) {
+                        urlError = null
+                    }
                     url = it
-                    urlError = null
                 },
                 label = {
                     Text(

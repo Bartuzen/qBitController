@@ -462,8 +462,10 @@ private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) ->
             OutlinedTextField(
                 value = nameValue,
                 onValueChange = {
+                    if (it.text != nameValue.text) {
+                        nameError = null
+                    }
                     nameValue = it
-                    nameError = null
                 },
                 label = {
                     Text(
@@ -531,8 +533,10 @@ private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
             OutlinedTextField(
                 value = nameValue,
                 onValueChange = {
+                    if (it.text != nameValue.text) {
+                        nameError = null
+                    }
                     nameValue = it
-                    nameError = null
                 },
                 label = {
                     Text(

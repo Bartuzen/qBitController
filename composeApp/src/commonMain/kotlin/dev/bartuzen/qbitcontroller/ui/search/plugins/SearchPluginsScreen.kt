@@ -431,8 +431,10 @@ private fun InstallPluginDialog(
             OutlinedTextField(
                 value = text,
                 onValueChange = {
+                    if (it.text != text.text) {
+                        error = null
+                    }
                     text = it
-                    error = null
                 },
                 label = {
                     Text(
