@@ -49,7 +49,6 @@ import androidx.compose.material.icons.filled.RssFeed
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -94,6 +93,7 @@ import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -477,6 +477,13 @@ fun RssFeedsScreen(
                                     onDismissRequest = { showAddMenu = false },
                                     scrollState = scrollState,
                                 ) {
+                                    Text(
+                                        text = stringResource(Res.string.rss_action_add),
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                    )
+
                                     DropdownMenuItem(
                                         text = {
                                             Text(text = stringResource(Res.string.rss_action_add_feed))

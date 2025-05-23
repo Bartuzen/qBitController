@@ -64,7 +64,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -117,6 +116,7 @@ import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
 import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.RadioButtonWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
@@ -425,6 +425,7 @@ fun TorrentOverviewTab(
                     Text(
                         text = stringResource(Res.string.torrent_action_copy),
                         style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     )
 

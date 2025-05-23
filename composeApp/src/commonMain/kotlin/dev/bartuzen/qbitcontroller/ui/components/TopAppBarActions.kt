@@ -6,10 +6,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TooltipBox
@@ -28,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
+import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 
 data class ActionMenuItem(
     val title: String?,
@@ -158,7 +157,6 @@ fun AppBarActions(
                                 Icon(
                                     imageVector = item.icon,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.secondary,
                                 )
                             }
                         } else {

@@ -96,7 +96,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -184,6 +183,7 @@ import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
 import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.EmptyListMessage
 import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
@@ -2405,6 +2405,7 @@ private fun TopBar(
                             Text(
                                 text = stringResource(Res.string.torrent_list_action_sort),
                                 style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                             )
 
@@ -2594,6 +2595,7 @@ private fun BottomBarSelection(
                             Text(
                                 text = stringResource(Res.string.torrent_list_action_priority),
                                 style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                             )
 
