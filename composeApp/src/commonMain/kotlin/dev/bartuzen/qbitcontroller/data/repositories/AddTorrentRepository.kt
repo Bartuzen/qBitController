@@ -3,9 +3,12 @@ package dev.bartuzen.qbitcontroller.data.repositories
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
+import io.ktor.client.request.forms.InputProvider
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
+import io.ktor.http.Headers
+import io.ktor.utils.io.core.buildPacket
+import io.ktor.utils.io.core.writeFully
 
 class AddTorrentRepository(
     private val requestManager: RequestManager,
@@ -30,41 +33,50 @@ class AddTorrentRepository(
         isSequentialDownloadEnabled: Boolean,
         isFirstLastPiecePrioritized: Boolean,
     ): RequestResult<String> {
-        val fileParts = files?.map { (fileName, byteArray) ->
-            MultipartBody.Part.createFormData(
-                "torrents",
-                fileName,
-                byteArray.toRequestBody("application/x-bittorrent".toMediaTypeOrNull()),
-            )
-        }
-
         val version = requestManager.getQBittorrentVersion(serverId)
         val pausedKey = when {
             version >= QBittorrentVersion(5, 0, 0) -> "stopped"
             else -> "paused"
         }
-        val pausedPart = MultipartBody.Part.createFormData(pausedKey, isPaused.toString())
-        val parts = fileParts.orEmpty() + pausedPart
+
+        val multipart = MultiPartFormDataContent(
+            formData {
+                files?.forEach { (fileName, byteArray) ->
+                    append(
+                        "torrents",
+                        InputProvider { buildPacket { writeFully(byteArray) } },
+                        Headers.build {
+                            append("Content-Type", "application/x-bittorrent")
+                            append("Content-Disposition", "form-data; name=\"torrents\"; filename=\"$fileName\"")
+                        },
+                    )
+                }
+
+                links?.joinToString("\n")?.let { append("urls", it) }
+
+                append(pausedKey, isPaused.toString())
+                append("skip_checking", skipHashChecking.toString())
+                append("sequentialDownload", isSequentialDownloadEnabled.toString())
+                append("firstLastPiecePrio", isFirstLastPiecePrioritized.toString())
+
+                savePath?.let { append("savepath", it) }
+                category?.let { append("category", it) }
+                if (tags.isNotEmpty()) {
+                    append("tags", tags.joinToString(","))
+                }
+                stopCondition?.let { append("stopCondition", it) }
+                contentLayout?.let { append("contentLayout", it) }
+                torrentName?.let { append("rename", it) }
+                downloadSpeedLimit?.let { append("dlLimit", it.toString()) }
+                uploadSpeedLimit?.let { append("upLimit", it.toString()) }
+                ratioLimit?.let { append("ratioLimit", it.toString()) }
+                seedingTimeLimit?.let { append("seedingTimeLimit", it.toString()) }
+                isAutoTorrentManagementEnabled?.let { append("autoTMM", it.toString()) }
+            },
+        )
 
         return requestManager.request(serverId) { service ->
-            service.addTorrent(
-                links?.joinToString("\n"),
-                parts,
-                savePath,
-                category,
-                tags.joinToString(",").ifEmpty { null },
-                stopCondition,
-                contentLayout,
-                torrentName,
-                downloadSpeedLimit,
-                uploadSpeedLimit,
-                ratioLimit,
-                seedingTimeLimit,
-                skipHashChecking,
-                isAutoTorrentManagementEnabled,
-                isSequentialDownloadEnabled,
-                isFirstLastPiecePrioritized,
-            )
+            service.addTorrent(multipart)
         }
     }
 

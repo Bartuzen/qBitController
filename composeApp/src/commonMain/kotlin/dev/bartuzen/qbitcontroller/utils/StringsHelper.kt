@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
-import okhttp3.internal.publicsuffix.PublicSuffixDatabase
+import io.ktor.http.parseUrl
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.error_api
 import qbitcontroller.composeapp.generated.resources.error_banned
@@ -56,7 +56,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_status_queued
 import qbitcontroller.composeapp.generated.resources.torrent_status_seeding
 import qbitcontroller.composeapp.generated.resources.torrent_status_stalled
 import qbitcontroller.composeapp.generated.resources.torrent_status_unknown
-import java.net.URI
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -148,7 +147,8 @@ fun formatSeconds(seconds: Long) = when (seconds) {
     }
 }
 
-@Composable fun formatSeconds(seconds: Int) = formatSeconds(seconds.toLong())
+@Composable
+fun formatSeconds(seconds: Int) = formatSeconds(seconds.toLong())
 
 @Composable
 fun formatTorrentState(state: TorrentState) = stringResource(
@@ -223,15 +223,16 @@ private val ipPattern = Regex(
     """(?:[a-zA-Z]+://)?(?:((?:\d{1,3}\.){3}\d{1,3})|\[?((?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?""",
 )
 
-fun formatUri(uri: String) = try {
+fun formatUri(uri: String): String {
     val ipAddressMatch = ipPattern.matchEntire(uri)
     if (ipAddressMatch != null) {
         val groups = ipAddressMatch.groups
-        (groups[1] ?: groups[2])?.value
-    } else {
-        val host = URI.create(uri).host ?: throw IllegalArgumentException()
-        PublicSuffixDatabase.get().getEffectiveTldPlusOne(host)
+        val ipAddress = (groups[1] ?: groups[2])?.value
+        if (ipAddress != null) {
+            return ipAddress
+        }
     }
-} catch (_: IllegalArgumentException) {
-    null
-} ?: uri
+
+    val host = parseUrl(uri)?.host
+    return host ?: uri
+}

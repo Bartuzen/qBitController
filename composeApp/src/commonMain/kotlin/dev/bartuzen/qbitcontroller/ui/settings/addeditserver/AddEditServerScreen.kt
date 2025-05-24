@@ -82,10 +82,10 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import io.ktor.http.parseUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -156,7 +156,7 @@ fun AddEditServerScreen(
         urlError = if (url.text.isBlank()) {
             isValid = false
             Res.string.error_required_field
-        } else if (urlWithProtocol.toHttpUrlOrNull() == null) {
+        } else if (parseUrl(urlWithProtocol) == null) {
             isValid = false
             Res.string.settings_server_invalid_url
         } else {

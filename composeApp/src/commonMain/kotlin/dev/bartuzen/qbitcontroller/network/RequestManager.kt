@@ -1,41 +1,52 @@
 package dev.bartuzen.qbitcontroller.network
 
+import de.jensklingenberg.ktorfit.Ktorfit
+import de.jensklingenberg.ktorfit.Response
+import de.jensklingenberg.ktorfit.converter.ResponseConverterFactory
 import dev.bartuzen.qbitcontroller.data.ServerManager
-import dev.bartuzen.qbitcontroller.model.Protocol
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.utils.getString
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.UserAgent
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BasicAuthCredentials
+import io.ktor.client.plugins.auth.providers.basic
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
+import io.ktor.client.plugins.cookies.HttpCookies
+import io.ktor.serialization.kotlinx.json.json
+import jdk.internal.agent.resources.agent
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.dnsoverhttps.DnsOverHttps
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.create
+import qBitController.composeApp.BuildConfig
+import qbitcontroller.composeapp.generated.resources.Res
+import qbitcontroller.composeapp.generated.resources.app_name
 import java.net.ConnectException
-import java.net.InetAddress
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.security.SecureRandom
 import java.time.Duration
 import java.time.Instant
-import javax.net.ssl.SSLContext
+import kotlin.time.Duration.Companion.seconds
 
 class RequestManager(
     private val serverManager: ServerManager,
-    private val timeoutInterceptor: TimeoutInterceptor,
-    private val userAgentInterceptor: UserAgentInterceptor,
-    private val trustAllManager: TrustAllX509TrustManager,
+    private val settingsManager: SettingsManager,
 ) {
     private val torrentServiceMap = mutableMapOf<Int, TorrentService>()
-    private val okHttpClientMap = mutableMapOf<Int, OkHttpClient>()
+    private val httpClientMap = mutableMapOf<Int, HttpClient>()
 
     private val loggedInServerIds = mutableListOf<Int>()
     private val initialLoginLocks = mutableMapOf<Int, Mutex>()
@@ -55,7 +66,7 @@ class RequestManager(
 
             override fun onServerRemovedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
-                okHttpClientMap.remove(serverConfig.id)
+                httpClientMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
                 initialLoginLocks.remove(serverConfig.id)
                 versions.remove(serverConfig.id)
@@ -64,7 +75,7 @@ class RequestManager(
 
             override fun onServerChangedListener(serverConfig: ServerConfig) {
                 torrentServiceMap.remove(serverConfig.id)
-                okHttpClientMap.remove(serverConfig.id)
+                httpClientMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
                 initialLoginLocks.remove(serverConfig.id)
                 versions.remove(serverConfig.id)
@@ -73,53 +84,57 @@ class RequestManager(
         })
     }
 
-    fun buildOkHttpClient(serverConfig: ServerConfig) = OkHttpClient.Builder().apply clientBuilder@{
-        cookieJar(SessionCookieJar())
-        addInterceptor(timeoutInterceptor)
-        addInterceptor(userAgentInterceptor)
+    fun buildHttpClient(serverConfig: ServerConfig) = createHttpClient(serverConfig) {
+        install(ContentNegotiation) {
+            this.json(json)
+        }
+
+        install(HttpCookies) {
+            storage = AcceptAllCookiesStorage()
+        }
+
+        install(HttpTimeout) {
+            CoroutineScope(Dispatchers.Default).launch {
+                settingsManager.connectionTimeout.flow.collectLatest {
+                    requestTimeoutMillis = it.seconds.inWholeMilliseconds
+                    connectTimeoutMillis = it.seconds.inWholeMilliseconds
+                    socketTimeoutMillis = it.seconds.inWholeMilliseconds
+                }
+            }
+        }
+
+        install(UserAgent) {
+            agent = runBlocking { "${getString(Res.string.app_name)}/${BuildConfig.Version}" }
+        }
 
         val basicAuth = serverConfig.advanced.basicAuth
         if (basicAuth.isEnabled && basicAuth.username != null && basicAuth.password != null) {
-            addInterceptor(BasicAuthInterceptor(basicAuth.username, basicAuth.password))
+            install(Auth) {
+                basic {
+                    credentials {
+                        BasicAuthCredentials(basicAuth.username, basicAuth.password)
+                    }
+                }
+            }
         }
-
-        if (serverConfig.protocol == Protocol.HTTPS && serverConfig.advanced.trustSelfSignedCertificates) {
-            val sslContext = SSLContext.getInstance("SSL")
-            sslContext.init(null, arrayOf(trustAllManager), SecureRandom())
-            sslSocketFactory(sslContext.socketFactory, trustAllManager)
-            hostnameVerifier { _, _ -> true }
-        }
-
-        retryOnConnectionFailure(true)
-
-        if (serverConfig.advanced.dnsOverHttps != null) {
-            val dns = DnsOverHttps.Builder().apply {
-                client(this@clientBuilder.build())
-                url(serverConfig.advanced.dnsOverHttps.url.toHttpUrl())
-                bootstrapDnsHosts(serverConfig.advanced.dnsOverHttps.bootstrapDnsHosts.map { InetAddress.getByName(it) })
-            }.build()
-
-            dns(dns)
-        }
-    }.build()
-
-    fun getOkHttpClient(serverId: Int) = okHttpClientMap.getOrPut(serverId) {
-        val serverConfig = serverManager.getServer(serverId)
-        buildOkHttpClient(serverConfig)
     }
 
-    fun buildTorrentService(serverConfig: ServerConfig, okHttpClient: OkHttpClient) = Retrofit.Builder()
+    fun getHttpClient(serverId: Int) = httpClientMap.getOrPut(serverId) {
+        val serverConfig = serverManager.getServer(serverId)
+        buildHttpClient(serverConfig)
+    }
+
+    fun buildTorrentService(serverConfig: ServerConfig, client: HttpClient) = Ktorfit.Builder()
         .baseUrl(serverConfig.requestUrl)
-        .client(okHttpClient)
-        .addConverterFactory(ScalarsConverterFactory.create())
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .httpClient(client)
+        .converterFactories(ResponseConverterFactory())
         .build()
-        .create<TorrentService>()
+        .createTorrentService()
 
     private fun getTorrentService(serverId: Int) = torrentServiceMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
-        val okHttpClient = getOkHttpClient(serverId)
-        buildTorrentService(serverConfig, okHttpClient)
+        val httpClient = getHttpClient(serverId)
+        buildTorrentService(serverConfig, httpClient)
     }
 
     private fun getInitialLoginLock(serverId: Int) = initialLoginLocks.getOrPut(serverId) { Mutex() }
@@ -150,7 +165,7 @@ class RequestManager(
 
         return if (serverConfig.username != null && serverConfig.password != null) {
             val loginResponse = service.login(serverConfig.username, serverConfig.password)
-            val code = loginResponse.code()
+            val code = loginResponse.code
             val body = loginResponse.body()
 
             when {
@@ -173,7 +188,7 @@ class RequestManager(
         val service = getTorrentService(serverId)
 
         val blockResponse = block(service)
-        val code = blockResponse.code()
+        val code = blockResponse.code
         val body = blockResponse.body()
 
         return if (code == 200 && body != null) {
@@ -262,3 +277,5 @@ sealed class RequestResult<out T : Any?> {
         data class ApiError(val code: Int) : Error()
     }
 }
+
+expect fun createHttpClient(serverConfig: ServerConfig, block: HttpClientConfig<*>.() -> Unit): HttpClient

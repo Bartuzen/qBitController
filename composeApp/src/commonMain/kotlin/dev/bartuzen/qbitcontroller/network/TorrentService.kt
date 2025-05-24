@@ -1,5 +1,12 @@
 package dev.bartuzen.qbitcontroller.network
 
+import de.jensklingenberg.ktorfit.Response
+import de.jensklingenberg.ktorfit.http.Body
+import de.jensklingenberg.ktorfit.http.Field
+import de.jensklingenberg.ktorfit.http.FormUrlEncoded
+import de.jensklingenberg.ktorfit.http.GET
+import de.jensklingenberg.ktorfit.http.POST
+import de.jensklingenberg.ktorfit.http.Query
 import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
@@ -14,17 +21,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentPeers
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.model.TorrentWebSeed
-import okhttp3.MultipartBody
-import okhttp3.ResponseBody
-import retrofit2.Response
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.Query
-import retrofit2.http.Streaming
+import io.ktor.client.request.forms.MultiPartFormDataContent
 
 interface TorrentService {
     @FormUrlEncoded
@@ -188,26 +185,8 @@ interface TorrentService {
     @POST("api/v2/torrents/toggleFirstLastPiecePrio")
     suspend fun togglePrioritizeFirstLastPiecesDownload(@Field("hashes") hashes: String): Response<Unit>
 
-    @Multipart
     @POST("api/v2/torrents/add")
-    suspend fun addTorrent(
-        @Part("urls") links: String?,
-        @Part fileParts: List<MultipartBody.Part>?,
-        @Part("savepath") savePath: String?,
-        @Part("category") category: String?,
-        @Part("tags") tags: String?,
-        @Part("stopCondition") stopCondition: String?,
-        @Part("contentLayout") contentLayout: String?,
-        @Part("rename") torrentName: String?,
-        @Part("dlLimit") downloadSpeedLimit: Int?,
-        @Part("upLimit") uploadSpeedLimit: Int?,
-        @Part("ratioLimit") ratioLimit: Double?,
-        @Part("seedingTimeLimit") seedingTimeLimit: Int?,
-        @Part("skip_checking") skipHashChecking: Boolean,
-        @Part("autoTMM") isAutoTorrentManagementEnabled: Boolean?,
-        @Part("sequentialDownload") isSequentialDownloadEnabled: Boolean,
-        @Part("firstLastPiecePrio") isFirstLastPiecePrioritized: Boolean,
-    ): Response<String>
+    suspend fun addTorrent(@Body map: MultiPartFormDataContent): Response<String>
 
     @FormUrlEncoded
     @POST("api/v2/torrents/setAutoManagement")
@@ -280,9 +259,8 @@ interface TorrentService {
     @POST("api/v2/torrents/removeTags")
     suspend fun removeTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
 
-    @Streaming
     @GET("api/v2/torrents/export")
-    suspend fun exportTorrent(@Query("hash") hash: String): Response<ResponseBody>
+    suspend fun exportTorrent(@Query("hash") hash: String): Response<ByteArray>
 
     @GET("api/v2/sync/torrentPeers")
     suspend fun getPeers(@Query("hash") hash: String): Response<TorrentPeers>

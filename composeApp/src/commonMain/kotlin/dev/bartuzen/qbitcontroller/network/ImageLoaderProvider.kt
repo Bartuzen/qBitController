@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import coil3.ImageLoader
 import coil3.compose.LocalPlatformContext
-import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 
@@ -39,8 +39,8 @@ class ImageLoaderProvider(
                 ImageLoader.Builder(platformContext)
                     .components {
                         add(
-                            OkHttpNetworkFetcherFactory(
-                                callFactory = requestManager.getOkHttpClient(serverId),
+                            KtorNetworkFetcherFactory(
+                                httpClient = requestManager.getHttpClient(serverId),
                             ),
                         )
                     }.build()

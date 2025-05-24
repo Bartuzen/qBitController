@@ -17,6 +17,8 @@ plugins {
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.buildConfig)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.ktorfit)
 
     id("dev.bartuzen.qbitcontroller.language")
 }
@@ -72,14 +74,16 @@ kotlin {
                 implementation(libs.koin.compose.viewModel)
                 implementation(libs.koin.compose.viewModel.navigation)
 
-                implementation(libs.retrofit)
-                implementation(libs.retrofit.converter.scalars)
-                implementation(libs.retrofit.converter.kotlinxSerialization)
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.contentNegotiation)
+                implementation(libs.ktor.serialization.json)
+                implementation(libs.ktor.auth)
 
-                implementation(libs.okhttp.doh)
+                implementation(libs.ktorfit)
+                implementation(libs.ktorfit.converter.response)
 
                 implementation(libs.coil)
-                implementation(libs.coil.okhttp)
+                implementation(libs.coil.ktor)
                 implementation(libs.coil.svg)
 
                 implementation(libs.htmlConverter)
@@ -95,7 +99,17 @@ kotlin {
             }
         }
 
+        val jvmMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.ktor.okhttp)
+
+                implementation(libs.okhttp.doh)
+            }
+        }
+
         val desktopMain by getting {
+            dependsOn(jvmMain)
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutines.swing)
@@ -103,6 +117,7 @@ kotlin {
         }
 
         val androidMain by getting {
+            dependsOn(jvmMain)
             dependencies {
                 implementation(compose.preview)
                 implementation(libs.androidx.appcompat)
@@ -253,4 +268,12 @@ tasks.withType<ConfigurableKtLintTask> {
         .minus(fileTree("build"))
         .minus(fileTree("src/commonMain/kotlin/dev/bartuzen/qbitcontroller/utils/SavedStateHandle.kt")) // Remove when ktlint supports context parameters
         .asFileTree
+}
+
+afterEvaluate {
+    tasks.matching { task ->
+        task.name.startsWith("ksp") && task.name.contains("KotlinMetadata")
+    }.configureEach {
+        dependsOn(":composeApp:generateLanguageList")
+    }
 }

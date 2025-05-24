@@ -13,7 +13,6 @@ import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.delete
 import io.github.vinceglb.filekit.write
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +24,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
 
 class TorrentOverviewViewModel(
@@ -457,9 +455,7 @@ class TorrentOverviewViewModel(
         when (val result = repository.exportTorrent(serverId, torrentHash)) {
             is RequestResult.Success -> {
                 try {
-                    withContext(Dispatchers.IO) {
-                        file.write(result.data.bytes())
-                    }
+                    file.write(result.data)
                     eventChannel.send(Event.TorrentExported)
                 } catch (_: Exception) {
                     file.tryDelete()

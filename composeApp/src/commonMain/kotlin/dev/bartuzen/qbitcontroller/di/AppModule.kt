@@ -21,9 +21,6 @@ import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTrackersRepo
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentWebSeedsRepository
 import dev.bartuzen.qbitcontroller.network.ImageLoaderProvider
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import dev.bartuzen.qbitcontroller.network.TimeoutInterceptor
-import dev.bartuzen.qbitcontroller.network.TrustAllX509TrustManager
-import dev.bartuzen.qbitcontroller.network.UserAgentInterceptor
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentViewModel
 import dev.bartuzen.qbitcontroller.ui.log.LogViewModel
 import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesViewModel
@@ -58,9 +55,6 @@ val appModule = module {
     single { SettingsManager(get(named("settings"))) }
     singleOf(::TorrentDownloadedNotifier)
     single { ConfigMigrator(get(named("settings")), get(named("servers"))) }
-    singleOf(::TimeoutInterceptor)
-    singleOf(::TrustAllX509TrustManager)
-    singleOf(::UserAgentInterceptor)
     singleOf(::ImageLoaderProvider)
 
     singleOf(::TorrentListRepository)

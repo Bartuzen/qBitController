@@ -51,11 +51,11 @@ class AddEditServerViewModel(
         val job = viewModelScope.launch {
             val error = try {
                 val service =
-                    requestManager.buildTorrentService(serverConfig, requestManager.buildOkHttpClient(serverConfig))
+                    requestManager.buildTorrentService(serverConfig, requestManager.buildHttpClient(serverConfig))
 
                 val response = service.login(serverConfig.username ?: "", serverConfig.password ?: "")
 
-                if (response.code() == 403) {
+                if (response.code == 403) {
                     RequestResult.Error.RequestError.Banned
                 } else if (response.body() == "Fails.") {
                     RequestResult.Error.RequestError.InvalidCredentials
