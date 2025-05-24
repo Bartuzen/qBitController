@@ -333,7 +333,6 @@
     <string name="rss_hint_feed_name_optional">Назва стрічки (необов\'язково)</string>
     <string name="rss_hint_folder_name">Назва теки</string>
     <string name="rss_all_articles">Усі статті</string>
-    <string name="rss_field_required">Це поле обов\'язкове.</string>
     <string name="rss_added_feed">Стрічку успішно додано.</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="one">Ви упевнені, що хочете забанити %1$d пір?</item>
@@ -676,4 +675,18 @@
     <string name="error_invalid_interval_optional">Має бути між %1$d та %2$d, або залиште поле порожнім, щоб вимкнути.</string>
     <string name="settings_server_credentials">Облікові дані</string>
     <string name="settings_server_url_examples">Приклади: %1$s</string>
+    <string name="rss_action_download">Завантажити</string>
+    <string name="search_result_action_download">Завантажити</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d вибрано торрент</item>
+        <item quantity="few">%1$d вибрані торрента</item>
+        <item quantity="many">%1$d вибрані торренти</item>
+        <item quantity="other">%1$d вибрані торренти</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d вибрано торрент</item>
+        <item quantity="few">%1$d вибрані торрента</item>
+        <item quantity="many">%1$d вибрані торренти</item>
+        <item quantity="other">%1$d вибрані торренти</item>
+    </plurals>
 </resources>
