@@ -82,6 +82,7 @@ import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.PlatformFileSerializer
+import dev.bartuzen.qbitcontroller.utils.getDecimalSeparator
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
@@ -144,7 +145,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_add_torrent_managem
 import qbitcontroller.composeapp.generated.resources.torrent_add_upload_speed_limit
 import qbitcontroller.composeapp.generated.resources.torrent_no_categories
 import qbitcontroller.composeapp.generated.resources.torrent_no_tags
-import java.text.DecimalFormatSymbols
 
 object AddTorrentKeys {
     const val TorrentAdded = "addTorrent.torrentAdded"
@@ -249,9 +249,8 @@ fun AddTorrentScreen(
     LaunchedEffect(Unit) {
         val separatorIndex = ratioLimit.text.indexOfFirst { !it.isDigit() }
         if (separatorIndex != -1) {
-            val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
             val stringBuilder = StringBuilder(ratioLimit.text)
-            stringBuilder[separatorIndex] = decimalSeparator
+            stringBuilder[separatorIndex] = getDecimalSeparator()
             ratioLimit = ratioLimit.copy(stringBuilder.toString())
         }
     }
@@ -370,7 +369,7 @@ fun AddTorrentScreen(
             torrentName = torrentName.text.ifBlank { null },
             downloadSpeedLimit = downloadLimit ?: 0,
             uploadSpeedLimit = uploadLimit ?: 0,
-            ratioLimit = ratioLimit.text.replace(DecimalFormatSymbols.getInstance().decimalSeparator, '.').toDoubleOrNull(),
+            ratioLimit = ratioLimit.text.replace(getDecimalSeparator(), '.').toDoubleOrNull(),
             seedingTimeLimit = seedingTimeLimit.text.toIntOrNull(),
             isPaused = !startTorrent,
             skipHashChecking = skipChecking,
@@ -884,7 +883,7 @@ fun AddTorrentScreen(
                 )
 
                 val ratioLimitRegex = remember {
-                    val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
+                    val decimalSeparator = getDecimalSeparator()
                     Regex("^\\d*\\$decimalSeparator?\\d*$|^$")
                 }
                 OutlinedTextField(

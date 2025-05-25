@@ -128,6 +128,7 @@ import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
 import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
+import dev.bartuzen.qbitcontroller.utils.getDecimalSeparator
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
@@ -241,7 +242,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_rename_success
 import qbitcontroller.composeapp.generated.resources.torrent_rename_torrent_hint
 import qbitcontroller.composeapp.generated.resources.torrent_resumed_success
 import qbitcontroller.composeapp.generated.resources.torrent_tags_update_success
-import java.text.DecimalFormatSymbols
 import kotlin.math.ceil
 
 @Composable
@@ -1643,9 +1643,8 @@ fun TorrentOptionsDialog(
     LaunchedEffect(Unit) {
         val separatorIndex = ratioLimit.text.indexOfFirst { !it.isDigit() }
         if (separatorIndex != -1) {
-            val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
             val stringBuilder = StringBuilder(ratioLimit.text)
-            stringBuilder[separatorIndex] = decimalSeparator
+            stringBuilder[separatorIndex] = getDecimalSeparator()
             ratioLimit = ratioLimit.copy(stringBuilder.toString())
         }
     }
@@ -1827,7 +1826,7 @@ fun TorrentOptionsDialog(
                         val isCustomEnabled = selectedShareLimitOption == 2
 
                         val ratioLimitRegex = remember {
-                            val decimalSeparator = DecimalFormatSymbols.getInstance().decimalSeparator
+                            val decimalSeparator = getDecimalSeparator()
                             Regex("^\\d*\\$decimalSeparator?\\d*$|^$")
                         }
                         OutlinedTextField(

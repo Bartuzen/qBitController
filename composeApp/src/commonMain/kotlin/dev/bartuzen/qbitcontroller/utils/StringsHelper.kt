@@ -212,3 +212,5 @@ fun formatUri(uri: String): String {
     val host = parseUrl(uri)?.host
     return host ?: uri
 }
+
+expect fun getDecimalSeparator(): Char
