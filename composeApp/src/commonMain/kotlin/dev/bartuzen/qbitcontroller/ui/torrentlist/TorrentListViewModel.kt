@@ -103,7 +103,9 @@ class TorrentListViewModel(
         }
     }
 
-    private fun getFirstServer(): ServerConfig? = serversFlow.value.firstOrNull()
+    private fun getFirstServer(): ServerConfig? = serversFlow.value.let { serverList ->
+        serverList.firstNotNullOfOrNull { it.value }
+    }
 
     fun setCurrentServer(id: Int?, forceReset: Boolean = false) {
         val oldServerId = currentServerId.value

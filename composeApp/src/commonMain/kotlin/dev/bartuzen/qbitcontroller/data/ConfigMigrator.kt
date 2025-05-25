@@ -15,7 +15,7 @@ class ConfigMigrator(
     private val settings: Settings,
     private val serverSettings: Settings,
 ) {
-    private val currentVersion = 5
+    private val currentVersion = 4
 
     fun run() {
         val oldVersion = settings["configVersion", -1].takeIf { it != -1 }
@@ -42,13 +42,6 @@ class ConfigMigrator(
 
         if (oldVersion < 4) {
             migrateServerConfigs()
-        }
-
-        if (oldVersion < 5) {
-            val serverConfigsStr: String = serverSettings["serverConfigs"] ?: return
-            val serverConfigsJson = Json.parseToJsonElement(serverConfigsStr).jsonObject
-
-            serverSettings["serverConfigs"] = Json.encodeToString(serverConfigsJson.values)
         }
     }
 

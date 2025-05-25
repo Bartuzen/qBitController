@@ -18,12 +18,12 @@ class ServerManager(
     }
 
     private val _serversFlow = MutableStateFlow(
-        json.decodeFromString<List<ServerConfig>>(serverSettings.getString(Keys.ServerConfigs, "[]")),
+        json.decodeFromString<Map<Int, ServerConfig>>(serverSettings.getString(Keys.ServerConfigs, "{}")).toSortedMap(),
     )
     val serversFlow = _serversFlow.asStateFlow()
 
     fun getServer(serverId: Int) =
-        serversFlow.value.find { it.id == serverId } ?: throw IllegalStateException("Couldn't find server with id $serverId")
+        serversFlow.value[serverId] ?: throw IllegalStateException("Couldn't find server with id $serverId")
 
     fun getServerOrNull(serverId: Int) = serversFlow.value[serverId]
 
@@ -32,35 +32,33 @@ class ServerManager(
         val serverId = serverSettings[Keys.LastServerId, -1] + 1
 
         val newServerConfig = serverConfig.copy(id = serverId)
-        val updatedServerConfigs = serverConfigs + newServerConfig
+        serverConfigs[serverId] = newServerConfig
 
-        serverSettings[Keys.ServerConfigs] = json.encodeToString(updatedServerConfigs)
+        serverSettings[Keys.ServerConfigs] = json.encodeToString(serverConfigs.toMap())
         serverSettings[Keys.LastServerId] = serverId
 
-        _serversFlow.value = updatedServerConfigs
+        _serversFlow.value = serverConfigs
         listeners.forEach { it.onServerAddedListener(newServerConfig) }
     }
 
     suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
         val serverConfigs = serversFlow.value
-        val updatedServerConfigs = serverConfigs.map {
-            if (it.id == serverConfig.id) serverConfig else it
-        }
+        serverConfigs[serverConfig.id] = serverConfig
 
-        serverSettings[Keys.ServerConfigs] = json.encodeToString(updatedServerConfigs)
+        serverSettings[Keys.ServerConfigs] = json.encodeToString(serverConfigs.toMap())
 
-        _serversFlow.value = updatedServerConfigs
+        _serversFlow.value = serverConfigs
         listeners.forEach { it.onServerChangedListener(serverConfig) }
     }
 
     suspend fun removeServer(serverId: Int) = withContext(Dispatchers.IO) {
         val serverConfigs = serversFlow.value
-        val serverConfig = serverConfigs.find { it.id == serverId } ?: return@withContext
-        val updatedServerConfigs = serverConfigs.filter { it.id != serverId }
+        val serverConfig = serverConfigs[serverId] ?: return@withContext
+        serverConfigs.remove(serverId)
 
-        serverSettings[Keys.ServerConfigs] = json.encodeToString(updatedServerConfigs)
+        serverSettings[Keys.ServerConfigs] = json.encodeToString(serverConfigs.toMap())
 
-        _serversFlow.value = updatedServerConfigs
+        _serversFlow.value = serverConfigs
         listeners.forEach { it.onServerRemovedListener(serverConfig) }
     }
 

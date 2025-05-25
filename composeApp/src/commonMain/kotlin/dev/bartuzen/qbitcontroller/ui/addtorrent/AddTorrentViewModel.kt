@@ -53,7 +53,7 @@ class AddTorrentViewModel(
     init {
         viewModelScope.launch {
             if (serverId.value == null) {
-                val firstServerId = serverManager.serversFlow.value.firstOrNull()?.id
+                val firstServerId = serverManager.serversFlow.value.keys.firstOrNull()
                 if (firstServerId != null) {
                     setServerId(firstServerId)
                 } else {
