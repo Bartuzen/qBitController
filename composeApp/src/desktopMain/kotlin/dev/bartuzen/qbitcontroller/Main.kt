@@ -4,10 +4,14 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.di.appModule
@@ -30,6 +34,13 @@ fun main() = application {
                 modules(appModule)
             },
         ) {
+            val configMigrator = koinInject<ConfigMigrator>()
+            var ranConfigMigration by remember { mutableStateOf(false) }
+            if (!ranConfigMigration) {
+                configMigrator.run()
+                ranConfigMigration = true
+            }
+
             val settingsManager = koinInject<SettingsManager>()
             val theme by settingsManager.theme.flow.collectAsStateWithLifecycle()
             val darkTheme = when (theme) {
