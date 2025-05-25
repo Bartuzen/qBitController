@@ -114,7 +114,7 @@ fun ServersScreen(
             modifier = Modifier.fillMaxSize(),
         ) {
             items(
-                items = servers.values.toList(),
+                items = servers,
                 key = { it.id },
             ) { serverConfig ->
                 Preference(

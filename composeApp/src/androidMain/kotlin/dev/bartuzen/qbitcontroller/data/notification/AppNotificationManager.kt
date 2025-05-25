@@ -88,7 +88,7 @@ class AppNotificationManager(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannels() {
-        serverManager.serversFlow.value.forEach { (_, serverConfig) ->
+        serverManager.serversFlow.value.forEach { serverConfig ->
             val notificationGroup =
                 NotificationChannelGroup("group_server_${serverConfig.id}", serverConfig.name ?: serverConfig.visibleUrl)
 
@@ -112,7 +112,7 @@ class AppNotificationManager(
             .forEach { group ->
                 val serverId = group.id.replace("group_server_", "").toInt()
 
-                if (serverId !in serverManager.serversFlow.value) {
+                if (serverManager.getServerOrNull(serverId) == null) {
                     notificationManager.deleteNotificationChannelGroup(group.id)
                 }
             }

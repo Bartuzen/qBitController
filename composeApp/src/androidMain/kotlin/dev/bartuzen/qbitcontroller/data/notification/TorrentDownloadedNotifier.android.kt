@@ -220,9 +220,8 @@ actual class TorrentDownloadedNotifier : KoinComponent {
     }
 
     fun discardRemovedServers() {
-        val servers = serverManager.serversFlow.value
         getSavedServers().forEach { serverId ->
-            if (serverId !in servers) {
+            if (serverManager.getServerOrNull(serverId) == null) {
                 removeServerFromStorage(serverId)
             }
         }

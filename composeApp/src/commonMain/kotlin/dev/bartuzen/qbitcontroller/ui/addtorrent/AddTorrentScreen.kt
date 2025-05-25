@@ -448,7 +448,7 @@ fun AddTorrentScreen(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         OutlinedTextField(
-                            value = servers[serverId]?.displayName ?: "",
+                            value = serverId?.let { servers[it].displayName } ?: "",
                             onValueChange = {},
                             label = {
                                 Text(
@@ -469,12 +469,12 @@ fun AddTorrentScreen(
                             expanded = expanded,
                             onDismissRequest = { expanded = false },
                         ) {
-                            servers.forEach { (id, server) ->
+                            servers.forEach { serverConfig ->
                                 DropdownMenuItem(
-                                    text = { Text(text = server.displayName) },
+                                    text = { Text(text = serverConfig.displayName) },
                                     onClick = {
                                         expanded = false
-                                        viewModel.setServerId(id)
+                                        viewModel.setServerId(serverConfig.id)
                                     },
                                 )
                             }

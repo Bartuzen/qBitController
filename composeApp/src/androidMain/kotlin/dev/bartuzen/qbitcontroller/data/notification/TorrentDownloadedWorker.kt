@@ -37,7 +37,8 @@ class TorrentDownloadedWorker(
             return Result.success()
         }
 
-        val serverIds = serverManager.serversFlow.value.keys
+        val serverIds = serverManager.serversFlow.value
+            .map { it.id }
             .filter { isDownloadNotificationsEnabled(it) }
 
         supervisorScope {
