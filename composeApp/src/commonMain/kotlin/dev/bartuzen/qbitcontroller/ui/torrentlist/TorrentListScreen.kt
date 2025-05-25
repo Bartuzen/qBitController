@@ -371,7 +371,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_speed_download_limi
 import qbitcontroller.composeapp.generated.resources.torrent_speed_limits_title
 import qbitcontroller.composeapp.generated.resources.torrent_speed_update_success
 import qbitcontroller.composeapp.generated.resources.torrent_speed_upload_limit
-import java.util.SortedMap
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -1531,7 +1530,7 @@ private fun TorrentItem(
 @Composable
 private fun DrawerContent(
     serverId: Int?,
-    servers: SortedMap<Int, ServerConfig>,
+    servers: List<ServerConfig>,
     selectedFilter: TorrentFilter,
     selectedCategory: CategoryTag,
     selectedTag: CategoryTag,
@@ -1585,18 +1584,18 @@ private fun DrawerContent(
                 Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
             }
 
-            items(servers.toList()) { (id, serverConfig) ->
+            items(servers.toList()) { serverConfig ->
                 Column {
                     DrawerServerItem(
                         name = serverConfig.name,
                         url = serverConfig.visibleUrl,
-                        isSelected = serverId == id,
+                        isSelected = serverId == serverConfig.id,
                         onClick = {
-                            onServerSelected(id)
+                            onServerSelected(serverConfig.id)
                             onDrawerClose()
                         },
                         onLongClick = {
-                            onNavigateToEditServer(id)
+                            onNavigateToEditServer(serverConfig.id)
                             onDrawerClose()
                         },
                         modifier = Modifier.focusProperties {
