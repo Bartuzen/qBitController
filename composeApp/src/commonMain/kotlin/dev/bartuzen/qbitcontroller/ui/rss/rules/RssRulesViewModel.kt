@@ -35,7 +35,9 @@ class RssRulesViewModel(
     private fun updateRssRules() = viewModelScope.launch {
         when (val result = repository.getRssRules(serverId)) {
             is RequestResult.Success -> {
-                _rssRules.value = result.data.toSortedMap(String.CASE_INSENSITIVE_ORDER)
+                _rssRules.value = result.data.toList()
+                    .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.first })
+                    .toMap()
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))

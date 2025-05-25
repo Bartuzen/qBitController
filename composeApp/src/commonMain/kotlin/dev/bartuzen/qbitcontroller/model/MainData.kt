@@ -127,19 +127,23 @@ private object MainDataSerializer : KSerializer<MainData> {
 
         val tags = decodedTags?.sortedWith(String.CASE_INSENSITIVE_ORDER) ?: emptyList()
 
-        val trackers = sortedMapOf<String, MutableList<String>>()
+        val trackers = mutableMapOf<String, MutableList<String>>()
         decodedTrackers?.forEach { (tracker, hashes) ->
             val formattedTracker = formatUri(tracker)
             val list = trackers.getOrPut(formattedTracker) { mutableListOf() }
             list.addAll(hashes)
         }
 
+        val sortedTrackers = trackers.toList()
+            .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.first })
+            .toMap()
+
         MainData(
             serverState = serverState,
             torrents = torrents,
             categories = categories,
             tags = tags,
-            trackers = trackers,
+            trackers = sortedTrackers,
         )
     }
 }
