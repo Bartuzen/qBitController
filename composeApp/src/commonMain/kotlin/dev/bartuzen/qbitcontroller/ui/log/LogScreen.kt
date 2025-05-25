@@ -212,7 +212,7 @@ fun LogItem(log: Log, modifier: Modifier = Modifier) {
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
-                        text = formatDate(log.timestamp),
+                        text = log.timestamp.formatDate(),
                         style = MaterialTheme.typography.labelMedium,
                         color = LocalCustomColors.current.logTimestamp,
                         fontWeight = FontWeight.SemiBold,

@@ -1,9 +1,11 @@
 package dev.bartuzen.qbitcontroller.model
 
-import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
+import dev.bartuzen.qbitcontroller.model.serializers.InstantSerializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableInstantSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableIntSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableLongSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -25,15 +27,16 @@ data class TorrentProperties(
     val totalSize: Long?,
 
     @SerialName("addition_date")
-    val additionDate: Long,
+    @Serializable(with = InstantSerializer::class)
+    val additionDate: Instant,
 
     @SerialName("completion_date")
-    @Serializable(with = NullableLongSerializer::class)
-    val completionDate: Long?,
+    @Serializable(with = NullableInstantSerializer::class)
+    val completionDate: Instant?,
 
     @SerialName("creation_date")
-    @Serializable(with = NullableEpochTimeSerializer::class)
-    val creationDate: Long?,
+    @Serializable(with = NullableInstantSerializer::class)
+    val creationDate: Instant?,
 
     @SerialName("created_by")
     @Serializable(with = NullableStringSerializer::class)

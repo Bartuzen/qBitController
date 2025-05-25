@@ -562,7 +562,7 @@ private fun ArticleItem(
                         tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
-                        text = formatDate(article.date),
+                        text = article.date.formatDate(),
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
@@ -661,7 +661,7 @@ private fun DetailsDialog(
                     )
 
                     Text(
-                        text = formatDate(article.date),
+                        text = article.date.formatDate(),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurface,

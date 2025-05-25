@@ -1,6 +1,10 @@
 package dev.bartuzen.qbitcontroller.model.serializers
 
 import dev.bartuzen.qbitcontroller.model.Article
+import kotlinx.datetime.UtcOffset
+import kotlinx.datetime.format.DateTimeComponents
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.char
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -8,9 +12,6 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 fun parseRssFeedWithData(feeds: String, path: List<String>, uid: String?): Pair<List<Article>?, List<String>?> {
     val rootNode = Json.parseToJsonElement(feeds)
@@ -48,18 +49,31 @@ private fun parseRssFeedWithData(node: JsonElement, articles: MutableList<Articl
     }
 }
 
+private val dateFormat = DateTimeComponents.Format {
+    dayOfMonth()
+    char(' ')
+    monthName(MonthNames.ENGLISH_ABBREVIATED)
+    char(' ')
+    year()
+    char(' ')
+    hour()
+    char(':')
+    minute()
+    char(':')
+    second()
+    char(' ')
+    offset(UtcOffset.Formats.FOUR_DIGITS)
+}
+
 private fun parseArticles(node: JsonElement, articles: MutableList<Article>, path: List<String>): List<Article> {
     for (article in node.jsonArray) {
-        val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH)
-        val date = ZonedDateTime.parse(article.jsonObject["date"]?.jsonPrimitive?.content, dateFormatter).toEpochSecond()
-
         articles += Article(
             id = article.jsonObject["id"]?.jsonPrimitive?.content!!,
             title = article.jsonObject["title"]?.jsonPrimitive?.content!!,
             description = article.jsonObject["description"]?.jsonPrimitive?.content,
             torrentUrl = article.jsonObject["torrentURL"]?.jsonPrimitive?.content!!,
             isRead = article.jsonObject["isRead"]?.jsonPrimitive?.booleanOrNull == true,
-            date = date,
+            date = dateFormat.parse(article.jsonObject["date"]?.jsonPrimitive?.content!!).toInstantUsingOffset(),
             path = path,
         )
     }

@@ -5,6 +5,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import io.ktor.http.parseUrl
+import kotlinx.datetime.Instant
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.error_api
 import qbitcontroller.composeapp.generated.resources.error_banned
@@ -56,10 +57,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_status_queued
 import qbitcontroller.composeapp.generated.resources.torrent_status_seeding
 import qbitcontroller.composeapp.generated.resources.torrent_status_stalled
 import qbitcontroller.composeapp.generated.resources.torrent_status_unknown
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.Locale
 import kotlin.math.roundToLong
 
@@ -195,15 +192,7 @@ suspend fun getErrorMessage(error: RequestResult.Error) = when (error) {
     is RequestResult.Error.ApiError -> getString(Res.string.error_api, error.code)
 }
 
-fun formatDate(epochSecondOrMilli: Long): String = if (epochSecondOrMilli >= 100000000000) {
-    Instant.ofEpochMilli(epochSecondOrMilli)
-} else {
-    Instant.ofEpochSecond(epochSecondOrMilli)
-}.atZone(ZoneId.systemDefault())
-    .format(
-        DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-            .withZone(ZoneId.systemDefault()),
-    )
+expect fun Instant.formatDate(): String
 
 @Composable
 fun getCountryName(countryCode: String): String {

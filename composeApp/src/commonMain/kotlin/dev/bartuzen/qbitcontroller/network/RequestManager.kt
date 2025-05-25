@@ -19,7 +19,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.serialization.kotlinx.json.json
-import jdk.internal.agent.resources.agent
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +29,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.serialization.json.Json
 import qBitController.composeApp.BuildConfig
 import qbitcontroller.composeapp.generated.resources.Res
@@ -37,8 +38,7 @@ import qbitcontroller.composeapp.generated.resources.app_name
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import java.time.Duration
-import java.time.Instant
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
 
 class RequestManager(
@@ -145,7 +145,7 @@ class RequestManager(
         val versionLock = versionLocks.getOrPut(serverId) { Mutex() }
         versionLock.withLock {
             val isVersionValid = versions[serverId]?.let { (fetchDate, _) ->
-                Duration.between(fetchDate, Instant.now()) < Duration.ofHours(1)
+                Clock.System.now() - fetchDate < 1.hours
             } == true
             if (!isVersionValid) {
                 val service = getTorrentService(serverId)
@@ -154,7 +154,7 @@ class RequestManager(
                 val parsedVersion = version.body()?.let { versionString ->
                     QBittorrentVersion.fromString(versionString)
                 } ?: QBittorrentVersion.Invalid
-                versions[serverId] = Instant.now() to parsedVersion
+                versions[serverId] = Clock.System.now() to parsedVersion
             }
         }
     }

@@ -1,5 +1,7 @@
 package dev.bartuzen.qbitcontroller.model
 
+import dev.bartuzen.qbitcontroller.model.serializers.InstantSerializer
+import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -12,7 +14,8 @@ import kotlinx.serialization.encoding.Encoder
 data class Log(
     val id: Int,
     val message: String,
-    val timestamp: Long,
+    @Serializable(with = InstantSerializer::class)
+    val timestamp: Instant,
     @Serializable(with = LogTypeSerializer::class)
     val type: LogType,
 )

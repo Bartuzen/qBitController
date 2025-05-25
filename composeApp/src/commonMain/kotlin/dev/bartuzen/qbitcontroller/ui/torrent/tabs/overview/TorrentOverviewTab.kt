@@ -812,7 +812,7 @@ fun TorrentOverviewTab(
                                 )
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_added_on),
-                                    value = formatDate(properties.additionDate),
+                                    value = properties.additionDate.formatDate(),
                                 )
 
                                 if (torrent.isPrivate != null) {
@@ -862,7 +862,7 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_completed_on),
-                                    value = properties.completionDate?.let { formatDate(it) },
+                                    value = properties.completionDate?.formatDate(),
                                 )
 
                                 InfoRow(
@@ -872,7 +872,7 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_created_on),
-                                    value = properties.creationDate?.let { formatDate(it) },
+                                    value = properties.creationDate?.formatDate(),
                                 )
                             }
                         }
@@ -928,12 +928,12 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_last_activity),
-                                    value = formatDate(torrent.lastActivity),
+                                    value = torrent.lastActivity.formatDate(),
                                 )
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_last_seen_complete),
-                                    value = torrent.lastSeenComplete?.let { formatDate(it) },
+                                    value = torrent.lastSeenComplete?.formatDate(),
                                 )
 
                                 InfoRow(

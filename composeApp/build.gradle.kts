@@ -68,6 +68,7 @@ kotlin {
                 implementation(libs.coroutines.core)
 
                 implementation(libs.kotlinxSerialization)
+                implementation(libs.kotlinx.datetime)
 
                 implementation(libs.koin.core)
                 implementation(libs.koin.compose)

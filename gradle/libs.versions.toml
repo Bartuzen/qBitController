@@ -14,6 +14,7 @@ material = "1.12.0"
 coroutines = "1.10.2"
 koin = "4.0.4"
 kotlinxSerialization = "1.8.1"
+kotlinx-datetime = "0.6.2"
 work-runtime = "2.10.1"
 okhttp = "4.12.0"
 desugar = "2.1.5"
@@ -51,6 +52,7 @@ coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 kotlinxSerialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-runtime" }
 

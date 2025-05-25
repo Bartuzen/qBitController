@@ -1,8 +1,10 @@
 package dev.bartuzen.qbitcontroller.model
 
+import dev.bartuzen.qbitcontroller.model.serializers.InstantSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableDoubleSerializer
-import dev.bartuzen.qbitcontroller.model.serializers.NullableEpochTimeSerializer
+import dev.bartuzen.qbitcontroller.model.serializers.NullableInstantSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
+import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.SerialName
@@ -40,8 +42,8 @@ data class Torrent(
     val additionDate: Long,
 
     @SerialName("completion_on")
-    @Serializable(with = NullableEpochTimeSerializer::class)
-    val completionDate: Long?,
+    @Serializable(with = NullableInstantSerializer::class)
+    val completionDate: Instant?,
 
     @SerialName("completed")
     val completed: Long,
@@ -136,11 +138,12 @@ data class Torrent(
     val ratio: Double,
 
     @SerialName("last_activity")
-    val lastActivity: Long,
+    @Serializable(with = InstantSerializer::class)
+    val lastActivity: Instant,
 
     @SerialName("seen_complete")
-    @Serializable(with = NullableEpochTimeSerializer::class)
-    val lastSeenComplete: Long?,
+    @Serializable(with = NullableInstantSerializer::class)
+    val lastSeenComplete: Instant?,
 
     @SerialName("ratio_limit")
     val ratioLimit: Double,
