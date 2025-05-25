@@ -6,6 +6,7 @@ import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
+import dev.bartuzen.qbitcontroller.network.catchRequestError
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -13,9 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 class AddEditServerViewModel(
     serverId: Int?,
@@ -49,38 +47,32 @@ class AddEditServerViewModel(
 
         _isTesting.value = true
         val job = viewModelScope.launch {
-            val error = try {
-                val service =
-                    requestManager.buildTorrentService(serverConfig, requestManager.buildHttpClient(serverConfig))
+            val result = catchRequestError<Unit>(
+                block = {
+                    val service =
+                        requestManager.buildTorrentService(serverConfig, requestManager.buildHttpClient(serverConfig))
 
-                val response = service.login(serverConfig.username ?: "", serverConfig.password ?: "")
+                    val response = service.login(serverConfig.username ?: "", serverConfig.password ?: "")
 
-                if (response.code == 403) {
-                    RequestResult.Error.RequestError.Banned
-                } else if (response.body() == "Fails.") {
-                    RequestResult.Error.RequestError.InvalidCredentials
-                } else if (response.body() != "Ok.") {
-                    RequestResult.Error.RequestError.UnknownLoginResponse(response.body())
-                } else {
-                    null
+                    if (response.code == 403) {
+                        RequestResult.Error.RequestError.Banned
+                    } else if (response.body() == "Fails.") {
+                        RequestResult.Error.RequestError.InvalidCredentials
+                    } else if (response.body() != "Ok.") {
+                        RequestResult.Error.RequestError.UnknownLoginResponse(response.body())
+                    } else {
+                        RequestResult.Success(Unit)
+                    }
+                },
+            )
+
+            when (result) {
+                is RequestResult.Success -> {
+                    eventChannel.send(Event.TestSuccess)
                 }
-            } catch (e: ConnectException) {
-                RequestResult.Error.RequestError.CannotConnect
-            } catch (e: SocketTimeoutException) {
-                RequestResult.Error.RequestError.Timeout
-            } catch (e: UnknownHostException) {
-                RequestResult.Error.RequestError.UnknownHost
-            } catch (e: Exception) {
-                if (e is CancellationException) {
-                    throw e
+                is RequestResult.Error -> {
+                    eventChannel.send(Event.TestFailure(result))
                 }
-                RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
-            }
-
-            if (error == null) {
-                eventChannel.send(Event.TestSuccess)
-            } else {
-                eventChannel.send(Event.TestFailure(error))
             }
         }
 

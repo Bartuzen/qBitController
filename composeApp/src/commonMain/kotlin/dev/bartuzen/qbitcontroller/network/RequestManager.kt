@@ -19,7 +19,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -35,9 +34,6 @@ import kotlinx.serialization.json.Json
 import qBitController.composeApp.BuildConfig
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.app_name
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
 
@@ -200,56 +196,49 @@ class RequestManager(
         }
     }
 
-    suspend fun <T : Any> request(serverId: Int, block: suspend (service: TorrentService) -> Response<T>) = try {
-        val initialLoginLock = getInitialLoginLock(serverId)
+    suspend fun <T : Any> request(serverId: Int, block: suspend (service: TorrentService) -> Response<T>) =
+        catchRequestError(
+            block = {
+                val initialLoginLock = getInitialLoginLock(serverId)
 
-        initialLoginLock.lock()
-        if (serverId !in loggedInServerIds) {
-            val loginResponse = tryLogin(serverId)
-            if (loginResponse is RequestResult.Success) {
-                loggedInServerIds.add(serverId)
-                initialLoginLock.tryUnlock()
+                initialLoginLock.lock()
+                if (serverId !in loggedInServerIds) {
+                    val loginResponse = tryLogin(serverId)
+                    if (loginResponse is RequestResult.Success) {
+                        loggedInServerIds.add(serverId)
+                        initialLoginLock.tryUnlock()
 
-                tryRequest(serverId, block)
-            } else {
-                loginResponse as RequestResult.Error
-            }
-        } else {
-            initialLoginLock.tryUnlock()
-            val response = tryRequest(serverId, block)
-
-            if (response is RequestResult.Error.RequestError.InvalidCredentials) {
-                val loginResponse = tryLogin(serverId)
-
-                if (loginResponse is RequestResult.Success) {
-                    tryRequest(serverId, block)
+                        tryRequest(serverId, block)
+                    } else {
+                        loginResponse as RequestResult.Error
+                    }
                 } else {
-                    loginResponse as RequestResult.Error
-                }
-            } else {
-                response
-            }
-        }
-    } catch (e: ConnectException) {
-        RequestResult.Error.RequestError.CannotConnect
-    } catch (e: SocketTimeoutException) {
-        RequestResult.Error.RequestError.Timeout
-    } catch (e: UnknownHostException) {
-        RequestResult.Error.RequestError.UnknownHost
-    } catch (e: Exception) {
-        if (e is CancellationException) {
-            throw e
-        }
-        RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
-    } finally {
-        withContext(NonCancellable) {
-            val initialLoginLock = getInitialLoginLock(serverId)
+                    initialLoginLock.tryUnlock()
+                    val response = tryRequest(serverId, block)
 
-            if (initialLoginLock.isLocked) {
-                initialLoginLock.tryUnlock()
-            }
-        }
-    }
+                    if (response is RequestResult.Error.RequestError.InvalidCredentials) {
+                        val loginResponse = tryLogin(serverId)
+
+                        if (loginResponse is RequestResult.Success) {
+                            tryRequest(serverId, block)
+                        } else {
+                            loginResponse as RequestResult.Error
+                        }
+                    } else {
+                        response
+                    }
+                }
+            },
+            finally = {
+                withContext(NonCancellable) {
+                    val initialLoginLock = getInitialLoginLock(serverId)
+
+                    if (initialLoginLock.isLocked) {
+                        initialLoginLock.tryUnlock()
+                    }
+                }
+            },
+        )
 
     private fun Mutex.tryUnlock() {
         try {
@@ -279,3 +268,8 @@ sealed class RequestResult<out T : Any?> {
 }
 
 expect fun createHttpClient(serverConfig: ServerConfig, block: HttpClientConfig<*>.() -> Unit): HttpClient
+
+expect suspend fun <T> catchRequestError(
+    block: suspend () -> RequestResult<T>,
+    finally: suspend () -> Unit = {},
+): RequestResult<T>
