@@ -23,7 +23,6 @@ import qbitcontroller.composeapp.generated.resources.eta_hours_minutes
 import qbitcontroller.composeapp.generated.resources.eta_minutes
 import qbitcontroller.composeapp.generated.resources.eta_minutes_seconds
 import qbitcontroller.composeapp.generated.resources.eta_seconds
-import qbitcontroller.composeapp.generated.resources.language_code
 import qbitcontroller.composeapp.generated.resources.size_bytes
 import qbitcontroller.composeapp.generated.resources.size_exbibytes
 import qbitcontroller.composeapp.generated.resources.size_format
@@ -57,7 +56,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_status_queued
 import qbitcontroller.composeapp.generated.resources.torrent_status_seeding
 import qbitcontroller.composeapp.generated.resources.torrent_status_stalled
 import qbitcontroller.composeapp.generated.resources.torrent_status_unknown
-import java.util.Locale
 import kotlin.math.roundToLong
 
 @Composable
@@ -195,18 +193,7 @@ suspend fun getErrorMessage(error: RequestResult.Error) = when (error) {
 expect fun Instant.formatDate(): String
 
 @Composable
-fun getCountryName(countryCode: String): String {
-    val (language, country) = stringResource(Res.string.language_code)
-        .replace("-", "_")
-        .split("_")
-        .let { it.first() to it.getOrNull(1) }
-
-    val localeForLanguage = if (country == null) Locale(language) else Locale(language, country)
-
-    return Locale("", countryCode).getDisplayCountry(
-        localeForLanguage,
-    )
-}
+expect fun getCountryName(countryCode: String): String
 
 private val ipPattern = Regex(
     """(?:[a-zA-Z]+://)?(?:((?:\d{1,3}\.){3}\d{1,3})|\[?((?:[A-Fa-f0-9]{4}:){7}[A-Fa-f0-9]{4})]?)(?::\d+)?(?:/.*)?""",
