@@ -12,10 +12,11 @@ class Preference<T : Any>(
     private val key: String,
     private val initialValue: T,
     private val type: KClass<T>,
+    private val enumValues: Array<T>? = null,
 ) {
     var value: T
         get() = when {
-            type.java.isEnum -> type.java.enumConstants?.find {
+            enumValues != null -> enumValues.find {
                 (it as Enum<*>).name == settings[key, initialValue.toString()]
             } ?: initialValue
             type == Int::class -> settings[key, initialValue as Int]
@@ -27,7 +28,7 @@ class Preference<T : Any>(
         } as T
         set(value) {
             when {
-                type.java.isEnum -> settings[key] = (value as Enum<*>).name
+                enumValues != null -> settings[key] = (value as Enum<*>).name
                 type == Int::class -> settings[key] = value as Int
                 type == Boolean::class -> settings[key] = value as Boolean
                 type == Float::class -> settings[key] = value as Float
@@ -43,3 +44,6 @@ class Preference<T : Any>(
 
 inline fun <reified T : Any> preference(settings: Settings, key: String, initialValue: T) =
     Preference(settings, key, initialValue, T::class)
+
+inline fun <reified T : Enum<T>> preference(settings: Settings, key: String, initialValue: T) =
+    Preference(settings, key, initialValue, T::class, enumValues<T>())
