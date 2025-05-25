@@ -2,7 +2,7 @@ package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import java.net.URLEncoder
+import io.ktor.http.encodeURLParameter
 
 class TorrentTrackersRepository(
     private val requestManager: RequestManager,
@@ -21,7 +21,7 @@ class TorrentTrackersRepository(
             when {
                 version >= QBittorrentVersion(5, 0, 4) -> service.deleteTorrentTrackers(
                     hash,
-                    urls.joinToString("|") { URLEncoder.encode(it, "UTF-8") },
+                    urls.joinToString("|") { it.encodeURLParameter() },
                 )
                 else -> service.deleteTorrentTrackers(hash, urls.joinToString("|"))
             }
