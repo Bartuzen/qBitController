@@ -78,10 +78,12 @@ class TorrentListViewModel(
     val mainData = _mainData.asStateFlow()
 
     val searchQuery = savedStateHandle.getStateFlow("searchQuery", "")
-    val selectedCategory = savedStateHandle.getSerializableStateFlow<CategoryTag>("selectedCategory", CategoryTag.All)
-    val selectedTag = savedStateHandle.getSerializableStateFlow<CategoryTag>("selectedTag", CategoryTag.All)
-    val selectedFilter = savedStateHandle.getSerializableStateFlow<TorrentFilter>("selectedFilter", TorrentFilter.ALL)
-    val selectedTracker = savedStateHandle.getSerializableStateFlow<Tracker>("selectedTracker", Tracker.All)
+    val selectedCategory =
+        savedStateHandle.getSerializableStateFlow<CategoryTag>(viewModelScope, "selectedCategory", CategoryTag.All)
+    val selectedTag = savedStateHandle.getSerializableStateFlow<CategoryTag>(viewModelScope, "selectedTag", CategoryTag.All)
+    val selectedFilter =
+        savedStateHandle.getSerializableStateFlow<TorrentFilter>(viewModelScope, "selectedFilter", TorrentFilter.ALL)
+    val selectedTracker = savedStateHandle.getSerializableStateFlow<Tracker>(viewModelScope, "selectedTracker", Tracker.All)
 
     private val serverListener = object : ServerManager.ServerListener {
         override fun onServerAddedListener(serverConfig: ServerConfig) {

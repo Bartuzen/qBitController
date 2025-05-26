@@ -35,7 +35,6 @@ kotlin {
     compilerOptions {
         freeCompilerArgs.addAll(
             "-Xexpect-actual-classes",
-            "-Xcontext-parameters",
             "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi",
             "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi",
             "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
@@ -265,10 +264,7 @@ compose.desktop {
 }
 
 tasks.withType<ConfigurableKtLintTask> {
-    source = source
-        .minus(fileTree("build"))
-        .minus(fileTree("src/commonMain/kotlin/dev/bartuzen/qbitcontroller/utils/SavedStateHandle.kt")) // Remove when ktlint supports context parameters
-        .asFileTree
+    source = source.minus(fileTree("build")).asFileTree
 }
 
 afterEvaluate {
