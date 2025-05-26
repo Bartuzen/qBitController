@@ -399,7 +399,7 @@ class TorrentListViewModel(
                         }
                     }
                     is Tracker.Named -> {
-                        if (torrent.hash !in mainData.trackers.getOrDefault(selectedTracker.name, emptyList())) {
+                        if (torrent.hash !in mainData.trackers.getOrElse(selectedTracker.name) { emptyList() }) {
                             return@filter false
                         }
                     }
@@ -900,6 +900,7 @@ class TorrentListViewModel(
     }
 }
 
+@Serializable
 enum class TorrentFilter(val states: List<TorrentState>?) {
     ALL(null),
     DOWNLOADING(

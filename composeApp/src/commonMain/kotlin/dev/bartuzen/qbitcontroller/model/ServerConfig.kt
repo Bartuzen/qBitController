@@ -53,6 +53,7 @@ enum class Protocol {
 }
 
 // https://github.com/mihonapp/mihon/blob/main/core/common/src/main/kotlin/eu/kanade/tachiyomi/network/DohProviders.kt
+@Serializable
 enum class DnsOverHttps(val url: String, val bootstrapDnsHosts: List<String>) {
     Cloudflare(
         url = "https://cloudflare-dns.com/dns-query",

@@ -76,3 +76,6 @@ actual suspend fun <T> catchRequestError(
 } finally {
     finally()
 }
+
+actual fun supportsSelfSignedCertificates() = true
+actual fun supportsDnsOverHttps() = true

@@ -5,6 +5,7 @@ import com.russhwolf.settings.get
 import com.russhwolf.settings.set
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext

@@ -32,6 +32,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import dev.bartuzen.qbitcontroller.model.DnsOverHttps
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.network.supportsDnsOverHttps
+import dev.bartuzen.qbitcontroller.network.supportsSelfSignedCertificates
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import me.zhanghai.compose.preference.ListPreference
@@ -132,39 +134,43 @@ fun AdvancedServerSettingsScreen(
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize(),
         ) {
-            item {
-                SwitchPreference(
-                    value = trustSelfSignedCertificates,
-                    onValueChange = { trustSelfSignedCertificates = it },
-                    title = { Text(text = stringResource(Res.string.settings_server_trust_self_signed_certificates)) },
-                )
+            if (supportsSelfSignedCertificates()) {
+                item {
+                    SwitchPreference(
+                        value = trustSelfSignedCertificates,
+                        onValueChange = { trustSelfSignedCertificates = it },
+                        title = { Text(text = stringResource(Res.string.settings_server_trust_self_signed_certificates)) },
+                    )
+                }
             }
 
-            item {
-                val items = mapOf(
-                    null to Res.string.settings_disabled,
-                    DnsOverHttps.Cloudflare to Res.string.settings_server_advanced_doh_cloudflare,
-                    DnsOverHttps.Google to Res.string.settings_server_advanced_doh_google,
-                    DnsOverHttps.AdGuard to Res.string.settings_server_advanced_doh_adguard,
-                    DnsOverHttps.Quad9 to Res.string.settings_server_advanced_doh_quad9,
-                    DnsOverHttps.AliDNS to Res.string.settings_server_advanced_doh_alidns,
-                    DnsOverHttps.DNSPod to Res.string.settings_server_advanced_doh_dnspod,
-                    DnsOverHttps.DNS360 to Res.string.settings_server_advanced_doh_360,
-                    DnsOverHttps.Quad101 to Res.string.settings_server_advanced_doh_quad101,
-                    DnsOverHttps.Mullvad to Res.string.settings_server_advanced_doh_mullvad,
-                    DnsOverHttps.ControlD to Res.string.settings_server_advanced_doh_controld,
-                    DnsOverHttps.Njalla to Res.string.settings_server_advanced_doh_njalla,
-                    DnsOverHttps.Shecan to Res.string.settings_server_advanced_doh_shecan,
-                ).mapValues { stringResource(it.value) }
+            if (supportsDnsOverHttps()) {
+                item {
+                    val items = mapOf(
+                        null to Res.string.settings_disabled,
+                        DnsOverHttps.Cloudflare to Res.string.settings_server_advanced_doh_cloudflare,
+                        DnsOverHttps.Google to Res.string.settings_server_advanced_doh_google,
+                        DnsOverHttps.AdGuard to Res.string.settings_server_advanced_doh_adguard,
+                        DnsOverHttps.Quad9 to Res.string.settings_server_advanced_doh_quad9,
+                        DnsOverHttps.AliDNS to Res.string.settings_server_advanced_doh_alidns,
+                        DnsOverHttps.DNSPod to Res.string.settings_server_advanced_doh_dnspod,
+                        DnsOverHttps.DNS360 to Res.string.settings_server_advanced_doh_360,
+                        DnsOverHttps.Quad101 to Res.string.settings_server_advanced_doh_quad101,
+                        DnsOverHttps.Mullvad to Res.string.settings_server_advanced_doh_mullvad,
+                        DnsOverHttps.ControlD to Res.string.settings_server_advanced_doh_controld,
+                        DnsOverHttps.Njalla to Res.string.settings_server_advanced_doh_njalla,
+                        DnsOverHttps.Shecan to Res.string.settings_server_advanced_doh_shecan,
+                    ).mapValues { stringResource(it.value) }
 
-                ListPreference(
-                    value = dnsOverHttps,
-                    onValueChange = { dnsOverHttps = it },
-                    values = items.keys.toList(),
-                    title = { Text(text = stringResource(Res.string.settings_server_advanced_doh)) },
-                    valueToText = { AnnotatedString(items[it] ?: "") },
-                    summary = items[dnsOverHttps]?.let { { Text(text = it) } },
-                )
+                    ListPreference(
+                        value = dnsOverHttps,
+                        onValueChange = { dnsOverHttps = it },
+                        values = items.keys.toList(),
+                        title = { Text(text = stringResource(Res.string.settings_server_advanced_doh)) },
+                        valueToText = { AnnotatedString(items[it] ?: "") },
+                        summary = items[dnsOverHttps]?.let { { Text(text = it) } },
+                    )
+                }
             }
 
             item {

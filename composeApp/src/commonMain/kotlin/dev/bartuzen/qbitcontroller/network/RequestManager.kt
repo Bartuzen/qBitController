@@ -273,3 +273,6 @@ expect suspend fun <T> catchRequestError(
     block: suspend () -> RequestResult<T>,
     finally: suspend () -> Unit = {},
 ): RequestResult<T>
+
+expect fun supportsSelfSignedCertificates(): Boolean
+expect fun supportsDnsOverHttps(): Boolean

@@ -23,10 +23,27 @@ plugins {
     id("dev.bartuzen.qbitcontroller.language")
 }
 
+val appVersion = "1.1.1"
+val appVersionCode = 21
+
 kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
+        }
+    }
+
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
+
+            binaryOption("bundleShortVersionString", appVersion)
+            binaryOption("bundleVersion", appVersionCode.toString())
         }
     }
 
@@ -135,11 +152,25 @@ kotlin {
                 implementation(libs.work.runtime)
             }
         }
+
+        val iosMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(libs.ktor.darwin)
+            }
+        }
+
+        val iosX64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
     }
 }
-
-val appVersion = "1.1.1"
-val appVersionCode = 21
 
 buildConfig {
     buildConfigField("Version", appVersion)

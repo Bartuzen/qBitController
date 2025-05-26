@@ -12,7 +12,7 @@ compose-navigation = "2.9.0-beta02"
 accompanist = "0.37.3"
 material = "1.12.0"
 coroutines = "1.10.2"
-koin = "4.0.4"
+koin = "4.1.0-RC1"
 kotlinxSerialization = "1.8.1"
 kotlinx-datetime = "0.6.2"
 work-runtime = "2.10.1"
@@ -65,6 +65,7 @@ koin-compose-viewModel-navigation = { module = "io.insert-koin:koin-compose-view
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-contentNegotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }

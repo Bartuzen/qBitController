@@ -59,3 +59,14 @@ google-services.json
 # Generated
 locales_config.xml
 /composeApp/src/androidMain/res/values*/strings_generated.xml
+
+# Xcode
+.DS_Store
+xcuserdata/
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings
