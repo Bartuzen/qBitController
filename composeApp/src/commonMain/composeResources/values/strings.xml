@@ -730,6 +730,12 @@
     <string name="settings_server_advanced_doh_controld" translatable="false">ControlD</string>
     <string name="settings_server_advanced_doh_njalla" translatable="false">Njalla</string>
     <string name="settings_server_advanced_doh_shecan" translatable="false">Shecan</string>
+    <string name="settings_server_advanced_custom_headers">Custom headers</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d header</item>
+        <item quantity="other">%1$d headers</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Add one custom header per line. Separate key and value using an equals sign.</string>
 
     <string name="settings_server_add_success">Server has been added successfully.</string>
     <string name="settings_server_edit_success">Server has been edited successfully.</string>

@@ -40,12 +40,16 @@ import me.zhanghai.compose.preference.ListPreference
 import me.zhanghai.compose.preference.PreferenceCategory
 import me.zhanghai.compose.preference.SwitchPreference
 import me.zhanghai.compose.preference.TextFieldPreference
+import org.jetbrains.compose.resources.pluralStringResource
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_disabled
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_basic_auth
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_basic_auth_enabled
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_basic_auth_password
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_basic_auth_username
+import qbitcontroller.composeapp.generated.resources.settings_server_advanced_custom_headers
+import qbitcontroller.composeapp.generated.resources.settings_server_advanced_custom_headers_description
+import qbitcontroller.composeapp.generated.resources.settings_server_advanced_custom_headers_summary
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_doh
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_doh_360
 import qbitcontroller.composeapp.generated.resources.settings_server_advanced_doh_adguard
@@ -86,6 +90,7 @@ fun AdvancedServerSettingsScreen(
         )
     }
     var dnsOverHttps by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf(advancedSettings.dnsOverHttps) }
+    var customHeaders by rememberSaveable { mutableStateOf(advancedSettings.customHeaders.joinToString("\n")) }
 
     LaunchedEffect(
         trustSelfSignedCertificates,
@@ -93,6 +98,7 @@ fun AdvancedServerSettingsScreen(
         basicAuthUsername,
         basicAuthPassword,
         dnsOverHttps,
+        customHeaders,
     ) {
         onUpdate(
             ServerConfig.AdvancedSettings(
@@ -103,6 +109,13 @@ fun AdvancedServerSettingsScreen(
                     password = if (basicAuthPassword.isNotEmpty()) basicAuthPassword else null,
                 ),
                 dnsOverHttps = dnsOverHttps,
+                customHeaders = customHeaders
+                    .split("\n")
+                    .filter { it.isNotBlank() && it.contains("=") }
+                    .map {
+                        val (key, value) = it.split("=", limit = 2)
+                        ServerConfig.AdvancedSettings.CustomHeader(key, value)
+                    },
             ),
         )
     }
@@ -171,6 +184,45 @@ fun AdvancedServerSettingsScreen(
                         summary = items[dnsOverHttps]?.let { { Text(text = it) } },
                     )
                 }
+            }
+
+            item {
+                TextFieldPreference(
+                    value = customHeaders,
+                    onValueChange = {
+                        customHeaders = it
+                            .split("\n")
+                            .filter { it.isNotBlank() && it.contains("=") }
+                            .joinToString("\n")
+                    },
+                    title = { Text(text = stringResource(Res.string.settings_server_advanced_custom_headers)) },
+                    textToValue = { it },
+                    textField = { value, onValueChange, onOk ->
+                        OutlinedTextField(
+                            value = value,
+                            onValueChange = onValueChange,
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardActions = KeyboardActions { onOk() },
+                            supportingText = {
+                                Text(text = stringResource(Res.string.settings_server_advanced_custom_headers_description))
+                            },
+                        )
+                    },
+                    summary = {
+                        val count = customHeaders
+                            .split("\n")
+                            .filter { it.isNotBlank() && it.contains("=") }
+                            .size
+                        Text(
+                            text = pluralStringResource(
+                                Res.plurals.settings_server_advanced_custom_headers_summary,
+                                count,
+                                count,
+                            ),
+                        )
+                    },
+                    modifier = Modifier.animateContentSize(),
+                )
             }
 
             item {

@@ -18,6 +18,8 @@ import io.ktor.client.plugins.auth.providers.basic
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
 import io.ktor.client.plugins.cookies.HttpCookies
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.header
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -111,6 +113,12 @@ class RequestManager(
                         BasicAuthCredentials(basicAuth.username, basicAuth.password)
                     }
                 }
+            }
+        }
+
+        defaultRequest {
+            serverConfig.advanced.customHeaders.forEach { (key, value) ->
+                header(key, value)
             }
         }
     }

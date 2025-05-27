@@ -37,12 +37,19 @@ data class ServerConfig(
         val trustSelfSignedCertificates: Boolean = false,
         val basicAuth: BasicAuth = BasicAuth(false, null, null),
         val dnsOverHttps: DnsOverHttps? = null,
+        val customHeaders: List<CustomHeader> = emptyList(),
     ) {
         @Serializable
         data class BasicAuth(
             val isEnabled: Boolean,
             val username: String?,
             val password: String?,
+        )
+
+        @Serializable
+        data class CustomHeader(
+            val key: String,
+            val value: String,
         )
     }
 }
