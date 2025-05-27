@@ -672,4 +672,11 @@
         <item quantity="many">%1$d torrent seleccionados</item>
         <item quantity="other">%1$d torrent seleccionados</item>
     </plurals>
+    <string name="settings_server_advanced_custom_headers">Cabeceras personalizadas</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d cabecera</item>
+        <item quantity="many">%1$d cabeceras</item>
+        <item quantity="other">%1$d cabeceras</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Añade una cabecera personalizada por línea. Separa la clave y el valor usando un signo igual.</string>
 </resources>
