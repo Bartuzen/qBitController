@@ -34,6 +34,7 @@ buildConfig = "5.6.5"
 ktor = "3.1.3"
 ktorfit = "2.5.2"
 ksp = "2.1.21-2.0.1"
+reorderable = "2.4.3"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
@@ -91,6 +92,8 @@ materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "ma
 
 fileKit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "fileKit" }
 fileKit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "fileKit" }
+
+reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }

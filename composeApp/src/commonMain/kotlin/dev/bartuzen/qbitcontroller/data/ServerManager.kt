@@ -65,6 +65,12 @@ class ServerManager(
         listeners.forEach { it.onServerRemovedListener(serverConfig) }
     }
 
+    fun reorderServer(from: Int, to: Int) {
+        _serversFlow.value = serversFlow.value.toMutableList().apply {
+            add(to, removeAt(from))
+        }
+    }
+
     private val listeners = mutableListOf<ServerListener>()
 
     fun addServerListener(serverListener: ServerListener) {

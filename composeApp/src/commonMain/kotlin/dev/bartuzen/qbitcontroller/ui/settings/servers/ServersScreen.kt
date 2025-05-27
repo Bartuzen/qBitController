@@ -1,22 +1,30 @@
 package dev.bartuzen.qbitcontroller.ui.settings.servers
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.LinkOff
+import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
@@ -45,6 +54,8 @@ import qbitcontroller.composeapp.generated.resources.settings_server_edit_succes
 import qbitcontroller.composeapp.generated.resources.settings_server_remove_success
 import qbitcontroller.composeapp.generated.resources.settings_servers_add_server
 import qbitcontroller.composeapp.generated.resources.settings_servers_no_server_configured
+import sh.calvin.reorderable.ReorderableItem
+import sh.calvin.reorderable.rememberReorderableLazyListState
 
 @Composable
 fun ServersScreen(
@@ -109,7 +120,13 @@ fun ServersScreen(
         },
         snackbarHost = { SwipeableSnackbarHost(snackbarHostState) },
     ) { innerPadding ->
+        val listState = rememberLazyListState()
+        val reorderableLazyListState = rememberReorderableLazyListState(listState) { from, to ->
+            viewModel.reorderServer(from.index, to.index)
+        }
+
         LazyColumn(
+            state = listState,
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -117,12 +134,37 @@ fun ServersScreen(
                 items = servers,
                 key = { it.id },
             ) { serverConfig ->
-                Preference(
-                    title = serverConfig.name?.let { { Text(text = it) } },
-                    summary = { Text(text = serverConfig.visibleUrl) },
-                    onClick = { onNavigateToAddEditServer(serverConfig.id) },
-                    modifier = Modifier.animateItem(),
-                )
+                ReorderableItem(
+                    state = reorderableLazyListState,
+                    key = serverConfig.id,
+                ) {
+                    Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+                        Preference(
+                            title = serverConfig.name?.let { { Text(text = it) } },
+                            summary = { Text(text = serverConfig.visibleUrl) },
+                            onClick = { onNavigateToAddEditServer(serverConfig.id) },
+                            modifier = Modifier.animateItem(),
+                            widgetContainer = {
+                                Icon(
+                                    imageVector = Icons.Rounded.DragHandle,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .padding(end = 16.dp)
+                                        .draggableHandle()
+                                        .clickable(
+                                            onClick = { },
+                                            interactionSource = null,
+                                            indication =
+                                            ripple(
+                                                bounded = false,
+                                                radius = 16.dp,
+                                            ),
+                                        ),
+                                )
+                            },
+                        )
+                    }
+                }
             }
         }
 

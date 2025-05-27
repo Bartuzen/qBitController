@@ -113,6 +113,8 @@ kotlin {
 
                 implementation(libs.fileKit.core)
                 implementation(libs.fileKit.dialogs)
+
+                implementation(libs.reorderable)
             }
         }
 
