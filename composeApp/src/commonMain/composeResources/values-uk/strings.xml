@@ -697,4 +697,5 @@
         <item quantity="many">%1$d заголовків</item>
         <item quantity="other">%1$d заголовків</item>
     </plurals>
+    <string name="settings_pure_black_dark_mode">Чисто чорний темний режим</string>
 </resources>
