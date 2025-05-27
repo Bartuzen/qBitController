@@ -679,4 +679,5 @@
         <item quantity="other">%1$d cabeceras</item>
     </plurals>
     <string name="settings_server_advanced_custom_headers_description">Añade una cabecera personalizada por línea. Separa la clave y el valor usando un signo igual.</string>
+    <string name="settings_pure_black_dark_mode">Modo negro oscuro puro</string>
 </resources>
