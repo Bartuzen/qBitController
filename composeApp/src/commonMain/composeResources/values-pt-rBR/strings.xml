@@ -672,4 +672,12 @@
         <item quantity="many">%1$d Torrents selecionados</item>
         <item quantity="other">%1$d Torrents selecionados</item>
     </plurals>
+    <string name="settings_pure_black_dark_mode">Modo preto natural</string>
+    <string name="settings_server_advanced_custom_headers">Cabeçalhos personalizados</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d cabeçalho</item>
+        <item quantity="many">%1$d cabeçalhos</item>
+        <item quantity="other">%1$d cabeçalhos</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Adicione um cabeçalho personalizado por linha. Separe a chave e o valor usando um sinal de igual.</string>
 </resources>
