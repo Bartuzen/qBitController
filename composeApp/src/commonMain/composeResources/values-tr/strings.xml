@@ -620,4 +620,44 @@
     <string name="rss_new">Yeni</string>
     <string name="rss_rule_item_enabled">Etkin</string>
     <string name="rss_rule_item_disabled">Devre dışı</string>
+    <string name="settings_server_advanced_custom_headers_description">Satır başına bir özel başlık ekleyin. Anahtar ile değeri eşittir işareti kullanarak ayırın.</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent seçildi</item>
+        <item quantity="other">%1$d torrent seçildi</item>
+    </plurals>
+    <string name="settings_pure_black_dark_mode">Tamamen karanlık koyu mod</string>
+    <string name="settings_server_server_info">Sunucu Bilgisi</string>
+    <string name="settings_server_credentials">Kimlik Bilgileri</string>
+    <string name="settings_server_advanced_title">Gelişmiş Ayarlar</string>
+    <string name="settings_server_advanced_custom_headers">Özel başlıklar</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d başlık</item>
+        <item quantity="other">%1$d başlık</item>
+    </plurals>
+    <string name="error_invalid_interval">%1$d ile %2$d arasında olmalı.</string>
+    <string name="error_invalid_interval_optional">%1$d ile %2$d arasında olmalı ya da devre dışı bırakmak için boş bırakılmalı.</string>
+    <string name="torrent_overview_piece_map">Parça Haritası</string>
+    <string name="torrent_overview_piece_downloaded">İndirildi</string>
+    <string name="torrent_overview_piece_downloading">İndiriliyor</string>
+    <string name="torrent_overview_piece_not_downloaded">İndirilmedi</string>
+    <string name="torrent_peers_details_section_overview">Kişi Özeti</string>
+    <string name="torrent_peers_details_section_transfer">Aktarım İstatistikleri</string>
+    <string name="settings_servers_add_server">Sunucu Ekle</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d bildirim</item>
+        <item quantity="other">%1$d bildirim</item>
+    </plurals>
+    <string name="settings_category_appearance">Görünüm</string>
+    <string name="settings_category_network">Ağ</string>
+    <string name="rss_action_download">İndir</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent seçildi</item>
+        <item quantity="other">%1$d torrent seçildi</item>
+    </plurals>
+    <string name="search_result_action_download">İndir</string>
+    <string name="settings_server_invalid_url">URL formatı geçersiz.</string>
+    <string name="settings_category_general">Genel</string>
+    <string name="settings_servers_no_server_configured">Sunucu Ayarlanmadı</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_url_examples">Örnekler: %1$s</string>
 </resources>
