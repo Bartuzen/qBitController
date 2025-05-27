@@ -20,9 +20,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import me.zhanghai.compose.preference.ListPreference
+import me.zhanghai.compose.preference.SwitchPreference
 import org.koin.compose.viewmodel.koinViewModel
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_category_appearance
+import qbitcontroller.composeapp.generated.resources.settings_pure_black_dark_mode
 import qbitcontroller.composeapp.generated.resources.settings_theme
 import qbitcontroller.composeapp.generated.resources.settings_theme_dark
 import qbitcontroller.composeapp.generated.resources.settings_theme_light
@@ -94,6 +96,15 @@ fun AppearanceSettingsScreen(
                             },
                         )
                     },
+                )
+            }
+
+            item {
+                val pureBlackDarkMode by viewModel.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
+                SwitchPreference(
+                    value = pureBlackDarkMode,
+                    onValueChange = { viewModel.pureBlackDarkMode.value = it },
+                    title = { Text(text = stringResource(Res.string.settings_pure_black_dark_mode)) },
                 )
             }
         }

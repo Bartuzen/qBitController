@@ -692,6 +692,7 @@
     <string name="settings_theme_system_default">System Default</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_system_default">System Default</string>
+    <string name="settings_pure_black_dark_mode">Pure black dark mode</string>
 
     <string name="settings_servers_add_server">Add Server</string>
     <string name="settings_servers_no_server_configured">No Server Configured</string>

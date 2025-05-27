@@ -5,14 +5,22 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.data.SettingsManager
+import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import kotlinx.coroutines.flow.flow
 import me.zhanghai.compose.preference.LocalPreferenceTheme
 import me.zhanghai.compose.preference.preferenceTheme
+import org.koin.compose.koinInject
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
@@ -94,9 +102,39 @@ private val darkScheme = darkColorScheme(
 )
 
 @Composable
-fun AppTheme(darkTheme: Boolean = isSystemInDarkTheme(), dynamicColor: Boolean = true, content: @Composable () -> Unit) {
-    val colorScheme = (if (dynamicColor) getDynamicColorScheme(darkTheme) else null)
-        ?: if (darkTheme) darkScheme else lightScheme
+fun AppTheme(content: @Composable () -> Unit) {
+    val settingsManager = koinInject<SettingsManager>()
+    val theme by settingsManager.theme.flow.collectAsStateWithLifecycle()
+    val pureBlack by settingsManager.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
+
+    val darkTheme = when (theme) {
+        Theme.LIGHT -> false
+        Theme.DARK -> true
+        Theme.SYSTEM_DEFAULT -> isSystemInDarkTheme()
+    }
+
+    val colorScheme = (getDynamicColorScheme(darkTheme) ?: if (darkTheme) darkScheme else lightScheme).let {
+        if (pureBlack && darkTheme) {
+            val surfaceContainer = Color(0xFF0C0C0C)
+            val surfaceContainerHigh = Color(0xFF131313)
+            val surfaceContainerHighest = Color(0xFF1B1B1B)
+
+            it.copy(
+                background = Color.Black,
+                onBackground = Color.White,
+                surface = Color.Black,
+                onSurface = Color.White,
+                surfaceVariant = surfaceContainer,
+                surfaceContainerLowest = surfaceContainer,
+                surfaceContainerLow = surfaceContainer,
+                surfaceContainer = surfaceContainer,
+                surfaceContainerHigh = surfaceContainerHigh,
+                surfaceContainerHighest = surfaceContainerHighest,
+            )
+        } else {
+            it
+        }
+    }
 
     MaterialTheme(colorScheme = colorScheme) {
         val preferenceTheme = preferenceTheme(

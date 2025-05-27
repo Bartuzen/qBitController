@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -16,14 +15,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import dev.bartuzen.qbitcontroller.data.SettingsManager
-import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
@@ -56,20 +52,11 @@ import dev.bartuzen.qbitcontroller.utils.serializableNavType
 import dev.bartuzen.qbitcontroller.utils.setSerializable
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import org.koin.compose.koinInject
 import kotlin.reflect.typeOf
 
 @Composable
 fun MainScreen(navController: NavHostController = rememberNavController(), serverIdChannel: Channel<Int> = Channel<Int>()) {
-    val settingsManager = koinInject<SettingsManager>()
-    val theme by settingsManager.theme.flow.collectAsStateWithLifecycle()
-    val darkTheme = when (theme) {
-        Theme.LIGHT -> false
-        Theme.DARK -> true
-        Theme.SYSTEM_DEFAULT -> isSystemInDarkTheme()
-    }
-
-    AppTheme(darkTheme = darkTheme) {
+    AppTheme {
         var showNotificationPermission by remember { mutableStateOf(false) }
         val notificationPermissionLauncher = notificationPermissionLauncher()
 
