@@ -460,7 +460,7 @@
     <string name="error_required_field">Это обязательное поле.</string>
     <string name="settings_server_username_min_character">Имя пользователя не должно быть короче 3 символов.</string>
     <string name="settings_server_password_min_character">Пароль не должен быть короче 6 символов.</string>
-    <string name="settings_server_connection_success">Подключение к серверу успешно.</string>
+    <string name="settings_server_connection_success">Подключение к серверу установлено.</string>
     <string name="notification_channel_download_completed">Загрузка завершена</string>
     <string name="torrent_list_action_sort_progress">Прогресс</string>
     <string name="speed_kibibytes_per_second">КиБ/с</string>
@@ -691,4 +691,13 @@
         <item quantity="many">%1$d торрентов выбрано</item>
         <item quantity="other">%1$d торрентов выбрано</item>
     </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Добавляйте по одному пользовательскому заголовку на строку. Разделяйте ключ и значение знаком равно.</string>
+    <string name="settings_pure_black_dark_mode">Абсолютно чёрный режим</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d заголовок</item>
+        <item quantity="few">%1$d заголовка</item>
+        <item quantity="many">%1$d заголовков</item>
+        <item quantity="other">%1$d заголовков</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers">Пользовательские заголовки</string>
 </resources>
