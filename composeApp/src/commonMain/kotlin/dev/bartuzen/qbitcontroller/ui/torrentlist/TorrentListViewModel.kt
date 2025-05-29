@@ -85,25 +85,7 @@ class TorrentListViewModel(
         savedStateHandle.getSerializableStateFlow<TorrentFilter>(viewModelScope, "selectedFilter", TorrentFilter.ALL)
     val selectedTracker = savedStateHandle.getSerializableStateFlow<Tracker>(viewModelScope, "selectedTracker", Tracker.All)
 
-    private val serverListener = object : ServerManager.ServerListener {
-        override fun onServerAddedListener(serverConfig: ServerConfig) {
-            if (serversFlow.value.size == 1) {
-                setCurrentServer(serverConfig.id)
-            }
-        }
-
-        override fun onServerRemovedListener(serverConfig: ServerConfig) {
-            if (currentServerId.value == serverConfig.id) {
-                setCurrentServer(getFirstServer()?.id)
-            }
-        }
-
-        override fun onServerChangedListener(serverConfig: ServerConfig) {
-            if (currentServerId.value == serverConfig.id) {
-                setCurrentServer(serverConfig.id, forceReset = true)
-            }
-        }
-    }
+    private val serverListener: ServerManager.ServerListener? = null
 
     private fun getFirstServer(): ServerConfig? = serversFlow.value.firstOrNull()
 
@@ -153,7 +135,23 @@ class TorrentListViewModel(
         _currentServer.value = if (id != null) serverManager.getServerOrNull(id) else null
         startAutoRefresh()
 
-        serverManager.addServerListener(serverListener)
+        serverManager.addServerListener(
+            add = { serverConfig ->
+                if (serversFlow.value.size == 1) {
+                    setCurrentServer(serverConfig.id)
+                }
+            },
+            remove = { serverConfig ->
+                if (currentServerId.value == serverConfig.id) {
+                    setCurrentServer(getFirstServer()?.id)
+                }
+            },
+            change = { serverConfig ->
+                if (currentServerId.value == serverConfig.id) {
+                    setCurrentServer(serverConfig.id, forceReset = true)
+                }
+            },
+        )
 
         viewModelScope.launch {
             mainData.collect { mainData ->
@@ -181,7 +179,7 @@ class TorrentListViewModel(
     }
 
     override fun onCleared() {
-        serverManager.removeServerListener(serverListener)
+        serverListener?.let { serverManager.removeServerListener(it) }
         serverScope.cancel()
     }
 

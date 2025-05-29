@@ -59,27 +59,24 @@ class RequestManager(
     }
 
     init {
-        serverManager.addServerListener(object : ServerManager.ServerListener {
-            override fun onServerAddedListener(serverConfig: ServerConfig) {}
-
-            override fun onServerRemovedListener(serverConfig: ServerConfig) {
+        serverManager.addServerListener(
+            remove = { serverConfig ->
                 torrentServiceMap.remove(serverConfig.id)
                 httpClientMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
                 initialLoginLocks.remove(serverConfig.id)
                 versions.remove(serverConfig.id)
                 versionLocks.remove(serverConfig.id)
-            }
-
-            override fun onServerChangedListener(serverConfig: ServerConfig) {
+            },
+            change = { serverConfig ->
                 torrentServiceMap.remove(serverConfig.id)
                 httpClientMap.remove(serverConfig.id)
                 loggedInServerIds.remove(serverConfig.id)
                 initialLoginLocks.remove(serverConfig.id)
                 versions.remove(serverConfig.id)
                 versionLocks.remove(serverConfig.id)
-            }
-        })
+            },
+        )
     }
 
     fun buildHttpClient(serverConfig: ServerConfig) = createHttpClient(serverConfig) {

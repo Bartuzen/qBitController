@@ -73,12 +73,30 @@ class ServerManager(
 
     private val listeners = mutableListOf<ServerListener>()
 
-    fun addServerListener(serverListener: ServerListener) {
-        listeners.add(serverListener)
+    fun addServerListener(
+        add: (ServerConfig) -> Unit = {},
+        remove: (ServerConfig) -> Unit = {},
+        change: (ServerConfig) -> Unit = {},
+    ): ServerListener {
+        val listener = object : ServerListener {
+            override fun onServerAddedListener(serverConfig: ServerConfig) {
+                add(serverConfig)
+            }
+
+            override fun onServerRemovedListener(serverConfig: ServerConfig) {
+                remove(serverConfig)
+            }
+
+            override fun onServerChangedListener(serverConfig: ServerConfig) {
+                change(serverConfig)
+            }
+        }
+        listeners.add(listener)
+        return listener
     }
 
     fun removeServerListener(serverListener: ServerListener) {
-        listeners.add(serverListener)
+        listeners.remove(serverListener)
     }
 
     interface ServerListener {

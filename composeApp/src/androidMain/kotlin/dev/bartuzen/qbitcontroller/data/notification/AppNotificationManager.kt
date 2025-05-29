@@ -15,7 +15,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.SettingsManager
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.utils.getString
 import kotlinx.coroutines.runBlocking
 import qbitcontroller.composeapp.generated.resources.Res
@@ -32,19 +31,11 @@ class AppNotificationManager(
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     init {
-        serverManager.addServerListener(object : ServerManager.ServerListener {
-            override fun onServerAddedListener(serverConfig: ServerConfig) {
-                updateChannels()
-            }
-
-            override fun onServerRemovedListener(serverConfig: ServerConfig) {
-                updateChannels()
-            }
-
-            override fun onServerChangedListener(serverConfig: ServerConfig) {
-                updateChannels()
-            }
-        })
+        serverManager.addServerListener(
+            add = { updateChannels() },
+            remove = { updateChannels() },
+            change = { updateChannels() },
+        )
     }
 
     fun startWorker() {

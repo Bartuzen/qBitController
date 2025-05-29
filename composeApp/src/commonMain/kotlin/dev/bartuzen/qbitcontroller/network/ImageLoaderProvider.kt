@@ -6,7 +6,6 @@ import coil3.ImageLoader
 import coil3.compose.LocalPlatformContext
 import coil3.network.ktor3.KtorNetworkFetcherFactory
 import dev.bartuzen.qbitcontroller.data.ServerManager
-import dev.bartuzen.qbitcontroller.model.ServerConfig
 
 class ImageLoaderProvider(
     serverManager: ServerManager,
@@ -17,17 +16,8 @@ class ImageLoaderProvider(
 
     init {
         serverManager.addServerListener(
-            object : ServerManager.ServerListener {
-                override fun onServerAddedListener(serverConfig: ServerConfig) {}
-
-                override fun onServerRemovedListener(serverConfig: ServerConfig) {
-                    imageLoaders.remove(serverConfig.id)
-                }
-
-                override fun onServerChangedListener(serverConfig: ServerConfig) {
-                    imageLoaders.remove(serverConfig.id)
-                }
-            },
+            remove = { imageLoaders.remove(it.id) },
+            change = { imageLoaders.remove(it.id) },
         )
     }
 
