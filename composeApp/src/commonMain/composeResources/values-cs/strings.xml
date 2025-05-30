@@ -444,7 +444,7 @@
     <string name="torrent_peers_flag_optimistic_unchoke">Optimisticky nepřiškrcený</string>
     <string name="torrent_peers_flag_peer_from_dht">Peer z DHT</string>
     <string name="torrent_add_title">Přidat torrent</string>
-    <string name="torrent_add_button_url">URL</string>
+    <string name="torrent_add_button_url">Adresa URL</string>
     <string name="torrent_add_click_to_select_file">Kliknutím zvolíte soubor</string>
     <string name="torrent_add_button_file">Soubor</string>
     <string name="torrent_add_link_hint">Magnet nebo HTTP odkaz</string>
@@ -634,4 +634,48 @@
         <item quantity="other">%1$d kanálů</item>
     </plurals>
     <string name="search_result_title">Výsledky hledání</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent zvolen</item>
+        <item quantity="few">%1$d torrenty zvoleny</item>
+        <item quantity="other">%1$d torrentů zvoleno</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent zvolen</item>
+        <item quantity="few">%1$d torrenty zvoleny</item>
+        <item quantity="other">%1$d torrentů zvoleno</item>
+    </plurals>
+    <string name="settings_pure_black_dark_mode">Čistě černý tmavý režim</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d záhlaví</item>
+        <item quantity="few">%1$d záhlaví</item>
+        <item quantity="other">%1$d záhlaví</item>
+    </plurals>
+    <string name="error_invalid_interval">Musí být mezi %1$d a %2$d.</string>
+    <string name="torrent_overview_piece_not_downloaded">Nestaženo</string>
+    <string name="settings_category_network">Síť</string>
+    <string name="settings_server_credentials">Údaje</string>
+    <string name="settings_server_url_examples">Příklady: %1$s</string>
+    <string name="torrent_overview_piece_downloading">Stahování</string>
+    <string name="search_start_plugins">Pluginy</string>
+    <string name="error_invalid_interval_optional">Musí být v rozmezí %1$d a %2$d, nebo ponechte prázdné, chcete-li deaktivovat.</string>
+    <string name="rss_rule_item_enabled">Zapnuto</string>
+    <string name="torrent_overview_piece_downloaded">Staženo</string>
+    <string name="torrent_peers_details_section_overview">Přehled peerů</string>
+    <string name="torrent_peers_details_section_transfer">Statistiky přenosů</string>
+    <string name="rss_details">Detaily torrentu</string>
+    <string name="settings_server_advanced_title">Pokročilé nastavení</string>
+    <string name="rss_new">Nové</string>
+    <string name="rss_rule_item_disabled">Vypnuto</string>
+    <string name="settings_server_invalid_url">Formát adresy URL je neplatný.</string>
+    <string name="settings_category_appearance">Vzhled</string>
+    <string name="settings_servers_no_server_configured">Žádný server není konfigurován</string>
+    <string name="settings_server_server_info">Informace o serveru</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_advanced_custom_headers">Vlastní záhlaví</string>
+    <string name="settings_server_advanced_custom_headers_description">Přidejte jedno vlastní záhlaví na každý řádek. Klíč a hodnotu oddělte znaménkem \"=\".</string>
+    <string name="rss_action_download">Stáhnout</string>
+    <string name="settings_servers_add_server">Přidat server</string>
+    <string name="search_result_details">Detaily torrentu</string>
+    <string name="search_result_action_download">Stáhnout</string>
+    <string name="settings_category_general">Obecné</string>
 </resources>
