@@ -66,9 +66,13 @@ class ServerManager(
     }
 
     fun reorderServer(from: Int, to: Int) {
-        _serversFlow.value = serversFlow.value.toMutableList().apply {
+        val serverConfigs = serversFlow.value
+        val updatedServerConfigs = serverConfigs.toMutableList().apply {
             add(to, removeAt(from))
         }
+
+        serverSettings[Keys.ServerConfigs] = json.encodeToString(updatedServerConfigs)
+        _serversFlow.value = updatedServerConfigs
     }
 
     private val listeners = mutableListOf<ServerListener>()
