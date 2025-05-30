@@ -448,7 +448,7 @@ fun AddTorrentScreen(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         OutlinedTextField(
-                            value = serverId?.let { servers[it].displayName } ?: "",
+                            value = servers.find { it.id == serverId }?.displayName ?: "",
                             onValueChange = {},
                             label = {
                                 Text(

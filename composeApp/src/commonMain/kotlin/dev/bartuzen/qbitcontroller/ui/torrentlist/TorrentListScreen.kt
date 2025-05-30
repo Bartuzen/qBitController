@@ -1584,7 +1584,7 @@ private fun DrawerContent(
                 Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
             }
 
-            items(servers.toList()) { serverConfig ->
+            items(servers) { serverConfig ->
                 Column {
                     DrawerServerItem(
                         name = serverConfig.name,
