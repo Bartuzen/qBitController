@@ -37,9 +37,7 @@
     <string name="size_format">%1$s %2$s</string>
     <string name="action_search">Søg</string>
     <string name="action_select_all">Vælg Alle</string>
-    <string name="main_action_settings">Indstillinger</string>
     <string name="torrent_list_action_add_torrent">Tilføj Torrent</string>
-    <string name="torrent_list_action_search_online">Søg Online</string>
     <string name="torrent_list_action_statistics">Statistikker</string>
     <string name="torrent_speed_alternative_speed_limits">Alternative Hastighedsgrænser</string>
     <string name="torrent_list_action_shutdown">Afslut qBittorrent</string>
@@ -62,7 +60,6 @@
     <string name="torrent_list_action_sort_hash">Hash</string>
     <string name="torrent_list_action_sort_progress">Fremskridt</string>
     <string name="action_select_inverse">Inverter valg</string>
-    <string name="torrent_list_action_execution_log">Udførelseslog</string>
     <string name="torrent_list_action_sort_connected_seeds">Tilsluttede Seedere</string>
     <string name="torrent_list_action_sort_total_seeds">Totale Seedere</string>
     <string name="torrent_list_action_sort_addition_date">Tilføjelsesdato</string>
@@ -365,7 +362,6 @@
     <string name="error_no_data">Serveren sendte ingen data.</string>
     <string name="main_action_about">Om</string>
     <string name="torrent_list_action_sort_name">Navn</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_status">Status</string>
     <string name="error_unknown_login_response">Ukendt login-svar: %1$s</string>
     <string name="torrent_list_action_sort_download_speed">Download Hastighed</string>

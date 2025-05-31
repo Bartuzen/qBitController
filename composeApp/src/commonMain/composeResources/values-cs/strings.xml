@@ -9,7 +9,6 @@
     <string name="action_search">Hledat</string>
     <string name="action_select_all">Zvolit vše</string>
     <string name="action_select_inverse">Obrátit výběr</string>
-    <string name="main_action_settings">Nastavení</string>
     <string name="language_code">cs</string>
     <string name="share_add_torrent">Přidat Torrent</string>
     <string name="torrent_status_error">Chyba</string>
@@ -52,9 +51,7 @@
     <string name="torrent_list_no_result_title">Nic nenalezeno</string>
     <string name="torrent_list_no_result_description">Vašim aktuálním filtrům neodpovídají žádné torrenty. Zkuste upravit filtry nebo kritéria vyhledávání.</string>
     <string name="torrent_list_no_result_reset">Resetovat filtry</string>
-    <string name="torrent_list_action_search_online">Hledat online</string>
     <string name="torrent_list_action_statistics">Statistiky</string>
-    <string name="torrent_list_action_execution_log">Záznamy programu</string>
     <string name="torrent_list_action_shutdown">Ukončit qBittorrent</string>
     <string name="torrent_list_action_sort">Seřadit</string>
     <string name="torrent_list_action_sort_name">Jméno</string>
@@ -180,7 +177,6 @@
     <string name="speed_format">%1$s%2$s</string>
     <string name="error_banned">Byli jste zablokování z důvodu mnoha neúspěšných pokusů o přihlášení.</string>
     <string name="torrent_list_action_add_torrent">Přidat torrent</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_priority">Priorita</string>
     <string name="torrent_list_action_sort_total_seeds">Počet zdrojů</string>
     <string name="torrent_list_action_sort_connected_leeches">Připojení peerové</string>

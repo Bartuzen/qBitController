@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="eta_seconds">%1$ssn</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_size">Boyut</string>
     <string name="torrent_list_action_sort_progress">İlerleme</string>
     <string name="torrent_status_error">Hata Oldu</string>
@@ -55,12 +54,9 @@
     <string name="action_search">Ara</string>
     <string name="action_select_all">Hepsini Seç</string>
     <string name="action_select_inverse">Tersini Seç</string>
-    <string name="main_action_settings">Ayarlar</string>
     <string name="main_action_about">Hakkında</string>
     <string name="torrent_list_action_add_torrent">Torrent Ekle</string>
-    <string name="torrent_list_action_search_online">Çevrimiçi Ara</string>
     <string name="torrent_list_action_statistics">İstatistikler</string>
-    <string name="torrent_list_action_execution_log">Çalıştırma Günlüğü</string>
     <string name="torrent_speed_alternative_speed_limits">Alternatif Hız Sınırlarını</string>
     <string name="torrent_list_action_shutdown">qBittorrent\'i Kapat</string>
     <string name="torrent_list_action_sort">Sıralama</string>

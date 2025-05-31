@@ -73,17 +73,13 @@
     <string name="error_no_data">A szerver nem küldött adatokat.</string>
     <string name="error_unknown_login_response">Ismeretlen válasz a bejelentkezésre: %1$s</string>
     <string name="dialog_ok">Rendben</string>
-    <string name="main_action_settings">Beállítások</string>
     <string name="torrent_list_action_add_torrent">Torrent hozzáadása</string>
-    <string name="torrent_list_action_search_online">Online keresés</string>
     <string name="action_select_all">Összes kijelölése</string>
     <string name="dialog_cancel">Mégse</string>
     <string name="action_search">Keresés</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="action_select_inverse">Fordított kijelölés</string>
     <string name="main_action_about">Az alkalmazásról</string>
     <string name="torrent_list_action_statistics">Statisztikák</string>
-    <string name="torrent_list_action_execution_log">Logok</string>
     <string name="torrent_list_action_shutdown">Kilépés</string>
     <string name="torrent_list_action_sort">Rendezés</string>
     <string name="torrent_list_action_sort_status">Státusz</string>

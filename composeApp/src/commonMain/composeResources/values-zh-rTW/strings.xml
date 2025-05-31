@@ -20,8 +20,6 @@
     <string name="torrent_list_action_statistics">統計</string>
     <string name="torrent_list_action_shutdown">退出 qBittorrent</string>
     <string name="torrent_list_action_sort">排序</string>
-    <string name="torrent_list_action_execution_log">執行日誌</string>
-    <string name="torrent_list_action_search_online">線上搜尋</string>
     <string name="torrent_list_action_sort_hash">雜湊值</string>
     <string name="torrent_list_action_sort_download_speed">下載速度</string>
     <string name="torrent_list_action_sort_priority">優先程度</string>
@@ -407,10 +405,8 @@
     <string name="action_search">搜尋</string>
     <string name="action_select_all">全選</string>
     <string name="action_select_inverse">反向選擇</string>
-    <string name="main_action_settings">設定</string>
     <string name="main_action_about">關於</string>
     <string name="torrent_list_action_add_torrent">新增 Torrent</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_size">大小</string>
     <string name="torrent_list_action_sort_eta">剩餘時間</string>
     <string name="torrent_list_action_resume">繼續</string>

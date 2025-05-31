@@ -37,8 +37,6 @@
     <string name="torrent_list_empty_add">Adicionar Torrent</string>
     <string name="torrent_list_no_result_title">Não Foram Encontrados Resultados</string>
     <string name="torrent_list_action_add_torrent">Adicionar Torrent</string>
-    <string name="torrent_list_action_rss">RSS</string>
-    <string name="torrent_list_action_search_online">Pesquisa Online</string>
     <string name="torrent_list_action_statistics">Estatísticas</string>
     <string name="torrent_list_action_shutdown">Sair do qBittorrent</string>
     <string name="torrent_list_action_sort_name">Nome</string>
@@ -71,7 +69,6 @@
     <string name="eta_days">%1$sd</string>
     <string name="size_gibibytes">GiB</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
-    <string name="torrent_list_action_execution_log">Registo de Execução</string>
     <string name="torrent_status_downloading_metadata">A Transferir os Meta-Dados</string>
     <string name="eta_hours">%1$sh</string>
     <string name="speed_bytes_per_second">B/s</string>
@@ -83,7 +80,6 @@
     <string name="error_invalid_credentials">Utilizador ou palavra-passe invalido.</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="torrent_list_action_sort_eta">Tempo Restante</string>
-    <string name="main_action_settings">Definições</string>
     <string name="main_action_about">Sobre</string>
     <string name="torrent_list_action_resume">Resumir</string>
     <string name="torrent_list_action_pause">Pausa</string>

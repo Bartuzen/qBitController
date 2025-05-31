@@ -7,7 +7,6 @@
     <string name="error_api">பநிஇ ஒரு பிழையைத் திருப்பியது: %1$d</string>
     <string name="torrent_list_no_result_title">முடிவுகள் எதுவும் கிடைக்கவில்லை</string>
     <string name="torrent_list_no_result_reset">வடிப்பான்களை மீட்டமை</string>
-    <string name="torrent_list_action_execution_log">சாவுஒறுப்பு பதிவு</string>
     <string name="torrent_list_action_shutdown">Qbittorrent ஐ விட்டு வெளியேறவும்</string>
     <string name="torrent_list_action_sort">வரிசைப்படுத்து</string>
     <string name="torrent_list_action_sort_ratio">விகிதம்</string>
@@ -185,7 +184,6 @@
     <string name="action_search">தேடல்</string>
     <string name="action_select_all">அனைத்தையும் தெரிவுசெய்</string>
     <string name="action_select_inverse">தலைகீழ் தேர்ந்தெடுக்கவும்</string>
-    <string name="main_action_settings">அமைப்புகள்</string>
     <string name="main_action_about">பற்றி</string>
     <string name="torrent_list_no_server_title">சேவையகங்கள் எதுவும் கிடைக்கவில்லை</string>
     <string name="torrent_list_no_server_description">நீங்கள் இதுவரை எந்த சேவையகங்களையும் சேர்க்கவில்லை. தொடங்க ஒன்றைச் சேர்க்கவும்.</string>
@@ -197,8 +195,6 @@
     <string name="torrent_list_empty_add">டொரண்ட் சேர்க்கவும்</string>
     <string name="torrent_list_no_result_description">உங்கள் தற்போதைய வடிப்பான்களுடன் எந்த டொரண்டுகளும் பொருந்தவில்லை. உங்கள் வடிப்பான்கள் அல்லது தேடல் அளவுகோல்களை சரிசெய்ய முயற்சிக்கவும்.</string>
     <string name="torrent_list_action_add_torrent">டொரண்ட் சேர்க்கவும்</string>
-    <string name="torrent_list_action_rss">ஆர்.எச்.எச்</string>
-    <string name="torrent_list_action_search_online">ஆன்லைனில் தேடுங்கள்</string>
     <string name="torrent_list_action_statistics">புள்ளிவிவரங்கள்</string>
     <string name="torrent_list_action_sort_status">நிலை</string>
     <string name="torrent_list_action_sort_hash">ஆச்</string>
