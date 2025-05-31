@@ -36,13 +36,9 @@
     <string name="action_search">Søk</string>
     <string name="action_select_all">Velg alle</string>
     <string name="action_select_inverse">Velg motsatt</string>
-    <string name="main_action_settings">Innstillinger</string>
     <string name="main_action_about">Om</string>
     <string name="torrent_list_action_add_torrent">Legg til torrent</string>
     <string name="torrent_list_action_statistics">Statistikk</string>
-    <string name="torrent_list_action_execution_log">Kjøringslogg</string>
-    <string name="torrent_list_action_rss">RSS</string>
-    <string name="torrent_list_action_search_online">Søk på nett</string>
     <string name="torrent_speed_alternative_speed_limits">Alternative hastighetsgrenser</string>
     <string name="torrent_list_action_shutdown">Avslutt qBittorrent</string>
     <string name="torrent_list_action_sort">Sorter</string>

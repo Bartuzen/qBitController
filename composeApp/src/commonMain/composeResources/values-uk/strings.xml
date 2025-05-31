@@ -71,7 +71,6 @@
     <string name="torrent_list_action_priority_decrease">Зменшити пріоритет</string>
     <string name="speed_format">%1$s %2$s</string>
     <string name="error_cannot_connect">Не вдається з\'єднатися з сервером.</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_status_missing_files">Файли відсутні</string>
     <string name="error_banned">Вас було заблоковано через занадто велику кількість невдалих спроб входу.</string>
     <string name="torrent_list_free_space">Вільний простір: %1$s</string>
@@ -85,7 +84,6 @@
     <string name="error_no_data">Сервер не надіслав жодних даних.</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
     <string name="torrent_status_force_downloading_metadata">[F] Завантаження метаданих</string>
-    <string name="main_action_settings">Налаштування</string>
     <string name="torrent_list_trackers_all">Усе</string>
     <string name="torrent_list_action_sort_ratio">За співвідношенням</string>
     <string name="torrent_list_trackers_title">Трекери</string>
@@ -111,7 +109,6 @@
     <string name="size_tebibytes">ТіБ</string>
     <string name="speed_bytes_per_second">Б/с</string>
     <string name="torrent_list_uncategorized">Без категорії</string>
-    <string name="torrent_list_action_execution_log">Журнал виконання</string>
     <string name="torrent_list_edit_category">Редагувати категорію</string>
     <string name="torrent_list_create_category_download_path_hint">Шлях завантаження</string>
     <string name="dialog_cancel">Скасувати</string>
@@ -140,7 +137,6 @@
     <string name="torrent_speed_alternative_speed_limits">Альтернативні обмеження швидкості</string>
     <string name="eta_seconds">%1$sс</string>
     <string name="torrent_list_action_sort_reverse">У зворотному порядку</string>
-    <string name="torrent_list_action_search_online">Шукати онлайн</string>
     <string name="error_unknown">Невідома помилка: %1$s</string>
     <string name="torrent_status_stalled">Зупинився</string>
     <plurals name="torrent_list_torrents_delete_success">
