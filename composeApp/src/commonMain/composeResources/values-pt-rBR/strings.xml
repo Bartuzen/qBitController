@@ -129,11 +129,8 @@
     <string name="action_search">Buscar</string>
     <string name="action_select_all">Selecionar todos</string>
     <string name="action_select_inverse">Inverter seleção</string>
-    <string name="main_action_settings">Configurações</string>
     <string name="main_action_about">Sobre</string>
     <string name="torrent_list_action_add_torrent">Adicionar Torrent</string>
-    <string name="torrent_list_action_rss">RSS</string>
-    <string name="torrent_list_action_search_online">Buscar na Internet</string>
     <string name="torrent_list_action_statistics">Estatísticas</string>
     <string name="torrent_list_action_sort_completion_date">Data de conclusão</string>
     <string name="torrent_list_action_sort_last_activity">Ultima atividade</string>
@@ -531,7 +528,6 @@
     <string name="speed_mebibytes_per_second">MB/s</string>
     <string name="error_unknown_host">Host desconhecido.</string>
     <string name="dialog_cancel">Cancelar</string>
-    <string name="torrent_list_action_execution_log">Registro de execução</string>
     <string name="torrent_list_action_shutdown">Sair do qBittorrent</string>
     <string name="torrent_list_action_sort_connected_seeds">Seeds conectados</string>
     <string name="torrent_list_action_sort_total_seeds">Total de Seeds</string>
