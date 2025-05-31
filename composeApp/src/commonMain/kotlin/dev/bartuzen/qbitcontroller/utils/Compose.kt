@@ -8,7 +8,9 @@ import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -174,3 +177,16 @@ fun Modifier.fillWidthOfParent(parentPadding: Dp) = this.layout { measurable, co
         placeable.place(0, 0)
     }
 }
+
+@Composable
+fun PaddingValues.excludeBottom(): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return PaddingValues(
+        start = calculateLeftPadding(layoutDirection),
+        end = calculateRightPadding(layoutDirection),
+        top = calculateTopPadding(),
+    )
+}
+
+@Composable
+expect fun calculateWindowSizeClass(): WindowSizeClass

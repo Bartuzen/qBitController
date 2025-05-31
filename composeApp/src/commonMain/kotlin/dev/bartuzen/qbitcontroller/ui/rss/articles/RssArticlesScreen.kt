@@ -1,7 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.rss.articles
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -76,8 +74,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -85,7 +81,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import be.digitalia.compose.htmlconverter.HtmlStyle
@@ -98,6 +93,7 @@ import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.excludeBottom
 import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
@@ -260,24 +256,9 @@ fun RssArticlesScreen(
         selectedArticles.removeAll { articleId -> articles?.none { it.id == articleId } != false }
     }
 
-    var bottomBarHeight by remember { mutableStateOf(0.dp) }
-    var bottomBarState = remember { MutableTransitionState(selectedArticles.isNotEmpty()) }
-
-    LaunchedEffect(selectedArticles.isNotEmpty()) {
-        bottomBarState.targetState = selectedArticles.isNotEmpty()
-    }
-
-    LaunchedEffect(bottomBarState.isIdle, bottomBarState.currentState) {
-        if (bottomBarState.isIdle && !bottomBarState.currentState) {
-            bottomBarHeight = 0.dp
-        }
-    }
-
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets.safeDrawing.only(
-            WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
-        ),
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             TopAppBar(
                 title = {
@@ -353,14 +334,12 @@ fun RssArticlesScreen(
             )
         },
         bottomBar = {
-            val density = LocalDensity.current
+            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+
             AnimatedVisibility(
-                visibleState = bottomBarState,
+                visible = selectedArticles.isNotEmpty(),
                 enter = expandVertically(),
                 exit = shrinkVertically(),
-                modifier = Modifier.onGloballyPositioned {
-                    bottomBarHeight = with(density) { it.size.height.toDp() }
-                },
             ) {
                 TopAppBar(
                     title = {
@@ -418,13 +397,7 @@ fun RssArticlesScreen(
             }
         },
         snackbarHost = {
-            val bottomPadding =
-                (WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding() - bottomBarHeight)
-                    .coerceAtLeast(0.dp)
-            SwipeableSnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier.padding(bottom = bottomPadding),
-            )
+            SwipeableSnackbarHost(hostState = snackbarHostState)
         },
     ) { innerPadding ->
         PullToRefreshBox(
@@ -432,8 +405,8 @@ fun RssArticlesScreen(
             onRefresh = { viewModel.refreshRssArticles() },
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding)
+                .padding(innerPadding.excludeBottom())
+                .consumeWindowInsets(innerPadding.excludeBottom())
                 .imePadding(),
         ) {
             val listState = rememberLazyListState()

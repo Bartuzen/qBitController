@@ -46,10 +46,8 @@ class TorrentListViewModel(
 ) : ViewModel() {
     private var serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
 
-    val currentServerId = savedStateHandle.getStateFlow<Int?>("currentServerId", null)
-
-    private val _currentServer = MutableStateFlow(null as ServerConfig?)
-    val currentServer = _currentServer.asStateFlow()
+    private val currentServer =
+        savedStateHandle.getSerializableStateFlow<ServerConfig?>(viewModelScope, "currentServer", null)
 
     val serversFlow = serverManager.serversFlow
 
@@ -85,27 +83,8 @@ class TorrentListViewModel(
         savedStateHandle.getSerializableStateFlow<TorrentFilter>(viewModelScope, "selectedFilter", TorrentFilter.ALL)
     val selectedTracker = savedStateHandle.getSerializableStateFlow<Tracker>(viewModelScope, "selectedTracker", Tracker.All)
 
-    private val serverListener: ServerManager.ServerListener? = null
-
-    private fun getFirstServer(): ServerConfig? = serversFlow.value.firstOrNull()
-
-    fun setCurrentServer(id: Int?, forceReset: Boolean = false) {
-        val oldServerId = currentServerId.value
-        if (oldServerId != id || forceReset) {
-            savedStateHandle["currentServerId"] = id
-            _currentServer.value = if (id != null) serverManager.getServerOrNull(id) else null
-
-            _mainData.value = null
-            resetFilters(setFilterToDefault = true)
-
-            viewModelScope.launch {
-                eventChannel.send(Event.ServerChanged)
-            }
-
-            if (id != null) {
-                startAutoRefresh()
-            }
-        }
+    fun setCurrentServer(serverConfig: ServerConfig?) {
+        savedStateHandle["currentServer"] = Json.encodeToString(serverConfig)
     }
 
     private fun startAutoRefresh() {
@@ -130,28 +109,20 @@ class TorrentListViewModel(
     }
 
     init {
-        val id = currentServerId.value ?: getFirstServer()?.id
-        savedStateHandle["currentServerId"] = id
-        _currentServer.value = if (id != null) serverManager.getServerOrNull(id) else null
-        startAutoRefresh()
+        viewModelScope.launch {
+            currentServer.collectLatest { serverConfig ->
+                _mainData.value = null
+                resetFilters(setFilterToDefault = true)
 
-        serverManager.addServerListener(
-            add = { serverConfig ->
-                if (serversFlow.value.size == 1) {
-                    setCurrentServer(serverConfig.id)
+                viewModelScope.launch {
+                    eventChannel.send(Event.ServerChanged)
                 }
-            },
-            remove = { serverConfig ->
-                if (currentServerId.value == serverConfig.id) {
-                    setCurrentServer(getFirstServer()?.id)
+
+                if (serverConfig != null) {
+                    startAutoRefresh()
                 }
-            },
-            change = { serverConfig ->
-                if (currentServerId.value == serverConfig.id) {
-                    setCurrentServer(serverConfig.id, forceReset = true)
-                }
-            },
-        )
+            }
+        }
 
         viewModelScope.launch {
             mainData.collect { mainData ->
@@ -179,7 +150,6 @@ class TorrentListViewModel(
     }
 
     override fun onCleared() {
-        serverListener?.let { serverManager.removeServerListener(it) }
         serverScope.cancel()
     }
 
@@ -491,10 +461,10 @@ class TorrentListViewModel(
     )
 
     private fun updateMainData() = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.getMainData(serverId)) {
             is RequestResult.Success -> {
-                if (isActive && currentServerId.value == serverId) {
+                if (isActive && currentServer.value?.id == serverId) {
                     _mainData.value = result.data
                     eventChannel.send(Event.UpdateMainDataSuccess)
                 }
@@ -528,7 +498,7 @@ class TorrentListViewModel(
     }
 
     fun deleteTorrents(hashes: List<String>, deleteFiles: Boolean) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.deleteTorrents(serverId, hashes, deleteFiles)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsDeleted(hashes.size))
@@ -541,7 +511,7 @@ class TorrentListViewModel(
     }
 
     fun pauseTorrents(hashes: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.pauseTorrents(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPaused(hashes.size))
@@ -557,7 +527,7 @@ class TorrentListViewModel(
     }
 
     fun resumeTorrents(hashes: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.resumeTorrents(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsResumed(hashes.size))
@@ -573,7 +543,7 @@ class TorrentListViewModel(
     }
 
     fun deleteCategory(category: String) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.deleteCategory(serverId, category)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.CategoryDeleted(category))
@@ -586,7 +556,7 @@ class TorrentListViewModel(
     }
 
     fun deleteTag(tag: String) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.deleteTag(serverId, tag)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TagDeleted(tag))
@@ -599,7 +569,7 @@ class TorrentListViewModel(
     }
 
     fun increaseTorrentPriority(hashes: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.increaseTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityIncreased)
@@ -619,7 +589,7 @@ class TorrentListViewModel(
     }
 
     fun decreaseTorrentPriority(hashes: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.decreaseTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityDecreased)
@@ -639,7 +609,7 @@ class TorrentListViewModel(
     }
 
     fun maximizeTorrentPriority(hashes: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.maximizeTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityMaximized)
@@ -659,7 +629,7 @@ class TorrentListViewModel(
     }
 
     fun minimizeTorrentPriority(hashes: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.minimizeTorrentPriority(serverId, hashes)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentsPriorityMinimized)
@@ -679,7 +649,7 @@ class TorrentListViewModel(
     }
 
     fun setLocation(hashes: List<String>, location: String) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.setLocation(serverId, hashes, location)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.LocationUpdated)
@@ -693,7 +663,7 @@ class TorrentListViewModel(
 
     fun createCategory(name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
         serverScope.launch {
-            val serverId = currentServerId.value ?: return@launch
+            val serverId = currentServer.value?.id ?: return@launch
             when (val result = repository.createCategory(serverId, name, savePath, downloadPathEnabled, downloadPath)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.CategoryCreated)
@@ -707,7 +677,7 @@ class TorrentListViewModel(
 
     fun editCategory(name: String, savePath: String, downloadPathEnabled: Boolean?, downloadPath: String) =
         serverScope.launch {
-            val serverId = currentServerId.value ?: return@launch
+            val serverId = currentServer.value?.id ?: return@launch
             when (val result = repository.editCategory(serverId, name, savePath, downloadPathEnabled, downloadPath)) {
                 is RequestResult.Success -> {
                     eventChannel.send(Event.CategoryEdited)
@@ -724,7 +694,7 @@ class TorrentListViewModel(
         }
 
     fun createTags(names: List<String>) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.createTags(serverId, names)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TagCreated)
@@ -737,7 +707,7 @@ class TorrentListViewModel(
     }
 
     fun toggleSpeedLimitsMode(isCurrentLimitAlternative: Boolean) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.toggleSpeedLimitsMode(serverId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.SpeedLimitsToggled(!isCurrentLimitAlternative))
@@ -750,7 +720,7 @@ class TorrentListViewModel(
     }
 
     fun shutdown() = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.shutdown(serverId)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.Shutdown)
@@ -762,7 +732,7 @@ class TorrentListViewModel(
     }
 
     fun setCategory(hashes: List<String>, category: String?) = serverScope.launch {
-        val serverId = currentServerId.value ?: return@launch
+        val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.setCategory(serverId, hashes, category)) {
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentCategoryUpdated)
@@ -831,7 +801,7 @@ class TorrentListViewModel(
     }
 
     fun setSpeedLimits(download: Int?, upload: Int?) {
-        val serverId = currentServerId.value ?: return
+        val serverId = currentServer.value?.id ?: return
         val job = Job()
 
         serverScope.launch(job) {

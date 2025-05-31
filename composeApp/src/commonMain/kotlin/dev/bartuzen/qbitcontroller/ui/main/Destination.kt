@@ -5,6 +5,9 @@ import kotlinx.serialization.Serializable
 
 sealed class Destination {
     @Serializable
+    data object Empty : Destination()
+
+    @Serializable
     data object TorrentList : Destination()
 
     @Serializable

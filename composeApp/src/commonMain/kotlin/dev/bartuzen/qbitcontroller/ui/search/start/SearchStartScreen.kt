@@ -28,7 +28,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Animation
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Category
@@ -47,7 +46,6 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
@@ -115,7 +113,6 @@ import qbitcontroller.composeapp.generated.resources.search_title
 @Composable
 fun SearchStartScreen(
     serverId: Int,
-    onNavigateBack: () -> Unit,
     onNavigateToPlugins: () -> Unit,
     onNavigateToSearchResult: (searchQuery: String, category: String, plugins: String) -> Unit,
     modifier: Modifier = Modifier,
@@ -162,14 +159,6 @@ fun SearchStartScreen(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
-                        )
-                    }
                 },
                 actions = {
                     val actionMenuItems = listOf(

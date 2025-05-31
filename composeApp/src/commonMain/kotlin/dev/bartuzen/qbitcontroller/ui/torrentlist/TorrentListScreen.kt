@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -28,7 +27,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,7 +55,6 @@ import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Error
@@ -74,13 +71,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PowerSettingsNew
-import androidx.compose.material.icons.filled.RssFeed
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Sell
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SyncAlt
-import androidx.compose.material.icons.filled.TravelExplore
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Cached
 import androidx.compose.material.icons.outlined.Done
@@ -147,7 +141,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.LinkAnnotation
@@ -167,7 +160,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -192,6 +184,7 @@ import dev.bartuzen.qbitcontroller.ui.icons.Priority
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.excludeBottom
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
@@ -225,7 +218,6 @@ import qbitcontroller.composeapp.generated.resources.app_name
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 import qbitcontroller.composeapp.generated.resources.main_action_about
-import qbitcontroller.composeapp.generated.resources.main_action_settings
 import qbitcontroller.composeapp.generated.resources.percentage_format
 import qbitcontroller.composeapp.generated.resources.size_kibibytes
 import qbitcontroller.composeapp.generated.resources.size_mebibytes
@@ -252,7 +244,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_deleted_success
 import qbitcontroller.composeapp.generated.resources.torrent_item_progress_format
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_add_torrent
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_delete
-import qbitcontroller.composeapp.generated.resources.torrent_list_action_execution_log
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_pause
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_decrease
@@ -260,8 +251,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_action_priorit
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_maximize
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_minimize
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_resume
-import qbitcontroller.composeapp.generated.resources.torrent_list_action_rss
-import qbitcontroller.composeapp.generated.resources.torrent_list_action_search_online
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_set_category
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_set_location
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_shutdown
@@ -381,15 +370,14 @@ object TorrentListKeys {
 @Composable
 fun TorrentListScreen(
     isScreenActive: Boolean,
-    serverIdFlow: Flow<Int>,
+    currentServer: ServerConfig?,
     addTorrentFlow: Flow<Int>,
     deleteTorrentFlow: Flow<Unit>,
+    onSelectServer: (serverId: Int) -> Unit,
     onNavigateToTorrent: (serverId: Int, torrentHash: String, torrentName: String) -> Unit,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
     onNavigateToRss: (serverId: Int) -> Unit,
     onNavigateToSearch: (serverId: Int) -> Unit,
-    onNavigateToLog: (serverId: Int) -> Unit,
-    onNavigateToSettings: () -> Unit,
     onNavigateToAddEditServer: (serverId: Int?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TorrentListViewModel = koinViewModel(),
@@ -398,7 +386,6 @@ fun TorrentListScreen(
     val torrents by viewModel.filteredTorrentList.collectAsStateWithLifecycle()
     val mainData = viewModel.mainData.collectAsStateWithLifecycle().value
     val servers by viewModel.serversFlow.collectAsStateWithLifecycle()
-    val currentServer = viewModel.currentServer.collectAsStateWithLifecycle().value
     val serverId = currentServer?.id
 
     val selectedFilter by viewModel.selectedFilter.collectAsStateWithLifecycle()
@@ -414,10 +401,8 @@ fun TorrentListScreen(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(Unit) {
-        serverIdFlow.collect { serverId ->
-            viewModel.setCurrentServer(serverId)
-        }
+    PersistentLaunchedEffect(Json.encodeToString(currentServer)) {
+        viewModel.setCurrentServer(currentServer)
     }
 
     LaunchedEffect(isScreenActive) {
@@ -426,7 +411,6 @@ fun TorrentListScreen(
 
     LaunchedEffect(Unit) {
         addTorrentFlow.collect { serverId ->
-            viewModel.setCurrentServer(serverId)
             snackbarHostState.currentSnackbarData?.dismiss()
             scope.launch {
                 snackbarHostState.showSnackbar(getString(Res.string.torrent_add_success))
@@ -981,7 +965,7 @@ fun TorrentListScreen(
                         mainData = mainData,
                         counts = counts,
                         isDrawerOpen = drawerState.isOpen,
-                        onServerSelected = { viewModel.setCurrentServer(it) },
+                        onServerSelected = onSelectServer,
                         onDialogOpen = { currentDialog = it },
                         onSetDefaultTorrentStatus = { viewModel.setDefaultTorrentStatus(it) },
                         onDrawerClose = { scope.launch { drawerState.close() } },
@@ -998,32 +982,11 @@ fun TorrentListScreen(
                 }
             },
         ) {
-            var bottomBarHeight by remember { mutableStateOf(0.dp) }
-            var bottomBarState = remember { MutableTransitionState(selectedTorrents.isNotEmpty()) }
-
-            LaunchedEffect(selectedTorrents.isNotEmpty()) {
-                bottomBarState.targetState = selectedTorrents.isNotEmpty()
-            }
-
-            LaunchedEffect(bottomBarState.isIdle, bottomBarState.currentState) {
-                if (bottomBarState.isIdle && !bottomBarState.currentState) {
-                    bottomBarHeight = 0.dp
-                }
-            }
-
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                contentWindowInsets = WindowInsets.safeDrawing.only(
-                    WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
-                ),
+                contentWindowInsets = WindowInsets.safeDrawing,
                 snackbarHost = {
-                    val bottomPadding =
-                        (WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding() - bottomBarHeight)
-                            .coerceAtLeast(0.dp)
-                    SwipeableSnackbarHost(
-                        hostState = snackbarHostState,
-                        modifier = Modifier.padding(bottom = bottomPadding),
-                    )
+                    SwipeableSnackbarHost(hostState = snackbarHostState)
                 },
                 topBar = {
                     val currentSorting by viewModel.torrentSort.collectAsStateWithLifecycle()
@@ -1049,21 +1012,15 @@ fun TorrentListScreen(
                         onReverseSortingChange = { viewModel.changeReverseSorting() },
                         onDialogOpen = { currentDialog = it },
                         onNavigateToAddTorrent = onNavigateToAddTorrent,
-                        onNavigateToRss = onNavigateToRss,
-                        onNavigateToSearch = onNavigateToSearch,
-                        onNavigateToLog = onNavigateToLog,
-                        onNavigateToSettings = onNavigateToSettings,
                     )
                 },
                 bottomBar = {
-                    val density = LocalDensity.current
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+
                     AnimatedVisibility(
-                        visibleState = bottomBarState,
+                        visible = selectedTorrents.isNotEmpty(),
                         enter = expandVertically(),
                         exit = shrinkVertically(),
-                        modifier = Modifier.onGloballyPositioned {
-                            bottomBarHeight = with(density) { it.size.height.toDp() }
-                        },
                     ) {
                         BottomBarSelection(
                             torrents = torrents,
@@ -1089,8 +1046,8 @@ fun TorrentListScreen(
                     onRefresh = { viewModel.refreshMainData() },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding)
-                        .consumeWindowInsets(innerPadding)
+                        .padding(innerPadding.excludeBottom())
+                        .consumeWindowInsets(innerPadding.excludeBottom())
                         .imePadding(),
                 ) {
                     Column {
@@ -1258,12 +1215,6 @@ fun TorrentListScreen(
                     },
                     actions = {
                         val actionMenuItems = listOf(
-                            ActionMenuItem(
-                                title = stringResource(Res.string.main_action_settings),
-                                icon = Icons.Filled.Settings,
-                                onClick = onNavigateToSettings,
-                                showAsAction = false,
-                            ),
                             ActionMenuItem(
                                 title = stringResource(Res.string.main_action_about),
                                 icon = Icons.Filled.Info,
@@ -2227,10 +2178,6 @@ private fun TopBar(
     onReverseSortingChange: () -> Unit,
     onDialogOpen: (dialog: Dialog) -> Unit,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
-    onNavigateToRss: (serverId: Int) -> Unit,
-    onNavigateToSearch: (serverId: Int) -> Unit,
-    onNavigateToLog: (serverId: Int) -> Unit,
-    onNavigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -2341,18 +2288,6 @@ private fun TopBar(
                     showAsAction = true,
                 ),
                 ActionMenuItem(
-                    title = stringResource(Res.string.torrent_list_action_rss),
-                    icon = Icons.Filled.RssFeed,
-                    onClick = { onNavigateToRss(serverId) },
-                    showAsAction = true,
-                ),
-                ActionMenuItem(
-                    title = stringResource(Res.string.torrent_list_action_search_online),
-                    icon = Icons.Filled.TravelExplore,
-                    onClick = { onNavigateToSearch(serverId) },
-                    showAsAction = true,
-                ),
-                ActionMenuItem(
                     title = stringResource(Res.string.torrent_list_action_statistics),
                     icon = Icons.Outlined.Analytics,
                     onClick = {
@@ -2360,12 +2295,6 @@ private fun TopBar(
                     },
                     showAsAction = false,
                     isEnabled = mainData != null,
-                ),
-                ActionMenuItem(
-                    title = stringResource(Res.string.torrent_list_action_execution_log),
-                    icon = Icons.Filled.Description,
-                    onClick = { onNavigateToLog(serverId) },
-                    showAsAction = false,
                 ),
                 ActionMenuItem(
                     title = stringResource(Res.string.torrent_list_action_shutdown),
@@ -2466,12 +2395,6 @@ private fun TopBar(
                             )
                         }
                     },
-                ),
-                ActionMenuItem(
-                    title = stringResource(Res.string.main_action_settings),
-                    icon = Icons.Filled.Settings,
-                    onClick = { onNavigateToSettings() },
-                    showAsAction = false,
                 ),
                 ActionMenuItem(
                     title = stringResource(Res.string.main_action_about),

@@ -28,12 +28,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -71,7 +69,6 @@ import qbitcontroller.composeapp.generated.resources.execution_log_title
 @Composable
 fun LogScreen(
     serverId: Int,
-    onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LogViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
@@ -103,14 +100,6 @@ fun LogScreen(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
-                        )
-                    }
                 },
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )

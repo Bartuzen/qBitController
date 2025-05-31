@@ -156,7 +156,6 @@ import qbitcontroller.composeapp.generated.resources.rss_title
 fun RssFeedsScreen(
     serverId: Int,
     articleUpdateFlow: Flow<Unit>,
-    onNavigateBack: () -> Unit,
     onNavigateToArticles: (feedPath: List<String>, uid: String?) -> Unit,
     onNavigateToRules: () -> Unit,
     modifier: Modifier = Modifier,
@@ -446,14 +445,6 @@ fun RssFeedsScreen(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
-                        )
-                    }
                 },
                 actions = {
                     var showAddMenu by rememberSaveable { mutableStateOf(false) }

@@ -26,6 +26,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,6 +52,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsTab
+import dev.bartuzen.qbitcontroller.utils.calculateWindowSizeClass
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -75,6 +77,7 @@ fun TorrentScreen(
     serverId: Int,
     torrentHash: String,
     torrentName: String?,
+    isScreenActive: Boolean,
     onNavigateBack: () -> Unit,
     onDeleteTorrent: () -> Unit,
     modifier: Modifier = Modifier,
@@ -151,9 +154,14 @@ fun TorrentScreen(
         },
         snackbarHost = {
             val isAnimating = bottomBarHeights[pagerState.currentPage]?.second == true
+            val widthSizeClass = calculateWindowSizeClass().widthSizeClass
 
             val bottomPadding = max(
-                WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding(),
+                if (widthSizeClass != WindowWidthSizeClass.Compact) {
+                    WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+                } else {
+                    0.dp
+                },
                 (bottomBarHeights[pagerState.currentPage]?.first ?: 0.dp),
             )
             val bottomPaddingAnimated by animateDpAsState(
@@ -213,7 +221,7 @@ fun TorrentScreen(
                         serverId = serverId,
                         torrentHash = torrentHash,
                         initialTorrentName = torrentName,
-                        isScreenActive = pagerState.currentPage == 0,
+                        isScreenActive = isScreenActive && pagerState.currentPage == 0,
                         snackbarEventFlow = snackbarEventFlow,
                         titleEventFlow = titleEventFlow,
                         actionsEventFlow = actionsEventFlow,
@@ -222,14 +230,14 @@ fun TorrentScreen(
                     1 -> TorrentFilesTab(
                         serverId = serverId,
                         torrentHash = torrentHash,
-                        isScreenActive = pagerState.currentPage == 1,
+                        isScreenActive = isScreenActive && pagerState.currentPage == 1,
                         snackbarEventFlow = snackbarEventFlow,
                         bottomBarStateEventFlow = bottomBarStateEventFlow,
                     )
                     2 -> TorrentTrackersTab(
                         serverId = serverId,
                         torrentHash = torrentHash,
-                        isScreenActive = pagerState.currentPage == 2,
+                        isScreenActive = isScreenActive && pagerState.currentPage == 2,
                         snackbarEventFlow = snackbarEventFlow,
                         actionsEventFlow = actionsEventFlow,
                         bottomBarStateEventFlow = bottomBarStateEventFlow,
@@ -237,7 +245,7 @@ fun TorrentScreen(
                     3 -> TorrentPeersTab(
                         serverId = serverId,
                         torrentHash = torrentHash,
-                        isScreenActive = pagerState.currentPage == 3,
+                        isScreenActive = isScreenActive && pagerState.currentPage == 3,
                         snackbarEventFlow = snackbarEventFlow,
                         actionsEventFlow = actionsEventFlow,
                         bottomBarStateEventFlow = bottomBarStateEventFlow,
@@ -245,7 +253,7 @@ fun TorrentScreen(
                     4 -> TorrentWebSeedsTab(
                         serverId = serverId,
                         torrentHash = torrentHash,
-                        isScreenActive = pagerState.currentPage == 4,
+                        isScreenActive = isScreenActive && pagerState.currentPage == 4,
                         snackbarEventFlow = snackbarEventFlow,
                     )
                 }

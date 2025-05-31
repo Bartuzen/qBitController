@@ -1,61 +1,99 @@
 package dev.bartuzen.qbitcontroller.ui.main
 
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.RssFeed
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.RssFeed
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
+import androidx.compose.ui.backhandler.BackHandler
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
-import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
-import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
-import dev.bartuzen.qbitcontroller.ui.log.LogScreen
-import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesKeys
-import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesScreen
-import dev.bartuzen.qbitcontroller.ui.rss.editrule.EditRssRuleScreen
-import dev.bartuzen.qbitcontroller.ui.rss.feeds.RssFeedsScreen
-import dev.bartuzen.qbitcontroller.ui.rss.rules.RssRulesScreen
-import dev.bartuzen.qbitcontroller.ui.search.plugins.SearchPluginsScreen
-import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultScreen
-import dev.bartuzen.qbitcontroller.ui.search.start.SearchStartScreen
-import dev.bartuzen.qbitcontroller.ui.settings.SettingsScreen
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerKeys
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerResult
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerScreen
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsKeys
-import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsScreen
-import dev.bartuzen.qbitcontroller.ui.settings.appearance.AppearanceSettingsScreen
-import dev.bartuzen.qbitcontroller.ui.settings.general.GeneralSettingsScreen
-import dev.bartuzen.qbitcontroller.ui.settings.network.NetworkSettingsScreen
-import dev.bartuzen.qbitcontroller.ui.settings.servers.ServersScreen
+import dev.bartuzen.qbitcontroller.ui.log.LogsNavHost
+import dev.bartuzen.qbitcontroller.ui.rss.RssNavHost
+import dev.bartuzen.qbitcontroller.ui.search.SearchNavHost
+import dev.bartuzen.qbitcontroller.ui.settings.SettingsNavHost
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
-import dev.bartuzen.qbitcontroller.ui.torrent.TorrentKeys
-import dev.bartuzen.qbitcontroller.ui.torrent.TorrentScreen
-import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListScreen
-import dev.bartuzen.qbitcontroller.utils.getSerializable
+import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentsNavHost
+import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
+import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.calculateWindowSizeClass
+import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.notificationPermissionLauncher
-import dev.bartuzen.qbitcontroller.utils.serializableNavType
-import dev.bartuzen.qbitcontroller.utils.setSerializable
+import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlin.reflect.typeOf
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.StringResource
+import org.koin.compose.koinInject
+import qbitcontroller.composeapp.generated.resources.Res
+import qbitcontroller.composeapp.generated.resources.destination_logs
+import qbitcontroller.composeapp.generated.resources.destination_rss
+import qbitcontroller.composeapp.generated.resources.destination_search
+import qbitcontroller.composeapp.generated.resources.destination_settings
+import qbitcontroller.composeapp.generated.resources.destination_torrents
 
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController(), serverIdChannel: Channel<Int> = Channel<Int>()) {
+fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
     AppTheme {
         var showNotificationPermission by remember { mutableStateOf(false) }
         val notificationPermissionLauncher = notificationPermissionLauncher()
@@ -67,359 +105,310 @@ fun MainScreen(navController: NavHostController = rememberNavController(), serve
             }
         }
 
-        val transitionDuration = 400
-        NavHost(
-            navController = navController,
-            startDestination = Destination.TorrentList,
-            enterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { it / 10 },
-                    animationSpec = tween(transitionDuration),
-                ) + fadeIn(animationSpec = tween(transitionDuration))
-            },
-            exitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { -it / 10 },
-                    animationSpec = tween(transitionDuration),
-                ) + fadeOut(animationSpec = tween(transitionDuration))
-            },
-            popEnterTransition = {
-                slideInHorizontally(
-                    initialOffsetX = { -it / 10 },
-                    animationSpec = tween(transitionDuration),
-                ) + fadeIn(animationSpec = tween(transitionDuration))
-            },
-            popExitTransition = {
-                slideOutHorizontally(
-                    targetOffsetX = { it / 10 },
-                    animationSpec = tween(transitionDuration),
-                ) + fadeOut(animationSpec = tween(transitionDuration))
-            },
+        val serverManager = koinInject<ServerManager>()
+        var currentServer by rememberSaveable(stateSaver = jsonSaver()) {
+            mutableStateOf<ServerConfig?>(serverManager.serversFlow.value.firstOrNull())
+        }
+        DisposableEffect(serverManager) {
+            val serversFlow = serverManager.serversFlow
+            val listener = serverManager.addServerListener(
+                add = { serverConfig ->
+                    if (serversFlow.value.size == 1) {
+                        currentServer = serverConfig
+                    }
+                },
+                remove = { serverConfig ->
+                    if (currentServer?.id == serverConfig.id) {
+                        currentServer = serversFlow.value.firstOrNull()
+                    }
+                },
+                change = { serverConfig ->
+                    if (currentServer?.id == serverConfig.id) {
+                        currentServer = serverConfig
+                    }
+                },
+            )
+
+            onDispose {
+                serverManager.removeServerListener(listener)
+            }
+        }
+
+        val tabs = remember(currentServer == null) {
+            listOf(
+                BottomNavigationItem(
+                    title = Res.string.destination_torrents,
+                    enabled = true,
+                    unselectedIcon = Icons.AutoMirrored.Outlined.List,
+                    selectedIcon = Icons.AutoMirrored.Filled.List,
+                    destination = NavHostDestination.Torrents,
+                ),
+                BottomNavigationItem(
+                    title = Res.string.destination_search,
+                    enabled = currentServer != null,
+                    unselectedIcon = Icons.Outlined.Search,
+                    selectedIcon = Icons.Filled.Search,
+                    destination = NavHostDestination.Search,
+                ),
+                BottomNavigationItem(
+                    title = Res.string.destination_rss,
+                    enabled = currentServer != null,
+                    unselectedIcon = Icons.Outlined.RssFeed,
+                    selectedIcon = Icons.Filled.RssFeed,
+                    destination = NavHostDestination.Rss,
+                ),
+                BottomNavigationItem(
+                    title = Res.string.destination_logs,
+                    enabled = currentServer != null,
+                    unselectedIcon = Icons.Outlined.Description,
+                    selectedIcon = Icons.Filled.Description,
+                    destination = NavHostDestination.Logs,
+                ),
+                BottomNavigationItem(
+                    title = Res.string.destination_settings,
+                    enabled = true,
+                    unselectedIcon = Icons.Outlined.Settings,
+                    selectedIcon = Icons.Filled.Settings,
+                    destination = NavHostDestination.Settings,
+                ),
+            )
+        }
+
+        val navigateToStartChannels = remember { List(tabs.size) { Channel<Unit>() } }
+
+        val navController = rememberNavController()
+        var selectedTabIndex by rememberSaveable { mutableIntStateOf(0) }
+        PersistentLaunchedEffect(selectedTabIndex) {
+            try {
+                navController.navigate(tabs[selectedTabIndex].destination) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            } catch (_: IllegalStateException) {
+            }
+        }
+
+        val torrentsDeepLinkChannel = remember { Channel<DeepLinkDestination>() }
+        val settingsDeepLinkChannel = remember { Channel<DeepLinkDestination>() }
+        LaunchedEffect(navigationFlow) {
+            navigationFlow?.collect { destination ->
+                when (destination) {
+                    is DeepLinkDestination.TorrentList -> {
+                        selectedTabIndex = 0
+                        if (destination.serverId != null) {
+                            serverManager.getServerOrNull(destination.serverId)?.let { currentServer = it }
+                        }
+                        torrentsDeepLinkChannel.send(destination)
+                    }
+                    is DeepLinkDestination.Torrent -> {
+                        selectedTabIndex = 0
+                        torrentsDeepLinkChannel.send(destination)
+                        serverManager.getServerOrNull(destination.serverId)?.let { currentServer = it }
+                    }
+                    is DeepLinkDestination.AddTorrent -> {
+                        selectedTabIndex = 0
+                        torrentsDeepLinkChannel.send(destination)
+                    }
+                    DeepLinkDestination.Settings -> {
+                        selectedTabIndex = 4
+                        settingsDeepLinkChannel.send(destination)
+                    }
+                }
+            }
+        }
+
+        val scope = rememberCoroutineScope()
+        val widthSizeClass = calculateWindowSizeClass().widthSizeClass
+        Row(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),
         ) {
-            composable<Destination.TorrentList> {
-                val addTorrentChannel = remember { Channel<Int>() }
-                val torrentAdded = it.savedStateHandle.get<Int?>(AddTorrentKeys.TorrentAdded)
-                LaunchedEffect(torrentAdded) {
-                    if (torrentAdded != null) {
-                        addTorrentChannel.send(torrentAdded)
-                        it.savedStateHandle.remove<Int?>(AddTorrentKeys.TorrentAdded)
-                    }
-                }
-
-                val deleteTorrentChannel = remember { Channel<Unit>() }
-                val torrentDeleted = it.savedStateHandle.get<Boolean?>(TorrentKeys.TorrentDeleted)
-                LaunchedEffect(torrentDeleted) {
-                    if (torrentDeleted != null) {
-                        deleteTorrentChannel.send(Unit)
-                        it.savedStateHandle.remove<Boolean?>(TorrentKeys.TorrentDeleted)
-                    }
-                }
-
-                val isScreenActive = navController.currentDestination == it.destination
-                TorrentListScreen(
-                    isScreenActive = isScreenActive,
-                    serverIdFlow = serverIdChannel.receiveAsFlow(),
-                    addTorrentFlow = addTorrentChannel.receiveAsFlow(),
-                    deleteTorrentFlow = deleteTorrentChannel.receiveAsFlow(),
-                    onNavigateToTorrent = { serverId, torrentHash, torrentName ->
-                        navController.navigate(Destination.Torrent(serverId, torrentHash, torrentName))
-                    },
-                    onNavigateToAddTorrent = { initialServerId ->
-                        navController.navigate(Destination.AddTorrent(initialServerId))
-                    },
-                    onNavigateToRss = { serverId ->
-                        navController.navigate(Destination.Rss.Feeds(serverId))
-                    },
-                    onNavigateToSearch = { serverId ->
-                        navController.navigate(Destination.Search.Start(serverId))
-                    },
-                    onNavigateToLog = { serverId ->
-                        navController.navigate(Destination.Log(serverId))
-                    },
-                    onNavigateToSettings = {
-                        navController.navigate(Destination.Settings.Main)
-                    },
-                    onNavigateToAddEditServer = { serverId ->
-                        navController.navigate(Destination.Settings.AddEditServer(serverId))
-                    },
-                )
-            }
-
-            composable<Destination.Torrent> {
-                val args = it.toRoute<Destination.Torrent>()
-                TorrentScreen(
-                    serverId = args.serverId,
-                    torrentHash = args.torrentHash,
-                    torrentName = args.torrentName,
-                    onNavigateBack = { navController.navigateUp() },
-                    onDeleteTorrent = {
-                        navController.previousBackStackEntry
-                            ?.savedStateHandle
-                            ?.set(TorrentKeys.TorrentDeleted, true)
-
-                        navController.navigateUp()
-                    },
-                )
-            }
-
-            composable<Destination.AddTorrent> {
-                val args = it.toRoute<Destination.AddTorrent>()
-                AddTorrentScreen(
-                    initialServerId = args.initialServerId,
-                    torrentUrl = args.torrentUrl,
-                    torrentFileUris = args.torrentFileUris,
-                    onNavigateBack = { navController.navigateUp() },
-                    onAddTorrent = { serverId ->
-                        navController.previousBackStackEntry
-                            ?.savedStateHandle
-                            ?.set(AddTorrentKeys.TorrentAdded, serverId)
-
-                        navController.navigateUp()
-                    },
-                )
-            }
-
-            composable<Destination.Rss.Feeds> {
-                val args = it.toRoute<Destination.Rss.Feeds>()
-
-                val articleUpdate = remember { Channel<Unit>() }
-                val isUpdated = it.savedStateHandle.get<Boolean?>(RssArticlesKeys.IsUpdated)
-                LaunchedEffect(isUpdated) {
-                    if (isUpdated != null) {
-                        articleUpdate.send(Unit)
-                        it.savedStateHandle.remove<Boolean?>(RssArticlesKeys.IsUpdated)
-                    }
-                }
-
-                RssFeedsScreen(
-                    serverId = args.serverId,
-                    articleUpdateFlow = articleUpdate.receiveAsFlow(),
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToArticles = { feedPath, uid ->
-                        navController.navigate(Destination.Rss.Articles(args.serverId, feedPath, uid))
-                    },
-                    onNavigateToRules = {
-                        navController.navigate(Destination.Rss.Rules(args.serverId))
-                    },
-                )
-            }
-
-            composable<Destination.Rss.Articles> {
-                val args = it.toRoute<Destination.Rss.Articles>()
-
-                val addTorrentChannel = remember { Channel<Unit>() }
-                val torrentAdded = it.savedStateHandle.get<Int?>(AddTorrentKeys.TorrentAdded)
-                LaunchedEffect(torrentAdded) {
-                    if (torrentAdded != null) {
-                        addTorrentChannel.send(Unit)
-                        it.savedStateHandle.remove<Int?>(AddTorrentKeys.TorrentAdded)
-                    }
-                }
-
-                RssArticlesScreen(
-                    serverId = args.serverId,
-                    feedPath = args.feedPath,
-                    uid = args.uid,
-                    addTorrentFlow = addTorrentChannel.receiveAsFlow(),
-                    onFeedPathChange = {
-                        navController.previousBackStackEntry
-                            ?.savedStateHandle
-                            ?.set(RssArticlesKeys.IsUpdated, true)
-                    },
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToAddTorrent = { torrentUrl ->
-                        navController.navigate(Destination.AddTorrent(args.serverId, torrentUrl))
-                    },
-                )
-            }
-
-            composable<Destination.Rss.Rules> {
-                val args = it.toRoute<Destination.Rss.Rules>()
-                RssRulesScreen(
-                    serverId = args.serverId,
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToEditRule = { ruleName ->
-                        navController.navigate(Destination.Rss.EditRule(args.serverId, ruleName))
-                    },
-                )
-            }
-
-            composable<Destination.Rss.EditRule> {
-                val args = it.toRoute<Destination.Rss.EditRule>()
-                EditRssRuleScreen(
-                    serverId = args.serverId,
-                    ruleName = args.ruleName,
-                    onNavigateBack = { navController.navigateUp() },
-                )
-            }
-
-            composable<Destination.Search.Start> {
-                val args = it.toRoute<Destination.Search.Start>()
-                SearchStartScreen(
-                    serverId = args.serverId,
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToSearchResult = { searchQuery, category, plugins ->
-                        navController.navigate(
-                            Destination.Search.Result(args.serverId, searchQuery, category, plugins),
-                        )
-                    },
-                    onNavigateToPlugins = { navController.navigate(Destination.Search.Plugins(args.serverId)) },
-                )
-            }
-
-            composable<Destination.Search.Result> {
-                val args = it.toRoute<Destination.Search.Result>()
-
-                val addTorrentChannel = remember { Channel<Unit>() }
-                val torrentAdded = it.savedStateHandle.get<Int?>(AddTorrentKeys.TorrentAdded)
-                LaunchedEffect(torrentAdded) {
-                    if (torrentAdded != null) {
-                        addTorrentChannel.send(Unit)
-                        it.savedStateHandle.remove<Int?>(AddTorrentKeys.TorrentAdded)
-                    }
-                }
-
-                SearchResultScreen(
-                    serverId = args.serverId,
-                    searchQuery = args.searchQuery,
-                    category = args.category,
-                    plugins = args.plugins,
-                    addTorrentFlow = addTorrentChannel.receiveAsFlow(),
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToAddTorrent = { torrentUrl ->
-                        navController.navigate(Destination.AddTorrent(args.serverId, torrentUrl))
-                    },
-                )
-            }
-
-            composable<Destination.Search.Plugins> {
-                val args = it.toRoute<Destination.Search.Plugins>()
-                SearchPluginsScreen(
-                    serverId = args.serverId,
-                    onNavigateBack = { navController.navigateUp() },
-                )
-            }
-
-            composable<Destination.Log> {
-                val args = it.toRoute<Destination.Log>()
-                LogScreen(
-                    serverId = args.serverId,
-                    onNavigateBack = { navController.navigateUp() },
-                )
-            }
-
-            composable<Destination.Settings.Main> {
-                SettingsScreen(
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToServerSettings = {
-                        navController.navigate(Destination.Settings.Server)
-                    },
-                    onNavigateToGeneralSettings = {
-                        navController.navigate(Destination.Settings.General)
-                    },
-                    onNavigateToAppearanceSettings = {
-                        navController.navigate(Destination.Settings.Appearance)
-                    },
-                    onNavigateToNetworkSettings = {
-                        navController.navigate(Destination.Settings.Network)
-                    },
-                )
-            }
-
-            composable<Destination.Settings.Server> {
-                val addEditServerChannel = remember { Channel<AddEditServerResult>() }
-                val addEditServerResult = it.savedStateHandle.get<AddEditServerResult>(AddEditServerKeys.Result)
-                LaunchedEffect(addEditServerResult) {
-                    if (addEditServerResult != null) {
-                        addEditServerChannel.send(addEditServerResult)
-                        it.savedStateHandle.remove<AddEditServerResult>(AddEditServerKeys.Result)
-                    }
-                }
-
-                ServersScreen(
-                    addEditServerFlow = addEditServerChannel.receiveAsFlow(),
-                    onNavigateBack = { navController.navigateUp() },
-                    onNavigateToAddEditServer = { serverId ->
-                        navController.navigate(Destination.Settings.AddEditServer(serverId))
-                    },
-                )
-            }
-
-            composable<Destination.Settings.AddEditServer> {
-                val args = it.toRoute<Destination.Settings.AddEditServer>()
-
-                val advancedSettingsChannel = remember { Channel<ServerConfig.AdvancedSettings>() }
-                val advancedSettings = it.savedStateHandle.getSerializable<ServerConfig.AdvancedSettings?>(
-                    AdvancedServerSettingsKeys.AdvancedSettings,
-                )
-                LaunchedEffect(advancedSettings) {
-                    if (advancedSettings != null) {
-                        advancedSettingsChannel.send(advancedSettings)
-
-                        it.savedStateHandle.remove<ServerConfig.AdvancedSettings?>(
-                            AdvancedServerSettingsKeys.AdvancedSettings,
-                        )
-                    }
-                }
-
-                AddEditServerScreen(
-                    serverId = args.serverId,
-                    advancedSettingsFlow = advancedSettingsChannel.receiveAsFlow(),
-                    onNavigateBack = { result ->
-                        navController.previousBackStackEntry
-                            ?.savedStateHandle
-                            ?.set(AddEditServerKeys.Result, result)
-
-                        navController.navigateUp()
-
-                        if (result == AddEditServerResult.Add) {
-                            showNotificationPermission = true
-                        }
-                    },
-                    onNavigateToAdvancedSettings = { advancedSettings ->
-                        navController.navigate(Destination.Settings.Advanced(advancedSettings))
-                    },
-                )
-            }
-
-            composable<Destination.Settings.Advanced>(
-                typeMap = mapOf(
-                    typeOf<ServerConfig.AdvancedSettings>() to
-                        serializableNavType<ServerConfig.AdvancedSettings>(),
-                ),
+            AnimatedVisibility(
+                visible = widthSizeClass != WindowWidthSizeClass.Compact,
+                enter = expandHorizontally(),
+                exit = shrinkHorizontally(),
             ) {
-                val args = it.toRoute<Destination.Settings.Advanced>()
-                AdvancedServerSettingsScreen(
-                    advancedSettings = args.advancedSettings,
-                    onNavigateBack = { navController.navigateUp() },
-                    onUpdate = { advancedSettings ->
-                        navController.previousBackStackEntry
-                            ?.savedStateHandle
-                            ?.setSerializable(AdvancedServerSettingsKeys.AdvancedSettings, advancedSettings)
-                    },
-                )
+                Box(modifier = Modifier.width(IntrinsicSize.Max)) {
+                    NavigationRail(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .verticalScroll(rememberScrollState()),
+                        windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Start),
+                    ) {
+                        Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.safeDrawing))
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        tabs.forEachIndexed { index, item ->
+                            NavigationRailItem(
+                                selected = index == selectedTabIndex,
+                                onClick = {
+                                    if (selectedTabIndex != index) {
+                                        selectedTabIndex = index
+                                    } else {
+                                        scope.launch {
+                                            navigateToStartChannels[selectedTabIndex].send(Unit)
+                                        }
+                                    }
+                                },
+                                label = { Text(text = stringResource(item.title)) },
+                                icon = {
+                                    Icon(
+                                        imageVector = if (index == selectedTabIndex) {
+                                            item.selectedIcon
+                                        } else {
+                                            item.unselectedIcon
+                                        },
+                                        contentDescription = null,
+                                    )
+                                },
+                                enabled = item.enabled,
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .windowInsetsTopHeight(WindowInsets.safeDrawing)
+                            .fillMaxWidth()
+                            .padding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start).asPaddingValues())
+                            .background(
+                                DrawerDefaults.modalContainerColor.copy(
+                                    alpha = if (isSystemInDarkTheme()) 0.5f else 0.9f,
+                                ),
+                            ),
+                    )
+                }
             }
 
-            composable<Destination.Settings.General> {
-                GeneralSettingsScreen(
-                    onNavigateBack = { navController.navigateUp() },
-                )
-            }
+            Scaffold(
+                contentWindowInsets = WindowInsets.safeDrawing,
+                bottomBar = {
+                    AnimatedVisibility(
+                        visible = widthSizeClass == WindowWidthSizeClass.Compact,
+                        enter = expandVertically(),
+                        exit = shrinkVertically(),
+                    ) {
+                        NavigationBar {
+                            tabs.forEachIndexed { index, item ->
+                                NavigationBarItem(
+                                    selected = index == selectedTabIndex,
+                                    onClick = {
+                                        if (selectedTabIndex != index) {
+                                            selectedTabIndex = index
+                                        } else {
+                                            scope.launch {
+                                                navigateToStartChannels[selectedTabIndex].send(Unit)
+                                            }
+                                        }
+                                    },
+                                    label = { Text(text = stringResource(item.title)) },
+                                    icon = {
+                                        Icon(
+                                            imageVector = if (index == selectedTabIndex) {
+                                                item.selectedIcon
+                                            } else {
+                                                item.unselectedIcon
+                                            },
+                                            contentDescription = null,
+                                        )
+                                    },
+                                    enabled = item.enabled,
+                                )
+                            }
+                        }
+                    }
+                },
+            ) { innerPadding ->
+                val padding = if (widthSizeClass == WindowWidthSizeClass.Compact) {
+                    PaddingValues(bottom = innerPadding.calculateBottomPadding())
+                } else {
+                    PaddingValues()
+                }
 
-            composable<Destination.Settings.Appearance> {
-                AppearanceSettingsScreen(
-                    onNavigateBack = { navController.navigateUp() },
-                )
-            }
+                NavHost(
+                    navController = navController,
+                    startDestination = NavHostDestination.Torrents,
+                    enterTransition = DefaultTransitions.NavBar.Enter,
+                    exitTransition = DefaultTransitions.NavBar.Exit,
+                    popEnterTransition = DefaultTransitions.NavBar.PopEnter,
+                    popExitTransition = DefaultTransitions.NavBar.PopExit,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(padding)
+                        .consumeWindowInsets(padding)
+                        .run {
+                            if (widthSizeClass != WindowWidthSizeClass.Compact) {
+                                consumeWindowInsets(WindowInsets.safeDrawing.only(WindowInsetsSides.Start))
+                            } else {
+                                this
+                            }
+                        },
+                ) {
+                    composable<NavHostDestination.Torrents> {
+                        TorrentsNavHost(
+                            isScreenActive = navController.currentDestination == it.destination,
+                            currentServer = currentServer,
+                            navigateToStartFlow = navigateToStartChannels[0].receiveAsFlow(),
+                            torrentsDeepLinkFlow = torrentsDeepLinkChannel.receiveAsFlow(),
+                            onSelectServer = { currentServer = serverManager.getServer(it) },
+                            onShowNotificationPermission = { showNotificationPermission = true },
+                        )
+                    }
 
-            composable<Destination.Settings.Network> {
-                NetworkSettingsScreen(
-                    onNavigateBack = { navController.navigateUp() },
-                )
+                    composable<NavHostDestination.Search> {
+                        BackHandler { selectedTabIndex = 0 }
+
+                        SearchNavHost(
+                            serverConfig = currentServer,
+                            navigateToStartFlow = navigateToStartChannels[1].receiveAsFlow(),
+                        )
+                    }
+
+                    composable<NavHostDestination.Rss> {
+                        BackHandler { selectedTabIndex = 0 }
+
+                        RssNavHost(
+                            serverConfig = currentServer,
+                            navigateToStartFlow = navigateToStartChannels[2].receiveAsFlow(),
+                        )
+                    }
+
+                    composable<NavHostDestination.Logs> {
+                        BackHandler { selectedTabIndex = 0 }
+
+                        LogsNavHost(
+                            serverConfig = currentServer,
+                            navigateToStartFlow = navigateToStartChannels[3].receiveAsFlow(),
+                        )
+                    }
+
+                    composable<NavHostDestination.Settings> {
+                        BackHandler { selectedTabIndex = 0 }
+
+                        SettingsNavHost(
+                            navigateToStartFlow = navigateToStartChannels[4].receiveAsFlow(),
+                            onShowNotificationPermission = { showNotificationPermission = true },
+                            settingsDeepLinkFlow = settingsDeepLinkChannel.receiveAsFlow(),
+                        )
+                    }
+                }
             }
         }
     }
 }
+
+private data class BottomNavigationItem(
+    val title: StringResource,
+    val enabled: Boolean,
+    val unselectedIcon: ImageVector,
+    val selectedIcon: ImageVector,
+    val destination: NavHostDestination,
+)
