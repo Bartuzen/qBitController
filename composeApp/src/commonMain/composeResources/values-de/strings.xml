@@ -57,7 +57,6 @@
     <string name="torrent_list_action_sort_name">Name</string>
     <string name="torrent_list_action_priority_decrease">Priorität verringern</string>
     <string name="error_cannot_connect">Verbindung zum Server kann nicht aufgebaut werden.</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_status_missing_files">Fehlende Dateien</string>
     <string name="error_banned">Du wurdest gebannt wegen zu viel fehlgeschlagenen Loginversuchen.</string>
     <string name="torrent_list_free_space">Freier Speicherplatz: %1$s</string>
@@ -69,7 +68,6 @@
     <string name="torrent_list_action_shutdown">qBittorrent schließen</string>
     <string name="error_no_data">Keine Datein vom Server empfangen.</string>
     <string name="torrent_status_force_downloading_metadata">[F] Metadaten werden heruntergeladen</string>
-    <string name="main_action_settings">Einstellungen</string>
     <string name="torrent_list_trackers_all">Alle</string>
     <string name="torrent_list_action_sort_ratio">Ratio</string>
     <string name="torrent_list_create_tag_hint">Labelname</string>
@@ -89,7 +87,6 @@
     <string name="torrent_speed_upload_limit">Upload Geschwindigkeitslimit</string>
     <string name="share_add_torrent">Torrent hinzufügen</string>
     <string name="torrent_list_uncategorized">Unkategorisiert</string>
-    <string name="torrent_list_action_execution_log">Ausführungsprotokoll</string>
     <string name="torrent_list_edit_category">Bearbeite Kategorie</string>
     <string name="torrent_list_create_category_download_path_hint">Downloadpfad</string>
     <string name="dialog_cancel">Abbrechen</string>
@@ -113,7 +110,6 @@
     <string name="torrent_list_category_tag_all">Alle</string>
     <string name="torrent_speed_alternative_speed_limits">Alternatives Speed Limit</string>
     <string name="torrent_list_action_sort_reverse">Umgekehrt</string>
-    <string name="torrent_list_action_search_online">Suche Online</string>
     <string name="error_unknown">Unbekannter Fehler: %1$s</string>
     <string name="torrent_status_stalled">Verzögert</string>
     <plurals name="torrent_list_torrents_delete_success">
