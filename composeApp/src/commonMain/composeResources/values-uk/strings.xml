@@ -694,4 +694,9 @@
         <item quantity="other">%1$d заголовків</item>
     </plurals>
     <string name="settings_pure_black_dark_mode">Чисто чорний темний режим</string>
+    <string name="destination_logs">Журнали</string>
+    <string name="destination_settings">Налаштування</string>
+    <string name="destination_torrents">Торренти</string>
+    <string name="destination_search">Пошук</string>
+    <string name="destination_rss">RSS</string>
 </resources>
