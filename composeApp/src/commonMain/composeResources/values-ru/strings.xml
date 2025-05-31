@@ -240,11 +240,7 @@
     <string name="error_api">API вернул ошибку: %1$d</string>
     <string name="action_search">Поиск</string>
     <string name="action_select_inverse">Инвертировать выделение</string>
-    <string name="main_action_settings">Настройки</string>
     <string name="torrent_list_action_add_torrent">Добавить торрент</string>
-    <string name="torrent_list_action_rss">RSS</string>
-    <string name="torrent_list_action_search_online">Поиск в Интернете</string>
-    <string name="torrent_list_action_execution_log">Журнал работы</string>
     <string name="torrent_list_action_shutdown">Выход из qBittorrent</string>
     <string name="torrent_list_action_sort">Сортировать</string>
     <string name="torrent_list_action_sort_hash">Хэш</string>

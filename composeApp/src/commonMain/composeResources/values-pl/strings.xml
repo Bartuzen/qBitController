@@ -26,7 +26,6 @@
     <string name="action_search">Szukaj</string>
     <string name="action_select_all">Zaznacz Wszystko</string>
     <string name="action_select_inverse">Odwróć Zaznaczenie</string>
-    <string name="main_action_settings">Ustawienia</string>
     <string name="main_action_about">O programie</string>
     <string name="torrent_list_no_server_title">Brak Dostępnych Serwerów</string>
     <string name="torrent_list_no_server_add">Dodaj Serwer</string>
@@ -67,9 +66,7 @@
     <string name="speed_gibibytes_per_second">GiB/s</string>
     <string name="torrent_list_empty_rss">Dodaj przez RSS</string>
     <string name="torrent_list_no_result_title">Brak wyników wyszukiwania</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_add_torrent">Dodaj torrent</string>
-    <string name="torrent_list_action_search_online">Szukaj online</string>
     <string name="torrent_list_action_statistics">Statystyki</string>
     <string name="torrent_list_action_sort_name">Nazwa</string>
     <string name="torrent_list_action_sort_priority">Priorytet</string>
