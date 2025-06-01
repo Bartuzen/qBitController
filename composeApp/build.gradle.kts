@@ -293,7 +293,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "dev.bartuzen.qbitcontroller"
+            packageName = "qBitController"
             packageVersion = appVersion
         }
     }
