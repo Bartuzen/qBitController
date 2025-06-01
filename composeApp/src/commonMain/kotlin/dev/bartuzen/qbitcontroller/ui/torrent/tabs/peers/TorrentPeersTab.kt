@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -748,6 +749,8 @@ private fun PeerDetailsDialog(peer: TorrentPeer, onDismiss: () -> Unit, modifier
                         value = peer.peerIdClient,
                     )
 
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     DetailsSectionHeader(
                         title = stringResource(Res.string.torrent_peers_details_section_transfer),
                     )
@@ -790,7 +793,7 @@ private fun PeerDetailsDialog(peer: TorrentPeer, onDismiss: () -> Unit, modifier
                 ) { flags ->
                     Column(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(top = 8.dp),
+                        modifier = Modifier.padding(top = 24.dp),
                     ) {
                         DetailsSectionHeader(
                             title = stringResource(Res.string.torrent_peers_details_section_flags),
@@ -857,7 +860,7 @@ private fun PeerDetailsDialog(peer: TorrentPeer, onDismiss: () -> Unit, modifier
                 ) { files ->
                     Column(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(top = 8.dp),
+                        modifier = Modifier.padding(top = 24.dp),
                     ) {
                         DetailsSectionHeader(
                             title = stringResource(Res.string.torrent_peers_details_section_files),
