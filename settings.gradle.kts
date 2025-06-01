@@ -14,11 +14,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://gitlab.com/api/v4/projects/69663547/packages/maven")
-        maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap") {
-            mavenContent {
-                includeGroupAndSubgroups("io.ktor")
-            }
-        }
     }
 }
 
