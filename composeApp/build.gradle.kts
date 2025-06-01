@@ -300,6 +300,10 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "qBitController"
             packageVersion = appVersion
+
+            linux {
+                modules("jdk.security.auth")
+            }
         }
     }
 }
