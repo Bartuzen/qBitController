@@ -304,8 +304,13 @@ compose.desktop {
             linux {
                 modules("jdk.security.auth")
             }
+
             windows {
                 shortcut = true
+            }
+
+            macOS {
+                iconFile.set(project.file("icon.icns"))
             }
         }
     }
