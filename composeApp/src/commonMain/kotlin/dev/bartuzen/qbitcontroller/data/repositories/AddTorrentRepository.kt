@@ -47,7 +47,8 @@ class AddTorrentRepository(
                         InputProvider { buildPacket { writeFully(byteArray) } },
                         Headers.build {
                             append("Content-Type", "application/x-bittorrent")
-                            append("Content-Disposition", "form-data; name=\"torrents\"; filename=\"$fileName\"")
+                            append("Content-Disposition", "filename=\"$fileName\"")
+                            append("Content-Length", byteArray.size.toString())
                         },
                     )
                 }
