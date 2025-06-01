@@ -45,6 +45,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
@@ -103,7 +104,6 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -3534,7 +3534,6 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
     Dialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
-        textHorizontalPadding = 8.dp,
         confirmButton = {
             Button(onClick = onDismiss) {
                 Text(text = stringResource(Res.string.dialog_ok))
@@ -3542,127 +3541,103 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
         },
         title = { Text(text = stringResource(Res.string.torrent_list_action_statistics)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                OutlinedCard(
-                    elevation = CardDefaults.outlinedCardElevation(0.dp),
-                    colors = CardDefaults.outlinedCardColors(Color.Transparent),
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(12.dp),
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.stats_category_user_statistics),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                        )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                StatisticsHeader(
+                    title = stringResource(Res.string.stats_category_user_statistics),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_all_time_upload),
-                            value = formatBytes(state.allTimeUpload),
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_all_time_upload),
+                    value = formatBytes(state.allTimeUpload),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_all_time_download),
-                            value = formatBytes(state.allTimeDownload),
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_all_time_download),
+                    value = formatBytes(state.allTimeDownload),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_all_time_share_ratio),
-                            value = state.globalRatio,
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_all_time_share_ratio),
+                    value = state.globalRatio,
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_session_waste),
-                            value = formatBytes(state.sessionWaste),
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_session_waste),
+                    value = formatBytes(state.sessionWaste),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_connected_peers),
-                            value = state.connectedPeers.toString(),
-                        )
-                    }
-                }
+                StatisticRow(
+                    label = stringResource(Res.string.stats_connected_peers),
+                    value = state.connectedPeers.toString(),
+                )
 
-                OutlinedCard(
-                    elevation = CardDefaults.outlinedCardElevation(0.dp),
-                    colors = CardDefaults.outlinedCardColors(Color.Transparent),
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(12.dp),
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.stats_category_cache_statistics),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                        )
+                Spacer(modifier = Modifier.height(8.dp))
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_total_buffer_size),
-                            value = formatBytes(state.bufferSize),
-                        )
-                    }
-                }
+                StatisticsHeader(
+                    title = stringResource(Res.string.stats_category_cache_statistics),
+                )
 
-                OutlinedCard(
-                    elevation = CardDefaults.outlinedCardElevation(0.dp),
-                    colors = CardDefaults.outlinedCardColors(Color.Transparent),
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(12.dp),
-                    ) {
-                        Text(
-                            text = stringResource(Res.string.stats_category_performance_statistics),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_total_buffer_size),
+                    value = formatBytes(state.bufferSize),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_write_cache_overload),
-                            value = stringResource(Res.string.percentage_format, state.writeCacheOverload),
-                        )
+                Spacer(modifier = Modifier.height(8.dp))
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_read_cache_overload),
-                            value = stringResource(Res.string.percentage_format, state.readCacheOverload),
-                        )
+                StatisticsHeader(
+                    title = stringResource(Res.string.stats_category_performance_statistics),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_queued_io_jobs),
-                            value = state.queuedIOJobs.toString(),
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_write_cache_overload),
+                    value = stringResource(Res.string.percentage_format, state.writeCacheOverload),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_average_time_in_queue),
-                            value = stringResource(Res.string.stats_ms_format, state.averageTimeInQueue),
-                        )
+                StatisticRow(
+                    label = stringResource(Res.string.stats_read_cache_overload),
+                    value = stringResource(Res.string.percentage_format, state.readCacheOverload),
+                )
 
-                        StatisticRow(
-                            label = stringResource(Res.string.stats_total_queued_size),
-                            value = formatBytes(state.queuedSize),
-                        )
-                    }
-                }
+                StatisticRow(
+                    label = stringResource(Res.string.stats_queued_io_jobs),
+                    value = state.queuedIOJobs.toString(),
+                )
+
+                StatisticRow(
+                    label = stringResource(Res.string.stats_average_time_in_queue),
+                    value = stringResource(Res.string.stats_ms_format, state.averageTimeInQueue),
+                )
+
+                StatisticRow(
+                    label = stringResource(Res.string.stats_total_queued_size),
+                    value = formatBytes(state.queuedSize),
+                )
             }
         },
     )
 }
 
 @Composable
+private fun StatisticsHeader(title: String, modifier: Modifier = Modifier) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.primary,
+        )
+
+        HorizontalDivider()
+    }
+}
+
+@Composable
 private fun StatisticRow(label: String, value: String, modifier: Modifier = Modifier) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth(),
     ) {
         Text(
@@ -3670,12 +3645,14 @@ private fun StatisticRow(label: String, value: String, modifier: Modifier = Modi
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
+
+        SelectionContainer {
+            Text(
+                text = value,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+        }
     }
 }
 
