@@ -380,7 +380,7 @@
     <string name="rss_title">RSS</string>
     <string name="torrent_add_category">Categoría</string>
     <string name="search_plugins_action_save">Guardar</string>
-    <string name="settings_title">Ajustes</string>
+    <string name="settings_title">Opciones</string>
     <string name="torrent_files_priority_normal">Normal</string>
     <string name="torrent_peers_details_country">País</string>
     <string name="settings_server_test_configuration">Configuración de prueba</string>
@@ -452,7 +452,7 @@
     <string name="rss_move_feed_error">No se puede mover el feed.</string>
     <string name="rss_action_move_feed">Mover el feed</string>
     <string name="rss_action_move_folder">Mover la carpeta</string>
-    <string name="settings_server_action_advanced_settings">Ajustes avanzados</string>
+    <string name="settings_server_action_advanced_settings">Opciones avanzadas</string>
     <string name="torrent_files_priority_mixed">Mixta</string>
     <string name="settings_server_advanced_basic_auth">Autenticación básica</string>
     <string name="rss_action_delete_feed">Borrar el feed</string>
@@ -553,7 +553,7 @@
     <string name="rss_rule_save_to_a_different_directory">Guardar en otro directorio</string>
     <string name="torrent_add_content_layout">Diseño del contenido</string>
     <string name="torrent_trackers_action_edit">Editar el rastreador</string>
-    <string name="rss_rule_use_global_settings">Utilizar los ajustes globales</string>
+    <string name="rss_rule_use_global_settings">Usar las opciones globales</string>
     <string name="settings_server_advanced_basic_auth_password">Contraseña</string>
     <string name="torrent_status_checking_resume_data">Comprobación el resumen de los datos</string>
     <string name="torrent_overview_transfer">Transferencia</string>
@@ -676,4 +676,9 @@
     </plurals>
     <string name="settings_server_advanced_custom_headers_description">Añade una cabecera personalizada por línea. Separa la clave y el valor usando un signo igual.</string>
     <string name="settings_pure_black_dark_mode">Modo negro oscuro puro</string>
+    <string name="destination_search">Buscar</string>
+    <string name="destination_settings">Opciones</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Registros</string>
+    <string name="destination_torrents">Torrents</string>
 </resources>
