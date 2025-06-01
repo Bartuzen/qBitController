@@ -696,7 +696,7 @@
         <item quantity="other">%1$d заголовков</item>
     </plurals>
     <string name="settings_server_advanced_custom_headers">Пользовательские заголовки</string>
-    <string name="destination_search">Найти</string>
+    <string name="destination_search">Поиск</string>
     <string name="destination_settings">Настройки</string>
     <string name="destination_logs">Журналы</string>
     <string name="destination_torrents">Торренты</string>
