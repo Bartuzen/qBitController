@@ -456,13 +456,13 @@
     <string name="rss_rule_saved_successfully">Regra salva com sucesso.</string>
     <string name="rss_rule_not_found">Não foi possível encontrar a regra.</string>
     <string name="search_title">Buscar</string>
-    <string name="search_start_query">Consulta de pesquisa</string>
+    <string name="search_start_query">Consulta de busca</string>
     <string name="search_start_category">Categoria</string>
     <string name="search_start_category_tv_shows">Séries</string>
     <string name="search_start_plugins_enabled">Plugins ativados</string>
     <string name="search_start_plugins_all">Todos os plugins</string>
     <string name="search_start_plugins_select">Selecionar plugins</string>
-    <string name="search_start_action_start">Iniciar pesquisa</string>
+    <string name="search_start_action_start">Iniciar busca</string>
     <string name="search_result_filter_results">Filtrar resultados…</string>
     <string name="search_result_filter_seeds">Seeds</string>
     <string name="search_result_filter_size">Tamanho</string>
@@ -476,15 +476,15 @@
     <string name="search_result_leechers">Leechers</string>
     <string name="search_result_open_description">Descrição aberta</string>
     <string name="search_result_download">Download</string>
-    <string name="search_result_stop_success">A pesquisa foi interrompida com êxito.</string>
+    <string name="search_result_stop_success">A busca foi interrompida com êxito.</string>
     <string name="search_result_no_browser">Não encontrou nenhum navegador.</string>
     <string name="search_result_action_filter">Filtrar</string>
     <string name="search_start_category_all">Todas</string>
     <string name="search_result_action_sort_seeders">Seeders</string>
     <string name="search_result_action_sort_leechers">Leechers</string>
-    <string name="search_result_action_sort_search_engine">Mecanismo de pesquisa</string>
+    <string name="search_result_action_sort_search_engine">Mecanismo de busca</string>
     <string name="search_result_action_sort_reverse">Reverter</string>
-    <string name="search_result_action_stop_search">Parar de pesquisar</string>
+    <string name="search_result_action_stop_search">Parar de buscar</string>
     <string name="search_plugins">Plugins</string>
     <string name="settings_disabled">Desativado</string>
     <plurals name="settings_notification_check_interval_description">
@@ -642,7 +642,7 @@
     <string name="rss_action_edit_feed_url">Editar URL do feed</string>
     <string name="rss_rule_item_enabled">Ativado</string>
     <string name="search_start_plugins">Plugins</string>
-    <string name="search_result_title">Resultados da pesquisa</string>
+    <string name="search_result_title">Resultados da busca</string>
     <string name="settings_category_appearance">Aparência</string>
     <string name="settings_server_credentials">Credenciais</string>
     <string name="settings_server_url_examples">Exemplos: %1$s</string>
@@ -676,4 +676,9 @@
         <item quantity="other">%1$d cabeçalhos</item>
     </plurals>
     <string name="settings_server_advanced_custom_headers_description">Adicione um cabeçalho personalizado por linha. Separe a chave e o valor usando um sinal de igual.</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_settings">Configurações</string>
+    <string name="destination_torrents">Torrents</string>
+    <string name="destination_search">Buscar</string>
+    <string name="destination_logs">Logs</string>
 </resources>
