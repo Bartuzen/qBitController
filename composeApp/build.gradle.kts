@@ -304,6 +304,9 @@ compose.desktop {
             linux {
                 modules("jdk.security.auth")
             }
+            windows {
+                shortcut = true
+            }
         }
     }
 }
