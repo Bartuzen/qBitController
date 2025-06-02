@@ -601,4 +601,33 @@
     <string name="rss_rule_item_enabled">활성화됨</string>
     <string name="search_result_title">검색 결과</string>
     <string name="search_start_plugins">플러그인</string>
+    <string name="settings_pure_black_dark_mode">매우 어두운 다크 모드</string>
+    <string name="settings_server_advanced_custom_headers_description">한 줄에 하나의 커스텀 헤더를 추가하십시오. 키와 값을 =로 구분하십시오.</string>
+    <string name="settings_server_advanced_custom_headers">커스텀 헤더</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="other">%1$d 헤더</item>
+    </plurals>
+    <string name="error_invalid_interval">값은 반드시 %1$d와 %2$d 사이여야 합니다.</string>
+    <string name="error_invalid_interval_optional">값은 반드시 %1$d와 %2$d 사이거나, 비활성화를 위해서 빈칸이여야 합니다.</string>
+    <string name="torrent_overview_piece_downloaded">내려받음</string>
+    <string name="torrent_overview_piece_downloading">내려받는 중</string>
+    <string name="torrent_overview_piece_not_downloaded">다운로드 되지 않음</string>
+    <string name="settings_category_network">네트워크</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_advanced_title">고급 설정</string>
+    <string name="destination_logs">로그</string>
+    <string name="destination_rss">RSS</string>
+    <string name="search_result_action_download">다운로드</string>
+    <string name="destination_torrents">토렌트</string>
+    <string name="torrent_overview_piece_map">조각 지도</string>
+    <string name="destination_search">검색</string>
+    <string name="destination_settings">설정</string>
+    <string name="settings_servers_add_server">서버 추가</string>
+    <string name="settings_server_invalid_url">URL 형식이 잘못되었습니다.</string>
+    <string name="settings_category_general">일반</string>
+    <string name="settings_category_appearance">모습</string>
+    <string name="settings_servers_no_server_configured">설정된 서버 없음</string>
+    <string name="settings_server_server_info">서버 정보</string>
+    <string name="settings_server_credentials">자격증명</string>
+    <string name="settings_server_url_examples">예시: %1$s</string>
 </resources>
