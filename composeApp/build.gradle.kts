@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.ktorfit)
 
     id("dev.bartuzen.qbitcontroller.language")
+    id("dev.bartuzen.qbitcontroller.ios")
 }
 
 val appVersion = "1.1.1"
