@@ -2,11 +2,16 @@ package dev.bartuzen.qbitcontroller.ui.addtorrent
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -501,96 +506,108 @@ fun AddTorrentScreen(
                     }
                 }
 
-                if (isUrlMode) {
-                    OutlinedTextField(
-                        value = torrentLinkText,
-                        onValueChange = {
-                            if (it.text != torrentLinkText.text) {
-                                torrentLinkError = null
-                            }
-                            torrentLinkText = it
-                        },
-                        label = {
-                            Text(
-                                text = stringResource(Res.string.torrent_add_link_hint),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
+                AnimatedContent(
+                    targetState = isUrlMode,
+                    transitionSpec = {
+                        (
+                            fadeIn(animationSpec = tween(220, delayMillis = 90)) +
+                                scaleIn(initialScale = 0.92f, animationSpec = tween(220, delayMillis = 90))
                             )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateContentSize(),
-                        minLines = 4,
-                        maxLines = 4,
-                        readOnly = torrentUrl != null,
-                        isError = torrentLinkError != null,
-                        supportingText = torrentLinkError?.let { { Text(text = stringResource(it)) } },
-                        trailingIcon = torrentLinkError?.let {
-                            {
-                                Icon(imageVector = Icons.Filled.Error, contentDescription = null)
-                            }
-                        },
-                    )
-                } else {
-                    val borderColor by animateColorAsState(
-                        targetValue = if (torrentFileError) {
-                            MaterialTheme.colorScheme.error
-                        } else {
-                            MaterialTheme.colorScheme.outlineVariant
-                        },
-                        animationSpec = tween(durationMillis = 150),
-                    )
-
-                    OutlinedCard(
-                        border = BorderStroke(1.dp, borderColor),
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Row(
+                            .togetherWith(fadeOut(animationSpec = tween(90)))
+                            .using(SizeTransform(clip = false))
+                    },
+                ) { isUrlMode ->
+                    if (isUrlMode) {
+                        OutlinedTextField(
+                            value = torrentLinkText,
+                            onValueChange = {
+                                if (it.text != torrentLinkText.text) {
+                                    torrentLinkError = null
+                                }
+                                torrentLinkText = it
+                            },
+                            label = {
+                                Text(
+                                    text = stringResource(Res.string.torrent_add_link_hint),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            },
                             modifier = Modifier
-                                .then(
-                                    if (torrentFileUris == null) {
-                                        Modifier.clickable {
-                                            scope.launch {
-                                                val files = FileKit.openFilePicker(
-                                                    mode = FileKitMode.Multiple(),
-                                                    type = FileKitType.File("torrent"),
-                                                )
-                                                if (files?.isNotEmpty() == true) {
-                                                    torrentFiles = files
-                                                    torrentFileError = false
+                                .fillMaxWidth()
+                                .animateContentSize(),
+                            minLines = 4,
+                            maxLines = 4,
+                            readOnly = torrentUrl != null,
+                            isError = torrentLinkError != null,
+                            supportingText = torrentLinkError?.let { { Text(text = stringResource(it)) } },
+                            trailingIcon = torrentLinkError?.let {
+                                {
+                                    Icon(imageVector = Icons.Filled.Error, contentDescription = null)
+                                }
+                            },
+                        )
+                    } else {
+                        val borderColor by animateColorAsState(
+                            targetValue = if (torrentFileError) {
+                                MaterialTheme.colorScheme.error
+                            } else {
+                                MaterialTheme.colorScheme.outlineVariant
+                            },
+                            animationSpec = tween(durationMillis = 150),
+                        )
+
+                        OutlinedCard(
+                            border = BorderStroke(1.dp, borderColor),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .then(
+                                        if (torrentFileUris == null) {
+                                            Modifier.clickable {
+                                                scope.launch {
+                                                    val files = FileKit.openFilePicker(
+                                                        mode = FileKitMode.Multiple(),
+                                                        type = FileKitType.File("torrent"),
+                                                    )
+                                                    if (files?.isNotEmpty() == true) {
+                                                        torrentFiles = files
+                                                        torrentFileError = false
+                                                    }
                                                 }
                                             }
-                                        }
-                                    } else {
-                                        Modifier
-                                    },
-                                )
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.AttachFile,
-                                contentDescription = null,
-                            )
-                            Text(
-                                text = when (torrentFiles.size) {
-                                    0 -> stringResource(Res.string.torrent_add_click_to_select_file)
-                                    1 -> torrentFiles.single().name
-                                    else -> pluralStringResource(
-                                        Res.plurals.torrent_add_files_selected,
-                                        torrentFiles.size,
-                                        torrentFiles.size,
+                                        } else {
+                                            Modifier
+                                        },
                                     )
-                                },
-                                modifier = Modifier.weight(1f),
-                            )
-                            if (torrentFileError) {
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
                                 Icon(
-                                    imageVector = Icons.Outlined.Error,
+                                    imageVector = Icons.Filled.AttachFile,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error,
                                 )
+                                Text(
+                                    text = when (torrentFiles.size) {
+                                        0 -> stringResource(Res.string.torrent_add_click_to_select_file)
+                                        1 -> torrentFiles.single().name
+                                        else -> pluralStringResource(
+                                            Res.plurals.torrent_add_files_selected,
+                                            torrentFiles.size,
+                                            torrentFiles.size,
+                                        )
+                                    },
+                                    modifier = Modifier.weight(1f),
+                                )
+                                if (torrentFileError) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Error,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.error,
+                                    )
+                                }
                             }
                         }
                     }
