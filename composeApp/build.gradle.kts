@@ -32,6 +32,10 @@ kotlin {
     androidTarget {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_21)
+
+            freeCompilerArgs.addAll(
+                "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
+            )
         }
     }
 
@@ -59,7 +63,6 @@ kotlin {
             "-opt-in=androidx.compose.foundation.layout.ExperimentalLayoutApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
-            "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
         )
     }
