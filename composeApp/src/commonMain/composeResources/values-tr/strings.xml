@@ -656,4 +656,9 @@
     <string name="settings_servers_no_server_configured">Sunucu Ayarlanmadı</string>
     <string name="settings_server_url">URL</string>
     <string name="settings_server_url_examples">Örnekler: %1$s</string>
+    <string name="destination_torrents">Torrentler</string>
+    <string name="destination_search">Arama</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Kayıtlar</string>
+    <string name="destination_settings">Ayarlar</string>
 </resources>
