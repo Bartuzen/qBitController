@@ -198,24 +198,6 @@ android {
         versionName = appVersion
     }
 
-    buildTypes {
-        debug {
-            applicationIdSuffix = ".debug"
-            isDefault = true
-        }
-
-        release {
-            postprocessing {
-                isRemoveUnusedCode = true
-                isRemoveUnusedResources = true
-                isObfuscate = false
-                isOptimizeCode = true
-            }
-
-            signingConfig = signingConfigs.create("release")
-        }
-    }
-
     flavorDimensions += "firebase"
     productFlavors {
         create("free") {
@@ -228,7 +210,7 @@ android {
     }
 
     signingConfigs {
-        getByName("release") {
+        create("release") {
             val keystorePropertiesFile = rootProject.file("keystore.properties")
             val keystoreProperties = Properties()
 
@@ -246,6 +228,26 @@ android {
             storePassword = getProperty("store", "password")
             keyAlias = getProperty("key", "alias")
             keyPassword = getProperty("key", "password")
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            isDefault = true
+        }
+
+        release {
+            postprocessing {
+                isRemoveUnusedCode = true
+                isRemoveUnusedResources = true
+                isObfuscate = false
+                isOptimizeCode = true
+            }
+
+            if (System.getenv("QBITCONTROLLER_SIGN_RELEASE") == "true") {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
     }
 
