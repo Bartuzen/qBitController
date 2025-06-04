@@ -6,7 +6,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -72,6 +71,7 @@ import dev.bartuzen.qbitcontroller.ui.rss.RssNavHost
 import dev.bartuzen.qbitcontroller.ui.search.SearchNavHost
 import dev.bartuzen.qbitcontroller.ui.settings.SettingsNavHost
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.ui.theme.isDarkTheme
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentsNavHost
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -281,7 +281,7 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                             .padding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start).asPaddingValues())
                             .background(
                                 DrawerDefaults.modalContainerColor.copy(
-                                    alpha = if (isSystemInDarkTheme()) 0.5f else 0.9f,
+                                    alpha = if (isDarkTheme()) 0.5f else 0.9f,
                                 ),
                             ),
                     )

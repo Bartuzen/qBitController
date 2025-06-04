@@ -5,7 +5,6 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import kotlinx.coroutines.flow.flow
 import me.zhanghai.compose.preference.LocalPreferenceTheme
 import me.zhanghai.compose.preference.preferenceTheme
 import org.koin.compose.koinInject
@@ -104,15 +102,9 @@ private val darkScheme = darkColorScheme(
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
-    val theme by settingsManager.theme.flow.collectAsStateWithLifecycle()
     val pureBlack by settingsManager.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
 
-    val darkTheme = when (theme) {
-        Theme.LIGHT -> false
-        Theme.DARK -> true
-        Theme.SYSTEM_DEFAULT -> isSystemInDarkTheme()
-    }
-
+    val darkTheme = isDarkTheme()
     val colorScheme = (getDynamicColorScheme(darkTheme) ?: if (darkTheme) darkScheme else lightScheme).let {
         if (pureBlack && darkTheme) {
             val surfaceContainer = Color(0xFF0C0C0C)
@@ -154,6 +146,18 @@ fun AppTheme(content: @Composable () -> Unit) {
             LocalPreferenceTheme provides preferenceTheme,
             content = content,
         )
+    }
+}
+
+@Composable
+fun isDarkTheme(): Boolean {
+    val settingsManager = koinInject<SettingsManager>()
+    val theme by settingsManager.theme.flow.collectAsStateWithLifecycle()
+
+    return when (theme) {
+        Theme.LIGHT -> false
+        Theme.DARK -> true
+        Theme.SYSTEM_DEFAULT -> isSystemInDarkTheme()
     }
 }
 

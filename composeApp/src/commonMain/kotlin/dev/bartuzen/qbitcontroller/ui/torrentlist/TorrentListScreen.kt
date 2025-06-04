@@ -17,7 +17,6 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -181,6 +180,7 @@ import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.components.TagChip
 import dev.bartuzen.qbitcontroller.ui.icons.Priority
+import dev.bartuzen.qbitcontroller.ui.theme.isDarkTheme
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
@@ -2045,7 +2045,7 @@ private fun DrawerContent(
             modifier = Modifier
                 .windowInsetsTopHeight(WindowInsets.safeDrawing)
                 .fillMaxWidth()
-                .background(DrawerDefaults.modalContainerColor.copy(alpha = if (isSystemInDarkTheme()) 0.5f else 0.9f)),
+                .background(DrawerDefaults.modalContainerColor.copy(alpha = if (isDarkTheme()) 0.5f else 0.9f)),
         )
     }
 }
