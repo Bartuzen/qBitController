@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -97,6 +96,7 @@ import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.excludeBottom
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
@@ -434,9 +434,7 @@ fun RssFeedsScreen(
 
     Scaffold(
         modifier = modifier,
-        contentWindowInsets = WindowInsets.safeDrawing.only(
-            WindowInsetsSides.Horizontal + WindowInsetsSides.Top,
-        ),
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             TopAppBar(
                 title = {
@@ -520,42 +518,47 @@ fun RssFeedsScreen(
                 },
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
+        },
+        bottomBar = {
+            Box {
+                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
 
-            AnimatedVisibility(
-                visible = movingItemId != null,
-                enter = expandVertically(),
-                exit = shrinkVertically(),
-            ) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(Res.string.rss_action_move_select_folder),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = { movingItemId = null },
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = null,
+                AnimatedVisibility(
+                    visible = movingItemId != null,
+                    enter = expandVertically(),
+                    exit = shrinkVertically(),
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                ) {
+                    TopAppBar(
+                        title = {
+                            Text(
+                                text = stringResource(Res.string.rss_action_move_select_folder),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    ),
-                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
-                )
+                        },
+                        navigationIcon = {
+                            IconButton(
+                                onClick = { movingItemId = null },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = null,
+                                )
+                            }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        ),
+                        windowInsets = WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom,
+                        ),
+                    )
+                }
             }
         },
         snackbarHost = {
-            SwipeableSnackbarHost(
-                hostState = snackbarHostState,
-                modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Bottom)),
-            )
+            SwipeableSnackbarHost(hostState = snackbarHostState)
         },
     ) { innerPadding ->
         PullToRefreshBox(
@@ -563,7 +566,7 @@ fun RssFeedsScreen(
             onRefresh = { viewModel.refreshRssFeeds() },
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding.excludeBottom())
                 .consumeWindowInsets(innerPadding)
                 .imePadding(),
         ) {
@@ -620,7 +623,7 @@ fun RssFeedsScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                    Spacer(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()))
                 }
             }
 
