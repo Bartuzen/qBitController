@@ -6,6 +6,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -454,64 +455,69 @@ fun SearchResultScreen(
             )
         },
         bottomBar = {
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            Box {
+                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
 
-            AnimatedVisibility(
-                visible = selectedTorrents.isNotEmpty(),
-                enter = expandVertically(),
-                exit = shrinkVertically(),
-            ) {
-                TopAppBar(
-                    title = {
-                        var selectedSize by rememberSaveable { mutableIntStateOf(0) }
+                AnimatedVisibility(
+                    visible = selectedTorrents.isNotEmpty(),
+                    enter = expandVertically(),
+                    exit = shrinkVertically(),
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                ) {
+                    TopAppBar(
+                        title = {
+                            var selectedSize by rememberSaveable { mutableIntStateOf(0) }
 
-                        LaunchedEffect(selectedTorrents.size) {
-                            if (selectedTorrents.isNotEmpty()) {
-                                selectedSize = selectedTorrents.size
+                            LaunchedEffect(selectedTorrents.size) {
+                                if (selectedTorrents.isNotEmpty()) {
+                                    selectedSize = selectedTorrents.size
+                                }
                             }
-                        }
 
-                        Text(
-                            text = pluralStringResource(
-                                Res.plurals.search_result_torrents_selected,
-                                selectedSize,
-                                selectedSize,
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    ),
-                    navigationIcon = {
-                        IconButton(onClick = { selectedTorrents.clear() }) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = null,
+                            Text(
+                                text = pluralStringResource(
+                                    Res.plurals.search_result_torrents_selected,
+                                    selectedSize,
+                                    selectedSize,
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
-                        }
-                    },
-                    actions = {
-                        val actionMenuItems = listOf(
-                            ActionMenuItem(
-                                title = stringResource(Res.string.search_result_action_download),
-                                onClick = {
-                                    onNavigateToAddTorrent(
-                                        selectedTorrents.joinToString("\n") {
-                                            Json.decodeFromString<Search.Result>(it).fileUrl
-                                        },
-                                    )
-                                },
-                                showAsAction = true,
-                                icon = Icons.Filled.Download,
-                            ),
-                        )
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        ),
+                        navigationIcon = {
+                            IconButton(onClick = { selectedTorrents.clear() }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = null,
+                                )
+                            }
+                        },
+                        actions = {
+                            val actionMenuItems = listOf(
+                                ActionMenuItem(
+                                    title = stringResource(Res.string.search_result_action_download),
+                                    onClick = {
+                                        onNavigateToAddTorrent(
+                                            selectedTorrents.joinToString("\n") {
+                                                Json.decodeFromString<Search.Result>(it).fileUrl
+                                            },
+                                        )
+                                    },
+                                    showAsAction = true,
+                                    icon = Icons.Filled.Download,
+                                ),
+                            )
 
-                        AppBarActions(items = actionMenuItems, bottom = true)
-                    },
-                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
-                )
+                            AppBarActions(items = actionMenuItems, bottom = true)
+                        },
+                        windowInsets = WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom,
+                        ),
+                    )
+                }
             }
         },
         snackbarHost = {
@@ -524,7 +530,7 @@ fun SearchResultScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding.excludeBottom())
-                .consumeWindowInsets(innerPadding.excludeBottom())
+                .consumeWindowInsets(innerPadding)
                 .imePadding(),
         ) {
             Column {
@@ -581,7 +587,7 @@ fun SearchResultScreen(
                     }
 
                     item {
-                        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                        Spacer(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()))
                     }
                 }
 

@@ -1015,28 +1015,39 @@ fun TorrentListScreen(
                     )
                 },
                 bottomBar = {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                    Box {
+                        Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
 
-                    AnimatedVisibility(
-                        visible = selectedTorrents.isNotEmpty(),
-                        enter = expandVertically(),
-                        exit = shrinkVertically(),
-                    ) {
-                        BottomBarSelection(
-                            torrents = torrents,
-                            selectedTorrents = selectedTorrents,
-                            canFocusNow = drawerState.isClosed,
-                            isQueueingEnabled = mainData?.serverState?.isQueueingEnabled == true,
-                            onPauseTorrents = { viewModel.pauseTorrents(selectedTorrents.toList()) },
-                            onResumeTorrents = { viewModel.resumeTorrents(selectedTorrents.toList()) },
-                            onDeleteTorrents = { currentDialog = Dialog.DeleteSelectedTorrents },
-                            onMaximizeTorrentsPriority = { viewModel.maximizeTorrentPriority(selectedTorrents.toList()) },
-                            onIncreaseTorrentsPriority = { viewModel.increaseTorrentPriority(selectedTorrents.toList()) },
-                            onDecreaseTorrentsPriority = { viewModel.decreaseTorrentPriority(selectedTorrents.toList()) },
-                            onMinimizeTorrentsPriority = { viewModel.minimizeTorrentPriority(selectedTorrents.toList()) },
-                            onSetTorrentsLocation = { currentDialog = Dialog.SetSelectedTorrentsLocation },
-                            onSetTorrentsCategory = { currentDialog = Dialog.SetSelectedTorrentsCategory },
-                        )
+                        AnimatedVisibility(
+                            visible = selectedTorrents.isNotEmpty(),
+                            enter = expandVertically(),
+                            exit = shrinkVertically(),
+                            modifier = Modifier.align(Alignment.BottomCenter),
+                        ) {
+                            BottomBarSelection(
+                                torrents = torrents,
+                                selectedTorrents = selectedTorrents,
+                                canFocusNow = drawerState.isClosed,
+                                isQueueingEnabled = mainData?.serverState?.isQueueingEnabled == true,
+                                onPauseTorrents = { viewModel.pauseTorrents(selectedTorrents.toList()) },
+                                onResumeTorrents = { viewModel.resumeTorrents(selectedTorrents.toList()) },
+                                onDeleteTorrents = { currentDialog = Dialog.DeleteSelectedTorrents },
+                                onMaximizeTorrentsPriority = {
+                                    viewModel.maximizeTorrentPriority(selectedTorrents.toList())
+                                },
+                                onIncreaseTorrentsPriority = {
+                                    viewModel.increaseTorrentPriority(selectedTorrents.toList())
+                                },
+                                onDecreaseTorrentsPriority = {
+                                    viewModel.decreaseTorrentPriority(selectedTorrents.toList())
+                                },
+                                onMinimizeTorrentsPriority = {
+                                    viewModel.minimizeTorrentPriority(selectedTorrents.toList())
+                                },
+                                onSetTorrentsLocation = { currentDialog = Dialog.SetSelectedTorrentsLocation },
+                                onSetTorrentsCategory = { currentDialog = Dialog.SetSelectedTorrentsCategory },
+                            )
+                        }
                     }
                 },
             ) { innerPadding ->
@@ -1047,7 +1058,7 @@ fun TorrentListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding.excludeBottom())
-                        .consumeWindowInsets(innerPadding.excludeBottom())
+                        .consumeWindowInsets(innerPadding)
                         .imePadding(),
                 ) {
                     Column {
@@ -1127,7 +1138,7 @@ fun TorrentListScreen(
                                 }
 
                                 item {
-                                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                                    Spacer(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()))
                                 }
                             }
 

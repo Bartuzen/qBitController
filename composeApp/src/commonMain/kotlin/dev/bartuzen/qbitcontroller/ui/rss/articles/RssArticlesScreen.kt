@@ -334,66 +334,71 @@ fun RssArticlesScreen(
             )
         },
         bottomBar = {
-            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+            Box {
+                Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
 
-            AnimatedVisibility(
-                visible = selectedArticles.isNotEmpty(),
-                enter = expandVertically(),
-                exit = shrinkVertically(),
-            ) {
-                TopAppBar(
-                    title = {
-                        var selectedSize by rememberSaveable { mutableIntStateOf(0) }
+                AnimatedVisibility(
+                    visible = selectedArticles.isNotEmpty(),
+                    enter = expandVertically(),
+                    exit = shrinkVertically(),
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                ) {
+                    TopAppBar(
+                        title = {
+                            var selectedSize by rememberSaveable { mutableIntStateOf(0) }
 
-                        LaunchedEffect(selectedArticles.size) {
-                            if (selectedArticles.isNotEmpty()) {
-                                selectedSize = selectedArticles.size
+                            LaunchedEffect(selectedArticles.size) {
+                                if (selectedArticles.isNotEmpty()) {
+                                    selectedSize = selectedArticles.size
+                                }
                             }
-                        }
 
-                        Text(
-                            text = pluralStringResource(
-                                Res.plurals.rss_torrents_selected,
-                                selectedSize,
-                                selectedSize,
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    ),
-                    navigationIcon = {
-                        IconButton(onClick = { selectedArticles.clear() }) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = null,
+                            Text(
+                                text = pluralStringResource(
+                                    Res.plurals.rss_torrents_selected,
+                                    selectedSize,
+                                    selectedSize,
+                                ),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
-                        }
-                    },
-                    actions = {
-                        val actionMenuItems = listOf(
-                            ActionMenuItem(
-                                title = stringResource(Res.string.rss_action_download),
-                                onClick = {
-                                    articles?.let { articles ->
-                                        onNavigateToAddTorrent(
-                                            articles
-                                                .filter { it.id in selectedArticles }
-                                                .joinToString("\n") { it.torrentUrl },
-                                        )
-                                    }
-                                },
-                                showAsAction = true,
-                                icon = Icons.Filled.Download,
-                            ),
-                        )
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        ),
+                        navigationIcon = {
+                            IconButton(onClick = { selectedArticles.clear() }) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = null,
+                                )
+                            }
+                        },
+                        actions = {
+                            val actionMenuItems = listOf(
+                                ActionMenuItem(
+                                    title = stringResource(Res.string.rss_action_download),
+                                    onClick = {
+                                        articles?.let { articles ->
+                                            onNavigateToAddTorrent(
+                                                articles
+                                                    .filter { it.id in selectedArticles }
+                                                    .joinToString("\n") { it.torrentUrl },
+                                            )
+                                        }
+                                    },
+                                    showAsAction = true,
+                                    icon = Icons.Filled.Download,
+                                ),
+                            )
 
-                        AppBarActions(items = actionMenuItems, bottom = true)
-                    },
-                    windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
-                )
+                            AppBarActions(items = actionMenuItems, bottom = true)
+                        },
+                        windowInsets = WindowInsets.safeDrawing.only(
+                            WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom,
+                        ),
+                    )
+                }
             }
         },
         snackbarHost = {
@@ -406,7 +411,7 @@ fun RssArticlesScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding.excludeBottom())
-                .consumeWindowInsets(innerPadding.excludeBottom())
+                .consumeWindowInsets(innerPadding)
                 .imePadding(),
         ) {
             val listState = rememberLazyListState()
@@ -449,7 +454,7 @@ fun RssArticlesScreen(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
+                    Spacer(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()))
                 }
             }
 
