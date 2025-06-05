@@ -39,7 +39,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class TorrentListViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val serverManager: ServerManager,
+    serverManager: ServerManager,
     private val repository: TorrentListRepository,
     private val settingsManager: SettingsManager,
     private val notifier: TorrentDownloadedNotifier,
@@ -87,22 +87,29 @@ class TorrentListViewModel(
         savedStateHandle["currentServer"] = Json.encodeToString(serverConfig)
     }
 
-    private fun startAutoRefresh() {
-        serverScope.cancel()
-        serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
+    var startAutoRefreshJob: Job? = null
 
-        loadMainData()
-        serverScope.launch {
-            combine(
-                autoRefreshInterval,
-                isNaturalLoading,
-                isScreenActive,
-            ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
-                Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
-            }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
-                if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
-                    delay(autoRefreshInterval.seconds)
-                    loadMainData(autoRefresh = true)
+    private fun startAutoRefresh() {
+        startAutoRefreshJob?.cancel()
+
+        startAutoRefreshJob = viewModelScope.launch {
+            serverScope.cancel()
+            serverScope.coroutineContext[Job]?.join()
+            serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
+
+            loadMainData()
+            serverScope.launch {
+                combine(
+                    autoRefreshInterval,
+                    isNaturalLoading,
+                    isScreenActive,
+                ) { autoRefreshInterval, isNaturalLoading, isScreenActive ->
+                    Triple(autoRefreshInterval, isNaturalLoading, isScreenActive)
+                }.collectLatest { (autoRefreshInterval, isNaturalLoading, isScreenActive) ->
+                    if (isScreenActive && isNaturalLoading == null && autoRefreshInterval != 0) {
+                        delay(autoRefreshInterval.seconds)
+                        loadMainData(autoRefresh = true)
+                    }
                 }
             }
         }
