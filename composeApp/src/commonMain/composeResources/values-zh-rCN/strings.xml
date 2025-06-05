@@ -620,4 +620,23 @@
     <string name="settings_server_url_examples">示例：%1$s</string>
     <string name="settings_server_advanced_title">高级设置</string>
     <string name="settings_server_invalid_url">URL 格式无效。</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="other">%1$d 个标头</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">每行添加一个自定义标头。使用等号分隔键和值。</string>
+    <string name="settings_server_advanced_custom_headers">自定义标头</string>
+    <string name="destination_torrents">种子</string>
+    <string name="destination_search">搜索</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">日志</string>
+    <string name="destination_settings">设置</string>
+    <string name="search_result_action_download">下载</string>
+    <string name="settings_pure_black_dark_mode">纯黑暗模式</string>
+    <string name="rss_action_download">下载</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="other">%1$d 个种子已选</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="other">%1$d 个种子已选</item>
+    </plurals>
 </resources>
