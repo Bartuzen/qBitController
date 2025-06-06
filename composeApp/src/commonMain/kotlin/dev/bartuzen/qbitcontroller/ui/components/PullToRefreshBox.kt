@@ -5,12 +5,12 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox as MaterialPullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.bartuzen.qbitcontroller.utils.Platform
 import dev.bartuzen.qbitcontroller.utils.currentPlatform
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox as MaterialPullToRefreshBox
 
 @Composable
 fun PullToRefreshBox(
@@ -23,10 +23,10 @@ fun PullToRefreshBox(
         Indicator(
             modifier = Modifier.align(Alignment.TopCenter),
             isRefreshing = isRefreshing,
-            state = state
+            state = state,
         )
     },
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     if (currentPlatform != Platform.Desktop) {
         MaterialPullToRefreshBox(
@@ -36,12 +36,12 @@ fun PullToRefreshBox(
             state = state,
             contentAlignment = contentAlignment,
             indicator = indicator,
-            content = content
+            content = content,
         )
     } else {
         Box(
             contentAlignment = contentAlignment,
-            modifier = modifier
+            modifier = modifier,
         ) {
             content()
         }

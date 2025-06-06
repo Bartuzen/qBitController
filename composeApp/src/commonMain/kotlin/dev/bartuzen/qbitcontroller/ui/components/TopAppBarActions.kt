@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
-import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 
 data class ActionMenuItem(
     val title: String?,
