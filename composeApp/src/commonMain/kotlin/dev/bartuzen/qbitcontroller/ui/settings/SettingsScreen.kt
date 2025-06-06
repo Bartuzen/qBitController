@@ -13,8 +13,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import me.zhanghai.compose.preference.Preference
@@ -33,6 +35,7 @@ fun SettingsScreen(
     onNavigateToNetworkSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -45,12 +48,15 @@ fun SettingsScreen(
                         overflow = TextOverflow.Ellipsis,
                     )
                 },
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { innerPadding ->
         LazyColumn(
             contentPadding = innerPadding,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         ) {
             item {
                 Preference(
