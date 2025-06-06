@@ -307,6 +307,7 @@ compose.desktop {
             }
 
             windows {
+                iconFile.set(project.file("icon.ico"))
                 shortcut = true
             }
 
