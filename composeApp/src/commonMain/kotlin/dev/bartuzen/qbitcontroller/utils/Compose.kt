@@ -13,6 +13,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -223,4 +225,15 @@ fun appBarColor(
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
     )
     return appBarContainerColor
+}
+
+@Composable
+operator fun PaddingValues.plus(other: PaddingValues): PaddingValues {
+    val layoutDirection = LocalLayoutDirection.current
+    return PaddingValues(
+        start = calculateStartPadding(layoutDirection) + other.calculateStartPadding(layoutDirection),
+        top = calculateTopPadding() + other.calculateTopPadding(),
+        end = calculateEndPadding(layoutDirection) + other.calculateEndPadding(layoutDirection),
+        bottom = calculateBottomPadding() + other.calculateBottomPadding(),
+    )
 }

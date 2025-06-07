@@ -1175,6 +1175,7 @@ fun TorrentListScreen(
                                                 viewModel.resetFilters()
                                                 isSearchMode = false
                                             },
+                                            contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
                                             modifier = Modifier.focusProperties {
                                                 canFocus = drawerState.isClosed
                                             },
@@ -1183,6 +1184,7 @@ fun TorrentListScreen(
                                     2 -> {
                                         NoTorrentsMessage(
                                             serverId = serverId,
+                                            contentPadding = PaddingValues(bottom = innerPadding.calculateBottomPadding()),
                                             onNavigateToAddTorrent = onNavigateToAddTorrent,
                                             onNavigateToRss = onNavigateToRss,
                                             onNavigateToSearch = onNavigateToSearch,
@@ -3750,6 +3752,7 @@ private fun AboutDialog(onDismiss: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 private fun NoTorrentsMessage(
     serverId: Int,
+    contentPadding: PaddingValues,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
     onNavigateToRss: (serverId: Int) -> Unit,
     onNavigateToSearch: (serverId: Int) -> Unit,
@@ -3781,12 +3784,13 @@ private fun NoTorrentsMessage(
                 }
             }
         },
+        contentPadding = contentPadding,
         modifier = modifier,
     )
 }
 
 @Composable
-private fun NoResultsMessage(onResetFilters: () -> Unit, modifier: Modifier = Modifier) {
+private fun NoResultsMessage(onResetFilters: () -> Unit, contentPadding: PaddingValues, modifier: Modifier = Modifier) {
     EmptyListMessage(
         icon = Icons.Default.FilterList,
         title = stringResource(Res.string.torrent_list_no_result_title),
@@ -3796,6 +3800,7 @@ private fun NoResultsMessage(onResetFilters: () -> Unit, modifier: Modifier = Mo
                 Text(text = stringResource(Res.string.torrent_list_no_result_reset))
             }
         },
+        contentPadding = contentPadding,
         modifier = modifier,
     )
 }
