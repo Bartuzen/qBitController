@@ -308,6 +308,7 @@ compose.desktop {
 
             windows {
                 iconFile.set(project.file("icon.ico"))
+                upgradeUuid = "c4421e97-03f4-405b-9655-4db49ad3ab82"
                 shortcut = true
             }
 
