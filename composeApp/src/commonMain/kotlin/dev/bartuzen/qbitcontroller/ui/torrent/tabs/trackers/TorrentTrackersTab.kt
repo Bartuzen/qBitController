@@ -90,6 +90,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.utils.AnimatedNullableVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
@@ -400,6 +401,7 @@ fun TorrentTrackersTab(
                 }
 
                 item {
+                    LazyColumnItemMinHeight()
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                 }
             }

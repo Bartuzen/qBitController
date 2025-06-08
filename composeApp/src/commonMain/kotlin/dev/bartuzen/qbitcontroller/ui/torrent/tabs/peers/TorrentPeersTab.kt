@@ -90,6 +90,7 @@ import dev.bartuzen.qbitcontroller.network.ImageLoaderProvider
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.utils.AnimatedListVisibility
 import dev.bartuzen.qbitcontroller.utils.EventEffect
@@ -421,6 +422,7 @@ fun TorrentPeersTab(
                 }
 
                 item {
+                    LazyColumnItemMinHeight()
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                 }
             }

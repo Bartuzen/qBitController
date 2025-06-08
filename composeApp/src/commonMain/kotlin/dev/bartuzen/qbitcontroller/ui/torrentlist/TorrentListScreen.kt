@@ -175,6 +175,7 @@ import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.EmptyListMessage
+import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
@@ -1138,6 +1139,7 @@ fun TorrentListScreen(
                                 }
 
                                 item {
+                                    LazyColumnItemMinHeight()
                                     Spacer(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding()))
                                 }
                             }

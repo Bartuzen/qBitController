@@ -82,6 +82,7 @@ import dev.bartuzen.qbitcontroller.model.Plugin
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
+import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.ui.components.RadioButtonWithLabel
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
@@ -433,6 +434,7 @@ fun SearchStartScreen(
                 }
 
                 item {
+                    LazyColumnItemMinHeight()
                     Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.safeDrawing))
                 }
             }
