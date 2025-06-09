@@ -316,6 +316,14 @@ compose.desktop {
                 iconFile.set(project.file("icon.icns"))
             }
         }
+
+        buildTypes {
+            release {
+                proguard {
+                    configurationFiles.from("proguard-rules-desktop.pro")
+                }
+            }
+        }
     }
 }
 
