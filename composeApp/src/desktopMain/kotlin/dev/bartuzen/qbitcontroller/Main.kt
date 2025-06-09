@@ -20,30 +20,34 @@ import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.app_name
 import java.awt.Color
 
-fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = stringResource(Res.string.app_name),
-    ) {
-        KoinApplication(
-            application = {
-                modules(appModule)
-            },
-        ) {
-            val configMigrator = koinInject<ConfigMigrator>()
-            var ranConfigMigration by remember { mutableStateOf(false) }
-            if (!ranConfigMigration) {
-                configMigrator.run()
-                ranConfigMigration = true
-            }
+fun main() {
+    System.setProperty("apple.awt.application.appearance", "system")
 
-            AppTheme {
-                val backgroundColor = MaterialTheme.colorScheme.background
-                LaunchedEffect(backgroundColor) {
-                    window.background = Color(backgroundColor.toArgb())
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = stringResource(Res.string.app_name),
+        ) {
+            KoinApplication(
+                application = {
+                    modules(appModule)
+                },
+            ) {
+                val configMigrator = koinInject<ConfigMigrator>()
+                var ranConfigMigration by remember { mutableStateOf(false) }
+                if (!ranConfigMigration) {
+                    configMigrator.run()
+                    ranConfigMigration = true
                 }
 
-                MainScreen()
+                AppTheme {
+                    val backgroundColor = MaterialTheme.colorScheme.background
+                    LaunchedEffect(backgroundColor) {
+                        window.background = Color(backgroundColor.toArgb())
+                    }
+
+                    MainScreen()
+                }
             }
         }
     }
