@@ -114,12 +114,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build project
-        run: ./gradlew packageDistributionForCurrentOS
+        run: ./gradlew packageReleaseDistributionForCurrentOS
 
       - name: Rename & move artifact
         shell: bash
         run: |
-          file=$(find composeApp/build/compose/binaries/main -type f -name 'qBitController-*' -o -name 'qbitcontroller_*' | head -n 1)
+          file=$(find composeApp/build/compose/binaries/main-release -type f -name 'qBitController-*' -o -name 'qbitcontroller_*' | head -n 1)
           if [[ -z "$file" ]]; then
             echo "Can't find artifact"
             exit 1
