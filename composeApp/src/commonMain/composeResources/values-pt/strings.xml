@@ -619,4 +619,64 @@
     <string name="torrent_list_no_server_title">Nenhum servidor disponível</string>
     <string name="torrent_list_no_server_description">Você ainda não adicionou nenhum servidor. Adicione um para começar.</string>
     <string name="torrent_list_no_server_add">Adicionar Servidor</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent selecionado</item>
+        <item quantity="many">%1$d torrents selecionados</item>
+        <item quantity="other">%1$d torrents selecionados</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent selecionado</item>
+        <item quantity="many">%1$d torrents selecionados</item>
+        <item quantity="other">%1$d torrents selecionados</item>
+    </plurals>
+    <string name="torrent_overview_availability">Disponibilidade</string>
+    <string name="search_result_title">Resultados da pesquisa</string>
+    <string name="settings_servers_no_server_configured">Nenhum servidor configurado</string>
+    <string name="settings_server_url">URL</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d feed</item>
+        <item quantity="many">%1$d feeds</item>
+        <item quantity="other">%1$d feeds</item>
+    </plurals>
+    <string name="destination_torrents">Torrents</string>
+    <string name="destination_search">Pesquisar</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Registos</string>
+    <string name="destination_settings">Definições</string>
+    <string name="torrent_overview_piece_downloaded">Descarregado</string>
+    <string name="torrent_overview_piece_map">Mapa de Blocos</string>
+    <string name="torrent_overview_piece_downloading">A descarregar</string>
+    <string name="torrent_overview_piece_not_downloaded">Não descarregado</string>
+    <string name="torrent_overview_popularity">Popularidade</string>
+    <string name="torrent_peers_details_section_overview">Visão geral dos pares</string>
+    <string name="torrent_peers_details_section_transfer">Estatísticas de transferências</string>
+    <string name="rss_details">Detalhes do torrent</string>
+    <string name="rss_action_edit_feed_url">Editar URL do feed</string>
+    <string name="rss_success_feed_change_url">URL do feed alterado com sucesso.</string>
+    <string name="rss_rule_item_enabled">Ativado</string>
+    <string name="rss_rule_item_disabled">Desativado</string>
+    <string name="rss_rule_no_feed_found">Nenhum feed encontrado</string>
+    <string name="search_start_plugins">Plugins</string>
+    <string name="search_result_details">Detalhes do torrent</string>
+    <string name="search_result_action_download">Download</string>
+    <string name="settings_category_appearance">Aparência</string>
+    <string name="settings_pure_black_dark_mode">Modo escuro total</string>
+    <string name="settings_server_url_examples">Exemplos: %1$s</string>
+    <string name="settings_server_advanced_custom_headers">Cabeçalhos personalizados</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d cabeçalho</item>
+        <item quantity="many">%1$d cabeçalhos</item>
+        <item quantity="other">%1$d cabeçalhos</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Adicione um cabeçalho personalizado por linha. Separe a chave e o valor usando um sinal de igual.</string>
+    <string name="rss_action_download">Download</string>
+    <string name="settings_category_general">Geral</string>
+    <string name="settings_category_network">Rede</string>
+    <string name="settings_server_advanced_title">Definições avançadas</string>
+    <string name="settings_servers_add_server">Adicionar servidor</string>
+    <string name="settings_server_server_info">Informações do servidor</string>
+    <string name="settings_server_credentials">Credenciais</string>
+    <string name="rss_description">Descrição</string>
+    <string name="settings_server_invalid_url">O formato da URL é inválido.</string>
+    <string name="rss_new">Novo</string>
 </resources>
