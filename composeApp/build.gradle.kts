@@ -303,6 +303,7 @@ compose.desktop {
             packageVersion = appVersion
 
             linux {
+                iconFile.set(project.file("icon.png"))
                 modules("jdk.security.auth")
             }
 
