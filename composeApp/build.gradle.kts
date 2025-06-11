@@ -188,12 +188,12 @@ buildConfig {
 
 android {
     namespace = "dev.bartuzen.qbitcontroller"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.bartuzen.qbitcontroller"
         minSdk = 21
-        targetSdk = 35
+        targetSdk = 36
         versionCode = appVersionCode
         versionName = appVersion
     }
