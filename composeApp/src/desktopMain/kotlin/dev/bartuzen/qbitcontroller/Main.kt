@@ -14,10 +14,12 @@ import dev.bartuzen.qbitcontroller.di.appModule
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.app_name
+import qbitcontroller.composeapp.generated.resources.icon_rounded
 import java.awt.Color
 
 fun main() {
@@ -27,6 +29,7 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             title = stringResource(Res.string.app_name),
+            icon = painterResource(Res.drawable.icon_rounded),
         ) {
             KoinApplication(
                 application = {
