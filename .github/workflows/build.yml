@@ -76,7 +76,7 @@ jobs:
           name: ios
           path: iosApp/qBitController-unsigned.ipa
 
-  build-desktop:
+  build-windows:
     strategy:
       fail-fast: false
       matrix:
@@ -87,12 +87,75 @@ jobs:
           - os: windows-11-arm
             artifactName: windows-arm64
 
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build project
+        run: ./gradlew packageReleaseMsi
+
+      - name: Rename & move artifact
+        shell: bash
+        run: mv composeApp/build/compose/binaries/main-release/msi/qBitController-*.msi qBitController.msi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifactName }}
+          path: qBitController.msi
+
+  build-ubuntu:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
           - os: ubuntu-latest
             artifactName: linux-x86_64
 
           - os: ubuntu-24.04-arm
             artifactName: linux-arm64
 
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build project
+        run: ./gradlew packageReleaseDeb
+
+      - name: Rename & move artifact
+        run: mv composeApp/build/compose/binaries/main-release/deb/qbitcontroller_*.deb qBitController.deb
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifactName }}
+          path: qBitController.deb
+
+  build-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
           - os: macos-latest
             artifactName: macos-arm64
 
@@ -114,22 +177,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build project
-        run: ./gradlew packageReleaseDistributionForCurrentOS
+        run: ./gradlew packageReleaseDmg
 
       - name: Rename & move artifact
-        shell: bash
-        run: |
-          file=$(find composeApp/build/compose/binaries/main-release -type f -name 'qBitController-*' -o -name 'qbitcontroller_*' | head -n 1)
-          if [[ -z "$file" ]]; then
-            echo "Can't find artifact"
-            exit 1
-          fi
-          newname="qBitController.${file##*.}"
-          mv "$file" "$newname"
-          echo "FILE_NAME=$newname" >> $GITHUB_ENV
+        run: mv composeApp/build/compose/binaries/main-release/dmg/qBitController-*.dmg qBitController.dmg
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifactName }}
-          path: ${{ env.FILE_NAME }}
+          path: qBitController.dmg
