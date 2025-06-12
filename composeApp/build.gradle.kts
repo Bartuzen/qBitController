@@ -298,7 +298,16 @@ compose.desktop {
         mainClass = "dev.bartuzen.qbitcontroller.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.AppImage)
+            val isMacOS = org.gradle.internal.os.OperatingSystem.current().isMacOsX
+            val formats = listOfNotNull(
+                TargetFormat.Dmg,
+                TargetFormat.Msi,
+                // https://youtrack.jetbrains.com/issue/CMP-3814
+                TargetFormat.AppImage.takeIf { !isMacOS }
+            ).toTypedArray()
+
+            targetFormats(*formats)
             packageName = "qBitController"
             packageVersion = appVersion
 
@@ -338,4 +347,106 @@ afterEvaluate {
     }.configureEach {
         dependsOn(":composeApp:generateLanguageList")
     }
+}
+
+listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFolder) ->
+    val appId = "dev.bartuzen.qbitcontroller"
+    val flatpakDir = "$buildDir/flatpak"
+
+    tasks.register("prepare${buildType}Flatpak") {
+        dependsOn("package${buildType}AppImage")
+        doLast {
+            delete {
+                delete("$flatpakDir/bin/")
+                delete("$flatpakDir/lib/")
+            }
+            copy {
+                from("$buildDir/compose/binaries/$buildFolder/app/qBitController/")
+                into("$flatpakDir/")
+            }
+            copy {
+                from("$projectDir/src/desktopMain/composeResources/drawable/icon-rounded.svg")
+                into("$flatpakDir/")
+                rename { "icon.svg" }
+            }
+            copy {
+                from("$projectDir/src/desktopMain/resources/flatpak/manifest.yml")
+                into("$flatpakDir/")
+                rename { "$appId.yml" }
+            }
+            copy {
+                from("$projectDir/src/desktopMain/resources/flatpak/qbitcontroller.desktop")
+                into("$flatpakDir/")
+                rename { "$appId.desktop" }
+            }
+        }
+    }
+
+    tasks.register("bundle${buildType}Flatpak") {
+        dependsOn("prepare${buildType}Flatpak")
+        doLast {
+            exec {
+                workingDir(flatpakDir)
+                val buildCommand = listOf(
+                    "flatpak-builder",
+                    "--disable-rofiles-fuse",
+                    "--force-clean",
+                    "--state-dir=build/flatpak-builder",
+                    "--repo=build/flatpak-repo",
+                    "build/flatpak-target",
+                    "$appId.yml",
+                )
+                commandLine(buildCommand)
+            }
+            exec {
+                workingDir(flatpakDir)
+                val bundleCommand = listOf(
+                    "flatpak",
+                    "build-bundle",
+                    "build/flatpak-repo",
+                    "qBitController.flatpak",
+                    appId,
+                )
+                commandLine(bundleCommand)
+            }
+        }
+    }
+
+    tasks.register("install${buildType}Flatpak") {
+        dependsOn("prepare${buildType}Flatpak")
+        doLast {
+            exec {
+                workingDir(flatpakDir)
+                val installCommand = listOf(
+                    "flatpak-builder",
+                    "--install",
+                    "--user",
+                    "--force-clean",
+                    "--state-dir=build/flatpak-builder",
+                    "--repo=build/flatpak-repo",
+                    "build/flatpak-target",
+                    "$appId.yml",
+                )
+                commandLine(installCommand)
+            }
+        }
+    }
+
+    tasks.register("run${buildType}Flatpak") {
+        dependsOn("install${buildType}Flatpak")
+        doLast {
+            exec {
+                val runCommand = listOf(
+                    "flatpak",
+                    "run",
+                    appId,
+                )
+                commandLine(runCommand)
+            }
+        }
+    }
+}
+
+tasks.matching { it.name.contains("Flatpak") }.configureEach {
+    notCompatibleWithConfigurationCache("")
 }

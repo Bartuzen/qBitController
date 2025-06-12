@@ -1,0 +1,30 @@
+id: dev.bartuzen.qbitcontroller
+sdk: org.freedesktop.Sdk
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+command: /app/bin/qBitController
+finish-args:
+  - --share=network
+  - --socket=x11
+  - --device=dri
+modules:
+  - name: qbitcontroller
+    buildsystem: simple
+    build-commands:
+      - cp -r bin/ /app/bin/
+      - cp -r lib/ /app/lib/
+      - mkdir -p /app/share/applications
+      - install -D dev.bartuzen.qbitcontroller.desktop /app/share/applications/dev.bartuzen.qbitcontroller.desktop
+      - mkdir -p /app/share/icons/hicolor/scalable/apps/
+      - cp icon.svg /app/share/icons/hicolor/scalable/apps/dev.bartuzen.qbitcontroller.svg
+    sources:
+      - type: file
+        path: icon.svg
+      - type: dir
+        path: "bin/"
+        dest: "bin/"
+      - type: dir
+        path: "lib/"
+        dest: "lib/"
+      - type: file
+        path: dev.bartuzen.qbitcontroller.desktop

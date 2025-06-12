@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=qBitController
+Exec=/app/bin/qBitController
+Icon=dev.bartuzen.qbitcontroller
+Terminal=false
