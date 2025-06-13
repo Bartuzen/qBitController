@@ -688,6 +688,7 @@
         <item quantity="other">%1$d minutes</item>
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">Enable torrent swipe actions</string>
+    <string name="settings_check_updates">Automatically check for updates</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>
@@ -752,4 +753,8 @@
 
     <string name="notification_channel_download_completed">Download completed</string>
     <string name="notification_torrent_downloaded">Torrent downloaded</string>
+
+    <string name="update_dialog_title">Update Available</string>
+    <string name="update_dialog_message">qBitController %1$s is now available. You're currently using version %2$s.</string>
+    <string name="update_dialog_download">Download</string>
 </resources>

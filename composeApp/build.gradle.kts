@@ -186,6 +186,10 @@ buildConfig {
 
     buildConfigField("Version", appVersion)
     buildConfigField("SourceCodeUrl", "https://github.com/Bartuzen/qBitController")
+
+    // Desktop only
+    buildConfigField("EnableUpdateChecker", true)
+    buildConfigField("LatestReleaseUrl", "https://api.github.com/repos/Bartuzen/qBitController/releases/latest")
 }
 
 android {

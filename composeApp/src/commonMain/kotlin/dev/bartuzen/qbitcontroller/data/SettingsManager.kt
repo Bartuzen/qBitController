@@ -23,6 +23,8 @@ class SettingsManager(
 
     val searchSort = preference(settings, "searchSort", SearchSort.NAME)
     val isReverseSearchSorting = preference(settings, "isReverseSearchSort", false)
+
+    val checkUpdates = preference(settings, "checkUpdates", true)
 }
 
 enum class Theme {

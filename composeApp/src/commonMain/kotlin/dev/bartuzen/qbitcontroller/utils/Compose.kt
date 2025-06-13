@@ -184,6 +184,46 @@ fun rememberReplaceAndApplyStyle(text: String, oldValue: String, newValue: Strin
         }
     }
 
+@Composable
+fun rememberReplaceAndApplyStyle(text: String, oldValues: List<String>, newValues: List<String>, styles: List<SpanStyle>) =
+    remember(text, oldValues, newValues, styles) {
+        require(oldValues.size == newValues.size && newValues.size == styles.size) {
+            "Lists of oldValues, newValues, and styles must have the same size"
+        }
+
+        buildAnnotatedString {
+            var startIndex = 0
+
+            while (startIndex < text.length) {
+                var earliestMatch: Triple<Int, String, Int>? = null
+
+                oldValues.forEachIndexed { valueIndex, oldValue ->
+                    if (oldValue.isNotEmpty()) {
+                        val index = text.indexOf(oldValue, startIndex)
+                        if (index != -1 && (earliestMatch == null || index < earliestMatch.first)) {
+                            earliestMatch = Triple(index, newValues[valueIndex], valueIndex)
+                        }
+                    }
+                }
+
+                if (earliestMatch != null) {
+                    val (index, newValue, styleIndex) = earliestMatch
+                    append(text.substring(startIndex, index))
+
+                    withStyle(styles[styleIndex]) {
+                        append(newValue)
+                    }
+
+                    val oldValue = oldValues[styleIndex]
+                    startIndex = index + oldValue.length
+                } else {
+                    append(text.substring(startIndex))
+                    break
+                }
+            }
+        }
+    }
+
 fun Modifier.fillWidthOfParent(parentPadding: Dp) = this.layout { measurable, constraints ->
     val placeable = measurable.measure(constraints.copy(maxWidth = constraints.maxWidth + parentPadding.roundToPx()))
     layout(placeable.width, placeable.height) {

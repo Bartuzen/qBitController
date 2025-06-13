@@ -27,7 +27,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.generated.BuildConfig
+import dev.bartuzen.qbitcontroller.utils.Platform
 import dev.bartuzen.qbitcontroller.utils.areNotificationsEnabled
+import dev.bartuzen.qbitcontroller.utils.currentPlatform
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import me.zhanghai.compose.preference.SwitchPreference
 import me.zhanghai.compose.preference.TextFieldPreference
@@ -37,6 +40,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.error_invalid_interval_optional
 import qbitcontroller.composeapp.generated.resources.settings_category_general
+import qbitcontroller.composeapp.generated.resources.settings_check_updates
 import qbitcontroller.composeapp.generated.resources.settings_disabled
 import qbitcontroller.composeapp.generated.resources.settings_enable_torrent_swipe_actions
 import qbitcontroller.composeapp.generated.resources.settings_notification_check_interval
@@ -147,6 +151,17 @@ fun GeneralSettingsScreen(
                     onValueChange = { viewModel.areTorrentSwipeActionsEnabled.value = it },
                     title = { Text(text = stringResource(Res.string.settings_enable_torrent_swipe_actions)) },
                 )
+            }
+
+            if (BuildConfig.EnableUpdateChecker && currentPlatform == Platform.Desktop) {
+                item {
+                    val checkUpdates by viewModel.checkUpdates.flow.collectAsStateWithLifecycle()
+                    SwitchPreference(
+                        value = checkUpdates,
+                        onValueChange = { checked -> viewModel.checkUpdates.value = checked },
+                        title = { Text(text = stringResource(Res.string.settings_check_updates)) },
+                    )
+                }
             }
         }
     }

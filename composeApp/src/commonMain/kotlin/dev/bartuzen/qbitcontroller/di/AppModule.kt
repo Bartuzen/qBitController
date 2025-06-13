@@ -21,6 +21,7 @@ import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentTrackersRepo
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentWebSeedsRepository
 import dev.bartuzen.qbitcontroller.network.ImageLoaderProvider
 import dev.bartuzen.qbitcontroller.network.RequestManager
+import dev.bartuzen.qbitcontroller.network.UpdateChecker
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentViewModel
 import dev.bartuzen.qbitcontroller.ui.log.LogViewModel
 import dev.bartuzen.qbitcontroller.ui.rss.articles.RssArticlesViewModel
@@ -56,6 +57,7 @@ val appModule = module {
     singleOf(::TorrentDownloadedNotifier)
     single { ConfigMigrator(get(named("settings")), get(named("servers"))) }
     singleOf(::ImageLoaderProvider)
+    singleOf(::UpdateChecker)
 
     singleOf(::TorrentListRepository)
 
