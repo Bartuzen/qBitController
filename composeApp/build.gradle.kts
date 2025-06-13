@@ -182,6 +182,8 @@ kotlin {
 }
 
 buildConfig {
+    packageName("dev.bartuzen.qbitcontroller.generated")
+
     buildConfigField("Version", appVersion)
     buildConfigField("SourceCodeUrl", "https://github.com/Bartuzen/qBitController")
 }
