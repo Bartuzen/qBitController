@@ -699,4 +699,8 @@
     <string name="destination_torrents">Торренти</string>
     <string name="destination_search">Пошук</string>
     <string name="destination_rss">RSS</string>
+    <string name="settings_check_updates">Автоматично перевіряти наявність оновлень</string>
+    <string name="update_dialog_title">Доступне оновлення</string>
+    <string name="update_dialog_message">qBitController %1$s тепер доступний. Ви зараз використовуєте версію %2$s.</string>
+    <string name="update_dialog_download">Завантажити</string>
 </resources>
