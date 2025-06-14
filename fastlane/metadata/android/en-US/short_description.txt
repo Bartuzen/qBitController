@@ -1,1 +1,1 @@
-Control qBittorrent from your Android device
+Remotely control qBittorrent from any device

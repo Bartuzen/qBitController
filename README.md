@@ -1,7 +1,6 @@
 # qBitController
 
-qBitController is a free and open-source app for
-controlling [qBittorrent](https://github.com/qbittorrent/qBittorrent) from an Android device.
+qBitController is a free and open-source app that allows you to control [qBittorrent](https://github.com/qbittorrent/qBittorrent) from Android, iOS, Windows, Linux, and macOS devices.
 
 ## Download
 
@@ -21,5 +20,4 @@ controlling [qBittorrent](https://github.com/qbittorrent/qBittorrent) from an An
 
 ## Translations
 
-Check out [Weblate](https://hosted.weblate.org/engage/qbitcontroller) for contributing to
-localization.
+Check out [Weblate](https://hosted.weblate.org/engage/qbitcontroller) for contributing to localization.

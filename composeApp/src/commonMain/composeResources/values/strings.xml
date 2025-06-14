@@ -749,7 +749,7 @@
     <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
     <string name="settings_server_connection_success">Connected to server successfully.</string>
 
-    <string name="about_description">qBitController allows you to control qBittorrent from an Android device.\n\nFor more detailed information and source code: %1$s</string>
+    <string name="about_description">qBitController allows you to control qBittorrent remotely from any device.\n\nFor more detailed information and source code: %1$s</string>
 
     <string name="notification_channel_download_completed">Download completed</string>
     <string name="notification_torrent_downloaded">Torrent downloaded</string>
