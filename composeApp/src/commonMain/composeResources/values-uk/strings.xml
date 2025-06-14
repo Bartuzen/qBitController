@@ -588,7 +588,7 @@
     <string name="settings_server_action_advanced_settings">Розширені налаштування</string>
     <string name="settings_server_edit_success">Сервер успішно відредаговано.</string>
     <string name="settings_server_remove_success">Сервер успішно видалено.</string>
-    <string name="about_description">qBitController дозволяє керувати qBittorrent з пристрою Android.\n\nДля отримання більш детальної інформації та вихідного коду: %1$s</string>
+    <string name="about_description">qBitController дозволяє відаленно керувати qBittorrent з будь-якого пристрою.\n\nДля отримання більш детальної інформації та вихідного коду: %1$s</string>
     <string name="torrent_enable_super_seeding_success">Суперзасівання успішно ввімкнено.</string>
     <string name="torrent_option_download_speed_limit">«Обмеження швидкості завантаження (КіБ/с)</string>
     <string name="torrent_option_share_limit">Обмеження на частку торрента</string>
