@@ -167,9 +167,7 @@
     <string name="search_result_filter_size">Размер</string>
     <string name="search_result_filter_min">Минимум</string>
     <string name="settings_server_remove_success">Сервер успешно удалён.</string>
-    <string name="about_description">qBitController позволяет управлять qBittorrent с устройства Android.
-\n
-\nБолее подробная информация и исходный код: %1$s</string>
+    <string name="about_description">qBitController позволяет управлять qBittorrent с устройства Android. \n \nБолее подробная информация и исходный код: %1$s</string>
     <string name="search_result_leechers">Личеры</string>
     <string name="search_result_open_description">Открыть описание</string>
     <string name="search_result_no_browser">Не удаётся найти браузер.</string>
