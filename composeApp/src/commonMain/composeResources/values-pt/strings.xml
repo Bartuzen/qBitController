@@ -609,7 +609,7 @@
     </plurals>
     <string name="settings_language_system_default">Padrão do Sistema</string>
     <string name="settings_server_advanced_basic_auth_password">Palavra-passe</string>
-    <string name="about_description">O qBitController permite-lhe controlar o qBittorrent a partir de um dispositivo Android.\n\nPara obter informações mais pormenorizadas e o código-fonte: %1$s</string>
+    <string name="about_description">O qBitController permite-lhe controlar o qBittorrent remotamente a partir de qualquer dispositivo.\n\nPara obter informações mais detalhadas e o código-fonte: %1$s</string>
     <string name="rss_success_feed_delete">Fonte eliminada com sucesso.</string>
     <string name="settings_enable_torrent_swipe_actions">Activar ações de gestos de torrent</string>
     <string name="settings_server_username_min_character">Nome de utilizador deve ter pelo menos 3 caracteres.</string>
@@ -679,4 +679,8 @@
     <string name="rss_description">Descrição</string>
     <string name="settings_server_invalid_url">O formato da URL é inválido.</string>
     <string name="rss_new">Novo</string>
+    <string name="update_dialog_title">Atualização disponível</string>
+    <string name="update_dialog_message">O qBitController %1$s já está disponível. Atualmente, está a utilizar a versão %2$s.</string>
+    <string name="update_dialog_download">Descarregar</string>
+    <string name="settings_check_updates">Procurar atualizações automaticamente</string>
 </resources>
