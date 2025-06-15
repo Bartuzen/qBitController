@@ -57,7 +57,7 @@
     <string name="settings_connection_timeout">Tempo limite da conexão</string>
     <string name="settings_auto_refresh_interval">Intervalo de atualização automática</string>
     <string name="settings_server_advanced_basic_auth_password">Senha</string>
-    <string name="about_description">qBitController permite que você controle qBittorrent de um dispositivo Android. \n \nPara informações mais detalhadas e código fonte: %1$s</string>
+    <string name="about_description">qBitController permite que você controle qBittorrent remotamente de qualquer dispositivo. \n \nPara informações mais detalhadas e código fonte: %1$s</string>
     <plurals name="settings_auto_refresh_interval_description">
         <item quantity="one">%1$d segundo</item>
         <item quantity="many">%1$d segundos</item>
@@ -679,4 +679,8 @@
     <string name="destination_torrents">Torrents</string>
     <string name="destination_search">Buscar</string>
     <string name="destination_logs">Logs</string>
+    <string name="update_dialog_title">Atualização disponível</string>
+    <string name="update_dialog_download">Baixar</string>
+    <string name="settings_check_updates">Buscar atualizações automaticamente</string>
+    <string name="update_dialog_message">O qBitController %1$s está disponível. Atualmente, você está na versão %2$s.</string>
 </resources>
