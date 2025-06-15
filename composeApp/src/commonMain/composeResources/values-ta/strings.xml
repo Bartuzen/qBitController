@@ -54,7 +54,7 @@
     <string name="torrent_overview_transfer">இடமாற்றம்</string>
     <string name="torrent_overview_time_active">நேரம் செயலில்</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s ( %2$s க்கு விதைக்கப்படுகிறது)</string>
-    <string name="torrent_overview_downloaded">பதிவிறக்கம்</string>
+    <string name="torrent_overview_downloaded">பதிவிறக்கப்பட்டது</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s இந்த அமர்வு)</string>
     <string name="torrent_overview_uploaded">பதிவேற்றப்பட்டது</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s இந்த அமர்வு)</string>
@@ -86,7 +86,7 @@
     <string name="torrent_trackers_peers">சகாக்கள்</string>
     <string name="torrent_trackers_seeds">விதைகள்</string>
     <string name="torrent_trackers_leeches">லீச்சச்</string>
-    <string name="torrent_trackers_downloaded">பதிவிறக்கம்</string>
+    <string name="torrent_trackers_downloaded">பதிவிறக்கப்பட்டது</string>
     <string name="torrent_trackers_action_edit">டிராக்கரைத் திருத்து</string>
     <plurals name="torrent_trackers_delete_title">
         <item quantity="one">%1$d டிராக்கரை நீக்கு</item>
@@ -126,7 +126,7 @@
     <string name="torrent_peers_details_progress">முன்னேற்றம்</string>
     <string name="torrent_peers_details_download_speed">பதிவிறக்க வேகம்</string>
     <string name="torrent_peers_details_upload_speed">பதிவேற்ற வேகம்</string>
-    <string name="torrent_peers_details_downloaded">பதிவிறக்கம்</string>
+    <string name="torrent_peers_details_downloaded">பதிவிறக்கப்பட்டது</string>
     <string name="torrent_peers_details_uploaded">பதிவேற்றப்பட்டது</string>
     <string name="torrent_peers_details_relevance">பொருத்தமானது</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">ஆர்வமுள்ள (உள்ளூர்) மற்றும் மூச்சுத் திணறல் (பியர்)</string>
@@ -604,6 +604,63 @@
     <string name="settings_server_username_min_character">பயனர்பெயர் குறைந்தது 3 எழுத்துக்கள் நீளமாக இருக்க வேண்டும்.</string>
     <string name="settings_server_password_min_character">கடவுச்சொல் குறைந்தது 6 எழுத்துக்கள் நீளமாக இருக்க வேண்டும்.</string>
     <string name="settings_server_connection_success">சேவையகத்துடன் வெற்றிகரமாக இணைக்கப்பட்டுள்ளது.</string>
-    <string name="about_description">ஆண்ட்ராய்டு சாதனத்திலிருந்து Qbittorrent ஐ கட்டுப்படுத்த QBITController உங்களை அனுமதிக்கிறது.\n\n மேலும் விரிவான செய்தி மற்றும் மூலக் குறியீட்டிற்கு: %1$s</string>
+    <string name="about_description">Qbitcontroller எந்த சாதனத்திலிருந்தும் Qbittorrent ஐ தொலைதூரத்தில் கட்டுப்படுத்த உங்களை அனுமதிக்கிறது. \n\nமேலும் விரிவான செய்தி மற்றும் மூலக் குறியீட்டிற்கு: %1$s</string>
     <string name="notification_channel_download_completed">பதிவிறக்கம் முடிந்தது</string>
+    <string name="settings_server_credentials">நற்சான்றிதழ்கள்</string>
+    <string name="settings_server_advanced_custom_headers">தனிப்பயன் தலைப்புகள்</string>
+    <string name="settings_check_updates">புதுப்பிப்புகளை தானாக சரிபார்க்கவும்</string>
+    <string name="settings_server_server_info">சேவையக செய்தி</string>
+    <string name="update_dialog_title">புதுப்பிப்பு கிடைக்கிறது</string>
+    <string name="update_dialog_message">QBITController %1$s இப்போது கிடைக்கிறது. நீங்கள் தற்போது பதிப்பு %2$s ஐப் பயன்படுத்துகிறீர்கள்.</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d தலைப்பு</item>
+        <item quantity="other">%1$d தலைப்புகள்</item>
+    </plurals>
+    <string name="destination_rss">ஆர்.எச்.எச்</string>
+    <string name="destination_logs">பதிவுகள்</string>
+    <string name="torrent_overview_piece_map">துண்டு வரைபடம்</string>
+    <string name="torrent_overview_piece_downloading">பதிவிறக்குகிறது</string>
+    <string name="torrent_overview_piece_not_downloaded">பதிவிறக்கம் செய்யப்படவில்லை</string>
+    <string name="rss_description">விவரம்</string>
+    <string name="rss_new">புதிய</string>
+    <string name="search_result_action_download">பதிவிறக்கம்</string>
+    <string name="settings_pure_black_dark_mode">தூய கருப்பு இருண்ட பயன்முறை</string>
+    <string name="settings_servers_add_server">சேவையகத்தைச் சேர்க்கவும்</string>
+    <string name="torrent_overview_piece_downloaded">பதிவிறக்கப்பட்டது</string>
+    <string name="settings_servers_no_server_configured">சேவையகம் கட்டமைக்கப்படவில்லை</string>
+    <string name="settings_server_url">முகவரி</string>
+    <string name="update_dialog_download">பதிவிறக்கம்</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d ஊட்டம்</item>
+        <item quantity="other">%1$d ஊட்டங்கள்</item>
+    </plurals>
+    <string name="search_start_plugins">செருகுநிரல்கள்</string>
+    <string name="search_result_details">டொரண்ட் விவரங்கள்</string>
+    <string name="destination_torrents">டொரண்ட்ச்</string>
+    <string name="destination_search">தேடல்</string>
+    <string name="destination_settings">அமைப்புகள்</string>
+    <string name="error_invalid_interval">%1$d மற்றும் %2$d க்கு இடையில் இருக்க வேண்டும்.</string>
+    <string name="error_invalid_interval_optional">%1$d மற்றும் %2$d க்கு இடையில் இருக்க வேண்டும், அல்லது முடக்க காலியாக இருக்க வேண்டும்.</string>
+    <string name="torrent_peers_details_section_overview">தம கண்ணோட்டம்</string>
+    <string name="torrent_peers_details_section_transfer">இடமாற்ற புள்ளிவிவரங்கள்</string>
+    <string name="rss_details">டொரண்ட் விவரங்கள்</string>
+    <string name="rss_action_download">பதிவிறக்கம்</string>
+    <string name="settings_category_network">பிணையம்</string>
+    <string name="settings_server_url_examples">எடுத்துக்காட்டுகள்: %1$s</string>
+    <string name="settings_server_advanced_custom_headers_description">ஒரு வரிக்கு ஒரு தனிப்பயன் தலைப்பைச் சேர்க்கவும். சமமான அடையாளத்தைப் பயன்படுத்தி விசை மற்றும் மதிப்பைப் பிரிக்கவும்.</string>
+    <string name="settings_server_invalid_url">முகவரி வடிவம் தவறானது.</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d டொரண்ட் தேர்ந்தெடுக்கப்பட்டது</item>
+        <item quantity="other">%1$d டொரண்ட்ச் தேர்ந்தெடுக்கப்பட்டது</item>
+    </plurals>
+    <string name="rss_rule_item_enabled">இயக்கப்பட்டது</string>
+    <string name="rss_rule_item_disabled">முடக்கப்பட்டது</string>
+    <string name="search_result_title">தேடல் முடிவுகள்</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d டொரண்ட் தேர்ந்தெடுக்கப்பட்டது</item>
+        <item quantity="other">%1$d டொரண்ட்ச் தேர்ந்தெடுக்கப்பட்டது</item>
+    </plurals>
+    <string name="settings_category_general">பொது</string>
+    <string name="settings_category_appearance">தோற்றம்</string>
+    <string name="settings_server_advanced_title">மேம்பட்ட அமைப்புகள்</string>
 </resources>
