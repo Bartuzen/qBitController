@@ -572,7 +572,7 @@
     <string name="torrent_add_invalid_file">Torrent dosyası geçersiz.</string>
     <string name="rss_add_folder_error">Klasör eklenemedi.</string>
     <string name="rss_rename_folder_error">Klasör yeniden adlandırılamadı.</string>
-    <string name="about_description">qBitController, bir Android cihazından qBittorrent\'i kontrol etmenizi sağlar. \n \nDaha ayrıntılı bilgi ve kaynak kodu için: %1$s</string>
+    <string name="about_description">qBitController, qBittorrent\'i herhangi bir cihazdan uzaktan kontrol etmenizi sağlar.\n \nDaha ayrıntılı bilgi ve kaynak kodu için: %1$s</string>
     <string name="settings_language">Dil</string>
     <string name="settings_language_system_default">Sistem Varsayılanı</string>
     <string name="search_result_filter_reset">Sıfırla</string>
@@ -659,4 +659,8 @@
     <string name="destination_rss">RSS</string>
     <string name="destination_logs">Kayıtlar</string>
     <string name="destination_settings">Ayarlar</string>
+    <string name="settings_check_updates">Güncellemeleri otomatik olarak denetle</string>
+    <string name="update_dialog_title">Güncelleme Mevcut</string>
+    <string name="update_dialog_download">İndir</string>
+    <string name="update_dialog_message">qBitController %1$s sürümü yayınlandı. Şu anda %2$s sürümünü kullanıyorsunuz.</string>
 </resources>
