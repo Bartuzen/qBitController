@@ -1,12 +1,28 @@
 name: Build
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      sign-android:
+        required: false
+        type: boolean
+        default: false
+      disable-cache:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      store-file-base64:
+        required: false
+      store-password:
+        required: false
+      key-alias:
+        required: false
+      key-password:
+        required: false
 
 jobs:
   build-android:
@@ -23,18 +39,32 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ inputs.disable-cache }}
 
       - name: Build project
         run: ./gradlew assembleFreeRelease
+        env:
+          QBITCONTROLLER_SIGN_RELEASE: ${{ inputs.sign-android }}
+          QBITCONTROLLER_STORE_FILE_BASE64: ${{ secrets.store-file-base64 }}
+          QBITCONTROLLER_STORE_PASSWORD: ${{ secrets.store-password }}
+          QBITCONTROLLER_KEY_ALIAS: ${{ secrets.key-alias }}
+          QBITCONTROLLER_KEY_PASSWORD: ${{ secrets.key-password }}
 
       - name: Rename & move APK file
-        run: mv composeApp/build/outputs/apk/free/release/composeApp-free-release-unsigned.apk qBitController-unsigned.apk
+        run: |
+          if [ "${{ inputs.sign-android }}" = "true" ]; then
+            apk_path=composeApp/build/outputs/apk/free/release/composeApp-free-release.apk
+          else
+            apk_path=composeApp/build/outputs/apk/free/release/composeApp-free-release-unsigned.apk
+          fi
+          mv "$apk_path" "qbitcontroller-${{ inputs.version }}-android.apk"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android
-          path: qBitController-unsigned.apk
+          name: ${{ inputs.sign-android && 'android' || 'android-unsigned' }}
+          path: "qbitcontroller-${{ inputs.version }}-android.apk"
 
   build-ios:
     runs-on: macos-latest
@@ -50,6 +80,8 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ inputs.disable-cache }}
 
       - name: Generate Info.plist
         run: ./gradlew generateInfoPlist
@@ -68,13 +100,13 @@ jobs:
         run: |
           mkdir -p Payload
           mv ./build/Build/Products/Release-iphoneos/qBitController.app Payload/
-          zip -r qBitController-unsigned.ipa Payload
+          zip -r "qbitcontroller-${{ inputs.version }}-ios.ipa" Payload
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ios
-          path: iosApp/qBitController-unsigned.ipa
+          name: ios-unsigned
+          path: "iosApp/qbitcontroller-${{ inputs.version }}-ios.ipa"
 
   build-windows:
     strategy:
@@ -83,9 +115,11 @@ jobs:
         include:
           - os: windows-latest
             artifactName: windows-x86_64
+            arch: x86_64
 
           - os: windows-11-arm
             artifactName: windows-arm64
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -100,19 +134,21 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ inputs.disable-cache }}
 
       - name: Build project
         run: ./gradlew packageReleaseMsi
 
       - name: Rename & move artifact
         shell: bash
-        run: mv composeApp/build/compose/binaries/main-release/msi/qBitController-*.msi qBitController.msi
+        run: mv composeApp/build/compose/binaries/main-release/msi/qBitController-*.msi "qbitcontroller-${{ inputs.version }}-windows-${{ matrix.arch }}.msi"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifactName }}
-          path: qBitController.msi
+          path: "qbitcontroller-${{ inputs.version }}-windows-${{ matrix.arch }}.msi"
 
   build-linux:
     strategy:
@@ -121,9 +157,11 @@ jobs:
         include:
           - os: ubuntu-latest
             artifactName: linux-x86_64
+            arch: x86_64
 
           - os: ubuntu-24.04-arm
             artifactName: linux-arm64
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     container:
@@ -141,15 +179,21 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ inputs.disable-cache }}
 
       - name: Build project
         run: ./gradlew bundleReleaseFlatpak
+
+      - name: Rename & move artifact
+        shell: bash
+        run: mv composeApp/build/flatpak/qBitController.flatpak "qbitcontroller-${{ inputs.version }}-linux-${{ matrix.arch }}.flatpak"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifactName }}
-          path: composeApp/build/flatpak/qBitController.flatpak
+          path: "qbitcontroller-${{ inputs.version }}-linux-${{ matrix.arch }}.flatpak"
 
   build-macos:
     strategy:
@@ -158,9 +202,11 @@ jobs:
         include:
           - os: macos-latest
             artifactName: macos-arm64
+            arch: arm64
 
           - os: macos-13
             artifactName: macos-x86_64
+            arch: x86_64
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -175,15 +221,17 @@ jobs:
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: ${{ inputs.disable-cache }}
 
       - name: Build project
         run: ./gradlew packageReleaseDmg
 
       - name: Rename & move artifact
-        run: mv composeApp/build/compose/binaries/main-release/dmg/qBitController-*.dmg qBitController.dmg
+        run: mv composeApp/build/compose/binaries/main-release/dmg/qBitController-*.dmg "qbitcontroller-${{ inputs.version }}-macos-${{ matrix.arch }}.dmg"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifactName }}
-          path: qBitController.dmg
+          path: "qbitcontroller-${{ inputs.version }}-macos-${{ matrix.arch }}.dmg"

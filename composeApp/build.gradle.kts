@@ -1,4 +1,5 @@
 @file:Suppress("UnstableApiUsage")
+@file:OptIn(ExperimentalEncodingApi::class)
 
 import android.databinding.tool.ext.joinToCamelCaseAsVar
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
@@ -7,6 +8,8 @@ import org.jmailen.gradle.kotlinter.tasks.ConfigurableKtLintTask
 import java.io.FileInputStream
 import java.util.Locale
 import java.util.Properties
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -230,7 +233,17 @@ android {
                 return keystoreProperties.getProperty(propertyName) ?: System.getenv(envName)
             }
 
-            storeFile = getProperty("store", "file")?.let { file(it) }
+            val base64StoreFile = getProperty("store", "file", "base64")
+            if (base64StoreFile != null) {
+                val decodedBytes = Base64.decode(base64StoreFile)
+                val tempFile = File.createTempFile("keystore-qbitcontroller-", ".jks")
+                tempFile.outputStream().use { it.write(decodedBytes) }
+                storeFile = tempFile
+                tempFile.deleteOnExit()
+            } else {
+                storeFile = getProperty("store", "file")?.let { file(it) }
+            }
+
             storePassword = getProperty("store", "password")
             keyAlias = getProperty("key", "alias")
             keyPassword = getProperty("key", "password")

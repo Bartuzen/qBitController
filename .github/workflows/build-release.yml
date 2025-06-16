@@ -1,0 +1,51 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+permissions:
+  contents: write
+
+jobs:
+  extract-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set-version.outputs.version }}
+    steps:
+      - name: Extract version
+        id: set-version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+  build:
+    needs: extract-version
+    name: Build
+    uses: ./.github/workflows/build.yml
+    with:
+      version: ${{ needs.extract-version.outputs.version }}
+      sign-android: true
+      disable-cache: true
+    secrets:
+      store-file-base64: ${{ secrets.QBITCONTROLLER_STORE_FILE_BASE64 }}
+      store-password: ${{ secrets.QBITCONTROLLER_STORE_PASSWORD }}
+      key-alias: ${{ secrets.QBITCONTROLLER_KEY_ALIAS }}
+      key-password: ${{ secrets.QBITCONTROLLER_KEY_PASSWORD }}
+
+  upload-release:
+    needs:
+      - extract-version
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: qBitController ${{ github.ref_name }}
+          draft: true
+          files: qbitcontroller-${{ needs.extract-version.outputs.version }}-*.*
