@@ -1,1 +1,1 @@
-Android cihazınızdan qBittorrent’i kontrol edin
+Herhangi bir cihazdan qBittorrent'i uzaktan kontrol edin
