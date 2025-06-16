@@ -466,4 +466,26 @@
         <item quantity="other">Êtes-vous sûr de vouloir supprimer %1$d trackers ?</item>
     </plurals>
     <string name="torrent_add_file_not_found">Le fichier Torrent n\'est pas trouvé.</string>
+    <string name="update_dialog_download">Télécharger</string>
+    <string name="rss_action_refresh_all">Rafraîchir tout</string>
+    <string name="destination_search">Rechercher</string>
+    <string name="destination_rss">RSS</string>
+    <string name="rss_download">Télécharger</string>
+    <string name="rss_mark_as_read">Marquer comme lu</string>
+    <string name="rss_action_add">Ajouter</string>
+    <string name="rss_action_add_feed">Ajouter un flux</string>
+    <string name="rss_action_rename_feed">Renommer le flux</string>
+    <string name="rss_action_edit_feed_url">Modifier l\'URL du flux</string>
+    <string name="rss_action_move_feed">Déplacer le flux</string>
+    <string name="rss_action_delete_feed">Supprimer le flux</string>
+    <string name="rss_action_add_folder">Ajouter un dossier</string>
+    <string name="rss_action_rename_folder">Renommer le dossier</string>
+    <string name="rss_action_move_folder">Déplacer le dossier</string>
+    <string name="rss_action_delete_folder">Supprimer le dossier</string>
+    <string name="rss_action_mark_all_as_read">Tout marquer comme lu</string>
+    <string name="rss_action_refresh">Rafraîchir</string>
+    <string name="rss_action_move_select_folder">Sélectionnez un dossier</string>
+    <string name="search_result_download">Télécharger</string>
+    <string name="search_result_action_download">Télécharger</string>
+    <string name="rss_action_download">Télécharger</string>
 </resources>
