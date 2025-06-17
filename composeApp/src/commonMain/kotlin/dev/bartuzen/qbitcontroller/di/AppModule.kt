@@ -2,7 +2,6 @@ package dev.bartuzen.qbitcontroller.di
 
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.ServerManager
-import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
@@ -53,7 +52,6 @@ val appModule = module {
 
     singleOf(::RequestManager)
     single { ServerManager(get(named("servers"))) }
-    single { SettingsManager(get(named("settings"))) }
     singleOf(::TorrentDownloadedNotifier)
     single { ConfigMigrator(get(named("settings")), get(named("servers"))) }
     singleOf(::ImageLoaderProvider)

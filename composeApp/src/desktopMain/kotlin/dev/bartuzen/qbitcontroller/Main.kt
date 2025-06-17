@@ -15,10 +15,12 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
-import dev.bartuzen.qbitcontroller.data.SettingsManager
+import dev.bartuzen.qbitcontroller.data.DesktopSettingsManager
 import dev.bartuzen.qbitcontroller.di.appModule
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
+import dev.bartuzen.qbitcontroller.model.WindowState
 import dev.bartuzen.qbitcontroller.network.UpdateChecker
 import dev.bartuzen.qbitcontroller.network.VersionInfo
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
@@ -53,7 +55,7 @@ fun main() {
     configMigrator.run()
 
     val updateChecker = koin.get<UpdateChecker>()
-    val settingsManager = koin.get<SettingsManager>()
+    val settingsManager = koin.get<DesktopSettingsManager>()
     if (BuildConfig.EnableUpdateChecker) {
         CoroutineScope(Dispatchers.Default).launch {
             settingsManager.checkUpdates.flow.collectLatest { enabled ->
@@ -66,11 +68,26 @@ fun main() {
         }
     }
 
+    val savedWindowState = settingsManager.windowState.value
     application {
+        val windowState = rememberWindowState(
+            placement = savedWindowState.placement,
+            position = savedWindowState.position,
+            size = savedWindowState.size,
+        )
+        LaunchedEffect(windowState.placement, windowState.position, windowState.size) {
+            settingsManager.windowState.value = WindowState(
+                placement = windowState.placement,
+                position = windowState.position,
+                size = windowState.size,
+            )
+        }
+
         Window(
             onCloseRequest = ::exitApplication,
             title = stringResource(Res.string.app_name),
             icon = painterResource(Res.drawable.icon_rounded),
+            state = windowState,
         ) {
             AppTheme {
                 val backgroundColor = MaterialTheme.colorScheme.background

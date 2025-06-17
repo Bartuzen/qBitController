@@ -3,7 +3,7 @@ package dev.bartuzen.qbitcontroller.data
 import com.russhwolf.settings.Settings
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
 
-class SettingsManager(
+open class SettingsManager(
     settings: Settings,
 ) {
     val theme = preference(settings, "theme", Theme.SYSTEM_DEFAULT)
