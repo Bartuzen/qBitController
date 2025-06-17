@@ -99,14 +99,14 @@ fun TorrentScreen(
     )
 
     val pagerState = rememberPagerState(pageCount = { tabTitles.size })
-    var bottomBarHeights = remember { mutableStateMapOf<Int, Pair<Dp, Boolean>>() }
+    val bottomBarHeights = remember { mutableStateMapOf<Int, Pair<Dp, Boolean>>() }
 
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top),
         topBar = {
             var title by remember { mutableStateOf("") }
-            var actionMenuItems = remember { mutableStateMapOf<Int, List<ActionMenuItem>>() }
+            val actionMenuItems = remember { mutableStateMapOf<Int, List<ActionMenuItem>>() }
 
             LaunchedEffect(Unit) {
                 titleEventFlow.collectLatest {

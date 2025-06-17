@@ -11,7 +11,7 @@ import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 
-@Suppress("ktlint:standard:function-naming")
+@Suppress("ktlint:standard:function-naming", "unused", "FunctionName")
 fun MainViewController() = ComposeUIViewController {
     KoinApplication(
         application = {

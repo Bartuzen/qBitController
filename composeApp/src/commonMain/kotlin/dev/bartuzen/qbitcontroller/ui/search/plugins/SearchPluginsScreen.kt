@@ -298,7 +298,7 @@ fun SearchPluginsScreen(
 
             val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
             AnimatedVisibility(
-                visible = isLoading == true,
+                visible = isLoading,
                 enter = expandVertically(tween(durationMillis = 500)),
                 exit = shrinkVertically(tween(durationMillis = 500)),
             ) {

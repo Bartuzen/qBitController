@@ -14,7 +14,7 @@ inline fun <reified T> SavedStateHandle.getSerializableStateFlow(
     initialValue: T,
 ): StateFlow<T> {
     val value = get<String>(key) ?: Json.encodeToString(initialValue)
-    return getStateFlow<String>(key, value)
+    return getStateFlow(key, value)
         .map { Json.decodeFromString<T>(it) }
         .stateIn(scope, SharingStarted.Eagerly, Json.decodeFromString(value))
 }

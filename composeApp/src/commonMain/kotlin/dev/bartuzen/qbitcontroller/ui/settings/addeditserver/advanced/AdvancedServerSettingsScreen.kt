@@ -107,8 +107,8 @@ fun AdvancedServerSettingsScreen(
                 trustSelfSignedCertificates = trustSelfSignedCertificates,
                 basicAuth = ServerConfig.AdvancedSettings.BasicAuth(
                     isEnabled = basicAuthEnabled,
-                    username = if (basicAuthUsername.isNotEmpty()) basicAuthUsername else null,
-                    password = if (basicAuthPassword.isNotEmpty()) basicAuthPassword else null,
+                    username = basicAuthUsername.ifEmpty { null },
+                    password = basicAuthPassword.ifEmpty { null },
                 ),
                 dnsOverHttps = dnsOverHttps,
                 customHeaders = customHeaders

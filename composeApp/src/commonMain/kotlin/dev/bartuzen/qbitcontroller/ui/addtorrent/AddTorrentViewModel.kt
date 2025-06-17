@@ -36,7 +36,7 @@ class AddTorrentViewModel(
 
     val servers = serverManager.serversFlow
 
-    val serverId = savedStateHandle.getStateFlow<Int?>("serverId", initialServerId)
+    val serverId = savedStateHandle.getStateFlow("serverId", initialServerId)
 
     val serverData = savedStateHandle.getSerializableStateFlow<ServerData?>(viewModelScope, "serverData", null)
 

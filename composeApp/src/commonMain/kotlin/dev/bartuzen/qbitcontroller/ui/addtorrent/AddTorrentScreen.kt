@@ -98,7 +98,6 @@ import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import dev.bartuzen.qbitcontroller.utils.toPlatformFile
 import io.github.vinceglb.filekit.FileKit
-import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.dialogs.FileKitMode
 import io.github.vinceglb.filekit.dialogs.FileKitType
 import io.github.vinceglb.filekit.dialogs.openFilePicker
@@ -178,9 +177,9 @@ fun AddTorrentScreen(
     var torrentLinkError by rememberSaveable { mutableStateOf<StringResource?>(null) }
 
     var torrentFiles by rememberSaveable(stateSaver = jsonSaver(serializer = ListSerializer(PlatformFileSerializer))) {
-        mutableStateOf<List<PlatformFile>>(torrentFileUris?.map { it.toPlatformFile() } ?: emptyList())
+        mutableStateOf(torrentFileUris?.map { it.toPlatformFile() } ?: emptyList())
     }
-    var torrentFileError by rememberSaveable { mutableStateOf<Boolean>(false) }
+    var torrentFileError by rememberSaveable { mutableStateOf(false) }
 
     var selectedCategory by rememberSaveable { mutableStateOf<String?>(null) }
     val selectedTags = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
@@ -1124,7 +1123,7 @@ fun AddTorrentScreen(
 
             val isAdding by viewModel.isAdding.collectAsStateWithLifecycle()
             AnimatedVisibility(
-                visible = isAdding == true,
+                visible = isAdding,
                 enter = expandVertically(tween(durationMillis = 500)),
                 exit = shrinkVertically(tween(durationMillis = 500)),
             ) {

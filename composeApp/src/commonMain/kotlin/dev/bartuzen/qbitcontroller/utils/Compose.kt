@@ -146,7 +146,7 @@ fun rememberSearchStyle(text: String, searchQuery: String, style: SpanStyle) = r
             }
             val (matchIndex, token) = firstMatch
             append(text.substring(currentIndex, matchIndex))
-            var highlightStart = matchIndex
+            val highlightStart = matchIndex
             var highlightEnd = matchIndex + token.length
             while (true) {
                 val nextMatch = terms.mapNotNull { token ->

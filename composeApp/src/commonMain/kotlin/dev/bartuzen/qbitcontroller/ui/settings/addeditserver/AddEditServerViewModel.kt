@@ -47,7 +47,7 @@ class AddEditServerViewModel(
 
         _isTesting.value = true
         val job = viewModelScope.launch {
-            val result = catchRequestError<Unit>(
+            val result = catchRequestError(
                 block = {
                     val service =
                         requestManager.buildTorrentService(serverConfig, requestManager.buildHttpClient(serverConfig))
