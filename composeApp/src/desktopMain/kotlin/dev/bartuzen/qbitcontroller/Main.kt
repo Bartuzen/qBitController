@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
@@ -31,6 +32,7 @@ import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.context.startKoin
@@ -75,12 +77,10 @@ fun main() {
             position = savedWindowState.position,
             size = savedWindowState.size,
         )
-        LaunchedEffect(windowState.placement, windowState.position, windowState.size) {
-            settingsManager.windowState.value = WindowState(
-                placement = windowState.placement,
-                position = windowState.position,
-                size = windowState.size,
-            )
+        LaunchedEffect(windowState) {
+            snapshotFlow { WindowState(windowState.placement, windowState.position, windowState.size) }
+                .debounce(200)
+                .collect { settingsManager.windowState.value = it }
         }
 
         Window(

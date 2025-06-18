@@ -56,7 +56,13 @@ kotlin {
         }
     }
 
-    jvm("desktop")
+    jvm("desktop") {
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-opt-in=kotlinx.coroutines.FlowPreview",
+            )
+        }
+    }
 
     compilerOptions {
         freeCompilerArgs.addAll(
