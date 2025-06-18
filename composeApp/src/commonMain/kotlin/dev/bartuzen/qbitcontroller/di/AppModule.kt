@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.di
 
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.data.repositories.TorrentListRepository
@@ -41,6 +42,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersViewModel
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.trackers.TorrentTrackersViewModel
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.webseeds.TorrentWebSeedsViewModel
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentListViewModel
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
@@ -48,9 +50,10 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
-    includes(platformModule, localStorageModule)
+    includes(platformModule)
 
     singleOf(::RequestManager)
+    single { SettingsManager(get(named("settings"))) }
     single { ServerManager(get(named("servers"))) }
     singleOf(::TorrentDownloadedNotifier)
     single { ConfigMigrator(get(named("settings")), get(named("servers"))) }
@@ -109,3 +112,5 @@ val appModule = module {
     viewModelOf(::AppearanceSettingsViewModel)
     viewModelOf(::NetworkSettingsViewModel)
 }
+
+expect val platformModule: Module

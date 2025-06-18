@@ -1,6 +1,8 @@
 package dev.bartuzen.qbitcontroller.di
 
-import dev.bartuzen.qbitcontroller.data.SettingsManager
+import android.content.Context
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.SharedPreferencesSettings
 import dev.bartuzen.qbitcontroller.data.notification.AppNotificationManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedWorker
 import org.koin.androidx.workmanager.dsl.workerOf
@@ -9,7 +11,13 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 actual val platformModule = module {
-    single { SettingsManager(get(named("settings"))) }
+    listOf("settings", "servers", "torrents").forEach { name ->
+        single<Settings>(named(name)) {
+            val context: Context = get()
+            SharedPreferencesSettings(context.getSharedPreferences(name, Context.MODE_PRIVATE))
+        }
+    }
+
     singleOf(::AppNotificationManager)
 
     workerOf(::TorrentDownloadedWorker)
