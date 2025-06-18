@@ -11,9 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
@@ -44,6 +46,7 @@ import qbitcontroller.composeapp.generated.resources.update_dialog_download
 import qbitcontroller.composeapp.generated.resources.update_dialog_message
 import qbitcontroller.composeapp.generated.resources.update_dialog_title
 import java.awt.Color
+import java.awt.Dimension
 
 fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
@@ -89,6 +92,13 @@ fun main() {
             icon = painterResource(Res.drawable.icon_rounded),
             state = windowState,
         ) {
+            val density = LocalDensity.current
+            LaunchedEffect(density) {
+                window.minimumSize = with(density) {
+                    Dimension(420.dp.toPx().toInt(), 360.dp.toPx().toInt())
+                }
+            }
+
             AppTheme {
                 val backgroundColor = MaterialTheme.colorScheme.background
                 LaunchedEffect(backgroundColor) {
