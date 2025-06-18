@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Warning
@@ -230,10 +231,12 @@ fun LogItem(log: Log, modifier: Modifier = Modifier) {
                     }
                 }
 
-                Text(
-                    text = log.message,
-                    color = logColor,
-                )
+                SelectionContainer {
+                    Text(
+                        text = log.message,
+                        color = logColor,
+                    )
+                }
             }
         }
     }
