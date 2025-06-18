@@ -28,7 +28,7 @@ fun PullToRefreshBox(
     },
     content: @Composable BoxScope.() -> Unit,
 ) {
-    if (currentPlatform != Platform.Desktop) {
+    if (currentPlatform !is Platform.Desktop) {
         MaterialPullToRefreshBox(
             isRefreshing = isRefreshing,
             onRefresh = onRefresh,

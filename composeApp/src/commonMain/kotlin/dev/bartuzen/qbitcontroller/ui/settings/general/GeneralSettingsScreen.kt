@@ -153,7 +153,7 @@ fun GeneralSettingsScreen(
                 )
             }
 
-            if (BuildConfig.EnableUpdateChecker && currentPlatform == Platform.Desktop) {
+            if (BuildConfig.EnableUpdateChecker && currentPlatform is Platform.Desktop) {
                 item {
                     val checkUpdates by viewModel.checkUpdates.flow.collectAsStateWithLifecycle()
                     SwitchPreference(

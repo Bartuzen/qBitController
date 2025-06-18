@@ -6,7 +6,11 @@ sealed interface Platform {
         data object IOS : Mobile
     }
 
-    data object Desktop : Platform
+    sealed interface Desktop : Platform {
+        data object Windows : Desktop
+        data object Linux : Desktop
+        data object MacOS : Desktop
+    }
 }
 
 expect val currentPlatform: Platform
