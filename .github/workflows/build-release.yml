@@ -49,3 +49,66 @@ jobs:
           name: qBitController ${{ github.ref_name }}
           draft: true
           files: qbitcontroller-${{ needs.extract-version.outputs.version }}-*.*
+
+  build-playstore:
+    needs: extract-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
+
+      - name: Create google-services.json
+        run: echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 --decode > composeApp/google-services.json
+
+      - name: Build project
+        run: ./gradlew bundleFirebaseRelease
+        env:
+          QBITCONTROLLER_SIGN_RELEASE: true
+          QBITCONTROLLER_STORE_FILE_BASE64: ${{ secrets.QBITCONTROLLER_STORE_FILE_BASE64 }}
+          QBITCONTROLLER_STORE_PASSWORD: ${{ secrets.QBITCONTROLLER_STORE_PASSWORD }}
+          QBITCONTROLLER_KEY_ALIAS: ${{ secrets.QBITCONTROLLER_KEY_ALIAS }}
+          QBITCONTROLLER_KEY_PASSWORD: ${{ secrets.QBITCONTROLLER_KEY_PASSWORD }}
+
+      - name: Rename & move artifact
+        run: mv composeApp/build/outputs/bundle/firebaseRelease/composeApp-firebase-release.aab "qbitcontroller-${{ needs.extract-version.outputs.version }}-android-playstore.aab"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-playstore
+          path: "qbitcontroller-${{ needs.extract-version.outputs.version }}-android-playstore.aab"
+
+  upload-playstore:
+    needs:
+      - extract-version
+      - build-playstore
+      - upload-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Play Store artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: android-playstore
+
+      - name: Upload to Play Store
+        run: |
+          fastlane supply \
+            --aab qbitcontroller-${{ needs.extract-version.outputs.version }}-android-playstore.aab \
+            --package_name dev.bartuzen.qbitcontroller \
+            --skip_upload_metadata true \
+            --skip_upload_changelogs true \
+            --skip_upload_images true \
+            --skip_upload_screenshots true
+        env:
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
