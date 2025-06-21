@@ -22,7 +22,6 @@ jobs:
 
   build:
     needs: extract-version
-    name: Build
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.extract-version.outputs.version }}

@@ -20,7 +20,6 @@ jobs:
 
   build:
     needs: extract-version
-    name: Build
     uses: ./.github/workflows/build.yml
     with:
       version: ${{ needs.extract-version.outputs.version }}
@@ -46,11 +45,29 @@ jobs:
       - name: Remove Play Store version
         run: rm qbitcontroller-${{ needs.extract-version.outputs.version }}-android-playstore.aab
 
-      - name: Create draft release
+      - name: Extract release body from tag message
+        id: changelog
+        run: |
+          TAG_NAME=${{ github.ref_name }}
+          TAG_SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/git/refs/tags/$TAG_NAME" | \
+            jq -r '.object.sha')
+          
+          BODY=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/git/tags/$TAG_SHA" | \
+            jq -r '.message' | tail -n +2)
+          
+          {
+            echo "body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
           name: qBitController ${{ github.ref_name }}
-          draft: true
+          body: ${{ steps.changelog.outputs.body }}
           files: qbitcontroller-${{ needs.extract-version.outputs.version }}-*.*
 
   build-playstore:
