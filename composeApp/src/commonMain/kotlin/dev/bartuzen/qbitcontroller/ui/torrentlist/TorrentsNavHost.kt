@@ -40,7 +40,6 @@ import kotlin.reflect.typeOf
 
 @Composable
 fun TorrentsNavHost(
-    isScreenActive: Boolean,
     currentServer: ServerConfig?,
     navigateToStartFlow: Flow<Unit>,
     torrentsDeepLinkFlow: Flow<DeepLinkDestination>,
@@ -50,18 +49,13 @@ fun TorrentsNavHost(
 ) {
     val navController = rememberNavController()
 
-    // Using currentServer and isScreenActive directly causes bugs beyond human comprehension
+    // Using currentServer directly causes bugs beyond human comprehension
     val serverManager = koinInject<ServerManager>()
     var currentServerLocal by rememberSaveable(stateSaver = jsonSaver()) {
         mutableStateOf(serverManager.serversFlow.value.firstOrNull())
     }
     LaunchedEffect(currentServer) {
         currentServerLocal = currentServer
-    }
-
-    var isScreenActiveLocal by rememberSaveable { mutableStateOf(true) }
-    LaunchedEffect(isScreenActive) {
-        isScreenActiveLocal = isScreenActive
     }
 
     LaunchedEffect(navigateToStartFlow) {
@@ -136,7 +130,6 @@ fun TorrentsNavHost(
             }
 
             TorrentListScreen(
-                isScreenActive = isScreenActiveLocal && navController.currentDestination == it.destination,
                 currentServer = currentServerLocal,
                 addTorrentFlow = addTorrentChannel.receiveAsFlow(),
                 deleteTorrentFlow = deleteTorrentChannel.receiveAsFlow(),
@@ -165,7 +158,6 @@ fun TorrentsNavHost(
                 serverId = args.serverId,
                 torrentHash = args.torrentHash,
                 torrentName = args.torrentName,
-                isScreenActive = isScreenActiveLocal && navController.currentDestination == it.destination,
                 onNavigateBack = { navController.navigateUp() },
                 onDeleteTorrent = {
                     navController.previousBackStackEntry

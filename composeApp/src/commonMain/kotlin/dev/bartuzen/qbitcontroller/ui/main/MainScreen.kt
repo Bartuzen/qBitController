@@ -353,7 +353,6 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                 ) {
                     composable<NavHostDestination.Torrents> {
                         TorrentsNavHost(
-                            isScreenActive = navController.currentDestination == it.destination,
                             currentServer = currentServer,
                             navigateToStartFlow = navigateToStartChannels[0].receiveAsFlow(),
                             torrentsDeepLinkFlow = torrentsDeepLinkChannel.receiveAsFlow(),

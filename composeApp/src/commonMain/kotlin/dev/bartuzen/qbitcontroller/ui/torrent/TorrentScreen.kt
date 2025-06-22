@@ -43,6 +43,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.currentStateAsState
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.PrimaryScrollableTabRow
@@ -77,7 +80,6 @@ fun TorrentScreen(
     serverId: Int,
     torrentHash: String,
     torrentName: String?,
-    isScreenActive: Boolean,
     onNavigateBack: () -> Unit,
     onDeleteTorrent: () -> Unit,
     modifier: Modifier = Modifier,
@@ -209,6 +211,11 @@ fun TorrentScreen(
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(it)
                 }
+            }
+
+            val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+            var isScreenActive by remember(lifecycleState.isAtLeast(Lifecycle.State.STARTED)) {
+                mutableStateOf(lifecycleState.isAtLeast(Lifecycle.State.STARTED))
             }
 
             HorizontalPager(

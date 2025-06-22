@@ -160,7 +160,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.currentStateAsState
 import dev.bartuzen.qbitcontroller.data.TorrentSort
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
 import dev.bartuzen.qbitcontroller.model.Category
@@ -370,7 +373,6 @@ object TorrentListKeys {
 
 @Composable
 fun TorrentListScreen(
-    isScreenActive: Boolean,
     currentServer: ServerConfig?,
     addTorrentFlow: Flow<Int>,
     deleteTorrentFlow: Flow<Unit>,
@@ -406,8 +408,9 @@ fun TorrentListScreen(
         viewModel.setCurrentServer(currentServer)
     }
 
-    LaunchedEffect(isScreenActive) {
-        viewModel.setScreenActive(isScreenActive)
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+    LaunchedEffect(lifecycleState.isAtLeast(Lifecycle.State.STARTED)) {
+        viewModel.setScreenActive(lifecycleState.isAtLeast(Lifecycle.State.STARTED))
     }
 
     LaunchedEffect(Unit) {
