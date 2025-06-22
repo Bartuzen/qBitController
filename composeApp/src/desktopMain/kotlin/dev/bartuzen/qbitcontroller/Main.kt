@@ -29,6 +29,8 @@ import dev.bartuzen.qbitcontroller.network.VersionInfo
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
+import dev.bartuzen.qbitcontroller.utils.Platform
+import dev.bartuzen.qbitcontroller.utils.currentPlatform
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.CoroutineScope
@@ -92,10 +94,16 @@ fun main() {
             icon = painterResource(Res.drawable.icon_rounded),
             state = windowState,
         ) {
-            val density = LocalDensity.current
-            LaunchedEffect(density) {
-                window.minimumSize = with(density) {
-                    Dimension(420.dp.toPx().toInt(), 360.dp.toPx().toInt())
+            if (currentPlatform is Platform.Desktop.MacOS) {
+                LaunchedEffect(Unit) {
+                    window.minimumSize = Dimension(420, 360)
+                }
+            } else {
+                val density = LocalDensity.current
+                LaunchedEffect(density) {
+                    window.minimumSize = with(density) {
+                        Dimension(420.dp.toPx().toInt(), 360.dp.toPx().toInt())
+                    }
                 }
             }
 
