@@ -9,6 +9,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CancellationException
 import platform.Foundation.NSURLErrorCannotConnectToHost
 import platform.Foundation.NSURLErrorCannotFindHost
+import platform.Foundation.NSURLErrorNotConnectedToInternet
 import platform.Foundation.NSURLErrorTimedOut
 
 @OptIn(ExperimentalForeignApi::class)
@@ -23,6 +24,7 @@ actual suspend fun <T> catchRequestError(block: suspend () -> RequestResult<T>, 
         NSURLErrorCannotConnectToHost -> RequestResult.Error.RequestError.CannotConnect
         NSURLErrorTimedOut -> RequestResult.Error.RequestError.Timeout
         NSURLErrorCannotFindHost -> RequestResult.Error.RequestError.UnknownHost
+        NSURLErrorNotConnectedToInternet -> RequestResult.Error.RequestError.NoInternet
         else -> RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
     }
 } catch (e: Exception) {

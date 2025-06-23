@@ -12,6 +12,7 @@ import qbitcontroller.composeapp.generated.resources.error_banned
 import qbitcontroller.composeapp.generated.resources.error_cannot_connect
 import qbitcontroller.composeapp.generated.resources.error_invalid_credentials
 import qbitcontroller.composeapp.generated.resources.error_no_data
+import qbitcontroller.composeapp.generated.resources.error_no_internet
 import qbitcontroller.composeapp.generated.resources.error_timeout
 import qbitcontroller.composeapp.generated.resources.error_unknown
 import qbitcontroller.composeapp.generated.resources.error_unknown_host
@@ -184,6 +185,7 @@ suspend fun getErrorMessage(error: RequestResult.Error) = when (error) {
     RequestResult.Error.RequestError.UnknownHost -> getString(Res.string.error_unknown_host)
     RequestResult.Error.RequestError.Timeout -> getString(Res.string.error_timeout)
     RequestResult.Error.RequestError.NoData -> getString(Res.string.error_no_data)
+    RequestResult.Error.RequestError.NoInternet -> getString(Res.string.error_no_internet)
     is RequestResult.Error.RequestError.UnknownLoginResponse ->
         getString(Res.string.error_unknown_login_response, error.response.toString())
     is RequestResult.Error.RequestError.Unknown -> getString(Res.string.error_unknown, error.message)

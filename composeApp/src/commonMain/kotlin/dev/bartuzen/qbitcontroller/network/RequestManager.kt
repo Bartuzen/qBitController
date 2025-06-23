@@ -264,6 +264,7 @@ sealed class RequestResult<out T : Any?> {
             data object UnknownHost : RequestError()
             data object Timeout : RequestError()
             data object NoData : RequestError()
+            data object NoInternet : RequestError()
             data class UnknownLoginResponse(val response: String?) : RequestError()
             data class Unknown(val message: String) : RequestError()
         }
