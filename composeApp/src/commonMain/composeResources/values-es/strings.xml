@@ -683,4 +683,5 @@
     <string name="update_dialog_title">Actualización disponible</string>
     <string name="update_dialog_download">Descargar</string>
     <string name="update_dialog_message">qBitController %1$s está disponible. Actualmente estás usando la versión %2$s.</string>
+    <string name="error_no_internet">Sin conexión a Internet.</string>
 </resources>
