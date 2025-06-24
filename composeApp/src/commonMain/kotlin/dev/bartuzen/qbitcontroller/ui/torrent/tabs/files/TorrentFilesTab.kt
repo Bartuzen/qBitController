@@ -66,7 +66,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.draw.rotate
@@ -130,7 +129,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_files_rename_folder
 import qbitcontroller.composeapp.generated.resources.torrent_files_rename_folder_hint
 import qbitcontroller.composeapp.generated.resources.torrent_files_selected
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TorrentFilesTab(
     serverId: Int,
