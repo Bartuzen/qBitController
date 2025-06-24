@@ -703,4 +703,5 @@
     <string name="update_dialog_title">Доступно обновление</string>
     <string name="update_dialog_message">Доступна новая версия qBitController %1$s. Сейчас вы используете версию %2$s.</string>
     <string name="update_dialog_download">Загрузить</string>
+    <string name="error_no_internet">Нет подключения к Интернету.</string>
 </resources>
