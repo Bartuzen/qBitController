@@ -349,6 +349,31 @@ compose.desktop {
 
             macOS {
                 iconFile.set(project.file("icon.icns"))
+
+                val emptyResourcesElement = "<resources>\\s*</resources>|<resources/>".toRegex()
+                val valuesPrefix = "values(-(b\\+)?)?".toRegex()
+                val languages = project.fileTree("${project.projectDir}/src/commonMain/composeResources/")
+                    .matching { include("**/strings.xml") }
+                    .filterNot { it.readText().contains(emptyResourcesElement) }
+                    .mapNotNull { it.parentFile.name }
+                    .sorted()
+                    .map {
+                        it.replaceFirst(valuesPrefix, "")
+                            .replace("-r", "-")
+                            .replace("+", "-")
+                            .takeIf(String::isNotBlank) ?: "en"
+                    }
+
+                infoPlist {
+                    this.extraKeysRawXml = buildString {
+                        appendLine("<key>CFBundleLocalizations</key>")
+                        appendLine("<array>")
+                        languages.forEach {
+                            appendLine("    <string>$it</string>")
+                        }
+                        appendLine("</array>")
+                    }
+                }
             }
         }
 
