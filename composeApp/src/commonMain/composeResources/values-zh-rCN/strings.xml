@@ -643,4 +643,5 @@
     <string name="update_dialog_message">qBitController %1$s 现已可用。您当前使用的是 %2$s 版本。</string>
     <string name="update_dialog_download">下载</string>
     <string name="update_dialog_title">有可用更新</string>
+    <string name="error_no_internet">无网络连接</string>
 </resources>
