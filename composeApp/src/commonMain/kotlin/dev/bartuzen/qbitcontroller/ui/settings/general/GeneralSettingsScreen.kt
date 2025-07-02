@@ -28,12 +28,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
+import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
+import dev.bartuzen.qbitcontroller.preferences.TextFieldPreference
 import dev.bartuzen.qbitcontroller.utils.Platform
 import dev.bartuzen.qbitcontroller.utils.areNotificationsEnabled
 import dev.bartuzen.qbitcontroller.utils.currentPlatform
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import me.zhanghai.compose.preference.SwitchPreference
-import me.zhanghai.compose.preference.TextFieldPreference
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.koin.compose.viewmodel.koinViewModel

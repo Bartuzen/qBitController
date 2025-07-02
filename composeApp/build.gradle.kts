@@ -121,7 +121,7 @@ kotlin {
 
                 implementation(libs.htmlConverter)
 
-                implementation(libs.composePreferences)
+                implementation(project(":preferences"))
 
                 implementation(libs.multiplatformSettings)
 

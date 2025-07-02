@@ -20,7 +20,6 @@ okhttp = "4.12.0"
 desugar = "2.1.5"
 coil = "3.2.0"
 htmlConverter = "1.0.4"
-composePreference = "3.0.2"
 multiplatorm-settings = "1.3.0"
 materialKolor = "3.0.0-beta01"
 fileKit = "0.10.0-beta04"
@@ -86,8 +85,6 @@ coil-svg = { module = "io.coil-kt.coil3:coil-svg", version.ref = "coil" }
 
 htmlConverter = { module = "be.digitalia.compose.htmlconverter:htmlconverter", version.ref = "htmlConverter" }
 
-composePreferences = { module = "dev.bartuzen:composepreference", version.ref = "composePreference" }
-
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatorm-settings" }
 
 materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
@@ -111,6 +108,7 @@ kotlinx-coroutines-swing = { group = "org.jetbrains.kotlinx", name = "kotlinx-co
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

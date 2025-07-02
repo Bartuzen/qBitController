@@ -20,9 +20,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.data.Theme
+import dev.bartuzen.qbitcontroller.preferences.ListPreference
+import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import me.zhanghai.compose.preference.ListPreference
-import me.zhanghai.compose.preference.SwitchPreference
 import org.koin.compose.viewmodel.koinViewModel
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_category_appearance

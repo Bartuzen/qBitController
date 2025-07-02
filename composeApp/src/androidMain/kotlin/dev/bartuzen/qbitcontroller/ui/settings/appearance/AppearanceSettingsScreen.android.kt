@@ -11,9 +11,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.os.LocaleListCompat
 import dev.bartuzen.qbitcontroller.generated.SupportedLanguages
+import dev.bartuzen.qbitcontroller.preferences.ListPreference
+import dev.bartuzen.qbitcontroller.preferences.Preference
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import me.zhanghai.compose.preference.ListPreference
-import me.zhanghai.compose.preference.Preference
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_language
 import qbitcontroller.composeapp.generated.resources.settings_language_system_default

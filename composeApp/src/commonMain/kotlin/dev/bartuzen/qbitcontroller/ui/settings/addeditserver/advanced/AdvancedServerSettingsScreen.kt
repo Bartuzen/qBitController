@@ -36,12 +36,12 @@ import dev.bartuzen.qbitcontroller.model.DnsOverHttps
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.network.supportsDnsOverHttps
 import dev.bartuzen.qbitcontroller.network.supportsSelfSignedCertificates
+import dev.bartuzen.qbitcontroller.preferences.ListPreference
+import dev.bartuzen.qbitcontroller.preferences.PreferenceCategory
+import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
+import dev.bartuzen.qbitcontroller.preferences.TextFieldPreference
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import me.zhanghai.compose.preference.ListPreference
-import me.zhanghai.compose.preference.PreferenceCategory
-import me.zhanghai.compose.preference.SwitchPreference
-import me.zhanghai.compose.preference.TextFieldPreference
 import org.jetbrains.compose.resources.pluralStringResource
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_disabled

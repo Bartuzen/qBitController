@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.Theme
+import dev.bartuzen.qbitcontroller.preferences.LocalPreferenceTheme
+import dev.bartuzen.qbitcontroller.preferences.preferenceTheme
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import me.zhanghai.compose.preference.LocalPreferenceTheme
-import me.zhanghai.compose.preference.preferenceTheme
 import org.koin.compose.koinInject
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
