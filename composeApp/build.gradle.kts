@@ -48,9 +48,6 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-
-            binaryOption("bundleShortVersionString", Versions.AppVersion)
-            binaryOption("bundleVersion", Versions.AppVersionCode.toString())
         }
     }
 

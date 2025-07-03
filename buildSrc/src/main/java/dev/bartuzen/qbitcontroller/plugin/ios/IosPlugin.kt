@@ -10,5 +10,16 @@ class IosPlugin : Plugin<Project> {
             group = "other"
             description = "Generates Info.plist file"
         }
+
+        project.tasks.register<GenerateXcconfigTask>("generateXcconfig") {
+            group = "other"
+            description = "Generates Config.xcconfig file"
+        }
+
+        project.tasks.register("generateIosFiles") {
+            group = "other"
+            description = "Generates required files to build the iOS app"
+            dependsOn("generateInfoPlist", "generateXcconfig")
+        }
     }
 }

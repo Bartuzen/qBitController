@@ -71,3 +71,4 @@ xcuserdata/
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 /iosApp/iosApp/Info.plist
+/iosApp/Configuration/Config.xcconfig
