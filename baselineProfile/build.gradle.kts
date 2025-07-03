@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+import dev.bartuzen.qbitcontroller.Versions
+
 plugins {
     alias(libs.plugins.android.test)
     alias(libs.plugins.kotlinAndroid)
@@ -8,20 +10,20 @@ plugins {
 
 android {
     namespace = "dev.bartuzen.baselineprofile"
-    compileSdk = 36
+    compileSdk = Versions.Android.CompileSdk
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = Versions.Android.JavaVersion
+        targetCompatibility = Versions.Android.JavaVersion
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_21.toString()
+        jvmTarget = Versions.Android.JvmTarget
     }
 
     defaultConfig {
         minSdk = 28
-        targetSdk = 36
+        targetSdk = Versions.Android.TargetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"

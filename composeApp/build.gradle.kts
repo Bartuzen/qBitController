@@ -2,6 +2,7 @@
 @file:OptIn(ExperimentalEncodingApi::class)
 
 import android.databinding.tool.ext.joinToCamelCaseAsVar
+import dev.bartuzen.qbitcontroller.Versions
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jmailen.gradle.kotlinter.tasks.ConfigurableKtLintTask
@@ -28,13 +29,10 @@ plugins {
     id("dev.bartuzen.qbitcontroller.ios")
 }
 
-val appVersion = "1.1.1"
-val appVersionCode = 21
-
 kotlin {
     androidTarget {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
+            jvmTarget.set(JvmTarget.fromTarget(Versions.Android.JvmTarget))
 
             freeCompilerArgs.addAll(
                 "-opt-in=com.google.accompanist.permissions.ExperimentalPermissionsApi",
@@ -51,8 +49,8 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
 
-            binaryOption("bundleShortVersionString", appVersion)
-            binaryOption("bundleVersion", appVersionCode.toString())
+            binaryOption("bundleShortVersionString", Versions.AppVersion)
+            binaryOption("bundleVersion", Versions.AppVersionCode.toString())
         }
     }
 
@@ -193,7 +191,7 @@ kotlin {
 buildConfig {
     packageName("dev.bartuzen.qbitcontroller.generated")
 
-    buildConfigField("Version", appVersion)
+    buildConfigField("Version", Versions.AppVersion)
     buildConfigField("SourceCodeUrl", "https://github.com/qBitController/qBitController")
 
     // Desktop only
@@ -203,14 +201,14 @@ buildConfig {
 
 android {
     namespace = "dev.bartuzen.qbitcontroller"
-    compileSdk = 36
+    compileSdk = Versions.Android.CompileSdk
 
     defaultConfig {
         applicationId = "dev.bartuzen.qbitcontroller"
-        minSdk = 21
-        targetSdk = 36
-        versionCode = appVersionCode
-        versionName = appVersion
+        minSdk = Versions.Android.MinSdk
+        targetSdk = Versions.Android.TargetSdk
+        versionCode = Versions.AppVersionCode
+        versionName = Versions.AppVersion
     }
 
     flavorDimensions += "firebase"
@@ -279,8 +277,8 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
 
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = Versions.Android.JavaVersion
+        targetCompatibility = Versions.Android.JavaVersion
     }
 
     buildFeatures {
@@ -334,7 +332,7 @@ compose.desktop {
 
             targetFormats(*formats)
             packageName = "qBitController"
-            packageVersion = appVersion
+            packageVersion = Versions.AppVersion
 
             linux {
                 iconFile.set(project.file("icon.png"))

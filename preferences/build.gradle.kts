@@ -1,3 +1,5 @@
+import dev.bartuzen.qbitcontroller.Versions
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinMultiplatform)
@@ -25,15 +27,15 @@ kotlin {
 
 android {
     namespace = "dev.bartuzen.qbitcontroller.preferences"
-    compileSdk = 36
+    compileSdk = Versions.Android.CompileSdk
 
     defaultConfig {
-        minSdk = 21
+        minSdk = Versions.Android.MinSdk
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = Versions.Android.JavaVersion
+        targetCompatibility = Versions.Android.JavaVersion
     }
 
     buildFeatures {
