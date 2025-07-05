@@ -7,4 +7,5 @@ class DesktopSettingsManager(
     settings: Settings,
 ) : SettingsManager(settings) {
     val windowState = jsonPreference(settings, "windowState", WindowState())
+    val language = preference(settings, "language", "")
 }

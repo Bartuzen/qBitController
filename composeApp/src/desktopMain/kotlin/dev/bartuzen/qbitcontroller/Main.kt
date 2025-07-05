@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,8 @@ import qbitcontroller.composeapp.generated.resources.update_dialog_message
 import qbitcontroller.composeapp.generated.resources.update_dialog_title
 import java.awt.Color
 import java.awt.Dimension
+import java.util.Locale
+import androidx.compose.ui.text.intl.Locale as ComposeLocale
 
 fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
@@ -86,6 +89,17 @@ fun main() {
             snapshotFlow { WindowState(windowState.placement, windowState.position, windowState.size) }
                 .debounce(200)
                 .collect { settingsManager.windowState.value = it }
+        }
+
+        val language by settingsManager.language.flow.collectAsState()
+        val defaultLanguage = remember { Locale.getDefault() }
+        LaunchedEffect(language) {
+            val locale = if (language.isNotEmpty()) {
+                ComposeLocale(language).platformLocale
+            } else {
+                defaultLanguage
+            }
+            Locale.setDefault(locale)
         }
 
         Window(
