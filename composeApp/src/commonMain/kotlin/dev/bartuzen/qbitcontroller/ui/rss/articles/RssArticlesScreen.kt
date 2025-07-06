@@ -68,7 +68,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -90,6 +89,7 @@ import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
+import dev.bartuzen.qbitcontroller.ui.components.PlatformBackHandler
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.ui.components.SearchBar
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
@@ -244,13 +244,13 @@ fun RssArticlesScreen(
         }
     }
 
-    BackHandler(enabled = isSearchMode) {
+    PlatformBackHandler(enabled = isSearchMode) {
         isSearchMode = false
         searchQuery = TextFieldValue()
         viewModel.setSearchQuery("")
     }
 
-    BackHandler(enabled = selectedArticles.isNotEmpty()) {
+    PlatformBackHandler(enabled = selectedArticles.isNotEmpty()) {
         selectedArticles.clear()
     }
 

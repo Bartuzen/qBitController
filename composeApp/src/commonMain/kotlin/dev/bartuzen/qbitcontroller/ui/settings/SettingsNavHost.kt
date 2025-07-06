@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.ui.components.PlatformNavHost
 import dev.bartuzen.qbitcontroller.ui.main.DeepLinkDestination
 import dev.bartuzen.qbitcontroller.ui.main.Destination
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerKeys
@@ -56,7 +56,7 @@ fun SettingsNavHost(
         }
     }
 
-    NavHost(
+    PlatformNavHost(
         navController = navController,
         startDestination = Destination.Settings.Main,
         enterTransition = DefaultTransitions.Enter,

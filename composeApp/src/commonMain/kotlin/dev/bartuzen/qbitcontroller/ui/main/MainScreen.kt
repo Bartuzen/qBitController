@@ -74,7 +74,9 @@ import dev.bartuzen.qbitcontroller.ui.theme.isDarkTheme
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentsNavHost
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.Platform
 import dev.bartuzen.qbitcontroller.utils.calculateWindowSizeClass
+import dev.bartuzen.qbitcontroller.utils.currentPlatform
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.notificationPermissionLauncher
 import dev.bartuzen.qbitcontroller.utils.stringResource
@@ -362,7 +364,11 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                     }
 
                     composable<NavHostDestination.Search> {
-                        BackHandler { selectedTabIndex = 0 }
+                        BackHandler {
+                            if (currentPlatform != Platform.Mobile.IOS) {
+                                selectedTabIndex = 0
+                            }
+                        }
 
                         SearchNavHost(
                             serverConfig = currentServer,
@@ -371,7 +377,11 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                     }
 
                     composable<NavHostDestination.Rss> {
-                        BackHandler { selectedTabIndex = 0 }
+                        BackHandler {
+                            if (currentPlatform != Platform.Mobile.IOS) {
+                                selectedTabIndex = 0
+                            }
+                        }
 
                         RssNavHost(
                             serverConfig = currentServer,
@@ -380,7 +390,11 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                     }
 
                     composable<NavHostDestination.Logs> {
-                        BackHandler { selectedTabIndex = 0 }
+                        BackHandler {
+                            if (currentPlatform != Platform.Mobile.IOS) {
+                                selectedTabIndex = 0
+                            }
+                        }
 
                         LogsNavHost(
                             serverConfig = currentServer,
@@ -389,7 +403,11 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                     }
 
                     composable<NavHostDestination.Settings> {
-                        BackHandler { selectedTabIndex = 0 }
+                        BackHandler {
+                            if (currentPlatform != Platform.Mobile.IOS) {
+                                selectedTabIndex = 0
+                            }
+                        }
 
                         SettingsNavHost(
                             navigateToStartFlow = navigateToStartChannels[4].receiveAsFlow(),

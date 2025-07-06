@@ -5,13 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
+import dev.bartuzen.qbitcontroller.ui.components.PlatformNavHost
 import dev.bartuzen.qbitcontroller.ui.main.Destination
 import dev.bartuzen.qbitcontroller.ui.search.plugins.SearchPluginsScreen
 import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultScreen
@@ -50,7 +50,7 @@ fun SearchNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, 
         }
     }
 
-    NavHost(
+    PlatformNavHost(
         navController = navController,
         startDestination = Destination.Empty,
         enterTransition = DefaultTransitions.Enter,

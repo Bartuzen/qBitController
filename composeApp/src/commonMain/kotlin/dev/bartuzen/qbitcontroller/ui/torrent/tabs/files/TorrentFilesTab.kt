@@ -67,7 +67,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.backhandler.BackHandler
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -88,6 +87,7 @@ import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
+import dev.bartuzen.qbitcontroller.ui.components.PlatformBackHandler
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.ui.icons.Priority
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
@@ -161,7 +161,7 @@ fun TorrentFilesTab(
         viewModel.setScreenActive(isScreenActive)
     }
 
-    BackHandler(enabled = isScreenActive && selectedFiles.isNotEmpty()) {
+    PlatformBackHandler(enabled = isScreenActive && selectedFiles.isNotEmpty()) {
         selectedFiles.clear()
     }
 

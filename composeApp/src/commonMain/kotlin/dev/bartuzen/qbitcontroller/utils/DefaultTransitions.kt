@@ -16,33 +16,53 @@ import androidx.navigation.NavBackStackEntry
 object DefaultTransitions {
     private const val TransitionDuration = 400
 
-    val Enter: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
-        slideInHorizontally(
-            initialOffsetX = { it / 10 },
-            animationSpec = tween(TransitionDuration),
-        ) + fadeIn(animationSpec = tween(TransitionDuration))
-    }
+    val Enter: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition)? =
+        if (currentPlatform != Platform.Mobile.IOS) {
+            {
+                slideInHorizontally(
+                    initialOffsetX = { it / 10 },
+                    animationSpec = tween(TransitionDuration),
+                ) + fadeIn(animationSpec = tween(TransitionDuration))
+            }
+        } else {
+            null
+        }
 
-    val Exit: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = {
-        slideOutHorizontally(
-            targetOffsetX = { -it / 10 },
-            animationSpec = tween(TransitionDuration),
-        ) + fadeOut(animationSpec = tween(TransitionDuration))
-    }
+    val Exit: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition)? =
+        if (currentPlatform != Platform.Mobile.IOS) {
+            {
+                slideOutHorizontally(
+                    targetOffsetX = { -it / 10 },
+                    animationSpec = tween(TransitionDuration),
+                ) + fadeOut(animationSpec = tween(TransitionDuration))
+            }
+        } else {
+            null
+        }
 
-    val PopEnter: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
-        slideInHorizontally(
-            initialOffsetX = { -it / 10 },
-            animationSpec = tween(TransitionDuration),
-        ) + fadeIn(animationSpec = tween(TransitionDuration))
-    }
+    val PopEnter: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition)? =
+        if (currentPlatform != Platform.Mobile.IOS) {
+            {
+                slideInHorizontally(
+                    initialOffsetX = { -it / 10 },
+                    animationSpec = tween(TransitionDuration),
+                ) + fadeIn(animationSpec = tween(TransitionDuration))
+            }
+        } else {
+            null
+        }
 
-    val PopExit: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition = {
-        slideOutHorizontally(
-            targetOffsetX = { it / 10 },
-            animationSpec = tween(TransitionDuration),
-        ) + fadeOut(animationSpec = tween(TransitionDuration))
-    }
+    val PopExit: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition)? =
+        if (currentPlatform != Platform.Mobile.IOS) {
+            {
+                slideOutHorizontally(
+                    targetOffsetX = { it / 10 },
+                    animationSpec = tween(TransitionDuration),
+                ) + fadeOut(animationSpec = tween(TransitionDuration))
+            }
+        } else {
+            null
+        }
 
     object NavBar {
         val Enter: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition = {
