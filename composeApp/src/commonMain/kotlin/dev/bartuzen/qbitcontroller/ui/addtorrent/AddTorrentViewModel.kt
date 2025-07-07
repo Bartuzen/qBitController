@@ -97,7 +97,7 @@ class AddTorrentViewModel(
             _isAdding.value = true
 
             val filesWithContent = try {
-                files?.mapNotNull { it.name to it.readBytes() }
+                files?.map { it.name to it.readBytes() }
             } catch (_: FileNotFoundException) {
                 eventChannel.send(Event.FileNotFound)
                 _isAdding.value = false

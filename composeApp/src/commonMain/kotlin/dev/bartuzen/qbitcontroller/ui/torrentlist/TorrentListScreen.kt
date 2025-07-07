@@ -1685,7 +1685,6 @@ private fun DrawerContent(
             }
 
             item {
-                var showMenu by rememberSaveable { mutableStateOf(false) }
                 AnimatedVisibility(
                     visible = !areCategoriesCollapsed,
                     enter = fadeIn() + expandVertically(),
@@ -1702,9 +1701,6 @@ private fun DrawerContent(
                         onClick = {
                             onSelectCategory(CategoryTag.All)
                             onDrawerClose()
-                        },
-                        onLongClick = {
-                            showMenu = true
                         },
                         modifier = Modifier.focusProperties {
                             canFocus = isDrawerOpen
