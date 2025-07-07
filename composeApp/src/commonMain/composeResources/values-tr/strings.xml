@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="eta_seconds">%1$ssn</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_size">Boyut</string>
     <string name="torrent_list_action_sort_progress">İlerleme</string>
     <string name="torrent_status_error">Hata Oldu</string>
@@ -55,12 +54,9 @@
     <string name="action_search">Ara</string>
     <string name="action_select_all">Hepsini Seç</string>
     <string name="action_select_inverse">Tersini Seç</string>
-    <string name="main_action_settings">Ayarlar</string>
     <string name="main_action_about">Hakkında</string>
     <string name="torrent_list_action_add_torrent">Torrent Ekle</string>
-    <string name="torrent_list_action_search_online">Çevrimiçi Ara</string>
     <string name="torrent_list_action_statistics">İstatistikler</string>
-    <string name="torrent_list_action_execution_log">Çalıştırma Günlüğü</string>
     <string name="torrent_speed_alternative_speed_limits">Alternatif Hız Sınırlarını</string>
     <string name="torrent_list_action_shutdown">qBittorrent\'i Kapat</string>
     <string name="torrent_list_action_sort">Sıralama</string>
@@ -336,7 +332,6 @@
     <string name="rss_hint_feed_url">Bildirim URL\'si</string>
     <string name="rss_all_articles">Bütün Makaleler</string>
     <string name="rss_added_feed">Bildirim başarıyla eklendi.</string>
-    <string name="rss_field_required">Bu alan gereklidir.</string>
     <string name="rss_confirm_delete_feed">%1$s bildirimini silmek istediğinizden emin misiniz\?</string>
     <string name="rss_confirm_delete_folder">%1$s klasörünü silmek istediğinizden emin misiniz\?</string>
     <string name="rss_add_feed_error">Bildirim eklenemedi.</string>
@@ -577,9 +572,7 @@
     <string name="torrent_add_invalid_file">Torrent dosyası geçersiz.</string>
     <string name="rss_add_folder_error">Klasör eklenemedi.</string>
     <string name="rss_rename_folder_error">Klasör yeniden adlandırılamadı.</string>
-    <string name="about_description">qBitController, bir Android cihazından qBittorrent\'i kontrol etmenizi sağlar.
-\n
-\nDaha ayrıntılı bilgi ve kaynak kodu için: %1$s</string>
+    <string name="about_description">qBitController, qBittorrent\'i herhangi bir cihazdan uzaktan kontrol etmenizi sağlar.\n \nDaha ayrıntılı bilgi ve kaynak kodu için: %1$s</string>
     <string name="settings_language">Dil</string>
     <string name="settings_language_system_default">Sistem Varsayılanı</string>
     <string name="search_result_filter_reset">Sıfırla</string>
@@ -621,4 +614,53 @@
     <string name="rss_new">Yeni</string>
     <string name="rss_rule_item_enabled">Etkin</string>
     <string name="rss_rule_item_disabled">Devre dışı</string>
+    <string name="settings_server_advanced_custom_headers_description">Satır başına bir özel başlık ekleyin. Anahtar ile değeri eşittir işareti kullanarak ayırın.</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent seçildi</item>
+        <item quantity="other">%1$d torrent seçildi</item>
+    </plurals>
+    <string name="settings_pure_black_dark_mode">Tamamen karanlık koyu mod</string>
+    <string name="settings_server_server_info">Sunucu Bilgisi</string>
+    <string name="settings_server_credentials">Kimlik Bilgileri</string>
+    <string name="settings_server_advanced_title">Gelişmiş Ayarlar</string>
+    <string name="settings_server_advanced_custom_headers">Özel başlıklar</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d başlık</item>
+        <item quantity="other">%1$d başlık</item>
+    </plurals>
+    <string name="error_invalid_interval">%1$d ile %2$d arasında olmalı.</string>
+    <string name="error_invalid_interval_optional">%1$d ile %2$d arasında olmalı ya da devre dışı bırakmak için boş bırakılmalı.</string>
+    <string name="torrent_overview_piece_map">Parça Haritası</string>
+    <string name="torrent_overview_piece_downloaded">İndirildi</string>
+    <string name="torrent_overview_piece_downloading">İndiriliyor</string>
+    <string name="torrent_overview_piece_not_downloaded">İndirilmedi</string>
+    <string name="torrent_peers_details_section_overview">Kişi Özeti</string>
+    <string name="torrent_peers_details_section_transfer">Aktarım İstatistikleri</string>
+    <string name="settings_servers_add_server">Sunucu Ekle</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d bildirim</item>
+        <item quantity="other">%1$d bildirim</item>
+    </plurals>
+    <string name="settings_category_appearance">Görünüm</string>
+    <string name="settings_category_network">Ağ</string>
+    <string name="rss_action_download">İndir</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent seçildi</item>
+        <item quantity="other">%1$d torrent seçildi</item>
+    </plurals>
+    <string name="search_result_action_download">İndir</string>
+    <string name="settings_server_invalid_url">URL formatı geçersiz.</string>
+    <string name="settings_category_general">Genel</string>
+    <string name="settings_servers_no_server_configured">Sunucu Ayarlanmadı</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_url_examples">Örnekler: %1$s</string>
+    <string name="destination_torrents">Torrentler</string>
+    <string name="destination_search">Arama</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Kayıtlar</string>
+    <string name="destination_settings">Ayarlar</string>
+    <string name="settings_check_updates">Güncellemeleri otomatik olarak denetle</string>
+    <string name="update_dialog_title">Güncelleme Mevcut</string>
+    <string name="update_dialog_download">İndir</string>
+    <string name="update_dialog_message">qBitController %1$s sürümü yayınlandı. Şu anda %2$s sürümünü kullanıyorsunuz.</string>
 </resources>

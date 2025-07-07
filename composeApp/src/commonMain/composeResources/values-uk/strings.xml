@@ -71,7 +71,6 @@
     <string name="torrent_list_action_priority_decrease">Зменшити пріоритет</string>
     <string name="speed_format">%1$s %2$s</string>
     <string name="error_cannot_connect">Не вдається з\'єднатися з сервером.</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_status_missing_files">Файли відсутні</string>
     <string name="error_banned">Вас було заблоковано через занадто велику кількість невдалих спроб входу.</string>
     <string name="torrent_list_free_space">Вільний простір: %1$s</string>
@@ -85,7 +84,6 @@
     <string name="error_no_data">Сервер не надіслав жодних даних.</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
     <string name="torrent_status_force_downloading_metadata">[F] Завантаження метаданих</string>
-    <string name="main_action_settings">Налаштування</string>
     <string name="torrent_list_trackers_all">Усе</string>
     <string name="torrent_list_action_sort_ratio">За співвідношенням</string>
     <string name="torrent_list_trackers_title">Трекери</string>
@@ -111,7 +109,6 @@
     <string name="size_tebibytes">ТіБ</string>
     <string name="speed_bytes_per_second">Б/с</string>
     <string name="torrent_list_uncategorized">Без категорії</string>
-    <string name="torrent_list_action_execution_log">Журнал виконання</string>
     <string name="torrent_list_edit_category">Редагувати категорію</string>
     <string name="torrent_list_create_category_download_path_hint">Шлях завантаження</string>
     <string name="dialog_cancel">Скасувати</string>
@@ -140,7 +137,6 @@
     <string name="torrent_speed_alternative_speed_limits">Альтернативні обмеження швидкості</string>
     <string name="eta_seconds">%1$sс</string>
     <string name="torrent_list_action_sort_reverse">У зворотному порядку</string>
-    <string name="torrent_list_action_search_online">Шукати онлайн</string>
     <string name="error_unknown">Невідома помилка: %1$s</string>
     <string name="torrent_status_stalled">Зупинився</string>
     <plurals name="torrent_list_torrents_delete_success">
@@ -333,7 +329,6 @@
     <string name="rss_hint_feed_name_optional">Назва стрічки (необов\'язково)</string>
     <string name="rss_hint_folder_name">Назва теки</string>
     <string name="rss_all_articles">Усі статті</string>
-    <string name="rss_field_required">Це поле обов\'язкове.</string>
     <string name="rss_added_feed">Стрічку успішно додано.</string>
     <plurals name="torrent_peers_ban_desc">
         <item quantity="one">Ви упевнені, що хочете забанити %1$d пір?</item>
@@ -593,7 +588,7 @@
     <string name="settings_server_action_advanced_settings">Розширені налаштування</string>
     <string name="settings_server_edit_success">Сервер успішно відредаговано.</string>
     <string name="settings_server_remove_success">Сервер успішно видалено.</string>
-    <string name="about_description">qBitController дозволяє керувати qBittorrent з пристрою Android.\n\nДля отримання більш детальної інформації та вихідного коду: %1$s</string>
+    <string name="about_description">qBitController дозволяє відаленно керувати qBittorrent з будь-якого пристрою.\n\nДля отримання більш детальної інформації та вихідного коду: %1$s</string>
     <string name="torrent_enable_super_seeding_success">Суперзасівання успішно ввімкнено.</string>
     <string name="torrent_option_download_speed_limit">«Обмеження швидкості завантаження (КіБ/с)</string>
     <string name="torrent_option_share_limit">Обмеження на частку торрента</string>
@@ -676,4 +671,37 @@
     <string name="error_invalid_interval_optional">Має бути між %1$d та %2$d, або залиште поле порожнім, щоб вимкнути.</string>
     <string name="settings_server_credentials">Облікові дані</string>
     <string name="settings_server_url_examples">Приклади: %1$s</string>
+    <string name="rss_action_download">Завантажити</string>
+    <string name="search_result_action_download">Завантажити</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d вибрано торрент</item>
+        <item quantity="few">%1$d вибрані торрента</item>
+        <item quantity="many">%1$d вибрані торренти</item>
+        <item quantity="other">%1$d вибрані торренти</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d вибрано торрент</item>
+        <item quantity="few">%1$d вибрані торрента</item>
+        <item quantity="many">%1$d вибрані торренти</item>
+        <item quantity="other">%1$d вибрані торренти</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Додайте один власний заголовок на рядок. Розділіть ключ і значення знаком рівності.</string>
+    <string name="settings_server_advanced_custom_headers">Користувацькі заголовки</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d заголовок</item>
+        <item quantity="few">%1$d заголовки</item>
+        <item quantity="many">%1$d заголовків</item>
+        <item quantity="other">%1$d заголовків</item>
+    </plurals>
+    <string name="settings_pure_black_dark_mode">Чисто чорний темний режим</string>
+    <string name="destination_logs">Журнали</string>
+    <string name="destination_settings">Налаштування</string>
+    <string name="destination_torrents">Торренти</string>
+    <string name="destination_search">Пошук</string>
+    <string name="destination_rss">RSS</string>
+    <string name="settings_check_updates">Автоматично перевіряти наявність оновлень</string>
+    <string name="update_dialog_title">Доступне оновлення</string>
+    <string name="update_dialog_message">qBitController %1$s тепер доступний. Ви зараз використовуєте версію %2$s.</string>
+    <string name="update_dialog_download">Завантажити</string>
+    <string name="error_no_internet">Немає мережевого з\'єднання.</string>
 </resources>

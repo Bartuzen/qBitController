@@ -37,9 +37,7 @@
     <string name="size_format">%1$s %2$s</string>
     <string name="action_search">Søg</string>
     <string name="action_select_all">Vælg Alle</string>
-    <string name="main_action_settings">Indstillinger</string>
     <string name="torrent_list_action_add_torrent">Tilføj Torrent</string>
-    <string name="torrent_list_action_search_online">Søg Online</string>
     <string name="torrent_list_action_statistics">Statistikker</string>
     <string name="torrent_speed_alternative_speed_limits">Alternative Hastighedsgrænser</string>
     <string name="torrent_list_action_shutdown">Afslut qBittorrent</string>
@@ -62,7 +60,6 @@
     <string name="torrent_list_action_sort_hash">Hash</string>
     <string name="torrent_list_action_sort_progress">Fremskridt</string>
     <string name="action_select_inverse">Inverter valg</string>
-    <string name="torrent_list_action_execution_log">Udførelseslog</string>
     <string name="torrent_list_action_sort_connected_seeds">Tilsluttede Seedere</string>
     <string name="torrent_list_action_sort_total_seeds">Totale Seedere</string>
     <string name="torrent_list_action_sort_addition_date">Tilføjelsesdato</string>
@@ -365,7 +362,6 @@
     <string name="error_no_data">Serveren sendte ingen data.</string>
     <string name="main_action_about">Om</string>
     <string name="torrent_list_action_sort_name">Navn</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_status">Status</string>
     <string name="error_unknown_login_response">Ukendt login-svar: %1$s</string>
     <string name="torrent_list_action_sort_download_speed">Download Hastighed</string>
@@ -456,7 +452,6 @@
     <string name="torrent_overview_created_by">Oprettet af</string>
     <string name="torrent_trackers_seeds">Seedere</string>
     <string name="torrent_add_default">Standard</string>
-    <string name="rss_field_required">Dette felt er påkrævet.</string>
     <string name="rss_confirm_delete_folder">Er du sikker på, at du vil slette mappe %1$s?</string>
     <string name="rss_rule_delete">Slet Regel</string>
     <string name="rss_rule_episode_filter">Episode Filter</string>
@@ -496,8 +491,6 @@
     <string name="torrent_add_content_layout_no_subfolder">Opret ikke undermapper</string>
     <string name="torrent_add_name">Torrent Navn</string>
     <string name="torrent_add_download_speed_limit">Download Hastighedsgrænse</string>
-    <string name="about_description">qBitController giver dig mulighed for at styre qBittorrent fra en Android-enhed.
-\n
-\nYderligere oplysninger og kildekode: %1$s</string>
+    <string name="about_description">qBitController giver dig mulighed for at styre qBittorrent fra en Android-enhed. \n \nYderligere oplysninger og kildekode: %1$s</string>
     <string name="torrent_add_upload_speed_limit">Upload hastighedsbegrænsning</string>
 </resources>

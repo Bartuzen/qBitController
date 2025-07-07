@@ -4,7 +4,6 @@
     <string name="torrent_list_tags">Tibzimin</string>
     <string name="main_action_about">Ɣef</string>
     <string name="language_code">kab</string>
-    <string name="main_action_settings">Iɣewwaṛen</string>
     <string name="size_exbibytes">EAṬ</string>
     <string name="torrent_status_error">Tuccḍa</string>
     <string name="torrent_status_checking">Asenqed</string>
@@ -17,7 +16,6 @@
     <string name="dialog_ok">Ih</string>
     <string name="dialog_cancel">Semmet</string>
     <string name="action_search">Nadi</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_sort_size">Tiddi</string>
     <string name="torrent_list_action_pause">Seṛǧu</string>
     <string name="torrent_list_action_delete">Kkes</string>

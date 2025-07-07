@@ -77,7 +77,6 @@
     <string name="rss_action_refresh_all">Обновить всё</string>
     <string name="rss_success_folder_delete">Папка успешно удалена.</string>
     <string name="rss_add_folder_error">Не удалось добавить папку.</string>
-    <string name="rss_field_required">Это поле обязательно.</string>
     <string name="rss_confirm_delete_feed">Уверены, что хотите удалить ленту %1$s\?</string>
     <string name="rss_success_folder_add">Папка добавлена успешно.</string>
     <string name="rss_rename_folder_error">Не удалось переименовать папку.</string>
@@ -168,9 +167,7 @@
     <string name="search_result_filter_size">Размер</string>
     <string name="search_result_filter_min">Минимум</string>
     <string name="settings_server_remove_success">Сервер успешно удалён.</string>
-    <string name="about_description">qBitController позволяет управлять qBittorrent с устройства Android.
-\n
-\nБолее подробная информация и исходный код: %1$s</string>
+    <string name="about_description">qBitController позволяет контролировать qBittorrent с любого устройства.\n\nБолее подробная информация и исходный код: %1$s</string>
     <string name="search_result_leechers">Личеры</string>
     <string name="search_result_open_description">Открыть описание</string>
     <string name="search_result_no_browser">Не удаётся найти браузер.</string>
@@ -241,11 +238,7 @@
     <string name="error_api">API вернул ошибку: %1$d</string>
     <string name="action_search">Поиск</string>
     <string name="action_select_inverse">Инвертировать выделение</string>
-    <string name="main_action_settings">Настройки</string>
     <string name="torrent_list_action_add_torrent">Добавить торрент</string>
-    <string name="torrent_list_action_rss">RSS</string>
-    <string name="torrent_list_action_search_online">Поиск в Интернете</string>
-    <string name="torrent_list_action_execution_log">Журнал работы</string>
     <string name="torrent_list_action_shutdown">Выход из qBittorrent</string>
     <string name="torrent_list_action_sort">Сортировать</string>
     <string name="torrent_list_action_sort_hash">Хэш</string>
@@ -461,7 +454,7 @@
     <string name="error_required_field">Это обязательное поле.</string>
     <string name="settings_server_username_min_character">Имя пользователя не должно быть короче 3 символов.</string>
     <string name="settings_server_password_min_character">Пароль не должен быть короче 6 символов.</string>
-    <string name="settings_server_connection_success">Подключение к серверу успешно.</string>
+    <string name="settings_server_connection_success">Подключение к серверу установлено.</string>
     <string name="notification_channel_download_completed">Загрузка завершена</string>
     <string name="torrent_list_action_sort_progress">Прогресс</string>
     <string name="speed_kibibytes_per_second">КиБ/с</string>
@@ -678,4 +671,37 @@
     <string name="settings_server_advanced_title">Расширенные настройки</string>
     <string name="settings_server_invalid_url">Неверный формат URL.</string>
     <string name="settings_servers_no_server_configured">Нет настроенного сервера</string>
+    <string name="rss_action_download">Загрузить</string>
+    <string name="search_result_action_download">Загрузить</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d торрент выбран</item>
+        <item quantity="few">%1$d торрента выбрано</item>
+        <item quantity="many">%1$d торрентов выбрано</item>
+        <item quantity="other">%1$d торрентов выбрано</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d торрент выбран</item>
+        <item quantity="few">%1$d торрента выбрано</item>
+        <item quantity="many">%1$d торрентов выбрано</item>
+        <item quantity="other">%1$d торрентов выбрано</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers_description">Добавляйте по одному пользовательскому заголовку на строку. Разделяйте ключ и значение знаком равно.</string>
+    <string name="settings_pure_black_dark_mode">Абсолютно чёрный режим</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d заголовок</item>
+        <item quantity="few">%1$d заголовка</item>
+        <item quantity="many">%1$d заголовков</item>
+        <item quantity="other">%1$d заголовков</item>
+    </plurals>
+    <string name="settings_server_advanced_custom_headers">Пользовательские заголовки</string>
+    <string name="destination_search">Поиск</string>
+    <string name="destination_settings">Настройки</string>
+    <string name="destination_logs">Журналы</string>
+    <string name="destination_torrents">Торренты</string>
+    <string name="destination_rss">RSS</string>
+    <string name="settings_check_updates">Автоматически проверять обновления</string>
+    <string name="update_dialog_title">Доступно обновление</string>
+    <string name="update_dialog_message">Доступна новая версия qBitController %1$s. Сейчас вы используете версию %2$s.</string>
+    <string name="update_dialog_download">Загрузить</string>
+    <string name="error_no_internet">Нет подключения к Интернету.</string>
 </resources>

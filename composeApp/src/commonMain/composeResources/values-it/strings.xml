@@ -38,9 +38,7 @@
     <string name="action_select_inverse">Selezione Inversa</string>
     <string name="main_action_about">Informazioni</string>
     <string name="torrent_list_action_add_torrent">Aggiungi Torrent</string>
-    <string name="torrent_list_action_rss">RSS</string>
     <string name="torrent_list_action_statistics">Statistiche</string>
-    <string name="torrent_list_action_execution_log">Log Esecuzione</string>
     <string name="torrent_speed_alternative_speed_limits">Limiti di velocità alternativi</string>
     <string name="torrent_list_action_shutdown">Esci da qBittorrent</string>
     <string name="torrent_list_action_sort">Ordina</string>
@@ -203,10 +201,8 @@
     <string name="size_pebibytes">PiB</string>
     <string name="speed_kibibytes_per_second">KiB/s</string>
     <string name="error_no_data">Il server non risponde.</string>
-    <string name="main_action_settings">Impostazioni</string>
     <string name="error_unknown_login_response">Risposta di accesso sconosciuta: %1$s</string>
     <string name="error_unknown">Errore sconosciuto: %1$s</string>
-    <string name="torrent_list_action_search_online">Cerca Online</string>
     <string name="torrent_list_action_sort_status">Stato</string>
     <string name="torrent_list_action_sort_connected_leeches">Leech Connessi</string>
     <string name="torrent_list_action_sort_total_leeches">Leech Totali</string>
