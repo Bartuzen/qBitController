@@ -663,4 +663,5 @@
     <string name="update_dialog_title">Güncelleme Mevcut</string>
     <string name="update_dialog_download">İndir</string>
     <string name="update_dialog_message">qBitController %1$s sürümü yayınlandı. Şu anda %2$s sürümünü kullanıyorsunuz.</string>
+    <string name="error_no_internet">İnternet bağlantısı yok.</string>
 </resources>
