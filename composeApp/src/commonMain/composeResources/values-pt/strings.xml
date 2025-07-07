@@ -25,8 +25,8 @@
     <string name="speed_format">%1$s %2$s</string>
     <string name="speed_kibibytes_per_second">KiB/s</string>
     <string name="speed_gibibytes_per_second">GiB/s</string>
-    <string name="error_banned">Foi banido por causa de muitas tentativas de inicio de sessão falhadas.</string>
-    <string name="error_cannot_connect">Não foi possível ligar ao servidor.</string>
+    <string name="error_banned">Foi banido por causa de muitas tentativas de início de sessão falhadas.</string>
+    <string name="error_cannot_connect">Não é possível ligar ao servidor.</string>
     <string name="error_unknown">Erro desconhecido: %1$s</string>
     <string name="action_search">Pesquisar</string>
     <string name="action_select_all">Selecionar Tudo</string>
@@ -57,7 +57,7 @@
     <string name="torrent_list_status_seeding">A Semear</string>
     <string name="torrent_enable_super_seeding_success">Modo super semear ativado.</string>
     <string name="eta_days_hours">%1$sd %2$sh</string>
-    <string name="torrent_status_force_downloading_metadata">[F] A Transferir os Meta-Dados</string>
+    <string name="torrent_status_force_downloading_metadata">[F] A Transferir os Metadados</string>
     <string name="speed_mebibytes_per_second">MiB/s</string>
     <string name="error_unknown_host">Servidor desconhecido.</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (semeado durante %2$s)</string>
@@ -69,7 +69,7 @@
     <string name="eta_days">%1$sd</string>
     <string name="size_gibibytes">GiB</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
-    <string name="torrent_status_downloading_metadata">A Transferir os Meta-Dados</string>
+    <string name="torrent_status_downloading_metadata">A Transferir os Metadados</string>
     <string name="eta_hours">%1$sh</string>
     <string name="speed_bytes_per_second">B/s</string>
     <string name="torrent_disable_super_seeding_success">Super semear desativado com sucesso.</string>
@@ -77,7 +77,7 @@
     <string name="dialog_ok">OK</string>
     <string name="torrent_list_empty_search">Pesquisar Torrents</string>
     <string name="torrent_list_action_sort_download_speed">Velocidade de Transferência</string>
-    <string name="error_invalid_credentials">Utilizador ou palavra-passe invalido.</string>
+    <string name="error_invalid_credentials">Utilizador ou palavra-passe inválida.</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="torrent_list_action_sort_eta">Tempo Restante</string>
     <string name="main_action_about">Sobre</string>
@@ -617,7 +617,7 @@
     <string name="error_invalid_interval_optional">Deve estar entre %1$d e %2$d ou deixe em branco para desativar.</string>
     <string name="error_invalid_interval">Deve estar entre %1$d e %2$d.</string>
     <string name="torrent_list_no_server_title">Nenhum servidor disponível</string>
-    <string name="torrent_list_no_server_description">Você ainda não adicionou nenhum servidor. Adicione um para começar.</string>
+    <string name="torrent_list_no_server_description">Ainda não adicionou nenhum servidor. Adicione um para começar.</string>
     <string name="torrent_list_no_server_add">Adicionar Servidor</string>
     <plurals name="rss_torrents_selected">
         <item quantity="one">%1$d torrent selecionado</item>
@@ -683,4 +683,5 @@
     <string name="update_dialog_message">O qBitController %1$s já está disponível. Atualmente, está a utilizar a versão %2$s.</string>
     <string name="update_dialog_download">Descarregar</string>
     <string name="settings_check_updates">Procurar atualizações automaticamente</string>
+    <string name="error_no_internet">Sem ligação à Internet.</string>
 </resources>
