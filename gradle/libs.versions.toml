@@ -35,6 +35,7 @@ ktorfit = "2.5.2"
 ksp = "2.1.21-2.0.2"
 reorderable = "2.5.1"
 composeHotReload = "1.0.0-alpha10"
+autolinktext = "2.0.2"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
@@ -93,6 +94,8 @@ fileKit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "file
 fileKit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "fileKit" }
 
 reorderable = { module = "sh.calvin.reorderable:reorderable", version.ref = "reorderable" }
+
+autolinktext = { module = "sh.calvin.autolinktext:autolinktext", version.ref = "autolinktext" }
 
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }

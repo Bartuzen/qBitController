@@ -126,6 +126,8 @@ kotlin {
                 implementation(libs.fileKit.dialogs)
 
                 implementation(libs.reorderable)
+
+                implementation(libs.autolinktext)
             }
         }
 

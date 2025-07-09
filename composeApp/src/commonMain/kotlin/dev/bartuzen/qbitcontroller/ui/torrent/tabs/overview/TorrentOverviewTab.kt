@@ -98,6 +98,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -242,6 +243,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_rename_success
 import qbitcontroller.composeapp.generated.resources.torrent_rename_torrent_hint
 import qbitcontroller.composeapp.generated.resources.torrent_resumed_success
 import qbitcontroller.composeapp.generated.resources.torrent_tags_update_success
+import sh.calvin.autolinktext.rememberAutoLinkText
 import kotlin.math.ceil
 
 @Composable
@@ -844,6 +846,7 @@ fun TorrentOverviewTab(
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_comment),
                                     value = properties.comment,
+                                    autoLink = true,
                                 )
 
                                 InfoRow(
@@ -1158,7 +1161,7 @@ private fun PieceBar(pieces: List<PieceState>, modifier: Modifier) {
 private val LocalLabelWidth = staticCompositionLocalOf { 0.dp }
 
 @Composable
-private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier) {
+private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier, autoLink: Boolean = false) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
@@ -1180,7 +1183,11 @@ private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier
 
         if (value != null) {
             SelectionContainer {
-                Text(text = value)
+                if (!autoLink) {
+                    Text(text = value)
+                } else {
+                    Text(text = AnnotatedString.rememberAutoLinkText(value))
+                }
             }
         } else {
             Text(text = "-")
