@@ -379,8 +379,8 @@ fun TorrentListScreen(
     onSelectServer: (serverId: Int) -> Unit,
     onNavigateToTorrent: (serverId: Int, torrentHash: String, torrentName: String) -> Unit,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
-    onNavigateToRss: (serverId: Int) -> Unit,
-    onNavigateToSearch: (serverId: Int) -> Unit,
+    onNavigateToRss: () -> Unit,
+    onNavigateToSearch: () -> Unit,
     onNavigateToAddEditServer: (serverId: Int?) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TorrentListViewModel = koinViewModel(),
@@ -3755,8 +3755,8 @@ private fun NoTorrentsMessage(
     serverId: Int,
     contentPadding: PaddingValues,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
-    onNavigateToRss: (serverId: Int) -> Unit,
-    onNavigateToSearch: (serverId: Int) -> Unit,
+    onNavigateToRss: () -> Unit,
+    onNavigateToSearch: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     EmptyListMessage(
@@ -3769,12 +3769,12 @@ private fun NoTorrentsMessage(
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
             ) {
                 OutlinedButton(
-                    onClick = { onNavigateToRss(serverId) },
+                    onClick = onNavigateToRss,
                 ) {
                     Text(text = stringResource(Res.string.torrent_list_empty_rss))
                 }
                 OutlinedButton(
-                    onClick = { onNavigateToSearch(serverId) },
+                    onClick = onNavigateToSearch,
                 ) {
                     Text(text = stringResource(Res.string.torrent_list_empty_search))
                 }

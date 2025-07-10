@@ -44,6 +44,8 @@ fun TorrentsNavHost(
     navigateToStartFlow: Flow<Unit>,
     torrentsDeepLinkFlow: Flow<DeepLinkDestination>,
     onSelectServer: (serverId: Int) -> Unit,
+    onNavigateToRss: () -> Unit,
+    onNavigateToSearch: () -> Unit,
     onShowNotificationPermission: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -140,12 +142,8 @@ fun TorrentsNavHost(
                 onNavigateToAddTorrent = { initialServerId ->
                     navController.navigate(Destination.AddTorrent(initialServerId))
                 },
-                onNavigateToRss = { serverId ->
-                    navController.navigate(Destination.Rss.Feeds(serverId))
-                },
-                onNavigateToSearch = { serverId ->
-                    navController.navigate(Destination.Search.Start(serverId))
-                },
+                onNavigateToRss = onNavigateToRss,
+                onNavigateToSearch = onNavigateToSearch,
                 onNavigateToAddEditServer = { serverId ->
                     navController.navigate(Destination.Settings.AddEditServer(serverId))
                 },

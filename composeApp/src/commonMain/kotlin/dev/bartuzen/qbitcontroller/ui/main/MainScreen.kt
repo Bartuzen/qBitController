@@ -359,6 +359,8 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                             navigateToStartFlow = navigateToStartChannels[0].receiveAsFlow(),
                             torrentsDeepLinkFlow = torrentsDeepLinkChannel.receiveAsFlow(),
                             onSelectServer = { currentServer = serverManager.getServer(it) },
+                            onNavigateToRss = { selectedTabIndex = 2 },
+                            onNavigateToSearch = { selectedTabIndex = 1 },
                             onShowNotificationPermission = { showNotificationPermission = true },
                         )
                     }
