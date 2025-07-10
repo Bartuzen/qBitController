@@ -87,13 +87,13 @@ import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
+import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stateMapSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
@@ -429,7 +429,7 @@ private fun InstallPluginDialog(
     modifier: Modifier = Modifier,
 ) {
     var text by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
-    var error by rememberSaveable { mutableStateOf<StringResource?>(null) }
+    var error by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,

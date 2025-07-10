@@ -85,11 +85,11 @@ import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
+import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -454,7 +454,7 @@ private sealed class RssRuleDialog {
 @Composable
 private fun CreateRuleDialog(onDismiss: () -> Unit, onConfirm: (name: String) -> Unit) {
     var nameValue by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
-    var nameError by rememberSaveable { mutableStateOf<StringResource?>(null) }
+    var nameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -527,7 +527,7 @@ private fun RenameRuleDialog(ruleName: String, onDismiss: () -> Unit, onConfirm:
     var nameValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(ruleName, TextRange(Int.MAX_VALUE)))
     }
-    var nameError by rememberSaveable { mutableStateOf<StringResource?>(null) }
+    var nameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
 
     Dialog(
         onDismissRequest = onDismiss,

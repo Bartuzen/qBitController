@@ -135,6 +135,7 @@ import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
+import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import dev.bartuzen.qbitcontroller.utils.toClipEntry
@@ -143,7 +144,6 @@ import io.github.vinceglb.filekit.dialogs.openFileSaver
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
@@ -1384,7 +1384,7 @@ private fun RenameDialog(
     var name by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(initialName ?: "", TextRange(Int.MAX_VALUE)))
     }
-    var error by rememberSaveable { mutableStateOf<StringResource?>(null) }
+    var error by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,

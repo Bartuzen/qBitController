@@ -83,12 +83,12 @@ import dev.bartuzen.qbitcontroller.utils.fillWidthOfParent
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
+import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import io.ktor.http.parseUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.StringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
@@ -143,9 +143,9 @@ fun AddEditServerScreen(
         mutableStateOf(TextFieldValue(serverConfig?.password ?: "", TextRange(Int.MAX_VALUE)))
     }
 
-    var urlError by rememberSaveable { mutableStateOf<StringResource?>(null) }
-    var usernameError by rememberSaveable { mutableStateOf<StringResource?>(null) }
-    var passwordError by rememberSaveable { mutableStateOf<StringResource?>(null) }
+    var urlError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var usernameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var passwordError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
 
     var advancedSettings by rememberSaveable(stateSaver = jsonSaver()) {
         mutableStateOf(serverConfig?.advanced ?: AdvancedSettings())
