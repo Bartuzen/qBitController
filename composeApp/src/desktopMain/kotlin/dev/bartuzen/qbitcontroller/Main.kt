@@ -111,16 +111,16 @@ fun main() {
             icon = painterResource(Res.drawable.icon_rounded),
             state = windowState,
         ) {
-            if (currentPlatform is Platform.Desktop.MacOS) {
-                LaunchedEffect(Unit) {
-                    window.minimumSize = Dimension(420, 360)
-                }
-            } else {
+            if (currentPlatform is Platform.Desktop.Windows) {
                 val density = LocalDensity.current
                 LaunchedEffect(density) {
                     window.minimumSize = with(density) {
                         Dimension(420.dp.toPx().toInt(), 360.dp.toPx().toInt())
                     }
+                }
+            } else {
+                LaunchedEffect(Unit) {
+                    window.minimumSize = Dimension(420, 360)
                 }
             }
 
