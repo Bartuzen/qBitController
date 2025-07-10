@@ -11,6 +11,7 @@ import java.util.Locale
 import java.util.Properties
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+import org.gradle.internal.os.OperatingSystem
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -320,8 +321,7 @@ compose.desktop {
         mainClass = "dev.bartuzen.qbitcontroller.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.AppImage)
-            val isMacOS = org.gradle.internal.os.OperatingSystem.current().isMacOsX
+            val isMacOS = OperatingSystem.current().isMacOsX
             val formats = listOfNotNull(
                 TargetFormat.Dmg,
                 TargetFormat.Msi,
