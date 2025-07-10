@@ -47,7 +47,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,7 +59,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.semantics
@@ -85,6 +83,7 @@ import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import io.ktor.http.parseUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -217,7 +216,7 @@ fun AddEditServerScreen(
     }
 
     val softwareKeyboardController = LocalSoftwareKeyboardController.current
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val scrollState = rememberScrollState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
@@ -287,7 +286,7 @@ fun AddEditServerScreen(
 
                     AppBarActions(items = actionMenuItems)
                 },
-                scrollBehavior = scrollBehavior,
+                colors = scrollState.topAppBarColors(),
             )
         },
         snackbarHost = {
@@ -307,8 +306,7 @@ fun AddEditServerScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection)
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrollState)
                     .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {

@@ -86,7 +86,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -111,7 +110,6 @@ import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
-import dev.bartuzen.qbitcontroller.utils.appBarColor
 import dev.bartuzen.qbitcontroller.utils.excludeBottom
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatUri
@@ -123,6 +121,8 @@ import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColor
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -282,7 +282,7 @@ fun SearchResultScreen(
         null -> {}
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -456,7 +456,7 @@ fun SearchResultScreen(
 
                     AppBarActions(items = actionMenuItems)
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
@@ -548,18 +548,15 @@ fun SearchResultScreen(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(appBarColor(scrollBehavior))
+                        .background(topAppBarColor(listState))
                         .padding(horizontal = 16.dp, vertical = 4.dp),
                 )
 
-                val listState = rememberLazyListState()
                 LazyColumn(
                     state = listState,
                     contentPadding = PaddingValues(horizontal = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .nestedScroll(scrollBehavior.nestedScrollConnection),
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     items(
                         items = searchResults ?: emptyList(),

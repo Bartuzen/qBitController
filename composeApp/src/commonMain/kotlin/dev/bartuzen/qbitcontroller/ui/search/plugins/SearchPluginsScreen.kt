@@ -53,7 +53,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -69,7 +68,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -91,6 +89,7 @@ import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stateMapSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -183,7 +182,7 @@ fun SearchPluginsScreen(
         null -> {}
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(
@@ -230,7 +229,7 @@ fun SearchPluginsScreen(
 
                     AppBarActions(items = actionMenuItems)
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
@@ -248,14 +247,11 @@ fun SearchPluginsScreen(
                 .padding(innerPadding)
                 .imePadding(),
         ) {
-            val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
                 contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 items(
                     items = plugins ?: emptyList(),

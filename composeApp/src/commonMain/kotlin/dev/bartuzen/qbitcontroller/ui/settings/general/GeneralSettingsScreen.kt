@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -16,14 +17,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,6 +33,7 @@ import dev.bartuzen.qbitcontroller.utils.Platform
 import dev.bartuzen.qbitcontroller.utils.areNotificationsEnabled
 import dev.bartuzen.qbitcontroller.utils.currentPlatform
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.pluralStringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -52,7 +52,7 @@ fun GeneralSettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: GeneralSettingsViewModel = koinViewModel(),
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -73,16 +73,15 @@ fun GeneralSettingsScreen(
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
             )
         },
     ) { innerPadding ->
         val areNotificationsEnabled = areNotificationsEnabled()
         LazyColumn(
+            state = listState,
             contentPadding = innerPadding,
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
         ) {
             if (areNotificationsEnabled != null) {
                 item {

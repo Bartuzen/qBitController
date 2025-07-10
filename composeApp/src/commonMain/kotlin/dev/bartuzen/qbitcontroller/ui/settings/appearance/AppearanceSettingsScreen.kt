@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
@@ -11,11 +12,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +22,7 @@ import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.preferences.ListPreference
 import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import org.koin.compose.viewmodel.koinViewModel
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_category_appearance
@@ -38,7 +38,7 @@ fun AppearanceSettingsScreen(
     modifier: Modifier = Modifier,
     viewModel: AppearanceSettingsViewModel = koinViewModel(),
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -59,15 +59,14 @@ fun AppearanceSettingsScreen(
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
             )
         },
     ) { innerPadding ->
         LazyColumn(
+            state = listState,
             contentPadding = innerPadding,
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
         ) {
             item {
                 LanguagePreference()

@@ -24,7 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,6 +43,7 @@ import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerResult
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -86,7 +85,7 @@ fun ServersScreen(
         }
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -119,12 +118,11 @@ fun ServersScreen(
 
                     AppBarActions(items = items)
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
             )
         },
         snackbarHost = { SwipeableSnackbarHost(snackbarHostState) },
     ) { innerPadding ->
-        val listState = rememberLazyListState()
         val reorderableLazyListState = rememberReorderableLazyListState(listState) { from, to ->
             viewModel.reorderServer(from.index, to.index)
         }
@@ -132,9 +130,7 @@ fun ServersScreen(
         LazyColumn(
             state = listState,
             contentPadding = innerPadding,
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.fillMaxSize(),
         ) {
             items(
                 items = servers,

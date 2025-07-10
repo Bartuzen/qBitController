@@ -72,7 +72,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -103,6 +102,7 @@ import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -258,7 +258,7 @@ fun RssArticlesScreen(
         selectedArticles.removeAll { articleId -> articles?.none { it.id == articleId } != false }
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -333,7 +333,7 @@ fun RssArticlesScreen(
 
                     AppBarActions(items = actionMenuItems)
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
@@ -418,14 +418,11 @@ fun RssArticlesScreen(
                 .consumeWindowInsets(innerPadding)
                 .imePadding(),
         ) {
-            val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
                 contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 items(
                     items = articles ?: emptyList(),

@@ -5,30 +5,28 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.platform.LocalDensity
@@ -245,23 +243,14 @@ fun PaddingValues.excludeBottom(): PaddingValues {
 expect fun calculateWindowSizeClass(): WindowSizeClass
 
 @Composable
-fun appBarColor(
-    scrollBehavior: TopAppBarScrollBehavior,
-    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(),
-): Color {
-    val colorTransitionFraction by remember(scrollBehavior) {
-        derivedStateOf {
-            val overlappingFraction = scrollBehavior.state.overlappedFraction
-            if (overlappingFraction > 0.01f) 1f else 0f
-        }
-    }
+fun ScrollableState.topAppBarColors() = TopAppBarDefaults.topAppBarColors(
+    containerColor = if (canScrollBackward) MaterialTheme.colorScheme.surfaceContainer else Color.Unspecified,
+)
 
+@Composable
+fun topAppBarColor(state: ScrollableState, colors: TopAppBarColors = state.topAppBarColors()): Color {
     val appBarContainerColor by animateColorAsState(
-        targetValue = lerp(
-            colors.containerColor,
-            colors.scrolledContainerColor,
-            FastOutLinearInEasing.transform(colorTransitionFraction),
-        ),
+        targetValue = colors.containerColor,
         animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
     )
     return appBarContainerColor

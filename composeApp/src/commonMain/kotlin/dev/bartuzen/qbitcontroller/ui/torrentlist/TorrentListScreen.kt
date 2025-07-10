@@ -39,6 +39,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -206,6 +207,8 @@ import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColor
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -986,6 +989,7 @@ fun TorrentListScreen(
                 }
             },
         ) {
+            val listState = rememberLazyListState()
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 contentWindowInsets = WindowInsets.safeDrawing,
@@ -1000,6 +1004,7 @@ fun TorrentListScreen(
                         serverId = serverId,
                         currentServer = currentServer,
                         mainData = mainData,
+                        listState = listState,
                         isSearchMode = isSearchMode,
                         searchQuery = searchQuery,
                         filterQuery = filterQuery,
@@ -1082,6 +1087,7 @@ fun TorrentListScreen(
                                 textAlign = TextAlign.End,
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .background(topAppBarColor(listState))
                                     .focusProperties {
                                         canFocus = drawerState.isClosed
                                     }
@@ -1092,7 +1098,6 @@ fun TorrentListScreen(
                             )
                         }
 
-                        val listState = rememberLazyListState()
                         val swipeEnabled by viewModel.areTorrentSwipeActionsEnabled.collectAsStateWithLifecycle()
 
                         Box(modifier = Modifier.fillMaxSize()) {
@@ -2179,6 +2184,7 @@ private fun TopBar(
     serverId: Int,
     currentServer: ServerConfig,
     mainData: MainData?,
+    listState: LazyListState,
     isSearchMode: Boolean,
     searchQuery: String,
     filterQuery: TextFieldValue,
@@ -2425,6 +2431,7 @@ private fun TopBar(
                 canFocus = canFocusNow,
             )
         },
+        colors = listState.topAppBarColors(),
         windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
     )
 }

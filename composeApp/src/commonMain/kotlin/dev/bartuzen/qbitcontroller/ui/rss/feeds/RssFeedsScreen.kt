@@ -77,7 +77,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
@@ -106,6 +105,7 @@ import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -434,7 +434,7 @@ fun RssFeedsScreen(
         movingItemId = null
     }
 
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val listState = rememberLazyListState()
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -519,7 +519,7 @@ fun RssFeedsScreen(
 
                     AppBarActions(items = actionMenuItems)
                 },
-                scrollBehavior = scrollBehavior,
+                colors = listState.topAppBarColors(),
                 windowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top),
             )
         },
@@ -580,14 +580,11 @@ fun RssFeedsScreen(
                 }
             }
 
-            val listState = rememberLazyListState()
             LazyColumn(
                 state = listState,
                 contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 items(
                     items = flattenedNodes ?: emptyList(),
