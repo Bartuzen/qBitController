@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.configureSwingGlobalsForCompose
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
@@ -54,6 +55,8 @@ import java.util.Locale
 import androidx.compose.ui.text.intl.Locale as ComposeLocale
 
 fun main() {
+    configureSwingGlobalsForCompose()
+
     System.setProperty("apple.awt.application.appearance", "system")
 
     val koinApplication = startKoin {
