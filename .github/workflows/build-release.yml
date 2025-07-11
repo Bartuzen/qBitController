@@ -57,9 +57,11 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/git/tags/$TAG_SHA" | \
             jq -r '.message' | tail -n +2)
           
+          BODY_CLEAN=$(echo "$BODY" | sed '/^-----BEGIN PGP SIGNATURE-----$/,/^-----END PGP SIGNATURE-----$/d')
+          
           {
             echo "body<<EOF"
-            echo "$BODY"
+            echo "$BODY_CLEAN"
             echo "EOF"
           } >> $GITHUB_OUTPUT
 
