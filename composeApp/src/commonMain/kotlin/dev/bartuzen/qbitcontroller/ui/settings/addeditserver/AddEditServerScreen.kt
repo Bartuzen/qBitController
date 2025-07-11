@@ -272,6 +272,7 @@ fun AddEditServerScreen(
                             icon = Icons.Filled.Save,
                             onClick = {
                                 val serverConfig = validateAndGetServerConfig() ?: return@ActionMenuItem
+                                softwareKeyboardController?.hide()
                                 if (serverConfig.id == -1) {
                                     viewModel.addServer(serverConfig)
                                     onNavigateBack(AddEditServerResult.Add)
