@@ -2,12 +2,12 @@ package dev.bartuzen.qbitcontroller.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.intl.Locale
-import kotlinx.datetime.Instant
 import kotlinx.datetime.toNSDate
 import platform.Foundation.NSDateFormatter
 import platform.Foundation.NSDateFormatterShortStyle
 import platform.Foundation.NSLocaleCountryCode
 import platform.Foundation.NSNumberFormatter
+import kotlin.time.Instant
 
 actual fun Instant.formatDate() = NSDateFormatter().apply {
     dateStyle = NSDateFormatterShortStyle

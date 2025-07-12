@@ -50,7 +50,7 @@ private fun parseRssFeedWithData(node: JsonElement, articles: MutableList<Articl
 }
 
 private val dateFormat = DateTimeComponents.Format {
-    dayOfMonth()
+    day()
     char(' ')
     monthName(MonthNames.ENGLISH_ABBREVIATED)
     char(' ')
