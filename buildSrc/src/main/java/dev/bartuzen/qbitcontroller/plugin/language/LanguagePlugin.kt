@@ -22,6 +22,9 @@ class LanguagePlugin : Plugin<Project> {
         }
 
         project.tasks.getByName("preBuild").dependsOn(localesConfigTask, languageListTask, copyLanguagesToAndroidTask)
+        project.afterEvaluate {
+            project.tasks.getByName("compileKotlinDesktop").dependsOn(languageListTask)
+        }
     }
 }
 
