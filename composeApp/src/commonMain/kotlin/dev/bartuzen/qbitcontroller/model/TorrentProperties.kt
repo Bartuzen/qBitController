@@ -5,9 +5,9 @@ import dev.bartuzen.qbitcontroller.model.serializers.NullableInstantSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableIntSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableLongSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.time.Instant
 
 @Serializable
 data class TorrentProperties(

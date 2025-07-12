@@ -1,6 +1,6 @@
 package dev.bartuzen.qbitcontroller.model
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 data class Article(
     val id: String,

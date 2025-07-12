@@ -4,7 +4,6 @@ import dev.bartuzen.qbitcontroller.model.serializers.InstantSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableDoubleSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableInstantSerializer
 import dev.bartuzen.qbitcontroller.model.serializers.NullableStringSerializer
-import kotlinx.datetime.Instant
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.KeepGeneratedSerializer
 import kotlinx.serialization.SerialName
@@ -18,6 +17,7 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonPrimitive
+import kotlin.time.Instant
 
 @Serializable
 data class Torrent(

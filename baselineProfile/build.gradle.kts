@@ -1,6 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
 import dev.bartuzen.qbitcontroller.Versions
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.test)
@@ -17,8 +18,10 @@ android {
         targetCompatibility = Versions.Android.JavaVersion
     }
 
-    kotlinOptions {
-        jvmTarget = Versions.Android.JvmTarget
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(Versions.Android.JvmTarget))
+        }
     }
 
     defaultConfig {

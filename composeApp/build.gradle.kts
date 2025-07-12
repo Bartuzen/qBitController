@@ -67,6 +67,7 @@ kotlin {
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+            "-opt-in=kotlin.time.ExperimentalTime"
         )
     }
 
@@ -132,6 +133,7 @@ kotlin {
             dependencies {
                 implementation(libs.ktor.okhttp)
 
+                implementation(project.dependencies.platform(libs.okhttp.bom))
                 implementation(libs.okhttp.doh)
             }
         }

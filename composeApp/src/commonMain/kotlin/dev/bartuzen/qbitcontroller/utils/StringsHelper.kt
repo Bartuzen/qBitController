@@ -5,7 +5,6 @@ import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import io.ktor.http.parseUrl
-import kotlinx.datetime.Instant
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.error_api
 import qbitcontroller.composeapp.generated.resources.error_banned
@@ -58,6 +57,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_status_seeding
 import qbitcontroller.composeapp.generated.resources.torrent_status_stalled
 import qbitcontroller.composeapp.generated.resources.torrent_status_unknown
 import kotlin.math.roundToLong
+import kotlin.time.Instant
 
 @Composable
 fun formatBytes(byte: Long) = when (byte) {
