@@ -1,8 +1,5 @@
 package dev.bartuzen.qbitcontroller.network
 
-import de.jensklingenberg.ktorfit.Ktorfit
-import de.jensklingenberg.ktorfit.Response
-import de.jensklingenberg.ktorfit.converter.ResponseConverterFactory
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
@@ -125,12 +122,10 @@ class RequestManager(
         buildHttpClient(serverConfig)
     }
 
-    fun buildTorrentService(serverConfig: ServerConfig, client: HttpClient) = Ktorfit.Builder()
-        .baseUrl(serverConfig.requestUrl)
-        .httpClient(client)
-        .converterFactories(ResponseConverterFactory())
-        .build()
-        .createTorrentService()
+    fun buildTorrentService(serverConfig: ServerConfig, client: HttpClient) = TorrentService(
+        client = client,
+        baseUrl = serverConfig.requestUrl,
+    )
 
     private fun getTorrentService(serverId: Int) = torrentServiceMap.getOrPut(serverId) {
         val serverConfig = serverManager.getServer(serverId)
@@ -192,7 +187,7 @@ class RequestManager(
         val code = blockResponse.code
         val body = blockResponse.body()
 
-        return if (code == 200 && body != null) {
+        return if (code == 200) {
             RequestResult.Success(body)
         } else if (code == 403) {
             RequestResult.Error.RequestError.InvalidCredentials

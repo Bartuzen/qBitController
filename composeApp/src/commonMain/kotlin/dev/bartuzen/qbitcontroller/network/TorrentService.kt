@@ -1,12 +1,5 @@
 package dev.bartuzen.qbitcontroller.network
 
-import de.jensklingenberg.ktorfit.Response
-import de.jensklingenberg.ktorfit.http.Body
-import de.jensklingenberg.ktorfit.http.Field
-import de.jensklingenberg.ktorfit.http.FormUrlEncoded
-import de.jensklingenberg.ktorfit.http.GET
-import de.jensklingenberg.ktorfit.http.POST
-import de.jensklingenberg.ktorfit.http.Query
 import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
@@ -21,338 +14,429 @@ import dev.bartuzen.qbitcontroller.model.TorrentPeers
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.model.TorrentWebSeed
+import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.appendEncodedPathSegments
+import io.ktor.http.parametersOf
+import io.ktor.http.takeFrom
 
-interface TorrentService {
-    @FormUrlEncoded
-    @POST("api/v2/auth/login")
-    suspend fun login(@Field("username") username: String, @Field("password") password: String): Response<String>
+class TorrentService(
+    val client: HttpClient,
+    val baseUrl: String,
+) {
+    suspend inline fun <reified T> get(path: String, parameters: Map<String, Any?> = emptyMap()): Response<T> = client.get {
+        url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
+        parameters.forEach { (key, value) ->
+            if (value != null) {
+                url.parameters.append(key, value.toString())
+            }
+        }
+    }.toResponse()
 
-    @GET("api/v2/app/version")
-    suspend fun getVersion(): Response<String>
+    suspend inline fun <reified T> post(path: String, parameters: Map<String, Any?> = emptyMap()): Response<T> =
+        client.submitForm(
+            formParameters = parametersOf(
+                parameters
+                    .filterValues { it != null }
+                    .mapValues { listOf(it.value.toString()) },
+            ),
+        ) {
+            url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
+        }.toResponse()
 
-    @GET("api/v2/app/defaultSavePath")
-    suspend fun getDefaultSavePath(): Response<String>
+    suspend fun login(username: String, password: String): Response<String> = post(
+        "auth/login",
+        mapOf("username" to username, "password" to password),
+    )
 
-    @POST("api/v2/app/shutdown")
-    suspend fun shutdown(): Response<String>
+    suspend fun getVersion(): Response<String> = get("app/version")
 
-    @GET("api/v2/log/main")
-    suspend fun getLog(): Response<List<Log>>
+    suspend fun getDefaultSavePath(): Response<String> = get("app/defaultSavePath")
 
-    @GET("api/v2/sync/maindata")
-    suspend fun getMainData(): Response<MainData>
+    suspend fun shutdown(): Response<String> = post("app/shutdown")
 
-    @POST("api/v2/transfer/toggleSpeedLimitsMode")
-    suspend fun toggleSpeedLimitsMode(): Response<Unit>
+    suspend fun getLog(): Response<List<Log>> = get("log/main")
 
-    @FormUrlEncoded
-    @POST("api/v2/transfer/setDownloadLimit")
-    suspend fun setDownloadSpeedLimit(@Field("limit") limit: Int): Response<Unit>
+    suspend fun getMainData(): Response<MainData> = get("sync/maindata")
 
-    @FormUrlEncoded
-    @POST("api/v2/transfer/setUploadLimit")
-    suspend fun setUploadSpeedLimit(@Field("limit") limit: Int): Response<Unit>
+    suspend fun toggleSpeedLimitsMode(): Response<Unit> = post("transfer/toggleSpeedLimitsMode")
 
-    @GET("api/v2/torrents/info")
-    suspend fun getTorrentList(@Query("hashes") hashes: String? = null): Response<List<Torrent>>
+    suspend fun setDownloadSpeedLimit(limit: Int): Response<Unit> = post(
+        "transfer/setDownloadLimit",
+        mapOf("limit" to limit),
+    )
 
-    @GET("api/v2/torrents/files")
-    suspend fun getFiles(@Query("hash") hash: String): Response<List<TorrentFile>>
+    suspend fun setUploadSpeedLimit(limit: Int): Response<Unit> = post(
+        "transfer/setUploadLimit",
+        mapOf("limit" to limit),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/delete")
-    suspend fun deleteTorrents(@Field("hashes") hashes: String, @Field("deleteFiles") deleteFiles: Boolean): Response<Unit>
+    suspend fun getTorrentList(hashes: String? = null): Response<List<Torrent>> = get(
+        "torrents/info",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/pause")
-    suspend fun pauseTorrents(@Field("hashes") hashes: String): Response<String>
+    suspend fun getFiles(hash: String): Response<List<TorrentFile>> = get(
+        "torrents/files",
+        mapOf("hash" to hash),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/resume")
-    suspend fun resumeTorrents(@Field("hashes") hashes: String): Response<String>
+    suspend fun deleteTorrents(hashes: String, deleteFiles: Boolean): Response<Unit> = post(
+        "torrents/delete",
+        mapOf("hashes" to hashes, "deleteFiles" to deleteFiles),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/stop")
-    suspend fun stopTorrents(@Field("hashes") hashes: String): Response<String>
+    suspend fun pauseTorrents(hashes: String): Response<String> = post(
+        "torrents/pause",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/start")
-    suspend fun startTorrents(@Field("hashes") hashes: String): Response<String>
+    suspend fun resumeTorrents(hashes: String): Response<String> = post(
+        "torrents/resume",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/recheck")
-    suspend fun recheckTorrents(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun stopTorrents(hashes: String): Response<String> = post(
+        "torrents/stop",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/reannounce")
-    suspend fun reannounceTorrents(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun startTorrents(hashes: String): Response<String> = post(
+        "torrents/start",
+        mapOf("hashes" to hashes),
+    )
 
-    @GET("api/v2/torrents/pieceStates")
-    suspend fun getTorrentPieces(@Query("hash") hash: String): Response<List<PieceState>>
+    suspend fun recheckTorrents(hashes: String): Response<Unit> = post(
+        "torrents/recheck",
+        mapOf("hashes" to hashes),
+    )
 
-    @GET("api/v2/torrents/properties")
-    suspend fun getTorrentProperties(@Query("hash") hash: String): Response<TorrentProperties>
+    suspend fun reannounceTorrents(hashes: String): Response<Unit> = post(
+        "torrents/reannounce",
+        mapOf("hashes" to hashes),
+    )
 
-    @GET("api/v2/torrents/trackers")
-    suspend fun getTorrentTrackers(@Query("hash") hash: String): Response<List<TorrentTracker>>
+    suspend fun getTorrentPieces(hash: String): Response<List<PieceState>> = get(
+        "torrents/pieceStates",
+        mapOf("hash" to hash),
+    )
 
-    @GET("api/v2/torrents/webseeds")
-    suspend fun getWebSeeds(@Query("hash") hash: String): Response<List<TorrentWebSeed>>
+    suspend fun getTorrentProperties(hash: String): Response<TorrentProperties> = get(
+        "torrents/properties",
+        mapOf("hash" to hash),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/addTrackers")
-    suspend fun addTorrentTrackers(@Field("hash") hash: String, @Field("urls") urls: String): Response<Unit>
+    suspend fun getTorrentTrackers(hash: String): Response<List<TorrentTracker>> = get(
+        "torrents/trackers",
+        mapOf("hash" to hash),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/removeTrackers")
-    suspend fun deleteTorrentTrackers(@Field("hash") hash: String, @Field("urls") urls: String): Response<Unit>
+    suspend fun getWebSeeds(hash: String): Response<List<TorrentWebSeed>> = get(
+        "torrents/webseeds",
+        mapOf("hash" to hash),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/editTracker")
-    suspend fun editTorrentTrackers(
-        @Field("hash") hash: String,
-        @Field("origUrl") tracker: String,
-        @Field("newUrl") newUrl: String,
-    ): Response<Unit>
+    suspend fun addTorrentTrackers(hash: String, urls: String): Response<Unit> = post(
+        "torrents/addTrackers",
+        mapOf("hash" to hash, "urls" to urls),
+    )
 
-    @GET("api/v2/torrents/categories")
-    suspend fun getCategories(): Response<Map<String, Category>>
+    suspend fun deleteTorrentTrackers(hash: String, urls: String): Response<Unit> = post(
+        "torrents/removeTrackers",
+        mapOf("hash" to hash, "urls" to urls),
+    )
 
-    @GET("api/v2/torrents/tags")
-    suspend fun getTags(): Response<List<String>>
+    suspend fun editTorrentTrackers(hash: String, tracker: String, newUrl: String): Response<Unit> = post(
+        "torrents/editTracker",
+        mapOf("hash" to hash, "origUrl" to tracker, "newUrl" to newUrl),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/removeCategories")
-    suspend fun deleteCategories(@Field("categories") categories: String): Response<Unit>
+    suspend fun getCategories(): Response<Map<String, Category>> = get("torrents/categories")
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/deleteTags")
-    suspend fun deleteTags(@Field("tags") tags: String): Response<Unit>
+    suspend fun getTags(): Response<List<String>> = get("torrents/tags")
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/increasePrio")
-    suspend fun increaseTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun deleteCategories(categories: String): Response<Unit> = post(
+        "torrents/removeCategories",
+        mapOf("categories" to categories),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/decreasePrio")
-    suspend fun decreaseTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun deleteTags(tags: String): Response<Unit> = post(
+        "torrents/deleteTags",
+        mapOf("tags" to tags),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/topPrio")
-    suspend fun maximizeTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun increaseTorrentPriority(hashes: String): Response<Unit> = post(
+        "torrents/increasePrio",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/bottomPrio")
-    suspend fun minimizeTorrentPriority(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun decreaseTorrentPriority(hashes: String): Response<Unit> = post(
+        "torrents/decreasePrio",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/createCategory")
+    suspend fun maximizeTorrentPriority(hashes: String): Response<Unit> = post(
+        "torrents/topPrio",
+        mapOf("hashes" to hashes),
+    )
+
+    suspend fun minimizeTorrentPriority(hashes: String): Response<Unit> = post(
+        "torrents/bottomPrio",
+        mapOf("hashes" to hashes),
+    )
+
     suspend fun createCategory(
-        @Field("category") name: String,
-        @Field("savePath") savePath: String,
-        @Field("downloadPathEnabled") downloadPathEnabled: Boolean?,
-        @Field("downloadPath") downloadPath: String,
-    ): Response<Unit>
+        name: String,
+        savePath: String,
+        downloadPathEnabled: Boolean?,
+        downloadPath: String,
+    ): Response<Unit> = post(
+        "torrents/createCategory",
+        mapOf(
+            "category" to name,
+            "savePath" to savePath,
+            "downloadPathEnabled" to downloadPathEnabled,
+            "downloadPath" to downloadPath,
+        ),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/editCategory")
     suspend fun editCategory(
-        @Field("category") name: String,
-        @Field("savePath") savePath: String,
-        @Field("downloadPathEnabled") downloadPathEnabled: Boolean?,
-        @Field("downloadPath") downloadPath: String,
-    ): Response<Unit>
+        name: String,
+        savePath: String,
+        downloadPathEnabled: Boolean?,
+        downloadPath: String,
+    ): Response<Unit> = post(
+        "torrents/editCategory",
+        mapOf(
+            "category" to name,
+            "savePath" to savePath,
+            "downloadPathEnabled" to downloadPathEnabled,
+            "downloadPath" to downloadPath,
+        ),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/createTags")
-    suspend fun createTags(@Field("tags") names: String): Response<Unit>
+    suspend fun createTags(names: String): Response<Unit> = post(
+        "torrents/createTags",
+        mapOf("tags" to names),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setShareLimits")
     suspend fun setShareLimit(
-        @Field("hashes") hashes: String,
-        @Field("ratioLimit") ratioLimit: Double,
-        @Field("seedingTimeLimit") seedingTimeLimit: Int,
-        @Field("inactiveSeedingTimeLimit") inactiveSeedingTimeLimit: Int,
-    ): Response<Unit>
+        hashes: String,
+        ratioLimit: Double,
+        seedingTimeLimit: Int,
+        inactiveSeedingTimeLimit: Int,
+    ): Response<Unit> = post(
+        "torrents/setShareLimits",
+        mapOf(
+            "hashes" to hashes,
+            "ratioLimit" to ratioLimit,
+            "seedingTimeLimit" to seedingTimeLimit,
+            "inactiveSeedingTimeLimit" to inactiveSeedingTimeLimit,
+        ),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/toggleSequentialDownload")
-    suspend fun toggleSequentialDownload(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun toggleSequentialDownload(hashes: String): Response<Unit> = post(
+        "torrents/toggleSequentialDownload",
+        mapOf("hashes" to hashes),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/toggleFirstLastPiecePrio")
-    suspend fun togglePrioritizeFirstLastPiecesDownload(@Field("hashes") hashes: String): Response<Unit>
+    suspend fun togglePrioritizeFirstLastPiecesDownload(hashes: String): Response<Unit> = post(
+        "torrents/toggleFirstLastPiecePrio",
+        mapOf("hashes" to hashes),
+    )
 
-    @POST("api/v2/torrents/add")
-    suspend fun addTorrent(@Body map: MultiPartFormDataContent): Response<String>
+    suspend fun addTorrent(map: MultiPartFormDataContent): Response<String> = client.post {
+        url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/torrents/add")
+        setBody(map)
+    }.toResponse()
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setAutoManagement")
-    suspend fun setAutomaticTorrentManagement(
-        @Field("hashes") hashes: String,
-        @Field("enable") enable: Boolean,
-    ): Response<Unit>
+    suspend fun setAutomaticTorrentManagement(hashes: String, enable: Boolean): Response<Unit> = post(
+        "torrents/setAutoManagement",
+        mapOf("hashes" to hashes, "enable" to enable),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setDownloadLimit")
-    suspend fun setDownloadSpeedLimit(@Field("hashes") hashes: String, @Field("limit") limit: Int): Response<Unit>
+    suspend fun setDownloadSpeedLimit(hashes: String, limit: Int): Response<Unit> = post(
+        "torrents/setDownloadLimit",
+        mapOf("hashes" to hashes, "limit" to limit),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setUploadLimit")
-    suspend fun setUploadSpeedLimit(@Field("hashes") hashes: String, @Field("limit") limit: Int): Response<Unit>
+    suspend fun setUploadSpeedLimit(hashes: String, limit: Int): Response<Unit> = post(
+        "torrents/setUploadLimit",
+        mapOf("hashes" to hashes, "limit" to limit),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setForceStart")
-    suspend fun setForceStart(@Field("hashes") hashes: String, @Field("value") value: Boolean): Response<Unit>
+    suspend fun setForceStart(hashes: String, value: Boolean): Response<Unit> = post(
+        "torrents/setForceStart",
+        mapOf("hashes" to hashes, "value" to value),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setSuperSeeding")
-    suspend fun setSuperSeeding(@Field("hashes") hashes: String, @Field("value") value: Boolean): Response<Unit>
+    suspend fun setSuperSeeding(hashes: String, value: Boolean): Response<Unit> = post(
+        "torrents/setSuperSeeding",
+        mapOf("hashes" to hashes, "value" to value),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/rename")
-    suspend fun renameTorrent(@Field("hash") hash: String, @Field("name") name: String): Response<Unit>
+    suspend fun renameTorrent(hash: String, name: String): Response<Unit> = post(
+        "torrents/rename",
+        mapOf("hash" to hash, "name" to name),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setLocation")
-    suspend fun setLocation(@Field("hashes") hashes: String, @Field("location") location: String): Response<Unit>
+    suspend fun setLocation(hashes: String, location: String): Response<Unit> = post(
+        "torrents/setLocation",
+        mapOf("hashes" to hashes, "location" to location),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setDownloadPath")
-    suspend fun setDownloadPath(@Field("id") hashes: String, @Field("path") path: String): Response<Unit>
+    suspend fun setDownloadPath(hashes: String, path: String): Response<Unit> = post(
+        "torrents/setDownloadPath",
+        mapOf("id" to hashes, "path" to path),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/filePrio")
-    suspend fun setFilePriority(
-        @Field("hash") hash: String,
-        @Field("id") id: String,
-        @Field("priority") priority: Int,
-    ): Response<Unit>
+    suspend fun setFilePriority(hash: String, id: String, priority: Int): Response<Unit> = post(
+        "torrents/filePrio",
+        mapOf("hash" to hash, "id" to id, "priority" to priority),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/renameFile")
-    suspend fun renameFile(
-        @Field("hash") hash: String,
-        @Field("oldPath") oldPath: String,
-        @Field("newPath") newPath: String,
-    ): Response<Unit>
+    suspend fun renameFile(hash: String, oldPath: String, newPath: String): Response<Unit> = post(
+        "torrents/renameFile",
+        mapOf("hash" to hash, "oldPath" to oldPath, "newPath" to newPath),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/renameFolder")
-    suspend fun renameFolder(
-        @Field("hash") hash: String,
-        @Field("oldPath") oldPath: String,
-        @Field("newPath") newPath: String,
-    ): Response<Unit>
+    suspend fun renameFolder(hash: String, oldPath: String, newPath: String): Response<Unit> = post(
+        "torrents/renameFolder",
+        mapOf("hash" to hash, "oldPath" to oldPath, "newPath" to newPath),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/setCategory")
-    suspend fun setCategory(@Field("hashes") hashes: String, @Field("category") category: String): Response<Unit>
+    suspend fun setCategory(hashes: String, category: String): Response<Unit> = post(
+        "torrents/setCategory",
+        mapOf("hashes" to hashes, "category" to category),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/addTags")
-    suspend fun addTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
+    suspend fun addTags(hashes: String, tags: String): Response<Unit> = post(
+        "torrents/addTags",
+        mapOf("hashes" to hashes, "tags" to tags),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/removeTags")
-    suspend fun removeTags(@Field("hashes") hashes: String, @Field("tags") tags: String): Response<Unit>
+    suspend fun removeTags(hashes: String, tags: String): Response<Unit> = post(
+        "torrents/removeTags",
+        mapOf("hashes" to hashes, "tags" to tags),
+    )
 
-    @GET("api/v2/torrents/export")
-    suspend fun exportTorrent(@Query("hash") hash: String): Response<ByteArray>
+    suspend fun exportTorrent(hash: String): Response<ByteArray> = get(
+        "torrents/export",
+        mapOf("hash" to hash),
+    )
 
-    @GET("api/v2/sync/torrentPeers")
-    suspend fun getPeers(@Query("hash") hash: String): Response<TorrentPeers>
+    suspend fun getPeers(hash: String): Response<TorrentPeers> = get(
+        "sync/torrentPeers",
+        mapOf("hash" to hash),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/torrents/addPeers")
-    suspend fun addPeers(@Field("hashes") hashes: String, @Field("peers") peers: String): Response<Unit>
+    suspend fun addPeers(hashes: String, peers: String): Response<Unit> = post(
+        "torrents/addPeers",
+        mapOf("hashes" to hashes, "peers" to peers),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/transfer/banPeers")
-    suspend fun banPeers(@Field("peers") peers: String): Response<Unit>
+    suspend fun banPeers(peers: String): Response<Unit> = post(
+        "transfer/banPeers",
+        mapOf("peers" to peers),
+    )
 
-    @GET("api/v2/rss/items")
-    suspend fun getRssFeeds(@Query("withData") withData: Boolean): Response<String>
+    suspend fun getRssFeeds(withData: Boolean): Response<String> = get(
+        "rss/items",
+        mapOf("withData" to withData),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/markAsRead")
-    suspend fun markAsRead(@Field("itemPath") itemPath: String, @Field("articleId") articleId: String?): Response<Unit>
+    suspend fun markAsRead(itemPath: String, articleId: String?): Response<Unit> = post(
+        "rss/markAsRead",
+        mapOf("itemPath" to itemPath, "articleId" to articleId),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/refreshItem")
-    suspend fun refreshItem(@Field("itemPath") itemPath: String): Response<Unit>
+    suspend fun refreshItem(itemPath: String): Response<Unit> = post(
+        "rss/refreshItem",
+        mapOf("itemPath" to itemPath),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/addFeed")
-    suspend fun addRssFeed(@Field("url") url: String, @Field("path") path: String): Response<Unit>
+    suspend fun addRssFeed(url: String, path: String): Response<Unit> = post(
+        "rss/addFeed",
+        mapOf("url" to url, "path" to path),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/setFeedURL")
-    suspend fun setFeedUrl(@Field("path") path: String, @Field("url") url: String): Response<Unit>
+    suspend fun setFeedUrl(path: String, url: String): Response<Unit> = post(
+        "rss/setFeedURL",
+        mapOf("path" to path, "url" to url),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/addFolder")
-    suspend fun addRssFolder(@Field("path") path: String): Response<Unit>
+    suspend fun addRssFolder(path: String): Response<Unit> = post(
+        "rss/addFolder",
+        mapOf("path" to path),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/moveItem")
-    suspend fun moveItem(@Field("itemPath") from: String, @Field("destPath") to: String): Response<Unit>
+    suspend fun moveItem(from: String, to: String): Response<Unit> = post(
+        "rss/moveItem",
+        mapOf("itemPath" to from, "destPath" to to),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/removeItem")
-    suspend fun removeItem(@Field("path") path: String): Response<Unit>
+    suspend fun removeItem(path: String): Response<Unit> = post(
+        "rss/removeItem",
+        mapOf("path" to path),
+    )
 
-    @GET("api/v2/rss/rules")
-    suspend fun getRssRules(): Response<Map<String, RssRule>>
+    suspend fun getRssRules(): Response<Map<String, RssRule>> = get("rss/rules")
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/setRule")
-    suspend fun setRule(@Field("ruleName") name: String, @Field("ruleDef") ruleDefinition: String): Response<Unit>
+    suspend fun setRule(name: String, ruleDefinition: String): Response<Unit> = post(
+        "rss/setRule",
+        mapOf("ruleName" to name, "ruleDef" to ruleDefinition),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/renameRule")
-    suspend fun renameRule(@Field("ruleName") name: String, @Field("newRuleName") newName: String): Response<Unit>
+    suspend fun renameRule(name: String, newName: String): Response<Unit> = post(
+        "rss/renameRule",
+        mapOf("ruleName" to name, "newRuleName" to newName),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/rss/removeRule")
-    suspend fun deleteRule(@Field("ruleName") name: String): Response<Unit>
+    suspend fun deleteRule(name: String): Response<Unit> = post(
+        "rss/removeRule",
+        mapOf("ruleName" to name),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/search/start")
-    suspend fun startSearch(
-        @Field("pattern") pattern: String,
-        @Field("category") category: String,
-        @Field("plugins") plugins: String,
-    ): Response<StartSearch>
+    suspend fun startSearch(pattern: String, category: String, plugins: String): Response<StartSearch> = post(
+        "search/start",
+        mapOf("pattern" to pattern, "category" to category, "plugins" to plugins),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/search/stop")
-    suspend fun stopSearch(@Field("id") id: Int): Response<Unit>
+    suspend fun stopSearch(id: Int): Response<Unit> = post(
+        "search/stop",
+        mapOf("id" to id),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/search/delete")
-    suspend fun deleteSearch(@Field("id") id: Int): Response<Unit>
+    suspend fun deleteSearch(id: Int): Response<Unit> = post(
+        "search/delete",
+        mapOf("id" to id),
+    )
 
-    @GET("api/v2/search/results")
-    suspend fun getSearchResults(@Query("id") id: Int): Response<Search>
+    suspend fun getSearchResults(id: Int): Response<Search> = get(
+        "search/results",
+        mapOf("id" to id),
+    )
 
-    @GET("api/v2/search/plugins")
-    suspend fun getPlugins(): Response<List<Plugin>>
+    suspend fun getPlugins(): Response<List<Plugin>> = get("search/plugins")
 
-    @FormUrlEncoded
-    @POST("api/v2/search/enablePlugin")
-    suspend fun enablePlugins(@Field("names") names: String, @Field("enable") isEnabled: Boolean): Response<Unit>
+    suspend fun enablePlugins(names: String, isEnabled: Boolean): Response<Unit> = post(
+        "search/enablePlugin",
+        mapOf("names" to names, "enable" to isEnabled),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/search/installPlugin")
-    suspend fun installPlugins(@Field("sources") sources: String): Response<Unit>
+    suspend fun installPlugins(sources: String): Response<Unit> = post(
+        "search/installPlugin",
+        mapOf("sources" to sources),
+    )
 
-    @FormUrlEncoded
-    @POST("api/v2/search/uninstallPlugin")
-    suspend fun uninstallPlugins(@Field("names") names: String): Response<Unit>
+    suspend fun uninstallPlugins(names: String): Response<Unit> = post(
+        "search/uninstallPlugin",
+        mapOf("names" to names),
+    )
 
-    @POST("api/v2/search/updatePlugins")
-    suspend fun updatePlugins(): Response<Unit>
+    suspend fun updatePlugins(): Response<Unit> = post("search/updatePlugins")
 }
