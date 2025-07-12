@@ -9,8 +9,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.buildConfig) apply false
-    alias(libs.plugins.ksp) apply false
-    alias(libs.plugins.ktorfit) apply false
     alias(libs.plugins.gradleVersions)
 
     alias(libs.plugins.firebase.googleServices) apply false

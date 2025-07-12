@@ -3,6 +3,7 @@
 
 import android.databinding.tool.ext.joinToCamelCaseAsVar
 import dev.bartuzen.qbitcontroller.Versions
+import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jmailen.gradle.kotlinter.tasks.ConfigurableKtLintTask
@@ -11,7 +12,6 @@ import java.util.Locale
 import java.util.Properties
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import org.gradle.internal.os.OperatingSystem
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -23,8 +23,6 @@ plugins {
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.buildConfig)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.ktorfit)
 
     id("dev.bartuzen.qbitcontroller.language")
     id("dev.bartuzen.qbitcontroller.ios")
@@ -107,9 +105,6 @@ kotlin {
                 implementation(libs.ktor.contentNegotiation)
                 implementation(libs.ktor.serialization.json)
                 implementation(libs.ktor.auth)
-
-                implementation(libs.ktorfit)
-                implementation(libs.ktorfit.converter.response)
 
                 implementation(libs.coil)
                 implementation(libs.coil.ktor)
@@ -386,14 +381,6 @@ compose.desktop {
 
 tasks.withType<ConfigurableKtLintTask> {
     source = source.minus(fileTree("build")).asFileTree
-}
-
-afterEvaluate {
-    tasks.matching { task ->
-        task.name.startsWith("ksp") && task.name.contains("KotlinMetadata")
-    }.configureEach {
-        dependsOn(":composeApp:generateLanguageList")
-    }
 }
 
 listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFolder) ->
