@@ -100,7 +100,6 @@ import qbitcontroller.composeapp.generated.resources.settings_server_credentials
 import qbitcontroller.composeapp.generated.resources.settings_server_invalid_url
 import qbitcontroller.composeapp.generated.resources.settings_server_name
 import qbitcontroller.composeapp.generated.resources.settings_server_password
-import qbitcontroller.composeapp.generated.resources.settings_server_password_min_character
 import qbitcontroller.composeapp.generated.resources.settings_server_server_info
 import qbitcontroller.composeapp.generated.resources.settings_server_test_configuration
 import qbitcontroller.composeapp.generated.resources.settings_server_title_add
@@ -108,7 +107,6 @@ import qbitcontroller.composeapp.generated.resources.settings_server_title_edit
 import qbitcontroller.composeapp.generated.resources.settings_server_url
 import qbitcontroller.composeapp.generated.resources.settings_server_url_examples
 import qbitcontroller.composeapp.generated.resources.settings_server_username
-import qbitcontroller.composeapp.generated.resources.settings_server_username_min_character
 
 object AddEditServerKeys {
     const val Result = "addEditServer.result"
@@ -145,12 +143,6 @@ fun AddEditServerScreen(
     var urlError by rememberSaveable(
         stateSaver = stringResourceSaver(Res.string.error_required_field, Res.string.settings_server_invalid_url),
     ) { mutableStateOf(null) }
-    var usernameError by rememberSaveable(
-        stateSaver = stringResourceSaver(Res.string.settings_server_username_min_character),
-    ) { mutableStateOf(null) }
-    var passwordError by rememberSaveable(
-        stateSaver = stringResourceSaver(Res.string.settings_server_password_min_character),
-    ) { mutableStateOf(null) }
 
     var advancedSettings by rememberSaveable(stateSaver = jsonSaver()) {
         mutableStateOf(serverConfig?.advanced ?: AdvancedSettings())
@@ -166,20 +158,6 @@ fun AddEditServerScreen(
         } else if (parseUrl(urlWithProtocol) == null) {
             isValid = false
             Res.string.settings_server_invalid_url
-        } else {
-            null
-        }
-
-        usernameError = if (username.text.isNotEmpty() && username.text.length < 3) {
-            isValid = false
-            Res.string.settings_server_username_min_character
-        } else {
-            null
-        }
-
-        passwordError = if (password.text.isNotEmpty() && password.text.length < 6) {
-            isValid = false
-            Res.string.settings_server_password_min_character
         } else {
             null
         }
@@ -419,15 +397,12 @@ fun AddEditServerScreen(
                             contentDescription = null,
                         )
                     },
-                    supportingText = usernameError?.let { { Text(stringResource(it)) } },
-                    isError = usernameError != null,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateContentSize()
                         .semantics {
                             contentType = ContentType.Username
                         },
@@ -450,8 +425,6 @@ fun AddEditServerScreen(
                             contentDescription = null,
                         )
                     },
-                    supportingText = passwordError?.let { { Text(stringResource(it)) } },
-                    isError = passwordError != null,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
@@ -467,7 +440,6 @@ fun AddEditServerScreen(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateContentSize()
                         .semantics {
                             contentType = ContentType.Password
                         },

@@ -746,8 +746,6 @@
     <string name="settings_server_edit_success">Server has been edited successfully.</string>
     <string name="settings_server_remove_success">Server has been removed successfully.</string>
     <string name="settings_server_invalid_url">The URL format is invalid.</string>
-    <string name="settings_server_username_min_character">Username must be at least 3 characters long.</string>
-    <string name="settings_server_password_min_character">Password must be at least 6 characters long.</string>
     <string name="settings_server_connection_success">Connected to server successfully.</string>
 
     <string name="about_description">qBitController allows you to control qBittorrent remotely from any device.\n\nFor more detailed information and source code: %1$s</string>
