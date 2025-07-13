@@ -803,7 +803,7 @@ class TorrentListViewModel(
         setSearchQuery("")
         setSelectedCategory(CategoryTag.All)
         setSelectedTag(CategoryTag.All)
-        setSelectedFilter(if (setFilterToDefault) TorrentFilter.ALL else settingsManager.defaultTorrentStatus.value)
+        setSelectedFilter(if (!setFilterToDefault) TorrentFilter.ALL else settingsManager.defaultTorrentStatus.value)
         setSelectedTracker(Tracker.All)
     }
 
