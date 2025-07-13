@@ -523,7 +523,6 @@
     <string name="search_result_filter_size">Velikost</string>
     <string name="rss_rule_save_to_a_different_directory">Uložit do jiné složky</string>
     <string name="settings_server_advanced_doh">DNS přes HTTPS (DoH)</string>
-    <string name="settings_server_username_min_character">Uživatelské jméno musí mít alespoň 3 znaky.</string>
     <string name="search_start_action_start">Začít vyhledávání</string>
     <string name="search_result_action_filter">Filtrovat</string>
     <string name="search_plugins_action_install_plugins">Instalovat pluginy</string>
@@ -613,7 +612,6 @@
     <string name="about_description">qBitController dovoluje ovládání qBittorrent z Android zařízení.\n\nPro více informací a zdrojový kód: %1$s</string>
     <string name="notification_channel_download_completed">Stahování dokončeno</string>
     <string name="notification_torrent_downloaded">Torrent stažen</string>
-    <string name="settings_server_password_min_character">Heslo musí mít alespoň 6 znaků.</string>
     <string name="torrent_overview_availability">Dostupnost</string>
     <string name="torrent_overview_popularity">Oblíbenost</string>
     <string name="torrent_list_no_server_title">Žádné servery k dispozici</string>

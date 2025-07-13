@@ -308,7 +308,6 @@
     <string name="settings_language_system_default">Predeterminado del sistema</string>
     <string name="rss_rule_create_success">Regla RSS creada correctamente.</string>
     <string name="rss_feed_not_found">No se ha encontrado el feed RSS.</string>
-    <string name="settings_server_password_min_character">La contraseña debe tener al menos 6 caracteres.</string>
     <string name="rss_mark_article_as_read_success">Artículo marcado como leído.</string>
     <string name="search_result_stop_success">Búsqueda detenida con éxito.</string>
     <string name="torrent_add_stop_condition_files_checked">Archivos verificados</string>
@@ -336,7 +335,6 @@
     <string name="settings_server_trust_self_signed_certificates">Confiar en certificados autofirmados</string>
     <string name="settings_server_password">Contraseña</string>
     <string name="rss_success_folder_delete">Se ha borrado una carpeta correctamente.</string>
-    <string name="settings_server_username_min_character">El usuario debe tener al menos 3 caracteres.</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Interesados (pares) y ahogados (locales)</string>
     <string name="search_start_category_books">Libros</string>
     <string name="search_result_action_sort_leechers">Sanguijuelas</string>

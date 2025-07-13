@@ -552,8 +552,6 @@
     <string name="settings_server_edit_success">已成功编辑服务器。</string>
     <string name="settings_server_remove_success">已成功移除服务器。</string>
     <string name="error_required_field">该字段不得为空。</string>
-    <string name="settings_server_username_min_character">用户名长度至少为 3 个字符。</string>
-    <string name="settings_server_password_min_character">密码长度至少为 6 个字符。</string>
     <string name="settings_server_connection_success">已成功连接到服务器。</string>
     <string name="about_description">qBitController 是一款能让您从任何设备远程控制 qBittorrent 的软件。\n\n您可从此处获取更多详细信息以及源代码： %1$s</string>
     <string name="notification_channel_download_completed">下载完成</string>

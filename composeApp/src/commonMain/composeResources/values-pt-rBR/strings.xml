@@ -513,8 +513,6 @@
     <string name="settings_server_edit_success">O servidor foi editado com sucesso.</string>
     <string name="settings_server_remove_success">O servidor foi removido com sucesso.</string>
     <string name="error_required_field">Campo obrigatório.</string>
-    <string name="settings_server_username_min_character">O nome de usuário deve ter pelo menos 3 caracteres.</string>
-    <string name="settings_server_password_min_character">A senha deve ter pelo menos 6 caracteres.</string>
     <string name="settings_server_connection_success">Conectado ao servidor com sucesso.</string>
     <string name="notification_channel_download_completed">Download concluído</string>
     <string name="torrent_status_completed">Concluído</string>

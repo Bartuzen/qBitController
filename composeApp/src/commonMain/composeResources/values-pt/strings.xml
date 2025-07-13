@@ -567,7 +567,6 @@
     <string name="settings_server_advanced_doh">DNS por HTTPS (DoH)</string>
     <string name="settings_server_add_success">O servidor adicionado com sucesso.</string>
     <string name="error_required_field">Este campo é obrigatório.</string>
-    <string name="settings_server_password_min_character">Palavra-passe deve ter pelo menos 6 caracteres.</string>
     <string name="notification_channel_download_completed">Transferência completada</string>
     <string name="notification_torrent_downloaded">Torrent transferido</string>
     <string name="rss_confirm_delete_folder">Tem a certeza que quer eliminar a pasta %1$s?</string>
@@ -612,7 +611,6 @@
     <string name="about_description">O qBitController permite-lhe controlar o qBittorrent remotamente a partir de qualquer dispositivo.\n\nPara obter informações mais detalhadas e o código-fonte: %1$s</string>
     <string name="rss_success_feed_delete">Fonte eliminada com sucesso.</string>
     <string name="settings_enable_torrent_swipe_actions">Activar ações de gestos de torrent</string>
-    <string name="settings_server_username_min_character">Nome de utilizador deve ter pelo menos 3 caracteres.</string>
     <string name="settings_server_connection_success">Ligação ao servidor bem sucedida.</string>
     <string name="error_invalid_interval_optional">Deve estar entre %1$d e %2$d ou deixe em branco para desativar.</string>
     <string name="error_invalid_interval">Deve estar entre %1$d e %2$d.</string>

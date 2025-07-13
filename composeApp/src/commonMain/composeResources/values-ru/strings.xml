@@ -452,8 +452,6 @@
     <string name="settings_theme_light">Светлая</string>
     <string name="settings_theme_system_default">Системная</string>
     <string name="error_required_field">Это обязательное поле.</string>
-    <string name="settings_server_username_min_character">Имя пользователя не должно быть короче 3 символов.</string>
-    <string name="settings_server_password_min_character">Пароль не должен быть короче 6 символов.</string>
     <string name="settings_server_connection_success">Подключение к серверу установлено.</string>
     <string name="notification_channel_download_completed">Загрузка завершена</string>
     <string name="torrent_list_action_sort_progress">Прогресс</string>

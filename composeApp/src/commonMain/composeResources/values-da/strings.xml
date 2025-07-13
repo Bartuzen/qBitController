@@ -351,8 +351,6 @@
     <string name="settings_server_add_success">Server tilføjet.</string>
     <string name="settings_server_edit_success">Server er blevet redigeret.</string>
     <string name="settings_server_remove_success">Server er blevet fjernet.</string>
-    <string name="settings_server_username_min_character">Brugernavn skal være på mindst 3 tegn.</string>
-    <string name="settings_server_password_min_character">Adgangskode skal være på mindst 6 tegn.</string>
     <string name="share_add_torrent">Tilføj Torrent</string>
     <string name="torrent_status_missing_files">Manglende Filer</string>
     <string name="notification_channel_download_completed">Download færdig</string>

@@ -443,8 +443,6 @@
     <string name="settings_server_advanced_basic_auth_enabled">Etkin</string>
     <string name="settings_server_remove_success">Sunucu başarıyla kaldırıldı.</string>
     <string name="error_required_field">Bu alan gereklidir.</string>
-    <string name="settings_server_username_min_character">Kullanıcı adı en az 3 karakter uzunluğunda olmalıdır.</string>
-    <string name="settings_server_password_min_character">Şifre en az 6 karakter olmalıdır.</string>
     <string name="settings_server_connection_success">Sunucuya başarıyla bağlanıldı.</string>
     <string name="notification_channel_download_completed">İndirme tamamlandı</string>
     <string name="torrent_option_share_limit_global">Genel paylaşım sınırlarını kullan</string>
