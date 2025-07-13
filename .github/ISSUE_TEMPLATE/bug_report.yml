@@ -33,10 +33,10 @@ body:
       required: true
 
   - type: input
-    id: android-version
+    id: operating-system
     attributes:
-      label: Android version
-      description: Enter the Android version you were using when you encountered the bug.
+      label: Operating system
+      description: Enter the operating system qBitController was running on.
     validations:
       required: true
 
