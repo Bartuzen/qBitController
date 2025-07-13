@@ -135,9 +135,9 @@ import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
-import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.stringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.toClipEntry
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.openFileSaver
@@ -1384,7 +1384,9 @@ private fun RenameDialog(
     var name by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(initialName ?: "", TextRange(Int.MAX_VALUE)))
     }
-    var error by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var error by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_rename_name_cannot_be_blank),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,

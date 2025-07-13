@@ -9,8 +9,6 @@ import androidx.compose.runtime.toMutableStateMap
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.StringResource
-import qbitcontroller.composeapp.generated.resources.Res
-import qbitcontroller.composeapp.generated.resources.allStringResources
 
 fun <T> stateListSaver() = listSaver<SnapshotStateList<T>, T>(
     save = { it.toList() },
@@ -27,7 +25,8 @@ inline fun <reified T> jsonSaver(json: Json = Json, serializer: KSerializer<T>? 
     restore = { if (serializer == null) json.decodeFromString(it) else json.decodeFromString(serializer, it) },
 )
 
-fun nullableStringResourceSaver() = Saver<StringResource?, String>(
+// Can't use Res.allStringResources because of https://github.com/Bartuzen/qBitController/issues/211
+fun stringResourceSaver(vararg resources: StringResource) = Saver<StringResource?, String>(
     save = { it?.key },
-    restore = { Res.allStringResources[it] },
+    restore = { key -> resources.find { it.key == key } },
 )
