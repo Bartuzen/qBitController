@@ -92,9 +92,9 @@ import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
-import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.stringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.toPlatformFile
 import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import io.github.vinceglb.filekit.FileKit
@@ -173,7 +173,9 @@ fun AddTorrentScreen(
     var torrentLinkText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(torrentUrl ?: ""))
     }
-    var torrentLinkError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var torrentLinkError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_add_link_cannot_be_empty),
+    ) { mutableStateOf(null) }
 
     var torrentFiles by rememberSaveable(stateSaver = jsonSaver(serializer = ListSerializer(PlatformFileSerializer))) {
         mutableStateOf(torrentFileUris?.map { it.toPlatformFile() } ?: emptyList())
@@ -201,8 +203,12 @@ fun AddTorrentScreen(
     var upSpeedLimitUnit by rememberSaveable { mutableIntStateOf(0) }
     var dlSpeedLimitUnit by rememberSaveable { mutableIntStateOf(0) }
 
-    var uploadSpeedError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
-    var downloadSpeedError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var uploadSpeedError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_add_speed_limit_too_big),
+    ) { mutableStateOf(null) }
+    var downloadSpeedError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_add_speed_limit_too_big),
+    ) { mutableStateOf(null) }
 
     val serverId by viewModel.serverId.collectAsStateWithLifecycle()
 

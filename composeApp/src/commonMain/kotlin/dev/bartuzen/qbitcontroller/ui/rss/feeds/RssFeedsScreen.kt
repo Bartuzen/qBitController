@@ -101,10 +101,10 @@ import dev.bartuzen.qbitcontroller.utils.excludeBottom
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
-import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.stringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -864,7 +864,9 @@ private fun AddFeedDialog(
 ) {
     var feedUrl by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var feedName by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
-    var urlError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var urlError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.error_required_field),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
@@ -954,7 +956,9 @@ private fun AddFeedDialog(
 @Composable
 private fun AddFolderDialog(onDismiss: () -> Unit, onAddFolder: (name: String) -> Unit, modifier: Modifier = Modifier) {
     var folderName by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
-    var nameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var nameError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.error_required_field),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
@@ -1031,7 +1035,9 @@ private fun RenameFeedFolderDialog(
     var name by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(node.name, TextRange(Int.MAX_VALUE)))
     }
-    var nameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var nameError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.error_required_field),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
@@ -1167,7 +1173,9 @@ private fun EditFeedUrlDialog(
     var url by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(node.feed?.url ?: "", TextRange(Int.MAX_VALUE)))
     }
-    var urlError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var urlError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.error_required_field),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,

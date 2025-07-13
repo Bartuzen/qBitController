@@ -98,9 +98,9 @@ import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
-import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.stringResourceSaver
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -658,7 +658,9 @@ fun EditSelectedTrackerDialog(
     var url by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(initialUrl, TextRange(Int.MAX_VALUE)))
     }
-    var error by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var error by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_trackers_url_cannot_be_empty),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,

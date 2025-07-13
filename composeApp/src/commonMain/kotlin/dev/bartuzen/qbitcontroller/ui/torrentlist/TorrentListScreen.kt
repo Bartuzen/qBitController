@@ -202,11 +202,11 @@ import dev.bartuzen.qbitcontroller.utils.getTorrentStateColor
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
 import dev.bartuzen.qbitcontroller.utils.measureTextWidth
 import dev.bartuzen.qbitcontroller.utils.notificationPermissionLauncher
-import dev.bartuzen.qbitcontroller.utils.nullableStringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.rememberSearchStyle
 import dev.bartuzen.qbitcontroller.utils.stateListSaver
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import dev.bartuzen.qbitcontroller.utils.stringResourceSaver
 import dev.bartuzen.qbitcontroller.utils.topAppBarColor
 import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import kotlinx.coroutines.flow.Flow
@@ -2733,7 +2733,9 @@ private fun CreateEditCategoryDialog(
         mutableStateOf(TextFieldValue((category?.downloadPath as? Category.DownloadPath.Yes)?.path ?: ""))
     }
 
-    var nameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var nameError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_list_create_category_name_cannot_be_empty),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
@@ -2960,7 +2962,9 @@ private fun DeleteCategoryDialog(
 @Composable
 private fun CreateTagDialog(onDismiss: () -> Unit, onConfirm: (tags: List<String>) -> Unit, modifier: Modifier = Modifier) {
     var name by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
-    var nameError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var nameError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_list_create_tag_name_cannot_be_empty),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
@@ -3113,7 +3117,9 @@ private fun SetTorrentsLocationDialog(
     var location by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(initialLocation ?: "", TextRange(Int.MAX_VALUE)))
     }
-    var locationError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var locationError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_location_cannot_be_blank),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
@@ -3257,13 +3263,17 @@ private fun SpeedLimitsDialog(
         mutableStateOf(TextFieldValue(currentUploadSpeedLimit.takeIf { it != 0 }?.toString() ?: ""))
     }
     var uploadSpeedUnit by rememberSaveable { mutableIntStateOf(0) }
-    var uploadSpeedError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var uploadSpeedError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_add_speed_limit_too_big),
+    ) { mutableStateOf(null) }
 
     var downloadSpeedLimit by rememberSaveable(stateSaver = TextFieldValue.Saver) {
         mutableStateOf(TextFieldValue(currentDownloadSpeedLimit.takeIf { it != 0 }?.toString() ?: ""))
     }
     var downloadSpeedUnit by rememberSaveable { mutableIntStateOf(0) }
-    var downloadSpeedError by rememberSaveable(stateSaver = nullableStringResourceSaver()) { mutableStateOf(null) }
+    var downloadSpeedError by rememberSaveable(
+        stateSaver = stringResourceSaver(Res.string.torrent_add_speed_limit_too_big),
+    ) { mutableStateOf(null) }
 
     Dialog(
         modifier = modifier,
