@@ -5,9 +5,10 @@ import dev.bartuzen.qbitcontroller.network.RequestManager
 class RssArticlesRepository(
     private val requestManager: RequestManager,
 ) {
-    suspend fun getRssFeeds(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getRssFeedsWithData()
-    }
+    suspend fun getRssFeedsWithData(serverId: Int, path: List<String>, uid: String?) =
+        requestManager.request(serverId) { service ->
+            service.getRssFeedWithData(path, uid)
+        }
 
     suspend fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?) =
         requestManager.request(serverId) { service ->

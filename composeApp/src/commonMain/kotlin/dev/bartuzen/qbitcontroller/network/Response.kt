@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.network
 
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
 import kotlinx.coroutines.CoroutineScope
@@ -11,12 +12,17 @@ import kotlinx.coroutines.async
 
 class Response<T>(
     private val rawResponse: HttpResponse,
-    private val typeInfo: TypeInfo,
+    typeInfo: TypeInfo,
+    customDeserializer: ((String) -> T)? = null,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    private val bodyDeferred = scope.async<T> {
-        rawResponse.body(typeInfo)
+    private val bodyDeferred = scope.async {
+        if (customDeserializer == null) {
+            rawResponse.body(typeInfo)
+        } else {
+            customDeserializer(rawResponse.bodyAsText())
+        }
     }.also { it.start() }
 
     suspend fun body(): T = bodyDeferred.await()
@@ -24,7 +30,8 @@ class Response<T>(
     val code: Int = rawResponse.status.value
 }
 
-inline fun <reified T> HttpResponse.toResponse() = Response<T>(
+inline fun <reified T> HttpResponse.toResponse(noinline customDeserializer: ((String) -> T)? = null) = Response(
     rawResponse = this,
     typeInfo = typeInfo<T>(),
+    customDeserializer = customDeserializer,
 )

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
 import dev.bartuzen.qbitcontroller.model.Article
-import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeedWithData
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -73,14 +72,14 @@ class RssArticlesViewModel(
     }
 
     fun updateRssArticles() = viewModelScope.launch {
-        when (val result = repository.getRssFeeds(serverId)) {
+        when (val result = repository.getRssFeedsWithData(serverId, feedPath.value, uid)) {
             is RequestResult.Success -> {
-                val (articles, newFeedPath) = parseRssFeedWithData(result.data, feedPath.value, uid)
-                if (articles != null) {
-                    rssArticles.value = articles
+                val feed = result.data
+                if (feed.articles != null) {
+                    rssArticles.value = feed.articles
 
-                    if (newFeedPath != null) {
-                        savedStateHandle["feedPath!"] = newFeedPath
+                    if (feed.newPath != null) {
+                        savedStateHandle["feedPath!"] = feed.newPath
                         eventChannel.send(Event.FeedPathChanged)
                     }
                 } else {

@@ -6,6 +6,8 @@ import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Plugin
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
+import dev.bartuzen.qbitcontroller.model.RssFeedWithData
+import dev.bartuzen.qbitcontroller.model.RssFeedWithDataSerializer
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.model.StartSearch
@@ -24,30 +26,38 @@ import io.ktor.client.request.setBody
 import io.ktor.http.appendEncodedPathSegments
 import io.ktor.http.parametersOf
 import io.ktor.http.takeFrom
+import kotlinx.serialization.json.Json
 
 class TorrentService(
     val client: HttpClient,
     val baseUrl: String,
 ) {
-    suspend inline fun <reified T> get(path: String, parameters: Map<String, Any?> = emptyMap()): Response<T> = client.get {
+    suspend inline fun <reified T> get(
+        path: String,
+        parameters: Map<String, Any?> = emptyMap(),
+        noinline customDeserializer: ((String) -> T)? = null,
+    ): Response<T> = client.get {
         url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
         parameters.forEach { (key, value) ->
             if (value != null) {
                 url.parameters.append(key, value.toString())
             }
         }
-    }.toResponse()
+    }.toResponse(customDeserializer)
 
-    suspend inline fun <reified T> post(path: String, parameters: Map<String, Any?> = emptyMap()): Response<T> =
-        client.submitForm(
-            formParameters = parametersOf(
-                parameters
-                    .filterValues { it != null }
-                    .mapValues { listOf(it.value.toString()) },
-            ),
-        ) {
-            url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
-        }.toResponse()
+    suspend inline fun <reified T> post(
+        path: String,
+        parameters: Map<String, Any?> = emptyMap(),
+        noinline customDeserializer: ((String) -> T)? = null,
+    ): Response<T> = client.submitForm(
+        formParameters = parametersOf(
+            parameters
+                .filterValues { it != null }
+                .mapValues { listOf(it.value.toString()) },
+        ),
+    ) {
+        url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
+    }.toResponse(customDeserializer)
 
     suspend fun login(username: String, password: String): Response<String> = post(
         "auth/login",
@@ -349,9 +359,18 @@ class TorrentService(
         "rss/items",
     )
 
-    suspend fun getRssFeedsWithData(): Response<String> = get(
+    private val json = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+        explicitNulls = false
+    }
+
+    suspend fun getRssFeedWithData(path: List<String>, uid: String?): Response<RssFeedWithData> = get(
         "rss/items",
         mapOf("withData" to true),
+        customDeserializer = {
+            json.decodeFromString(RssFeedWithDataSerializer(path, uid), it)
+        },
     )
 
     suspend fun markAsRead(itemPath: String, articleId: String?): Response<Unit> = post(
