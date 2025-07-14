@@ -456,6 +456,12 @@ fun TorrentFilesTab(
                                 } else {
                                     selectedFiles -= node.path
                                 }
+                            } else {
+                                if (node.path in expandedNodes) {
+                                    expandedNodes.remove(node.path)
+                                } else {
+                                    expandedNodes.add(node.path)
+                                }
                             }
                         },
                         onLongClick = {
