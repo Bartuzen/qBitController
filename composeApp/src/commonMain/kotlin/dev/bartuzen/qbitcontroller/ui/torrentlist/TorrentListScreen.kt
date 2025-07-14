@@ -58,6 +58,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Dns
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.FlipToBack
@@ -72,6 +73,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.PowerSettingsNew
+import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Sell
@@ -1636,6 +1638,7 @@ private fun DrawerContent(
                             text = {
                                 Text(text = stringResource(Res.string.torrent_list_status_set_as_default))
                             },
+                            leadingIcon = { Icon(imageVector = Icons.Filled.PushPin, contentDescription = null) },
                             onClick = {
                                 showMenu = false
                                 onDrawerClose()
@@ -1779,6 +1782,7 @@ private fun DrawerContent(
                                 text = {
                                     Text(text = stringResource(Res.string.torrent_list_create_subcategory))
                                 },
+                                leadingIcon = { Icon(imageVector = Icons.Filled.Add, contentDescription = null) },
                                 onClick = {
                                     showMenu = false
                                     onDrawerClose()
@@ -1790,6 +1794,7 @@ private fun DrawerContent(
                             text = {
                                 Text(text = stringResource(Res.string.torrent_list_edit_category))
                             },
+                            leadingIcon = { Icon(imageVector = Icons.Filled.Edit, contentDescription = null) },
                             onClick = {
                                 showMenu = false
                                 onDrawerClose()
@@ -1802,6 +1807,7 @@ private fun DrawerContent(
                             text = {
                                 Text(text = stringResource(Res.string.torrent_list_delete_category))
                             },
+                            leadingIcon = { Icon(imageVector = Icons.Filled.Delete, contentDescription = null) },
                             onClick = {
                                 showMenu = false
                                 onDrawerClose()
@@ -1942,6 +1948,7 @@ private fun DrawerContent(
                             text = {
                                 Text(text = stringResource(Res.string.torrent_list_delete_tag))
                             },
+                            leadingIcon = { Icon(imageVector = Icons.Filled.Delete, contentDescription = null) },
                             onClick = {
                                 showMenu = false
                                 onDrawerClose()
