@@ -5,8 +5,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.reflect.typeInfo
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -17,7 +15,7 @@ class Response<T>(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    private val bodyDeferred: Deferred<T> = scope.async<T>(start = CoroutineStart.LAZY) {
+    private val bodyDeferred = scope.async<T> {
         rawResponse.body(typeInfo)
     }.also { it.start() }
 
