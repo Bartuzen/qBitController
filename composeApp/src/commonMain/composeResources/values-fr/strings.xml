@@ -496,5 +496,13 @@
     <string name="settings_server_remove_success">Le serveur a été supprimé avec succès.</string>
     <string name="settings_server_invalid_url">Le format de l\'URL est invalide.</string>
     <string name="settings_server_connection_success">Connecté au serveur avec succès.</string>
-    <string name="update_dialog_title">Mise à jour disponible.</string>
+    <string name="update_dialog_title">Mise à jour disponible</string>
+    <string name="update_dialog_message">qBitController %1$s est disponible. Vous utilisez actuellement la version %2$s.</string>
+    <string name="settings_server_edit_success">Le serveur a été modifié avec succès.</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d en-tête</item>
+        <item quantity="many">%1$d en-têtes</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="destination_settings">Paramètres</string>
 </resources>
