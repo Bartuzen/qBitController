@@ -492,5 +492,9 @@
     <string name="destination_logs">Logs</string>
     <string name="error_invalid_interval">Doit être entre %1$d et %2$d.</string>
     <string name="error_invalid_interval_optional">Doit être entre %1$d et %2$d, ou laisser vide pour désactiver.</string>
-    <string name="about_description">qBitController vous permet de controler qBittorrent à distance depuis n\'importe quel appareil.\n\nPour plus de détails et pour le code source: %1$s</string>
+    <string name="about_description">qBitController vous permet de controler qBittorrent à distance depuis n\'importe quel appareil. \n\nPour plus de détails et pour le code source: %1$s</string>
+    <string name="settings_server_remove_success">Le serveur a été supprimé avec succès.</string>
+    <string name="settings_server_invalid_url">Le format de l\'URL est invalide.</string>
+    <string name="settings_server_connection_success">Connecté au serveur avec succès.</string>
+    <string name="update_dialog_title">Mise à jour disponible.</string>
 </resources>
