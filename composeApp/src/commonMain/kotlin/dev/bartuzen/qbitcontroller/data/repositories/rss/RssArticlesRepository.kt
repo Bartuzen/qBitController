@@ -6,7 +6,7 @@ class RssArticlesRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun getRssFeeds(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getRssFeeds(true)
+        service.getRssFeedsWithData()
     }
 
     suspend fun markAsRead(serverId: Int, feedPath: List<String>, articleId: String?) =

@@ -5,6 +5,7 @@ import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.Plugin
+import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.model.StartSearch
@@ -344,9 +345,13 @@ class TorrentService(
         mapOf("peers" to peers),
     )
 
-    suspend fun getRssFeeds(withData: Boolean): Response<String> = get(
+    suspend fun getRssFeeds(): Response<RssFeedNode> = get(
         "rss/items",
-        mapOf("withData" to withData),
+    )
+
+    suspend fun getRssFeedsWithData(): Response<String> = get(
+        "rss/items",
+        mapOf("withData" to true),
     )
 
     suspend fun markAsRead(itemPath: String, articleId: String?): Response<Unit> = post(

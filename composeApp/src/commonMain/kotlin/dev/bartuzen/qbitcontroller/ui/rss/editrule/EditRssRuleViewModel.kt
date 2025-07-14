@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.repositories.rss.EditRssRuleRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
 import dev.bartuzen.qbitcontroller.model.RssRule
-import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Deferred
@@ -97,7 +96,7 @@ class EditRssRuleViewModel(
         deferredList += async {
             when (val result = repository.getRssFeeds(serverId)) {
                 is RequestResult.Success -> {
-                    val feedNode = parseRssFeeds(result.data)
+                    val feedNode = result.data
 
                     val feedList = mutableListOf<Pair<String, String>>()
                     val nodeQueue = ArrayDeque<RssFeedNode>()

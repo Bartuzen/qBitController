@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.repositories.rss.RssFeedRepository
 import dev.bartuzen.qbitcontroller.model.RssFeedNode
-import dev.bartuzen.qbitcontroller.model.serializers.parseRssFeeds
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -36,7 +35,7 @@ class RssFeedsViewModel(
     private fun updateRssFeeds() = viewModelScope.launch {
         when (val result = repository.getRssFeeds(serverId)) {
             is RequestResult.Success -> {
-                _rssFeeds.value = parseRssFeeds(result.data)
+                _rssFeeds.value = result.data
             }
             is RequestResult.Error -> {
                 eventChannel.send(Event.Error(result))

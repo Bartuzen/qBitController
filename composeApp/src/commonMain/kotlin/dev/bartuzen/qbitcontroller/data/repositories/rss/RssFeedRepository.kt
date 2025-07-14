@@ -6,7 +6,7 @@ class RssFeedRepository(
     private val requestManager: RequestManager,
 ) {
     suspend fun getRssFeeds(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getRssFeeds(false)
+        service.getRssFeeds()
     }
 
     suspend fun refreshAllFeeds(serverId: Int) = requestManager.request(serverId) { service ->

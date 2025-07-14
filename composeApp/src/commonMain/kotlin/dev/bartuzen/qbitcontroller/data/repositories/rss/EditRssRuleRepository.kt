@@ -18,6 +18,6 @@ class EditRssRuleRepository(
     }
 
     suspend fun getRssFeeds(serverId: Int) = requestManager.request(serverId) { service ->
-        service.getRssFeeds(false)
+        service.getRssFeeds()
     }
 }
