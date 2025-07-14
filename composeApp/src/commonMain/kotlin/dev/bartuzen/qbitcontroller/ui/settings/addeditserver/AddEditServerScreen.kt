@@ -155,7 +155,7 @@ fun AddEditServerScreen(
         urlError = if (url.text.isBlank()) {
             isValid = false
             Res.string.error_required_field
-        } else if (parseUrl(urlWithProtocol) == null) {
+        } else if (parseUrl(urlWithProtocol) == null || !isPlatformUrlValid(urlWithProtocol)) {
             isValid = false
             Res.string.settings_server_invalid_url
         } else {
@@ -491,3 +491,5 @@ enum class AddEditServerResult {
     Edit,
     Delete,
 }
+
+expect fun isPlatformUrlValid(url: String): Boolean
