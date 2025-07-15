@@ -27,8 +27,9 @@ data class Category(
 private object DownloadPathSerializer : KSerializer<Category.DownloadPath> {
     override val descriptor = JsonPrimitive.serializer().descriptor
 
+    // Gets called, but the result won't be used
     override fun serialize(encoder: Encoder, value: Category.DownloadPath) {
-        throw UnsupportedOperationException()
+        encoder.encodeNull()
     }
 
     override fun deserialize(decoder: Decoder): Category.DownloadPath {
