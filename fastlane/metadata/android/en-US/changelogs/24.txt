@@ -1,0 +1,4 @@
+- Removed minimum character requirements for server username and password
+- Torrent folders can now be expanded or collapsed by clicking directly on the folder
+- Minor user interface improvements
+- Bug fixes
