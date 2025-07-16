@@ -350,8 +350,6 @@
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">啟用滑動操作</string>
     <string name="settings_server_name">名稱</string>
-    <string name="settings_server_username_min_character">使用者名長度至少為 3 個字串。</string>
-    <string name="settings_server_password_min_character">密碼長度至少為 6 個字串。</string>
     <string name="stats_read_cache_overload">讀取快取超載</string>
     <string name="torrent_overview_availability">可用性</string>
     <string name="torrent_trackers_action_delete">刪除</string>

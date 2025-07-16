@@ -539,7 +539,6 @@
     <string name="settings_server_advanced_basic_auth_username">Ім\'я користувача</string>
     <string name="settings_server_advanced_basic_auth_password">Пароль</string>
     <string name="error_required_field">Це поле є обов\'язковим для заповнення.</string>
-    <string name="settings_server_password_min_character">Пароль має бути не менше 6 символів.</string>
     <string name="notification_channel_download_completed">Завантаження завершено</string>
     <string name="torrent_overview_private">Приватний</string>
     <string name="search_start_category_music">музика</string>
@@ -604,7 +603,6 @@
     <string name="settings_server_title_add">Додати сервер</string>
     <string name="settings_server_advanced_doh">DNS через HTTPS (DoH)</string>
     <string name="settings_server_connection_success">Підключено до сервера успішно.</string>
-    <string name="settings_server_username_min_character">Ім\'я користувача має складатися не менше ніж з 3 символів.</string>
     <string name="torrent_disable_super_seeding_success">Суперпосадку успішно вимкнено.</string>
     <string name="torrent_queueing_is_not_enabled">Торрент-черга не ввімкнена.</string>
     <string name="torrent_option_automatic_torrent_management">Автоматичне керування торрентами</string>

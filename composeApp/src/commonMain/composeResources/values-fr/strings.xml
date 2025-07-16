@@ -488,4 +488,21 @@
     <string name="search_result_download">Télécharger</string>
     <string name="search_result_action_download">Télécharger</string>
     <string name="rss_action_download">Télécharger</string>
+    <string name="destination_torrents">Torrents</string>
+    <string name="destination_logs">Logs</string>
+    <string name="error_invalid_interval">Doit être entre %1$d et %2$d.</string>
+    <string name="error_invalid_interval_optional">Doit être entre %1$d et %2$d, ou laisser vide pour désactiver.</string>
+    <string name="about_description">qBitController vous permet de controler qBittorrent à distance depuis n\'importe quel appareil. \n\nPour plus de détails et pour le code source: %1$s</string>
+    <string name="settings_server_remove_success">Le serveur a été supprimé avec succès.</string>
+    <string name="settings_server_invalid_url">Le format de l\'URL est invalide.</string>
+    <string name="settings_server_connection_success">Connecté au serveur avec succès.</string>
+    <string name="update_dialog_title">Mise à jour disponible</string>
+    <string name="update_dialog_message">qBitController %1$s est disponible. Vous utilisez actuellement la version %2$s.</string>
+    <string name="settings_server_edit_success">Le serveur a été modifié avec succès.</string>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d en-tête</item>
+        <item quantity="many">%1$d en-têtes</item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="destination_settings">Paramètres</string>
 </resources>

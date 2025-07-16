@@ -601,8 +601,6 @@
     <string name="settings_server_advanced_basic_auth_password">கடவுச்சொல்</string>
     <string name="settings_server_advanced_doh">Https (doh) க்கு மேல் dns</string>
     <string name="settings_server_edit_success">சேவையகம் வெற்றிகரமாக திருத்தப்பட்டுள்ளது.</string>
-    <string name="settings_server_username_min_character">பயனர்பெயர் குறைந்தது 3 எழுத்துக்கள் நீளமாக இருக்க வேண்டும்.</string>
-    <string name="settings_server_password_min_character">கடவுச்சொல் குறைந்தது 6 எழுத்துக்கள் நீளமாக இருக்க வேண்டும்.</string>
     <string name="settings_server_connection_success">சேவையகத்துடன் வெற்றிகரமாக இணைக்கப்பட்டுள்ளது.</string>
     <string name="about_description">Qbitcontroller எந்த சாதனத்திலிருந்தும் Qbittorrent ஐ தொலைதூரத்தில் கட்டுப்படுத்த உங்களை அனுமதிக்கிறது. \n\nமேலும் விரிவான செய்தி மற்றும் மூலக் குறியீட்டிற்கு: %1$s</string>
     <string name="notification_channel_download_completed">பதிவிறக்கம் முடிந்தது</string>
