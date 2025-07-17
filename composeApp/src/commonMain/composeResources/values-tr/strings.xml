@@ -106,7 +106,7 @@
         <item quantity="other">%1$d torrent seçildi</item>
     </plurals>
     <string name="torrent_list_search_torrents">Torrent ara…</string>
-    <string name="torrent_list_free_space">Boş alan: %1$s</string>
+    <string name="torrent_list_free_space">%1$s boş</string>
     <string name="torrent_list_set_location_hint">Kaydetme Yolu</string>
     <string name="torrent_list_category_tag_all">Tümü</string>
     <string name="torrent_list_uncategorized">Kategorilenmemiş</string>

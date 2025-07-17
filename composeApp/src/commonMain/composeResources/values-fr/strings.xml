@@ -110,7 +110,7 @@
         <item quantity="other">%1$d torrents ont repris avec succès.</item>
     </plurals>
     <string name="torrent_list_search_torrents">Rechercher des torrents…</string>
-    <string name="torrent_list_free_space">Espace libre : %1$s</string>
+    <string name="torrent_list_free_space">Espace libre : %1$s</string>
     <string name="torrent_list_set_location_hint">Chemin de sauvegarde</string>
     <string name="torrent_list_category_tag_all">Tout</string>
     <string name="torrent_list_uncategorized">Non catégorisé</string>
@@ -502,7 +502,7 @@
     <plurals name="settings_server_advanced_custom_headers_summary">
         <item quantity="one">%1$d en-tête</item>
         <item quantity="many">%1$d en-têtes</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="destination_settings">Paramètres</string>
 </resources>
