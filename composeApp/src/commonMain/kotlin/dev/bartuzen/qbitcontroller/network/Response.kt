@@ -18,14 +18,18 @@ class Response<T>(
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     private val bodyDeferred = scope.async {
-        if (customDeserializer == null) {
-            rawResponse.body(typeInfo)
+        if (code in 200..<300 && code != 204 && code != 205) {
+            if (customDeserializer == null) {
+                rawResponse.body(typeInfo)
+            } else {
+                customDeserializer(rawResponse.bodyAsText())
+            }
         } else {
-            customDeserializer(rawResponse.bodyAsText())
+            null
         }
     }.also { it.start() }
 
-    suspend fun body(): T = bodyDeferred.await()
+    suspend fun body(): T? = bodyDeferred.await()
 
     val code: Int = rawResponse.status.value
 }
