@@ -702,4 +702,17 @@
     <string name="update_dialog_message">qBitController %1$s тепер доступний. Ви зараз використовуєте версію %2$s.</string>
     <string name="update_dialog_download">Завантажити</string>
     <string name="error_no_internet">Немає мережевого з\'єднання.</string>
+    <string name="settings_enable_dynamic_colors">Увімкнути динамічні кольори</string>
+    <string name="settings_app_color">Колір програми</string>
+    <string name="settings_app_color_reset">Скинути</string>
+    <string name="settings_palette_style">Стиль палітри</string>
+    <string name="settings_palette_style_tonal_spot">Тональна пляма</string>
+    <string name="settings_palette_style_neutral">Нейтральний</string>
+    <string name="settings_palette_style_vibrant">Яскравий</string>
+    <string name="settings_palette_style_expressive">Виразний</string>
+    <string name="settings_palette_style_rainbow">Веселка</string>
+    <string name="settings_palette_style_fruit_salad">Фруктовий салат</string>
+    <string name="settings_palette_style_monochrome">Монохромний</string>
+    <string name="settings_palette_style_fidelity">Вірність</string>
+    <string name="settings_palette_style_content">Зміст</string>
 </resources>
