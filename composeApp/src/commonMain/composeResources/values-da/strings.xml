@@ -491,4 +491,12 @@
     <string name="torrent_add_download_speed_limit">Download Hastighedsgrænse</string>
     <string name="about_description">qBitController giver dig mulighed for at styre qBittorrent fra en Android-enhed. \n \nYderligere oplysninger og kildekode: %1$s</string>
     <string name="torrent_add_upload_speed_limit">Upload hastighedsbegrænsning</string>
+    <string name="destination_logs">Logge</string>
+    <string name="destination_settings">Indstillinger</string>
+    <string name="torrent_status_checking_resume_data">Tjekker fortsat data</string>
+    <string name="error_no_internet">Ingen internetforbindelse.</string>
+    <string name="error_invalid_interval">Skal være mellem %1$d og %2$d.</string>
+    <string name="error_invalid_interval_optional">Skal være mellem %1$d og %2$d, eller blankt for at slå fra.</string>
+    <string name="torrent_list_no_server_title">Ingen servere tilgængelige</string>
+    <string name="torrent_list_no_server_description">Du har ikke tilføjet nogle servere endnu. Tilføj en for at komme igang.</string>
 </resources>
