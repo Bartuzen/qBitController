@@ -268,7 +268,7 @@
         <item quantity="other">Выбрано %1$d торрентов</item>
     </plurals>
     <string name="torrent_list_search_torrents">Поиск торрентов…</string>
-    <string name="torrent_list_free_space">Свободно: %1$s</string>
+    <string name="torrent_list_free_space">%1$s свободно</string>
     <string name="torrent_list_category_tag_all">Все</string>
     <string name="torrent_list_uncategorized">Без категории</string>
     <string name="torrent_list_untagged">Без метки</string>
