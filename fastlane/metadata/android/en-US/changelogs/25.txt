@@ -1,0 +1,1 @@
+- Fix authentication failure that occurs after the first authentication expires
