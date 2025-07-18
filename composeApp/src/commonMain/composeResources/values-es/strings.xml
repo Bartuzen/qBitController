@@ -112,7 +112,7 @@
     <string name="error_cannot_connect">No se puede conectar con el servidor.</string>
     <string name="torrent_status_missing_files">Archivos Perdidos</string>
     <string name="error_banned">Has sido baneado por demasiados intentos fallidos de inicio de sesión.</string>
-    <string name="torrent_list_free_space">Espacio libre: %1$s</string>
+    <string name="torrent_list_free_space">%1$s libres</string>
     <string name="torrent_list_create_category_hint">Nombre de Categoría</string>
     <string name="torrent_paused_success">Torrent pausado con éxito.</string>
     <string name="torrent_status_downloading">Descargando</string>
