@@ -1,12 +1,24 @@
 package dev.bartuzen.qbitcontroller.data
 
+import androidx.compose.ui.graphics.Color
+import com.materialkolor.PaletteStyle
 import com.russhwolf.settings.Settings
+import dev.bartuzen.qbitcontroller.ui.theme.defaultPrimaryColor
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
 
 open class SettingsManager(
     settings: Settings,
 ) {
     val theme = preference(settings, "theme", Theme.SYSTEM_DEFAULT)
+    val enableDynamicColors = preference(settings, "enableDynamicColors", true)
+    val appColor = preference(
+        settings,
+        "appColor",
+        defaultPrimaryColor,
+        serializer = { it.value.shr(32).and(0xFFFFFFu).toString(16).padStart(6, '0') },
+        deserializer = { Color(it.toULong(16) or 0xFF000000u shl 32) },
+    )
+    val paletteStyle = preference(settings, "paletteStyle", PaletteStyle.TonalSpot)
     val pureBlackDarkMode = preference(settings, "pureBlackDarkMode", false)
     val sort = preference(settings, "sort", TorrentSort.NAME)
     val isReverseSorting = preference(settings, "isReverseSorting", false)

@@ -71,3 +71,5 @@ private fun getLanguageCode(locale: Locale?): String {
     }
     return locale.toString().replace("_", "-")
 }
+
+actual fun areDynamicColorsSupported() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S

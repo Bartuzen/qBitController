@@ -125,7 +125,13 @@ kotlin {
                 implementation(libs.reorderable)
 
                 implementation(libs.autolinktext)
+
+                implementation(libs.composePipette)
             }
+        }
+
+        val nonAndroidMain by creating {
+            dependsOn(commonMain)
         }
 
         val jvmMain by creating {
@@ -140,6 +146,7 @@ kotlin {
 
         val desktopMain by getting {
             dependsOn(jvmMain)
+            dependsOn(nonAndroidMain)
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutines.swing)
@@ -168,6 +175,7 @@ kotlin {
 
         val iosMain by creating {
             dependsOn(commonMain)
+            dependsOn(nonAndroidMain)
             dependencies {
                 implementation(libs.ktor.darwin)
             }
