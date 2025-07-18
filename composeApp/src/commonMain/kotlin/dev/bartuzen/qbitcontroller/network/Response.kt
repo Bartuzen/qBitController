@@ -17,6 +17,8 @@ class Response<T>(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
+    val code: Int = rawResponse.status.value
+
     private val bodyDeferred = scope.async {
         if (code in 200..<300 && code != 204 && code != 205) {
             if (customDeserializer == null) {
@@ -30,8 +32,6 @@ class Response<T>(
     }.also { it.start() }
 
     suspend fun body(): T? = bodyDeferred.await()
-
-    val code: Int = rawResponse.status.value
 }
 
 inline fun <reified T> HttpResponse.toResponse(noinline customDeserializer: ((String) -> T)? = null) = Response(
