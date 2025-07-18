@@ -6,6 +6,8 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.materialkolor.ktx.harmonize
 
+val defaultPrimaryColor = Color(0xFF415F91)
+
 data class CustomColors(
     val torrentStateDownloading: Color = Color.Unspecified,
     val torrentStateStalledDownloading: Color = Color.Unspecified,

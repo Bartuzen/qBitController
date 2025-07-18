@@ -22,8 +22,6 @@ import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 
-val defaultPrimaryColor = Color(0xFF415F91)
-
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
