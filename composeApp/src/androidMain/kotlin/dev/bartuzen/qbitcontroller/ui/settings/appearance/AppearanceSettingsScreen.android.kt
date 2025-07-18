@@ -7,14 +7,20 @@ import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.generated.SupportedLanguages
 import dev.bartuzen.qbitcontroller.preferences.ListPreference
 import dev.bartuzen.qbitcontroller.preferences.Preference
+import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.utils.stringResource
+import org.koin.compose.koinInject
 import qbitcontroller.composeapp.generated.resources.Res
+import qbitcontroller.composeapp.generated.resources.settings_enable_dynamic_colors
 import qbitcontroller.composeapp.generated.resources.settings_language
 import qbitcontroller.composeapp.generated.resources.settings_language_system_default
 import java.util.Locale
@@ -70,4 +76,18 @@ private fun getLanguageCode(locale: Locale?): String {
         return ""
     }
     return locale.toString().replace("_", "-")
+}
+
+@Composable
+actual fun DynamicColorsPreference() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val settingsManager = koinInject<SettingsManager>()
+        val enableDynamicColors by settingsManager.enableDynamicColors.flow.collectAsStateWithLifecycle()
+
+        SwitchPreference(
+            value = enableDynamicColors,
+            onValueChange = { settingsManager.enableDynamicColors.value = it },
+            title = { Text(text = stringResource(Res.string.settings_enable_dynamic_colors)) },
+        )
+    }
 }

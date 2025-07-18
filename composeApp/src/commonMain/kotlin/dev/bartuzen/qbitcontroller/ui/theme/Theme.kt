@@ -28,12 +28,17 @@ private val primaryColor = Color(0xFF415F91)
 fun AppTheme(content: @Composable () -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
     val pureBlack by settingsManager.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
+    val enableDynamicColors by settingsManager.enableDynamicColors.flow.collectAsStateWithLifecycle()
 
     val darkTheme = isDarkTheme()
     val defaultColorSchema = rememberDynamicColorScheme(primary = primaryColor, isDark = darkTheme, isAmoled = false)
     val dynamicColorSchema = getDynamicColorScheme(darkTheme)
 
-    val colorScheme = (dynamicColorSchema ?: defaultColorSchema).let {
+    val colorScheme = if (enableDynamicColors && dynamicColorSchema != null) {
+        dynamicColorSchema
+    } else {
+        defaultColorSchema
+    }.let {
         if (pureBlack && darkTheme) {
             val surfaceContainer = Color(0xFF0C0C0C)
             val surfaceContainerHigh = Color(0xFF131313)

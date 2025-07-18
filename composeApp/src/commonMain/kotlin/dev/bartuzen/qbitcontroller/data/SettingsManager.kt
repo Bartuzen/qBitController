@@ -7,6 +7,7 @@ open class SettingsManager(
     settings: Settings,
 ) {
     val theme = preference(settings, "theme", Theme.SYSTEM_DEFAULT)
+    val enableDynamicColors = preference(settings, "enableDynamicColors", true)
     val pureBlackDarkMode = preference(settings, "pureBlackDarkMode", false)
     val sort = preference(settings, "sort", TorrentSort.NAME)
     val isReverseSorting = preference(settings, "isReverseSorting", false)

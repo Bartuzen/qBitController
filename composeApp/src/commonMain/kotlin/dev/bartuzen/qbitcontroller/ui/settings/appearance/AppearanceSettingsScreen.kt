@@ -105,6 +105,10 @@ fun AppearanceSettingsScreen(
             }
 
             item {
+                DynamicColorsPreference()
+            }
+
+            item {
                 val pureBlackDarkMode by viewModel.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
                 SwitchPreference(
                     value = pureBlackDarkMode,
@@ -118,3 +122,6 @@ fun AppearanceSettingsScreen(
 
 @Composable
 expect fun LanguagePreference()
+
+@Composable
+expect fun DynamicColorsPreference()
