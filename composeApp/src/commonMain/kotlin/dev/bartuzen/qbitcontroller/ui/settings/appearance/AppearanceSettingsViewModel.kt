@@ -8,6 +8,7 @@ class AppearanceSettingsViewModel(
 ) : ViewModel() {
     val enableDynamicColors = settingsManager.enableDynamicColors
     val appColor = settingsManager.appColor
+    val paletteStyle = settingsManager.paletteStyle
     val theme = settingsManager.theme
     val pureBlackDarkMode = settingsManager.pureBlackDarkMode
 }

@@ -28,6 +28,7 @@ fun AppTheme(content: @Composable () -> Unit) {
     val pureBlack by settingsManager.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
     val enableDynamicColors by settingsManager.enableDynamicColors.flow.collectAsStateWithLifecycle()
     val appColor by settingsManager.appColor.flow.collectAsStateWithLifecycle()
+    val paletteStyle by settingsManager.paletteStyle.flow.collectAsStateWithLifecycle()
 
     val darkTheme = isDarkTheme()
     val dynamicColorSchema = getDynamicColorScheme(darkTheme)
@@ -35,7 +36,12 @@ fun AppTheme(content: @Composable () -> Unit) {
     val colorScheme = if (enableDynamicColors && dynamicColorSchema != null) {
         dynamicColorSchema
     } else {
-        rememberDynamicColorScheme(primary = appColor, isDark = darkTheme, isAmoled = false)
+        rememberDynamicColorScheme(
+            primary = appColor,
+            isDark = darkTheme,
+            style = paletteStyle,
+            isAmoled = false,
+        )
     }.let {
         if (pureBlack && darkTheme) {
             val surfaceContainer = Color(0xFF0C0C0C)

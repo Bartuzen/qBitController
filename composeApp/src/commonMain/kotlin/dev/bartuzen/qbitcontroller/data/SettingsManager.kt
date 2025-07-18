@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.data
 
+import com.materialkolor.PaletteStyle
 import com.russhwolf.settings.Settings
 import dev.bartuzen.qbitcontroller.model.serializers.ColorSerializer
 import dev.bartuzen.qbitcontroller.ui.theme.defaultPrimaryColor
@@ -11,6 +12,7 @@ open class SettingsManager(
     val theme = preference(settings, "theme", Theme.SYSTEM_DEFAULT)
     val enableDynamicColors = preference(settings, "enableDynamicColors", true)
     val appColor = jsonPreference(settings, "appColor", defaultPrimaryColor, serializer = ColorSerializer)
+    val paletteStyle = preference(settings, "paletteStyle", PaletteStyle.TonalSpot)
     val pureBlackDarkMode = preference(settings, "pureBlackDarkMode", false)
     val sort = preference(settings, "sort", TorrentSort.NAME)
     val isReverseSorting = preference(settings, "isReverseSorting", false)

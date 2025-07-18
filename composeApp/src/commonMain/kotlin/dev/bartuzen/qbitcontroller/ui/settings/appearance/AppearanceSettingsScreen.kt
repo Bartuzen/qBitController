@@ -5,6 +5,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -38,8 +39,10 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.materialkolor.PaletteStyle
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.preferences.ListPreference
+import dev.bartuzen.qbitcontroller.preferences.ListPreferenceType
 import dev.bartuzen.qbitcontroller.preferences.Preference
 import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
@@ -57,11 +60,22 @@ import qbitcontroller.composeapp.generated.resources.settings_app_color
 import qbitcontroller.composeapp.generated.resources.settings_app_color_reset
 import qbitcontroller.composeapp.generated.resources.settings_category_appearance
 import qbitcontroller.composeapp.generated.resources.settings_enable_dynamic_colors
+import qbitcontroller.composeapp.generated.resources.settings_palette_style
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_content
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_expressive
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_fidelity
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_fruit_salad
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_monochrome
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_neutral
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_rainbow
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_tonal_spot
+import qbitcontroller.composeapp.generated.resources.settings_palette_style_vibrant
 import qbitcontroller.composeapp.generated.resources.settings_pure_black_dark_mode
 import qbitcontroller.composeapp.generated.resources.settings_theme
 import qbitcontroller.composeapp.generated.resources.settings_theme_dark
 import qbitcontroller.composeapp.generated.resources.settings_theme_light
 import qbitcontroller.composeapp.generated.resources.settings_theme_system_default
+import kotlin.to
 
 @Composable
 fun AppearanceSettingsScreen(
@@ -152,76 +166,100 @@ fun AppearanceSettingsScreen(
                     enter = expandVertically(),
                     exit = shrinkVertically(),
                 ) {
-                    val appColor by viewModel.appColor.flow.collectAsStateWithLifecycle()
-                    var showDialog by rememberSaveable { mutableStateOf(false) }
+                    Column {
+                        val appColor by viewModel.appColor.flow.collectAsStateWithLifecycle()
+                        var showDialog by rememberSaveable { mutableStateOf(false) }
 
-                    if (showDialog) {
-                        var currentColor by rememberSaveable(stateSaver = HsvColor.Saver) {
-                            mutableStateOf(HsvColor(appColor))
+                        if (showDialog) {
+                            var currentColor by rememberSaveable(stateSaver = HsvColor.Saver) {
+                                mutableStateOf(HsvColor(appColor))
+                            }
+                            Dialog(
+                                title = { Text(text = stringResource(Res.string.settings_app_color)) },
+                                onDismissRequest = { showDialog = false },
+                                text = {
+                                    Box(
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    ) {
+                                        RingColorPicker(
+                                            color = currentColor,
+                                            onColorChange = { currentColor = it },
+                                            modifier = Modifier.size(196.dp),
+                                        )
+
+                                        SquareColorPicker(
+                                            color = currentColor,
+                                            onColorChange = { currentColor = it },
+                                            shape = RoundedCornerShape(16.dp),
+                                            modifier = Modifier.size(108.dp),
+                                        )
+                                    }
+                                },
+                                confirmButton = {
+                                    Row(modifier = Modifier.fillMaxWidth()) {
+                                        TextButton(
+                                            onClick = { currentColor = HsvColor(defaultPrimaryColor) },
+                                        ) {
+                                            Text(text = stringResource(Res.string.settings_app_color_reset))
+                                        }
+
+                                        Spacer(modifier = Modifier.weight(1f))
+
+                                        TextButton(onClick = { showDialog = false }) {
+                                            Text(text = stringResource(Res.string.dialog_cancel))
+                                        }
+
+                                        Button(
+                                            onClick = {
+                                                viewModel.appColor.value = currentColor.toColor()
+                                                showDialog = false
+                                            },
+                                        ) {
+                                            Text(text = stringResource(Res.string.dialog_ok))
+                                        }
+                                    }
+                                },
+                            )
                         }
-                        Dialog(
+
+                        Preference(
                             title = { Text(text = stringResource(Res.string.settings_app_color)) },
-                            onDismissRequest = { showDialog = false },
-                            text = {
+                            onClick = { showDialog = true },
+                            widgetContainer = {
                                 Box(
-                                    contentAlignment = Alignment.Center,
-                                    modifier = Modifier.fillMaxWidth(),
-                                ) {
-                                    RingColorPicker(
-                                        color = currentColor,
-                                        onColorChange = { currentColor = it },
-                                        modifier = Modifier.size(196.dp),
-                                    )
-
-                                    SquareColorPicker(
-                                        color = currentColor,
-                                        onColorChange = { currentColor = it },
-                                        shape = RoundedCornerShape(16.dp),
-                                        modifier = Modifier.size(108.dp),
-                                    )
-                                }
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                        .background(appColor),
+                                )
                             },
-                            confirmButton = {
-                                Row(modifier = Modifier.fillMaxWidth()) {
-                                    TextButton(
-                                        onClick = { currentColor = HsvColor(defaultPrimaryColor) },
-                                    ) {
-                                        Text(text = stringResource(Res.string.settings_app_color_reset))
-                                    }
+                            modifier = Modifier.animateItem(),
+                        )
 
-                                    Spacer(modifier = Modifier.weight(1f))
+                        val paletteStyle by viewModel.paletteStyle.flow.collectAsStateWithLifecycle()
+                        val items = mapOf(
+                            PaletteStyle.TonalSpot to Res.string.settings_palette_style_tonal_spot,
+                            PaletteStyle.Neutral to Res.string.settings_palette_style_neutral,
+                            PaletteStyle.Vibrant to Res.string.settings_palette_style_vibrant,
+                            PaletteStyle.Expressive to Res.string.settings_palette_style_expressive,
+                            PaletteStyle.Rainbow to Res.string.settings_palette_style_rainbow,
+                            PaletteStyle.FruitSalad to Res.string.settings_palette_style_fruit_salad,
+                            PaletteStyle.Monochrome to Res.string.settings_palette_style_monochrome,
+                            PaletteStyle.Fidelity to Res.string.settings_palette_style_fidelity,
+                            PaletteStyle.Content to Res.string.settings_palette_style_content,
+                        ).mapValues { stringResource(it.value) }
 
-                                    TextButton(onClick = { showDialog = false }) {
-                                        Text(text = stringResource(Res.string.dialog_cancel))
-                                    }
-
-                                    Button(
-                                        onClick = {
-                                            viewModel.appColor.value = currentColor.toColor()
-                                            showDialog = false
-                                        },
-                                    ) {
-                                        Text(text = stringResource(Res.string.dialog_ok))
-                                    }
-                                }
-                            },
+                        ListPreference(
+                            value = paletteStyle,
+                            onValueChange = { viewModel.paletteStyle.value = it },
+                            title = { Text(text = stringResource(Res.string.settings_palette_style)) },
+                            values = items.keys.toList(),
+                            valueToText = { AnnotatedString(items[it] ?: "") },
+                            type = ListPreferenceType.DropdownMenu,
                         )
                     }
-
-                    Preference(
-                        title = { Text(text = stringResource(Res.string.settings_app_color)) },
-                        onClick = { showDialog = true },
-                        widgetContainer = {
-                            Box(
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                                    .size(36.dp)
-                                    .clip(CircleShape)
-                                    .background(appColor),
-                            )
-                        },
-                        modifier = Modifier.animateItem(),
-                    )
                 }
             }
 
