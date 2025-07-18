@@ -125,6 +125,8 @@ kotlin {
                 implementation(libs.reorderable)
 
                 implementation(libs.autolinktext)
+
+                implementation(libs.composePipette)
             }
         }
 

@@ -1,6 +1,8 @@
 package dev.bartuzen.qbitcontroller.data
 
 import com.russhwolf.settings.Settings
+import dev.bartuzen.qbitcontroller.model.serializers.ColorSerializer
+import dev.bartuzen.qbitcontroller.ui.theme.defaultPrimaryColor
 import dev.bartuzen.qbitcontroller.ui.torrentlist.TorrentFilter
 
 open class SettingsManager(
@@ -8,6 +10,7 @@ open class SettingsManager(
 ) {
     val theme = preference(settings, "theme", Theme.SYSTEM_DEFAULT)
     val enableDynamicColors = preference(settings, "enableDynamicColors", true)
+    val appColor = jsonPreference(settings, "appColor", defaultPrimaryColor, serializer = ColorSerializer)
     val pureBlackDarkMode = preference(settings, "pureBlackDarkMode", false)
     val sort = preference(settings, "sort", TorrentSort.NAME)
     val isReverseSorting = preference(settings, "isReverseSorting", false)

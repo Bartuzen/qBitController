@@ -697,6 +697,7 @@
     <string name="settings_language">Language</string>
     <string name="settings_language_system_default">System Default</string>
     <string name="settings_enable_dynamic_colors">Enable dynamic colors</string>
+    <string name="settings_app_color">App color</string>
     <string name="settings_pure_black_dark_mode">Pure black dark mode</string>
 
     <string name="settings_servers_add_server">Add Server</string>

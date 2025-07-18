@@ -22,22 +22,22 @@ import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 
-private val primaryColor = Color(0xFF415F91)
+val defaultPrimaryColor = Color(0xFF415F91)
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
     val pureBlack by settingsManager.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
     val enableDynamicColors by settingsManager.enableDynamicColors.flow.collectAsStateWithLifecycle()
+    val appColor by settingsManager.appColor.flow.collectAsStateWithLifecycle()
 
     val darkTheme = isDarkTheme()
-    val defaultColorSchema = rememberDynamicColorScheme(primary = primaryColor, isDark = darkTheme, isAmoled = false)
     val dynamicColorSchema = getDynamicColorScheme(darkTheme)
 
     val colorScheme = if (enableDynamicColors && dynamicColorSchema != null) {
         dynamicColorSchema
     } else {
-        defaultColorSchema
+        rememberDynamicColorScheme(primary = appColor, isDark = darkTheme, isAmoled = pureBlack)
     }.let {
         if (pureBlack && darkTheme) {
             val surfaceContainer = Color(0xFF0C0C0C)
@@ -45,10 +45,6 @@ fun AppTheme(content: @Composable () -> Unit) {
             val surfaceContainerHighest = Color(0xFF1B1B1B)
 
             it.copy(
-                background = Color.Black,
-                onBackground = Color.White,
-                surface = Color.Black,
-                onSurface = Color.White,
                 surfaceVariant = surfaceContainer,
                 surfaceContainerLowest = surfaceContainer,
                 surfaceContainerLow = surfaceContainer,
