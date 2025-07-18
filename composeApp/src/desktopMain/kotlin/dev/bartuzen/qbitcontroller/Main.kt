@@ -55,9 +55,11 @@ import java.util.Locale
 import androidx.compose.ui.text.intl.Locale as ComposeLocale
 
 fun main() {
-    configureSwingGlobalsForCompose()
+    if (currentPlatform is Platform.Desktop.MacOS) {
+        System.setProperty("apple.awt.application.appearance", "system")
+    }
 
-    System.setProperty("apple.awt.application.appearance", "system")
+    configureSwingGlobalsForCompose()
 
     val koinApplication = startKoin {
         modules(appModule)
