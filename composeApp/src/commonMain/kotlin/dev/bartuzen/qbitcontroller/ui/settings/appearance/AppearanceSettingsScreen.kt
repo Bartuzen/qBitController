@@ -5,6 +5,8 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +43,7 @@ import dev.bartuzen.qbitcontroller.preferences.ListPreference
 import dev.bartuzen.qbitcontroller.preferences.Preference
 import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.theme.defaultPrimaryColor
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import dev.bartuzen.qbitcontroller.utils.topAppBarColors
 import dev.zt64.compose.pipette.HsvColor
@@ -51,6 +54,7 @@ import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 import qbitcontroller.composeapp.generated.resources.settings_app_color
+import qbitcontroller.composeapp.generated.resources.settings_app_color_reset
 import qbitcontroller.composeapp.generated.resources.settings_category_appearance
 import qbitcontroller.composeapp.generated.resources.settings_enable_dynamic_colors
 import qbitcontroller.composeapp.generated.resources.settings_pure_black_dark_mode
@@ -178,18 +182,27 @@ fun AppearanceSettingsScreen(
                                 }
                             },
                             confirmButton = {
-                                Button(
-                                    onClick = {
-                                        viewModel.appColor.value = currentColor.toColor()
-                                        showDialog = false
-                                    },
-                                ) {
-                                    Text(text = stringResource(Res.string.dialog_ok))
-                                }
-                            },
-                            dismissButton = {
-                                TextButton(onClick = { showDialog = false }) {
-                                    Text(text = stringResource(Res.string.dialog_cancel))
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    TextButton(
+                                        onClick = { currentColor = HsvColor(defaultPrimaryColor) },
+                                    ) {
+                                        Text(text = stringResource(Res.string.settings_app_color_reset))
+                                    }
+
+                                    Spacer(modifier = Modifier.weight(1f))
+
+                                    TextButton(onClick = { showDialog = false }) {
+                                        Text(text = stringResource(Res.string.dialog_cancel))
+                                    }
+
+                                    Button(
+                                        onClick = {
+                                            viewModel.appColor.value = currentColor.toColor()
+                                            showDialog = false
+                                        },
+                                    ) {
+                                        Text(text = stringResource(Res.string.dialog_ok))
+                                    }
                                 }
                             },
                         )
