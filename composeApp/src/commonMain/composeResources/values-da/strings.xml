@@ -499,4 +499,12 @@
     <string name="error_invalid_interval_optional">Skal være mellem %1$d og %2$d, eller blankt for at slå fra.</string>
     <string name="torrent_list_no_server_title">Ingen servere tilgængelige</string>
     <string name="torrent_list_no_server_description">Du har ikke tilføjet nogle servere endnu. Tilføj en for at komme igang.</string>
+    <string name="torrent_list_no_server_add">Tilføj Server</string>
+    <string name="torrent_list_empty_title">Ingen Torrents fundet</string>
+    <string name="torrent_list_empty_description">Du har ingen Torrents. Tilføj en for at komme i gang.</string>
+    <string name="torrent_list_empty_rss">Tilføj via RSS</string>
+    <string name="torrent_list_empty_search">Søg Torrents</string>
+    <string name="torrent_list_empty_add">Tilføj torrent</string>
+    <string name="torrent_list_no_result_title">Ingen resultater fundet</string>
+    <string name="torrent_list_no_result_description">Ingen torrents passer til dine filtre. Prøv at justere dine filtre eller søge kriterier.</string>
 </resources>
