@@ -37,7 +37,7 @@ fun AppTheme(content: @Composable () -> Unit) {
     val colorScheme = if (enableDynamicColors && dynamicColorSchema != null) {
         dynamicColorSchema
     } else {
-        rememberDynamicColorScheme(primary = appColor, isDark = darkTheme, isAmoled = pureBlack)
+        rememberDynamicColorScheme(primary = appColor, isDark = darkTheme, isAmoled = false)
     }.let {
         if (pureBlack && darkTheme) {
             val surfaceContainer = Color(0xFF0C0C0C)
@@ -45,6 +45,10 @@ fun AppTheme(content: @Composable () -> Unit) {
             val surfaceContainerHighest = Color(0xFF1B1B1B)
 
             it.copy(
+                background = Color.Black,
+                onBackground = Color.White,
+                surface = Color.Black,
+                onSurface = Color.White,
                 surfaceVariant = surfaceContainer,
                 surfaceContainerLowest = surfaceContainer,
                 surfaceContainerLow = surfaceContainer,
