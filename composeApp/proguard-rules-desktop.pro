@@ -7,6 +7,7 @@
 -keep class okhttp3.** { *; }
 -keep class okio.** { *; }
 -keep class io.ktor.** { *; }
+-keep class com.materialkolor.** { *; }
 
 -keep class com.sun.jna.** { *; }
 -keep class * implements com.sun.jna.** { *; }
