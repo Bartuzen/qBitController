@@ -682,4 +682,17 @@
     <string name="update_dialog_download">Descargar</string>
     <string name="update_dialog_message">qBitController %1$s está disponible. Actualmente estás usando la versión %2$s.</string>
     <string name="error_no_internet">Sin conexión a Internet.</string>
+    <string name="settings_app_color">Color de la aplicación</string>
+    <string name="settings_palette_style">Estilo de paleta</string>
+    <string name="settings_palette_style_neutral">Neutral</string>
+    <string name="settings_palette_style_vibrant">Vibrante</string>
+    <string name="settings_palette_style_expressive">Expresivo</string>
+    <string name="settings_palette_style_rainbow">Arcoíris</string>
+    <string name="settings_palette_style_fruit_salad">Ensalada de frutas</string>
+    <string name="settings_palette_style_monochrome">Monocromo</string>
+    <string name="settings_palette_style_fidelity">Fidelidad</string>
+    <string name="settings_palette_style_content">Contenido</string>
+    <string name="settings_app_color_reset">Restablecer</string>
+    <string name="settings_enable_dynamic_colors">Activar colores dinámicos</string>
+    <string name="settings_palette_style_tonal_spot">Mancha tonal</string>
 </resources>
