@@ -76,7 +76,6 @@ import qbitcontroller.composeapp.generated.resources.settings_theme
 import qbitcontroller.composeapp.generated.resources.settings_theme_dark
 import qbitcontroller.composeapp.generated.resources.settings_theme_light
 import qbitcontroller.composeapp.generated.resources.settings_theme_system_default
-import kotlin.to
 
 @Composable
 fun AppearanceSettingsScreen(
@@ -260,6 +259,7 @@ fun AppearanceSettingsScreen(
                             values = items.keys.toList(),
                             valueToText = { AnnotatedString(items[it] ?: "") },
                             type = ListPreferenceType.DropdownMenu,
+                            summary = items[paletteStyle]?.let { { Text(text = it) } },
                         )
                     }
                 }
