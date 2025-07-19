@@ -37,8 +37,8 @@
     <string name="size_format">%1$s %2$s</string>
     <string name="action_search">Søg</string>
     <string name="action_select_all">Vælg Alle</string>
-    <string name="torrent_list_action_add_torrent">Tilføj Torrent</string>
-    <string name="torrent_list_action_statistics">Statistikker</string>
+    <string name="torrent_list_action_add_torrent">Tilføj torrent</string>
+    <string name="torrent_list_action_statistics">Statistik</string>
     <string name="torrent_speed_alternative_speed_limits">Alternative Hastighedsgrænser</string>
     <string name="torrent_list_action_shutdown">Afslut qBittorrent</string>
     <string name="torrent_list_action_sort">Sortér</string>
@@ -51,10 +51,10 @@
     <string name="torrent_list_action_delete">Slet</string>
     <string name="torrent_list_action_priority">Prioritet</string>
     <string name="torrent_list_action_set_location">Sæt lokation</string>
-    <string name="torrent_list_action_set_category">Sæt Kategori</string>
+    <string name="torrent_list_action_set_category">Sæt kategori</string>
     <plurals name="torrent_list_delete_torrents">
-        <item quantity="one">Slet %1$d Torrent</item>
-        <item quantity="other">Slet %1$d Torrents</item>
+        <item quantity="one">Slet %1$d torrent</item>
+        <item quantity="other">Slet %1$d torrents</item>
     </plurals>
     <string name="dialog_cancel">Annuller</string>
     <string name="torrent_list_action_sort_hash">Hash</string>
@@ -64,15 +64,15 @@
     <string name="torrent_list_action_sort_total_seeds">Totale Seedere</string>
     <string name="torrent_list_action_sort_addition_date">Tilføjelsesdato</string>
     <string name="torrent_list_action_sort_completion_date">Afslutningsdato</string>
-    <string name="torrent_list_action_priority_increase">Øget prioritet</string>
+    <string name="torrent_list_action_priority_increase">Forhøj prioritet</string>
     <string name="torrent_list_action_priority_maximize">Maksimer prioritet</string>
-    <string name="torrent_list_action_priority_minimize">Minimer Prioritet</string>
+    <string name="torrent_list_action_priority_minimize">Minimer prioritet</string>
     <plurals name="torrent_list_torrents_delete_success">
         <item quantity="one">%1$d torrent slettet.</item>
         <item quantity="other">%1$d torrents slettet.</item>
     </plurals>
     <string name="torrent_list_search_torrents">Søg torrents…</string>
-    <string name="torrent_list_free_space">Tilgængelig plads: %1$s</string>
+    <string name="torrent_list_free_space">%1$s tilgængeligt</string>
     <string name="torrent_list_set_location_hint">Gem sti</string>
     <string name="torrent_list_category_tag_all">Alle</string>
     <string name="torrent_list_uncategorized">Ukategoriseret</string>
@@ -507,4 +507,9 @@
     <string name="torrent_list_empty_add">Tilføj torrent</string>
     <string name="torrent_list_no_result_title">Ingen resultater fundet</string>
     <string name="torrent_list_no_result_description">Ingen torrents passer til dine filtre. Prøv at justere dine filtre eller søge kriterier.</string>
+    <string name="torrent_list_no_result_reset">Nulstil filtre</string>
+    <string name="torrent_list_action_sort_connected_leeches">Forbundet leeches</string>
+    <string name="torrent_list_action_sort_total_leeches">Totale leeches</string>
+    <string name="torrent_list_action_sort_reverse">Omvendt</string>
+    <string name="torrent_list_action_priority_decrease">Formindsk prioritet</string>
 </resources>
