@@ -20,6 +20,7 @@ open class SettingsManager(
     )
     val paletteStyle = preference(settings, "paletteStyle", PaletteStyle.TonalSpot)
     val pureBlackDarkMode = preference(settings, "pureBlackDarkMode", false)
+    val showRelativeTimestamps = preference(settings, "showRelativeTimestamps", true)
     val sort = preference(settings, "sort", TorrentSort.NAME)
     val isReverseSorting = preference(settings, "isReverseSorting", false)
     val connectionTimeout = preference(settings, "connectionTimeout", 10)

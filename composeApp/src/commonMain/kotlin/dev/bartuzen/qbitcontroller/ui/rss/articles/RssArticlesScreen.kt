@@ -86,6 +86,7 @@ import be.digitalia.compose.htmlconverter.htmlToAnnotatedString
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
+import dev.bartuzen.qbitcontroller.ui.components.DateText
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
 import dev.bartuzen.qbitcontroller.ui.components.PlatformBackHandler
@@ -95,7 +96,7 @@ import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.excludeBottom
-import dev.bartuzen.qbitcontroller.utils.formatDate
+import dev.bartuzen.qbitcontroller.utils.formatDateByPreference
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.getString
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
@@ -544,7 +545,7 @@ private fun ArticleItem(
                         tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
-                        text = article.date.formatDate(),
+                        text = article.date.formatDateByPreference(),
                         style = MaterialTheme.typography.bodySmall,
                     )
                 }
@@ -642,12 +643,17 @@ private fun DetailsDialog(
                         modifier = Modifier.size(18.dp),
                     )
 
-                    Text(
-                        text = article.date.formatDate(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
+                    DateText(
+                        date = article.date,
+                        tooltipText = { Text(text = it) },
+                    ) { date ->
+                        Text(
+                            text = date,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                    }
                 }
 
                 if (article.description != null) {

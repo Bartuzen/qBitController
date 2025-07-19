@@ -72,6 +72,7 @@ import qbitcontroller.composeapp.generated.resources.settings_palette_style_rain
 import qbitcontroller.composeapp.generated.resources.settings_palette_style_tonal_spot
 import qbitcontroller.composeapp.generated.resources.settings_palette_style_vibrant
 import qbitcontroller.composeapp.generated.resources.settings_pure_black_dark_mode
+import qbitcontroller.composeapp.generated.resources.settings_relative_timestamps
 import qbitcontroller.composeapp.generated.resources.settings_theme
 import qbitcontroller.composeapp.generated.resources.settings_theme_dark
 import qbitcontroller.composeapp.generated.resources.settings_theme_light
@@ -271,6 +272,15 @@ fun AppearanceSettingsScreen(
                     value = pureBlackDarkMode,
                     onValueChange = { viewModel.pureBlackDarkMode.value = it },
                     title = { Text(text = stringResource(Res.string.settings_pure_black_dark_mode)) },
+                )
+            }
+
+            item {
+                val showRelativeTimestamps by viewModel.showRelativeTimestamps.flow.collectAsStateWithLifecycle()
+                SwitchPreference(
+                    value = showRelativeTimestamps,
+                    onValueChange = { viewModel.showRelativeTimestamps.value = it },
+                    title = { Text(text = stringResource(Res.string.settings_relative_timestamps)) },
                 )
             }
         }

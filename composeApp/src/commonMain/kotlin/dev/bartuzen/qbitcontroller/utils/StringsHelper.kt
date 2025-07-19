@@ -1,11 +1,28 @@
 package dev.bartuzen.qbitcontroller.utils
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.model.TorrentFilePriority
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import io.ktor.http.parseUrl
+import kotlinx.datetime.DateTimePeriod
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.periodUntil
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import qbitcontroller.composeapp.generated.resources.Res
+import qbitcontroller.composeapp.generated.resources.date_days_ago
+import qbitcontroller.composeapp.generated.resources.date_hours_ago
+import qbitcontroller.composeapp.generated.resources.date_minutes_ago
+import qbitcontroller.composeapp.generated.resources.date_months_ago
+import qbitcontroller.composeapp.generated.resources.date_now
+import qbitcontroller.composeapp.generated.resources.date_seconds_ago
+import qbitcontroller.composeapp.generated.resources.date_weeks_ago
+import qbitcontroller.composeapp.generated.resources.date_years_ago
 import qbitcontroller.composeapp.generated.resources.error_api
 import qbitcontroller.composeapp.generated.resources.error_banned
 import qbitcontroller.composeapp.generated.resources.error_cannot_connect
@@ -57,6 +74,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_status_seeding
 import qbitcontroller.composeapp.generated.resources.torrent_status_stalled
 import qbitcontroller.composeapp.generated.resources.torrent_status_unknown
 import kotlin.math.roundToLong
+import kotlin.time.Clock
 import kotlin.time.Instant
 
 @Composable
@@ -193,6 +211,32 @@ suspend fun getErrorMessage(error: RequestResult.Error) = when (error) {
 }
 
 expect fun Instant.formatDate(): String
+
+private val DateTimePeriod.weeks get() = days / 7
+
+@Composable
+fun Instant.formatRelativeDate(): String {
+    val period = periodUntil(Clock.System.now(), TimeZone.currentSystemDefault())
+
+    return when {
+        period.years > 0 -> pluralStringResource(Res.plurals.date_years_ago, period.years, period.years)
+        period.months > 0 -> pluralStringResource(Res.plurals.date_months_ago, period.months, period.months)
+        period.weeks > 0 -> pluralStringResource(Res.plurals.date_weeks_ago, period.weeks, period.weeks)
+        period.days > 0 -> pluralStringResource(Res.plurals.date_days_ago, period.days, period.days)
+        period.hours > 0 -> pluralStringResource(Res.plurals.date_hours_ago, period.hours, period.hours)
+        period.minutes > 0 -> pluralStringResource(Res.plurals.date_minutes_ago, period.minutes, period.minutes)
+        period.seconds > 0 -> pluralStringResource(Res.plurals.date_seconds_ago, period.seconds, period.seconds)
+        else -> stringResource(Res.string.date_now)
+    }
+}
+
+@Composable
+fun Instant.formatDateByPreference(): String {
+    val settingsManager = koinInject<SettingsManager>()
+    val showRelativeTimestamps by settingsManager.showRelativeTimestamps.flow.collectAsStateWithLifecycle()
+
+    return if (showRelativeTimestamps) formatRelativeDate() else formatDate()
+}
 
 @Composable
 expect fun getCountryName(countryCode: String): String

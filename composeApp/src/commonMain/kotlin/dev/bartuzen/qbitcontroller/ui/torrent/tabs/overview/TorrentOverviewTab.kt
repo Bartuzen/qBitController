@@ -115,6 +115,7 @@ import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
 import dev.bartuzen.qbitcontroller.ui.components.CheckboxWithLabel
+import dev.bartuzen.qbitcontroller.ui.components.DateText
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.DropdownMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
@@ -126,7 +127,6 @@ import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
 import dev.bartuzen.qbitcontroller.utils.floorToDecimal
 import dev.bartuzen.qbitcontroller.utils.formatBytes
 import dev.bartuzen.qbitcontroller.utils.formatBytesPerSecond
-import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.formatSeconds
 import dev.bartuzen.qbitcontroller.utils.formatTorrentState
 import dev.bartuzen.qbitcontroller.utils.getDecimalSeparator
@@ -245,6 +245,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_resumed_success
 import qbitcontroller.composeapp.generated.resources.torrent_tags_update_success
 import sh.calvin.autolinktext.rememberAutoLinkText
 import kotlin.math.ceil
+import kotlin.time.Instant
 
 @Composable
 fun TorrentOverviewTab(
@@ -814,7 +815,7 @@ fun TorrentOverviewTab(
                                 )
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_added_on),
-                                    value = properties.additionDate.formatDate(),
+                                    date = properties.additionDate,
                                 )
 
                                 if (torrent.isPrivate != null) {
@@ -865,7 +866,7 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_completed_on),
-                                    value = properties.completionDate?.formatDate(),
+                                    date = properties.completionDate,
                                 )
 
                                 InfoRow(
@@ -875,7 +876,7 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_created_on),
-                                    value = properties.creationDate?.formatDate(),
+                                    date = properties.creationDate,
                                 )
                             }
                         }
@@ -931,12 +932,12 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_last_activity),
-                                    value = torrent.lastActivity.formatDate(),
+                                    date = torrent.lastActivity,
                                 )
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_last_seen_complete),
-                                    value = torrent.lastSeenComplete?.formatDate(),
+                                    date = torrent.lastSeenComplete,
                                 )
 
                                 InfoRow(
@@ -1161,7 +1162,7 @@ private fun PieceBar(pieces: List<PieceState>, modifier: Modifier) {
 private val LocalLabelWidth = staticCompositionLocalOf { 0.dp }
 
 @Composable
-private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier, autoLink: Boolean = false) {
+private fun InfoRow(label: String, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier,
@@ -1181,6 +1182,16 @@ private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier
             modifier = Modifier.width(LocalLabelWidth.current.coerceAtMost(maxWidth)),
         )
 
+        content()
+    }
+}
+
+@Composable
+private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier, autoLink: Boolean = false) {
+    InfoRow(
+        label = label,
+        modifier = modifier,
+    ) {
         if (value != null) {
             SelectionContainer {
                 if (!autoLink) {
@@ -1188,6 +1199,25 @@ private fun InfoRow(label: String, value: String?, modifier: Modifier = Modifier
                 } else {
                     Text(text = AnnotatedString.rememberAutoLinkText(value))
                 }
+            }
+        } else {
+            Text(text = "-")
+        }
+    }
+}
+
+@Composable
+private fun InfoRow(label: String, date: Instant?, modifier: Modifier = Modifier) {
+    InfoRow(
+        label = label,
+        modifier = modifier,
+    ) {
+        if (date != null) {
+            DateText(
+                date = date,
+                tooltipText = { Text(text = it) },
+            ) { date ->
+                Text(text = date)
             }
         } else {
             Text(text = "-")

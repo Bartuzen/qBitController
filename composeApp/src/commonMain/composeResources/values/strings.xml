@@ -51,6 +51,36 @@
     <string name="speed_mebibytes_per_second">MiB/s</string>
     <string name="speed_gibibytes_per_second">GiB/s</string>
 
+    <string name="date_now">Now</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d second ago</item>
+        <item quantity="other">%1$d seconds ago</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d minute ago</item>
+        <item quantity="other">%1$d minutes ago</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d hour ago</item>
+        <item quantity="other">%1$d hours ago</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d day ago</item>
+        <item quantity="other">%1$d days ago</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d week ago</item>
+        <item quantity="other">%1$d weeks ago</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d month ago</item>
+        <item quantity="other">%1$d months ago</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d year ago</item>
+        <item quantity="other">%1$d years ago</item>
+    </plurals>
+
     <string name="percentage_format">%1$s%%</string>
 
     <string name="error_invalid_credentials">Invalid username or password.</string>
@@ -710,6 +740,7 @@
     <string name="settings_palette_style_fidelity">Fidelity</string>
     <string name="settings_palette_style_content">Content</string>
     <string name="settings_pure_black_dark_mode">Pure black dark mode</string>
+    <string name="settings_relative_timestamps">Relative timestamps</string>
 
     <string name="settings_servers_add_server">Add Server</string>
     <string name="settings_servers_no_server_configured">No Server Configured</string>

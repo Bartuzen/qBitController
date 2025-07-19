@@ -54,12 +54,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.LogType
+import dev.bartuzen.qbitcontroller.ui.components.DateText
 import dev.bartuzen.qbitcontroller.ui.components.LazyColumnItemMinHeight
 import dev.bartuzen.qbitcontroller.ui.components.PullToRefreshBox
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.theme.LocalCustomColors
 import dev.bartuzen.qbitcontroller.utils.EventEffect
-import dev.bartuzen.qbitcontroller.utils.formatDate
 import dev.bartuzen.qbitcontroller.utils.getErrorMessage
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import dev.bartuzen.qbitcontroller.utils.topAppBarColors
@@ -205,12 +205,17 @@ fun LogItem(log: Log, modifier: Modifier = Modifier) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    Text(
-                        text = log.timestamp.formatDate(),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = LocalCustomColors.current.logTimestamp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
+                    DateText(
+                        date = log.timestamp,
+                        tooltipText = { Text(text = it) },
+                    ) { date ->
+                        Text(
+                            text = date,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = LocalCustomColors.current.logTimestamp,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
 
                     val icon = when (log.type) {
                         LogType.WARNING -> Icons.Filled.Warning

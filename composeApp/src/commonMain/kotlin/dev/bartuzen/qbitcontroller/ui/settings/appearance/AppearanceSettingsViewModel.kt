@@ -11,4 +11,5 @@ class AppearanceSettingsViewModel(
     val paletteStyle = settingsManager.paletteStyle
     val theme = settingsManager.theme
     val pureBlackDarkMode = settingsManager.pureBlackDarkMode
+    val showRelativeTimestamps = settingsManager.showRelativeTimestamps
 }
