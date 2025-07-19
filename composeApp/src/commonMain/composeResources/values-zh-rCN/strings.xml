@@ -642,4 +642,8 @@
     <string name="update_dialog_download">下载</string>
     <string name="update_dialog_title">有可用更新</string>
     <string name="error_no_internet">无网络连接</string>
+    <string name="settings_enable_dynamic_colors">启用动态颜色</string>
+    <string name="settings_app_color">应用颜色</string>
+    <string name="settings_app_color_reset">重置</string>
+    <string name="settings_palette_style">色调风格</string>
 </resources>
