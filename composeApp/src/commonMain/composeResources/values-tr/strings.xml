@@ -662,4 +662,17 @@
     <string name="update_dialog_download">İndir</string>
     <string name="update_dialog_message">qBitController %1$s sürümü yayınlandı. Şu anda %2$s sürümünü kullanıyorsunuz.</string>
     <string name="error_no_internet">İnternet bağlantısı yok.</string>
+    <string name="settings_enable_dynamic_colors">Dinamik renkleri etkinleştir</string>
+    <string name="settings_app_color">Uygulama rengi</string>
+    <string name="settings_app_color_reset">Sıfırla</string>
+    <string name="settings_palette_style">Palet stili</string>
+    <string name="settings_palette_style_tonal_spot">Tonal nokta</string>
+    <string name="settings_palette_style_neutral">Nötr</string>
+    <string name="settings_palette_style_vibrant">Canlı</string>
+    <string name="settings_palette_style_expressive">İfade edici</string>
+    <string name="settings_palette_style_rainbow">Gökkuşağı</string>
+    <string name="settings_palette_style_fruit_salad">Meyve salatası</string>
+    <string name="settings_palette_style_monochrome">Tek renkli</string>
+    <string name="settings_palette_style_fidelity">Sadakat</string>
+    <string name="settings_palette_style_content">İçerik</string>
 </resources>
