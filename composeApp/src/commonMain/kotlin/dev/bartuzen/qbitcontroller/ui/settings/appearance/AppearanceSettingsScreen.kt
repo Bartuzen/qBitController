@@ -43,6 +43,7 @@ import com.materialkolor.PaletteStyle
 import dev.bartuzen.qbitcontroller.data.Theme
 import dev.bartuzen.qbitcontroller.preferences.ListPreference
 import dev.bartuzen.qbitcontroller.preferences.ListPreferenceType
+import dev.bartuzen.qbitcontroller.preferences.LocalPreferenceTheme
 import dev.bartuzen.qbitcontroller.preferences.Preference
 import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
@@ -223,13 +224,14 @@ fun AppearanceSettingsScreen(
                             )
                         }
 
+                        val preferenceTheme = LocalPreferenceTheme.current
                         Preference(
                             title = { Text(text = stringResource(Res.string.settings_app_color)) },
                             onClick = { showDialog = true },
                             widgetContainer = {
                                 Box(
                                     modifier = Modifier
-                                        .padding(end = 8.dp)
+                                        .padding(end = preferenceTheme.horizontalSpacing)
                                         .size(36.dp)
                                         .clip(CircleShape)
                                         .background(appColor),
