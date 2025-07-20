@@ -646,4 +646,26 @@
     <string name="settings_app_color">应用颜色</string>
     <string name="settings_app_color_reset">重置</string>
     <string name="settings_palette_style">色调风格</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="other">%1$d 秒前</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="other">%1$d 分钟前</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="other">%1$d 小时前</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="other">%1$d 天前</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="other">%1$d 周前</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="other">%1$d 个月前</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="other">%1$d 年前</item>
+    </plurals>
+    <string name="settings_relative_timestamps">相对时间戳</string>
 </resources>
