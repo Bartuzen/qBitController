@@ -7,7 +7,7 @@
     <string name="torrent_status_seeding">正在做种</string>
     <string name="torrent_status_paused">已暂停</string>
     <string name="torrent_status_queued">已排队</string>
-    <string name="torrent_status_stalled">等待</string>
+    <string name="torrent_status_stalled">已停止</string>
     <string name="torrent_status_checking">正在检查</string>
     <string name="torrent_status_completed">已完成</string>
     <string name="torrent_status_force_seeding">[F] 正在做种</string>
@@ -86,7 +86,7 @@
     <string name="torrent_list_action_priority_minimize">最低优先级</string>
     <string name="torrent_list_action_set_location">设置保存位置</string>
     <plurals name="torrent_list_delete_torrents">
-        <item quantity="other">删除 %1$d 个种子</item>
+        <item quantity="other">删除 %1$d 个种子。</item>
     </plurals>
     <plurals name="torrent_list_torrents_delete_success">
         <item quantity="other">已成功删除 %1$d 个种子。</item>
@@ -155,7 +155,7 @@
     <string name="torrent_list_status_paused">已暂停</string>
     <string name="torrent_list_status_active">活动</string>
     <string name="torrent_list_status_inactive">空闲</string>
-    <string name="torrent_list_status_stalled">等待</string>
+    <string name="torrent_list_status_stalled">已停止</string>
     <string name="torrent_list_status_checking">正在检查</string>
     <string name="torrent_list_status_moving">正在移动</string>
     <string name="torrent_list_status_error">错误</string>
