@@ -715,4 +715,48 @@
     <string name="settings_palette_style_monochrome">Монохромний</string>
     <string name="settings_palette_style_fidelity">Вірність</string>
     <string name="settings_palette_style_content">Зміст</string>
+    <string name="date_now">Зараз</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d секунду тому</item>
+        <item quantity="few">%1$d секунди тому</item>
+        <item quantity="many">%1$d секунд тому</item>
+        <item quantity="other">%1$d секунд тому</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d хвилину тому</item>
+        <item quantity="few">%1$d хвилини тому</item>
+        <item quantity="many">%1$d хвилин тому</item>
+        <item quantity="other">%1$d хвилин тому</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d годину тому</item>
+        <item quantity="few">%1$d години тому</item>
+        <item quantity="many">%1$d годин тому</item>
+        <item quantity="other">%1$d годин тому</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d день тому</item>
+        <item quantity="few">%1$d дня тому</item>
+        <item quantity="many">%1$d днів тому</item>
+        <item quantity="other">%1$d днів тому</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d тиждень тому</item>
+        <item quantity="few">%1$d тижня тому</item>
+        <item quantity="many">%1$d тижні тому</item>
+        <item quantity="other">%1$d тижні тому</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d місяць тому</item>
+        <item quantity="few">%1$d місяці тому</item>
+        <item quantity="many">%1$d місяців тому</item>
+        <item quantity="other">%1$d місяців тому</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d рік тому</item>
+        <item quantity="few">%1$d роки тому</item>
+        <item quantity="many">%1$d років тому</item>
+        <item quantity="other">%1$d років тому</item>
+    </plurals>
+    <string name="settings_relative_timestamps">Відносні позначки часу</string>
 </resources>
