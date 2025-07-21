@@ -23,6 +23,7 @@ import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.prepareForm
 import io.ktor.client.request.prepareGet
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.appendEncodedPathSegments
 import io.ktor.http.parametersOf
@@ -48,11 +49,7 @@ class TorrentService(
                     url.parameters.append(key, value.toString())
                 }
             }
-        }.execute { response ->
-            withContext(Dispatchers.IO) {
-                Response(response.status.value, response.body<T>())
-            }
-        }
+        }.execute(::execute)
 
     suspend inline fun <reified T> get(
         path: String,
@@ -67,13 +64,12 @@ class TorrentService(
             }
         }
     }.execute { response ->
-        withContext(Dispatchers.IO) {
-            val body = decodeJson(
+        execute(response) {
+            decodeJson(
                 channel = response.bodyAsChannel(),
                 deserializer = deserializer,
                 json = json,
             )
-            Response(response.status.value, body)
         }
     }
 
@@ -86,19 +82,21 @@ class TorrentService(
             ),
         ) {
             url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
-        }.execute { response ->
-            withContext(Dispatchers.IO) {
-                Response(response.status.value, response.body<T>())
-            }
-        }
+        }.execute(::execute)
 
     suspend inline fun <reified T> post(path: String, body: MultiPartFormDataContent): Response<T> = client.prepareForm {
         url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
         setBody(body)
-    }.execute { response ->
-        withContext(Dispatchers.IO) {
-            Response(response.status.value, response.body<T>())
-        }
+    }.execute(::execute)
+
+    suspend inline fun <reified T> execute(
+        response: HttpResponse,
+        noinline body: suspend () -> T? = { response.body<T>() },
+    ): Response<T> = withContext(Dispatchers.IO) {
+        val code = response.status.value
+        val body = if (code in 200..<300 && code != 204 && code != 205) body() else null
+
+        Response(code, body)
     }
 
     suspend fun login(username: String, password: String): Response<String> = post(
