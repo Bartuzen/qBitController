@@ -739,4 +739,24 @@
         <item quantity="many">%1$d месяцев назад</item>
         <item quantity="other">%1$d месяцев назад</item>
     </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d год назад</item>
+        <item quantity="few">%1$d года назад</item>
+        <item quantity="many">%1$d лет назад</item>
+        <item quantity="other">%1$d лет назад</item>
+    </plurals>
+    <string name="settings_enable_dynamic_colors">Включить динамические цвета</string>
+    <string name="settings_app_color">Цвет приложения</string>
+    <string name="settings_app_color_reset">Сброс</string>
+    <string name="settings_palette_style">Стиль палитры</string>
+    <string name="settings_palette_style_neutral">Нейтральный</string>
+    <string name="settings_palette_style_vibrant">Яркий</string>
+    <string name="settings_palette_style_expressive">Выразительный</string>
+    <string name="settings_palette_style_rainbow">Радуга</string>
+    <string name="settings_palette_style_fruit_salad">Фруктовый салат</string>
+    <string name="settings_palette_style_monochrome">Монохромный</string>
+    <string name="settings_palette_style_fidelity">Верность</string>
+    <string name="settings_palette_style_content">Контент</string>
+    <string name="settings_relative_timestamps">Относительные временные метки</string>
+    <string name="settings_palette_style_tonal_spot">Тональное пятно</string>
 </resources>
