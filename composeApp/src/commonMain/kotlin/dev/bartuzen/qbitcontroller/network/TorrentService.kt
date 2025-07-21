@@ -18,46 +18,88 @@ import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentTracker
 import dev.bartuzen.qbitcontroller.model.TorrentWebSeed
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.forms.MultiPartFormDataContent
-import io.ktor.client.request.forms.submitForm
-import io.ktor.client.request.get
-import io.ktor.client.request.post
+import io.ktor.client.request.forms.prepareForm
+import io.ktor.client.request.prepareGet
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.http.appendEncodedPathSegments
 import io.ktor.http.parametersOf
 import io.ktor.http.takeFrom
+import io.ktor.serialization.kotlinx.json.DefaultJson
+import io.ktor.utils.io.ByteReadChannel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 class TorrentService(
     val client: HttpClient,
     val baseUrl: String,
 ) {
+    suspend inline fun <reified T> get(path: String, parameters: Map<String, Any?> = emptyMap()): Response<T> =
+        client.prepareGet {
+            url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
+            parameters.forEach { (key, value) ->
+                if (value != null) {
+                    url.parameters.append(key, value.toString())
+                }
+            }
+        }.execute { response ->
+            withContext(Dispatchers.IO) {
+                Response(response.status.value, response.body<T>())
+            }
+        }
+
     suspend inline fun <reified T> get(
         path: String,
         parameters: Map<String, Any?> = emptyMap(),
-        noinline customDeserializer: ((String) -> T)? = null,
-    ): Response<T> = client.get {
+        deserializer: DeserializationStrategy<T>,
+        json: Json = DefaultJson,
+    ): Response<T> = client.prepareGet {
         url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
         parameters.forEach { (key, value) ->
             if (value != null) {
                 url.parameters.append(key, value.toString())
             }
         }
-    }.toResponse(customDeserializer)
+    }.execute { response ->
+        withContext(Dispatchers.IO) {
+            val body = decodeJson(
+                channel = response.bodyAsChannel(),
+                deserializer = deserializer,
+                json = json,
+            )
+            Response(response.status.value, body)
+        }
+    }
 
-    suspend inline fun <reified T> post(
-        path: String,
-        parameters: Map<String, Any?> = emptyMap(),
-        noinline customDeserializer: ((String) -> T)? = null,
-    ): Response<T> = client.submitForm(
-        formParameters = parametersOf(
-            parameters
-                .filterValues { it != null }
-                .mapValues { listOf(it.value.toString()) },
-        ),
-    ) {
+    suspend inline fun <reified T> post(path: String, parameters: Map<String, Any?> = emptyMap()): Response<T> =
+        client.prepareForm(
+            formParameters = parametersOf(
+                parameters
+                    .filterValues { it != null }
+                    .mapValues { listOf(it.value.toString()) },
+            ),
+        ) {
+            url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
+        }.execute { response ->
+            withContext(Dispatchers.IO) {
+                Response(response.status.value, response.body<T>())
+            }
+        }
+
+    suspend inline fun <reified T> post(path: String, body: MultiPartFormDataContent): Response<T> = client.prepareForm {
         url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/$path")
-    }.toResponse(customDeserializer)
+        setBody(body)
+    }.execute { response ->
+        withContext(Dispatchers.IO) {
+            Response(response.status.value, response.body<T>())
+        }
+    }
 
     suspend fun login(username: String, password: String): Response<String> = post(
         "auth/login",
@@ -260,10 +302,10 @@ class TorrentService(
         mapOf("hashes" to hashes),
     )
 
-    suspend fun addTorrent(map: MultiPartFormDataContent): Response<String> = client.post {
-        url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/torrents/add")
-        setBody(map)
-    }.toResponse()
+    suspend fun addTorrent(formData: MultiPartFormDataContent): Response<String> = post(
+        "torrents/add",
+        formData,
+    )
 
     suspend fun setAutomaticTorrentManagement(hashes: String, enable: Boolean): Response<Unit> = post(
         "torrents/setAutoManagement",
@@ -359,18 +401,10 @@ class TorrentService(
         "rss/items",
     )
 
-    private val json = Json {
-        ignoreUnknownKeys = true
-        coerceInputValues = true
-        explicitNulls = false
-    }
-
     suspend fun getRssFeedWithData(path: List<String>, uid: String?): Response<RssFeedWithData> = get(
         "rss/items",
         mapOf("withData" to true),
-        customDeserializer = {
-            json.decodeFromString(RssFeedWithDataSerializer(path, uid), it)
-        },
+        RssFeedWithDataSerializer(path, uid),
     )
 
     suspend fun markAsRead(itemPath: String, articleId: String?): Response<Unit> = post(
@@ -464,3 +498,9 @@ class TorrentService(
 
     suspend fun updatePlugins(): Response<Unit> = post("search/updatePlugins")
 }
+
+expect suspend inline fun <reified T> decodeJson(
+    channel: ByteReadChannel,
+    deserializer: DeserializationStrategy<T> = serializer<T>(),
+    json: Json = DefaultJson,
+): T?

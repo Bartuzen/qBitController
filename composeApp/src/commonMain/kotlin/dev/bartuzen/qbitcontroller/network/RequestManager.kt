@@ -18,7 +18,9 @@ import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
 import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.http.ContentType
+import io.ktor.serialization.Configuration
+import io.ktor.serialization.kotlinx.json.DefaultJson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
@@ -78,7 +80,7 @@ class RequestManager(
 
     fun buildHttpClient(serverConfig: ServerConfig) = createHttpClient(serverConfig) {
         install(ContentNegotiation) {
-            this.json(json)
+            platformJsonIo(json)
         }
 
         install(HttpCookies) {
@@ -147,7 +149,7 @@ class RequestManager(
                 val service = getTorrentService(serverId)
                 val version = service.getVersion()
 
-                val parsedVersion = version.body()?.let { versionString ->
+                val parsedVersion = version.body?.let { versionString ->
                     QBittorrentVersion.fromString(versionString)
                 } ?: QBittorrentVersion.Invalid
                 versions[serverId] = Clock.System.now() to parsedVersion
@@ -162,7 +164,7 @@ class RequestManager(
         return if (serverConfig.username != null && serverConfig.password != null) {
             val loginResponse = service.login(serverConfig.username, serverConfig.password)
             val code = loginResponse.code
-            val body = loginResponse.body()
+            val body = loginResponse.body
 
             when {
                 code == 403 -> RequestResult.Error.RequestError.Banned
@@ -185,7 +187,7 @@ class RequestManager(
 
         val blockResponse = block(service)
         val code = blockResponse.code
-        val body = blockResponse.body()
+        val body = blockResponse.body
 
         return if (code == 200 && body != null) {
             RequestResult.Success(body)
@@ -277,3 +279,5 @@ expect suspend fun <T> catchRequestError(
 
 expect fun supportsSelfSignedCertificates(): Boolean
 expect fun supportsDnsOverHttps(): Boolean
+
+expect fun Configuration.platformJsonIo(json: Json = DefaultJson, contentType: ContentType = ContentType.Application.Json)
