@@ -161,8 +161,8 @@
     <string name="torrent_list_status_error">错误</string>
     <string name="torrent_list_priority_increase_success">已成功提升优先级。</string>
     <string name="torrent_list_priority_decrease_success">已成功降低优先级。</string>
-    <string name="torrent_list_priority_maximize_success">已成功将优先级提升至最大值。</string>
-    <string name="torrent_list_priority_minimize_success">已成功将优先级降低至最小值。</string>
+    <string name="torrent_list_priority_maximize_success">已成功提升至最大优先级。</string>
+    <string name="torrent_list_priority_minimize_success">已成功降低至最小优先级。</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">用户统计</string>
@@ -209,7 +209,7 @@
     <string name="torrent_action_copy_hash_v1">哈希值 v1</string>
     <string name="torrent_action_copy_hash_v2">哈希值 v2</string>
     <string name="torrent_action_copy_magnet_uri">磁力链接</string>
-    <string name="torrent_action_export">导出 .torrent</string>
+    <string name="torrent_action_export">导出种子文件</string>
     <string name="torrent_enable_force_start_success">已成功启用强制开始。</string>
     <string name="torrent_disable_force_start_success">已成功禁用强制开始。</string>
     <string name="torrent_enable_super_seeding_success">已成功启用超级做种。</string>
@@ -285,7 +285,7 @@
     <string name="torrent_files_rename_file_hint">文件名</string>
     <string name="torrent_files_rename_folder_hint">文件夹名</string>
     <string name="torrent_files_priority_update_success">已成功更新文件优先级。</string>
-    <string name="torrent_files_file_renamed_success">已成功重命名文件</string>
+    <string name="torrent_files_file_renamed_success">文件重命名成功</string>
     <string name="torrent_files_folder_renamed_success">文件夹重命名成功</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">该路径无效或已被使用。</string>
     <string name="torrent_trackers_action_delete">删除</string>
@@ -378,7 +378,7 @@
     <string name="torrent_add_content_layout_subfolder">创建子文件夹</string>
     <string name="torrent_add_content_layout_no_subfolder">不创建子文件夹</string>
     <string name="torrent_add_save_path">保存文件到</string>
-    <string name="torrent_add_name">种子名称</string>
+    <string name="torrent_add_name">种子重命名</string>
     <string name="torrent_add_ratio_limit">分享率</string>
     <string name="torrent_add_seeding_time_limit">做种时间限制（分钟）</string>
     <string name="torrent_add_download_speed_limit">下载速度限制</string>
@@ -420,7 +420,7 @@
     <string name="rss_success_feed_move">已成功移动订阅源。</string>
     <string name="rss_success_feed_delete">已成功删除订阅源。</string>
     <string name="rss_success_folder_add">已成功新建文件夹。</string>
-    <string name="rss_success_folder_rename">已重命名文件夹。</string>
+    <string name="rss_success_folder_rename">文件夹重命名成功。</string>
     <string name="rss_success_folder_move">已成功移动文件夹。</string>
     <string name="rss_success_folder_delete">已成功删除文件夹。</string>
     <string name="rss_add_feed_error">无法添加订阅源。</string>
