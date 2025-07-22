@@ -375,10 +375,16 @@ class TorrentService(
         mapOf("hashes" to hashes, "tags" to tags),
     )
 
-    suspend fun exportTorrent(hash: String): Response<ByteArray> = get(
-        "torrents/export",
-        mapOf("hash" to hash),
-    )
+    suspend fun exportTorrent(hash: String, block: suspend (ByteReadChannel) -> Unit): Response<Unit> = client.prepareGet {
+        url.takeFrom(baseUrl).appendEncodedPathSegments("api/v2/torrents/export")
+        url.parameters.append("hash", hash)
+    }.execute { response ->
+        withContext(Dispatchers.IO) {
+            val channel = response.bodyAsChannel()
+            block(channel)
+            Response(response.status.value, Unit)
+        }
+    }
 
     suspend fun getPeers(hash: String): Response<TorrentPeers> = get(
         "sync/torrentPeers",
