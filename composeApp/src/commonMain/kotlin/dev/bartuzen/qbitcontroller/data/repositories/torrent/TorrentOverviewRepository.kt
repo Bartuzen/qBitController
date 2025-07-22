@@ -2,6 +2,7 @@ package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
+import io.ktor.utils.io.ByteReadChannel
 
 class TorrentOverviewRepository(
     private val requestManager: RequestManager,
@@ -120,7 +121,8 @@ class TorrentOverviewRepository(
         service.setShareLimit(hash, ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
     }
 
-    suspend fun exportTorrent(serverId: Int, hash: String) = requestManager.request(serverId) { service ->
-        service.exportTorrent(hash)
-    }
+    suspend fun exportTorrent(serverId: Int, hash: String, block: suspend (ByteReadChannel) -> Unit) =
+        requestManager.request(serverId) { service ->
+            service.exportTorrent(hash, block)
+        }
 }

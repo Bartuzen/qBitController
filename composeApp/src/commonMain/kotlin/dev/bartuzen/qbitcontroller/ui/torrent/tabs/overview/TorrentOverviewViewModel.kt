@@ -11,7 +11,9 @@ import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import io.github.vinceglb.filekit.PlatformFile
 import io.github.vinceglb.filekit.delete
-import io.github.vinceglb.filekit.write
+import io.github.vinceglb.filekit.sink
+import io.ktor.utils.io.core.remaining
+import io.ktor.utils.io.readBuffer
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -452,15 +454,19 @@ class TorrentOverviewViewModel(
     }
 
     fun exportTorrent(file: PlatformFile) = viewModelScope.launch {
-        when (val result = repository.exportTorrent(serverId, torrentHash)) {
-            is RequestResult.Success -> {
+        when (
+            val result = repository.exportTorrent(serverId, torrentHash) { channel ->
                 try {
-                    file.write(result.data)
-                    eventChannel.send(Event.TorrentExported)
+                    val buffer = channel.readBuffer()
+                    file.sink().write(buffer, buffer.remaining)
                 } catch (_: Exception) {
                     file.tryDelete()
                     eventChannel.send(Event.TorrentExportError)
                 }
+            }
+        ) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentExported)
             }
             is RequestResult.Error -> {
                 if (result is RequestResult.Error.ApiError && result.code == 409) {

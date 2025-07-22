@@ -5,7 +5,11 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.darwin.Darwin
 import io.ktor.client.engine.darwin.DarwinHttpRequestException
+import io.ktor.http.ContentType
+import io.ktor.serialization.Configuration
+import io.ktor.serialization.kotlinx.json.jsonIo
 import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.json.Json
 import platform.Foundation.NSURLErrorCannotConnectToHost
 import platform.Foundation.NSURLErrorCannotFindHost
 import platform.Foundation.NSURLErrorNotConnectedToInternet
@@ -36,3 +40,7 @@ actual suspend fun <T> catchRequestError(block: suspend () -> RequestResult<T>, 
 
 actual fun supportsSelfSignedCertificates() = false
 actual fun supportsDnsOverHttps() = false
+
+actual fun Configuration.platformJsonIo(json: Json, contentType: ContentType) {
+    jsonIo(json, contentType)
+}
