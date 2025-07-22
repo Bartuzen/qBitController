@@ -65,12 +65,11 @@ class TorrentWebSeedsViewModel(
             is RequestResult.Success -> {
                 _webSeeds.value = result.data.map { it.url }
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }

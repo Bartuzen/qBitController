@@ -68,12 +68,11 @@ class TorrentPeersViewModel(
             is RequestResult.Success -> {
                 _peers.value = result.data.peers.values.toList()
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -108,12 +107,11 @@ class TorrentPeersViewModel(
                     loadPeers()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 400 -> {
+                eventChannel.send(Event.PeersInvalid)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 400) {
-                    eventChannel.send(Event.PeersInvalid)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }

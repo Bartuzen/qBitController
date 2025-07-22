@@ -582,12 +582,11 @@ class TorrentListViewModel(
                     loadMainData()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.QueueingNotEnabled)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.QueueingNotEnabled)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -602,12 +601,11 @@ class TorrentListViewModel(
                     loadMainData()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.QueueingNotEnabled)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.QueueingNotEnabled)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -622,12 +620,11 @@ class TorrentListViewModel(
                     loadMainData()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.QueueingNotEnabled)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.QueueingNotEnabled)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -642,12 +639,11 @@ class TorrentListViewModel(
                     loadMainData()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.QueueingNotEnabled)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.QueueingNotEnabled)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -687,12 +683,11 @@ class TorrentListViewModel(
                     eventChannel.send(Event.CategoryEdited)
                     loadMainData()
                 }
+                is RequestResult.Error.ApiError if result.code == 409 -> {
+                    eventChannel.send(Event.CategoryEditingFailed)
+                }
                 is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 409) {
-                        eventChannel.send(Event.CategoryEditingFailed)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+                    eventChannel.send(Event.Error(result))
                 }
             }
         }

@@ -85,12 +85,11 @@ class RssFeedsViewModel(
                 eventChannel.send(Event.FeedAdded)
                 loadRssFeeds()
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.FeedAddError)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.FeedAddError)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -101,12 +100,11 @@ class RssFeedsViewModel(
                 eventChannel.send(Event.FolderAdded)
                 loadRssFeeds()
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.FolderAddError)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.FolderAddError)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -121,16 +119,15 @@ class RssFeedsViewModel(
                 }
                 loadRssFeeds()
             }
-            is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    if (isFeed) {
-                        eventChannel.send(Event.FeedRenameError)
-                    } else {
-                        eventChannel.send(Event.FolderRenameError)
-                    }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                if (isFeed) {
+                    eventChannel.send(Event.FeedRenameError)
                 } else {
-                    eventChannel.send(Event.Error(result))
+                    eventChannel.send(Event.FolderRenameError)
                 }
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -145,16 +142,15 @@ class RssFeedsViewModel(
                 }
                 loadRssFeeds()
             }
-            is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    if (isFeed) {
-                        eventChannel.send(Event.FeedMoveError)
-                    } else {
-                        eventChannel.send(Event.FolderMoveError)
-                    }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                if (isFeed) {
+                    eventChannel.send(Event.FeedMoveError)
                 } else {
-                    eventChannel.send(Event.Error(result))
+                    eventChannel.send(Event.FolderMoveError)
                 }
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -169,16 +165,15 @@ class RssFeedsViewModel(
                 }
                 loadRssFeeds()
             }
-            is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    if (isFeed) {
-                        eventChannel.send(Event.FeedDeleteError)
-                    } else {
-                        eventChannel.send(Event.FolderDeleteError)
-                    }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                if (isFeed) {
+                    eventChannel.send(Event.FeedDeleteError)
                 } else {
-                    eventChannel.send(Event.Error(result))
+                    eventChannel.send(Event.FolderDeleteError)
                 }
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
             }
         }
     }

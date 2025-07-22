@@ -189,12 +189,10 @@ class RequestManager(
         val code = blockResponse.code
         val body = blockResponse.body
 
-        return if (code == 200 && body != null) {
-            RequestResult.Success(body)
-        } else if (code == 403) {
-            RequestResult.Error.RequestError.InvalidCredentials
-        } else {
-            RequestResult.Error.ApiError(code)
+        return when (code) {
+            200 if body != null -> RequestResult.Success(body)
+            403 -> RequestResult.Error.RequestError.InvalidCredentials
+            else -> RequestResult.Error.ApiError(code)
         }
     }
 

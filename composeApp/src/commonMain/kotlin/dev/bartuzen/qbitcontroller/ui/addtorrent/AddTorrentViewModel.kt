@@ -137,12 +137,11 @@ class AddTorrentViewModel(
                         eventChannel.send(Event.TorrentAddError)
                     }
                 }
+                is RequestResult.Error.ApiError if result.code == 415 -> {
+                    eventChannel.send(Event.InvalidTorrentFile)
+                }
                 is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 415) {
-                        eventChannel.send(Event.InvalidTorrentFile)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+                    eventChannel.send(Event.Error(result))
                 }
             }
             _isAdding.value = false

@@ -78,12 +78,11 @@ class TorrentFilesViewModel(
 
                 _filesNode.value = TorrentFileNode.fromFileList(files)
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -132,12 +131,11 @@ class TorrentFilesViewModel(
                     loadFiles()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.PathIsInvalidOrInUse)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.PathIsInvalidOrInUse)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -151,12 +149,11 @@ class TorrentFilesViewModel(
                     loadFiles()
                 }
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.PathIsInvalidOrInUse)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.PathIsInvalidOrInUse)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }

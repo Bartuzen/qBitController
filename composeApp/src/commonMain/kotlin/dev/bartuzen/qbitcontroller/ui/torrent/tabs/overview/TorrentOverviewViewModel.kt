@@ -102,12 +102,12 @@ class TorrentOverviewViewModel(
                 is RequestResult.Success -> {
                     result.data
                 }
+                is RequestResult.Error.ApiError if result.code == 404 -> {
+                    eventChannel.send(Event.TorrentNotFound)
+                    throw CancellationException()
+                }
                 is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 404) {
-                        eventChannel.send(Event.TorrentNotFound)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+                    eventChannel.send(Event.Error(result))
                     throw CancellationException()
                 }
             }
@@ -117,12 +117,12 @@ class TorrentOverviewViewModel(
                 is RequestResult.Success -> {
                     result.data
                 }
+                is RequestResult.Error.ApiError if result.code == 404 -> {
+                    eventChannel.send(Event.TorrentNotFound)
+                    throw CancellationException()
+                }
                 is RequestResult.Error -> {
-                    if (result is RequestResult.Error.ApiError && result.code == 404) {
-                        eventChannel.send(Event.TorrentNotFound)
-                    } else {
-                        eventChannel.send(Event.Error(result))
-                    }
+                    eventChannel.send(Event.Error(result))
                     throw CancellationException()
                 }
             }
@@ -346,12 +346,11 @@ class TorrentOverviewViewModel(
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentRenamed)
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -468,15 +467,16 @@ class TorrentOverviewViewModel(
             is RequestResult.Success -> {
                 eventChannel.send(Event.TorrentExported)
             }
+            is RequestResult.Error.ApiError if result.code == 409 -> {
+                eventChannel.send(Event.TorrentExportError)
+                file.tryDelete()
+            }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+                file.tryDelete()
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 409) {
-                    eventChannel.send(Event.TorrentExportError)
-                } else if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
-
+                eventChannel.send(Event.Error(result))
                 file.tryDelete()
             }
         }
@@ -485,7 +485,8 @@ class TorrentOverviewViewModel(
     suspend fun PlatformFile.tryDelete() {
         try {
             delete()
-        } catch (_: Exception) { }
+        } catch (_: Exception) {
+        }
     }
 
     sealed class Event {

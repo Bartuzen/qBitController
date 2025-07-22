@@ -66,12 +66,11 @@ class TorrentTrackersViewModel(
             is RequestResult.Success -> {
                 _trackers.value = result.data
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -103,12 +102,11 @@ class TorrentTrackersViewModel(
                 eventChannel.send(Event.TrackersAdded)
                 loadTrackers()
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -119,12 +117,11 @@ class TorrentTrackersViewModel(
                 eventChannel.send(Event.TrackersDeleted)
                 loadTrackers()
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
@@ -135,12 +132,11 @@ class TorrentTrackersViewModel(
                 eventChannel.send(Event.TrackerEdited)
                 loadTrackers()
             }
+            is RequestResult.Error.ApiError if result.code == 404 -> {
+                eventChannel.send(Event.TorrentNotFound)
+            }
             is RequestResult.Error -> {
-                if (result is RequestResult.Error.ApiError && result.code == 404) {
-                    eventChannel.send(Event.TorrentNotFound)
-                } else {
-                    eventChannel.send(Event.Error(result))
-                }
+                eventChannel.send(Event.Error(result))
             }
         }
     }
