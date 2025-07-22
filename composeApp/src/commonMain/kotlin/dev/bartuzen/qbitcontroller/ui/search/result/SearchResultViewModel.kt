@@ -40,7 +40,7 @@ class SearchResultViewModel(
 
     private val filterQuery = savedStateHandle.getStateFlow("filterQuery", "")
 
-    val filter = savedStateHandle.getSerializableStateFlow(viewModelScope, "filter", Filter())
+    val filter = savedStateHandle.getSerializableStateFlow("filter", Filter())
 
     val searchSort = settingsManager.searchSort.flow
     val isReverseSearchSorting = settingsManager.isReverseSearchSorting.flow

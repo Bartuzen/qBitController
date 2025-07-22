@@ -46,8 +46,7 @@ class TorrentListViewModel(
 ) : ViewModel() {
     private var serverScope = CoroutineScope(viewModelScope.coroutineContext + SupervisorJob())
 
-    private val currentServer =
-        savedStateHandle.getSerializableStateFlow<ServerConfig?>(viewModelScope, "currentServer", null)
+    private val currentServer = savedStateHandle.getSerializableStateFlow<ServerConfig?>("currentServer", null)
 
     val serversFlow = serverManager.serversFlow
 
@@ -76,12 +75,10 @@ class TorrentListViewModel(
     val mainData = _mainData.asStateFlow()
 
     val searchQuery = savedStateHandle.getStateFlow("searchQuery", "")
-    val selectedCategory =
-        savedStateHandle.getSerializableStateFlow<CategoryTag>(viewModelScope, "selectedCategory", CategoryTag.All)
-    val selectedTag = savedStateHandle.getSerializableStateFlow<CategoryTag>(viewModelScope, "selectedTag", CategoryTag.All)
-    val selectedFilter =
-        savedStateHandle.getSerializableStateFlow<TorrentFilter>(viewModelScope, "selectedFilter", TorrentFilter.ALL)
-    val selectedTracker = savedStateHandle.getSerializableStateFlow<Tracker>(viewModelScope, "selectedTracker", Tracker.All)
+    val selectedCategory = savedStateHandle.getSerializableStateFlow<CategoryTag>("selectedCategory", CategoryTag.All)
+    val selectedTag = savedStateHandle.getSerializableStateFlow<CategoryTag>("selectedTag", CategoryTag.All)
+    val selectedFilter = savedStateHandle.getSerializableStateFlow<TorrentFilter>("selectedFilter", TorrentFilter.ALL)
+    val selectedTracker = savedStateHandle.getSerializableStateFlow<Tracker>("selectedTracker", Tracker.All)
 
     fun setCurrentServer(serverConfig: ServerConfig?) {
         savedStateHandle["currentServer"] = Json.encodeToString(serverConfig)
