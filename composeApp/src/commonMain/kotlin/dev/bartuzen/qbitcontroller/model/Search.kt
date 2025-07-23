@@ -9,6 +9,7 @@ import kotlinx.serialization.Serializable
 data class Search(
     val status: Status,
     val results: List<Result>,
+    val total: Int,
 ) {
     @Serializable
     data class Result(

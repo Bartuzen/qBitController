@@ -478,9 +478,9 @@ class TorrentService(
         mapOf("id" to id),
     )
 
-    suspend fun getSearchResults(id: Int): Response<Search> = get(
+    suspend fun getSearchResults(id: Int, offset: Int): Response<Search> = get(
         "search/results",
-        mapOf("id" to id),
+        mapOf("id" to id, "offset" to offset),
     )
 
     suspend fun getPlugins(): Response<List<Plugin>> = get("search/plugins")

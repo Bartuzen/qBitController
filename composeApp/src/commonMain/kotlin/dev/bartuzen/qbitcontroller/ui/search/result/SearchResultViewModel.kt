@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -206,9 +207,9 @@ class SearchResultViewModel(
 
     private fun updateResults() = viewModelScope.launch {
         searchId?.let { searchId ->
-            when (val result = repository.getSearchResults(serverId, searchId)) {
+            when (val result = repository.getSearchResults(serverId, searchId, searchResult.value?.total ?: 0)) {
                 is RequestResult.Success -> {
-                    searchResult.value = result.data
+                    updateSearchResultState(result.data)
                     if (result.data.status == Search.Status.STOPPED) {
                         _isSearchContinuing.value = false
                     }
@@ -245,9 +246,9 @@ class SearchResultViewModel(
                 }
             }
         } else {
-            when (val result = repository.getSearchResults(serverId, searchId)) {
+            when (val result = repository.getSearchResults(serverId, searchId, searchResult.value?.total ?: 0)) {
                 is RequestResult.Success -> {
-                    searchResult.value = result.data
+                    updateSearchResultState(result.data)
                     _isSearchContinuing.value = result.data.status != Search.Status.STOPPED
                 }
                 is RequestResult.Error -> {
@@ -257,6 +258,16 @@ class SearchResultViewModel(
         }
         delay(25)
         _isRefreshing.value = false
+    }
+
+    fun updateSearchResultState(newResult: Search) {
+        this.searchResult.update { oldResult ->
+            when {
+                oldResult == null -> newResult
+                newResult.total > oldResult.total -> newResult.copy(results = newResult.results + oldResult.results)
+                else -> oldResult
+            }
+        }
     }
 
     fun setFilterQuery(filterQuery: String) {

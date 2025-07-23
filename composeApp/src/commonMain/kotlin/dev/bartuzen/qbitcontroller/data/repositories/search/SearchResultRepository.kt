@@ -18,7 +18,7 @@ class SearchResultRepository(
         service.deleteSearch(searchId)
     }
 
-    suspend fun getSearchResults(serverId: Int, searchId: Int) = requestManager.request(serverId) { service ->
-        service.getSearchResults(searchId)
+    suspend fun getSearchResults(serverId: Int, searchId: Int, offset: Int) = requestManager.request(serverId) { service ->
+        service.getSearchResults(searchId, offset)
     }
 }
