@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="language_code">pt</string>
-    <string name="share_add_torrent">Adicionar Torrent</string>
-    <string name="torrent_status_checking">A Verificar</string>
+    <string name="share_add_torrent">Adicionar Torrente</string>
+    <string name="torrent_status_checking">Verificando</string>
     <string name="torrent_status_error">Erro</string>
     <string name="torrent_status_seeding">A Semear</string>
     <string name="torrent_status_paused">Pausado</string>
     <string name="torrent_status_queued">Na Fila</string>
     <string name="torrent_status_stalled">Parado</string>
     <string name="torrent_status_completed">Completo</string>
-    <string name="torrent_status_missing_files">Ficheiros em Falta</string>
+    <string name="torrent_status_missing_files">Faltando arquivos</string>
     <string name="torrent_status_force_seeding">[F] A Semear</string>
     <string name="torrent_status_downloading">A Transferir</string>
     <string name="torrent_status_force_downloading">[F] A Transferir</string>
@@ -636,11 +636,11 @@
         <item quantity="many">%1$d feeds</item>
         <item quantity="other">%1$d feeds</item>
     </plurals>
-    <string name="destination_torrents">Torrents</string>
+    <string name="destination_torrents">Torrentes</string>
     <string name="destination_search">Pesquisar</string>
     <string name="destination_rss">RSS</string>
-    <string name="destination_logs">Registos</string>
-    <string name="destination_settings">Definições</string>
+    <string name="destination_logs">Registros</string>
+    <string name="destination_settings">Configurações</string>
     <string name="torrent_overview_piece_downloaded">Descarregado</string>
     <string name="torrent_overview_piece_map">Mapa de Blocos</string>
     <string name="torrent_overview_piece_downloading">A descarregar</string>
