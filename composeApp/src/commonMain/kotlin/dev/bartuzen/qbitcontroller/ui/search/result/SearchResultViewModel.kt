@@ -43,6 +43,8 @@ class SearchResultViewModel(
 
     val filter = savedStateHandle.getSerializableStateFlow("filter", Filter())
 
+    private val isScreenActive = MutableStateFlow(false)
+
     val searchSort = settingsManager.searchSort.flow
     val isReverseSearchSorting = settingsManager.isReverseSearchSorting.flow
 
@@ -154,10 +156,10 @@ class SearchResultViewModel(
 
         loadResults()
         viewModelScope.launch {
-            combine(isSearchContinuing, isLoading) { isSearchContinuing, isLoading ->
-                isSearchContinuing to isLoading
-            }.collectLatest { (isSearchContinuing, isLoading) ->
-                if (isSearchContinuing && !isLoading) {
+            combine(isSearchContinuing, isLoading, isScreenActive) { isSearchContinuing, isLoading, isScreenActive ->
+                Triple(isSearchContinuing, isLoading, isScreenActive)
+            }.collectLatest { (isSearchContinuing, isLoading, isScreenActive) ->
+                if (isScreenActive && isSearchContinuing && !isLoading) {
                     delay(1000)
                     loadResults()
                 }
@@ -167,6 +169,10 @@ class SearchResultViewModel(
 
     override fun onCleared() {
         deleteSearch()
+    }
+
+    fun setScreenActive(isScreenActive: Boolean) {
+        this.isScreenActive.value = isScreenActive
     }
 
     private fun startSearch() = viewModelScope.launch {

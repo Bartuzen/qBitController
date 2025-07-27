@@ -95,7 +95,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.currentStateAsState
 import dev.bartuzen.qbitcontroller.data.SearchSort
 import dev.bartuzen.qbitcontroller.model.Search
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
@@ -197,6 +200,11 @@ fun SearchResultScreen(
     var filterQuery by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue()) }
     var isSearchMode by rememberSaveable { mutableStateOf(false) }
     val selectedTorrents = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
+
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateAsState()
+    LaunchedEffect(lifecycleState.isAtLeast(Lifecycle.State.STARTED)) {
+        viewModel.setScreenActive(lifecycleState.isAtLeast(Lifecycle.State.STARTED))
+    }
 
     LaunchedEffect(addTorrentFlow) {
         addTorrentFlow.collect {
