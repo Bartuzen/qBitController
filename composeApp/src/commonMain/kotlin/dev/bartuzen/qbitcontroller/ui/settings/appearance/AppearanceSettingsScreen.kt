@@ -148,6 +148,7 @@ fun AppearanceSettingsScreen(
                             },
                         )
                     },
+                    type = ListPreferenceType.DropdownMenu,
                 )
             }
 
