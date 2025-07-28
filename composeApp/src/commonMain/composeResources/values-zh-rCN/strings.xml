@@ -101,7 +101,7 @@
         <item quantity="other">已选择 %1$d 个种子</item>
     </plurals>
     <string name="torrent_list_search_torrents">搜索种子…</string>
-    <string name="torrent_list_free_space">剩余空间：%1$s</string>
+    <string name="torrent_list_free_space">%1$s 可用空间</string>
     <string name="torrent_list_set_location_hint">保存路径</string>
     <string name="torrent_list_category_tag_all">全部</string>
     <string name="torrent_list_uncategorized">未分类</string>
@@ -669,13 +669,13 @@
     </plurals>
     <string name="settings_relative_timestamps">相对时间戳</string>
     <string name="date_now">刚刚</string>
-    <string name="settings_palette_style_tonal_spot">Tonal spot</string>
-    <string name="settings_palette_style_neutral">Neutral</string>
-    <string name="settings_palette_style_vibrant">Vibrant</string>
-    <string name="settings_palette_style_expressive">Expressive</string>
-    <string name="settings_palette_style_rainbow">Rainbow</string>
-    <string name="settings_palette_style_fruit_salad">Fruit salad</string>
-    <string name="settings_palette_style_monochrome">Monochrome</string>
-    <string name="settings_palette_style_fidelity">Fidelity</string>
-    <string name="settings_palette_style_content">Content</string>
+    <string name="settings_palette_style_tonal_spot">色调点缀</string>
+    <string name="settings_palette_style_neutral">中性</string>
+    <string name="settings_palette_style_vibrant">鲜艳</string>
+    <string name="settings_palette_style_expressive">表现</string>
+    <string name="settings_palette_style_rainbow">彩虹</string>
+    <string name="settings_palette_style_fruit_salad">水果沙拉</string>
+    <string name="settings_palette_style_monochrome">单色</string>
+    <string name="settings_palette_style_fidelity">保真</string>
+    <string name="settings_palette_style_content">内容</string>
 </resources>
