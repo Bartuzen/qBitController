@@ -390,8 +390,10 @@ compose.desktop {
     }
 }
 
-tasks.withType<ConfigurableKtLintTask> {
-    source = source.minus(fileTree("build")).asFileTree
+afterEvaluate {
+    tasks.withType<ConfigurableKtLintTask> {
+        source = source.minus(fileTree("build")).asFileTree
+    }
 }
 
 listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFolder) ->
