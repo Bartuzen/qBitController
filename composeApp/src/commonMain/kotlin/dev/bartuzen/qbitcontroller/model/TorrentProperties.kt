@@ -56,7 +56,8 @@ data class TorrentProperties(
     val connections: Int,
 
     @SerialName("nb_connections_limit")
-    val connectionsLimit: Int,
+    @Serializable(with = NullableIntSerializer::class)
+    val connectionsLimit: Int?,
 
     @SerialName("seeds")
     val seeds: Int,

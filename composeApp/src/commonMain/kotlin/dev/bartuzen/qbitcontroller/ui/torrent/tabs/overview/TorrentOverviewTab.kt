@@ -945,7 +945,7 @@ fun TorrentOverviewTab(
                                     value = stringResource(
                                         Res.string.torrent_overview_connections_format,
                                         properties.connections,
-                                        properties.connectionsLimit,
+                                        properties.connectionsLimit ?: "∞",
                                     ),
                                 )
 
