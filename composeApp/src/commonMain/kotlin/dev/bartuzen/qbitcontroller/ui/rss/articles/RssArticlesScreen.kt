@@ -33,10 +33,12 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.FlipToBack
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.MarkEmailRead
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.MarkEmailRead
@@ -113,6 +115,8 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.action_search
+import qbitcontroller.composeapp.generated.resources.action_select_all
+import qbitcontroller.composeapp.generated.resources.action_select_inverse
 import qbitcontroller.composeapp.generated.resources.rss_action_download
 import qbitcontroller.composeapp.generated.resources.rss_action_mark_all_as_read
 import qbitcontroller.composeapp.generated.resources.rss_action_refresh
@@ -394,6 +398,31 @@ fun RssArticlesScreen(
                                     },
                                     showAsAction = true,
                                     icon = Icons.Filled.Download,
+                                ),
+                                ActionMenuItem(
+                                    title = stringResource(Res.string.action_select_all),
+                                    icon = Icons.Filled.SelectAll,
+                                    showAsAction = false,
+                                    onClick = onClick@{
+                                        val newArticles = articles
+                                            ?.filter { it.id !in selectedArticles }
+                                            ?.map { it.id }
+                                            ?: return@onClick
+                                        selectedArticles.addAll(newArticles)
+                                    },
+                                ),
+                                ActionMenuItem(
+                                    title = stringResource(Res.string.action_select_inverse),
+                                    icon = Icons.Filled.FlipToBack,
+                                    showAsAction = false,
+                                    onClick = onClick@{
+                                        val newArticles = articles
+                                            ?.filter { it.id !in selectedArticles }
+                                            ?.map { it.id }
+                                            ?: return@onClick
+                                        selectedArticles.clear()
+                                        selectedArticles.addAll(newArticles)
+                                    },
                                 ),
                             )
 

@@ -37,7 +37,9 @@ import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.FlipToBack
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.outlined.ArrowDownward
 import androidx.compose.material.icons.outlined.ArrowUpward
 import androidx.compose.material.icons.outlined.Cancel
@@ -135,6 +137,8 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.action_search
+import qbitcontroller.composeapp.generated.resources.action_select_all
+import qbitcontroller.composeapp.generated.resources.action_select_inverse
 import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 import qbitcontroller.composeapp.generated.resources.search_result_action_download
@@ -522,6 +526,31 @@ fun SearchResultScreen(
                                     },
                                     showAsAction = true,
                                     icon = Icons.Filled.Download,
+                                ),
+                                ActionMenuItem(
+                                    title = stringResource(Res.string.action_select_all),
+                                    icon = Icons.Filled.SelectAll,
+                                    showAsAction = false,
+                                    onClick = onClick@{
+                                        val newTorrents = searchResults
+                                            ?.map { Json.encodeToString(it) }
+                                            ?.filter { it !in selectedTorrents }
+                                            ?: return@onClick
+                                        selectedTorrents.addAll(newTorrents)
+                                    },
+                                ),
+                                ActionMenuItem(
+                                    title = stringResource(Res.string.action_select_inverse),
+                                    icon = Icons.Filled.FlipToBack,
+                                    showAsAction = false,
+                                    onClick = onClick@{
+                                        val newTorrents = searchResults
+                                            ?.map { Json.encodeToString(it) }
+                                            ?.filter { it !in selectedTorrents }
+                                            ?: return@onClick
+                                        selectedTorrents.clear()
+                                        selectedTorrents.addAll(newTorrents)
+                                    },
                                 ),
                             )
 
