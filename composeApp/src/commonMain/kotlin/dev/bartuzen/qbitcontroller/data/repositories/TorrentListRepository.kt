@@ -10,6 +10,10 @@ class TorrentListRepository(
         service.getMainData()
     }
 
+    suspend fun getPartialMainData(serverId: Int, rid: Int) = requestManager.request(serverId) { service ->
+        service.getPartialMainData(rid)
+    }
+
     suspend fun deleteTorrents(serverId: Int, hashes: List<String>, deleteFiles: Boolean) =
         requestManager.request(serverId) { service ->
             service.deleteTorrents(hashes.joinToString("|"), deleteFiles)

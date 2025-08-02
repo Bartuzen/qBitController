@@ -22,6 +22,46 @@ data class Category(
         data object No : DownloadPath
         data class Yes(val path: String) : DownloadPath
     }
+
+    companion object {
+        val comparator = Comparator<Category> { category1, category2 ->
+            category1.name.compareTo(category2.name, ignoreCase = true).let { comparison ->
+                if (comparison != 0) {
+                    return@Comparator comparison
+                }
+            }
+
+            category1.name.compareTo(category2.name)
+        }
+
+        val subcategoryComparator = Comparator<Category> { category1, category2 ->
+            val parts1 = category1.name.split("/")
+            val parts2 = category2.name.split("/")
+
+            for (i in parts1.indices) {
+                if (i >= parts2.size) {
+                    return@Comparator 1
+                }
+
+                val part1 = parts1[i]
+                val part2 = parts2[i]
+
+                part1.compareTo(part2, ignoreCase = true).let { comparison ->
+                    if (comparison != 0) {
+                        return@Comparator comparison
+                    }
+                }
+
+                part1.compareTo(part2).let { comparison ->
+                    if (comparison != 0) {
+                        return@Comparator comparison
+                    }
+                }
+            }
+
+            return@Comparator parts1.size.compareTo(parts2.size)
+        }
+    }
 }
 
 private object DownloadPathSerializer : KSerializer<Category.DownloadPath> {

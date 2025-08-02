@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -466,10 +467,33 @@ class TorrentListViewModel(
 
     private fun updateMainData() = serverScope.launch {
         val serverId = currentServer.value?.id ?: return@launch
-        when (val result = repository.getMainData(serverId)) {
+        val currentMainData = mainData.value
+
+        val result = if (currentMainData == null) {
+            repository.getMainData(serverId)
+        } else {
+            when (val partialResult = repository.getPartialMainData(serverId, currentMainData.rid)) {
+                is RequestResult.Success -> {
+                    try {
+                        RequestResult.Success(currentMainData.merge(partialResult.data))
+                    } catch (e: Exception) {
+                        RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
+                    }
+                }
+                is RequestResult.Error -> partialResult
+            }
+        }
+
+        when (result) {
             is RequestResult.Success -> {
                 if (isActive && currentServer.value?.id == serverId) {
-                    _mainData.value = result.data
+                    _mainData.update { oldMainData ->
+                        if (oldMainData == null || oldMainData.rid < result.data.rid) {
+                            result.data
+                        } else {
+                            oldMainData
+                        }
+                    }
                     eventChannel.send(Event.UpdateMainDataSuccess)
                 }
                 notifier.checkCompleted(serverId, result.data.torrents)
