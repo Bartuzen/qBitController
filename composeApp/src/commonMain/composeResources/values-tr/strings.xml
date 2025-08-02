@@ -675,4 +675,34 @@
     <string name="settings_palette_style_monochrome">Tek renkli</string>
     <string name="settings_palette_style_fidelity">Sadakat</string>
     <string name="settings_palette_style_content">İçerik</string>
+    <string name="date_now">Şimdi</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d saniye önce</item>
+        <item quantity="other">%1$d saniye önce</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d dakika önce</item>
+        <item quantity="other">%1$d dakika önce</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d saat önce</item>
+        <item quantity="other">%1$d saat önce</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d gün önce</item>
+        <item quantity="other">%1$d gün önce</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d hafta önce</item>
+        <item quantity="other">%1$d hafta önce</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d ay önce</item>
+        <item quantity="other">%1$d ay önce</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d yıl önce</item>
+        <item quantity="other">%1$d yıl önce</item>
+    </plurals>
+    <string name="settings_relative_timestamps">Göreli zaman biçimi</string>
 </resources>
