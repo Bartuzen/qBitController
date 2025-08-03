@@ -2,7 +2,6 @@ package dev.bartuzen.qbitcontroller.model
 
 import dev.bartuzen.qbitcontroller.utils.formatUri
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -39,7 +38,7 @@ data class MainData(
 ) {
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun merge(partialMainData: JsonElement): MainData = withContext(Dispatchers.IO) {
+    suspend fun merge(partialMainData: JsonElement): MainData = withContext(Dispatchers.Default) {
         val mainData = this@MainData
         val partialMainDataMap = partialMainData.jsonObject
 
