@@ -5,7 +5,6 @@ import com.russhwolf.settings.get
 import com.russhwolf.settings.set
 import dev.bartuzen.qbitcontroller.model.ServerConfig
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
@@ -28,7 +27,7 @@ class ServerManager(
 
     fun getServerOrNull(serverId: Int) = serversFlow.value.find { it.id == serverId }
 
-    suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
+    suspend fun addServer(serverConfig: ServerConfig) = withContext(Dispatchers.Default) {
         val serverConfigs = serversFlow.value
         val serverId = serverSettings[Keys.LastServerId, -1] + 1
 
@@ -42,7 +41,7 @@ class ServerManager(
         listeners.forEach { it.onServerAddedListener(newServerConfig) }
     }
 
-    suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.IO) {
+    suspend fun editServer(serverConfig: ServerConfig) = withContext(Dispatchers.Default) {
         val serverConfigs = serversFlow.value
         val updatedServerConfigs = serverConfigs.map {
             if (it.id == serverConfig.id) serverConfig else it
@@ -54,7 +53,7 @@ class ServerManager(
         listeners.forEach { it.onServerChangedListener(serverConfig) }
     }
 
-    suspend fun removeServer(serverId: Int) = withContext(Dispatchers.IO) {
+    suspend fun removeServer(serverId: Int) = withContext(Dispatchers.Default) {
         val serverConfigs = serversFlow.value
         val serverConfig = serverConfigs.find { it.id == serverId } ?: return@withContext
         val updatedServerConfigs = serverConfigs.filter { it.id != serverId }

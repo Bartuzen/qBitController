@@ -1,6 +1,12 @@
 package dev.bartuzen.qbitcontroller.data
 
 import com.russhwolf.settings.Settings
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -23,6 +29,9 @@ class JsonSettings(
     private val inMemoryMap = ConcurrentHashMap<String, JsonElement>()
     private val json = Json { prettyPrint = true }
 
+    private val saveScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val saveMutex = Mutex()
+
     init {
         if (file.exists()) {
             val content = Files.readString(file)
@@ -34,9 +43,13 @@ class JsonSettings(
     }
 
     private fun saveToFile() {
-        val jsonObject = JsonObject(inMemoryMap)
-        val content = json.encodeToString(jsonObject)
-        Files.writeString(file, content)
+        saveScope.launch {
+            saveMutex.withLock {
+                val jsonObject = JsonObject(inMemoryMap)
+                val content = json.encodeToString(jsonObject)
+                Files.writeString(file, content)
+            }
+        }
     }
 
     private fun putJsonElement(key: String, value: JsonElement) {

@@ -93,7 +93,7 @@ class TorrentService(
     suspend inline fun <reified T> execute(
         response: HttpResponse,
         noinline body: suspend () -> T? = { response.body<T>() },
-    ): Response<T> = withContext(Dispatchers.IO) {
+    ): Response<T> = withContext(Dispatchers.Default) {
         val code = response.status.value
         val body = if (code in 200..<300 && code != 204 && code != 205) body() else null
 
