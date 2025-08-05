@@ -238,7 +238,7 @@
         <item quantity="one">%1$d டொரண்ட் வெற்றிகரமாக மீண்டும் தொடங்கியது.</item>
         <item quantity="other">%1$d டொரண்ட்ச் வெற்றிகரமாக மீண்டும் தொடங்கியது.</item>
     </plurals>
-    <string name="torrent_list_free_space">இலவச இடம்: %1$s</string>
+    <string name="torrent_list_free_space">%1$s இலவசம்</string>
     <string name="torrent_list_category_tag_all">அனைத்தும்</string>
     <string name="torrent_list_set_location_hint">பாதையைச் சேமிக்கவும்</string>
     <string name="torrent_list_uncategorized">வகைப்படுத்தப்படாதது</string>
@@ -447,7 +447,7 @@
     <string name="error_required_field">இந்த புலம் தேவை.</string>
     <string name="notification_torrent_downloaded">டொரண்ட் பதிவிறக்கம்</string>
     <string name="eta_hours_minutes">%1$sh %2$sm</string>
-    <string name="eta_days_hours">%1$sd %2$sh</string>
+    <string name="eta_days_hours">%1$sநா %2$sம</string>
     <string name="torrent_peers_flag_encrypted_handshake">மறைகுறியாக்கப்பட்ட ஏண்ட்சேக்</string>
     <string name="torrent_error_not_found">டோரண்ட் கண்டுபிடிக்கப்படவில்லை.</string>
     <string name="torrent_add_title">டொரண்ட் சேர்க்கவும்</string>
@@ -661,4 +661,48 @@
     <string name="settings_category_general">பொது</string>
     <string name="settings_category_appearance">தோற்றம்</string>
     <string name="settings_server_advanced_title">மேம்பட்ட அமைப்புகள்</string>
+    <string name="date_now">இப்போது</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d நொடிக்கு முன்பு</item>
+        <item quantity="other">%1$d வினாடிகள் முன்பு</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d மணித்துளி முன்பு</item>
+        <item quantity="other">%1$d நிமிடங்களுக்கு முன்பு</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d மணி நேரத்திற்கு முன்பு</item>
+        <item quantity="other">%1$d மணி நேரத்திற்கு முன்பு</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d நாள் முன்பு</item>
+        <item quantity="other">%1$d சில நாட்களுக்கு முன்பு</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d வாரத்திற்கு முன்பு</item>
+        <item quantity="other">%1$d வாரங்களுக்கு முன்பு</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d மாதத்திற்கு முன்பு</item>
+        <item quantity="other">%1$d மாதங்களுக்கு முன்பு</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d ஆண்டுக்கு முன்பு</item>
+        <item quantity="other">%1$d ஆண்டுகளுக்கு முன்பு</item>
+    </plurals>
+    <string name="error_no_internet">இணைய இணைப்பு இல்லை.</string>
+    <string name="settings_enable_dynamic_colors">மாறும் வண்ணங்களை இயக்கவும்</string>
+    <string name="settings_app_color">பயன்பாட்டு நிறம்</string>
+    <string name="settings_app_color_reset">மீட்டமை</string>
+    <string name="settings_palette_style">தட்டு நடை</string>
+    <string name="settings_palette_style_tonal_spot">டோனல் ச்பாட்</string>
+    <string name="settings_palette_style_neutral">நடுநிலை</string>
+    <string name="settings_palette_style_vibrant">துடிப்பான</string>
+    <string name="settings_palette_style_expressive">வெளிப்படையான</string>
+    <string name="settings_palette_style_rainbow">ரெயின்போ</string>
+    <string name="settings_palette_style_fruit_salad">பழ சாலட்</string>
+    <string name="settings_palette_style_monochrome">ஒரே வண்ணமுடைய</string>
+    <string name="settings_palette_style_fidelity">மெய்நிலை</string>
+    <string name="settings_palette_style_content">உள்ளடக்கம்</string>
+    <string name="settings_relative_timestamps">உறவினர் நேர முத்திரைகள்</string>
 </resources>
