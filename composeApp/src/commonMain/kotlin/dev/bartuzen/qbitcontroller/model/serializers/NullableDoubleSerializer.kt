@@ -11,7 +11,7 @@ object NullableDoubleSerializer : KSerializer<Double?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("NullableDouble", PrimitiveKind.DOUBLE)
 
     override fun serialize(encoder: Encoder, value: Double?) {
-        throw UnsupportedOperationException()
+        encoder.encodeDouble(value ?: -1.0)
     }
 
     override fun deserialize(decoder: Decoder): Double? {
