@@ -14,6 +14,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.getSerializableStateFlow
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -476,6 +477,8 @@ class TorrentListViewModel(
                 is RequestResult.Success -> {
                     try {
                         RequestResult.Success(currentMainData.merge(partialResult.data))
+                    } catch (e: CancellationException) {
+                        throw e
                     } catch (e: Exception) {
                         RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
                     }
