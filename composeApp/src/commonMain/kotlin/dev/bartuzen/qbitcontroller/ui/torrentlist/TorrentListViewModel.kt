@@ -479,8 +479,8 @@ class TorrentListViewModel(
                         RequestResult.Success(currentMainData.merge(partialResult.data))
                     } catch (e: CancellationException) {
                         throw e
-                    } catch (e: Exception) {
-                        RequestResult.Error.RequestError.Unknown("${e::class.simpleName} ${e.message}")
+                    } catch (_: Exception) {
+                        repository.getMainData(serverId)
                     }
                 }
                 is RequestResult.Error -> partialResult
