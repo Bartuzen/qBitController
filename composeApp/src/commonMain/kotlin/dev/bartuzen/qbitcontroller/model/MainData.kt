@@ -43,13 +43,12 @@ data class MainData(
         val partialMainDataMap = partialMainData.jsonObject
 
         val updatedRid = partialMainDataMap["rid"]?.jsonPrimitive?.int!!
-        if (updatedRid < mainData.rid) {
-            return@withContext mainData
-        }
-
         val isFullUpdate = partialMainDataMap["full_update"]?.jsonPrimitive?.boolean == true
+
         if (isFullUpdate) {
             return@withContext json.decodeFromJsonElement(partialMainData)
+        } else if (updatedRid < mainData.rid) {
+            return@withContext mainData
         }
 
         val updatedServerState = partialMainDataMap["server_state"]?.jsonObject?.let { partialServerState ->

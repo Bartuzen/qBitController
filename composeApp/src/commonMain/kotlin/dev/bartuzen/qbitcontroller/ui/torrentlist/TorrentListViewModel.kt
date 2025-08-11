@@ -37,6 +37,9 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlin.time.Duration.Companion.seconds
 
 class TorrentListViewModel(
@@ -470,20 +473,21 @@ class TorrentListViewModel(
         val serverId = currentServer.value?.id ?: return@launch
         val currentMainData = mainData.value
 
-        val result = if (currentMainData == null) {
-            repository.getMainData(serverId)
+        val (result, isFullUpdate) = if (currentMainData == null) {
+            repository.getMainData(serverId) to true
         } else {
             when (val partialResult = repository.getPartialMainData(serverId, currentMainData.rid)) {
                 is RequestResult.Success -> {
                     try {
-                        RequestResult.Success(currentMainData.merge(partialResult.data))
+                        val isFullUpdate = partialResult.data.jsonObject["full_update"]?.jsonPrimitive?.boolean ?: false
+                        RequestResult.Success(currentMainData.merge(partialResult.data)) to isFullUpdate
                     } catch (e: CancellationException) {
                         throw e
                     } catch (_: Exception) {
-                        repository.getMainData(serverId)
+                        repository.getMainData(serverId) to true
                     }
                 }
-                is RequestResult.Error -> partialResult
+                is RequestResult.Error -> partialResult to false
             }
         }
 
@@ -491,7 +495,7 @@ class TorrentListViewModel(
             is RequestResult.Success -> {
                 if (isActive && currentServer.value?.id == serverId) {
                     _mainData.update { oldMainData ->
-                        if (oldMainData == null || oldMainData.rid < result.data.rid) {
+                        if (isFullUpdate || oldMainData == null || oldMainData.rid < result.data.rid) {
                             result.data
                         } else {
                             oldMainData
