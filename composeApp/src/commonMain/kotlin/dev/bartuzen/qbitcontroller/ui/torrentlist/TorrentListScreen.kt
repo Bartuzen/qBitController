@@ -240,6 +240,7 @@ import qbitcontroller.composeapp.generated.resources.stats_category_user_statist
 import qbitcontroller.composeapp.generated.resources.stats_connected_peers
 import qbitcontroller.composeapp.generated.resources.stats_ms_format
 import qbitcontroller.composeapp.generated.resources.stats_queued_io_jobs
+import qbitcontroller.composeapp.generated.resources.stats_read_cache_hits
 import qbitcontroller.composeapp.generated.resources.stats_read_cache_overload
 import qbitcontroller.composeapp.generated.resources.stats_session_waste
 import qbitcontroller.composeapp.generated.resources.stats_total_buffer_size
@@ -3613,6 +3614,11 @@ private fun StatisticsDialog(state: ServerState, onDismiss: () -> Unit, modifier
 
                 StatisticsHeader(
                     title = stringResource(Res.string.stats_category_cache_statistics),
+                )
+
+                StatisticRow(
+                    label = stringResource(Res.string.stats_read_cache_hits),
+                    value = stringResource(Res.string.percentage_format, state.readCacheHits),
                 )
 
                 StatisticRow(

@@ -23,6 +23,9 @@ data class ServerState(
     @SerialName("total_peer_connections")
     val connectedPeers: Long,
 
+    @SerialName("read_cache_hits")
+    val readCacheHits: String,
+
     @SerialName("total_buffers_size")
     val bufferSize: Long,
 

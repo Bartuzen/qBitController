@@ -259,6 +259,7 @@
     <string name="stats_all_time_share_ratio">All-Time Share Ratio</string>
     <string name="stats_session_waste">Session Waste</string>
     <string name="stats_connected_peers">Connected Peers</string>
+    <string name="stats_read_cache_hits">Read Cache Hits</string>
     <string name="stats_total_buffer_size">Total Buffer Size</string>
     <string name="stats_write_cache_overload">Write Cache Overload</string>
     <string name="stats_read_cache_overload">Read Cache Overload</string>
