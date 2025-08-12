@@ -705,4 +705,5 @@
         <item quantity="other">%1$d yıl önce</item>
     </plurals>
     <string name="settings_relative_timestamps">Göreli zaman biçimi</string>
+    <string name="stats_read_cache_hits">Okuma Önbelleği Yoklaması</string>
 </resources>
