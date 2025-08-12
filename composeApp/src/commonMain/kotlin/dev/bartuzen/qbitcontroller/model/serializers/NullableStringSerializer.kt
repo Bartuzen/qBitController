@@ -11,7 +11,7 @@ object NullableStringSerializer : KSerializer<String?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("NullableString", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: String?) {
-        throw UnsupportedOperationException()
+        return encoder.encodeString(value ?: "")
     }
 
     override fun deserialize(decoder: Decoder): String? {

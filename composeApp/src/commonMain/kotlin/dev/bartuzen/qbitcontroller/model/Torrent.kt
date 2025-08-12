@@ -188,7 +188,7 @@ private object PrioritySerializer : KSerializer<Int?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Priority", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: Int?) {
-        throw UnsupportedOperationException()
+        return encoder.encodeInt(value ?: 0)
     }
 
     override fun deserialize(decoder: Decoder): Int? {
@@ -200,7 +200,7 @@ private object TagsSerializer : KSerializer<List<String>> {
     override val descriptor: SerialDescriptor = listSerialDescriptor<List<String>>()
 
     override fun serialize(encoder: Encoder, value: List<String>) {
-        throw UnsupportedOperationException()
+        return encoder.encodeString(value.joinToString(", "))
     }
 
     override fun deserialize(decoder: Decoder): List<String> {

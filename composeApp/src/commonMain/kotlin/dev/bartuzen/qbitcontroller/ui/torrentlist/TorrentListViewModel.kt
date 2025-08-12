@@ -14,6 +14,7 @@ import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentState
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.getSerializableStateFlow
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -29,12 +30,16 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.boolean
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlin.time.Duration.Companion.seconds
 
 class TorrentListViewModel(
@@ -466,10 +471,36 @@ class TorrentListViewModel(
 
     private fun updateMainData() = serverScope.launch {
         val serverId = currentServer.value?.id ?: return@launch
-        when (val result = repository.getMainData(serverId)) {
+        val currentMainData = mainData.value
+
+        val (result, isFullUpdate) = if (currentMainData == null) {
+            repository.getMainData(serverId) to true
+        } else {
+            when (val partialResult = repository.getPartialMainData(serverId, currentMainData.rid)) {
+                is RequestResult.Success -> {
+                    try {
+                        val isFullUpdate = partialResult.data.jsonObject["full_update"]?.jsonPrimitive?.boolean ?: false
+                        RequestResult.Success(currentMainData.merge(partialResult.data)) to isFullUpdate
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (_: Exception) {
+                        repository.getMainData(serverId) to true
+                    }
+                }
+                is RequestResult.Error -> partialResult to false
+            }
+        }
+
+        when (result) {
             is RequestResult.Success -> {
                 if (isActive && currentServer.value?.id == serverId) {
-                    _mainData.value = result.data
+                    _mainData.update { oldMainData ->
+                        if (isFullUpdate || oldMainData == null || oldMainData.rid < result.data.rid) {
+                            result.data
+                        } else {
+                            oldMainData
+                        }
+                    }
                     eventChannel.send(Event.UpdateMainDataSuccess)
                 }
                 notifier.checkCompleted(serverId, result.data.torrents)

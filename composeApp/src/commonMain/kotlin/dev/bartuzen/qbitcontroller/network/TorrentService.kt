@@ -35,6 +35,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.serializer
 
 class TorrentService(
@@ -113,6 +114,11 @@ class TorrentService(
     suspend fun getLog(): Response<List<Log>> = get("log/main")
 
     suspend fun getMainData(): Response<MainData> = get("sync/maindata")
+
+    suspend fun getPartialMainData(rid: Int): Response<JsonElement> = get(
+        "sync/maindata",
+        mapOf("rid" to rid),
+    )
 
     suspend fun toggleSpeedLimitsMode(): Response<Unit> = post("transfer/toggleSpeedLimitsMode")
 
