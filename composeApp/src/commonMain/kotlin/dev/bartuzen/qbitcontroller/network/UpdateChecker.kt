@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
-import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.days
 
 class UpdateChecker {
     private val httpClient = HttpClient {
@@ -44,7 +44,7 @@ class UpdateChecker {
         updateJob = scope.launch {
             while (isActive) {
                 checkUpdates()
-                delay(1.hours)
+                delay(1.days)
             }
         }
     }
