@@ -732,4 +732,5 @@
         <item quantity="many">Hace %1$d años</item>
         <item quantity="other">Hace %1$d años</item>
     </plurals>
+    <string name="stats_read_cache_hits">Aciertos de caché de lectura</string>
 </resources>
