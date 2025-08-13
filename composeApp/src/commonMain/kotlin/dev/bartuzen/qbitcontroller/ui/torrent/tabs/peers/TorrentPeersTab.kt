@@ -42,6 +42,7 @@ import androidx.compose.material.icons.outlined.Downloading
 import androidx.compose.material.icons.outlined.Speed
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -465,7 +466,7 @@ private fun PeerItem(
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = if (selected) {
-                MaterialTheme.colorScheme.surfaceContainerHigh
+                MaterialTheme.colorScheme.secondaryContainer
             } else {
                 Color.Unspecified
             },
@@ -516,7 +517,14 @@ private fun PeerItem(
                 }
             }
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(
+                color = if (selected) {
+                    MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.38f)
+                } else {
+                    DividerDefaults.color
+                },
+                modifier = Modifier.padding(vertical = 8.dp),
+            )
 
             FlowRow(
                 horizontalArrangement = Arrangement.SpaceAround,
@@ -564,7 +572,11 @@ private fun PeerItem(
                 exit = shrinkVertically(),
             ) { flags ->
                 Surface(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    color = if (selected) {
+                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.38f)
+                    } else {
+                        MaterialTheme.colorScheme.secondaryContainer
+                    },
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.padding(top = 8.dp),
                 ) {
@@ -578,13 +590,11 @@ private fun PeerItem(
                         Icon(
                             imageVector = Icons.Filled.Flag,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
                             modifier = Modifier.size(16.dp),
                         )
                         Text(
                             text = flags.joinToString(" ") { it.flag },
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )

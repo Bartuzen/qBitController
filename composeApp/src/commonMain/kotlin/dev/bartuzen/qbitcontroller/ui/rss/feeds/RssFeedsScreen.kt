@@ -673,7 +673,7 @@ private fun FeedItem(
 ) {
     val containerColor by animateColorAsState(
         targetValue = if (isMoving) {
-            MaterialTheme.colorScheme.surfaceContainerHighest
+            MaterialTheme.colorScheme.secondaryContainer
         } else {
             MaterialTheme.colorScheme.surfaceContainerLow
         },

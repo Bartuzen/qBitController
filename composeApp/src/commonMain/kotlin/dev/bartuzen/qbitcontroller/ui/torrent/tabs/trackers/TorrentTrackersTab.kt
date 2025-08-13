@@ -44,6 +44,7 @@ import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -443,7 +444,7 @@ fun TrackerItem(
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = if (selected && selectable) {
-                MaterialTheme.colorScheme.surfaceContainerHigh
+                MaterialTheme.colorScheme.secondaryContainer
             } else {
                 Color.Unspecified
             },
@@ -470,7 +471,14 @@ fun TrackerItem(
                 style = MaterialTheme.typography.titleMedium,
             )
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(
+                color = if (selected) {
+                    MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.38f)
+                } else {
+                    DividerDefaults.color
+                },
+                modifier = Modifier.padding(vertical = 8.dp),
+            )
 
             FlowRow(
                 horizontalArrangement = Arrangement.SpaceAround,
@@ -509,7 +517,11 @@ fun TrackerItem(
                 exit = shrinkVertically(),
             ) { _, message ->
                 Surface(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    color = if (selected) {
+                        MaterialTheme.colorScheme.secondary.copy(alpha = 0.38f)
+                    } else {
+                        MaterialTheme.colorScheme.secondaryContainer
+                    },
                     shape = MaterialTheme.shapes.small,
                     modifier = Modifier.padding(top = 8.dp),
                 ) {
@@ -523,13 +535,11 @@ fun TrackerItem(
                         Icon(
                             imageVector = Icons.Filled.Info,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
                             modifier = Modifier.size(16.dp),
                         )
                         Text(
                             text = message,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                     }
                 }

@@ -529,7 +529,7 @@ private fun ArticleItem(
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
             containerColor = if (selected) {
-                MaterialTheme.colorScheme.surfaceContainerHigh
+                MaterialTheme.colorScheme.secondaryContainer
             } else {
                 Color.Unspecified
             },

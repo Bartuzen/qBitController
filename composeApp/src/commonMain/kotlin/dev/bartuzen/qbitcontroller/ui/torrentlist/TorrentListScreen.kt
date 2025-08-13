@@ -1381,7 +1381,7 @@ private fun TorrentItem(
         ElevatedCard(
             modifier = cardModifier,
             colors = CardDefaults.elevatedCardColors(
-                containerColor = if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Unspecified,
+                containerColor = if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Unspecified,
             ),
         ) {
             Column(

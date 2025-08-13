@@ -467,7 +467,7 @@ private fun PluginItem(plugin: Plugin, selectedPlugins: List<String>, onClick: (
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (plugin.name in selectedPlugins) {
-                MaterialTheme.colorScheme.surfaceContainerHighest
+                MaterialTheme.colorScheme.secondaryContainer
             } else {
                 MaterialTheme.colorScheme.surfaceContainer
             },

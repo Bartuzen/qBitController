@@ -527,7 +527,7 @@ private fun FileItem(
 ) {
     ElevatedCard(
         colors = CardDefaults.elevatedCardColors(
-            containerColor = if (selected) MaterialTheme.colorScheme.surfaceContainerHigh else Color.Unspecified,
+            containerColor = if (selected) MaterialTheme.colorScheme.secondaryContainer else Color.Unspecified,
         ),
         modifier = modifier.padding(start = ((fileNode.level - 1) * 12).dp),
     ) {
