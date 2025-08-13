@@ -23,6 +23,7 @@ import dev.bartuzen.qbitcontroller.ui.settings.network.NetworkSettingsScreen
 import dev.bartuzen.qbitcontroller.ui.settings.servers.ServersScreen
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
 import dev.bartuzen.qbitcontroller.utils.getSerializable
+import dev.bartuzen.qbitcontroller.utils.navigateWithLifecycle
 import dev.bartuzen.qbitcontroller.utils.serializableNavType
 import dev.bartuzen.qbitcontroller.utils.setSerializable
 import kotlinx.coroutines.channels.Channel
@@ -73,16 +74,16 @@ fun SettingsNavHost(
         ) {
             SettingsScreen(
                 onNavigateToServerSettings = {
-                    navController.navigate(Destination.Settings.Server)
+                    navController.navigateWithLifecycle(Destination.Settings.Server)
                 },
                 onNavigateToGeneralSettings = {
-                    navController.navigate(Destination.Settings.General)
+                    navController.navigateWithLifecycle(Destination.Settings.General)
                 },
                 onNavigateToAppearanceSettings = {
-                    navController.navigate(Destination.Settings.Appearance)
+                    navController.navigateWithLifecycle(Destination.Settings.Appearance)
                 },
                 onNavigateToNetworkSettings = {
-                    navController.navigate(Destination.Settings.Network)
+                    navController.navigateWithLifecycle(Destination.Settings.Network)
                 },
             )
         }
@@ -101,7 +102,7 @@ fun SettingsNavHost(
                 addEditServerFlow = addEditServerChannel.receiveAsFlow(),
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAddEditServer = { serverId ->
-                    navController.navigate(Destination.Settings.AddEditServer(serverId))
+                    navController.navigateWithLifecycle(Destination.Settings.AddEditServer(serverId))
                 },
             )
         }
@@ -138,7 +139,7 @@ fun SettingsNavHost(
                     }
                 },
                 onNavigateToAdvancedSettings = { advancedSettings ->
-                    navController.navigate(Destination.Settings.Advanced(advancedSettings))
+                    navController.navigateWithLifecycle(Destination.Settings.Advanced(advancedSettings))
                 },
             )
         }

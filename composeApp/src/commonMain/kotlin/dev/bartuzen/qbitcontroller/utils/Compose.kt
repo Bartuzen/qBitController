@@ -37,6 +37,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavOptionsBuilder
 
 @Composable
 inline fun <T> AnimatedNullableVisibility(
@@ -265,4 +268,10 @@ operator fun PaddingValues.plus(other: PaddingValues): PaddingValues {
         end = calculateEndPadding(layoutDirection) + other.calculateEndPadding(layoutDirection),
         bottom = calculateBottomPadding() + other.calculateBottomPadding(),
     )
+}
+
+fun <T : Any> NavController.navigateWithLifecycle(route: T) {
+    if (currentBackStackEntry?.lifecycle?.currentState?.isAtLeast(Lifecycle.State.RESUMED) != false) {
+        navigate(route)
+    }
 }

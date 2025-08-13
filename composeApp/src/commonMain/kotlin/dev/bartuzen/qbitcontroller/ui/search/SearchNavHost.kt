@@ -18,6 +18,7 @@ import dev.bartuzen.qbitcontroller.ui.search.result.SearchResultScreen
 import dev.bartuzen.qbitcontroller.ui.search.start.SearchStartScreen
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.navigateWithLifecycle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -70,11 +71,11 @@ fun SearchNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, 
             SearchStartScreen(
                 serverId = args.serverId,
                 onNavigateToSearchResult = { searchQuery, category, plugins ->
-                    navController.navigate(
+                    navController.navigateWithLifecycle(
                         Destination.Search.Result(args.serverId, searchQuery, category, plugins),
                     )
                 },
-                onNavigateToPlugins = { navController.navigate(Destination.Search.Plugins(args.serverId)) },
+                onNavigateToPlugins = { navController.navigateWithLifecycle(Destination.Search.Plugins(args.serverId)) },
             )
         }
 
@@ -98,7 +99,7 @@ fun SearchNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, 
                 addTorrentFlow = addTorrentChannel.receiveAsFlow(),
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAddTorrent = { torrentUrl ->
-                    navController.navigate(Destination.AddTorrent(args.serverId, torrentUrl))
+                    navController.navigateWithLifecycle(Destination.AddTorrent(args.serverId, torrentUrl))
                 },
             )
         }

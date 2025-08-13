@@ -20,6 +20,7 @@ import dev.bartuzen.qbitcontroller.ui.rss.feeds.RssFeedsScreen
 import dev.bartuzen.qbitcontroller.ui.rss.rules.RssRulesScreen
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
 import dev.bartuzen.qbitcontroller.utils.PersistentLaunchedEffect
+import dev.bartuzen.qbitcontroller.utils.navigateWithLifecycle
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -83,7 +84,7 @@ fun RssNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, mod
                 serverId = args.serverId,
                 articleUpdateFlow = articleUpdate.receiveAsFlow(),
                 onNavigateToArticles = { feedPath, uid ->
-                    navController.navigate(
+                    navController.navigateWithLifecycle(
                         Destination.Rss.Articles(
                             args.serverId,
                             feedPath,
@@ -92,7 +93,7 @@ fun RssNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, mod
                     )
                 },
                 onNavigateToRules = {
-                    navController.navigate(Destination.Rss.Rules(args.serverId))
+                    navController.navigateWithLifecycle(Destination.Rss.Rules(args.serverId))
                 },
             )
         }
@@ -121,7 +122,7 @@ fun RssNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, mod
                 },
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToAddTorrent = { torrentUrl ->
-                    navController.navigate(Destination.AddTorrent(args.serverId, torrentUrl))
+                    navController.navigateWithLifecycle(Destination.AddTorrent(args.serverId, torrentUrl))
                 },
             )
         }
@@ -132,7 +133,7 @@ fun RssNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, mod
                 serverId = args.serverId,
                 onNavigateBack = { navController.navigateUp() },
                 onNavigateToEditRule = { ruleName ->
-                    navController.navigate(Destination.Rss.EditRule(args.serverId, ruleName))
+                    navController.navigateWithLifecycle(Destination.Rss.EditRule(args.serverId, ruleName))
                 },
             )
         }

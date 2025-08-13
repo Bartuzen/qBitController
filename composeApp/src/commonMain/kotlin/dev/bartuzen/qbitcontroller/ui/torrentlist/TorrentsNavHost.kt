@@ -29,6 +29,7 @@ import dev.bartuzen.qbitcontroller.ui.torrent.TorrentScreen
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
 import dev.bartuzen.qbitcontroller.utils.getSerializable
 import dev.bartuzen.qbitcontroller.utils.jsonSaver
+import dev.bartuzen.qbitcontroller.utils.navigateWithLifecycle
 import dev.bartuzen.qbitcontroller.utils.serializableNavType
 import dev.bartuzen.qbitcontroller.utils.setSerializable
 import kotlinx.coroutines.channels.Channel
@@ -137,15 +138,15 @@ fun TorrentsNavHost(
                 deleteTorrentFlow = deleteTorrentChannel.receiveAsFlow(),
                 onSelectServer = onSelectServer,
                 onNavigateToTorrent = { serverId, torrentHash, torrentName ->
-                    navController.navigate(Destination.Torrent(serverId, torrentHash, torrentName))
+                    navController.navigateWithLifecycle(Destination.Torrent(serverId, torrentHash, torrentName))
                 },
                 onNavigateToAddTorrent = { initialServerId ->
-                    navController.navigate(Destination.AddTorrent(initialServerId))
+                    navController.navigateWithLifecycle(Destination.AddTorrent(initialServerId))
                 },
                 onNavigateToRss = onNavigateToRss,
                 onNavigateToSearch = onNavigateToSearch,
                 onNavigateToAddEditServer = { serverId ->
-                    navController.navigate(Destination.Settings.AddEditServer(serverId))
+                    navController.navigateWithLifecycle(Destination.Settings.AddEditServer(serverId))
                 },
             )
         }
@@ -218,7 +219,7 @@ fun TorrentsNavHost(
                     }
                 },
                 onNavigateToAdvancedSettings = { advancedSettings ->
-                    navController.navigate(Destination.Settings.Advanced(advancedSettings))
+                    navController.navigateWithLifecycle(Destination.Settings.Advanced(advancedSettings))
                 },
             )
         }
