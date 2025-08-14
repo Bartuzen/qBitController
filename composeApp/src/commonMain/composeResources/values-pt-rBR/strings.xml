@@ -719,4 +719,9 @@
     </plurals>
     <string name="error_no_internet">Sem conexão com a internet.</string>
     <string name="settings_enable_dynamic_colors">Habilitar cores dinâmicas</string>
+    <string name="settings_app_color">Cor do aplicativo</string>
+    <string name="settings_app_color_reset">Resetar</string>
+    <string name="settings_palette_style">Estilo de paleta</string>
+    <string name="settings_palette_style_monochrome">Monocromático</string>
+    <string name="settings_palette_style_fruit_salad">Salada de frutas</string>
 </resources>
