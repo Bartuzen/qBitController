@@ -759,4 +759,5 @@
     <string name="settings_palette_style_content">Контент</string>
     <string name="settings_relative_timestamps">Относительные временные метки</string>
     <string name="settings_palette_style_tonal_spot">Тональное пятно</string>
+    <string name="stats_read_cache_hits">Хиты кэша чтения</string>
 </resources>
