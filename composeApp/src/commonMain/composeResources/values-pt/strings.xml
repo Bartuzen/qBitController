@@ -94,7 +94,7 @@
     <string name="torrent_list_action_set_location">Definir Localização</string>
     <string name="torrent_list_action_set_category">Definir Categoria</string>
     <string name="torrent_list_search_torrents">Pesquisar torrents…</string>
-    <string name="torrent_list_free_space">Espaço livre: %1$s</string>
+    <string name="torrent_list_free_space">%1$s livre</string>
     <string name="torrent_list_untagged">Sem Etiqueta</string>
     <string name="torrent_list_create_category">Criar Categoria</string>
     <string name="torrent_list_edit_category">Editar Categoria</string>
@@ -682,4 +682,55 @@
     <string name="update_dialog_download">Descarregar</string>
     <string name="settings_check_updates">Procurar atualizações automaticamente</string>
     <string name="error_no_internet">Sem ligação à Internet.</string>
+    <string name="date_now">Agora</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">há %1$d segundo</item>
+        <item quantity="many">há %1$d segundos</item>
+        <item quantity="other">há %1$d segundos</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">há %1$d minuto</item>
+        <item quantity="many">há %1$d minutos</item>
+        <item quantity="other">há %1$d minutos</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">há %1$d hora</item>
+        <item quantity="many">há %1$d horas</item>
+        <item quantity="other">há %1$d horas</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">há %1$d dia</item>
+        <item quantity="many">há %1$d dias</item>
+        <item quantity="other">há %1$d dias</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">há %1$d semana</item>
+        <item quantity="many">há %1$d semanas</item>
+        <item quantity="other">há %1$d semanas</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">há %1$d mês</item>
+        <item quantity="many">há %1$d meses</item>
+        <item quantity="other">há %1$d meses</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">há %1$d ano</item>
+        <item quantity="many">há %1$d anos</item>
+        <item quantity="other">há %1$d anos</item>
+    </plurals>
+    <string name="stats_read_cache_hits">Leitura de acertos na cache</string>
+    <string name="settings_enable_dynamic_colors">Ativar cores dinâmicas</string>
+    <string name="settings_app_color">Aplicação colorida</string>
+    <string name="settings_app_color_reset">Reiniciar</string>
+    <string name="settings_palette_style">Estilo da paleta</string>
+    <string name="settings_palette_style_tonal_spot">Mancha tonal</string>
+    <string name="settings_palette_style_neutral">Neutro</string>
+    <string name="settings_palette_style_vibrant">Vibrante</string>
+    <string name="settings_palette_style_expressive">Expressivo</string>
+    <string name="settings_palette_style_rainbow">Arco-íris</string>
+    <string name="settings_palette_style_fruit_salad">Salada de frutas</string>
+    <string name="settings_palette_style_monochrome">Monocromático</string>
+    <string name="settings_palette_style_fidelity">Fidelidade</string>
+    <string name="settings_palette_style_content">Conteúdo</string>
+    <string name="settings_relative_timestamps">Tempos relativos</string>
 </resources>
