@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.registerCurrentScreenTelemetry
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
 import dev.bartuzen.qbitcontroller.ui.components.PlatformNavHost
@@ -51,6 +52,7 @@ fun TorrentsNavHost(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
+    registerCurrentScreenTelemetry(navController)
 
     // Using currentServer directly causes bugs beyond human comprehension
     val serverManager = koinInject<ServerManager>()

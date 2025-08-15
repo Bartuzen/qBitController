@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.registerCurrentScreenTelemetry
 import dev.bartuzen.qbitcontroller.ui.components.PlatformNavHost
 import dev.bartuzen.qbitcontroller.ui.main.DeepLinkDestination
 import dev.bartuzen.qbitcontroller.ui.main.Destination
@@ -40,6 +41,8 @@ fun SettingsNavHost(
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
+    registerCurrentScreenTelemetry(navController)
+
     LaunchedEffect(settingsDeepLinkFlow) {
         settingsDeepLinkFlow.collect { destination ->
             when (destination) {

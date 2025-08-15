@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import dev.bartuzen.qbitcontroller.model.ServerConfig
+import dev.bartuzen.qbitcontroller.registerCurrentScreenTelemetry
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentKeys
 import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
 import dev.bartuzen.qbitcontroller.ui.components.PlatformNavHost
@@ -28,6 +29,8 @@ import kotlinx.serialization.json.Json
 @Composable
 fun SearchNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    registerCurrentScreenTelemetry(navController)
+
     PersistentLaunchedEffect(Json.encodeToString(serverConfig)) {
         val serverId = serverConfig?.id
         if (serverId != null) {

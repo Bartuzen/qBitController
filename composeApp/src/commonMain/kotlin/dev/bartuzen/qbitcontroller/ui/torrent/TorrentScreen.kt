@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.max
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.currentStateAsState
+import dev.bartuzen.qbitcontroller.Telemetry
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.PrimaryScrollableTabRow
@@ -102,6 +103,21 @@ fun TorrentScreen(
 
     val pagerState = rememberPagerState(pageCount = { tabTitles.size })
     val bottomBarHeights = remember { mutableStateMapOf<Int, Pair<Dp, Boolean>>() }
+
+    LaunchedEffect(pagerState.currentPage) {
+        val currentScreenTitle = when (pagerState.currentPage) {
+            0 -> "Overview"
+            1 -> "Files"
+            2 -> "Trackers"
+            3 -> "Peers"
+            4 -> "WebSeeds"
+            else -> null
+        }
+
+        if (currentScreenTitle != null) {
+            Telemetry.setCurrentScreen("Torrent", currentScreenTitle)
+        }
+    }
 
     Scaffold(
         modifier = modifier,
