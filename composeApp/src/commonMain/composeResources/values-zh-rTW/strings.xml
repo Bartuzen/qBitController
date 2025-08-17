@@ -40,7 +40,7 @@
         <item quantity="other">刪除 %1$d 個 Torrent</item>
     </plurals>
     <string name="torrent_list_search_torrents">搜尋 Torrents…</string>
-    <string name="torrent_list_free_space">剩餘空間：%1$s</string>
+    <string name="torrent_list_free_space">%1$s 可用空間</string>
     <string name="torrent_list_set_location_hint">儲存路徑</string>
     <string name="torrent_list_category_tag_all">全部</string>
     <string name="torrent_list_uncategorized">未分類</string>
@@ -615,4 +615,40 @@
     <string name="settings_servers_no_server_configured">沒有伺服器組態</string>
     <string name="settings_server_server_info">伺服器資訊</string>
     <string name="torrent_peers_details_section_transfer">傳輸狀態</string>
+    <string name="destination_search">搜尋</string>
+    <string name="destination_logs">日誌</string>
+    <string name="destination_settings">設定</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="other">%1$d 秒之前</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="other">%1$d 分鐘之前</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="other">%1$d 小時之前</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="other">%1$d 日之前</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="other">%1$d 週之前</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="other">%1$d 月之前</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="other">%1$d 年之前</item>
+    </plurals>
+    <string name="error_no_internet">沒有網路連接。</string>
+    <string name="rss_action_download">下載</string>
+    <string name="search_result_action_download">下載</string>
+    <string name="settings_check_updates">自動檢查更新</string>
+    <string name="settings_enable_dynamic_colors">啟用動態色彩</string>
+    <string name="settings_app_color">應用程式色彩</string>
+    <string name="settings_app_color_reset">重置</string>
+    <string name="settings_pure_black_dark_mode">純黑深色模式</string>
+    <string name="settings_relative_timestamps">相對時間戳記</string>
+    <string name="update_dialog_title">有可用的更新</string>
+    <string name="update_dialog_message">qBitController %1$s 現在已可用。您目前使用的版本為 %2$s。</string>
+    <string name="update_dialog_download">下載</string>
 </resources>
