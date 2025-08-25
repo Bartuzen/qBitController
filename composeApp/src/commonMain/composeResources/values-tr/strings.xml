@@ -706,4 +706,5 @@
     </plurals>
     <string name="settings_relative_timestamps">Göreli zaman biçimi</string>
     <string name="stats_read_cache_hits">Okuma Önbelleği Yoklaması</string>
+    <string name="shortcut_new_window">Yeni pencere</string>
 </resources>
