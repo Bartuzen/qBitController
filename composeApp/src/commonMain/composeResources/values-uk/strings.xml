@@ -760,4 +760,5 @@
     </plurals>
     <string name="settings_relative_timestamps">Відносні позначки часу</string>
     <string name="stats_read_cache_hits">Звернення до кешу читання</string>
+    <string name="shortcut_new_window">Нове вікно</string>
 </resources>
