@@ -5,6 +5,8 @@
 
     <string name="share_add_torrent">Add Torrent</string>
 
+    <string name="shortcut_new_window">New window</string>
+
     <string name="destination_torrents">Torrents</string>
     <string name="destination_search">Search</string>
     <string name="destination_rss">RSS</string>
