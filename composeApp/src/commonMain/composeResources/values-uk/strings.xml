@@ -392,7 +392,7 @@
     <string name="rss_rule_not_found">Не вдалося знайти правило.</string>
     <string name="search_title">Пошук</string>
     <string name="search_start_query">Пошуковий запит</string>
-    <string name="search_start_category_tv_shows">телешоу</string>
+    <string name="search_start_category_tv_shows">Телешоу</string>
     <string name="search_result_filter_results">Фільтрувати результати…</string>
     <string name="settings_title">Налаштування</string>
     <string name="settings_category_servers">Сервери</string>
@@ -411,11 +411,11 @@
     <string name="torrent_overview_transfer">Трансфер</string>
     <string name="torrent_overview_downloaded">Завантажено</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s цього сеансу)</string>
-    <string name="torrent_overview_uploaded">завантажено</string>
+    <string name="torrent_overview_uploaded">Вавантажено</string>
     <string name="torrent_overview_seeds">Насіння</string>
     <string name="torrent_overview_seeds_format">%1$d (усього %2$d)</string>
     <string name="torrent_files_priority_do_not_download">Не завантажувати</string>
-    <string name="torrent_files_priority_normal">нормальний</string>
+    <string name="torrent_files_priority_normal">Нормальний</string>
     <string name="torrent_files_priority_high">Високий</string>
     <string name="torrent_files_priority_maximum">Максимум</string>
     <string name="torrent_files_rename_file">Перейменувати файл</string>
@@ -444,8 +444,8 @@
     <string name="torrent_overview_added_on">Додано</string>
     <string name="torrent_overview_hash_v1">Хеш v1</string>
     <string name="torrent_overview_hash_v2">Хеш v2</string>
-    <string name="torrent_overview_comment">коментар</string>
-    <string name="torrent_overview_pieces">штук</string>
+    <string name="torrent_overview_comment">Коментар</string>
+    <string name="torrent_overview_pieces">Шматки</string>
     <string name="torrent_overview_created_by">Створено</string>
     <string name="torrent_overview_last_activity">Остання активність</string>
     <string name="torrent_overview_last_seen_complete">Останнє відвідування завершено</string>
@@ -531,7 +531,7 @@
     <string name="settings_notification_check_interval">Інтервал перевірки повідомлень</string>
     <string name="settings_enable_torrent_swipe_actions">Увімкнути дії торрент</string>
     <string name="settings_theme">Тема</string>
-    <string name="settings_theme_light">світло</string>
+    <string name="settings_theme_light">Світло</string>
     <string name="settings_server_title_edit">Редагувати сервер</string>
     <string name="settings_server_name">Ім\'я</string>
     <string name="settings_server_advanced_basic_auth">Базова автентифікація</string>
@@ -541,13 +541,13 @@
     <string name="error_required_field">Це поле є обов\'язковим для заповнення.</string>
     <string name="notification_channel_download_completed">Завантаження завершено</string>
     <string name="torrent_overview_private">Приватний</string>
-    <string name="search_start_category_music">музика</string>
+    <string name="search_start_category_music">Музика</string>
     <string name="settings_server_action_delete">Видалити</string>
     <string name="torrent_list_no_result_description">Жоден торрент не відповідає вашим поточним фільтрам. Спробуйте налаштувати фільтри або критерії пошуку.</string>
     <string name="torrent_list_no_result_title">Результатів не знайдено</string>
     <string name="torrent_overview_created_on">Дата створення</string>
     <string name="torrent_overview_time_active">Час активний</string>
-    <string name="torrent_overview_completed_on">завершено</string>
+    <string name="torrent_overview_completed_on">Завершено від</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (посів на %2$s)</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">Вибрано %1$d файл</item>
@@ -562,14 +562,14 @@
     <string name="rss_mark_all_articles_as_read_success">Усі статті позначено як успішно прочитані.</string>
     <string name="rss_mark_article_as_read_success">Стаття позначена як прочитана.</string>
     <string name="rss_rule_apply_rule_to_feeds">Застосувати правило до каналів</string>
-    <string name="search_start_category_all">всі</string>
+    <string name="search_start_category_all">Всі</string>
     <string name="search_start_plugins_select">Виберіть Плагіни</string>
     <string name="search_result_filter_reset">Скинути</string>
-    <string name="search_start_category_anime">аніме</string>
+    <string name="search_start_category_anime">Аніме</string>
     <string name="search_start_plugins_all">Усі плагіни</string>
-    <string name="search_start_category_movies">фільми</string>
+    <string name="search_start_category_movies">Фільми</string>
     <string name="search_plugins_cannot_be_empty">Плагіни не можуть бути порожніми.</string>
-    <string name="search_plugins_action_save">зберегти</string>
+    <string name="search_plugins_action_save">Зберегти</string>
     <string name="search_start_action_start">Розпочати пошук</string>
     <string name="search_result_showing_count">Показано %1$d з %2$d</string>
     <string name="search_result_size">Розмір: %1$s</string>
@@ -583,7 +583,7 @@
     <string name="settings_server_add_success">Сервер успішно додано.</string>
     <string name="settings_language_system_default">Системне за замовчуванням</string>
     <string name="settings_server_trust_self_signed_certificates">Довірчі самопідписані сертифікати</string>
-    <string name="settings_server_action_save">зберегти</string>
+    <string name="settings_server_action_save">Зберегти</string>
     <string name="settings_server_action_advanced_settings">Розширені налаштування</string>
     <string name="settings_server_edit_success">Сервер успішно відредаговано.</string>
     <string name="settings_server_remove_success">Сервер успішно видалено.</string>
@@ -622,7 +622,7 @@
     <string name="torrent_overview_information">Інформація</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (має %3$d)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s цього сеансу)</string>
-    <string name="torrent_files_priority_mixed">змішаний</string>
+    <string name="torrent_files_priority_mixed">Змішаний</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">Пріоритет</string>
     <string name="torrent_files_rename_file_hint">Ім\'я файлу</string>
@@ -715,4 +715,50 @@
     <string name="settings_palette_style_monochrome">Монохромний</string>
     <string name="settings_palette_style_fidelity">Вірність</string>
     <string name="settings_palette_style_content">Зміст</string>
+    <string name="date_now">Зараз</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d секунду тому</item>
+        <item quantity="few">%1$d секунди тому</item>
+        <item quantity="many">%1$d секунд тому</item>
+        <item quantity="other">%1$d секунд тому</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d хвилину тому</item>
+        <item quantity="few">%1$d хвилини тому</item>
+        <item quantity="many">%1$d хвилин тому</item>
+        <item quantity="other">%1$d хвилин тому</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d годину тому</item>
+        <item quantity="few">%1$d години тому</item>
+        <item quantity="many">%1$d годин тому</item>
+        <item quantity="other">%1$d годин тому</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d день тому</item>
+        <item quantity="few">%1$d дня тому</item>
+        <item quantity="many">%1$d днів тому</item>
+        <item quantity="other">%1$d днів тому</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d тиждень тому</item>
+        <item quantity="few">%1$d тижня тому</item>
+        <item quantity="many">%1$d тижні тому</item>
+        <item quantity="other">%1$d тижні тому</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d місяць тому</item>
+        <item quantity="few">%1$d місяці тому</item>
+        <item quantity="many">%1$d місяців тому</item>
+        <item quantity="other">%1$d місяців тому</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d рік тому</item>
+        <item quantity="few">%1$d роки тому</item>
+        <item quantity="many">%1$d років тому</item>
+        <item quantity="other">%1$d років тому</item>
+    </plurals>
+    <string name="settings_relative_timestamps">Відносні позначки часу</string>
+    <string name="stats_read_cache_hits">Звернення до кешу читання</string>
+    <string name="shortcut_new_window">Нове вікно</string>
 </resources>
