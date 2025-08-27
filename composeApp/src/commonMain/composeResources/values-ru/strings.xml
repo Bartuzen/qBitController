@@ -760,4 +760,5 @@
     <string name="settings_relative_timestamps">Относительные временные метки</string>
     <string name="settings_palette_style_tonal_spot">Тональное пятно</string>
     <string name="stats_read_cache_hits">Попадания в кэш чтения</string>
+    <string name="shortcut_new_window">Новое окно</string>
 </resources>
