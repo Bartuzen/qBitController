@@ -27,7 +27,7 @@ def get_inputs(release_id):
     with open("buildSrc/src/main/java/dev/bartuzen/qbitcontroller/Versions.kt", "r") as f:
         build_version = re.search(r"AppVersionCode\s*=\s*(\d+)", f.read()).group(1)
 
-    with open(f"fastlane/metadata/android/en-US/changelogs/{build_version}.txt", "r") as f:
+    with open(f"fastlane/metadata/ios/en-US/changelogs/{build_version}.txt", "r") as f:
         description = f.read()
 
     return {
