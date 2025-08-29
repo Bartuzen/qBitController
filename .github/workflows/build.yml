@@ -85,7 +85,7 @@ jobs:
         with:
           cache-disabled: ${{ inputs.disable-cache }}
 
-      - name: Generate Info.plist
+      - name: Generate iOS Files
         run: ./gradlew generateIosFiles
 
       - name: Setup latest Xcode
