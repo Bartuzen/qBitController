@@ -702,4 +702,63 @@
     <string name="update_dialog_message">Доступна новая версия qBitController %1$s. Сейчас вы используете версию %2$s.</string>
     <string name="update_dialog_download">Загрузить</string>
     <string name="error_no_internet">Нет подключения к Интернету.</string>
+    <string name="date_now">Сейчас</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d секунда назад</item>
+        <item quantity="few">%1$d секунды назад</item>
+        <item quantity="many">%1$d секунд назад</item>
+        <item quantity="other">%1$d секунд назад</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d минуту назад</item>
+        <item quantity="few">%1$d минуты назад</item>
+        <item quantity="many">%1$d минут назад</item>
+        <item quantity="other">%1$d минут назад</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d час назад</item>
+        <item quantity="few">%1$d часа назад</item>
+        <item quantity="many">%1$d часов назад</item>
+        <item quantity="other">%1$d часов назад</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d день назад</item>
+        <item quantity="few">%1$d дня назад</item>
+        <item quantity="many">%1$d дней назад</item>
+        <item quantity="other">%1$d дней назад</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d неделю назад</item>
+        <item quantity="few">%1$d недели назад</item>
+        <item quantity="many">%1$d недель назад</item>
+        <item quantity="other">%1$d недель назад</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d месяц назад</item>
+        <item quantity="few">%1$d месяца назад</item>
+        <item quantity="many">%1$d месяцев назад</item>
+        <item quantity="other">%1$d месяцев назад</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d год назад</item>
+        <item quantity="few">%1$d года назад</item>
+        <item quantity="many">%1$d лет назад</item>
+        <item quantity="other">%1$d лет назад</item>
+    </plurals>
+    <string name="settings_enable_dynamic_colors">Включить динамические цвета</string>
+    <string name="settings_app_color">Цвет приложения</string>
+    <string name="settings_app_color_reset">Сброс</string>
+    <string name="settings_palette_style">Стиль палитры</string>
+    <string name="settings_palette_style_neutral">Нейтральный</string>
+    <string name="settings_palette_style_vibrant">Яркий</string>
+    <string name="settings_palette_style_expressive">Выразительный</string>
+    <string name="settings_palette_style_rainbow">Радуга</string>
+    <string name="settings_palette_style_fruit_salad">Фруктовый салат</string>
+    <string name="settings_palette_style_monochrome">Монохромный</string>
+    <string name="settings_palette_style_fidelity">Верность</string>
+    <string name="settings_palette_style_content">Контент</string>
+    <string name="settings_relative_timestamps">Относительные временные метки</string>
+    <string name="settings_palette_style_tonal_spot">Тональное пятно</string>
+    <string name="stats_read_cache_hits">Попадания в кэш чтения</string>
+    <string name="shortcut_new_window">Новое окно</string>
 </resources>

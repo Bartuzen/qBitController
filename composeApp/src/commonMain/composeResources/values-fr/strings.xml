@@ -505,4 +505,5 @@
         <item quantity="other"/>
     </plurals>
     <string name="destination_settings">Paramètres</string>
+    <string name="date_now">Maintenant</string>
 </resources>

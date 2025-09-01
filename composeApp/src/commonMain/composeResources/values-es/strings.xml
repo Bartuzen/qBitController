@@ -682,4 +682,56 @@
     <string name="update_dialog_download">Descargar</string>
     <string name="update_dialog_message">qBitController %1$s está disponible. Actualmente estás usando la versión %2$s.</string>
     <string name="error_no_internet">Sin conexión a Internet.</string>
+    <string name="settings_app_color">Color de la aplicación</string>
+    <string name="settings_palette_style">Estilo de paleta</string>
+    <string name="settings_palette_style_neutral">Neutral</string>
+    <string name="settings_palette_style_vibrant">Vibrante</string>
+    <string name="settings_palette_style_expressive">Expresivo</string>
+    <string name="settings_palette_style_rainbow">Arcoíris</string>
+    <string name="settings_palette_style_fruit_salad">Ensalada de frutas</string>
+    <string name="settings_palette_style_monochrome">Monocromo</string>
+    <string name="settings_palette_style_fidelity">Fidelidad</string>
+    <string name="settings_palette_style_content">Contenido</string>
+    <string name="settings_app_color_reset">Restablecer</string>
+    <string name="settings_enable_dynamic_colors">Activar colores dinámicos</string>
+    <string name="settings_palette_style_tonal_spot">Mancha tonal</string>
+    <string name="date_now">Ahora</string>
+    <string name="settings_relative_timestamps">Tiempos relativos</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">Hace %1$d segundo</item>
+        <item quantity="many">Hace %1$d segundos</item>
+        <item quantity="other">Hace %1$d segundos</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">Hace %1$d minuto</item>
+        <item quantity="many">Hace %1$d minutos</item>
+        <item quantity="other">Hace %1$d minutos</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">Hace %1$d hora</item>
+        <item quantity="many">Hace %1$d horas</item>
+        <item quantity="other">Hace %1$d horas</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">Hace %1$d día</item>
+        <item quantity="many">Hace %1$d días</item>
+        <item quantity="other">Hace %1$d días</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">Hace %1$d semana</item>
+        <item quantity="many">Hace %1$d semanas</item>
+        <item quantity="other">Hace %1$d semanas</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">Hace %1$d mes</item>
+        <item quantity="many">Hace %1$d meses</item>
+        <item quantity="other">Hace %1$d meses</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">Hace %1$d año</item>
+        <item quantity="many">Hace %1$d años</item>
+        <item quantity="other">Hace %1$d años</item>
+    </plurals>
+    <string name="stats_read_cache_hits">Aciertos de caché de lectura</string>
+    <string name="shortcut_new_window">Nueva ventana</string>
 </resources>
