@@ -1,0 +1,6 @@
+- Improved performance for torrent list and search results
+- Dates are now displayed in relative format (can be reverted in settings)
+- Changed selected item colors
+- Added select all and select inverse to RSS and search torrents multi-select
+- Added read cache hit to statistics
+- Bug fixes
