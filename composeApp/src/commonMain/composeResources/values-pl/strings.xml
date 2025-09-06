@@ -430,4 +430,9 @@
     <string name="torrent_peers_banned">Peery zbanowane pomyślnie.</string>
     <string name="torrent_peers_invalid">Wprowadzone peery nie są poprawne.</string>
     <string name="torrent_peers_details_section_overview">Podgląd peerów</string>
+    <string name="error_unknown_login_response">Nieznany odpowiedź logowania: %1$s</string>
+    <string name="torrent_list_action_sort_reverse">Odwróć</string>
+    <string name="stats_queued_io_jobs">Zkolejkowane I/O zadań</string>
+    <string name="torrent_tab_overview">Przegląd</string>
+    <string name="torrent_reannounce_success">Torrent rozgłoszony pomyślnie.</string>
 </resources>
