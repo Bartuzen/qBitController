@@ -222,4 +222,82 @@
         <item quantity="many">Zaznaczono %1$d torrenty</item>
         <item quantity="other">Zaznaczono %1$d torrenty</item>
     </plurals>
+    <string name="shortcut_new_window">Nowe okno</string>
+    <string name="destination_torrents">Torrenty</string>
+    <string name="destination_search">Wyszukaj</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Logi</string>
+    <string name="destination_settings">Ustawienia</string>
+    <string name="size_format">%1$s %2$s</string>
+    <string name="speed_format">%1$s %2$s</string>
+    <string name="date_now">Teraz</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d sekundę temu</item>
+        <item quantity="few">%1$d sekundy temu</item>
+        <item quantity="many">%1$d sekund temu</item>
+        <item quantity="other">%1$d sekund temu</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d minutę temu</item>
+        <item quantity="few">%1$d minuty temu</item>
+        <item quantity="many">%1$d minut temu</item>
+        <item quantity="other">%1$d minut temu</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d godzinę temu</item>
+        <item quantity="few">%1$d godziny temu</item>
+        <item quantity="many">%1$d godzin temu</item>
+        <item quantity="other">%1$d godzin temu</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d dzień temu</item>
+        <item quantity="few">%1$d dni temu</item>
+        <item quantity="many">%1$d dni temu</item>
+        <item quantity="other">%1$d dni temu</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d tydzień temu</item>
+        <item quantity="few">%1$d tygodnie temu</item>
+        <item quantity="many">%1$d tygodni temu</item>
+        <item quantity="other">%1$d tygodni temu</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d miesiąc temu</item>
+        <item quantity="few">%1$d miesiące temu</item>
+        <item quantity="many">%1$d miesięcy temu</item>
+        <item quantity="other">%1$d miesięcy temu</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d rok temu</item>
+        <item quantity="few">%1$d lata temu</item>
+        <item quantity="many">%1$d lat temu</item>
+        <item quantity="other">%1$d lat temu</item>
+    </plurals>
+    <string name="percentage_format">%1$s%%</string>
+    <string name="error_timeout">Przekroczono limit czasu połączenia.</string>
+    <string name="error_no_internet">Brak połączenia z Internetem.</string>
+    <string name="error_required_field">To pole jest wymagane.</string>
+    <string name="error_invalid_interval">Musi być pomiędzy %1$d a %2$d.</string>
+    <string name="error_invalid_interval_optional">Musi być pomiędzy %1$d a %2$d, lub pozostaw pole puste aby wyłączyć.</string>
+    <string name="torrent_list_no_result_description">Brak torrentów pasujących do ustawionych filtrów. Zmień filtry lub kryterium wyszukiwania.</string>
+    <string name="torrent_list_no_result_reset">Zresetuj filtry</string>
+    <string name="torrent_list_action_shutdown">Wyjdź z qBittorrent</string>
+    <string name="torrent_list_action_sort_hash">Hash</string>
+    <string name="torrent_list_action_sort_download_speed">Prędkość pobierania</string>
+    <string name="torrent_list_action_sort_upload_speed">Prędkość wysylania</string>
+    <string name="torrent_list_action_sort_eta">ETA</string>
+    <string name="torrent_list_action_sort_size">Rozmiar</string>
+    <string name="torrent_list_trackers_trackerless">Bez trackerów</string>
+    <string name="torrent_speed_alternative_speed_limits">Alternatywne limity prędkości</string>
+    <string name="torrent_list_switch_speed_limit_alternative_success">Przełączono na alternatywne limity prędkości.</string>
+    <string name="torrent_list_switch_speed_limit_regular_success">Przełączono na standardowe limity prędkości.</string>
+    <string name="torrent_list_status_stalled">Wstrzymany</string>
+    <string name="stats_category_cache_statistics">Statystyki pamięci podręcznej</string>
+    <string name="stats_category_performance_statistics">Statystyki wydajności</string>
+    <string name="torrent_overview_private_no">Nie</string>
+    <string name="torrent_overview_hash_v1">Hash v1</string>
+    <string name="torrent_overview_hash_v2">Hash v2</string>
+    <string name="torrent_overview_comment">Komentarz</string>
+    <string name="torrent_overview_pieces">Części</string>
+    <string name="torrent_overview_created_by">Stworzony przez</string>
 </resources>
