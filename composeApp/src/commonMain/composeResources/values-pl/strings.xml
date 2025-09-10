@@ -306,7 +306,7 @@
     <string name="torrent_action_super_seeding">Super seedowanie</string>
     <string name="torrent_action_copy_hash_v1">Hash v1</string>
     <string name="torrent_action_copy_hash_v2">Hash v2</string>
-    <string name="torrent_enable_force_start_success">Wymuszono rozpoczęcie</string>
+    <string name="torrent_enable_force_start_success">Wymuszono rozpoczęcie.</string>
     <string name="torrent_disable_force_start_success">Wymuszono zatrzymanie.</string>
     <string name="torrent_enable_super_seeding_success">Super seedowanie włączone.</string>
     <string name="torrent_disable_super_seeding_success">Super seedowanie wyłączone.</string>
@@ -334,7 +334,7 @@
     <string name="torrent_overview_created_on">Stworzono</string>
     <string name="torrent_overview_transfer">Przenieś</string>
     <string name="torrent_overview_time_active">Czas aktywności</string>
-    <string name="torrent_overview_time_active_seeding_time_format">%1$s (wysyłane przez %2$s)</string>
+    <string name="torrent_overview_time_active_seeding_time_format">%1$s (wysyłany przez %2$s)</string>
     <string name="torrent_overview_downloaded">Pobrane</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s tej sesji)</string>
     <string name="torrent_overview_uploaded">Wysłane</string>
@@ -432,7 +432,7 @@
     <string name="torrent_peers_details_section_overview">Podgląd peerów</string>
     <string name="error_unknown_login_response">Nieznana odpowiedź logowania: %1$s</string>
     <string name="torrent_list_action_sort_reverse">Odwróć</string>
-    <string name="stats_queued_io_jobs">Zkolejkowane I/O zadań</string>
+    <string name="stats_queued_io_jobs">Zadania I/O w kolejce</string>
     <string name="torrent_tab_overview">Przegląd</string>
     <string name="torrent_reannounce_success">Torrent rozgłoszony pomyślnie.</string>
     <string name="torrent_option_share_limit_total_minutes">Łącznie minut</string>
