@@ -523,7 +523,7 @@
     <string name="rss_confirm_delete_folder">Czy na pewno chcesz usunąć folder %1$s?</string>
     <string name="rss_added_feed">Pomyślnie dodano kanał.</string>
     <string name="rss_success_feed_rename">Pomyślnie zmieniono nazwę kanału.</string>
-    <string name="rss_success_feed_change_url">URL kanału zmieniony pomyślnie.</string>
+    <string name="rss_success_feed_change_url">Adres URL kanału zmieniony pomyślnie.</string>
     <string name="rss_success_feed_move">Kanał przeniesiony pomyślnie.</string>
     <string name="rss_success_feed_delete">Kanał usunięty pomyślnie.</string>
     <string name="rss_success_folder_add">Folder dodany pomyślnie.</string>
@@ -542,7 +542,7 @@
     <string name="rss_mark_all_articles_as_read_success">Wszystkie artykuły oznaczone jako przeczytane.</string>
     <string name="rss_refresh_all_feeds_success">Odświeżono wszystkie kanały pomyślnie.</string>
     <string name="rss_refresh_feed_success">Kanał odświeżony pomyślnie.</string>
-    <string name="rss_feed_not_found">Nie znaleziono kanalu RSS.</string>
+    <string name="rss_feed_not_found">Nie znaleziono kanału RSS.</string>
     <string name="rss_rules">Pobieracz RSS</string>
     <string name="rss_rule_item_enabled">Włączony</string>
     <string name="rss_rule_item_disabled">Wyłączony</string>
@@ -553,7 +553,7 @@
         <item quantity="other">%1$d kanałów</item>
     </plurals>
     <string name="rss_rule_rename">Zmień nazwę reguły</string>
-    <string name="rss_rule_delete">Usuń regułe</string>
+    <string name="rss_rule_delete">Usuń regułę</string>
     <string name="rss_rule_action_create">Utwórz regułę</string>
     <string name="rss_rule_name">Nazwa reguły</string>
     <string name="rss_rule_delete_confirm">Czy na pewno chcesz usunąć regułę %1$s?</string>
@@ -561,5 +561,47 @@
     <string name="rss_rule_rename_success">Nazwa reguły kanału RSS zmieniona pomyślnie.</string>
     <string name="rss_rule_delete_success">Reguła RSS usunięta pomyślnie.</string>
     <string name="rss_rule_name_cannot_be_empty">Nazwa nie może być pusta.</string>
-    <string name="rss_rule_enabled">Właczona</string>
+    <string name="rss_rule_enabled">Włączona</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">Wybrano %1$d torrent</item>
+        <item quantity="few">Wybrano %1$d torrenty</item>
+        <item quantity="many">Wybrano %1$d torrentów</item>
+        <item quantity="other">Wybrano %1$d torrentów</item>
+    </plurals>
+    <plurals name="settings_connection_timeout_description">
+        <item quantity="one">%1$d sekunda</item>
+        <item quantity="few">%1$d sekundy</item>
+        <item quantity="many">%1$d sekund</item>
+        <item quantity="other">%1$d sekund</item>
+    </plurals>
+    <plurals name="settings_auto_refresh_interval_description">
+        <item quantity="one">%1$d sekunda</item>
+        <item quantity="few">%1$d sekundy</item>
+        <item quantity="many">%1$d sekund</item>
+        <item quantity="other">%1$d sekund</item>
+    </plurals>
+    <plurals name="settings_notification_check_interval_description">
+        <item quantity="one">%1$d minuta</item>
+        <item quantity="few">%1$d minuty</item>
+        <item quantity="many">%1$d minut</item>
+        <item quantity="other">%1$d minut</item>
+    </plurals>
+    <plurals name="settings_server_advanced_custom_headers_summary">
+        <item quantity="one">%1$d nagłówek</item>
+        <item quantity="few">%1$d nagłówki</item>
+        <item quantity="many">%1$d nagłówków</item>
+        <item quantity="other">%1$d nagłówków</item>
+    </plurals>
+    <string name="torrent_status_checking_resume_data">Sprawdzanie danych wznowienia</string>
+    <string name="stats_read_cache_hits">Prawidłowe odczyty z pamięci podręcznej</string>
+    <string name="stats_write_cache_overload">Przeciążenie pamięci podręcznej zapisu</string>
+    <string name="stats_read_cache_overload">Przeciążenie pamięci podręcznej odczytu</string>
+    <string name="torrent_peers_details_peer_id_client">ID klienta peera</string>
+    <string name="rss_action_edit_feed_url">Edytuj adres URL kanału</string>
+    <string name="rss_action_move_feed">Przenieś kanał</string>
+    <string name="rss_action_delete_feed">Usuń kanał</string>
+    <string name="rss_hint_feed_url">Adres URL kanału</string>
+    <string name="rss_hint_feed_name_optional">Nazwa kanału (opcjonalnie)</string>
+    <string name="rss_hint_feed_name">Nazwa kanału</string>
+    <string name="rss_confirm_delete_feed">Czy na pewno chcesz usunąc kanał %1$s?</string>
 </resources>
