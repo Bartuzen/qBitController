@@ -678,4 +678,5 @@
     <string name="settings_palette_style_monochrome">单色</string>
     <string name="settings_palette_style_fidelity">保真</string>
     <string name="settings_palette_style_content">内容</string>
+    <string name="shortcut_new_window">新窗口</string>
 </resources>
