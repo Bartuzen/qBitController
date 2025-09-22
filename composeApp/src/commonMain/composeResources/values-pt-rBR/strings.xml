@@ -724,4 +724,14 @@
     <string name="settings_palette_style">Estilo de paleta</string>
     <string name="settings_palette_style_monochrome">Monocromático</string>
     <string name="settings_palette_style_fruit_salad">Salada de frutas</string>
+    <string name="shortcut_new_window">Nova janela</string>
+    <string name="stats_read_cache_hits">Leitura de acertos na cache</string>
+    <string name="settings_palette_style_neutral">Neutro</string>
+    <string name="settings_palette_style_vibrant">Vibrante</string>
+    <string name="settings_palette_style_expressive">Expressivo</string>
+    <string name="settings_palette_style_rainbow">Arco-íris</string>
+    <string name="settings_palette_style_fidelity">Fidelidade</string>
+    <string name="settings_palette_style_content">Conteúdo</string>
+    <string name="settings_relative_timestamps">Tempos relativos</string>
+    <string name="settings_palette_style_tonal_spot">Mancha tonal</string>
 </resources>
