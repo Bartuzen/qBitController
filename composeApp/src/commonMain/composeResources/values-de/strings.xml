@@ -124,4 +124,15 @@
     <string name="torrent_list_action_sort_connected_leeches">Verbundene Leeches</string>
     <string name="torrent_list_action_sort_upload_speed">Uploadgeschwindigkeit</string>
     <string name="eta_seconds">%1$ss</string>
+    <string name="language_code">en</string>
+    <string name="shortcut_new_window">Neues Fenster</string>
+    <string name="destination_torrents">Torrents</string>
+    <string name="destination_search">Suche</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Protokoll</string>
+    <string name="destination_settings">Einstellungen</string>
+    <string name="eta_minutes_seconds">%1$sm%2$s</string>
+    <string name="eta_minutes">%1$sm</string>
+    <string name="eta_hours_minutes">%1$sh%2$sm</string>
+    <string name="eta_hours">%1$sah</string>
 </resources>
