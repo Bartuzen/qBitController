@@ -42,7 +42,7 @@
     <string name="torrent_list_action_sort_status">Stav</string>
     <string name="torrent_action_copy_hash_v2">Hash v2</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
-    <string name="stats_category_cache_statistics">Statistiky vyrovnávací paměti</string>
+    <string name="stats_category_cache_statistics">Statistiky mezipaměti</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="torrent_list_empty_rss">Přidat pomocí RSS</string>
     <string name="torrent_list_empty_search">Vyhledat torrenty</string>
@@ -131,13 +131,13 @@
     <string name="torrent_list_priority_maximize_success">Priorita maximalizována úspěšně.</string>
     <string name="torrent_list_priority_minimize_success">Priorita minimalizována úspěšně.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="stats_all_time_upload">Celkově odesláno</string>
-    <string name="stats_all_time_download">Celkově staženo</string>
-    <string name="stats_all_time_share_ratio">Celkový poměr sdílení</string>
+    <string name="stats_all_time_upload">Celkem odesláno</string>
+    <string name="stats_all_time_download">Celkem staženo</string>
+    <string name="stats_all_time_share_ratio">Poměr sdílení</string>
     <string name="stats_session_waste">Zahozeno od spuštění</string>
     <string name="stats_connected_peers">Připojení peerové</string>
-    <string name="stats_write_cache_overload">Přeplnění cache pro zápis</string>
-    <string name="stats_read_cache_overload">Přetížení cache pro čtení</string>
+    <string name="stats_write_cache_overload">Užití mezipaměti pro zápis</string>
+    <string name="stats_read_cache_overload">Užití mezipaměti pro čtení</string>
     <string name="stats_queued_io_jobs">I/O úkoly ve frontě</string>
     <string name="torrent_deleted_success">Torrent smazán úspěšně.</string>
     <string name="torrent_resumed_success">Torrent obnoven úspěšně.</string>
@@ -197,9 +197,9 @@
     <string name="torrent_list_status_error">Chyba</string>
     <string name="torrent_list_priority_increase_success">Priorita zvýšena úspěšně.</string>
     <string name="stats_category_performance_statistics">Statistiky výkonu</string>
-    <string name="stats_total_buffer_size">Celková velikost vyrovnávací paměti</string>
+    <string name="stats_total_buffer_size">Velikost vyrovnávací paměti</string>
     <string name="torrent_tab_web_seeds">HTTP zdroje</string>
-    <string name="torrent_action_options">Možnosti Torrentu</string>
+    <string name="torrent_action_options">Nastavení torrentu</string>
     <string name="torrent_action_force_recheck">Vynutit překontrolování</string>
     <string name="torrent_action_force_reannounce">Vynutit znovu-oznámení</string>
     <string name="torrent_action_copy_name">Jméno</string>
@@ -220,7 +220,7 @@
         <item quantity="other">%1$d torrentů zvoleno</item>
     </plurals>
     <string name="torrent_list_status_set_as_default">Nastavit jako výchozí</string>
-    <string name="stats_total_queued_size">Celková velikost fronty</string>
+    <string name="stats_total_queued_size">Velikost fronty</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Přehled</string>
     <string name="stats_average_time_in_queue">Průměrná doba ve frontě</string>
@@ -263,7 +263,7 @@
     <string name="torrent_option_share_limit_disable">Vypnout limit sdílení</string>
     <string name="torrent_option_share_limit_custom">Použít vlastní limit sdílení</string>
     <string name="torrent_option_sequential_download">Stahovat postupně</string>
-    <string name="torrent_option_update_success">Možnosti torrentu úspěšně změněny.</string>
+    <string name="torrent_option_update_success">Nastavení torrentu úspěšně změněny.</string>
     <string name="torrent_overview_private">Soukromý</string>
     <string name="torrent_overview_hash_v1">Hash v1</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
@@ -286,7 +286,7 @@
     <string name="torrent_no_tags">Nebyly nalezeny žádné štítky.</string>
     <string name="torrent_overview_last_activity">Poslední aktivita</string>
     <string name="torrent_overview_information">Informace</string>
-    <string name="torrent_overview_total_size">Celková velikost</string>
+    <string name="torrent_overview_total_size">Velikost</string>
     <string name="torrent_overview_added_on">Přidáno</string>
     <string name="torrent_overview_comment">Komentář</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (máte %3$d)</string>
