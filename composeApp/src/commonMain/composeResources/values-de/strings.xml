@@ -14,7 +14,7 @@
     <string name="torrent_list_delete_category">Lösche Kategorie</string>
     <string name="torrent_list_delete_category_success">Kategorie %1$s wurde gelöscht.</string>
     <string name="dialog_ok">OK</string>
-    <string name="error_invalid_credentials">Username oder Passwort ungültig.</string>
+    <string name="error_invalid_credentials">Benutzername oder Passwort ungültig.</string>
     <string name="torrent_list_edit_category_success">Kategorie bearbeitet.</string>
     <string name="torrent_list_trackers_trackerless">Ohne Tracker</string>
     <string name="torrent_list_delete_category_confirm">Soll diese Kategorie wirklich gelöscht werden: %1$s?</string>
@@ -58,7 +58,7 @@
     <string name="torrent_list_action_priority_decrease">Priorität verringern</string>
     <string name="error_cannot_connect">Verbindung zum Server kann nicht aufgebaut werden.</string>
     <string name="torrent_status_missing_files">Fehlende Dateien</string>
-    <string name="error_banned">Du wurdest gebannt wegen zu viel fehlgeschlagenen Loginversuchen.</string>
+    <string name="error_banned">Du wurdest wegen zu vielen fehlgeschlagenen Loginversuchen verbannt.</string>
     <string name="torrent_list_free_space">Freier Speicherplatz: %1$s</string>
     <string name="torrent_list_create_category_hint">Kategoriename</string>
     <string name="torrent_status_downloading">Beim Herunterladen</string>
@@ -135,4 +135,82 @@
     <string name="eta_minutes">%1$sm</string>
     <string name="eta_hours_minutes">%1$sh%2$sm</string>
     <string name="eta_hours">%1$sah</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_mebibytes">MiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="size_exbibytes">EiB</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
+    <string name="date_now">Jetzt</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">vor %1$d Sekunde</item>
+        <item quantity="other">vor %1$d Sekunden</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">vor %1$d Minute</item>
+        <item quantity="other">vor %1$d Minuten</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">vor %1$d Stunde</item>
+        <item quantity="other">vor %1$d Stunden</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">vor %1$d Tag</item>
+        <item quantity="other">vor %1$d Tagen</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">vor %1$d Woche</item>
+        <item quantity="other">vor %1$d Wochen</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">vor %1$d Monat</item>
+        <item quantity="other">vor %1$d Monaten</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">vor %1$d Jahr</item>
+        <item quantity="other">vor %1$d Jahren</item>
+    </plurals>
+    <string name="percentage_format">%1$s%%</string>
+    <string name="error_invalid_interval">Muss zwischen %1$d und %2$d liegen.</string>
+    <string name="error_invalid_interval_optional">Muss zwischen %1$d und %2$d liegen. Zum Deaktivieren leer lassen.</string>
+    <string name="about_description">qBitController lässt dich qBittorrent von überall und jedem Gerät bedienen.\n\nFür detailliertere Informationen und Quellcode: %1$s</string>
+    <string name="notification_channel_download_completed">Herunterladen abgeschlossen</string>
+    <string name="notification_torrent_downloaded">Torrent heruntergeladen</string>
+    <string name="update_dialog_title">Update verfügbar</string>
+    <string name="update_dialog_message">qBitController %1$s ist jetzt verfügbar. Aktuell genutzte Version: %2$s.</string>
+    <string name="update_dialog_download">Herunterladen</string>
+    <string name="torrent_list_empty_add">Torrent hinzufügen</string>
+    <string name="torrent_list_no_result_title">Nichts gefunden</string>
+    <string name="torrent_list_no_result_description">Es stimmen keine Torrents mit den aktuellen Filterkategorien überein. Bitte Filter oder Suchkriterien anpassen.</string>
+    <string name="torrent_list_no_result_reset">Filter zurücksetzen</string>
+    <string name="torrent_list_status_set_as_default">Als Standard einstellen</string>
+    <string name="torrent_list_status_all">Alle</string>
+    <string name="torrent_list_status_downloading">Am Herunterladen</string>
+    <string name="torrent_list_status_seeding">Seeding</string>
+    <string name="torrent_list_status_completed">Abgeschlossen</string>
+    <string name="torrent_list_status_resumed">Weitergeführt</string>
+    <string name="torrent_list_status_paused">Pausiert</string>
+    <string name="torrent_list_status_active">Aktiv</string>
+    <string name="torrent_list_status_inactive">Inaktiv</string>
+    <string name="torrent_list_status_checking">Überprüfen</string>
+    <string name="torrent_list_status_error">Fehler</string>
+    <string name="torrent_list_status">Status</string>
+    <string name="torrent_list_priority_increase_success">Priorität erfolgreich erhöht.</string>
+    <string name="torrent_list_priority_decrease_success">Priorität erfolgreich verringert.</string>
+    <string name="torrent_list_priority_maximize_success">Priorität erfolgreich maximiert.</string>
+    <string name="torrent_list_priority_minimize_success">Priorität erfolgreich minimiert.</string>
+    <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
+    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
+    <string name="stats_category_user_statistics">Nutzerstatistiken</string>
+    <string name="torrent_tab_overview">Übersicht</string>
+    <string name="torrent_tab_files">Dateien</string>
+    <string name="torrent_delete">Torrent löschen</string>
+    <string name="torrent_delete_files">Ebenfalls Dateien von Speicher löschen</string>
+    <string name="torrent_deleted_success">Torrent erfolgreich gelöscht.</string>
+    <string name="torrent_paused_success">Torrent erfolgreich pausiert.</string>
+    <string name="torrent_resumed_success">Torrent erfolgreich weitergeführt.</string>
 </resources>
