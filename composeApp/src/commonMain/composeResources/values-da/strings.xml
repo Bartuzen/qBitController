@@ -624,4 +624,30 @@
     <string name="update_dialog_message">qBitController %1$s er nu tilgængelig. Du bruger nu version %2$s.</string>
     <string name="update_dialog_download">Download</string>
     <string name="date_now">Nu</string>
+    <string name="stats_all_time_upload">Alt-tid Upload</string>
+    <string name="stats_session_waste">Session affald</string>
+    <string name="stats_read_cache_hits">Læs cache Hits</string>
+    <string name="stats_write_cache_overload">Skriv cache Overload</string>
+    <string name="stats_read_cache_overload">Læs cache Overload</string>
+    <string name="stats_total_queued_size">Total Kø Størrelse</string>
+    <string name="torrent_action_copy_magnet_uri">Magnet URI</string>
+    <string name="torrent_enable_super_seeding_success">Super seeding aktiveret med succes.</string>
+    <string name="torrent_disable_super_seeding_success">Super seedning deaktiveret med succes.</string>
+    <string name="torrent_queueing_is_not_enabled">Torrent køing er ikke aktiveret.</string>
+    <string name="torrent_option_share_limit_disable">Deaktiver delegrænse</string>
+    <string name="torrent_overview_piece_map">Piece Map</string>
+    <string name="torrent_overview_reannounce_in">Reannouncer om</string>
+    <string name="torrent_overview_last_seen_complete">Sidst Set Færdig</string>
+    <string name="torrent_overview_wasted">Wasted</string>
+    <string name="torrent_overview_availability">Tilgængelighed</string>
+    <string name="torrent_trackers_leeches">Leeches</string>
+    <plurals name="torrent_peers_selected">
+        <item quantity="one">%1$d peer valgt</item>
+        <item quantity="other">%1$d peers valgt</item>
+    </plurals>
+    <string name="torrent_peers_added">Peers tilføjet med succes.</string>
+    <string name="torrent_peers_banned">Peers forbudt med succes.</string>
+    <string name="torrent_peers_invalid">Indtastede peers er ikke gyldige.</string>
+    <string name="torrent_peers_details_section_overview">Peer Oversigt</string>
+    <string name="torrent_peers_details_peer_id_client">Peer ID Client</string>
 </resources>
