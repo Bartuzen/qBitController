@@ -86,7 +86,7 @@
     <string name="torrent_list_action_priority_minimize">最低优先级</string>
     <string name="torrent_list_action_set_location">设置保存位置</string>
     <plurals name="torrent_list_delete_torrents">
-        <item quantity="other">删除 %1$d 个种子。</item>
+        <item quantity="other">删除 %1$d 个种子</item>
     </plurals>
     <plurals name="torrent_list_torrents_delete_success">
         <item quantity="other">已成功删除 %1$d 个种子。</item>
