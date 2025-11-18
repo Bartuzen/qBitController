@@ -217,6 +217,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.getPluralString
 import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.about_description
@@ -1074,7 +1075,7 @@ fun TorrentListScreen(
                         .imePadding(),
                 ) {
                     Column {
-                        AnimatedNullableVisibility(
+                        /*AnimatedNullableVisibility(
                             value = mainData,
                             enter = fadeIn() + expandVertically(),
                             exit = fadeOut() + shrinkVertically(),
@@ -1099,7 +1100,7 @@ fun TorrentListScreen(
                                     }
                                     .padding(4.dp),
                             )
-                        }
+                        }*/
 
                         val swipeEnabled by viewModel.areTorrentSwipeActionsEnabled.collectAsStateWithLifecycle()
 
@@ -1457,11 +1458,8 @@ private fun TorrentItem(
                             },
                             torrent.ratio.floorToDecimal(2).toString(),
                         ),
+                        style = MaterialTheme.typography.labelMedium,
                     )
-
-                    if (torrent.eta != null) {
-                        Text(text = formatSeconds(torrent.eta))
-                    }
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -1487,8 +1485,12 @@ private fun TorrentItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = formatTorrentState(torrent.state))
-
+                    Text(text = formatTorrentState(torrent.state),
+                        style = MaterialTheme.typography.labelSmall)
+                    if (torrent.eta != null) {
+                        Text(text = formatSeconds(torrent.eta),
+                            style = MaterialTheme.typography.labelSmall)
+                    }
                     val speedText = buildList {
                         if (torrent.downloadSpeed > 0) {
                             add("↓ ${formatBytesPerSecond(torrent.downloadSpeed)}")
@@ -1497,7 +1499,8 @@ private fun TorrentItem(
                             add("↑ ${formatBytesPerSecond(torrent.uploadSpeed)}")
                         }
                     }.joinToString(" ")
-                    Text(text = speedText)
+                    Text(text = speedText,
+                        style = MaterialTheme.typography.labelSmall)
                 }
             }
         }

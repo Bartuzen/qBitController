@@ -14,6 +14,7 @@ fun getTorrentStateColor(state: TorrentState) = when (state) {
     TorrentState.CHECKING_UP,
     TorrentState.CHECKING_RESUME_DATA,
     TorrentState.MOVING,
+    TorrentState.PAUSED_UP,
     -> {
         LocalCustomColors.current.torrentStateDownloading
     }
@@ -31,9 +32,9 @@ fun getTorrentStateColor(state: TorrentState) = when (state) {
     TorrentState.PAUSED_DL -> {
         LocalCustomColors.current.torrentStatePausedDownloading
     }
-    TorrentState.PAUSED_UP -> {
+    /*TorrentState.PAUSED_UP -> {
         LocalCustomColors.current.torrentStatePausedUploading
-    }
+    }*/
     TorrentState.QUEUED_DL,
     TorrentState.QUEUED_UP,
     -> {
