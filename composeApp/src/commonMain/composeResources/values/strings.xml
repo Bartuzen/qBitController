@@ -252,6 +252,7 @@
 
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
+    <string name="torrent_list_speed_format_limit">↓ %1$s ↑ %2$s</string>
 
     <string name="stats_category_user_statistics">User Statistics</string>
     <string name="stats_category_cache_statistics">Cache Statistics</string>

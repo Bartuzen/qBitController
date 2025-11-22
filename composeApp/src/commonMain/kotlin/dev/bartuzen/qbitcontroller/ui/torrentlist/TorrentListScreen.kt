@@ -334,6 +334,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_set_location_h
 import qbitcontroller.composeapp.generated.resources.torrent_list_shutdown_confirm
 import qbitcontroller.composeapp.generated.resources.torrent_list_shutdown_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_speed_format
+import qbitcontroller.composeapp.generated.resources.torrent_list_speed_format_limit
 import qbitcontroller.composeapp.generated.resources.torrent_list_status
 import qbitcontroller.composeapp.generated.resources.torrent_list_status_active
 import qbitcontroller.composeapp.generated.resources.torrent_list_status_all
@@ -2218,23 +2219,49 @@ private fun TopBar(
         title = {
             if (!isSearchMode) {
                 Column {
-                    Text(
+                    /*Text(
                         text = currentServer.name ?: stringResource(Res.string.app_name),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                    )
+                    )*/
+                    Row {
+                        AnimatedNullableVisibility(
+                            value = mainData?.serverState?.freeSpace?.takeIf { it >= 0 },
+                            enter = fadeIn() + expandVertically(),
+                            exit = fadeOut() + shrinkVertically(),
+                        ) { _, freeSpace ->
+                            Text(
+                                text = stringResource(Res.string.torrent_list_free_space, formatBytes(freeSpace)),
+                                style = MaterialTheme.typography.titleSmall,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                fontWeight = FontWeight.Normal,
+                                modifier = Modifier.alpha(0.78f),
+                            )
+                        }
+                    }
                     AnimatedNullableVisibility(
-                        value = mainData?.serverState?.freeSpace?.takeIf { it >= 0 },
+                        value = mainData,
                         enter = fadeIn() + expandVertically(),
                         exit = fadeOut() + shrinkVertically(),
-                    ) { _, freeSpace ->
+                    ) { _, mainData ->
                         Text(
-                            text = stringResource(Res.string.torrent_list_free_space, formatBytes(freeSpace)),
-                            style = MaterialTheme.typography.titleMedium,
+                            text = stringResource(
+                                Res.string.torrent_list_speed_format_limit,
+                                formatBytesPerSecond(mainData.serverState.downloadSpeed),
+                                formatBytesPerSecond(mainData.serverState.uploadSpeed),
+                            ),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(topAppBarColor(listState))
+                                .focusProperties {
+                                    canFocus = canFocusNow
+                                }
+                                .clickable {
+                                    onDialogOpen(Dialog.SpeedLimits)
+                                },
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            fontWeight = FontWeight.Normal,
-                            modifier = Modifier.alpha(0.78f),
+                            style = MaterialTheme.typography.labelSmall,
                         )
                     }
                 }
