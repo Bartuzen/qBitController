@@ -213,4 +213,21 @@
     <string name="torrent_deleted_success">Torrent erfolgreich gelöscht.</string>
     <string name="torrent_paused_success">Torrent erfolgreich pausiert.</string>
     <string name="torrent_resumed_success">Torrent erfolgreich weitergeführt.</string>
+    <string name="error_no_internet">Keine Internet Verbindung.</string>
+    <string name="error_required_field">Dieses Feld ist erforderlich.</string>
+    <string name="torrent_list_no_server_title">Keine Server verfügbar</string>
+    <string name="torrent_list_no_server_description">Sie haben noch keine Server hinzugefügt. Fügen Sie einen Server hinzu, um loszulegen.</string>
+    <string name="torrent_list_no_server_add">Server hinzufügen</string>
+    <string name="torrent_list_empty_rss">Hinzufügen via RSS</string>
+    <string name="torrent_list_trackers_title">Verfolger</string>
+    <string name="torrent_list_switch_speed_limit_alternative_success">Auf alternative Geschwindigkeitsbegrenzungen umgestellt.</string>
+    <string name="torrent_list_switch_speed_limit_regular_success">Auf normale Geschwindigkeitsbegrenzungen umgestellt.</string>
+    <string name="torrent_list_status_moving">Bewegend</string>
+    <string name="stats_category_cache_statistics">Cache-Statistiken</string>
+    <string name="stats_category_performance_statistics">Performanz-Statistiken</string>
+    <string name="stats_all_time_upload">Gesamt-Upload</string>
+    <string name="stats_all_time_download">Gesamt-Download</string>
+    <string name="stats_total_buffer_size">Gesamtpuffergröße</string>
+    <string name="stats_write_cache_overload">Schreibe Cache-Überlast</string>
+    <string name="stats_read_cache_overload">Lese Cache-Überlast</string>
 </resources>
