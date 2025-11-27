@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="language_code">pt</string>
-    <string name="share_add_torrent">Adicionar Torrente</string>
+    <string name="share_add_torrent">Adicionar Torrent</string>
     <string name="torrent_status_checking">Verificando</string>
     <string name="torrent_status_error">Erro</string>
     <string name="torrent_status_seeding">A Semear</string>
@@ -636,10 +636,10 @@
         <item quantity="many">%1$d feeds</item>
         <item quantity="other">%1$d feeds</item>
     </plurals>
-    <string name="destination_torrents">Torrentes</string>
+    <string name="destination_torrents">Torrents</string>
     <string name="destination_search">Pesquisar</string>
     <string name="destination_rss">RSS</string>
-    <string name="destination_logs">Registros</string>
+    <string name="destination_logs">Registos</string>
     <string name="destination_settings">Configurações</string>
     <string name="torrent_overview_piece_downloaded">Descarregado</string>
     <string name="torrent_overview_piece_map">Mapa de Blocos</string>
@@ -733,4 +733,5 @@
     <string name="settings_palette_style_fidelity">Fidelidade</string>
     <string name="settings_palette_style_content">Conteúdo</string>
     <string name="settings_relative_timestamps">Tempos relativos</string>
+    <string name="shortcut_new_window">Nova janela</string>
 </resources>
