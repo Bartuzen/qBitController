@@ -600,4 +600,18 @@
     <string name="settings_theme_light">Clair</string>
     <string name="settings_theme_dark">Sombre</string>
     <string name="settings_theme_system_default">Du système par défaut</string>
+    <string name="torrent_trackers_leeches">Sangsues</string>
+    <string name="rss_rule_delete_success">Règle RSS supprimée avec succès.</string>
+    <string name="rss_rule_name_cannot_be_empty">Le nom ne peut pas être vide.</string>
+    <string name="rss_rule_use_regular_expressions">Utilisez des expressions régulières</string>
+    <string name="rss_rule_must_contain">Doit contenir</string>
+    <string name="rss_rule_must_not_contain">Ne doit pas contenir</string>
+    <string name="rss_rule_episode_filter">Filtre épisode</string>
+    <string name="rss_rule_use_smart_episode_filter">Utilisez le filtre intelligent par épisode</string>
+    <string name="rss_rule_save_to_a_different_directory">Enregistrer dans un autre répertoire</string>
+    <string name="rss_rule_save_to">Enregistrer dans</string>
+    <string name="rss_rule_ignore_subsequent_matches_for">Ignorer les correspondances suivantes pendant (jours)</string>
+    <string name="rss_rule_add_paused">Ajouter une pause</string>
+    <string name="rss_rule_add_paused_always">Toujours</string>
+    <string name="rss_rule_add_paused_never">Jamais</string>
 </resources>
