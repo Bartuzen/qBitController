@@ -642,4 +642,32 @@
     <string name="settings_disabled">Désactivé</string>
     <string name="search_plugins_action_save">Enregistrer</string>
     <string name="search_result_action_sort_search_engine">Moteur de recherche</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent sélectionné</item>
+        <item quantity="many">%1$d torrents sélectionnés</item>
+        <item quantity="other">%1$d torrents sélectionnés</item>
+    </plurals>
+    <string name="search_result_filter_results">Filtrer les résultats…</string>
+    <string name="search_start_category_music">Musique</string>
+    <string name="search_start_category_pictures">Images</string>
+    <string name="search_start_category_software">Logiciels</string>
+    <string name="search_start_category_movies">Films</string>
+    <string name="search_start_category_games">Jeux</string>
+    <string name="search_start_category_books">Livres</string>
+    <string name="search_start_category_anime">Anime</string>
+    <string name="search_start_category">Catégorie</string>
+    <string name="search_start_category_all">Tout</string>
+    <string name="search_start_category_tv_shows">Émissions TV</string>
+    <string name="rss_rule_delete">Supprimer la règle</string>
+    <string name="rss_rule_rename">Renommer la règle</string>
+    <string name="rss_rule_action_create">Créer une règle</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d flux</item>
+        <item quantity="many">%1$d flux</item>
+        <item quantity="other">%1$d flux</item>
+    </plurals>
+    <string name="rss_rule_item_disabled">Désactivé</string>
+    <string name="rss_rule_item_enabled">Activé</string>
+    <string name="rss_rule_name">Nom de la règle</string>
+    <string name="rss_rule_delete_confirm">Voulez-vous vraiment supprimer la règle %1$s ?</string>
 </resources>
