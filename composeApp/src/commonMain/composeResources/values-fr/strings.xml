@@ -614,4 +614,32 @@
     <string name="rss_rule_add_paused">Ajouter une pause</string>
     <string name="rss_rule_add_paused_always">Toujours</string>
     <string name="rss_rule_add_paused_never">Jamais</string>
+    <string name="settings_server_advanced_doh">DNS over HTTPS (DoH)</string>
+    <string name="settings_server_url_examples">Exemples : %1$s</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_palette_style_monochrome">Monochrome</string>
+    <string name="settings_palette_style_fruit_salad">Salade de fruits</string>
+    <string name="settings_palette_style_rainbow">Arc-en-ciel</string>
+    <string name="settings_palette_style_neutral">Neutre</string>
+    <string name="settings_app_color_reset">Réinitialiser</string>
+    <string name="settings_app_color">Couleur de l\'app</string>
+    <string name="settings_language">Langue</string>
+    <plurals name="settings_notification_check_interval_description">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="many">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <plurals name="settings_auto_refresh_interval_description">
+        <item quantity="one">%1$d seconde</item>
+        <item quantity="many">%1$d secondes</item>
+        <item quantity="other">%1$d secondes</item>
+    </plurals>
+    <plurals name="settings_connection_timeout_description">
+        <item quantity="one">%1$d seconde</item>
+        <item quantity="many">%1$d secondes</item>
+        <item quantity="other">%1$d secondes</item>
+    </plurals>
+    <string name="settings_disabled">Désactivé</string>
+    <string name="search_plugins_action_save">Enregistrer</string>
+    <string name="search_result_action_sort_search_engine">Moteur de recherche</string>
 </resources>
