@@ -628,7 +628,6 @@ fun AddTorrentScreen(
                 ) { (isLoading, categoryList) ->
                     when {
                         isLoading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                         categoryList?.isNotEmpty() == true -> FlowRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -644,7 +643,6 @@ fun AddTorrentScreen(
                                 )
                             }
                         }
-
                         else -> Text(
                             text = stringResource(Res.string.torrent_no_categories),
                             style = MaterialTheme.typography.bodySmall,
@@ -660,7 +658,6 @@ fun AddTorrentScreen(
                 ) { (isLoading, tagList) ->
                     when {
                         isLoading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                         tagList?.isNotEmpty() == true -> FlowRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -680,7 +677,6 @@ fun AddTorrentScreen(
                                 )
                             }
                         }
-
                         else -> Text(
                             text = stringResource(Res.string.torrent_no_tags),
                             style = MaterialTheme.typography.bodySmall,

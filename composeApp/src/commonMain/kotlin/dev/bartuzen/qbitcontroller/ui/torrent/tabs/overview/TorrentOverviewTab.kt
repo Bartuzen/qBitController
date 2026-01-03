@@ -1501,12 +1501,10 @@ private fun SetCategoryDialog(
             AnimatedContent(targetState = categories) { categories ->
                 when {
                     categories == null -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                     categories.isEmpty() -> Text(
                         text = stringResource(Res.string.torrent_no_categories),
                         color = MaterialTheme.colorScheme.error,
                     )
-
                     else -> FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -1564,12 +1562,10 @@ private fun SetTagsDialog(
             AnimatedContent(targetState = tags) { tags ->
                 when {
                     tags == null -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                     tags.isEmpty() -> Text(
                         text = stringResource(Res.string.torrent_no_tags),
                         color = MaterialTheme.colorScheme.error,
                     )
-
                     else -> FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
