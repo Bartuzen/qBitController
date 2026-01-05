@@ -13,7 +13,6 @@ import dev.bartuzen.qbitcontroller.utils.formatRelativeDate
 import org.koin.compose.koinInject
 import kotlin.time.Instant
 
-// TODO Make tooltip persistent when the fix for https://issuetracker.google.com/issues/352722609 is available
 @Composable
 fun DateText(date: Instant, tooltipText: @Composable (date: String) -> Unit, content: @Composable (date: String) -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
@@ -42,7 +41,7 @@ fun DateText(
                     tooltipText(date.formatDate())
                 }
             },
-            state = rememberTooltipState(),
+            state = rememberTooltipState(isPersistent = true),
             focusable = false,
         ) {
             content(date.formatRelativeDate())
