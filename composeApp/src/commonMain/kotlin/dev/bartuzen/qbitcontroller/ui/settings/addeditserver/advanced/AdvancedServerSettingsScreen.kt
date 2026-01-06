@@ -92,7 +92,9 @@ fun AdvancedServerSettingsScreen(
         )
     }
     var dnsOverHttps by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf(advancedSettings.dnsOverHttps) }
-    var customHeaders by rememberSaveable { mutableStateOf(advancedSettings.customHeaders.joinToString("\n") { "${it.key}=${it.value}" }) }
+    var customHeaders by rememberSaveable {
+        mutableStateOf(advancedSettings.customHeaders.joinToString("\n") { "${it.key}=${it.value}" })
+    }
 
     LaunchedEffect(
         trustSelfSignedCertificates,
