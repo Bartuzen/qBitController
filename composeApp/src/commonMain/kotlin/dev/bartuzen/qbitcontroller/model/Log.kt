@@ -20,7 +20,7 @@ data class Log(
     val type: LogType,
 )
 
-private object LogTypeSerializer : KSerializer<LogType> {
+object LogTypeSerializer : KSerializer<LogType> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("LogType", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: LogType) {

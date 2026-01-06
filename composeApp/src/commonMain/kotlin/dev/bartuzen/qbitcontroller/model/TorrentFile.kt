@@ -28,7 +28,7 @@ data class TorrentFile(
     val priority: TorrentFilePriority,
 )
 
-private object TorrentFilePrioritySerializer : KSerializer<TorrentFilePriority> {
+object TorrentFilePrioritySerializer : KSerializer<TorrentFilePriority> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("TorrentFilePriority", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: TorrentFilePriority) {

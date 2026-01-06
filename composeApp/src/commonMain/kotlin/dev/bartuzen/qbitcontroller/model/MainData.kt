@@ -187,7 +187,7 @@ data class MainData(
     }
 }
 
-private object MainDataSerializer : KSerializer<MainData> {
+object MainDataSerializer : KSerializer<MainData> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("MainData") {
         element<ServerState>("server_state")
         element<Map<String, Torrent>>("torrents")
