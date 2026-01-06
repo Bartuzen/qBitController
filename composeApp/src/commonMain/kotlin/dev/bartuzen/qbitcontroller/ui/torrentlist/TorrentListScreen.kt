@@ -94,6 +94,7 @@ import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -102,7 +103,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
@@ -2804,7 +2804,7 @@ private fun CreateEditCategoryDialog(
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                             .fillMaxWidth(),
                         value = when (downloadPathEnabled) {
                             true -> stringResource(Res.string.torrent_list_create_category_download_path_yes)
@@ -3381,7 +3381,7 @@ private fun SpeedLimitsDialog(
                             .padding(top = 8.dp),
                     ) {
                         OutlinedTextField(
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                             value = when (uploadSpeedUnit) {
                                 1 -> stringResource(Res.string.size_mebibytes)
                                 else -> stringResource(Res.string.size_kibibytes)
@@ -3483,7 +3483,7 @@ private fun SpeedLimitsDialog(
                             .padding(top = 8.dp),
                     ) {
                         OutlinedTextField(
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                             value = when (downloadSpeedUnit) {
                                 1 -> stringResource(Res.string.size_mebibytes)
                                 else -> stringResource(Res.string.size_kibibytes)
