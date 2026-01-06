@@ -40,13 +40,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachFile
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.outlined.Error
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -475,7 +475,7 @@ fun AddTorrentScreen(
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                         )
 
                         ExposedDropdownMenu(
@@ -628,7 +628,6 @@ fun AddTorrentScreen(
                 ) { (isLoading, categoryList) ->
                     when {
                         isLoading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                         categoryList?.isNotEmpty() == true -> FlowRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -644,7 +643,6 @@ fun AddTorrentScreen(
                                 )
                             }
                         }
-
                         else -> Text(
                             text = stringResource(Res.string.torrent_no_categories),
                             style = MaterialTheme.typography.bodySmall,
@@ -660,7 +658,6 @@ fun AddTorrentScreen(
                 ) { (isLoading, tagList) ->
                     when {
                         isLoading -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                         tagList?.isNotEmpty() == true -> FlowRow(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -680,7 +677,6 @@ fun AddTorrentScreen(
                                 )
                             }
                         }
-
                         else -> Text(
                             text = stringResource(Res.string.torrent_no_tags),
                             style = MaterialTheme.typography.bodySmall,
@@ -738,7 +734,7 @@ fun AddTorrentScreen(
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = autoTmmExpanded) },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                     )
 
                     ExposedDropdownMenu(
@@ -797,7 +793,7 @@ fun AddTorrentScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                     )
 
                     ExposedDropdownMenu(
@@ -849,7 +845,7 @@ fun AddTorrentScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                     )
 
                     ExposedDropdownMenu(
@@ -1015,7 +1011,7 @@ fun AddTorrentScreen(
                             readOnly = true,
                             singleLine = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = upSpeedUnitExpanded) },
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                         )
 
                         ExposedDropdownMenu(
@@ -1095,7 +1091,7 @@ fun AddTorrentScreen(
                             readOnly = true,
                             singleLine = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = dlSpeedUnitExpanded) },
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                         )
 
                         ExposedDropdownMenu(

@@ -9,7 +9,7 @@ object Versions {
     object Android {
         const val CompileSdk = 36
         const val TargetSdk = 36
-        const val MinSdk = 21
+        const val MinSdk = 23
 
         val JavaVersion = GradleJavaVersion.VERSION_21
         const val JvmTarget = "21"

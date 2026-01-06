@@ -1,19 +1,19 @@
 package dev.bartuzen.qbitcontroller.ui.components
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SwipeToDismissBox
-import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 
 @Composable
 fun SwipeableSnackbarHost(
@@ -22,33 +22,27 @@ fun SwipeableSnackbarHost(
     snackbar: @Composable (SnackbarData) -> Unit = { Snackbar(it) },
 ) {
     val dismissSnackbarState = rememberSwipeToDismissBoxState()
-
-    LaunchedEffect(dismissSnackbarState.currentValue != SwipeToDismissBoxValue.Settled) {
-        withContext(NonCancellable) {
-            if (dismissSnackbarState.currentValue != SwipeToDismissBoxValue.Settled) {
-                hostState.currentSnackbarData?.dismiss()
-                delay(100)
-                dismissSnackbarState.snapTo(SwipeToDismissBoxValue.Settled)
-            }
-        }
-    }
+    val scope = rememberCoroutineScope()
 
     SwipeToDismissBox(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         state = dismissSnackbarState,
         backgroundContent = {},
-        content = {
-            val alpha = if (dismissSnackbarState.dismissDirection == SwipeToDismissBoxValue.Settled) {
-                1f
-            } else {
-                1 - dismissSnackbarState.progress
+        onDismiss = {
+            scope.launch {
+                hostState.currentSnackbarData?.dismiss()
+                delay(100)
+                dismissSnackbarState.reset()
             }
-
-            SnackbarHost(
-                hostState = hostState,
-                snackbar = snackbar,
-                modifier = Modifier.alpha(alpha),
-            )
+        },
+        content = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                SnackbarHost(
+                    hostState = hostState,
+                    snackbar = snackbar,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
         },
     )
 }

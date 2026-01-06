@@ -62,7 +62,7 @@ data class TorrentPeer(
     val address = "$ip:$port"
 }
 
-private object PeerFlagSerializer : KSerializer<List<PeerFlag>> {
+object PeerFlagSerializer : KSerializer<List<PeerFlag>> {
     override val descriptor: SerialDescriptor = ListSerializer(String.serializer()).descriptor
 
     override fun serialize(encoder: Encoder, value: List<PeerFlag>) {
@@ -76,7 +76,7 @@ private object PeerFlagSerializer : KSerializer<List<PeerFlag>> {
     }
 }
 
-private object PeerFilesSerializer : KSerializer<List<String>> {
+object PeerFilesSerializer : KSerializer<List<String>> {
     override val descriptor: SerialDescriptor = ListSerializer(String.serializer()).descriptor
 
     override fun serialize(encoder: Encoder, value: List<String>) {

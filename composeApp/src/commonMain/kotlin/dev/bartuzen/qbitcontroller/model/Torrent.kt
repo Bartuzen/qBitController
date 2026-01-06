@@ -171,7 +171,7 @@ data class Torrent(
     val availability: Double?,
 )
 
-private object EtaSerializer : KSerializer<Int?> {
+object EtaSerializer : KSerializer<Int?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Eta", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: Int?) {
@@ -184,7 +184,7 @@ private object EtaSerializer : KSerializer<Int?> {
     }
 }
 
-private object PrioritySerializer : KSerializer<Int?> {
+object PrioritySerializer : KSerializer<Int?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Priority", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: Int?) {
@@ -196,7 +196,7 @@ private object PrioritySerializer : KSerializer<Int?> {
     }
 }
 
-private object TagsSerializer : KSerializer<List<String>> {
+object TagsSerializer : KSerializer<List<String>> {
     override val descriptor: SerialDescriptor = listSerialDescriptor<List<String>>()
 
     override fun serialize(encoder: Encoder, value: List<String>) {
@@ -269,7 +269,7 @@ enum class TorrentState {
     UNKNOWN,
 }
 
-private object TorrentStateSerializer : KSerializer<TorrentState> {
+object TorrentStateSerializer : KSerializer<TorrentState> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("TorrentState", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: TorrentState) {
@@ -308,7 +308,7 @@ enum class PieceState(val id: Int) {
     DOWNLOADED(2),
 }
 
-private object PieceStateSerializer : KSerializer<PieceState> {
+object PieceStateSerializer : KSerializer<PieceState> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("PieceState", PrimitiveKind.INT)
 
     override fun serialize(encoder: Encoder, value: PieceState) {

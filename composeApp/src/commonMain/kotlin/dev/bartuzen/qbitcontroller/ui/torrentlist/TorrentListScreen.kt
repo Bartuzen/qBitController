@@ -94,6 +94,7 @@ import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -102,7 +103,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.OutlinedButton
@@ -454,33 +454,28 @@ fun TorrentListScreen(
                     }
                 }
             }
-
             TorrentListViewModel.Event.UpdateMainDataSuccess -> {
                 if (snackbarHostState.currentSnackbarData?.visuals?.duration == SnackbarDuration.Indefinite) {
                     snackbarHostState.currentSnackbarData?.dismiss()
                 }
             }
-
             TorrentListViewModel.Event.ServerChanged -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 isSearchMode = false
                 selectedTorrents.clear()
             }
-
             TorrentListViewModel.Event.QueueingNotEnabled -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_queueing_is_not_enabled))
                 }
             }
-
             TorrentListViewModel.Event.CategoryEditingFailed -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_list_edit_category_error))
                 }
             }
-
             is TorrentListViewModel.Event.TorrentsDeleted -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -493,7 +488,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             is TorrentListViewModel.Event.TorrentsPaused -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -506,7 +500,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             is TorrentListViewModel.Event.TorrentsResumed -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -519,7 +512,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             is TorrentListViewModel.Event.CategoryDeleted -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -528,7 +520,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             is TorrentListViewModel.Event.TagDeleted -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -537,7 +528,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             TorrentListViewModel.Event.TorrentsPriorityDecreased -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -546,7 +536,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             TorrentListViewModel.Event.TorrentsPriorityIncreased -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -555,7 +544,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             TorrentListViewModel.Event.TorrentsPriorityMaximized -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -564,7 +552,6 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             TorrentListViewModel.Event.TorrentsPriorityMinimized -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -573,35 +560,30 @@ fun TorrentListScreen(
                     )
                 }
             }
-
             TorrentListViewModel.Event.LocationUpdated -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_location_update_success))
                 }
             }
-
             TorrentListViewModel.Event.CategoryCreated -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_list_create_category_success))
                 }
             }
-
             TorrentListViewModel.Event.CategoryEdited -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_list_edit_category_success))
                 }
             }
-
             TorrentListViewModel.Event.TagCreated -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_list_create_tag_success))
                 }
             }
-
             is TorrentListViewModel.Event.SpeedLimitsToggled -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
@@ -616,21 +598,18 @@ fun TorrentListScreen(
                     }
                 }
             }
-
             TorrentListViewModel.Event.SpeedLimitsUpdated -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_speed_update_success))
                 }
             }
-
             TorrentListViewModel.Event.Shutdown -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 scope.launch {
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_list_shutdown_success))
                 }
             }
-
             TorrentListViewModel.Event.TorrentCategoryUpdated -> {
                 scope.launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
@@ -679,7 +658,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         is Dialog.CreateSubcategory -> {
             LaunchedEffect(mainData?.categories) {
                 if (mainData?.categories?.find { dialog.parent == it.name } == null) {
@@ -703,7 +681,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         is Dialog.EditCategory -> {
             LaunchedEffect(mainData?.categories) {
                 if (mainData?.categories?.find { dialog.category.name == it.name } == null) {
@@ -727,7 +704,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         Dialog.Statistics -> {
             LaunchedEffect(mainData == null) {
                 if (mainData == null) {
@@ -744,7 +720,6 @@ fun TorrentListScreen(
                 )
             }
         }
-
         is Dialog.DeleteTag -> {
             LaunchedEffect(mainData?.tags) {
                 if (mainData?.tags?.find { dialog.tag == it } == null) {
@@ -763,7 +738,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         is Dialog.DeleteCategory -> {
             LaunchedEffect(mainData?.categories) {
                 if (mainData?.categories?.find { dialog.category == it.name } == null) {
@@ -782,7 +756,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         Dialog.CreateTag -> {
             CreateTagDialog(
                 onDismiss = {
@@ -794,7 +767,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         Dialog.Shutdown -> {
             ShutdownDialog(
                 onDismiss = {
@@ -806,7 +778,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         Dialog.About -> {
             AboutDialog(
                 onDismiss = {
@@ -814,7 +785,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         is Dialog.DeleteTorrent -> {
             LaunchedEffect(mainData?.torrents) {
                 if (mainData?.torrents?.find { dialog.hash == it.hash } == null) {
@@ -833,7 +803,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         is Dialog.DeleteSelectedTorrents -> {
             LaunchedEffect(selectedTorrents.isEmpty()) {
                 if (selectedTorrents.isEmpty()) {
@@ -853,7 +822,6 @@ fun TorrentListScreen(
                 },
             )
         }
-
         Dialog.SetSelectedTorrentsLocation -> {
             LaunchedEffect(selectedTorrents.isEmpty()) {
                 if (selectedTorrents.isEmpty()) {
@@ -883,7 +851,6 @@ fun TorrentListScreen(
                 )
             }
         }
-
         Dialog.SetSelectedTorrentsCategory -> {
             LaunchedEffect(selectedTorrents.isEmpty()) {
                 if (selectedTorrents.isEmpty()) {
@@ -914,7 +881,6 @@ fun TorrentListScreen(
                 )
             }
         }
-
         Dialog.SpeedLimits -> {
             LaunchedEffect(mainData == null) {
                 if (mainData == null) {
@@ -941,7 +907,6 @@ fun TorrentListScreen(
                 )
             }
         }
-
         null -> {}
     }
 
@@ -2839,7 +2804,7 @@ private fun CreateEditCategoryDialog(
                 ) {
                     OutlinedTextField(
                         modifier = Modifier
-                            .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                             .fillMaxWidth(),
                         value = when (downloadPathEnabled) {
                             true -> stringResource(Res.string.torrent_list_create_category_download_path_yes)
@@ -3312,7 +3277,6 @@ private fun SpeedLimitsDialog(
                                         limit * 1024
                                     }
                                 }
-
                                 1 -> {
                                     if (limit > 2_000_000 / 1024) {
                                         null
@@ -3320,7 +3284,6 @@ private fun SpeedLimitsDialog(
                                         limit * 1024 * 1024
                                     }
                                 }
-
                                 else -> null
                             }
                         }
@@ -3418,7 +3381,7 @@ private fun SpeedLimitsDialog(
                             .padding(top = 8.dp),
                     ) {
                         OutlinedTextField(
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                             value = when (uploadSpeedUnit) {
                                 1 -> stringResource(Res.string.size_mebibytes)
                                 else -> stringResource(Res.string.size_kibibytes)
@@ -3520,7 +3483,7 @@ private fun SpeedLimitsDialog(
                             .padding(top = 8.dp),
                     ) {
                         OutlinedTextField(
-                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                             value = when (downloadSpeedUnit) {
                                 1 -> stringResource(Res.string.size_mebibytes)
                                 else -> stringResource(Res.string.size_kibibytes)

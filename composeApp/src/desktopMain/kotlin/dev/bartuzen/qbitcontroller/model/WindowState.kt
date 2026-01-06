@@ -23,7 +23,7 @@ data class WindowState(
     val size: DpSize = DpSize(800.dp, 600.dp),
 )
 
-private object WindowStateSerializer : KSerializer<WindowState> {
+object WindowStateSerializer : KSerializer<WindowState> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("WindowState") {
         element<String>("placement")
         element<Double?>("positionX")
