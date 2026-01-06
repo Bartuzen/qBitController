@@ -117,6 +117,8 @@ private class JsonConverter(private val format: Json) : ContentConverter {
         } catch (_: SerializationException) {
             guessSerializer(value, format.serializersModule)
         }
+
+        @Suppress("UNCHECKED_CAST")
         val buffer = Buffer().also {
             format.encodeToSink(
                 serializer as KSerializer<Any?>,
