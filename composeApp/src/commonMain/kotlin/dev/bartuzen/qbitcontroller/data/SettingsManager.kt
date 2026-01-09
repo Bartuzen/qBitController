@@ -64,6 +64,8 @@ enum class TorrentSort {
     ADDITION_DATE,
     COMPLETION_DATE,
     LAST_ACTIVITY,
+    DOWNLOADED,
+    UPLOADED,
 }
 
 enum class SearchSort {

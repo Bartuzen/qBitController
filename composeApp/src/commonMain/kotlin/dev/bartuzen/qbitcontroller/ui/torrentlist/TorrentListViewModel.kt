@@ -259,6 +259,16 @@ class TorrentListViewModel(
                                 .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
                                 .thenBy(Torrent::hash)
                         }
+                        TorrentSort.DOWNLOADED -> {
+                            compareBy(Torrent::downloaded)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.UPLOADED -> {
+                            compareBy(Torrent::uploaded)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
                     }
                     sortedWith(comparator)
                 }.run {
