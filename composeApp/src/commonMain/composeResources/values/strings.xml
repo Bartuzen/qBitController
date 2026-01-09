@@ -143,6 +143,8 @@
     <string name="torrent_list_action_sort_completion_date">Completion Date</string>
     <string name="torrent_list_action_sort_last_activity">Last Activity</string>
     <string name="torrent_list_action_sort_reverse">Reverse</string>
+    <string name="torrent_list_action_sort_downloaded">Downloaded</string>
+    <string name="torrent_list_action_sort_uploaded">Uploaded</string>
 
     <string name="torrent_list_action_pause">Pause</string>
     <string name="torrent_list_action_resume">Resume</string>

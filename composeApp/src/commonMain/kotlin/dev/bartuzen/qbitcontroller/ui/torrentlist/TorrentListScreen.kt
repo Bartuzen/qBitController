@@ -283,6 +283,8 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_action_sort_st
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_sort_total_leeches
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_sort_total_seeds
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_sort_upload_speed
+import qbitcontroller.composeapp.generated.resources.torrent_list_action_sort_downloaded
+import qbitcontroller.composeapp.generated.resources.torrent_list_action_sort_uploaded
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_statistics
 import qbitcontroller.composeapp.generated.resources.torrent_list_categories
 import qbitcontroller.composeapp.generated.resources.torrent_list_category_tag_all
@@ -2349,6 +2351,8 @@ private fun TopBar(
                                     Res.string.torrent_list_action_sort_addition_date to TorrentSort.ADDITION_DATE,
                                     Res.string.torrent_list_action_sort_completion_date to TorrentSort.COMPLETION_DATE,
                                     Res.string.torrent_list_action_sort_last_activity to TorrentSort.LAST_ACTIVITY,
+                                    Res.string.torrent_list_action_sort_downloaded to TorrentSort.DOWNLOADED,
+                                    Res.string.torrent_list_action_sort_uploaded to TorrentSort.UPLOADED,
                                 )
                             }
                             sortOptions.forEach { (stringId, torrentSort) ->
