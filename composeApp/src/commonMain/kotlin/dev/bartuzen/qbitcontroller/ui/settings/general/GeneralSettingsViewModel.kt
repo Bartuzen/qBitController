@@ -8,5 +8,6 @@ class GeneralSettingsViewModel(
 ) : ViewModel() {
     var notificationCheckInterval = settingsManager.notificationCheckInterval
     var areTorrentSwipeActionsEnabled = settingsManager.areTorrentSwipeActionsEnabled
+    var trafficStatsInList = settingsManager.trafficStatsInList
     val checkUpdates = settingsManager.checkUpdates
 }

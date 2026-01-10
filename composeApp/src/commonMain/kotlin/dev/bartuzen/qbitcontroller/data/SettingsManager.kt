@@ -27,6 +27,7 @@ open class SettingsManager(
     val autoRefreshInterval = preference(settings, "autoRefreshInterval", 3)
     val notificationCheckInterval = preference(settings, "notificationCheckInterval", 15)
     val areTorrentSwipeActionsEnabled = preference(settings, "areTorrentSwipeActionsEnabled", true)
+    val trafficStatsInList = preference(settings, "trafficStatsInList", TrafficStats.NONE)
 
     val defaultTorrentStatus = preference(settings, "defaultTorrentState", TorrentFilter.ALL)
     val areStatesCollapsed = preference(settings, "areStatesCollapsed", false)
@@ -74,4 +75,11 @@ enum class SearchSort {
     SEEDERS,
     LEECHERS,
     SEARCH_ENGINE,
+}
+
+enum class TrafficStats {
+    NONE,
+    TOTAL,
+    SESSION,
+    COMPLETE,
 }

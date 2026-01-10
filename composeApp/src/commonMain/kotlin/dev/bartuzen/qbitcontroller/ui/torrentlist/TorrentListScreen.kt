@@ -167,6 +167,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.currentStateAsState
 import dev.bartuzen.qbitcontroller.data.TorrentSort
+import dev.bartuzen.qbitcontroller.data.TrafficStats
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
 import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.MainData
@@ -1069,6 +1070,7 @@ fun TorrentListScreen(
                         }
 
                         val swipeEnabled by viewModel.areTorrentSwipeActionsEnabled.collectAsStateWithLifecycle()
+                        val trafficStats by viewModel.trafficStatsInList.collectAsStateWithLifecycle()
 
                         Box(modifier = Modifier.fillMaxSize()) {
                             LazyColumn(
@@ -1110,6 +1112,7 @@ fun TorrentListScreen(
                                                 canFocus = drawerState.isClosed
                                             },
                                         swipeEnabled = swipeEnabled,
+                                        trafficStats = trafficStats,
                                         onPauseTorrent = { viewModel.pauseTorrents(listOf(torrent.hash)) },
                                         onResumeTorrent = { viewModel.resumeTorrents(listOf(torrent.hash)) },
                                         onDeleteTorrent = { currentDialog = Dialog.DeleteTorrent(torrent.hash) },
@@ -1257,6 +1260,7 @@ private fun TorrentItem(
     torrent: Torrent,
     selected: Boolean,
     swipeEnabled: Boolean,
+    trafficStats: TrafficStats,
     searchQuery: String?,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
@@ -1429,6 +1433,22 @@ private fun TorrentItem(
                     if (torrent.eta != null) {
                         Text(text = formatSeconds(torrent.eta))
                     }
+                }
+
+                val trafficStatsString = when (trafficStats) {
+                    TrafficStats.NONE -> null
+                    TrafficStats.TOTAL -> "↓ ${formatBytes(torrent.downloaded)} " +
+                        "↑ ${formatBytes(torrent.uploaded)}"
+                    TrafficStats.SESSION -> "↓ ${formatBytes(torrent.downloadedSession)} " +
+                        "↑ ${formatBytes(torrent.uploadedSession)}"
+                    TrafficStats.COMPLETE -> "↓ ${formatBytes(torrent.downloaded)} " +
+                        "(${formatBytes(torrent.downloadedSession)}) " +
+                        "↑ ${formatBytes(torrent.uploaded)} " +
+                        "(${formatBytes(torrent.uploadedSession)})"
+                }
+
+                if (trafficStatsString != null) {
+                    Text(text = trafficStatsString)
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))

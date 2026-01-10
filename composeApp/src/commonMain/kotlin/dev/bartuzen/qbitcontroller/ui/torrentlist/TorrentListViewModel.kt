@@ -60,6 +60,7 @@ class TorrentListViewModel(
     val torrentSort = settingsManager.sort.flow
     val isReverseSorting = settingsManager.isReverseSorting.flow
     val areTorrentSwipeActionsEnabled = settingsManager.areTorrentSwipeActionsEnabled.flow
+    val trafficStatsInList = settingsManager.trafficStatsInList.flow
     private val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
     val areStatesCollapsed = settingsManager.areStatesCollapsed.flow
