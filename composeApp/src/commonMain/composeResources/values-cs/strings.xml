@@ -741,4 +741,6 @@
     <string name="update_dialog_title">Aktualizace k dispozici</string>
     <string name="update_dialog_message">qBitController %1$s je nyní k dispozici. Aktuálně používáte verzi %2$s.</string>
     <string name="update_dialog_download">Stáhnout</string>
+    <string name="torrent_list_action_sort_downloaded">Stažené</string>
+    <string name="torrent_list_action_sort_uploaded">Odeslané</string>
 </resources>
