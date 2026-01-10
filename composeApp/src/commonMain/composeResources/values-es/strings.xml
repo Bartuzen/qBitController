@@ -734,4 +734,6 @@
     </plurals>
     <string name="stats_read_cache_hits">Aciertos de caché de lectura</string>
     <string name="shortcut_new_window">Nueva ventana</string>
+    <string name="torrent_list_action_sort_downloaded">Descargado</string>
+    <string name="torrent_list_action_sort_uploaded">Subido</string>
 </resources>
