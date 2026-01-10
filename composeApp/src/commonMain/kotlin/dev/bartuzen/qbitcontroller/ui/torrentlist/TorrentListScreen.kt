@@ -1448,9 +1448,7 @@ private fun TorrentItem(
                 }
 
                 if (trafficStatsString != null) {
-                    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                        Text(text = trafficStatsString)
-                    }
+                    Text(text = trafficStatsString)
                 }
 
                 Spacer(modifier = Modifier.height(4.dp))
