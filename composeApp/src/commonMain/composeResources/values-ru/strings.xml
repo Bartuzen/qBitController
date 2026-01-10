@@ -763,4 +763,9 @@
     <string name="shortcut_new_window">Новое окно</string>
     <string name="torrent_list_action_sort_downloaded">Загружено</string>
     <string name="torrent_list_action_sort_uploaded">Отдано</string>
+    <string name="settings_traffic_stats_in_list">Статистика трафика в списке</string>
+    <string name="settings_traffic_stats_in_list_none">Нет</string>
+    <string name="settings_traffic_stats_in_list_total">Всего</string>
+    <string name="settings_traffic_stats_in_list_session">Сеанс</string>
+    <string name="settings_traffic_stats_in_list_complete">Всего (Сеанс)</string>
 </resources>
