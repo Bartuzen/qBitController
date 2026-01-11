@@ -736,4 +736,9 @@
     <string name="shortcut_new_window">Nueva ventana</string>
     <string name="torrent_list_action_sort_downloaded">Descargado</string>
     <string name="torrent_list_action_sort_uploaded">Subido</string>
+    <string name="settings_traffic_stats_in_list">Estadísticas de tráfico en lista</string>
+    <string name="settings_traffic_stats_in_list_none">Ninguna</string>
+    <string name="settings_traffic_stats_in_list_total">Total</string>
+    <string name="settings_traffic_stats_in_list_session">Sesión</string>
+    <string name="settings_traffic_stats_in_list_complete">Total (Sesión)</string>
 </resources>
