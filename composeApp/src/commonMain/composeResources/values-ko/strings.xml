@@ -14,14 +14,14 @@
     <string name="torrent_list_edit_category_success">범주가 성공적으로 수정됨.</string>
     <string name="torrent_list_create_category_hint">범주 이름</string>
     <string name="torrent_list_create_category_download_path_no">아니오</string>
-    <string name="torrent_list_create_category_enable_download_path_hint">내려받기 경로 활성화</string>
-    <string name="torrent_list_create_category_download_path_hint">내려받기 경로</string>
+    <string name="torrent_list_create_category_enable_download_path_hint">다운로드 경로 활성화</string>
+    <string name="torrent_list_create_category_download_path_hint">다운로드 경로</string>
     <string name="torrent_list_create_tag">태그 생성</string>
     <string name="torrent_list_create_tag_name_cannot_be_empty">태그 이름은 비어있을 수 없습니다.</string>
     <string name="torrent_list_delete_category_confirm">%1$s 범주를 삭제하시겠습니까?</string>
     <string name="torrent_list_create_tag_hint">태그 이름</string>
-    <string name="torrent_speed_download_limit">내려받기 속도 제한</string>
-    <string name="torrent_speed_upload_limit">올려주기 속도 제한</string>
+    <string name="torrent_speed_download_limit">다운로드 속도 제한</string>
+    <string name="torrent_speed_upload_limit">업로드 속도 제한</string>
     <string name="torrent_list_shutdown_success">qBittorrent가 성공적으로 종료되었습니다.</string>
     <string name="torrent_list_status_set_as_default">기본값으로 설정</string>
     <string name="torrent_list_priority_maximize_success">우선 순위가 성공적으로 최대화되었습니다.</string>
@@ -50,7 +50,7 @@
     <string name="torrent_option_automatic_torrent_management">자동 토렌트 관리</string>
     <string name="torrent_option_download_path_enable">불완전한 토렌트에 대해 다른 경로 사용</string>
     <string name="torrent_option_speed_limit">토렌트 속도 제한</string>
-    <string name="torrent_option_download_speed_limit">내려받기 속도 제한 (KiB/s)</string>
+    <string name="torrent_option_download_speed_limit">다운로드 속도 제한 (KiB/s)</string>
     <string name="torrent_status_force_seeding">[F] 배포</string>
     <string name="torrent_status_checking_resume_data">이어받기 데이터 확인중</string>
     <string name="torrent_status_downloading_metadata">메타데이터 내려받는 중</string>
@@ -84,7 +84,7 @@
     <string name="torrent_list_action_add_torrent">토렌트 추가</string>
     <string name="torrent_list_action_shutdown">qBittorrent 종료</string>
     <string name="torrent_list_action_sort_name">이름</string>
-    <string name="torrent_list_action_sort_download_speed">내려받기 속도</string>
+    <string name="torrent_list_action_sort_download_speed">다운로드 속도</string>
     <string name="torrent_list_action_sort_eta">남은 시간</string>
     <string name="torrent_list_action_sort_progress">진행률</string>
     <string name="torrent_list_action_sort_total_seeds">전체 배포</string>
@@ -108,7 +108,7 @@
         <item quantity="other">%1$d개의 토렌트가 성공적으로 이어받기됨.</item>
     </plurals>
     <string name="torrent_list_search_torrents">토렌트 검색…</string>
-    <string name="torrent_list_free_space">여유 공간: %1$s</string>
+    <string name="torrent_list_free_space">%1$s 남음</string>
     <string name="torrent_list_set_location_hint">저장경로</string>
     <string name="torrent_list_category_tag_all">전체</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
@@ -151,7 +151,7 @@
     <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">사용자 통계</string>
     <string name="stats_category_cache_statistics">캐시 통계</string>
-    <string name="stats_all_time_upload">전체 시간 올려기</string>
+    <string name="stats_all_time_upload">전체 시간 업로드</string>
     <string name="stats_all_time_download">전체 시간 내려기</string>
     <string name="stats_session_waste">세션 낭비</string>
     <string name="stats_connected_peers">연결된 피어</string>
@@ -184,8 +184,8 @@
     <string name="torrent_disable_super_seeding_success">초도 배포가 성공적으로 비활성화되었습니다.</string>
     <string name="torrent_queueing_is_not_enabled">토렌트 대기열이 비활성화되었습니다.</string>
     <string name="torrent_option_save_path">경로 저장</string>
-    <string name="torrent_option_download_path">내려받기 경로</string>
-    <string name="torrent_option_upload_speed_limit">올려주기 속도 제한 (KiB/s)</string>
+    <string name="torrent_option_download_path">다운로드 경로</string>
+    <string name="torrent_option_upload_speed_limit">업로드 속도 제한 (KiB/s)</string>
     <string name="torrent_option_share_limit">토렌트 공유 제한한</string>
     <string name="torrent_status_downloading">내려받는 중</string>
     <string name="torrent_status_force_downloading">[F] 내려받는 중</string>
@@ -204,7 +204,7 @@
     <string name="torrent_list_action_sort">정렬</string>
     <string name="torrent_list_action_sort_status">상태</string>
     <string name="torrent_list_action_sort_hash">해시</string>
-    <string name="torrent_list_action_sort_upload_speed">올려주기 속도</string>
+    <string name="torrent_list_action_sort_upload_speed">업로드 속도</string>
     <string name="torrent_list_action_sort_priority">우선순위</string>
     <string name="torrent_list_action_sort_size">크기</string>
     <string name="torrent_list_action_sort_connected_seeds">연결된 배포</string>
@@ -229,7 +229,7 @@
     <string name="torrent_option_share_limit_disable">공유 제한 비활성화</string>
     <string name="torrent_option_share_limit_total_minutes">총 시간(분)</string>
     <string name="torrent_option_share_limit_inactive_minutes">활동하지 않는 시간(분)</string>
-    <string name="torrent_option_prioritize_first_last_piece">처음과 마지막 조각 먼저 내려받기</string>
+    <string name="torrent_option_prioritize_first_last_piece">처음과 마지막 조각 먼저 다운로드</string>
     <string name="torrent_category_update_success">범주가 성공적으로 업데이트됨.</string>
     <string name="torrent_rename_success">토렌트 이름이 성공적으로 업데이트 됨.</string>
     <string name="torrent_location_update_success">토렌트 위치를 성공적으로 변경함.</string>
@@ -266,7 +266,7 @@
     <string name="torrent_option_share_limit_ratio">비율</string>
     <string name="torrent_tags_update_success">태그가 성공적으로 업데이트됨.</string>
     <string name="torrent_export_error">토렌트를 내보낼 수 없음.</string>
-    <string name="torrent_option_sequential_download">순차 내려받기</string>
+    <string name="torrent_option_sequential_download">순차적으로 다운로드</string>
     <string name="torrent_option_update_success">토렌트 옵션이 성공적으로 업데이트됨.</string>
     <string name="torrent_location_cannot_be_blank">저장 경로는 비어있을 수 없습니다.</string>
     <string name="torrent_rename_torrent_hint">이름</string>
@@ -282,10 +282,10 @@
         <item quantity="other">%1$d개의 트래커 삭제</item>
     </plurals>
     <string name="torrent_overview_transfer">전송</string>
-    <string name="torrent_overview_downloaded">내려받음</string>
+    <string name="torrent_overview_downloaded">다운로드함</string>
     <string name="torrent_overview_time_active">활성 시간</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (%2$s 동안 배포됨)</string>
-    <string name="torrent_overview_uploaded">올려줌</string>
+    <string name="torrent_overview_uploaded">업로드됨</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s 이 세션)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s 이 세션)</string>
     <string name="torrent_overview_reannounce_in">다시 알림 시간</string>
@@ -305,7 +305,7 @@
     <string name="torrent_files_action_rename">이름 바꾸기</string>
     <string name="torrent_files_folder_renamed_success">폴더 이름이 성공적으로 바뀜</string>
     <string name="torrent_trackers_action_add">트래커 추가</string>
-    <string name="torrent_trackers_downloaded">내려받음</string>
+    <string name="torrent_trackers_downloaded">다운로드함</string>
     <string name="torrent_trackers_add_hint">트래커</string>
     <string name="torrent_trackers_action_edit">트래커 수정</string>
     <plurals name="torrent_trackers_delete_desc">
@@ -340,11 +340,11 @@
     <string name="torrent_peers_details_country">국가</string>
     <string name="torrent_peers_details_client">클라이언트</string>
     <string name="torrent_peers_details_relevance">관련성</string>
-    <string name="torrent_peers_details_uploaded">올려줌</string>
+    <string name="torrent_peers_details_uploaded">업로드됨</string>
     <string name="torrent_peers_details_peer_id_client">피어 ID 클라이언트</string>
-    <string name="torrent_peers_details_download_speed">내려받기 속도</string>
-    <string name="torrent_peers_details_upload_speed">올려주기 속도</string>
-    <string name="torrent_peers_details_downloaded">내려받음</string>
+    <string name="torrent_peers_details_download_speed">다운로드 속도</string>
+    <string name="torrent_peers_details_upload_speed">업로드 속도</string>
+    <string name="torrent_peers_details_downloaded">다운로드함</string>
     <string name="torrent_peers_details_section_files">파일</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">관심 있음 (로컬) / 혼잡 (피어)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">관심 있음 (피어) / 혼잡 (로컬)</string>
@@ -368,7 +368,7 @@
     <string name="torrent_add_ratio_limit">비율 재한</string>
     <string name="torrent_add_seeding_time_limit">배포 제한 시간 (분)</string>
     <string name="torrent_add_server">서버</string>
-    <string name="rss_download">내려받기</string>
+    <string name="rss_download">다운로드</string>
     <string name="rss_action_move_feed">피드 옮기기</string>
     <string name="rss_action_delete_feed">피드 삭제</string>
     <string name="rss_action_move_select_folder">폴더 선택</string>
@@ -383,7 +383,7 @@
     <string name="rss_add_folder_error">폴더를 추가할 수 없습니다.</string>
     <string name="rss_rename_folder_error">폴더의 이름을 바꿀 수 없습니다.</string>
     <string name="rss_mark_article_as_read_success">문서가 성공적으로 읽음 표시되었습니다.</string>
-    <string name="rss_rules">RSS 내려받기 도구</string>
+    <string name="rss_rules">RSS 다운로드 도구</string>
     <string name="rss_rule_action_create">규칙 생성</string>
     <string name="rss_rule_rename">규칙 이름 바꾸기</string>
     <string name="rss_rule_delete_confirm">%1$s 규칙을 삭제하시겠습니까?</string>
@@ -410,7 +410,7 @@
     <string name="search_result_size">크기: %1$s</string>
     <string name="search_result_leechers">공유자</string>
     <string name="search_result_open_description">설명 열기</string>
-    <string name="search_result_download">내려받기</string>
+    <string name="search_result_download">다운로드</string>
     <string name="search_result_stop_success">검색이 성공적으로 중지되었습니다.</string>
     <string name="search_result_action_sort_name">이름</string>
     <string name="search_result_action_stop_search">검색 중지</string>
@@ -453,8 +453,8 @@
     </plurals>
     <string name="torrent_add_click_to_select_file">파일을 선택하려면 클릭하세요</string>
     <string name="torrent_add_tags">태그</string>
-    <string name="torrent_add_sequential_download">순차 내려받기</string>
-    <string name="torrent_add_prioritize_first_last_piece">처음과 마지막 조각 먼저 내려받기</string>
+    <string name="torrent_add_sequential_download">순차적으로 다운로드</string>
+    <string name="torrent_add_prioritize_first_last_piece">처음과 마지막 조각 먼저 다운로드</string>
     <string name="torrent_add_torrent_management_mode">토렌트 관리 모드</string>
     <string name="torrent_add_torrent_management_mode_manual">수동</string>
     <string name="torrent_add_start_torrent">토렌트 시작</string>
@@ -475,8 +475,8 @@
     <string name="torrent_add_content_layout_no_subfolder">하위 폴더 만들지 않기</string>
     <string name="torrent_add_save_path">저장경로</string>
     <string name="torrent_add_name">토렌트 이름</string>
-    <string name="torrent_add_download_speed_limit">내려받기 속도 제한</string>
-    <string name="torrent_add_upload_speed_limit">올려주기 속도 제한</string>
+    <string name="torrent_add_download_speed_limit">다운로드 속도 제한</string>
+    <string name="torrent_add_upload_speed_limit">업로드 속도 제한</string>
     <string name="torrent_add_action_add_torrent">토렌트 추가</string>
     <string name="torrent_add_link_cannot_be_empty">링크는 비어있을 수 없습니다.</string>
     <string name="torrent_add_error">토렌트를 추가할 수 없습니다.</string>
@@ -569,9 +569,9 @@
     <string name="settings_server_advanced_basic_auth_username">사용자 이름</string>
     <string name="settings_server_connection_success">서버에 성공적으로 연결되었습니다.</string>
     <string name="error_required_field">이 항목은 필수입니다.</string>
-    <string name="about_description">qBitController는 당신이 안드로이드 기기에서 qBittorrent를 제어하게 해줍니다.\n\n더 자세한 정보와 소스코드: %1$s</string>
-    <string name="notification_channel_download_completed">내려받기 완료됨</string>
-    <string name="notification_torrent_downloaded">내려받기 완료됨</string>
+    <string name="about_description">qBitController는 당신이 어떤 기기에서든 원격으로 qBittorrent를 제어하게 해줍니다.\n\n더 자세한 정보와 소스코드: %1$s</string>
+    <string name="notification_channel_download_completed">다운로드 완료됨</string>
+    <string name="notification_torrent_downloaded">다운로드 완료됨</string>
     <string name="torrent_list_no_server_title">사용 가능한 서버 없음</string>
     <string name="torrent_list_no_server_description">아직 서버를 추가하지 않았습니다. 시작하기 위해 서버를 추가하십시오.</string>
     <string name="torrent_list_no_server_add">서버 추가</string>
@@ -607,7 +607,7 @@
     </plurals>
     <string name="error_invalid_interval">값은 반드시 %1$d와 %2$d 사이여야 합니다.</string>
     <string name="error_invalid_interval_optional">값은 반드시 %1$d와 %2$d 사이거나, 비활성화를 위해서 빈칸이여야 합니다.</string>
-    <string name="torrent_overview_piece_downloaded">내려받음</string>
+    <string name="torrent_overview_piece_downloaded">다운로드함</string>
     <string name="torrent_overview_piece_downloading">내려받는 중</string>
     <string name="torrent_overview_piece_not_downloaded">다운로드 되지 않음</string>
     <string name="settings_category_network">네트워크</string>
@@ -628,4 +628,63 @@
     <string name="settings_server_server_info">서버 정보</string>
     <string name="settings_server_credentials">자격증명</string>
     <string name="settings_server_url_examples">예시: %1$s</string>
+    <string name="shortcut_new_window">새 창</string>
+    <string name="date_now">지금</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="other">%1$d 초 전</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="other">%1$d 분 전</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="other">%1$d 시간 전</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="other">%1$d 일 전</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="other">%1$d 주 전</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="other">%1$d 달 전</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="other">%1$d 년 전</item>
+    </plurals>
+    <string name="error_no_internet">인터넷 연결이 없음.</string>
+    <string name="torrent_list_action_sort_downloaded">다운로드함</string>
+    <string name="torrent_list_action_sort_uploaded">업로드됨</string>
+    <string name="stats_read_cache_hits">읽기 캐시 적중률</string>
+    <string name="torrent_peers_details_section_overview">피어 개요</string>
+    <string name="torrent_peers_details_section_transfer">전송 통계</string>
+    <string name="rss_action_download">다운로드</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="other">%1$d개의 토렌트가 선택됨</item>
+    </plurals>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="other">%1$d개의 토렌트가 선택됨</item>
+    </plurals>
+    <string name="settings_traffic_stats_in_list">트래픽 통계 목록</string>
+    <string name="settings_traffic_stats_in_list_none">없음</string>
+    <string name="settings_traffic_stats_in_list_total">총</string>
+    <string name="settings_traffic_stats_in_list_session">세션</string>
+    <string name="settings_traffic_stats_in_list_complete">총 (세션)</string>
+    <string name="settings_check_updates">업데이트 자동으로 확인</string>
+    <string name="settings_enable_dynamic_colors">동적 색상 활성화</string>
+    <string name="settings_app_color">앱 색상</string>
+    <string name="settings_app_color_reset">초기화</string>
+    <string name="settings_palette_style">팔레트 스타일</string>
+    <string name="settings_palette_style_tonal_spot">톤 강조</string>
+    <string name="settings_palette_style_neutral">중립</string>
+    <string name="settings_palette_style_vibrant">활기찬</string>
+    <string name="settings_palette_style_expressive">감각적인</string>
+    <string name="settings_palette_style_rainbow">무지개</string>
+    <string name="settings_palette_style_fruit_salad">과일 샐러드</string>
+    <string name="settings_palette_style_monochrome">단색</string>
+    <string name="settings_palette_style_fidelity">선명함</string>
+    <string name="settings_palette_style_content">콘텐츠</string>
+    <string name="settings_relative_timestamps">상대적 타임스탬프</string>
+    <string name="update_dialog_title">업데이트 가능함</string>
+    <string name="update_dialog_message">qBitController %1$s 이 사용 가능합니다. 현재 %2$s 버전을 사용중입니다.</string>
+    <string name="update_dialog_download">다운로드</string>
 </resources>
