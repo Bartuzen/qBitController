@@ -377,4 +377,5 @@
     <string name="torrent_peers_details_uploaded">Hochgeladen</string>
     <string name="torrent_peers_details_relevance">Relevanz</string>
     <string name="torrent_peers_flag_incoming_connection">Eingehende Verbindung</string>
+    <string name="torrent_list_status_stalled">Verzögerung</string>
 </resources>
