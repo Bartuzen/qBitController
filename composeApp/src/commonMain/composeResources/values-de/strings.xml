@@ -338,4 +338,43 @@
     <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
     <string name="torrent_list_status_format">%1$s (%2$d)</string>
     <string name="stats_ms_format">%1$d ms</string>
+    <string name="torrent_list_action_sort_downloaded">Heruntergeladen</string>
+    <string name="torrent_list_action_sort_uploaded">Hochgeladen</string>
+    <string name="torrent_overview_connections_format">%1$d (%2$d max.)</string>
+    <string name="torrent_overview_seeds_format">%1$d (%2$d gesamt)</string>
+    <string name="torrent_overview_peers_format">%1$d (%2$d gesamt)</string>
+    <string name="torrent_files_priority_high">Hoch</string>
+    <string name="torrent_trackers_peers">Gegenstellen</string>
+    <string name="torrent_peers_action_add">Gegenstellen hinzufügen</string>
+    <string name="torrent_peers_action_ban">Gegenstellen verbieten</string>
+    <string name="torrent_peers_add_hint">Gegenstellen</string>
+    <plurals name="torrent_peers_ban_title">
+        <item quantity="one">%1$d Gegenstelle verbieten</item>
+        <item quantity="other">%1$d Gegenstellen verbieten</item>
+    </plurals>
+    <plurals name="torrent_peers_ban_desc">
+        <item quantity="one">Soll %1$d Gegenstelle verboten werden?</item>
+        <item quantity="other">Sollen %1$d Gegenstellen verboten werden?</item>
+    </plurals>
+    <plurals name="torrent_peers_selected">
+        <item quantity="one">%1$d Gegenstelle ausgewählt</item>
+        <item quantity="other">%1$d Gegenstellen ausgewählt</item>
+    </plurals>
+    <string name="torrent_peers_added">Gegenstellen erfolgreich hinzugefügt.</string>
+    <string name="torrent_peers_banned">Gegenstellen erfolgreich verboten.</string>
+    <string name="torrent_peers_invalid">Ungültige Gegenstellen eingegeben.</string>
+    <string name="torrent_peers_details_section_overview">Gegenstellen Übersicht</string>
+    <string name="torrent_peers_details_section_transfer">Übertragungsstatistiken</string>
+    <string name="torrent_peers_details_section_flags">Markierungen</string>
+    <string name="torrent_peers_details_section_files">Dateien</string>
+    <string name="torrent_peers_details_country">Land</string>
+    <string name="torrent_peers_details_connection">Verbindung</string>
+    <string name="torrent_peers_details_client">Client</string>
+    <string name="torrent_peers_details_progress">Fortschritt</string>
+    <string name="torrent_peers_details_download_speed">Herunterladegeschwindigkeit</string>
+    <string name="torrent_peers_details_upload_speed">Hochladegeschwindigkeit</string>
+    <string name="torrent_peers_details_downloaded">Heruntergeladen</string>
+    <string name="torrent_peers_details_uploaded">Hochgeladen</string>
+    <string name="torrent_peers_details_relevance">Relevanz</string>
+    <string name="torrent_peers_flag_incoming_connection">Eingehende Verbindung</string>
 </resources>
