@@ -158,6 +158,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -335,7 +336,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_search_torrent
 import qbitcontroller.composeapp.generated.resources.torrent_list_set_location_hint
 import qbitcontroller.composeapp.generated.resources.torrent_list_shutdown_confirm
 import qbitcontroller.composeapp.generated.resources.torrent_list_shutdown_success
-import qbitcontroller.composeapp.generated.resources.torrent_list_speed_format
 import qbitcontroller.composeapp.generated.resources.torrent_list_status
 import qbitcontroller.composeapp.generated.resources.torrent_list_status_active
 import qbitcontroller.composeapp.generated.resources.torrent_list_status_all
@@ -1047,14 +1047,34 @@ fun TorrentListScreen(
                             enter = fadeIn() + expandVertically(),
                             exit = fadeOut() + shrinkVertically(),
                         ) { _, mainData ->
+                            val text = buildAnnotatedString {
+                                fun appendStat(color: Color, speed: String, total: String) {
+                                    withStyle(SpanStyle(color = color)) {
+                                        append(speed)
+                                    }
+                                    append(" ")
+                                    withStyle(SpanStyle(color = color.copy(alpha = 0.5f))) {
+                                        append("($total)")
+                                    }
+                                }
+
+                                appendStat(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    speed = "↓ ${formatBytesPerSecond(mainData.serverState.downloadSpeed)}",
+                                    total = formatBytes(mainData.serverState.downloadSession),
+                                )
+
+                                append(" ")
+
+                                appendStat(
+                                    color = MaterialTheme.colorScheme.tertiary,
+                                    speed = "↑ ${formatBytesPerSecond(mainData.serverState.uploadSpeed)}",
+                                    total = formatBytes(mainData.serverState.uploadSession),
+                                )
+                            }
+
                             Text(
-                                text = stringResource(
-                                    Res.string.torrent_list_speed_format,
-                                    formatBytesPerSecond(mainData.serverState.downloadSpeed),
-                                    formatBytes(mainData.serverState.downloadSession),
-                                    formatBytesPerSecond(mainData.serverState.uploadSpeed),
-                                    formatBytes(mainData.serverState.uploadSession),
-                                ),
+                                text = text,
                                 textAlign = TextAlign.End,
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -1437,14 +1457,41 @@ private fun TorrentItem(
 
                 val trafficStatsString = when (trafficStats) {
                     TrafficStats.NONE -> null
-                    TrafficStats.TOTAL -> "↓ ${formatBytes(torrent.downloaded)} " +
-                        "↑ ${formatBytes(torrent.uploaded)}"
-                    TrafficStats.SESSION -> "↓ ${formatBytes(torrent.downloadedSession)} " +
-                        "↑ ${formatBytes(torrent.uploadedSession)}"
-                    TrafficStats.COMPLETE -> "↓ ${formatBytes(torrent.downloaded)} " +
-                        "(${formatBytes(torrent.downloadedSession)}) " +
-                        "↑ ${formatBytes(torrent.uploaded)} " +
-                        "(${formatBytes(torrent.uploadedSession)})"
+                    TrafficStats.TOTAL -> buildAnnotatedString {
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                            append("↓ ${formatBytes(torrent.downloaded)}")
+                        }
+                        append(" ")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.tertiary)) {
+                            append("↑ ${formatBytes(torrent.uploaded)}")
+                        }
+                    }
+                    TrafficStats.SESSION -> buildAnnotatedString {
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                            append("↓ ${formatBytes(torrent.downloadedSession)}")
+                        }
+                        append(" ")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.tertiary)) {
+                            append("↑ ${formatBytes(torrent.uploadedSession)}")
+                        }
+                    }
+                    TrafficStats.COMPLETE -> buildAnnotatedString {
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                            append("↓ ${formatBytes(torrent.downloaded)}")
+                        }
+                        append(" ")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f))) {
+                            append("(${formatBytes(torrent.downloadedSession)})")
+                        }
+                        append(" ")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.tertiary)) {
+                            append("↑ ${formatBytes(torrent.uploaded)}")
+                        }
+                        append(" ")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.5f))) {
+                            append("(${formatBytes(torrent.uploadedSession)})")
+                        }
+                    }
                 }
 
                 if (trafficStatsString != null) {
@@ -1476,14 +1523,24 @@ private fun TorrentItem(
                 Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                     Text(text = formatTorrentState(torrent.state))
 
-                    val speedText = buildList {
+                    val speedText = buildAnnotatedString {
                         if (torrent.downloadSpeed > 0) {
-                            add("↓ ${formatBytesPerSecond(torrent.downloadSpeed)}")
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                                append("↓ ${formatBytesPerSecond(torrent.downloadSpeed)}")
+                            }
                         }
+
+                        if (torrent.downloadSpeed > 0 && torrent.uploadSpeed > 0) {
+                            append(" ")
+                        }
+
                         if (torrent.uploadSpeed > 0) {
-                            add("↑ ${formatBytesPerSecond(torrent.uploadSpeed)}")
+                            withStyle(SpanStyle(color = MaterialTheme.colorScheme.tertiary)) {
+                                append("↑ ${formatBytesPerSecond(torrent.uploadSpeed)}")
+                            }
                         }
-                    }.joinToString(" ")
+                    }
+
                     Text(text = speedText)
                 }
             }
