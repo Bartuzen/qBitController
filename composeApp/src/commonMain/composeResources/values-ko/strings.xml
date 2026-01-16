@@ -148,7 +148,6 @@
     <string name="torrent_list_status_checking">확인 중</string>
     <string name="torrent_list_priority_increase_success">우선 순위가 성공적으로 증가했습니다.</string>
     <string name="torrent_list_priority_decrease_success">우선 순위가 성공적으로 감소했습니다.</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">사용자 통계</string>
     <string name="stats_category_cache_statistics">캐시 통계</string>
     <string name="stats_all_time_upload">전체 시간 업로드</string>

@@ -170,7 +170,6 @@
     <string name="torrent_list_priority_maximize_success">Ustawiono maksymalny priorytet.</string>
     <string name="torrent_list_priority_minimize_success">Ustawiono minimalny priorytet.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">Statystyki użytkownika</string>
     <string name="stats_all_time_upload">Całkowicie wysłano</string>
     <string name="stats_average_time_in_queue">Średni czas w kolejce</string>

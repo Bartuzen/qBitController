@@ -172,7 +172,6 @@
     <string name="torrent_list_priority_maximize_success">Пріоритет успішно максимізовано.</string>
     <string name="torrent_list_priority_minimize_success">Пріоритет успішно мінімізовано.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">Статистика користувача</string>
     <string name="stats_all_time_download">Завантажено за весь час</string>
     <string name="stats_all_time_share_ratio">Загальний коефіцієнт за весь час</string>

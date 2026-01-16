@@ -204,7 +204,6 @@
     <string name="torrent_list_priority_maximize_success">Priorität erfolgreich maximiert.</string>
     <string name="torrent_list_priority_minimize_success">Priorität erfolgreich minimiert.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">Nutzerstatistiken</string>
     <string name="torrent_tab_overview">Übersicht</string>
     <string name="torrent_tab_files">Dateien</string>
