@@ -577,7 +577,7 @@ fun EditRssRuleScreen(
                             DropdownMenuItem(
                                 text = { Text(text = stringResource(Res.string.torrent_add_content_layout_no_subfolder)) },
                                 onClick = {
-                                    contentLayoutIndex = 4
+                                    contentLayoutIndex = 3
                                     contentLayoutExpanded = false
                                 },
                             )
