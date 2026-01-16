@@ -492,7 +492,6 @@
     <string name="stats_write_cache_overload">Перегрузка кэша записи</string>
     <string name="stats_average_time_in_queue">Среднее время в очереди</string>
     <string name="percentage_format">%1$s%%</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_ms_format">%1$d мс</string>
     <string name="torrent_list_priority_maximize_success">Перемещён в начало очереди.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
