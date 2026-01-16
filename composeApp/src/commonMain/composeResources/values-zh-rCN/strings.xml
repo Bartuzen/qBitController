@@ -164,7 +164,6 @@
     <string name="torrent_list_priority_maximize_success">已成功提升至最大优先级。</string>
     <string name="torrent_list_priority_minimize_success">已成功降低至最小优先级。</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">用户统计</string>
     <string name="stats_category_cache_statistics">缓存统计</string>
     <string name="stats_category_performance_statistics">性能统计</string>

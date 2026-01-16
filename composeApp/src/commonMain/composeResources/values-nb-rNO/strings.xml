@@ -313,7 +313,6 @@
     <string name="torrent_speed_upload_limit">Opplastingshastighetsgrense</string>
     <string name="torrent_speed_update_success">Hastighetsgrenser oppdatert.</string>
     <string name="torrent_list_priority_minimize_success">Prioritet minimert.</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="torrent_action_options">Torrentvalg</string>
     <string name="torrent_action_rename_torrent">Gi torrent nytt navn</string>
     <string name="torrent_action_force_recheck">Påtving omsjekking</string>

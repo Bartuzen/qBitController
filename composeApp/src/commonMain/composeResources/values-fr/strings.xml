@@ -164,7 +164,6 @@
     <string name="torrent_list_empty_search">Recherche Torrents</string>
     <string name="torrent_list_empty_add">Ajouter un torrent</string>
     <string name="torrent_list_action_priority_increase">Augmenter la priorité</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">Statistiques utilisateur</string>
     <string name="torrent_queueing_is_not_enabled">La file d\'attente de Torrent n\'est pas activée.</string>
     <string name="torrent_list_empty_description">Vous n\'avez pas de torrents. Ajoutez-en un pour commencer.</string>

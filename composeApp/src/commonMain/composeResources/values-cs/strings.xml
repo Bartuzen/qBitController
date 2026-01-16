@@ -43,7 +43,6 @@
     <string name="torrent_action_copy_hash_v2">Hash v2</string>
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
     <string name="stats_category_cache_statistics">Statistiky mezipaměti</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="torrent_list_empty_rss">Přidat pomocí RSS</string>
     <string name="torrent_list_empty_search">Vyhledat torrenty</string>
     <string name="torrent_list_empty_title">Žádné torrenty nenalezeny</string>
