@@ -152,10 +152,7 @@ class TorrentOverviewViewModel(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateTorrent().invokeOnCompletion {
-                viewModelScope.launch {
-                    delay(25)
-                    _isRefreshing.value = false
-                }
+                _isRefreshing.value = false
             }
         }
     }

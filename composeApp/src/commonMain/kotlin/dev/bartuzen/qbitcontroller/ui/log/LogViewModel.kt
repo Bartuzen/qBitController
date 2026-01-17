@@ -6,7 +6,6 @@ import dev.bartuzen.qbitcontroller.data.repositories.log.LogRepository
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -56,10 +55,7 @@ class LogViewModel(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateLogs().invokeOnCompletion {
-                viewModelScope.launch {
-                    delay(25)
-                    _isRefreshing.value = false
-                }
+                _isRefreshing.value = false
             }
         }
     }

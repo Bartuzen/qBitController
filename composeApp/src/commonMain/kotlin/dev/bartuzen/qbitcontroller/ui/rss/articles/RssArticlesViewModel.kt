@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.data.repositories.rss.RssArticlesRepository
 import dev.bartuzen.qbitcontroller.model.Article
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -105,10 +104,7 @@ class RssArticlesViewModel(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateRssArticles().invokeOnCompletion {
-                viewModelScope.launch {
-                    delay(25)
-                    _isRefreshing.value = false
-                }
+                _isRefreshing.value = false
             }
         }
     }
