@@ -125,7 +125,7 @@ actual class TorrentDownloadedNotifier : KoinComponent {
             context,
             0,
             torrentIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0,
+            PendingIntent.FLAG_IMMUTABLE,
         )
 
         val notification = NotificationCompat.Builder(context, "channel_server_${serverId}_downloaded")
@@ -155,11 +155,7 @@ actual class TorrentDownloadedNotifier : KoinComponent {
             context,
             serverId,
             mainIntent,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-            } else {
-                PendingIntent.FLAG_UPDATE_CURRENT
-            },
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
         val serverConfig = serverManager.getServer(serverId)
