@@ -47,6 +47,8 @@ import qbitcontroller.composeapp.generated.resources.settings_category_general
 import qbitcontroller.composeapp.generated.resources.settings_check_updates
 import qbitcontroller.composeapp.generated.resources.settings_disabled
 import qbitcontroller.composeapp.generated.resources.settings_enable_torrent_swipe_actions
+import qbitcontroller.composeapp.generated.resources.settings_hide_server_urls
+import qbitcontroller.composeapp.generated.resources.settings_hide_server_urls_desc
 import qbitcontroller.composeapp.generated.resources.settings_notification_check_interval
 import qbitcontroller.composeapp.generated.resources.settings_notification_check_interval_description
 import qbitcontroller.composeapp.generated.resources.settings_traffic_stats_in_list
@@ -92,6 +94,16 @@ fun GeneralSettingsScreen(
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize(),
         ) {
+            item {
+                val hideServerUrls by viewModel.hideServerUrls.flow.collectAsStateWithLifecycle()
+                SwitchPreference(
+                    value = hideServerUrls,
+                    onValueChange = { viewModel.hideServerUrls.value = it },
+                    title = { Text(text = stringResource(Res.string.settings_hide_server_urls)) },
+                    summary = { Text(text = stringResource(Res.string.settings_hide_server_urls_desc)) },
+                )
+            }
+
             if (areNotificationsEnabled != null) {
                 item {
                     val notificationCheckInterval by viewModel.notificationCheckInterval.flow.collectAsStateWithLifecycle()

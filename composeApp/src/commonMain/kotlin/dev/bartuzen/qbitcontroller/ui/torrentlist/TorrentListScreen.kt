@@ -928,6 +928,7 @@ fun TorrentListScreen(
                     val areCategoriesCollapsed by viewModel.areCategoriesCollapsed.collectAsStateWithLifecycle()
                     val areTagsCollapsed by viewModel.areTagsCollapsed.collectAsStateWithLifecycle()
                     val areTrackersCollapsed by viewModel.areTrackersCollapsed.collectAsStateWithLifecycle()
+                    val hideServerUrls by viewModel.hideServerUrls.collectAsStateWithLifecycle()
 
                     DrawerContent(
                         serverId = serverId,
@@ -943,6 +944,7 @@ fun TorrentListScreen(
                         mainData = mainData,
                         counts = counts,
                         isDrawerOpen = drawerState.isOpen,
+                        hideServerUrls = hideServerUrls,
                         onServerSelected = onSelectServer,
                         onDialogOpen = { currentDialog = it },
                         onSetDefaultTorrentStatus = { viewModel.setDefaultTorrentStatus(it) },
@@ -1563,6 +1565,7 @@ private fun DrawerContent(
     mainData: MainData?,
     counts: TorrentListViewModel.Counts?,
     isDrawerOpen: Boolean,
+    hideServerUrls: Boolean,
     onServerSelected: (serverId: Int) -> Unit,
     onDialogOpen: (dialog: Dialog) -> Unit,
     onSetDefaultTorrentStatus: (status: TorrentFilter) -> Unit,
@@ -1611,6 +1614,7 @@ private fun DrawerContent(
                         name = serverConfig.name,
                         url = serverConfig.visibleUrl,
                         isSelected = serverId == serverConfig.id,
+                        hideServerUrls = hideServerUrls,
                         onClick = {
                             onServerSelected(serverConfig.id)
                             onDrawerClose()
@@ -2115,6 +2119,7 @@ private fun DrawerServerItem(
     name: String?,
     url: String,
     isSelected: Boolean,
+    hideServerUrls: Boolean,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -2135,19 +2140,28 @@ private fun DrawerServerItem(
             )
             .padding(16.dp),
     ) {
-        if (name != null) {
+        val showName = name != null
+        val showUrl = !hideServerUrls || name == null
+
+        if (showName) {
             Text(
                 text = name,
                 style = MaterialTheme.typography.bodyLarge,
                 color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else Color.Unspecified,
             )
+        }
+
+        if (showName && showUrl) {
             Spacer(modifier = Modifier.height(4.dp))
         }
-        Text(
-            text = url,
-            style = MaterialTheme.typography.labelMedium,
-            color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else Color.Unspecified,
-        )
+
+        if (showUrl) {
+            Text(
+                text = url,
+                style = MaterialTheme.typography.labelMedium,
+                color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else Color.Unspecified,
+            )
+        }
     }
 }
 

@@ -717,6 +717,9 @@
         <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
+
+    <string name="settings_hide_server_urls">Hide server URLs in the sidebar</string>
+    <string name="settings_hide_server_urls_desc">URLs will still be shown for servers without a name</string>
     <string name="settings_notification_check_interval">Notification check interval</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="one">%1$d minute</item>

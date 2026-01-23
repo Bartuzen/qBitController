@@ -67,6 +67,7 @@ class TorrentListViewModel(
     val areCategoriesCollapsed = settingsManager.areCategoriesCollapsed.flow
     val areTagsCollapsed = settingsManager.areTagsCollapsed.flow
     val areTrackersCollapsed = settingsManager.areTrackersCollapsed.flow
+    val hideServerUrls = settingsManager.hideServerUrls.flow
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
