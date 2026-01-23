@@ -95,11 +95,7 @@ fun AppBarActions(
             if (item.title != null) {
                 TooltipBox(
                     positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
-                        positioning = if (!bottom) {
-                            TooltipAnchorPosition.Above
-                        } else {
-                            TooltipAnchorPosition.Below
-                        },
+                        positioning = if (bottom) TooltipAnchorPosition.Above else TooltipAnchorPosition.Below,
                     ),
                     tooltip = {
                         PlainTooltip {
