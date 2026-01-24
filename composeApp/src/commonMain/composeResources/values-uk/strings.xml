@@ -767,4 +767,6 @@
     <string name="settings_traffic_stats_in_list_total">Всього</string>
     <string name="settings_traffic_stats_in_list_session">Сесія</string>
     <string name="settings_traffic_stats_in_list_complete">Всього (сеанс)</string>
+    <string name="settings_hide_server_urls">Приховати URL-адреси серверів на бічній панелі</string>
+    <string name="settings_hide_server_urls_desc">URL-адреси все ще відображатимуться для серверів без назви</string>
 </resources>
