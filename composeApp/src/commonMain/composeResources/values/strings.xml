@@ -773,6 +773,8 @@
     <string name="settings_server_action_save">Save</string>
     <string name="settings_server_action_advanced_settings">Advanced Settings</string>
 
+    <string name="settings_server_delete_confirm">Are you sure you want to delete this server?</string>
+
     <string name="settings_server_advanced_title">Advanced Settings</string>
     <string name="settings_server_advanced_basic_auth">Basic Authentication</string>
     <string name="settings_server_advanced_basic_auth_enabled">Enabled</string>
