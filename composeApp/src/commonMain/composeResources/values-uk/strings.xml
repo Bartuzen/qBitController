@@ -769,4 +769,5 @@
     <string name="settings_traffic_stats_in_list_complete">Всього (сеанс)</string>
     <string name="settings_hide_server_urls">Приховати URL-адреси серверів на бічній панелі</string>
     <string name="settings_hide_server_urls_desc">URL-адреси все ще відображатимуться для серверів без назви</string>
+    <string name="settings_server_delete_confirm">Ви впевнені, що хочете видалити цей сервер?</string>
 </resources>
