@@ -12,6 +12,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
+import dev.bartuzen.qbitcontroller.model.Category
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -633,15 +634,31 @@ fun AddTorrentScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            categoryList.forEach { category ->
-                                CategoryChip(
-                                    category = category,
-                                    isSelected = selectedCategory == category,
-                                    onClick = {
-                                        selectedCategory = if (selectedCategory == category) null else category
-                                    },
-                                )
-                            }
+                        categoryList.forEach { category ->
+                            CategoryChip(
+                                category = category.name,
+                                isSelected = selectedCategory == category.name,
+                                onClick = {
+                                    if (selectedCategory == category.name) {
+                                        selectedCategory = null
+                                    } else {
+                                        selectedCategory = category.name
+                                        if (category.savePath.isNotBlank()) {
+                                            savePath = TextFieldValue(category.savePath)
+                                        } else {
+                                            when (val path = category.downloadPath) {
+                                                Category.DownloadPath.Default,
+                                                Category.DownloadPath.No,
+                                                -> Unit
+                                                is Category.DownloadPath.Yes -> {
+                                                    savePath = TextFieldValue(path.path)
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                            )
+                        }
                         }
                         else -> Text(
                             text = stringResource(Res.string.torrent_no_categories),
