@@ -69,10 +69,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -913,7 +917,17 @@ fun AddTorrentScreen(
                                 DropdownMenuItem(
                                     text = {
                                         Text(
-                                            text = suggestion,
+                                            text = buildAnnotatedString {
+                                                val matchLength = savePath.text.length
+                                                if (suggestion.startsWith(savePath.text, ignoreCase = true)) {
+                                                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                                        append(suggestion.take(matchLength))
+                                                    }
+                                                    append(suggestion.drop(matchLength))
+                                                } else {
+                                                    append(suggestion)
+                                                }
+                                            },
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis,
                                         )

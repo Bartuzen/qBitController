@@ -233,15 +233,23 @@ class AddTorrentViewModel(
             // Debounce
             kotlinx.coroutines.delay(300)
 
-            when (val result = repository.getDirectoryContent(serverId, path)) {
-                is RequestResult.Success -> {
-                    _directorySuggestions.value = result.data.sorted()
-                }
-                is RequestResult.Error -> {
-                    // Ignore errors for suggestions
-                    _directorySuggestions.value = emptyList()
-                }
+            val lastSeparatorIndex = path.lastIndexOfAny(charArrayOf('/', '\\'))
+            val parent = if (lastSeparatorIndex != -1) {
+                path.substring(0, lastSeparatorIndex + 1)
+            } else {
+                ""
             }
+
+            if (parent.isEmpty()) {
+                 _directorySuggestions.value = emptyList()
+                 return@launch
+            }
+
+            val suggestions = repository.getDirectoryContent(serverId, parent)
+            
+            _directorySuggestions.value = suggestions
+                .filter { it.startsWith(path, ignoreCase = true) }
+                .sorted()
         }
     }
 
