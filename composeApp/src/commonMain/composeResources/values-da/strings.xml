@@ -489,7 +489,7 @@
     <string name="torrent_add_content_layout_no_subfolder">Opret ikke undermapper</string>
     <string name="torrent_add_name">Torrent Navn</string>
     <string name="torrent_add_download_speed_limit">Download Hastighedsgrænse</string>
-    <string name="about_description">qBitController giver dig mulighed for at styre qBittorrent fra en Android-enhed. \n \nYderligere oplysninger og kildekode: %1$s</string>
+    <string name="about_description">qBitController giver dig mulighed for at styre qBittorrent remotely fra en enhed. \n \nYderligere oplysninger og kildekode: %1$s</string>
     <string name="torrent_add_upload_speed_limit">Upload hastighedsbegrænsning</string>
     <string name="destination_logs">Logge</string>
     <string name="destination_settings">Indstillinger</string>
@@ -512,4 +512,142 @@
     <string name="torrent_list_action_sort_total_leeches">Totale leeches</string>
     <string name="torrent_list_action_sort_reverse">Omvendt</string>
     <string name="torrent_list_action_priority_decrease">Formindsk prioritet</string>
+    <string name="shortcut_new_window">Nyt vindue</string>
+    <string name="destination_torrents">Torrents</string>
+    <string name="destination_search">Søg</string>
+    <string name="destination_rss">RSS</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d sekund siden</item>
+        <item quantity="other">%1$d sekunder siden</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d minut siden</item>
+        <item quantity="other">%1$d minutter siden</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d time siden</item>
+        <item quantity="other">%1$d timer siden</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d dag siden</item>
+        <item quantity="other">%1$d dage siden</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d uge siden</item>
+        <item quantity="other">%1$d uger siden</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d måned siden</item>
+        <item quantity="other">%1$d måneder siden</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d år siden</item>
+        <item quantity="other">%1$d år siden</item>
+    </plurals>
+    <string name="torrent_list_status_set_as_default">Sæt som standard</string>
+    <string name="stats_connected_peers">Forbundne Peers</string>
+    <string name="stats_queued_io_jobs">I/O jobs i kø</string>
+    <string name="torrent_action_force_reannounce">Tving reannoncering</string>
+    <string name="torrent_action_super_seeding">Super Seeding</string>
+    <string name="torrent_option_share_limit_total_minutes">Total Minutter</string>
+    <string name="torrent_option_share_limit_inactive_minutes">Inaktive Minutter</string>
+    <string name="torrent_force_recheck_confirm">Er du sikker på at du vil tvinge gentjek af denne torrent?</string>
+    <string name="torrent_overview_piece_downloaded">Downloadet</string>
+    <string name="torrent_overview_piece_downloading">Downloader</string>
+    <string name="torrent_overview_piece_not_downloaded">Ikke downloadet</string>
+    <string name="torrent_overview_private">Privat</string>
+    <string name="torrent_overview_private_yes">Ja</string>
+    <string name="torrent_overview_private_no">Nej</string>
+    <string name="torrent_overview_pieces_format">%1$d x %2$s (har %3$d)</string>
+    <string name="torrent_overview_time_active_seeding_time_format">%1$s (seedet i %2$s)</string>
+    <string name="torrent_overview_popularity">Popularitet</string>
+    <string name="torrent_peers_action_add">Tilføj Peers</string>
+    <string name="torrent_peers_details_section_transfer">Overfør statistikker</string>
+    <string name="torrent_peers_flag_incoming_connection">Indadgående forbindelse</string>
+    <string name="torrent_error_not_found">Torrent ikke fundet.</string>
+    <plurals name="torrent_add_files_selected">
+        <item quantity="one">%1$d fil valgt</item>
+        <item quantity="other">%1$d filer valgt</item>
+    </plurals>
+    <string name="rss_details">Torrent Detaljer</string>
+    <string name="rss_description">Beskrivelse</string>
+    <string name="rss_new">Ny</string>
+    <string name="rss_action_move_select_folder">Vælg en mappe</string>
+    <string name="rss_action_download">Download</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d torrent valgt</item>
+        <item quantity="other">%1$d torrents valgt</item>
+    </plurals>
+    <string name="rss_rule_item_enabled">Aktiveret</string>
+    <string name="rss_rule_item_disabled">Deaktiveret</string>
+    <plurals name="rss_rule_feeds">
+        <item quantity="one">%1$d feed</item>
+        <item quantity="other">%1$d feeds</item>
+    </plurals>
+    <string name="rss_rule_no_feed_found">Intet feed fundet</string>
+    <string name="search_start_plugins">Plugins</string>
+    <string name="search_start_plugins_enabled">Aktiver Plugins</string>
+    <string name="search_start_plugins_all">Alle Plugins</string>
+    <string name="search_start_plugins_select">Vælg Plugins</string>
+    <string name="search_result_title">Søge resultater</string>
+    <plurals name="search_result_torrents_selected">
+        <item quantity="one">%1$d torrent valgt</item>
+        <item quantity="other">%1$d torrents valgt</item>
+    </plurals>
+    <string name="search_result_details">Torrent Detaljer</string>
+    <string name="search_result_leechers">Leechers</string>
+    <string name="search_result_action_sort_leechers">Leechers</string>
+    <string name="search_result_action_sort_search_engine">Søgemaskine</string>
+    <string name="search_result_action_download">Download</string>
+    <string name="search_plugins_action_install_plugins">Installér plugins</string>
+    <string name="search_plugins_action_update_plugins">Opdatér Plugins</string>
+    <string name="settings_category_general">Generelt</string>
+    <string name="settings_category_appearance">Udseende</string>
+    <string name="settings_category_network">Netværk</string>
+    <string name="settings_check_updates">Tjek automatisk for opdateringer</string>
+    <string name="settings_enable_dynamic_colors">Aktiver dynamiske farver</string>
+    <string name="settings_app_color">App farve</string>
+    <string name="settings_palette_style">Palette stil</string>
+    <string name="settings_palette_style_neutral">Neutral</string>
+    <string name="settings_palette_style_rainbow">Regnbue</string>
+    <string name="settings_palette_style_fruit_salad">Frugtsalat</string>
+    <string name="settings_servers_add_server">Tilføj Server</string>
+    <string name="settings_servers_no_server_configured">Ingen Server Konfigureret</string>
+    <string name="settings_server_server_info">Server Information</string>
+    <string name="settings_server_url">URL</string>
+    <string name="settings_server_url_examples">Eksempler: %1$s</string>
+    <string name="settings_server_advanced_title">Avancerede indstillinger</string>
+    <string name="settings_server_advanced_doh">DNS over HTTPS (DoH)</string>
+    <string name="settings_server_invalid_url">URL formateringen er ugyldig.</string>
+    <string name="notification_torrent_downloaded">Torrent downloadet</string>
+    <string name="update_dialog_title">Opdatering Tilgængelig</string>
+    <string name="update_dialog_message">qBitController %1$s er nu tilgængelig. Du bruger nu version %2$s.</string>
+    <string name="update_dialog_download">Download</string>
+    <string name="date_now">Nu</string>
+    <string name="stats_all_time_upload">Alt-tid Upload</string>
+    <string name="stats_session_waste">Session affald</string>
+    <string name="stats_read_cache_hits">Læs cache Hits</string>
+    <string name="stats_write_cache_overload">Skriv cache Overload</string>
+    <string name="stats_read_cache_overload">Læs cache Overload</string>
+    <string name="stats_total_queued_size">Total Kø Størrelse</string>
+    <string name="torrent_action_copy_magnet_uri">Magnet URI</string>
+    <string name="torrent_enable_super_seeding_success">Super seeding aktiveret med succes.</string>
+    <string name="torrent_disable_super_seeding_success">Super seedning deaktiveret med succes.</string>
+    <string name="torrent_queueing_is_not_enabled">Torrent køing er ikke aktiveret.</string>
+    <string name="torrent_option_share_limit_disable">Deaktiver delegrænse</string>
+    <string name="torrent_overview_piece_map">Piece Map</string>
+    <string name="torrent_overview_reannounce_in">Reannouncer om</string>
+    <string name="torrent_overview_last_seen_complete">Sidst Set Færdig</string>
+    <string name="torrent_overview_wasted">Wasted</string>
+    <string name="torrent_overview_availability">Tilgængelighed</string>
+    <string name="torrent_trackers_leeches">Leeches</string>
+    <plurals name="torrent_peers_selected">
+        <item quantity="one">%1$d peer valgt</item>
+        <item quantity="other">%1$d peers valgt</item>
+    </plurals>
+    <string name="torrent_peers_added">Peers tilføjet med succes.</string>
+    <string name="torrent_peers_banned">Peers forbudt med succes.</string>
+    <string name="torrent_peers_invalid">Indtastede peers er ikke gyldige.</string>
+    <string name="torrent_peers_details_section_overview">Peer Oversigt</string>
+    <string name="torrent_peers_details_peer_id_client">Peer ID Client</string>
 </resources>

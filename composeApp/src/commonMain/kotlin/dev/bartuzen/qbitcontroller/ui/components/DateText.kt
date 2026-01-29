@@ -1,6 +1,7 @@
 package dev.bartuzen.qbitcontroller.ui.components
 
 import androidx.compose.material3.PlainTooltip
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
@@ -13,7 +14,6 @@ import dev.bartuzen.qbitcontroller.utils.formatRelativeDate
 import org.koin.compose.koinInject
 import kotlin.time.Instant
 
-// TODO Make tooltip persistent when the fix for https://issuetracker.google.com/issues/352722609 is available
 @Composable
 fun DateText(date: Instant, tooltipText: @Composable (date: String) -> Unit, content: @Composable (date: String) -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
@@ -36,13 +36,13 @@ fun DateText(
 ) {
     if (showRelativeTimestamp) {
         TooltipBox(
-            positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
+            positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
             tooltip = {
                 PlainTooltip {
                     tooltipText(date.formatDate())
                 }
             },
-            state = rememberTooltipState(),
+            state = rememberTooltipState(isPersistent = true),
             focusable = false,
         ) {
             content(date.formatRelativeDate())

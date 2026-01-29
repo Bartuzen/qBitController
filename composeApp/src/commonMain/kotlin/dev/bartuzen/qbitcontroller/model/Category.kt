@@ -64,7 +64,7 @@ data class Category(
     }
 }
 
-private object DownloadPathSerializer : KSerializer<Category.DownloadPath> {
+object DownloadPathSerializer : KSerializer<Category.DownloadPath> {
     override val descriptor = JsonPrimitive.serializer().descriptor
 
     // Gets called, but the result won't be used

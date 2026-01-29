@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
@@ -253,7 +252,7 @@ fun ScrollableState.topAppBarColors() = TopAppBarDefaults.topAppBarColors(
 fun topAppBarColor(state: ScrollableState, colors: TopAppBarColors = state.topAppBarColors()): Color {
     val appBarContainerColor by animateColorAsState(
         targetValue = colors.containerColor,
-        animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+        animationSpec = spring(stiffness = 1600f),
     )
     return appBarContainerColor
 }

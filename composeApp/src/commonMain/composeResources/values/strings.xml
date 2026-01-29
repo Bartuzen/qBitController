@@ -143,6 +143,8 @@
     <string name="torrent_list_action_sort_completion_date">Completion Date</string>
     <string name="torrent_list_action_sort_last_activity">Last Activity</string>
     <string name="torrent_list_action_sort_reverse">Reverse</string>
+    <string name="torrent_list_action_sort_downloaded">Downloaded</string>
+    <string name="torrent_list_action_sort_uploaded">Uploaded</string>
 
     <string name="torrent_list_action_pause">Pause</string>
     <string name="torrent_list_action_resume">Resume</string>
@@ -717,12 +719,20 @@
         <item quantity="one">%1$d second</item>
         <item quantity="other">%1$d seconds</item>
     </plurals>
+
+    <string name="settings_hide_server_urls">Hide server URLs in the sidebar</string>
+    <string name="settings_hide_server_urls_desc">URLs will still be shown for servers without a name</string>
     <string name="settings_notification_check_interval">Notification check interval</string>
     <plurals name="settings_notification_check_interval_description">
         <item quantity="one">%1$d minute</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
     <string name="settings_enable_torrent_swipe_actions">Enable torrent swipe actions</string>
+    <string name="settings_traffic_stats_in_list">Traffic stats in list</string>
+    <string name="settings_traffic_stats_in_list_none">None</string>
+    <string name="settings_traffic_stats_in_list_total">Total</string>
+    <string name="settings_traffic_stats_in_list_session">Session</string>
+    <string name="settings_traffic_stats_in_list_complete">Total (Session)</string>
     <string name="settings_check_updates">Automatically check for updates</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_theme_light">Light</string>
@@ -764,6 +774,8 @@
     <string name="settings_server_action_delete">Delete</string>
     <string name="settings_server_action_save">Save</string>
     <string name="settings_server_action_advanced_settings">Advanced Settings</string>
+
+    <string name="settings_server_delete_confirm">Are you sure you want to delete this server?</string>
 
     <string name="settings_server_advanced_title">Advanced Settings</string>
     <string name="settings_server_advanced_basic_auth">Basic Authentication</string>

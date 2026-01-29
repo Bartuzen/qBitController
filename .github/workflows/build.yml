@@ -206,7 +206,7 @@ jobs:
             artifactName: macos-arm64
             arch: arm64
 
-          - os: macos-13
+          - os: macos-15-intel
             artifactName: macos-x86_64
             arch: x86_64
 

@@ -262,7 +262,7 @@ class SearchResultViewModel(
                 }
             }
         }
-        delay(25)
+
         _isRefreshing.value = false
     }
 

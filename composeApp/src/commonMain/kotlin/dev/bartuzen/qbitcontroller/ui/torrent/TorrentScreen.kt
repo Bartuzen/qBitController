@@ -21,6 +21,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
@@ -49,7 +50,6 @@ import androidx.lifecycle.compose.currentStateAsState
 import dev.bartuzen.qbitcontroller.Telemetry
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
-import dev.bartuzen.qbitcontroller.ui.components.PrimaryScrollableTabRow
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesTab
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewTab

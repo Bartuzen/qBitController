@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.model.Plugin
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -58,10 +57,7 @@ class SearchPluginsViewModel(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updatePlugins(serverId).invokeOnCompletion {
-                viewModelScope.launch {
-                    delay(25)
-                    _isRefreshing.value = false
-                }
+                _isRefreshing.value = false
             }
         }
     }

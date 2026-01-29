@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +47,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -75,6 +77,7 @@ import dev.bartuzen.qbitcontroller.model.ServerConfig
 import dev.bartuzen.qbitcontroller.model.ServerConfig.AdvancedSettings
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
+import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.components.SwipeableSnackbarHost
 import dev.bartuzen.qbitcontroller.utils.EventEffect
 import dev.bartuzen.qbitcontroller.utils.fillWidthOfParent
@@ -88,15 +91,19 @@ import io.ktor.http.parseUrl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import qbitcontroller.composeapp.generated.resources.Res
+import qbitcontroller.composeapp.generated.resources.dialog_cancel
+import qbitcontroller.composeapp.generated.resources.dialog_ok
 import qbitcontroller.composeapp.generated.resources.error_required_field
 import qbitcontroller.composeapp.generated.resources.settings_server_action_advanced_settings
 import qbitcontroller.composeapp.generated.resources.settings_server_action_delete
 import qbitcontroller.composeapp.generated.resources.settings_server_action_save
 import qbitcontroller.composeapp.generated.resources.settings_server_connection_success
 import qbitcontroller.composeapp.generated.resources.settings_server_credentials
+import qbitcontroller.composeapp.generated.resources.settings_server_delete_confirm
 import qbitcontroller.composeapp.generated.resources.settings_server_invalid_url
 import qbitcontroller.composeapp.generated.resources.settings_server_name
 import qbitcontroller.composeapp.generated.resources.settings_server_password
@@ -146,6 +153,24 @@ fun AddEditServerScreen(
 
     var advancedSettings by rememberSaveable(stateSaver = jsonSaver()) {
         mutableStateOf(serverConfig?.advanced ?: AdvancedSettings())
+    }
+
+    var currentDialog by rememberSaveable(stateSaver = jsonSaver()) { mutableStateOf<Dialog?>(null) }
+    when (val dialog = currentDialog) {
+        Dialog.Delete -> {
+            DeleteDialog(
+                onDismiss = { currentDialog = null },
+                onConfirm = {
+                    currentDialog = null
+
+                    if (serverId != null) {
+                        viewModel.removeServer(serverId)
+                        onNavigateBack(AddEditServerResult.Delete)
+                    }
+                },
+            )
+        }
+        null -> {}
     }
 
     fun validateAndGetServerConfig(): ServerConfig? {
@@ -242,10 +267,7 @@ fun AddEditServerScreen(
                             ActionMenuItem(
                                 title = stringResource(Res.string.settings_server_action_delete),
                                 icon = Icons.Filled.Delete,
-                                onClick = {
-                                    viewModel.removeServer(serverId)
-                                    onNavigateBack(AddEditServerResult.Delete)
-                                },
+                                onClick = { currentDialog = Dialog.Delete },
                                 showAsAction = true,
                             )
                         } else {
@@ -490,6 +512,34 @@ enum class AddEditServerResult {
     Add,
     Edit,
     Delete,
+}
+
+@Serializable
+private sealed class Dialog {
+    @Serializable
+    data object Delete : Dialog()
+}
+
+@Composable
+fun DeleteDialog(onDismiss: () -> Unit, onConfirm: () -> Unit, modifier: Modifier = Modifier) {
+    Dialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(Res.string.dialog_cancel))
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+            ) {
+                Text(text = stringResource(Res.string.dialog_ok))
+            }
+        },
+        title = { Text(text = stringResource(Res.string.settings_server_action_delete)) },
+        text = { Text(text = stringResource(Res.string.settings_server_delete_confirm)) },
+    )
 }
 
 expect fun isPlatformUrlValid(url: String): Boolean

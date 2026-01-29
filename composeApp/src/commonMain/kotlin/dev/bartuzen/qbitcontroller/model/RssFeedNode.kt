@@ -29,7 +29,7 @@ data class RssFeedNode(
     val uniqueId = feed?.uid ?: "$level-$name"
 }
 
-private object RssFeedNodeSerializer : KSerializer<RssFeedNode> {
+object RssFeedNodeSerializer : KSerializer<RssFeedNode> {
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor("RssFeedNode")
 
     override fun serialize(encoder: Encoder, value: RssFeedNode) {

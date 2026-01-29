@@ -42,7 +42,7 @@ data class TorrentTracker(
     val message: String?,
 )
 
-private object TrackerTierSerializer : KSerializer<Int?> {
+object TrackerTierSerializer : KSerializer<Int?> {
     override val descriptor = JsonPrimitive.serializer().descriptor
 
     override fun serialize(encoder: Encoder, value: Int?) {

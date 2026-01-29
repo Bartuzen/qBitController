@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
@@ -92,9 +93,10 @@ fun AppBarActions(
             }
 
             if (item.title != null) {
-                val position = if (!bottom) (-72).dp else 0.dp
                 TooltipBox(
-                    positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(position),
+                    positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+                        positioning = if (bottom) TooltipAnchorPosition.Above else TooltipAnchorPosition.Below,
+                    ),
                     tooltip = {
                         PlainTooltip {
                             Text(item.title)

@@ -99,11 +99,14 @@ import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.coerceAtMost
 import androidx.compose.ui.unit.dp
@@ -1088,14 +1091,24 @@ private fun Progress(torrent: Torrent, modifier: Modifier = Modifier) {
             Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
                 Text(text = formatTorrentState(torrent.state))
 
-                val speedText = buildList {
+                val speedText = buildAnnotatedString {
                     if (torrent.downloadSpeed > 0) {
-                        add("↓ ${formatBytesPerSecond(torrent.downloadSpeed)}")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.primary)) {
+                            append("↓ ${formatBytesPerSecond(torrent.downloadSpeed)}")
+                        }
                     }
+
+                    if (torrent.downloadSpeed > 0 && torrent.uploadSpeed > 0) {
+                        append(" ")
+                    }
+
                     if (torrent.uploadSpeed > 0) {
-                        add("↑ ${formatBytesPerSecond(torrent.uploadSpeed)}")
+                        withStyle(SpanStyle(color = MaterialTheme.colorScheme.tertiary)) {
+                            append("↑ ${formatBytesPerSecond(torrent.uploadSpeed)}")
+                        }
                     }
-                }.joinToString(" ")
+                }
+
                 Text(text = speedText)
             }
         }
@@ -1501,12 +1514,10 @@ private fun SetCategoryDialog(
             AnimatedContent(targetState = categories) { categories ->
                 when {
                     categories == null -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                     categories.isEmpty() -> Text(
                         text = stringResource(Res.string.torrent_no_categories),
                         color = MaterialTheme.colorScheme.error,
                     )
-
                     else -> FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -1564,12 +1575,10 @@ private fun SetTagsDialog(
             AnimatedContent(targetState = tags) { tags ->
                 when {
                     tags == null -> LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-
                     tags.isEmpty() -> Text(
                         text = stringResource(Res.string.torrent_no_tags),
                         color = MaterialTheme.colorScheme.error,
                     )
-
                     else -> FlowRow(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(8.dp),

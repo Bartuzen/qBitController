@@ -3,6 +3,7 @@
 
 import android.databinding.tool.ext.joinToCamelCaseAsVar
 import dev.bartuzen.qbitcontroller.Versions
+import org.gradle.internal.extensions.core.serviceOf
 import org.gradle.internal.os.OperatingSystem
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -398,6 +399,7 @@ afterEvaluate {
 
 listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFolder) ->
     val appId = "dev.bartuzen.qbitcontroller"
+    val buildDir = layout.buildDirectory.get()
     val flatpakDir = "$buildDir/flatpak"
 
     tasks.register("prepare${buildType}Flatpak") {
@@ -432,7 +434,7 @@ listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFol
     tasks.register("bundle${buildType}Flatpak") {
         dependsOn("prepare${buildType}Flatpak")
         doLast {
-            exec {
+            serviceOf<ExecOperations>().exec {
                 workingDir(flatpakDir)
                 val buildCommand = listOf(
                     "flatpak-builder",
@@ -445,7 +447,7 @@ listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFol
                 )
                 commandLine(buildCommand)
             }
-            exec {
+            serviceOf<ExecOperations>().exec {
                 workingDir(flatpakDir)
                 val bundleCommand = listOf(
                     "flatpak",
@@ -462,7 +464,7 @@ listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFol
     tasks.register("install${buildType}Flatpak") {
         dependsOn("prepare${buildType}Flatpak")
         doLast {
-            exec {
+            serviceOf<ExecOperations>().exec {
                 workingDir(flatpakDir)
                 val installCommand = listOf(
                     "flatpak-builder",
@@ -482,7 +484,7 @@ listOf("" to "main", "Release" to "main-release").forEach { (buildType, buildFol
     tasks.register("run${buildType}Flatpak") {
         dependsOn("install${buildType}Flatpak")
         doLast {
-            exec {
+            serviceOf<ExecOperations>().exec {
                 val runCommand = listOf(
                     "flatpak",
                     "run",

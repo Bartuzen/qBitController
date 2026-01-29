@@ -23,10 +23,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.data.TrafficStats
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
+import dev.bartuzen.qbitcontroller.preferences.ListPreference
+import dev.bartuzen.qbitcontroller.preferences.ListPreferenceType
 import dev.bartuzen.qbitcontroller.preferences.SwitchPreference
 import dev.bartuzen.qbitcontroller.preferences.TextFieldPreference
 import dev.bartuzen.qbitcontroller.utils.Platform
@@ -43,8 +47,15 @@ import qbitcontroller.composeapp.generated.resources.settings_category_general
 import qbitcontroller.composeapp.generated.resources.settings_check_updates
 import qbitcontroller.composeapp.generated.resources.settings_disabled
 import qbitcontroller.composeapp.generated.resources.settings_enable_torrent_swipe_actions
+import qbitcontroller.composeapp.generated.resources.settings_hide_server_urls
+import qbitcontroller.composeapp.generated.resources.settings_hide_server_urls_desc
 import qbitcontroller.composeapp.generated.resources.settings_notification_check_interval
 import qbitcontroller.composeapp.generated.resources.settings_notification_check_interval_description
+import qbitcontroller.composeapp.generated.resources.settings_traffic_stats_in_list
+import qbitcontroller.composeapp.generated.resources.settings_traffic_stats_in_list_complete
+import qbitcontroller.composeapp.generated.resources.settings_traffic_stats_in_list_none
+import qbitcontroller.composeapp.generated.resources.settings_traffic_stats_in_list_session
+import qbitcontroller.composeapp.generated.resources.settings_traffic_stats_in_list_total
 
 @Composable
 fun GeneralSettingsScreen(
@@ -83,6 +94,16 @@ fun GeneralSettingsScreen(
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize(),
         ) {
+            item {
+                val hideServerUrls by viewModel.hideServerUrls.flow.collectAsStateWithLifecycle()
+                SwitchPreference(
+                    value = hideServerUrls,
+                    onValueChange = { viewModel.hideServerUrls.value = it },
+                    title = { Text(text = stringResource(Res.string.settings_hide_server_urls)) },
+                    summary = { Text(text = stringResource(Res.string.settings_hide_server_urls_desc)) },
+                )
+            }
+
             if (areNotificationsEnabled != null) {
                 item {
                     val notificationCheckInterval by viewModel.notificationCheckInterval.flow.collectAsStateWithLifecycle()
@@ -149,6 +170,47 @@ fun GeneralSettingsScreen(
                     value = swipeActionsEnabled,
                     onValueChange = { viewModel.areTorrentSwipeActionsEnabled.value = it },
                     title = { Text(text = stringResource(Res.string.settings_enable_torrent_swipe_actions)) },
+                )
+            }
+
+            item {
+                val trafficStatsInList by viewModel.trafficStatsInList.flow.collectAsStateWithLifecycle()
+                val trafficNoneString = stringResource(Res.string.settings_traffic_stats_in_list_none)
+                val trafficTotalString = stringResource(Res.string.settings_traffic_stats_in_list_total)
+                val trafficSessionString = stringResource(Res.string.settings_traffic_stats_in_list_session)
+                val trafficCompleteString = stringResource(Res.string.settings_traffic_stats_in_list_complete)
+
+                ListPreference(
+                    value = trafficStatsInList,
+                    onValueChange = { viewModel.trafficStatsInList.value = it },
+                    values = listOf(
+                        TrafficStats.NONE,
+                        TrafficStats.TOTAL,
+                        TrafficStats.SESSION,
+                        TrafficStats.COMPLETE,
+                    ),
+                    title = { Text(text = stringResource(Res.string.settings_traffic_stats_in_list)) },
+                    valueToText = { trafficStatsInList ->
+                        AnnotatedString(
+                            when (trafficStatsInList) {
+                                TrafficStats.NONE -> trafficNoneString
+                                TrafficStats.TOTAL -> trafficTotalString
+                                TrafficStats.SESSION -> trafficSessionString
+                                TrafficStats.COMPLETE -> trafficCompleteString
+                            },
+                        )
+                    },
+                    summary = {
+                        Text(
+                            text = when (trafficStatsInList) {
+                                TrafficStats.NONE -> trafficNoneString
+                                TrafficStats.TOTAL -> trafficTotalString
+                                TrafficStats.SESSION -> trafficSessionString
+                                TrafficStats.COMPLETE -> trafficCompleteString
+                            },
+                        )
+                    },
+                    type = ListPreferenceType.DropdownMenu,
                 )
             }
 

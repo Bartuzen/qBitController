@@ -60,12 +60,14 @@ class TorrentListViewModel(
     val torrentSort = settingsManager.sort.flow
     val isReverseSorting = settingsManager.isReverseSorting.flow
     val areTorrentSwipeActionsEnabled = settingsManager.areTorrentSwipeActionsEnabled.flow
+    val trafficStatsInList = settingsManager.trafficStatsInList.flow
     private val autoRefreshInterval = settingsManager.autoRefreshInterval.flow
 
     val areStatesCollapsed = settingsManager.areStatesCollapsed.flow
     val areCategoriesCollapsed = settingsManager.areCategoriesCollapsed.flow
     val areTagsCollapsed = settingsManager.areTagsCollapsed.flow
     val areTrackersCollapsed = settingsManager.areTrackersCollapsed.flow
+    val hideServerUrls = settingsManager.hideServerUrls.flow
 
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -256,6 +258,16 @@ class TorrentListViewModel(
                         }
                         TorrentSort.LAST_ACTIVITY -> {
                             compareByDescending(Torrent::lastActivity)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.DOWNLOADED -> {
+                            compareBy(Torrent::downloaded)
+                                .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
+                                .thenBy(Torrent::hash)
+                        }
+                        TorrentSort.UPLOADED -> {
+                            compareBy(Torrent::uploaded)
                                 .thenBy(String.CASE_INSENSITIVE_ORDER, Torrent::name)
                                 .thenBy(Torrent::hash)
                         }
@@ -524,10 +536,7 @@ class TorrentListViewModel(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateMainData().invokeOnCompletion {
-                viewModelScope.launch {
-                    delay(25)
-                    _isRefreshing.value = false
-                }
+                _isRefreshing.value = false
             }
         }
     }

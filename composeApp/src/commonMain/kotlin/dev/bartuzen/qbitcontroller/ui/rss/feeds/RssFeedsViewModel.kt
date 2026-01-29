@@ -56,10 +56,7 @@ class RssFeedsViewModel(
         if (!isRefreshing.value) {
             _isRefreshing.value = true
             updateRssFeeds().invokeOnCompletion {
-                viewModelScope.launch {
-                    delay(25)
-                    _isRefreshing.value = false
-                }
+                _isRefreshing.value = false
             }
         }
     }

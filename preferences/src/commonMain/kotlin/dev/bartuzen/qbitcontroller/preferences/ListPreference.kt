@@ -145,7 +145,7 @@ object ListPreferenceDefaults {
             modifier =
                 Modifier.fillMaxWidth()
                     .heightIn(min = 48.dp)
-                    .selectable(selected, true, Role.RadioButton, onClick)
+                    .selectable(selected, true, Role.RadioButton, onClick = onClick)
                     .padding(horizontal = 24.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
