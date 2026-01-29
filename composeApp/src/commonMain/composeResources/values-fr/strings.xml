@@ -37,7 +37,7 @@
     <string name="torrent_status_error">Erreur</string>
     <string name="torrent_status_paused">En pause</string>
     <string name="torrent_status_queued">En attente</string>
-    <string name="torrent_status_force_seeding">[F] Seeding</string>
+    <string name="torrent_status_force_seeding">[F] Partageant</string>
     <string name="torrent_status_downloading">Téléchargement</string>
     <string name="torrent_status_checking_resume_data">Vérification des données de reprise</string>
     <string name="torrent_status_downloading_metadata">Téléchargement des métadonnées</string>
@@ -137,7 +137,7 @@
     <string name="torrent_list_delete_tag_desc">Êtes-vous sûr de vouloir supprimer l\'étiquette %1$s ?</string>
     <string name="torrent_list_delete_tag_success">Étiquette %1$s supprimée avec succès.</string>
     <string name="torrent_list_create_tag_name_cannot_be_empty">Le nom de l\'étiquette ne peut pas être vide.</string>
-    <string name="torrent_list_trackers_title">Trackers</string>
+    <string name="torrent_list_trackers_title">Traqueurs</string>
     <string name="torrent_list_trackers_all">Tout</string>
     <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
     <string name="torrent_speed_limits_title">Limites de vitesse</string>
@@ -204,7 +204,7 @@
     <string name="torrent_tab_files">Fichiers</string>
     <string name="stats_ms_format">%1$d ms</string>
     <string name="torrent_tab_overview">Vue d\'ensemble</string>
-    <string name="torrent_tab_trackers">Trackers</string>
+    <string name="torrent_tab_trackers">Traqueurs</string>
     <string name="torrent_tab_peers">Pairs</string>
     <string name="torrent_action_super_seeding">Super partage</string>
     <string name="torrent_action_force_start">Démarrage forcé</string>
@@ -325,7 +325,7 @@
     <plurals name="torrent_files_selected">
         <item quantity="one">%1$d fichier sélectionné</item>
         <item quantity="many">%1$d fichiers sélectionnés</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d fichiers sélectionnés</item>
     </plurals>
     <string name="torrent_files_rename_folder">Renommer dossier</string>
     <string name="torrent_files_rename_file_hint">Nom du fichier</string>
@@ -336,7 +336,7 @@
     <string name="torrent_trackers_action_add">Ajouter des trackers</string>
     <string name="torrent_trackers_seeds">Sources</string>
     <string name="torrent_trackers_downloaded">Téléchargé</string>
-    <string name="torrent_trackers_add_hint">Trackers</string>
+    <string name="torrent_trackers_add_hint">Traqueurs</string>
     <string name="torrent_trackers_action_edit">Editer tracker</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_action_add">Ajouter pairs</string>
@@ -488,10 +488,10 @@
     <string name="search_result_action_download">Télécharger</string>
     <string name="rss_action_download">Télécharger</string>
     <string name="destination_torrents">Torrents</string>
-    <string name="destination_logs">Logs</string>
+    <string name="destination_logs">Journal d\'évènements</string>
     <string name="error_invalid_interval">Doit être entre %1$d et %2$d.</string>
     <string name="error_invalid_interval_optional">Doit être entre %1$d et %2$d, ou laisser vide pour désactiver.</string>
-    <string name="about_description">qBitController vous permet de controler qBittorrent à distance depuis n\'importe quel appareil. \n\nPour plus de détails et pour le code source: %1$s</string>
+    <string name="about_description">qBitController vous permet de controler qBittorrent à distance depuis n\'importe quel appareil. \n\nPour plus de détails et pour le code source : %1$s</string>
     <string name="settings_server_remove_success">Le serveur a été supprimé avec succès.</string>
     <string name="settings_server_invalid_url">Le format de l\'URL est invalide.</string>
     <string name="settings_server_connection_success">Connecté au serveur avec succès.</string>
@@ -501,7 +501,7 @@
     <plurals name="settings_server_advanced_custom_headers_summary">
         <item quantity="one">%1$d en-tête</item>
         <item quantity="many">%1$d en-têtes</item>
-        <item quantity="other"/>
+        <item quantity="other">%1$d en-têtes</item>
     </plurals>
     <string name="destination_settings">Paramètres</string>
     <string name="date_now">Maintenant</string>
@@ -599,7 +599,7 @@
     <string name="settings_theme_light">Clair</string>
     <string name="settings_theme_dark">Sombre</string>
     <string name="settings_theme_system_default">Valeur par défaut du système</string>
-    <string name="torrent_trackers_leeches">Téléchargeurs égoïstes</string>
+    <string name="torrent_trackers_leeches">Sangsues</string>
     <string name="rss_rule_delete_success">Règle RSS supprimée avec succès.</string>
     <string name="rss_rule_name_cannot_be_empty">Le nom ne peut pas être vide.</string>
     <string name="rss_rule_use_regular_expressions">Utilisez des expressions régulières</string>
@@ -671,7 +671,7 @@
     <string name="rss_rule_delete_confirm">Voulez-vous vraiment supprimer la règle %1$s ?</string>
     <string name="torrent_list_action_sort_downloaded">Téléchargé</string>
     <string name="torrent_list_action_sort_uploaded">Déposé</string>
-    <string name="stats_read_cache_hits">Résultats du cache de lecture</string>
+    <string name="stats_read_cache_hits">Lire les résultats du cache</string>
     <string name="torrent_peers_flag_interested_local_choked_peer">Intéressé (local) et bloqué (pair)</string>
     <string name="torrent_peers_flag_interested_local_unchoked_peer">Intéressé (local) et débloqué (pair)</string>
     <string name="torrent_peers_flag_interested_peer_choked_local">Intéressé (pair) et bloqué (local)</string>
@@ -740,4 +740,7 @@
     <string name="settings_server_advanced_custom_headers">En-têtes personnalisés</string>
     <string name="settings_server_advanced_custom_headers_description">Ajoutez un en-tête personnalisé par ligne. Séparez la clé et la valeur en utilisant un signe égal.</string>
     <string name="settings_server_add_success">Le serveur a bien été ajouté.</string>
+    <string name="settings_hide_server_urls">Cacher les URLs de serveur dans la barre latérale</string>
+    <string name="settings_hide_server_urls_desc">Les URLs seront encore affichées pour les serveurs sans nom</string>
+    <string name="settings_server_delete_confirm">Êtes-vous sûr de vouloir supprimer ce serveur ?</string>
 </resources>
