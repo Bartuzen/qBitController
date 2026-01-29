@@ -224,29 +224,35 @@ class AddTorrentViewModel(
 
     fun searchDirectories(serverId: Int, path: String) {
         searchDirectoriesJob?.cancel()
-        if (path.isBlank()) {
+        if (path.isBlank() || !path.startsWith("/")) {
             _directorySuggestions.value = emptyList()
             return
         }
 
         searchDirectoriesJob = viewModelScope.launch {
-            // Debounce
             kotlinx.coroutines.delay(300)
 
-            val lastSeparatorIndex = path.lastIndexOfAny(charArrayOf('/', '\\'))
-            val parent = if (lastSeparatorIndex != -1) {
-                path.substring(0, lastSeparatorIndex + 1)
-            } else {
-                ""
+            val suggestions = ArrayList<String>()
+
+            when (val result = repository.getDirectoryContent(serverId, path)) {
+                is RequestResult.Success -> {
+                    suggestions.addAll(result.data)
+                }
+                else -> {}
             }
 
-            if (parent.isEmpty()) {
-                 _directorySuggestions.value = emptyList()
-                 return@launch
+            // if path doesn't ends with a slash, we need to also check the parent directory for suggestions
+            // e.g. for /downloads/m, check if there's a directory's name under /downloads starts with "m"
+            if (!path.endsWith("/")) {
+                val lastSeparatorIndex = path.lastIndexOf('/')
+                val parent = path.take(lastSeparatorIndex + 1)
+                when (val result = repository.getDirectoryContent(serverId, parent)) {
+                    is RequestResult.Success -> {
+                        suggestions.addAll(result.data)
+                    }
+                    else -> {}
+                }
             }
-
-            val suggestions = repository.getDirectoryContent(serverId, parent)
-            
             _directorySuggestions.value = suggestions
                 .filter { it.startsWith(path, ignoreCase = true) }
                 .sorted()
