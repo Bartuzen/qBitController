@@ -47,7 +47,11 @@ class AddTorrentViewModel(
     private val _isAdding = MutableStateFlow(false)
     val isAdding = _isAdding.asStateFlow()
 
+    private val _directorySuggestions = MutableStateFlow<List<String>>(emptyList())
+    val directorySuggestions = _directorySuggestions.asStateFlow()
+
     private var loadCategoryTagJob: Job? = null
+    private var searchDirectoriesJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -214,6 +218,29 @@ class AddTorrentViewModel(
             _isRefreshing.value = true
             updateData(serverId).invokeOnCompletion {
                 _isRefreshing.value = false
+            }
+        }
+    }
+
+    fun searchDirectories(serverId: Int, path: String) {
+        searchDirectoriesJob?.cancel()
+        if (path.isBlank()) {
+            _directorySuggestions.value = emptyList()
+            return
+        }
+
+        searchDirectoriesJob = viewModelScope.launch {
+            // Debounce
+            kotlinx.coroutines.delay(300)
+
+            when (val result = repository.getDirectoryContent(serverId, path)) {
+                is RequestResult.Success -> {
+                    _directorySuggestions.value = result.data.sorted()
+                }
+                is RequestResult.Error -> {
+                    // Ignore errors for suggestions
+                    _directorySuggestions.value = emptyList()
+                }
             }
         }
     }

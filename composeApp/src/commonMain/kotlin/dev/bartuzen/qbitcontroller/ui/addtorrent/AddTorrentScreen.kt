@@ -869,24 +869,72 @@ fun AddTorrentScreen(
                     }
                 }
 
-                OutlinedTextField(
-                    value = savePath,
-                    onValueChange = { savePath = it },
-                    label = {
-                        Text(
-                            text = stringResource(Res.string.torrent_add_save_path),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = autoTmmIndex != 2,
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Uri,
-                        imeAction = ImeAction.Next,
-                    ),
-                )
+                val directorySuggestions by viewModel.directorySuggestions.collectAsStateWithLifecycle()
+                var savePathExpanded by remember { mutableStateOf(false) }
+
+                ExposedDropdownMenuBox(
+                    expanded = savePathExpanded,
+                    onExpandedChange = { savePathExpanded = it },
+                ) {
+                    OutlinedTextField(
+                        value = savePath,
+                        onValueChange = {
+                            savePath = it
+                            savePathExpanded = true
+                            serverId?.let { id ->
+                                viewModel.searchDirectories(id, it.text)
+                            }
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(Res.string.torrent_add_save_path),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable),
+                        enabled = autoTmmIndex != 2,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Uri,
+                            imeAction = ImeAction.Next,
+                        ),
+                    )
+
+                    if (directorySuggestions.isNotEmpty()) {
+                        ExposedDropdownMenu(
+                            expanded = savePathExpanded,
+                            onDismissRequest = { savePathExpanded = false },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            directorySuggestions.forEach { suggestion ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            text = suggestion,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                    },
+                                    onClick = {
+                                        savePath = TextFieldValue(
+                                            text = suggestion,
+                                            selection = androidx.compose.ui.text.TextRange(suggestion.length),
+                                        )
+                                        savePathExpanded = true
+                                        // Trigger search again for the new path to load its subdirectories
+                                        serverId?.let { id ->
+                                            viewModel.searchDirectories(id, suggestion)
+                                        }
+                                    },
+                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                                )
+                            }
+                        }
+                    }
+                }
 
                 OutlinedTextField(
                     value = torrentName,

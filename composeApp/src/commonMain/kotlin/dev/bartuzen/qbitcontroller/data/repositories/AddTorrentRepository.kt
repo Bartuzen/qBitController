@@ -92,4 +92,8 @@ class AddTorrentRepository(
     suspend fun getDefaultSavePath(serverId: Int) = requestManager.request(serverId) { service ->
         service.getDefaultSavePath()
     }
+
+    suspend fun getDirectoryContent(serverId: Int, path: String) = requestManager.request(serverId) { service ->
+        service.getDirectoryContent(path)
+    }
 }
