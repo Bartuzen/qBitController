@@ -921,7 +921,7 @@ fun AddTorrentScreen(
                             onNext = {
                                 savePathExpanded = false
                                 defaultKeyboardAction(ImeAction.Next)
-                            }
+                            },
                         ),
                     )
 
@@ -938,7 +938,9 @@ fun AddTorrentScreen(
                                             text = buildAnnotatedString {
                                                 val matchLength = savePath.text.length
                                                 if (suggestion.startsWith(savePath.text, ignoreCase = true)) {
-                                                    withStyle(style = SpanStyle(background = Color.LightGray.copy(alpha = 0.5f))) {
+                                                    withStyle(
+                                                        style = SpanStyle(background = Color.LightGray.copy(alpha = 0.5f)),
+                                                    ) {
                                                         append(suggestion.take(matchLength))
                                                     }
                                                     append(suggestion.drop(matchLength))
