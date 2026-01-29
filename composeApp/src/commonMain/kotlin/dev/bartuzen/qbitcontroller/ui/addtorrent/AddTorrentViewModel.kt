@@ -148,7 +148,6 @@ class AddTorrentViewModel(
         }
     }
 
-
     private fun updateData(serverId: Int) = viewModelScope.launch {
         val categoriesDeferred = async {
             when (val result = repository.getCategories(serverId)) {

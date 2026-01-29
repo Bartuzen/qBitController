@@ -12,7 +12,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
-import dev.bartuzen.qbitcontroller.model.Category
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -77,6 +76,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
@@ -634,31 +634,31 @@ fun AddTorrentScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                        categoryList.forEach { category ->
-                            CategoryChip(
-                                category = category.name,
-                                isSelected = selectedCategory == category.name,
-                                onClick = {
-                                    if (selectedCategory == category.name) {
-                                        selectedCategory = null
-                                    } else {
-                                        selectedCategory = category.name
-                                        if (category.savePath.isNotBlank()) {
-                                            savePath = TextFieldValue(category.savePath)
+                            categoryList.forEach { category ->
+                                CategoryChip(
+                                    category = category.name,
+                                    isSelected = selectedCategory == category.name,
+                                    onClick = {
+                                        if (selectedCategory == category.name) {
+                                            selectedCategory = null
                                         } else {
-                                            when (val path = category.downloadPath) {
-                                                Category.DownloadPath.Default,
-                                                Category.DownloadPath.No,
-                                                -> Unit
-                                                is Category.DownloadPath.Yes -> {
-                                                    savePath = TextFieldValue(path.path)
+                                            selectedCategory = category.name
+                                            if (category.savePath.isNotBlank()) {
+                                                savePath = TextFieldValue(category.savePath)
+                                            } else {
+                                                when (val path = category.downloadPath) {
+                                                    Category.DownloadPath.Default,
+                                                    Category.DownloadPath.No,
+                                                    -> Unit
+                                                    is Category.DownloadPath.Yes -> {
+                                                        savePath = TextFieldValue(path.path)
+                                                    }
                                                 }
                                             }
                                         }
-                                    }
-                                },
-                            )
-                        }
+                                    },
+                                )
+                            }
                         }
                         else -> Text(
                             text = stringResource(Res.string.torrent_no_categories),
