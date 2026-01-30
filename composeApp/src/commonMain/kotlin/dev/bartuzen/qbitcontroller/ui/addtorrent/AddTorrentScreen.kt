@@ -76,7 +76,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.ui.components.ActionMenuItem
 import dev.bartuzen.qbitcontroller.ui.components.AppBarActions
 import dev.bartuzen.qbitcontroller.ui.components.CategoryChip
@@ -641,19 +640,15 @@ fun AddTorrentScreen(
                                     onClick = {
                                         if (selectedCategory == category.name) {
                                             selectedCategory = null
+
+                                            savePath = TextFieldValue(serverData?.defaultSavePath ?: "")
                                         } else {
                                             selectedCategory = category.name
-                                            if (category.savePath.isNotBlank()) {
-                                                savePath = TextFieldValue(category.savePath)
+
+                                            savePath = if (category.savePath.isNotBlank()) {
+                                                TextFieldValue(category.savePath)
                                             } else {
-                                                when (val path = category.downloadPath) {
-                                                    Category.DownloadPath.Default,
-                                                    Category.DownloadPath.No,
-                                                    -> Unit
-                                                    is Category.DownloadPath.Yes -> {
-                                                        savePath = TextFieldValue(path.path)
-                                                    }
-                                                }
+                                                TextFieldValue(serverData?.defaultSavePath ?: "")
                                             }
                                         }
                                     },
