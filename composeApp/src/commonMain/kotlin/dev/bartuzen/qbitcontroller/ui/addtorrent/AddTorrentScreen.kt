@@ -635,10 +635,22 @@ fun AddTorrentScreen(
                         ) {
                             categoryList.forEach { category ->
                                 CategoryChip(
-                                    category = category,
-                                    isSelected = selectedCategory == category,
+                                    category = category.name,
+                                    isSelected = selectedCategory == category.name,
                                     onClick = {
-                                        selectedCategory = if (selectedCategory == category) null else category
+                                        if (selectedCategory == category.name) {
+                                            selectedCategory = null
+
+                                            savePath = TextFieldValue(serverData?.defaultSavePath ?: "")
+                                        } else {
+                                            selectedCategory = category.name
+
+                                            savePath = if (category.savePath.isNotBlank()) {
+                                                TextFieldValue(category.savePath)
+                                            } else {
+                                                TextFieldValue(serverData?.defaultSavePath ?: "")
+                                            }
+                                        }
                                     },
                                 )
                             }

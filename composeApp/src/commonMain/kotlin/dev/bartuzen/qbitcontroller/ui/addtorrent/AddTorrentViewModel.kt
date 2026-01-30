@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
+import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.getSerializableStateFlow
 import io.github.vinceglb.filekit.PlatformFile
@@ -153,8 +154,7 @@ class AddTorrentViewModel(
                 is RequestResult.Success -> {
                     result.data.values
                         .toList()
-                        .map { it.name }
-                        .sorted()
+                        .sortedWith(Category.comparator)
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
@@ -243,7 +243,7 @@ class AddTorrentViewModel(
 
 @Serializable
 data class ServerData(
-    val categoryList: List<String>,
+    val categoryList: List<Category>,
     val tagList: List<String>,
     val defaultSavePath: String,
 )
