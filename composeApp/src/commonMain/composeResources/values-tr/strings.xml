@@ -715,4 +715,5 @@
     <string name="settings_traffic_stats_in_list_total">Toplam</string>
     <string name="settings_traffic_stats_in_list_session">Oturum</string>
     <string name="settings_traffic_stats_in_list_complete">Toplam (Oturum)</string>
+    <string name="settings_server_delete_confirm">Bu sunucuyu silmek istediğinize emin misiniz?</string>
 </resources>
