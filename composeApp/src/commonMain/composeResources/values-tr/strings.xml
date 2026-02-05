@@ -709,7 +709,7 @@
     <string name="torrent_list_action_sort_downloaded">İndirilen</string>
     <string name="torrent_list_action_sort_uploaded">Yüklenen</string>
     <string name="settings_hide_server_urls">Sunucu URL\'lerini kenar çubuğunda gizle</string>
-    <string name="settings_hide_server_urls_desc">Adı olmayan sunucuların URL\'leri yine de gösterilecektir.</string>
+    <string name="settings_hide_server_urls_desc">Adı olmayan sunucuların URL\'leri yine de gösterilecektir</string>
     <string name="settings_traffic_stats_in_list">Listede trafik durumu</string>
     <string name="settings_traffic_stats_in_list_none">Hiçbiri</string>
     <string name="settings_traffic_stats_in_list_total">Toplam</string>
