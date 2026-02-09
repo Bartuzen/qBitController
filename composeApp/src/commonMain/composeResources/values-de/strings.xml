@@ -69,7 +69,7 @@
     <string name="error_no_data">Keine Datein vom Server empfangen.</string>
     <string name="torrent_status_force_downloading_metadata">[F] Metadaten werden heruntergeladen</string>
     <string name="torrent_list_trackers_all">Alle</string>
-    <string name="torrent_list_action_sort_ratio">Ratio</string>
+    <string name="torrent_list_action_sort_ratio">Verhältnis</string>
     <string name="torrent_list_create_tag_hint">Labelname</string>
     <string name="torrent_status_force_downloading">[F] Herunterladen</string>
     <string name="torrent_list_action_sort_download_speed">Downloadgeschwindigkeit</string>
@@ -314,19 +314,19 @@
     <string name="torrent_trackers_add_hint">Verfolger</string>
     <string name="torrent_trackers_action_edit">Bearbeite Verfolger</string>
     <plurals name="torrent_trackers_delete_title">
-        <item quantity="one">Lösche %1$d Verfolger</item>
-        <item quantity="other">Lösche %1$d Verfolger</item>
+        <item quantity="one">Lösche %1$d Tracker</item>
+        <item quantity="other">Lösche %1$d Tracker</item>
     </plurals>
     <plurals name="torrent_trackers_delete_desc">
         <item quantity="one">Sind Sie sicher, dass Sie den %1$d Tracker löschen möchten?</item>
         <item quantity="other">Sind Sie sicher, dass Sie die %1$d Tracker löschen möchten?</item>
     </plurals>
     <plurals name="torrent_trackers_selected">
-        <item quantity="one">%1$d Verfolger ausgesucht</item>
-        <item quantity="other">%1$d Verfolger ausgesucht</item>
+        <item quantity="one">%1$d Tracker ausgesucht</item>
+        <item quantity="other">%1$d Tracker ausgesucht</item>
     </plurals>
-    <string name="torrent_trackers_added">Verfolger erfolgreich hinzugefügt.</string>
-    <string name="torrent_trackers_deleted">Verfolger erfolgreich hinzugefügt.</string>
+    <string name="torrent_trackers_added">Tracker erfolgreich hinzugefügt.</string>
+    <string name="torrent_trackers_deleted">Tracker erfolgreich gelöscht.</string>
     <string name="torrent_trackers_edited">Verfolger erfolgreich bearbeitet.</string>
     <string name="torrent_trackers_url_cannot_be_empty">Verfolger URL kann nicht leer sein.</string>
     <string name="eta_days_hours">%1$sd %2$sh</string>
@@ -481,4 +481,8 @@
     <string name="rss_action_move_folder">Order verschieben</string>
     <string name="rss_action_delete_folder">Ordner löschen</string>
     <string name="rss_action_mark_all_as_read">Als gelesen markieren</string>
+    <plurals name="rss_torrents_selected">
+        <item quantity="one">%1$d Torrent ausgewählt</item>
+        <item quantity="other">%1$d Torrents ausgewählt</item>
+    </plurals>
 </resources>
