@@ -679,4 +679,7 @@
     <string name="settings_palette_style_content">内容</string>
     <string name="shortcut_new_window">新窗口</string>
     <string name="stats_read_cache_hits">读缓存命中</string>
+    <string name="torrent_list_action_sort_downloaded">已下载</string>
+    <string name="torrent_list_action_sort_uploaded">已上传</string>
+    <string name="settings_traffic_stats_in_list_none">无</string>
 </resources>
