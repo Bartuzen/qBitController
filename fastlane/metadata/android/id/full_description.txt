@@ -1,0 +1,13 @@
+Aplikasi gratis dan sumber terbuka untuk mengontrol qBittorrent di server Anda.
+
+Fitur:
+
+- Kelola beberapa server qBittorrent
+- Tambahkan torrent menggunakan tautan magnet atau file
+- Lihat informasi rinci tentang torrent
+- Lakukan berbagai tindakan pada torrent seperti menjeda, melanjutkan, menghapus, dan lainnya
+- Urutkan torrent berdasarkan nama, ukuran, kemajuan, kecepatan unduh/unggah, dan lainnya
+- Filter torrent berdasarkan status, kategori, tag, dan pelacak
+- Kelola kategori dan tag
+- Lihat feed RSS, buat aturan unduhan otomatis
+- Cari torrent online
