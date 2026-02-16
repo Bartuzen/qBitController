@@ -73,7 +73,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -880,7 +882,7 @@ fun AddTorrentScreen(
                 var savePathExpanded by remember { mutableStateOf(false) }
 
                 // Hide suggestions when IME is folded
-                val density = androidx.compose.ui.platform.LocalDensity.current
+                val density = LocalDensity.current
                 val isImeVisible = WindowInsets.ime.getBottom(density) > 0
                 LaunchedEffect(isImeVisible) {
                     if (!isImeVisible) {
@@ -955,7 +957,7 @@ fun AddTorrentScreen(
                                     onClick = {
                                         savePath = TextFieldValue(
                                             text = suggestion,
-                                            selection = androidx.compose.ui.text.TextRange(suggestion.length),
+                                            selection = TextRange(suggestion.length),
                                         )
                                         savePathExpanded = true
                                         // Trigger search again for the new path to load its subdirectories

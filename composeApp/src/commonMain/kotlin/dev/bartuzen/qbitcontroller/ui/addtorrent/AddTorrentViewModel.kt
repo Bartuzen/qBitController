@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
+import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
+import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.getSerializableStateFlow
 import io.github.vinceglb.filekit.PlatformFile
@@ -14,6 +16,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -29,6 +32,7 @@ class AddTorrentViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val repository: AddTorrentRepository,
     private val serverManager: ServerManager,
+    private val requestManager: RequestManager,
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -224,35 +228,60 @@ class AddTorrentViewModel(
 
     fun searchDirectories(serverId: Int, path: String) {
         searchDirectoriesJob?.cancel()
-        if (path.isBlank() || !path.startsWith("/")) {
+
+        if (path.isBlank()) {
             _directorySuggestions.value = emptyList()
             return
         }
 
+        val version = requestManager.getQBittorrentVersion(serverId)
+        if (version < QBittorrentVersion(5, 0, 0)) {
+            return
+        }
+
         searchDirectoriesJob = viewModelScope.launch {
-            kotlinx.coroutines.delay(300)
+            delay(300)
 
             val suggestions = ArrayList<String>()
 
-            when (val result = repository.getDirectoryContent(serverId, path)) {
-                is RequestResult.Success -> {
-                    suggestions.addAll(result.data)
+            val pathDeferred = async {
+                when (val result = repository.getDirectoryContent(serverId, path)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        emptyList()
+                    }
                 }
-                else -> {}
             }
 
-            // if path doesn't ends with a slash, we need to also check the parent directory for suggestions
-            // e.g. for /downloads/m, check if there's a directory's name under /downloads starts with "m"
-            if (!path.endsWith("/")) {
-                val lastSeparatorIndex = path.lastIndexOf('/')
-                val parent = path.take(lastSeparatorIndex + 1)
-                when (val result = repository.getDirectoryContent(serverId, parent)) {
-                    is RequestResult.Success -> {
-                        suggestions.addAll(result.data)
+            val parentDeferred = async {
+                // if path doesn't ends with a slash, we need to also check the parent directory for suggestions
+                // e.g. for /downloads/m, check if there's a directory's name under /downloads starts with "m"
+                if (!path.endsWith("/") && !path.endsWith("\\")) {
+                    val separator = if (path.contains('/')) '/' else '\\'
+                    val lastSeparatorIndex = path.lastIndexOf(separator)
+                    if (lastSeparatorIndex != -1) {
+                        val parent = path.take(lastSeparatorIndex + 1)
+                        when (val result = repository.getDirectoryContent(serverId, parent)) {
+                            is RequestResult.Success -> {
+                                result.data
+                            }
+                            is RequestResult.Error -> {
+                                emptyList()
+                            }
+                        }
+                    } else {
+                        emptyList()
                     }
-                    else -> {}
+                } else {
+                    emptyList()
                 }
             }
+
+            suggestions.addAll(pathDeferred.await())
+            suggestions.addAll(parentDeferred.await())
+
             _directorySuggestions.value = suggestions
                 .filter { it.startsWith(path, ignoreCase = true) }
                 .sorted()
