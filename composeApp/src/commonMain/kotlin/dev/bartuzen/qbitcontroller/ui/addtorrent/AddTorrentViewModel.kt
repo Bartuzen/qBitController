@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
+import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
 import dev.bartuzen.qbitcontroller.network.RequestManager
-import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.getSerializableStateFlow
 import io.github.vinceglb.filekit.PlatformFile
