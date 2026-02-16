@@ -682,4 +682,11 @@
     <string name="torrent_list_action_sort_downloaded">已下载</string>
     <string name="torrent_list_action_sort_uploaded">已上传</string>
     <string name="settings_traffic_stats_in_list_none">无</string>
+    <string name="settings_hide_server_urls">在侧边栏隐藏服务器 URL</string>
+    <string name="settings_hide_server_urls_desc">对于没有名称的服务器，URL 仍会显示</string>
+    <string name="settings_traffic_stats_in_list">列表中的流量统计</string>
+    <string name="settings_traffic_stats_in_list_total">总计</string>
+    <string name="settings_traffic_stats_in_list_session">会话</string>
+    <string name="settings_traffic_stats_in_list_complete">总计（会话）</string>
+    <string name="settings_server_delete_confirm">确定要删除此服务器吗？</string>
 </resources>
