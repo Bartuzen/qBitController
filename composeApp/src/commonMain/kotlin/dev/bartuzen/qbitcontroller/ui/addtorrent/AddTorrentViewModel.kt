@@ -19,14 +19,19 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.io.files.FileNotFoundException
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlin.math.max
 
 class AddTorrentViewModel(
     initialServerId: Int?,
@@ -52,8 +57,13 @@ class AddTorrentViewModel(
     private val _isAdding = MutableStateFlow(false)
     val isAdding = _isAdding.asStateFlow()
 
-    private val _directorySuggestions = MutableStateFlow<List<String>>(emptyList())
-    val directorySuggestions = _directorySuggestions.asStateFlow()
+    private val savePath = MutableStateFlow<String?>("")
+
+    private val directoryInfo = MutableStateFlow<DirectoryInfo?>(null)
+
+    val directorySuggestions = directoryInfo
+        .map { it?.content ?: emptyList() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private var loadCategoryTagJob: Job? = null
     private var searchDirectoriesJob: Job? = null
@@ -78,6 +88,16 @@ class AddTorrentViewModel(
                         loadData(serverId)
                     }
                 }
+        }
+
+        viewModelScope.launch {
+            combine(savePath, serverId) { path, serverId ->
+                Pair(path, serverId)
+            }.collectLatest { (path, serverId) ->
+                if (serverId != null && path != null) {
+                    searchDirectories(serverId, path)
+                }
+            }
         }
     }
 
@@ -226,11 +246,16 @@ class AddTorrentViewModel(
         }
     }
 
-    fun searchDirectories(serverId: Int, path: String) {
+    private fun searchDirectories(serverId: Int, path: String) {
         searchDirectoriesJob?.cancel()
 
+        val currentDirectoryInfo = directoryInfo.value
+        if (serverId != currentDirectoryInfo?.serverId) {
+            directoryInfo.value = null
+        }
+
         if (path.isBlank()) {
-            _directorySuggestions.value = emptyList()
+            directoryInfo.value = currentDirectoryInfo?.copy(content = emptyList())
             return
         }
 
@@ -240,9 +265,9 @@ class AddTorrentViewModel(
         }
 
         searchDirectoriesJob = viewModelScope.launch {
-            delay(300)
-
-            val suggestions = ArrayList<String>()
+            if (directoryInfo.value != null) {
+                delay(300)
+            }
 
             val pathDeferred = async {
                 when (val result = repository.getDirectoryContent(serverId, path)) {
@@ -256,35 +281,36 @@ class AddTorrentViewModel(
             }
 
             val parentDeferred = async {
-                // if path doesn't ends with a slash, we need to also check the parent directory for suggestions
-                // e.g. for /downloads/m, check if there's a directory's name under /downloads starts with "m"
-                if (!path.endsWith("/") && !path.endsWith("\\")) {
-                    val separator = if (path.contains('/')) '/' else '\\'
-                    val lastSeparatorIndex = path.lastIndexOf(separator)
-                    if (lastSeparatorIndex != -1) {
-                        val parent = path.take(lastSeparatorIndex + 1)
-                        when (val result = repository.getDirectoryContent(serverId, parent)) {
-                            is RequestResult.Success -> {
-                                result.data
-                            }
-                            is RequestResult.Error -> {
-                                emptyList()
-                            }
-                        }
-                    } else {
+                if (path.endsWith("/") || path.endsWith("\\")) {
+                    return@async emptyList()
+                }
+
+                val lastSeparatorIndex = max(
+                    path.lastIndexOf('/'),
+                    path.lastIndexOf('\\'),
+                )
+                if (lastSeparatorIndex == -1) {
+                    return@async emptyList()
+                }
+
+                val parent = path.take(lastSeparatorIndex + 1)
+                when (val result = repository.getDirectoryContent(serverId, parent)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
                         emptyList()
                     }
-                } else {
-                    emptyList()
                 }
             }
 
-            suggestions.addAll(pathDeferred.await())
-            suggestions.addAll(parentDeferred.await())
-
-            _directorySuggestions.value = suggestions
-                .filter { it.startsWith(path, ignoreCase = true) }
-                .sorted()
+            directoryInfo.value = DirectoryInfo(
+                serverId = serverId,
+                content = (pathDeferred.await() + parentDeferred.await())
+                    .distinct()
+                    .filter { it.startsWith(path, ignoreCase = true) }
+                    .sortedWith(String.CASE_INSENSITIVE_ORDER),
+            )
         }
     }
 
@@ -298,6 +324,10 @@ class AddTorrentViewModel(
 
     private fun setLoading(isLoading: Boolean) {
         savedStateHandle["isLoading"] = isLoading
+    }
+
+    fun setSavePath(path: String) {
+        savePath.value = path
     }
 
     sealed class Event {
@@ -316,4 +346,9 @@ data class ServerData(
     val categoryList: List<Category>,
     val tagList: List<String>,
     val defaultSavePath: String,
+)
+
+private data class DirectoryInfo(
+    val serverId: Int,
+    val content: List<String>,
 )

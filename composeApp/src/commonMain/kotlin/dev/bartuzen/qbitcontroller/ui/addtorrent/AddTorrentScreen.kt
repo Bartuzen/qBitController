@@ -911,9 +911,7 @@ fun AddTorrentScreen(
                         onValueChange = {
                             savePath = it
                             savePathExpanded = true
-                            serverId?.let { id ->
-                                viewModel.searchDirectories(id, it.text)
-                            }
+                            viewModel.setSavePath(it.text)
                         },
                         label = {
                             Text(
@@ -972,12 +970,8 @@ fun AddTorrentScreen(
                                             selection = TextRange(suggestion.length),
                                         )
                                         savePathExpanded = true
-                                        // Trigger search again for the new path to load its subdirectories
-                                        serverId?.let { id ->
-                                            viewModel.searchDirectories(id, suggestion)
-                                        }
+                                        viewModel.setSavePath(suggestion)
                                     },
-                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                                 )
                             }
                         }
