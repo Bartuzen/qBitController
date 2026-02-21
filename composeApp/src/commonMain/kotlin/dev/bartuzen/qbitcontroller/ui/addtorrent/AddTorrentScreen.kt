@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
@@ -32,6 +34,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -68,11 +71,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -881,24 +890,93 @@ fun AddTorrentScreen(
                     }
                 }
 
-                OutlinedTextField(
-                    value = savePath,
-                    onValueChange = { savePath = it },
-                    label = {
-                        Text(
-                            text = stringResource(Res.string.torrent_add_save_path),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = autoTmmIndex != 2,
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Uri,
-                        imeAction = ImeAction.Next,
-                    ),
-                )
+                val directorySuggestions by viewModel.directorySuggestions.collectAsStateWithLifecycle()
+                var savePathExpanded by remember { mutableStateOf(false) }
+
+                // Hide suggestions when IME is folded
+                val density = LocalDensity.current
+                val isImeVisible = WindowInsets.ime.getBottom(density) > 0
+                LaunchedEffect(isImeVisible) {
+                    if (!isImeVisible) {
+                        savePathExpanded = false
+                    }
+                }
+
+                ExposedDropdownMenuBox(
+                    expanded = savePathExpanded,
+                    onExpandedChange = { savePathExpanded = it },
+                ) {
+                    OutlinedTextField(
+                        value = savePath,
+                        onValueChange = {
+                            savePath = it
+                            savePathExpanded = true
+                            viewModel.setSavePath(it.text)
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(Res.string.torrent_add_save_path),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable),
+                        enabled = autoTmmIndex != 2,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Uri,
+                            imeAction = ImeAction.Next,
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                savePathExpanded = false
+                                defaultKeyboardAction(ImeAction.Next)
+                            },
+                        ),
+                    )
+
+                    if (directorySuggestions.isNotEmpty()) {
+                        ExposedDropdownMenu(
+                            expanded = savePathExpanded,
+                            onDismissRequest = { savePathExpanded = false },
+                            modifier = Modifier.heightIn(max = 240.dp),
+                        ) {
+                            directorySuggestions.forEach { suggestion ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                val matchLength = savePath.text.length
+                                                if (suggestion.startsWith(savePath.text, ignoreCase = true)) {
+                                                    withStyle(
+                                                        style = SpanStyle(background = Color.LightGray.copy(alpha = 0.5f)),
+                                                    ) {
+                                                        append(suggestion.take(matchLength))
+                                                    }
+                                                    append(suggestion.drop(matchLength))
+                                                } else {
+                                                    append(suggestion)
+                                                }
+                                            },
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
+                                    },
+                                    onClick = {
+                                        savePath = TextFieldValue(
+                                            text = suggestion,
+                                            selection = TextRange(suggestion.length),
+                                        )
+                                        savePathExpanded = true
+                                        viewModel.setSavePath(suggestion)
+                                    },
+                                )
+                            }
+                        }
+                    }
+                }
 
                 OutlinedTextField(
                     value = torrentName,

@@ -109,6 +109,11 @@ class TorrentService(
 
     suspend fun getDefaultSavePath(): Response<String> = get("app/defaultSavePath")
 
+    suspend fun getDirectoryContent(path: String): Response<List<String>> = get(
+        "app/getDirectoryContent",
+        mapOf("dirPath" to path),
+    )
+
     suspend fun shutdown(): Response<String> = post("app/shutdown")
 
     suspend fun getLog(): Response<List<Log>> = get("log/main")

@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.model.Category
+import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
+import dev.bartuzen.qbitcontroller.network.RequestManager
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import dev.bartuzen.qbitcontroller.utils.getSerializableStateFlow
 import io.github.vinceglb.filekit.PlatformFile
@@ -15,21 +17,28 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.io.files.FileNotFoundException
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlin.math.max
 
 class AddTorrentViewModel(
     initialServerId: Int?,
     private val savedStateHandle: SavedStateHandle,
     private val repository: AddTorrentRepository,
     private val serverManager: ServerManager,
+    private val requestManager: RequestManager,
 ) : ViewModel() {
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
@@ -48,7 +57,16 @@ class AddTorrentViewModel(
     private val _isAdding = MutableStateFlow(false)
     val isAdding = _isAdding.asStateFlow()
 
+    private val savePath = MutableStateFlow<String?>("")
+
+    private val directoryInfo = MutableStateFlow<DirectoryInfo?>(null)
+
+    val directorySuggestions = directoryInfo
+        .map { it?.content ?: emptyList() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     private var loadCategoryTagJob: Job? = null
+    private var searchDirectoriesJob: Job? = null
 
     init {
         viewModelScope.launch {
@@ -70,6 +88,16 @@ class AddTorrentViewModel(
                         loadData(serverId)
                     }
                 }
+        }
+
+        viewModelScope.launch {
+            combine(savePath, serverId) { path, serverId ->
+                Pair(path, serverId)
+            }.collectLatest { (path, serverId) ->
+                if (serverId != null && path != null) {
+                    searchDirectories(serverId, path)
+                }
+            }
         }
     }
 
@@ -218,6 +246,74 @@ class AddTorrentViewModel(
         }
     }
 
+    private fun searchDirectories(serverId: Int, path: String) {
+        searchDirectoriesJob?.cancel()
+
+        val currentDirectoryInfo = directoryInfo.value
+        if (serverId != currentDirectoryInfo?.serverId) {
+            directoryInfo.value = null
+        }
+
+        if (path.isBlank()) {
+            directoryInfo.value = currentDirectoryInfo?.copy(content = emptyList())
+            return
+        }
+
+        val version = requestManager.getQBittorrentVersion(serverId)
+        if (version < QBittorrentVersion(5, 0, 0)) {
+            return
+        }
+
+        searchDirectoriesJob = viewModelScope.launch {
+            if (directoryInfo.value != null) {
+                delay(300)
+            }
+
+            val pathDeferred = async {
+                when (val result = repository.getDirectoryContent(serverId, path)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        emptyList()
+                    }
+                }
+            }
+
+            val parentDeferred = async {
+                if (path.endsWith("/") || path.endsWith("\\")) {
+                    return@async emptyList()
+                }
+
+                val lastSeparatorIndex = max(
+                    path.lastIndexOf('/'),
+                    path.lastIndexOf('\\'),
+                )
+                if (lastSeparatorIndex == -1) {
+                    return@async emptyList()
+                }
+
+                val parent = path.take(lastSeparatorIndex + 1)
+                when (val result = repository.getDirectoryContent(serverId, parent)) {
+                    is RequestResult.Success -> {
+                        result.data
+                    }
+                    is RequestResult.Error -> {
+                        emptyList()
+                    }
+                }
+            }
+
+            directoryInfo.value = DirectoryInfo(
+                serverId = serverId,
+                content = (pathDeferred.await() + parentDeferred.await())
+                    .distinct()
+                    .filter { it.startsWith(path, ignoreCase = true) }
+                    .sortedWith(String.CASE_INSENSITIVE_ORDER),
+            )
+        }
+    }
+
     fun setServerId(serverId: Int?) {
         savedStateHandle["serverId"] = serverId
     }
@@ -228,6 +324,10 @@ class AddTorrentViewModel(
 
     private fun setLoading(isLoading: Boolean) {
         savedStateHandle["isLoading"] = isLoading
+    }
+
+    fun setSavePath(path: String) {
+        savePath.value = path
     }
 
     sealed class Event {
@@ -246,4 +346,9 @@ data class ServerData(
     val categoryList: List<Category>,
     val tagList: List<String>,
     val defaultSavePath: String,
+)
+
+private data class DirectoryInfo(
+    val serverId: Int,
+    val content: List<String>,
 )

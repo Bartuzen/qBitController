@@ -89,7 +89,7 @@ val appModule = module {
     viewModel { (serverId: Int, hash: String) -> TorrentPeersViewModel(serverId, hash, get(), get(), get()) }
     viewModel { (serverId: Int, hash: String) -> TorrentWebSeedsViewModel(serverId, hash, get(), get()) }
 
-    viewModel { (initialServerId: Int?) -> AddTorrentViewModel(initialServerId, get(), get(), get()) }
+    viewModel { (initialServerId: Int?) -> AddTorrentViewModel(initialServerId, get(), get(), get(), get()) }
 
     viewModel { (serverId: Int) -> RssFeedsViewModel(serverId, get()) }
     viewModel { (serverId: Int, feedPath: List<String>, uid: String?) ->
