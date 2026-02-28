@@ -580,7 +580,6 @@
     <string name="torrent_speed_limits_title">Limites de velocidade</string>
     <string name="torrent_list_priority_minimize_success">Prioridade minimizada com sucesso.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">Estatísticas de usuário</string>
     <string name="stats_category_cache_statistics">Estatísticas de cache</string>
     <string name="stats_category_performance_statistics">Estatísticas de performance</string>

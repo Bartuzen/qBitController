@@ -36,7 +36,6 @@
     <string name="size_bytes">B</string>
     <string name="torrent_list_action_sort_addition_date">Fecha de incorporación</string>
     <string name="torrent_action_force_recheck">Forzar la comprobación</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="torrent_list_status_seeding">Sembrando</string>
     <string name="torrent_action_pause">Pausa</string>
     <string name="size_exbibytes">EiB</string>
@@ -734,4 +733,14 @@
     </plurals>
     <string name="stats_read_cache_hits">Aciertos de caché de lectura</string>
     <string name="shortcut_new_window">Nueva ventana</string>
+    <string name="torrent_list_action_sort_downloaded">Descargado</string>
+    <string name="torrent_list_action_sort_uploaded">Subido</string>
+    <string name="settings_traffic_stats_in_list">Estadísticas de tráfico en lista</string>
+    <string name="settings_traffic_stats_in_list_none">Ninguna</string>
+    <string name="settings_traffic_stats_in_list_total">Total</string>
+    <string name="settings_traffic_stats_in_list_session">Sesión</string>
+    <string name="settings_traffic_stats_in_list_complete">Total (Sesión)</string>
+    <string name="settings_hide_server_urls">Esconder las URLs del servidor en la barra lateral</string>
+    <string name="settings_hide_server_urls_desc">Las URLs aún se mostrarán para los servidores sin nombre</string>
+    <string name="settings_server_delete_confirm">¿Estás seguro de que quieres eliminar este servidor?</string>
 </resources>

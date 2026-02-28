@@ -492,7 +492,6 @@
     <string name="stats_write_cache_overload">Перегрузка кэша записи</string>
     <string name="stats_average_time_in_queue">Среднее время в очереди</string>
     <string name="percentage_format">%1$s%%</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_ms_format">%1$d мс</string>
     <string name="torrent_list_priority_maximize_success">Перемещён в начало очереди.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
@@ -761,4 +760,14 @@
     <string name="settings_palette_style_tonal_spot">Тональное пятно</string>
     <string name="stats_read_cache_hits">Попадания в кэш чтения</string>
     <string name="shortcut_new_window">Новое окно</string>
+    <string name="torrent_list_action_sort_downloaded">Загружено</string>
+    <string name="torrent_list_action_sort_uploaded">Отдано</string>
+    <string name="settings_traffic_stats_in_list">Статистика трафика в списке</string>
+    <string name="settings_traffic_stats_in_list_none">Нет</string>
+    <string name="settings_traffic_stats_in_list_total">Всего</string>
+    <string name="settings_traffic_stats_in_list_session">Сеанс</string>
+    <string name="settings_traffic_stats_in_list_complete">Всего (Сеанс)</string>
+    <string name="settings_hide_server_urls">Скрыть URL-адреса серверов в боковой панели</string>
+    <string name="settings_hide_server_urls_desc">URL-адреса серверов без имени всё равно будут видны</string>
+    <string name="settings_server_delete_confirm">Вы уверены, что хотите удалить этот сервер?</string>
 </resources>

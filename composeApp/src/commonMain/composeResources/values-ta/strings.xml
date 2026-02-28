@@ -379,7 +379,6 @@
     <string name="torrent_overview_comment">கருத்து</string>
     <string name="torrent_overview_pieces">துண்டுகள்</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s %% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s ( %2$s) ↑ %3$s ( %4$s)</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s %%</string>
     <string name="torrent_peers_flag_encrypted_traffic">குறியாக்கப்பட்ட போக்குவரத்து</string>
     <string name="torrent_peers_flag_utp">µtp</string>
