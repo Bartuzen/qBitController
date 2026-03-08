@@ -78,15 +78,15 @@ kotlin {
             kotlin.srcDir(layout.buildDirectory.file("generated/kotlin"))
 
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material3)
-                implementation(compose.ui)
-                implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.components.resources)
+                implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.lifecycle.viewModel)
                 implementation(libs.androidx.lifecycle.runtime.compose)
-                implementation(compose.materialIconsExtended)
+                implementation(libs.compose.icons.extended)
 
                 implementation(libs.compose.ui.util)
                 implementation(libs.compose.ui.backHandler)
@@ -158,7 +158,7 @@ kotlin {
         val androidMain by getting {
             dependsOn(jvmMain)
             dependencies {
-                implementation(compose.preview)
+                implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.appcompat)
                 implementation(libs.coroutines.android)
 
@@ -304,7 +304,7 @@ android {
 
 dependencies {
     coreLibraryDesugaring(libs.desugar)
-    debugImplementation(compose.uiTooling)
+    debugImplementation(libs.compose.ui.tooling)
     baselineProfile(project(":baselineProfile"))
 
     val firebaseImplementation by configurations

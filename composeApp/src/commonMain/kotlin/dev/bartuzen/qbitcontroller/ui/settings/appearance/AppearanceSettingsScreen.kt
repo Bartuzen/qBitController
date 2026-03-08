@@ -185,13 +185,13 @@ fun AppearanceSettingsScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                     ) {
                                         RingColorPicker(
-                                            color = currentColor,
+                                            color = { currentColor },
                                             onColorChange = { currentColor = it },
                                             modifier = Modifier.size(196.dp),
                                         )
 
                                         SquareColorPicker(
-                                            color = currentColor,
+                                            color = { currentColor },
                                             onColorChange = { currentColor = it },
                                             shape = RoundedCornerShape(16.dp),
                                             modifier = Modifier.size(108.dp),
