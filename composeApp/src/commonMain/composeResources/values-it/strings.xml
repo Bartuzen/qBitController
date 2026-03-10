@@ -289,7 +289,7 @@
     <string name="torrent_files_priority_maximum">Massima</string>
     <string name="torrent_files_action_rename">Rinomina</string>
     <plurals name="torrent_files_selected">
-        <item quantity="one">%1$d file selelezionato</item>
+        <item quantity="one">%1$d file selezionato</item>
         <item quantity="many">%1$d file selezionati</item>
         <item quantity="other">%1$d file selezionati</item>
     </plurals>
