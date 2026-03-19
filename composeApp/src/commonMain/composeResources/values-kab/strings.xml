@@ -110,4 +110,5 @@
     <string name="torrent_overview_downloaded_format">%1$s (%2$s tiɣimit-a)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s tiɣimit-a)</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
+    <string name="torrent_peers_details_client">Amsaɣ</string>
 </resources>
