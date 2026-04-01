@@ -279,7 +279,6 @@
     <string name="torrent_list_status_moving">正在移動</string>
     <string name="torrent_list_priority_increase_success">已成功提升優先程度。</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_speed_format">↓ %1$s (%2$s) ↑ %3$s (%4$s)</string>
     <string name="stats_category_user_statistics">使用者統計</string>
     <string name="stats_category_cache_statistics">快取統計</string>
     <string name="stats_all_time_upload">全域上傳</string>
