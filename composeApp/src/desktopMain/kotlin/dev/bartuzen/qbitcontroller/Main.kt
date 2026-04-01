@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -54,7 +55,9 @@ import java.awt.Dimension
 import java.util.Locale
 import androidx.compose.ui.text.intl.Locale as ComposeLocale
 
-fun main() {
+fun main(args: Array<String>) {
+    val cliArgs = CommandLineArguments.parse(args)
+
     if (currentPlatform is Platform.Desktop.MacOS) {
         System.setProperty("apple.awt.application.appearance", "system")
     }
@@ -113,8 +116,9 @@ fun main() {
             icon = painterResource(Res.drawable.icon_rounded),
             state = windowState,
         ) {
+            val density = LocalDensity.current
+
             if (currentPlatform is Platform.Desktop.Windows) {
-                val density = LocalDensity.current
                 LaunchedEffect(density) {
                     window.minimumSize = with(density) {
                         Dimension(420.dp.toPx().toInt(), 360.dp.toPx().toInt())
@@ -126,7 +130,13 @@ fun main() {
                 }
             }
 
-            AppTheme {
+            val newDensity = remember(density) {
+                Density(
+                    density = cliArgs.density ?: (density.density * (cliArgs.densityMultiplier ?: 1f)),
+                    fontScale = cliArgs.fontSize ?: (density.fontScale * (cliArgs.fontSizeMultiplier ?: 1f)),
+                )
+            }
+            AppTheme(density = newDensity) {
                 val backgroundColor = MaterialTheme.colorScheme.background
                 LaunchedEffect(backgroundColor) {
                     window.background = Color(backgroundColor.toArgb())

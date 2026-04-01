@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.materialkolor.rememberDynamicColorScheme
@@ -23,7 +25,7 @@ import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 
 @Composable
-fun AppTheme(content: @Composable () -> Unit) {
+fun AppTheme(density: Density = LocalDensity.current, content: @Composable () -> Unit) {
     val settingsManager = koinInject<SettingsManager>()
     val pureBlack by settingsManager.pureBlackDarkMode.flow.collectAsStateWithLifecycle()
     val enableDynamicColors by settingsManager.enableDynamicColors.flow.collectAsStateWithLifecycle()
@@ -65,24 +67,26 @@ fun AppTheme(content: @Composable () -> Unit) {
         }
     }
 
-    MaterialTheme(colorScheme = colorScheme) {
-        val preferenceTheme = preferenceTheme(
-            dialogOkText = stringResource(Res.string.dialog_ok),
-            dialogCancelText = stringResource(Res.string.dialog_cancel),
-            titleTextStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 16.sp),
-            summaryTextStyle = MaterialTheme.typography.bodySmall,
-            iconColor = MaterialTheme.colorScheme.primary,
-            useTextButtonForDialogConfirmation = false,
-        )
+    CompositionLocalProvider(LocalDensity provides density) {
+        MaterialTheme(colorScheme = colorScheme) {
+            val preferenceTheme = preferenceTheme(
+                dialogOkText = stringResource(Res.string.dialog_ok),
+                dialogCancelText = stringResource(Res.string.dialog_cancel),
+                titleTextStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 16.sp),
+                summaryTextStyle = MaterialTheme.typography.bodySmall,
+                iconColor = MaterialTheme.colorScheme.primary,
+                useTextButtonForDialogConfirmation = false,
+            )
 
-        val customColorsPalette = if (darkTheme) darkCustomColors else lightCustomColors
-        CompositionLocalProvider(
-            LocalTextStyle provides MaterialTheme.typography.bodyMedium,
-            LocalContentColor provides MaterialTheme.colorScheme.onBackground,
-            LocalCustomColors provides customColorsPalette,
-            LocalPreferenceTheme provides preferenceTheme,
-            content = content,
-        )
+            val customColorsPalette = if (darkTheme) darkCustomColors else lightCustomColors
+            CompositionLocalProvider(
+                LocalTextStyle provides MaterialTheme.typography.bodyMedium,
+                LocalContentColor provides MaterialTheme.colorScheme.onBackground,
+                LocalCustomColors provides customColorsPalette,
+                LocalPreferenceTheme provides preferenceTheme,
+                content = content,
+            )
+        }
     }
 }
 
