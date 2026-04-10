@@ -223,7 +223,7 @@
     </plurals>
     <string name="shortcut_new_window">Nowe okno</string>
     <string name="destination_torrents">Torrenty</string>
-    <string name="destination_search">Wyszukaj</string>
+    <string name="destination_search">Szukaj</string>
     <string name="destination_rss">RSS</string>
     <string name="destination_logs">Logi</string>
     <string name="destination_settings">Ustawienia</string>
@@ -605,7 +605,7 @@
     <string name="rss_confirm_delete_feed">Czy na pewno chcesz usunąc kanał %1$s?</string>
     <string name="torrent_list_action_sort_downloaded">Pobrane</string>
     <string name="torrent_list_action_sort_uploaded">Wysłane</string>
-    <string name="torrent_add_stop_condition_metadata_received">"Metadane  pobrane"</string>
+    <string name="torrent_add_stop_condition_metadata_received">Pobrano metadane</string>
     <string name="torrent_add_ratio_limit">Limit współczynnika</string>
     <string name="rss_filter">Filtruj pozycje…</string>
     <string name="rss_action_add_feed">Dodaj kanał</string>
