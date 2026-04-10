@@ -692,4 +692,9 @@
     <string name="settings_enable_dynamic_colors">Włącz dynamiczne kolory</string>
     <string name="settings_app_color">Kolor aplikacji</string>
     <string name="settings_app_color_reset">Resetuj</string>
+    <string name="torrent_option_share_limit_inactive_minutes">Nieaktywne minuty</string>
+    <string name="torrent_peers_flag_interested_local_choked_peer">Zainteresowany (lokalny) i zdławiony (peer)</string>
+    <string name="torrent_peers_flag_interested_local_unchoked_peer">Zainteresowany (lokalny) i nie zdławiony (peer)</string>
+    <string name="torrent_peers_flag_interested_peer_choked_local">Zainteresowany (peer) i zdławiony (lokalny)</string>
+    <string name="torrent_peers_flag_interested_peer_unchoked_local">Zainteresowani (peers) i nie zablokowani (lokalni)</string>
 </resources>
