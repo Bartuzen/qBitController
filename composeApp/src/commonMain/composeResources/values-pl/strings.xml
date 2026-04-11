@@ -591,7 +591,7 @@
         <item quantity="many">%1$d nagłówków</item>
         <item quantity="other">%1$d nagłówków</item>
     </plurals>
-    <string name="torrent_status_checking_resume_data">Sprawdzanie danych wznowienia</string>
+    <string name="torrent_status_checking_resume_data">Sprawdzanie danych do wznowienia</string>
     <string name="stats_read_cache_hits">Prawidłowe odczyty z pamięci podręcznej</string>
     <string name="stats_write_cache_overload">Przeciążenie pamięci podręcznej zapisu</string>
     <string name="stats_read_cache_overload">Przeciążenie pamięci podręcznej odczytu</string>
@@ -716,7 +716,7 @@
     <string name="execution_log_title">Dziennik programu</string>
     <string name="settings_disabled">Wyłączone</string>
     <string name="settings_traffic_stats_in_list">Statystyki ruchu na liście</string>
-    <string name="settings_traffic_stats_in_list_none">Brak</string>
+    <string name="settings_traffic_stats_in_list_none">Żaden</string>
     <string name="settings_palette_style">Kolorystyka</string>
     <string name="settings_palette_style_neutral">Neutralny</string>
     <string name="settings_palette_style_vibrant">Żywa</string>
