@@ -724,7 +724,7 @@
     <string name="settings_palette_style_rainbow">Tęczowa</string>
     <string name="settings_palette_style_fruit_salad">Owocowa</string>
     <string name="settings_palette_style_monochrome">Monochromatyczna</string>
-    <string name="settings_palette_style_fidelity">Odwzorowany</string>
+    <string name="settings_palette_style_fidelity">Odwzorowana</string>
     <string name="settings_palette_style_content">Zawartość</string>
     <string name="settings_pure_black_dark_mode">Czysta czerń</string>
     <string name="settings_relative_timestamps">Czas względny</string>
