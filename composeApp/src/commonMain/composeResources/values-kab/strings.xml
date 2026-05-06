@@ -111,4 +111,9 @@
     <string name="torrent_overview_uploaded_format">%1$s (%2$s tiɣimit-a)</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_peers_details_client">Amsaɣ</string>
+    <string name="search_result_title">Igmaḍ n unadi</string>
+    <string name="search_result_size">Tiddi: %1$s</string>
+    <string name="search_result_site">Asmel: %1$s</string>
+    <string name="search_result_action_sort_search_engine">Amsedday n unadi</string>
+    <string name="search_result_action_stop_search">Seḥbes anadi</string>
 </resources>
