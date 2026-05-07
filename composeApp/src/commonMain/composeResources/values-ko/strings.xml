@@ -686,7 +686,4 @@
     <string name="update_dialog_title">업데이트 가능함</string>
     <string name="update_dialog_message">qBitController %1$s 이 사용 가능합니다. 현재 %2$s 버전을 사용중입니다.</string>
     <string name="update_dialog_download">다운로드</string>
-    <string name="settings_hide_server_urls"></string>
-    <string name="settings_hide_server_urls_desc"></string>
-    <string name="settings_server_delete_confirm"></string>
 </resources>
