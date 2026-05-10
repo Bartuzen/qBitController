@@ -733,4 +733,14 @@
     <string name="settings_palette_style_content">Conteúdo</string>
     <string name="settings_relative_timestamps">Tempos relativos</string>
     <string name="settings_palette_style_tonal_spot">Mancha tonal</string>
+    <string name="torrent_list_action_sort_downloaded">Baixado</string>
+    <string name="torrent_list_action_sort_uploaded">Enviado</string>
+    <string name="settings_hide_server_urls">Ocultar URLs do servidor na barra lateral</string>
+    <string name="settings_hide_server_urls_desc">Os URLs continuarão sendo exibidos para servidores sem nome</string>
+    <string name="settings_traffic_stats_in_list">Estatísticas de tráfego na lista</string>
+    <string name="settings_traffic_stats_in_list_none">Nenhum</string>
+    <string name="settings_traffic_stats_in_list_total">Total</string>
+    <string name="settings_traffic_stats_in_list_session">Sessão</string>
+    <string name="settings_traffic_stats_in_list_complete">Total (Sessão)</string>
+    <string name="settings_server_delete_confirm">Tem certeza de que deseja excluir este servidor?</string>
 </resources>
