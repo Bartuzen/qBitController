@@ -24,4 +24,69 @@
     <string name="torrent_status_downloading_metadata">メタデータをダウンロード中</string>
     <string name="torrent_status_force_downloading_metadata">[F] メタデータをダウンロード中</string>
     <string name="destination_rss">RSS</string>
+    <string name="dialog_cancel">キャンセル</string>
+    <string name="eta_seconds">%1$s秒</string>
+    <string name="eta_minutes_seconds">%1$s分%2$s秒</string>
+    <string name="eta_minutes">%1$s分</string>
+    <string name="eta_hours_minutes">%1$s時間%2$s分</string>
+    <string name="eta_hours">%1$s時間</string>
+    <string name="eta_days_hours">%1$s日%2$s時間</string>
+    <string name="eta_days">%1$s日</string>
+    <string name="size_format">%1$s%2$s</string>
+    <string name="size_bytes">B</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_mebibytes">MiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="size_exbibytes">EiB</string>
+    <string name="speed_format">%1$s %2$s</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
+    <string name="date_now">現在</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="other">%1$d 秒前</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="other">%1$d 分前</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="other">%1$d 時間前</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="other">%1$d 日前</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="other">%1$d 週間前</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="other">%1$d か月前</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="other">%1$d 年前</item>
+    </plurals>
+    <string name="percentage_format">%1$s%%</string>
+    <string name="error_invalid_credentials">ユーザー名またはパスワードが無効です。</string>
+    <string name="error_banned">ログイン試行回数が多すぎるため、アカウントが停止されました。</string>
+    <string name="error_cannot_connect">サーバーに接続できません。</string>
+    <string name="error_unknown_host">不明なホスト。</string>
+    <string name="error_timeout">接続がタイムアウトしました。</string>
+    <string name="error_no_data">サーバーはデータを送信しませんでした。</string>
+    <string name="error_no_internet">インターネット接続がありません。</string>
+    <string name="error_unknown_login_response">不明なログイン応答: %1$s</string>
+    <string name="error_unknown">不明なエラー: %1$s</string>
+    <string name="error_api">APIがエラーを返しました: %1$d</string>
+    <string name="error_required_field">この項目は必須です。</string>
+    <string name="error_invalid_interval">%1$dから%2$dの間である必要があります。</string>
+    <string name="error_invalid_interval_optional">%1$dから%2$dの間である必要があります。空白のままにすると無効になります。</string>
+    <string name="dialog_ok">OK</string>
+    <string name="action_search">検索</string>
+    <string name="action_select_all">全て選択</string>
+    <string name="action_select_inverse">選択範囲を反転</string>
+    <string name="torrent_list_no_server_title">利用可能なサーバーがありません</string>
+    <string name="torrent_list_no_server_description">まだサーバーを追加していません。まずはサーバーを追加してください。</string>
+    <string name="torrent_list_no_server_add">サーバーを追加</string>
+    <string name="torrent_list_empty_title">トレントが見つかりませんでした</string>
 </resources>
