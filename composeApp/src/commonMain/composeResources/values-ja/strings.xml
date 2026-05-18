@@ -1,3 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="language_code">ja</string>
+    <string name="share_add_torrent">トレントを追加</string>
+    <string name="shortcut_new_window">新しいウィンドウ</string>
+    <string name="destination_torrents">トレント</string>
+    <string name="destination_search">検索</string>
+    <string name="destination_logs">ログ</string>
+    <string name="destination_settings">設定</string>
+    <string name="torrent_status_error">エラー</string>
+    <string name="torrent_status_missing_files">見つからないファイル</string>
+    <string name="torrent_status_seeding">シード</string>
+    <string name="torrent_status_paused">一時停止</string>
+    <string name="torrent_status_queued">キュー</string>
+    <string name="torrent_status_stalled">停滞</string>
+    <string name="torrent_status_checking">チェック中</string>
+    <string name="torrent_status_completed">完了</string>
+    <string name="torrent_status_force_seeding">[F] シード中</string>
+    <string name="torrent_status_downloading">ダウンロード中</string>
+    <string name="torrent_status_force_downloading">[F] ダウンロード中</string>
+    <string name="torrent_status_unknown">未知</string>
+    <string name="torrent_status_moving">移動中</string>
+    <string name="torrent_status_checking_resume_data">再開データをチェック中</string>
+    <string name="torrent_status_downloading_metadata">メタデータをダウンロード中</string>
+    <string name="torrent_status_force_downloading_metadata">[F] メタデータをダウンロード中</string>
+    <string name="destination_rss">RSS</string>
 </resources>
