@@ -91,8 +91,8 @@
     <string name="torrent_list_empty_title">トレントが見つかりませんでした</string>
     <string name="torrent_list_empty_description">トレントファイルが1つもありません。まずは1つ追加してください。</string>
     <string name="torrent_list_empty_rss">RSS経由で追加</string>
-    <string name="torrent_list_empty_search">トレントを検索する</string>
-    <string name="torrent_list_empty_add">トレントを追加する</string>
+    <string name="torrent_list_empty_search">トレントを検索</string>
+    <string name="torrent_list_empty_add">トレントを追加</string>
     <string name="torrent_list_no_result_title">検索結果が見つかりませんでした</string>
     <string name="torrent_list_no_result_description">現在設定されているフィルターに一致するトレントはありません。フィルターまたは検索条件を変更してみてください。</string>
     <string name="torrent_list_no_result_reset">フィルターをリセットする</string>
@@ -242,4 +242,51 @@
     <string name="settings_server_server_info">サーバー情報</string>
     <string name="settings_server_credentials">認証情報</string>
     <string name="settings_theme_dark">ダーク</string>
+    <string name="torrent_list_status">状態</string>
+    <string name="torrent_list_status_format">%1$s (%2$d)</string>
+    <string name="torrent_list_status_set_as_default">デフォルトとして設定</string>
+    <string name="torrent_list_status_all">全て</string>
+    <string name="torrent_list_status_downloading">ダウンロード中</string>
+    <string name="torrent_list_status_seeding">シード中</string>
+    <string name="torrent_list_status_completed">完了</string>
+    <string name="torrent_list_status_resumed">再開</string>
+    <string name="torrent_list_status_paused">一時停止</string>
+    <string name="torrent_list_status_active">アクティブ</string>
+    <string name="torrent_list_status_inactive">非アクティブ</string>
+    <string name="torrent_list_status_stalled">停止</string>
+    <string name="torrent_list_status_checking">チェック中</string>
+    <string name="torrent_list_status_moving">移動中</string>
+    <string name="torrent_list_status_error">エラー</string>
+    <string name="torrent_overview_hash_v1">Hash v1</string>
+    <string name="torrent_overview_hash_v2">Hash v2</string>
+    <string name="settings_theme">テーマ</string>
+    <string name="settings_theme_light">ライト</string>
+    <string name="settings_traffic_stats_in_list_none">なし</string>
+    <string name="settings_traffic_stats_in_list_total">合計</string>
+    <string name="settings_traffic_stats_in_list_session">セッション</string>
+    <string name="settings_traffic_stats_in_list_complete">トータル (セッション)</string>
+    <string name="settings_check_updates">更新を自動的に確認する</string>
+    <string name="settings_connection_timeout">接続タイムアウト</string>
+    <plurals name="settings_connection_timeout_description">
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <string name="settings_auto_refresh_interval">自動更新間隔</string>
+    <plurals name="settings_auto_refresh_interval_description">
+        <item quantity="other">%1$d 秒</item>
+    </plurals>
+    <string name="settings_hide_server_urls">サイドバーのサーバーURLを非表示にする</string>
+    <plurals name="settings_notification_check_interval_description">
+        <item quantity="other">%1$d 分</item>
+    </plurals>
+    <string name="settings_enable_torrent_swipe_actions">トレントのスワイプ操作を有効にする</string>
+    <string name="settings_traffic_stats_in_list">リスト内の通信統計</string>
+    <string name="settings_category_servers">サーバー</string>
+    <string name="settings_category_general">一般</string>
+    <string name="settings_category_appearance">外観</string>
+    <string name="settings_category_network">ネットワーク</string>
+    <string name="settings_disabled">無効</string>
+    <string name="search_plugins_action_save">保存</string>
+    <string name="search_plugins_action_install_plugins">プラグインをインストール</string>
+    <string name="search_plugins_action_update_plugins">プラグインをアップデート</string>
+    <string name="execution_log_title">実行ログ</string>
 </resources>
