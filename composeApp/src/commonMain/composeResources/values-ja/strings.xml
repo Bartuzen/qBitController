@@ -32,7 +32,7 @@
     <string name="eta_hours">%1$s時間</string>
     <string name="eta_days_hours">%1$s日%2$s時間</string>
     <string name="eta_days">%1$s日</string>
-    <string name="size_format">%1$s%2$s</string>
+    <string name="size_format">%1$s %2$s</string>
     <string name="size_bytes">B</string>
     <string name="size_kibibytes">KiB</string>
     <string name="size_mebibytes">MiB</string>
@@ -124,26 +124,26 @@
     <string name="torrent_list_action_resume">再開</string>
     <string name="torrent_list_action_delete">削除</string>
     <string name="torrent_list_action_priority">優先度</string>
-    <string name="torrent_list_action_priority_increase">優先順位を上げる</string>
-    <string name="torrent_list_action_priority_decrease">優先順位を下げる</string>
-    <string name="torrent_list_action_priority_maximize">最優先にする</string>
-    <string name="torrent_list_action_priority_minimize">最低優先にする</string>
+    <string name="torrent_list_action_priority_increase">優先度を上げる</string>
+    <string name="torrent_list_action_priority_decrease">優先度を下げる</string>
+    <string name="torrent_list_action_priority_maximize">優先度を最大にする</string>
+    <string name="torrent_list_action_priority_minimize">優先度を最小にする</string>
     <string name="torrent_list_action_set_location">場所を設定</string>
     <string name="torrent_list_action_set_category">カテゴリーの設定</string>
     <plurals name="torrent_list_delete_torrents">
-        <item quantity="other">%1$d トレントを削除</item>
+        <item quantity="other">%1$d のトレントを削除</item>
     </plurals>
     <plurals name="torrent_list_torrents_delete_success">
-        <item quantity="other">%1$d トレントが正常に削除されました。</item>
+        <item quantity="other">%1$d のトレントが正常に削除されました。</item>
     </plurals>
     <plurals name="torrent_list_torrents_pause_success">
-        <item quantity="other">%1$d トレントが正常に一時停止されました。</item>
+        <item quantity="other">%1$d のトレントが正常に一時停止されました。</item>
     </plurals>
     <plurals name="torrent_list_torrents_resume_success">
-        <item quantity="other">%1$d トレントが正常に再開されました。</item>
+        <item quantity="other">%1$d のトレントが正常に再開されました。</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
-        <item quantity="other">%1$d 個のトレントが選択されました。</item>
+        <item quantity="other">%1$d 個のトレントが選択されました</item>
     </plurals>
     <string name="torrent_list_search_torrents">トレントを検索…</string>
     <string name="torrent_list_free_space">%1$s 空き</string>
@@ -157,7 +157,7 @@
     <string name="torrent_list_create_category">カテゴリを作成</string>
     <string name="torrent_list_edit_category">カテゴリを編集</string>
     <string name="torrent_list_delete_category">カテゴリを削除</string>
-    <string name="torrent_list_delete_category_confirm">カテゴリを削除してもよろしいですか %1$s？</string>
+    <string name="torrent_list_delete_category_confirm">カテゴリ %1$s を削除してもよろしいですか？</string>
     <string name="torrent_list_delete_category_success">カテゴリ %1$s が正常に削除されました。</string>
     <string name="torrent_list_create_category_success">カテゴリが正常に作成されました。</string>
     <string name="torrent_list_edit_category_success">カテゴリの編集に成功しました。</string>
@@ -173,6 +173,29 @@
     <string name="torrent_list_tags">タグ</string>
     <string name="torrent_list_create_tag">タグを作成</string>
     <string name="torrent_list_delete_tag">タグを削除</string>
-    <string name="torrent_list_delete_tag_desc">本当にタグを削除しますか %1$s？</string>
+    <string name="torrent_list_delete_tag_desc">タグ %1$s を削除してもよろしいですか？</string>
     <string name="main_action_about">情報</string>
+    <string name="settings_server_invalid_url">URL形式が無効です。</string>
+    <string name="settings_server_connection_success">サーバーに正常に接続しました。</string>
+    <string name="about_description">qBitControllerを使用すると、あらゆるデバイスからqBittorrentをリモートで制御できます。\n\nより詳細な情報とソースコードについては、 %1$s を参照してください</string>
+    <string name="notification_channel_download_completed">ダウンロード完了</string>
+    <string name="notification_torrent_downloaded">ダウンロードしたトレント</string>
+    <string name="update_dialog_title">アップデートが利用可能です</string>
+    <string name="update_dialog_message">qBitController %1$s が利用可能になりました。現在、バージョン %2$s を使用しています。</string>
+    <string name="update_dialog_download">ダウンロード</string>
+    <string name="torrent_list_delete_tag_success">タグ %1$s は正常に削除されました。</string>
+    <string name="torrent_list_create_tag_success">タグが正常に作成されました。</string>
+    <string name="torrent_list_create_tag_name_cannot_be_empty">タグ名は空欄にできません。</string>
+    <string name="torrent_list_create_tag_hint">タグ名</string>
+    <string name="torrent_list_trackers_title">トラッカー</string>
+    <string name="torrent_list_trackers_all">全て</string>
+    <string name="torrent_list_trackers_trackerless">トラッカーなし</string>
+    <string name="torrent_list_trackers_format">%1$s (%2$d)</string>
+    <string name="torrent_speed_limits_title">速度制限</string>
+    <string name="torrent_speed_alternative_speed_limits">代替速度制限</string>
+    <string name="torrent_speed_download_limit">ダウンロード速度制限</string>
+    <string name="torrent_speed_upload_limit">アップロード速度制限</string>
+    <string name="torrent_speed_update_success">速度制限の設定を更新しました。</string>
+    <string name="torrent_list_switch_speed_limit_alternative_success">代替速度制限に切り替えました。</string>
+    <string name="torrent_list_switch_speed_limit_regular_success">通常の速度制限に切り替えました。</string>
 </resources>
