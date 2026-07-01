@@ -1,0 +1,13 @@
+Darmowa i open-source'owa aplikacja do kontrolowania qBittorrent na Twoich serwerach.
+
+Funkcje:
+
+- Zarządzanie wieloma serwerami qBittorrent
+- Dodawanie torrentów za pomocą linków magnet lub plików
+- Wyświetlanie szczegółowych informacji o torrentach
+- Wykonywanie różnych operacji na torrentach, takich jak wstrzymywanie, wznawianie, usuwanie i inne
+- Sortowanie torrentów według nazwy, rozmiaru, postępu, prędkości pobierania/wysyłania i innych
+- Filtrowanie torrentów według stanu, kategorii, tagu i trackera
+- Zarządzanie kategoriami i tagami
+- Wyświetlanie kanałów RSS, tworzenie reguł automatycznego pobierania
+- Wyszukiwanie torrentów online

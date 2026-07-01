@@ -1,0 +1,1 @@
+Zdalne sterowanie qBittorrent z dowolnego urządzenia
