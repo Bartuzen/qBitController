@@ -733,6 +733,9 @@
     <string name="settings_traffic_stats_in_list_session">Session</string>
     <string name="settings_traffic_stats_in_list_complete">Total (Session)</string>
     <string name="settings_check_updates">Automatically check for updates</string>
+    <string name="settings_magnet_links">Torrent files and magnet links</string>
+    <string name="settings_magnet_links_desc">Open .torrent files and magnet links with qBitController</string>
+    <string name="settings_set_as_default">Set as Default</string>
     <string name="settings_theme">Theme</string>
     <string name="settings_theme_light">Light</string>
     <string name="settings_theme_dark">Dark</string>

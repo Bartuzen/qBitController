@@ -24,12 +24,14 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.DesktopSettingsManager
+import dev.bartuzen.qbitcontroller.data.ServerManager
 import dev.bartuzen.qbitcontroller.di.appModule
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
 import dev.bartuzen.qbitcontroller.model.WindowState
 import dev.bartuzen.qbitcontroller.network.UpdateChecker
 import dev.bartuzen.qbitcontroller.network.VersionInfo
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
+import dev.bartuzen.qbitcontroller.ui.main.DeepLinkDestination
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.Platform
@@ -38,8 +40,10 @@ import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.context.startKoin
@@ -74,6 +78,7 @@ fun main(args: Array<String>) {
 
     val updateChecker = koin.get<UpdateChecker>()
     val settingsManager = koin.get<DesktopSettingsManager>()
+    val serverManager = koin.get<ServerManager>()
     if (BuildConfig.EnableUpdateChecker) {
         CoroutineScope(Dispatchers.Default).launch {
             settingsManager.checkUpdates.flow.collectLatest { enabled ->
@@ -87,6 +92,7 @@ fun main(args: Array<String>) {
     }
 
     val savedWindowState = settingsManager.windowState.value
+    val navigationChannel = Channel<DeepLinkDestination>()
     application {
         val windowState = rememberWindowState(
             placement = savedWindowState.placement,
@@ -191,7 +197,22 @@ fun main(args: Array<String>) {
                     }
                 }
 
-                MainScreen()
+                LaunchedEffect(cliArgs.torrentUrl, cliArgs.torrentFileUris) {
+                    if (cliArgs.torrentUrl != null || cliArgs.torrentFileUris != null) {
+                        if (serverManager.serversFlow.value.isNotEmpty()) {
+                            navigationChannel.send(
+                                DeepLinkDestination.AddTorrent(
+                                    torrentUrl = cliArgs.torrentUrl,
+                                    torrentFileUris = cliArgs.torrentFileUris,
+                                ),
+                            )
+                        } else {
+                            navigationChannel.send(DeepLinkDestination.TorrentList(null))
+                        }
+                    }
+                }
+
+                MainScreen(navigationFlow = navigationChannel.receiveAsFlow())
             }
         }
     }
