@@ -169,6 +169,7 @@ fun AddTorrentScreen(
     initialServerId: Int?,
     torrentUrl: String?,
     torrentFileUris: List<String>?,
+    torrentUrlDownloaders: List<String>? = null,
     onNavigateBack: () -> Unit,
     onAddTorrent: (serverId: Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -380,6 +381,7 @@ fun AddTorrentScreen(
         viewModel.addTorrent(
             serverId = currentServerId,
             links = if (isUrlMode) torrentLinkText.text.split("\n") else null,
+            linkDownloaders = if (isUrlMode) torrentUrlDownloaders else null,
             files = if (!isUrlMode) torrentFiles else null,
             savePath = finalSavePath,
             category = selectedCategory,

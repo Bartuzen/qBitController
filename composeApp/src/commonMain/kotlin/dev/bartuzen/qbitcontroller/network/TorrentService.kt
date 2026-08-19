@@ -316,6 +316,11 @@ class TorrentService(
         formData,
     )
 
+    suspend fun fetchTorrentMetadata(source: String, downloader: String): Response<JsonElement> = post(
+        "torrents/fetchMetadata",
+        mapOf("source" to source, "downloader" to downloader),
+    )
+
     suspend fun setAutomaticTorrentManagement(hashes: String, enable: Boolean): Response<Unit> = post(
         "torrents/setAutoManagement",
         mapOf("hashes" to hashes, "enable" to enable),
