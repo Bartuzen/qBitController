@@ -56,11 +56,17 @@ import qbitcontroller.composeapp.generated.resources.update_dialog_message
 import qbitcontroller.composeapp.generated.resources.update_dialog_title
 import java.awt.Color
 import java.awt.Dimension
+import java.awt.Frame
 import java.util.Locale
 import androidx.compose.ui.text.intl.Locale as ComposeLocale
 
 fun main(args: Array<String>) {
     val cliArgs = CommandLineArguments.parse(args)
+    val cliArgumentsChannel = Channel<CommandLineArguments>(Channel.UNLIMITED)
+    val singleInstance = DesktopSingleInstance.acquire(args) { forwardedArgs ->
+        cliArgumentsChannel.trySend(forwardedArgs)
+    } ?: return
+    Runtime.getRuntime().addShutdownHook(Thread { singleInstance.close() })
 
     if (currentPlatform is Platform.Desktop.MacOS) {
         System.setProperty("apple.awt.application.appearance", "system")
@@ -93,6 +99,21 @@ fun main(args: Array<String>) {
 
     val savedWindowState = settingsManager.windowState.value
     val navigationChannel = Channel<DeepLinkDestination>()
+    suspend fun navigateFromArguments(args: CommandLineArguments) {
+        if (args.torrentUrl != null || args.torrentFileUris != null) {
+            if (serverManager.serversFlow.value.isNotEmpty()) {
+                navigationChannel.send(
+                    DeepLinkDestination.AddTorrent(
+                        torrentUrl = args.torrentUrl,
+                        torrentFileUris = args.torrentFileUris,
+                    ),
+                )
+            } else {
+                navigationChannel.send(DeepLinkDestination.TorrentList(null))
+            }
+        }
+    }
+
     application {
         val windowState = rememberWindowState(
             placement = savedWindowState.placement,
@@ -198,17 +219,15 @@ fun main(args: Array<String>) {
                 }
 
                 LaunchedEffect(cliArgs.torrentUrl, cliArgs.torrentFileUris) {
-                    if (cliArgs.torrentUrl != null || cliArgs.torrentFileUris != null) {
-                        if (serverManager.serversFlow.value.isNotEmpty()) {
-                            navigationChannel.send(
-                                DeepLinkDestination.AddTorrent(
-                                    torrentUrl = cliArgs.torrentUrl,
-                                    torrentFileUris = cliArgs.torrentFileUris,
-                                ),
-                            )
-                        } else {
-                            navigationChannel.send(DeepLinkDestination.TorrentList(null))
-                        }
+                    navigateFromArguments(cliArgs)
+                }
+
+                LaunchedEffect(cliArgumentsChannel) {
+                    cliArgumentsChannel.receiveAsFlow().collect { forwardedArgs ->
+                        window.extendedState = window.extendedState and Frame.ICONIFIED.inv()
+                        window.toFront()
+                        window.requestFocus()
+                        navigateFromArguments(forwardedArgs)
                     }
                 }
 
