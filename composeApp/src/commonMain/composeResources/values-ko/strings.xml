@@ -2,9 +2,9 @@
 <resources>
     <string name="share_add_torrent">토렌트 추가</string>
     <string name="torrent_status_missing_files">파일 누락</string>
-    <string name="torrent_status_seeding">배포중</string>
+    <string name="torrent_status_seeding">시딩 중</string>
     <string name="torrent_status_paused">일시정지</string>
-    <string name="torrent_status_queued">대기</string>
+    <string name="torrent_status_queued">대기 중</string>
     <string name="torrent_status_stalled">중지됨</string>
     <string name="torrent_status_checking">확인 중</string>
     <string name="torrent_status_completed">완료됨</string>
@@ -26,7 +26,7 @@
     <string name="torrent_list_status_set_as_default">기본값으로 설정</string>
     <string name="torrent_list_priority_maximize_success">우선 순위가 성공적으로 최대화되었습니다.</string>
     <string name="torrent_item_progress_format">%1$s / %2$s • %3$s%% • %4$s</string>
-    <string name="torrent_list_status_seeding">배포 중</string>
+    <string name="torrent_list_status_seeding">시딩 중</string>
     <string name="torrent_list_status_paused">일시정지됨</string>
     <string name="torrent_list_status_active">활성</string>
     <string name="torrent_list_status_moving">이동 중</string>
@@ -34,7 +34,7 @@
     <string name="torrent_list_priority_minimize_success">우선순위가 성공적으로 최소화되었습니다.</string>
     <string name="torrent_action_delete">삭제</string>
     <string name="stats_category_performance_statistics">성능 통계</string>
-    <string name="stats_all_time_share_ratio">전체 시간 공유 비율</string>
+    <string name="stats_all_time_share_ratio">전체 기간 공유 비율</string>
     <string name="stats_total_queued_size">총 대기열 크기</string>
     <string name="percentage_format">%1$s%%</string>
     <string name="torrent_tab_trackers">트래커</string>
@@ -51,7 +51,7 @@
     <string name="torrent_option_download_path_enable">불완전한 토렌트에 대해 다른 경로 사용</string>
     <string name="torrent_option_speed_limit">토렌트 속도 제한</string>
     <string name="torrent_option_download_speed_limit">다운로드 속도 제한 (KiB/s)</string>
-    <string name="torrent_status_force_seeding">[F] 배포</string>
+    <string name="torrent_status_force_seeding">[F] 시딩 중</string>
     <string name="torrent_status_checking_resume_data">이어받기 데이터 확인중</string>
     <string name="torrent_status_downloading_metadata">메타데이터 내려받는 중</string>
     <string name="torrent_status_force_downloading_metadata">[F] 메타데이터 내려받는 중</string>
@@ -71,11 +71,11 @@
     <string name="speed_format">%1$s %2$s</string>
     <string name="speed_gibibytes_per_second">GiB/s</string>
     <string name="error_invalid_credentials">사용자 이름/암호가 올바르지 않습니다.</string>
-    <string name="error_banned">너무 많은 실패한 로그인 시도로 차단되었습니다.</string>
+    <string name="error_banned">과도한 로그인 실패로 차단되었습니다.</string>
     <string name="error_cannot_connect">서버에 연결할 수 없습니다.</string>
     <string name="error_timeout">연결 시간 초과.</string>
     <string name="error_no_data">서버가 어떤 정보도 보내지 않음.</string>
-    <string name="error_unknown_login_response">알 수 없는 로그인 시도:%1$s</string>
+    <string name="error_unknown_login_response">알 수 없는 로그인 응답:%1$s</string>
     <string name="error_unknown">알 수 없는 오류: %1$s</string>
     <string name="dialog_ok">확인</string>
     <string name="action_search">검색</string>
@@ -87,9 +87,9 @@
     <string name="torrent_list_action_sort_download_speed">다운로드 속도</string>
     <string name="torrent_list_action_sort_eta">남은 시간</string>
     <string name="torrent_list_action_sort_progress">진행률</string>
-    <string name="torrent_list_action_sort_total_seeds">전체 배포</string>
-    <string name="torrent_list_action_sort_connected_leeches">연결된 리처</string>
-    <string name="torrent_list_action_sort_total_leeches">전체 얌체</string>
+    <string name="torrent_list_action_sort_total_seeds">전체 시드</string>
+    <string name="torrent_list_action_sort_connected_leeches">연결된 리치</string>
+    <string name="torrent_list_action_sort_total_leeches">전체 리치</string>
     <string name="torrent_list_action_sort_completion_date">완료된 날짜</string>
     <string name="torrent_list_action_pause">일시정지</string>
     <string name="torrent_list_action_resume">이어받기</string>
@@ -141,7 +141,7 @@
     <string name="torrent_list_status_format">%1$s (%2$d)</string>
     <string name="torrent_list_status_all">전체</string>
     <string name="torrent_list_status_downloading">내려받는 중</string>
-    <string name="torrent_list_status_completed">완료</string>
+    <string name="torrent_list_status_completed">완료됨</string>
     <string name="torrent_list_status_resumed">이어받기됨</string>
     <string name="torrent_list_status_inactive">비활성</string>
     <string name="torrent_list_status_stalled">중지됨</string>
@@ -150,8 +150,8 @@
     <string name="torrent_list_priority_decrease_success">우선 순위가 성공적으로 감소했습니다.</string>
     <string name="stats_category_user_statistics">사용자 통계</string>
     <string name="stats_category_cache_statistics">캐시 통계</string>
-    <string name="stats_all_time_upload">전체 시간 업로드</string>
-    <string name="stats_all_time_download">전체 시간 내려기</string>
+    <string name="stats_all_time_upload">전체 기간 업로드</string>
+    <string name="stats_all_time_download">전체 기간 내려받기</string>
     <string name="stats_session_waste">세션 낭비</string>
     <string name="stats_connected_peers">연결된 피어</string>
     <string name="stats_total_buffer_size">총 버퍼 크기</string>
@@ -185,7 +185,7 @@
     <string name="torrent_option_save_path">경로 저장</string>
     <string name="torrent_option_download_path">다운로드 경로</string>
     <string name="torrent_option_upload_speed_limit">업로드 속도 제한 (KiB/s)</string>
-    <string name="torrent_option_share_limit">토렌트 공유 제한한</string>
+    <string name="torrent_option_share_limit">토렌트 공유 제한</string>
     <string name="torrent_status_downloading">내려받는 중</string>
     <string name="torrent_status_force_downloading">[F] 내려받는 중</string>
     <string name="torrent_status_moving">이동하는 중</string>
@@ -206,7 +206,7 @@
     <string name="torrent_list_action_sort_upload_speed">업로드 속도</string>
     <string name="torrent_list_action_sort_priority">우선순위</string>
     <string name="torrent_list_action_sort_size">크기</string>
-    <string name="torrent_list_action_sort_connected_seeds">연결된 배포</string>
+    <string name="torrent_list_action_sort_connected_seeds">연결된 시드</string>
     <string name="torrent_list_action_sort_ratio">비율</string>
     <string name="torrent_list_action_sort_addition_date">추가된 날짜</string>
     <string name="torrent_list_action_sort_last_activity">최근 활동</string>
@@ -227,13 +227,13 @@
     <string name="torrent_option_share_limit_global">전역 공유 제한 사용</string>
     <string name="torrent_option_share_limit_disable">공유 제한 비활성화</string>
     <string name="torrent_option_share_limit_total_minutes">총 시간(분)</string>
-    <string name="torrent_option_share_limit_inactive_minutes">활동하지 않는 시간(분)</string>
-    <string name="torrent_option_prioritize_first_last_piece">처음과 마지막 조각 먼저 다운로드</string>
+    <string name="torrent_option_share_limit_inactive_minutes">비활성 시간(분)</string>
+    <string name="torrent_option_prioritize_first_last_piece">처음과 마지막 조각부터 다운로드</string>
     <string name="torrent_category_update_success">범주가 성공적으로 업데이트됨.</string>
     <string name="torrent_rename_success">토렌트 이름이 성공적으로 업데이트 됨.</string>
     <string name="torrent_location_update_success">토렌트 위치를 성공적으로 변경함.</string>
     <string name="torrent_rename_name_cannot_be_blank">토렌트 이름은 비어있을 수 없습니다.</string>
-    <string name="torrent_export_success">토렌트가 성공적으로 내보내짐.</string>
+    <string name="torrent_export_success">토렌트를 성공적으로 내보냈습니다.</string>
     <string name="torrent_no_categories">어떤 범주도 찾을 수 없음.</string>
     <string name="torrent_overview_added_on">추가된 날짜</string>
     <string name="torrent_overview_private">비공개</string>
@@ -241,10 +241,10 @@
     <string name="torrent_overview_hash_v2">정보 해시 v2</string>
     <string name="torrent_overview_comment">주석</string>
     <string name="torrent_overview_pieces">조각</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (%3$d개)</string>
+    <string name="torrent_overview_pieces_format">%1$d x %2$s (%3$d개 보유)</string>
     <string name="torrent_overview_completed_on">완료된 날짜</string>
     <string name="torrent_overview_created_by">생성자</string>
-    <string name="torrent_overview_seeds">배포</string>
+    <string name="torrent_overview_seeds">시드</string>
     <string name="torrent_overview_seeds_format">%1$d (전체 %2$d)</string>
     <string name="torrent_overview_peers">피어</string>
     <string name="torrent_files_priority_maximum">최대</string>
@@ -252,8 +252,8 @@
     <plurals name="torrent_files_selected">
         <item quantity="other">%1$d개의 파일이 선택됨</item>
     </plurals>
-    <string name="torrent_files_rename_file">파일 이름 바꾸기</string>
-    <string name="torrent_files_rename_folder">폴더 이름 바꾸기</string>
+    <string name="torrent_files_rename_file">파일 이름 변경</string>
+    <string name="torrent_files_rename_folder">폴더 이름 변경</string>
     <string name="torrent_files_rename_file_hint">파일 이름</string>
     <string name="torrent_files_priority_update_success">파일 우선순위가 성공적으로 업데이트 되었습니다.</string>
     <string name="torrent_files_error_path_is_invalid_or_in_use">경로가 잘못되었거나 이미 사용중입니다.</string>
@@ -271,7 +271,7 @@
     <string name="torrent_rename_torrent_hint">이름</string>
     <string name="torrent_no_tags">어떤 태그도 찾을 수 없음.</string>
     <string name="torrent_overview_total_size">전체 크기</string>
-    <string name="torrent_force_recheck_confirm">이 토렌트를 강제 다시 검사하시겠습니까?</string>
+    <string name="torrent_force_recheck_confirm">이 토렌트를 강제로 다시 검사하시겠습니까?</string>
     <string name="torrent_overview_information">정보</string>
     <string name="torrent_overview_private_no">아니오</string>
     <string name="torrent_overview_private_yes">예</string>
@@ -297,14 +297,14 @@
     <string name="torrent_files_priority_normal">보통</string>
     <string name="torrent_files_priority_high">높음</string>
     <string name="torrent_trackers_leeches">얌체</string>
-    <string name="torrent_files_file_renamed_success">파일 이름이 성공적으로 바뀜</string>
+    <string name="torrent_files_file_renamed_success">파일 이름이 성공적으로 변경됨</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>
     <string name="torrent_files_action_priority">우선순위</string>
     <string name="torrent_files_rename_folder_hint">폴더 이름</string>
     <string name="torrent_files_action_rename">이름 바꾸기</string>
-    <string name="torrent_files_folder_renamed_success">폴더 이름이 성공적으로 바뀜</string>
+    <string name="torrent_files_folder_renamed_success">폴더 이름이 성공적으로 변경됨</string>
     <string name="torrent_trackers_action_add">트래커 추가</string>
-    <string name="torrent_trackers_downloaded">다운로드함</string>
+    <string name="torrent_trackers_downloaded">다운로드됨</string>
     <string name="torrent_trackers_add_hint">트래커</string>
     <string name="torrent_trackers_action_edit">트래커 수정</string>
     <plurals name="torrent_trackers_delete_desc">
@@ -453,7 +453,7 @@
     <string name="torrent_add_click_to_select_file">파일을 선택하려면 클릭하세요</string>
     <string name="torrent_add_tags">태그</string>
     <string name="torrent_add_sequential_download">순차적으로 다운로드</string>
-    <string name="torrent_add_prioritize_first_last_piece">처음과 마지막 조각 먼저 다운로드</string>
+    <string name="torrent_add_prioritize_first_last_piece">처음과 마지막 조각부터 다운로드</string>
     <string name="torrent_add_torrent_management_mode">토렌트 관리 모드</string>
     <string name="torrent_add_torrent_management_mode_manual">수동</string>
     <string name="torrent_add_start_torrent">토렌트 시작</string>
@@ -585,7 +585,7 @@
     <string name="torrent_overview_availability">가용성</string>
     <string name="rss_action_edit_feed_url">피드 URL 편집</string>
     <string name="rss_rule_no_feed_found">발견된 피드 없음</string>
-    <string name="torrent_overview_popularity">인지도</string>
+    <string name="torrent_overview_popularity">인기</string>
     <string name="rss_success_feed_change_url">피드 URL이 성공적으로 변경되었습니다.</string>
     <string name="rss_details">토렌트 세부정보</string>
     <string name="rss_description">설명</string>
@@ -605,8 +605,8 @@
         <item quantity="other">%1$d 헤더</item>
     </plurals>
     <string name="error_invalid_interval">값은 반드시 %1$d와 %2$d 사이여야 합니다.</string>
-    <string name="error_invalid_interval_optional">값은 반드시 %1$d와 %2$d 사이거나, 비활성화를 위해서 빈칸이여야 합니다.</string>
-    <string name="torrent_overview_piece_downloaded">다운로드함</string>
+    <string name="error_invalid_interval_optional">값은 반드시 %1$d와 %2$d 사이거나, 빈칸으로 두어 비활성화시킵니다.</string>
+    <string name="torrent_overview_piece_downloaded">다운로드됨</string>
     <string name="torrent_overview_piece_downloading">내려받는 중</string>
     <string name="torrent_overview_piece_not_downloaded">다운로드 되지 않음</string>
     <string name="settings_category_network">네트워크</string>
@@ -651,7 +651,7 @@
         <item quantity="other">%1$d 년 전</item>
     </plurals>
     <string name="error_no_internet">인터넷 연결이 없음.</string>
-    <string name="torrent_list_action_sort_downloaded">다운로드함</string>
+    <string name="torrent_list_action_sort_downloaded">다운로드됨</string>
     <string name="torrent_list_action_sort_uploaded">업로드됨</string>
     <string name="stats_read_cache_hits">읽기 캐시 적중률</string>
     <string name="torrent_peers_details_section_overview">피어 개요</string>
