@@ -402,27 +402,22 @@ private fun openWindowsDefaultAppsSettingsForRegisteredApp(): Boolean =
         openWindowsSettings("ms-settings:defaultapps?registeredAppUser=${urlEncode("qBitController")}") ||
         openWindowsDefaultAppsSettings()
 
-private fun openWindowsDefaultAppsSettings(): Boolean =
-    openWindowsSettings("ms-settings:defaultapps")
+private fun openWindowsDefaultAppsSettings(): Boolean = openWindowsSettings("ms-settings:defaultapps")
 
-private fun openWindowsSettings(uri: String): Boolean =
-    try {
-        ProcessBuilder("cmd", "/c", "start", "", uri)
-            .redirectErrorStream(true)
-            .start()
-            .waitFor() == 0
-    } catch (_: Exception) {
-        false
-    }
+private fun openWindowsSettings(uri: String): Boolean = try {
+    ProcessBuilder("cmd", "/c", "start", "", uri)
+        .redirectErrorStream(true)
+        .start()
+        .waitFor() == 0
+} catch (_: Exception) {
+    false
+}
 
-private fun urlEncode(value: String): String =
-    URLEncoder.encode(value, StandardCharsets.UTF_8)
+private fun urlEncode(value: String): String = URLEncoder.encode(value, StandardCharsets.UTF_8)
 
-private fun registryString(value: String): String =
-    value.replace("\\", "\\\\").replace("\"", "\\\"")
+private fun registryString(value: String): String = value.replace("\\", "\\\\").replace("\"", "\\\"")
 
-private fun powershellSingleQuotedString(value: String): String =
-    "'${value.replace("'", "''")}'"
+private fun powershellSingleQuotedString(value: String): String = "'${value.replace("'", "''")}'"
 
 private fun File.writeWindowsRegistryFile(content: String) {
     outputStream().use { output ->
@@ -431,11 +426,10 @@ private fun File.writeWindowsRegistryFile(content: String) {
     }
 }
 
-private fun isWindowsMachineDefaultAppRegistered(): Boolean =
-    queryRegistryValue(
-        key = "HKLM\\SOFTWARE\\RegisteredApplications",
-        name = "qBitController",
-    )?.equals("Software\\qBitController\\Capabilities", ignoreCase = true) == true
+private fun isWindowsMachineDefaultAppRegistered(): Boolean = queryRegistryValue(
+    key = "HKLM\\SOFTWARE\\RegisteredApplications",
+    name = "qBitController",
+)?.equals("Software\\qBitController\\Capabilities", ignoreCase = true) == true
 
 private fun addRegistryValue(key: String, name: String?, value: String): Boolean {
     val command = buildList {

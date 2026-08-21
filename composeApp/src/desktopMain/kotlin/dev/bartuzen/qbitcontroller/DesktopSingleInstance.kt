@@ -102,8 +102,6 @@ private fun singleInstanceLockFile(): File {
     return File(directory, "qBitController.lock")
 }
 
-private fun encodeArgument(value: String): String =
-    URLEncoder.encode(value, StandardCharsets.UTF_8)
+private fun encodeArgument(value: String): String = URLEncoder.encode(value, StandardCharsets.UTF_8)
 
-private fun decodeArgument(value: String): String =
-    java.net.URLDecoder.decode(value, StandardCharsets.UTF_8)
+private fun decodeArgument(value: String): String = java.net.URLDecoder.decode(value, StandardCharsets.UTF_8)
