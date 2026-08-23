@@ -770,4 +770,5 @@
     <string name="settings_hide_server_urls">Скрыть URL-адреса серверов в боковой панели</string>
     <string name="settings_hide_server_urls_desc">URL-адреса серверов без имени всё равно будут видны</string>
     <string name="settings_server_delete_confirm">Вы уверены, что хотите удалить этот сервер?</string>
+    <string name="settings_remember_last_selected_server">Запомнить последний выбранный сервер</string>
 </resources>
