@@ -158,7 +158,7 @@
     <string name="torrent_list_status_active">Actif</string>
     <string name="torrent_list_status_stalled">Suspendu</string>
     <string name="torrent_list_status_checking">Vérification</string>
-    <string name="torrent_list_no_server_title">Aucun server disponible</string>
+    <string name="torrent_list_no_server_title">Aucun serveur disponible</string>
     <string name="torrent_list_no_server_description">Vous n\'avez pas encore ajouté de serveurs. Ajoutez-en un pour commencer.</string>
     <string name="torrent_list_no_server_add">Ajouter serveur</string>
     <string name="torrent_list_empty_search">Recherche Torrents</string>
