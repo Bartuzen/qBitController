@@ -743,4 +743,5 @@
     <string name="settings_hide_server_urls">Cacher les URLs de serveur dans la barre latérale</string>
     <string name="settings_hide_server_urls_desc">Les URLs seront encore affichées pour les serveurs sans nom</string>
     <string name="settings_server_delete_confirm">Êtes-vous sûr de vouloir supprimer ce serveur ?</string>
+    <string name="settings_remember_last_selected_server">Mémoriser le dernier serveur utilisé</string>
 </resources>
