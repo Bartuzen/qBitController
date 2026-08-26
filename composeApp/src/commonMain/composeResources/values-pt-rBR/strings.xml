@@ -743,4 +743,5 @@
     <string name="settings_traffic_stats_in_list_session">Sessão</string>
     <string name="settings_traffic_stats_in_list_complete">Total (Sessão)</string>
     <string name="settings_server_delete_confirm">Tem certeza de que deseja excluir este servidor?</string>
+    <string name="settings_remember_last_selected_server">Lembrar do último servidor selecionado</string>
 </resources>
