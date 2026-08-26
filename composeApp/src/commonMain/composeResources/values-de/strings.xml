@@ -485,4 +485,5 @@
         <item quantity="one">%1$d Torrent ausgewählt</item>
         <item quantity="other">%1$d Torrents ausgewählt</item>
     </plurals>
+    <string name="torrent_option_share_limit">Beschränkungen für Torrent-Sharing</string>
 </resources>
