@@ -86,17 +86,21 @@ class AddTorrentRepository(
         if (searchLinks != null && version >= QBittorrentVersion(5, 2, 0)) {
             for ((downloader, downloaderLinks) in searchLinks) {
                 for (link in downloaderLinks) {
-                    when (val result = requestManager.request(serverId) { service ->
-                        service.fetchTorrentMetadata(link, downloader)
-                    }) {
+                    when (
+                        val result = requestManager.request(serverId) { service ->
+                            service.fetchTorrentMetadata(link, downloader)
+                        }
+                    ) {
                         is RequestResult.Success -> Unit
                         is RequestResult.Error -> return result
                     }
                 }
 
-                when (val result = requestManager.request(serverId) { service ->
-                    service.addTorrent(buildMultipart(downloaderLinks, downloader))
-                }) {
+                when (
+                    val result = requestManager.request(serverId) { service ->
+                        service.addTorrent(buildMultipart(downloaderLinks, downloader))
+                    }
+                ) {
                     is RequestResult.Success -> {
                         if (result.data == "Fails.") {
                             return result
