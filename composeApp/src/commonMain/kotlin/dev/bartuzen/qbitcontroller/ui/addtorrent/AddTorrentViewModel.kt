@@ -104,6 +104,7 @@ class AddTorrentViewModel(
     fun addTorrent(
         serverId: Int,
         links: List<String>?,
+        linkDownloaders: List<String>?,
         files: List<PlatformFile>?,
         savePath: String?,
         category: String?,
@@ -140,6 +141,7 @@ class AddTorrentViewModel(
                 val result = repository.addTorrent(
                     serverId,
                     links,
+                    linkDownloaders,
                     filesWithContent,
                     savePath,
                     category,
