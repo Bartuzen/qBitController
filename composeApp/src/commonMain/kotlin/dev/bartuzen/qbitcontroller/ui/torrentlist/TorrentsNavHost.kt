@@ -49,6 +49,7 @@ fun TorrentsNavHost(
     onNavigateToRss: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onShowNotificationPermission: () -> Unit,
+    onAddTorrentLaunchFinished: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
@@ -59,6 +60,7 @@ fun TorrentsNavHost(
     var currentServerLocal by rememberSaveable(stateSaver = jsonSaver()) {
         mutableStateOf(serverManager.serversFlow.value.firstOrNull())
     }
+    var isHandlingAddTorrentLaunch by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(currentServer) {
         currentServerLocal = currentServer
     }
@@ -87,6 +89,7 @@ fun TorrentsNavHost(
                     }
                 }
                 is DeepLinkDestination.AddTorrent -> {
+                    isHandlingAddTorrentLaunch = true
                     navController.navigate(
                         Destination.AddTorrent(
                             torrentUrl = destination.torrentUrl,
@@ -176,15 +179,25 @@ fun TorrentsNavHost(
                 initialServerId = args.initialServerId,
                 torrentUrl = args.torrentUrl,
                 torrentFileUris = args.torrentFileUris,
-                onNavigateBack = { navController.navigateUp() },
+                onNavigateBack = {
+                    if (isHandlingAddTorrentLaunch) {
+                        onAddTorrentLaunchFinished?.invoke()
+                    } else {
+                        navController.navigateUp()
+                    }
+                },
                 onAddTorrent = { serverId ->
-                    navController.previousBackStackEntry
-                        ?.savedStateHandle
-                        ?.set(AddTorrentKeys.TorrentAdded, serverId)
+                    if (isHandlingAddTorrentLaunch) {
+                        onAddTorrentLaunchFinished?.invoke()
+                    } else {
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set(AddTorrentKeys.TorrentAdded, serverId)
 
-                    onSelectServer(serverId)
+                        onSelectServer(serverId)
 
-                    navController.navigateUp()
+                        navController.navigateUp()
+                    }
                 },
             )
         }
