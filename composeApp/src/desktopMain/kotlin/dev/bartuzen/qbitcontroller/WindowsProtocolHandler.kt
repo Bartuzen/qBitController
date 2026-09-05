@@ -22,6 +22,7 @@ fun registerWindowsDefaultTorrentHandlers(): WindowsDefaultTorrentHandlersRegist
     registerWindowsMagnetProtocolHandler(executable)
     registerWindowsTorrentFileHandler(executable)
     registerWindowsAppCapabilities(executable)
+    unregisterWindowsUserDefaultApp()
     if (!isWindowsMachineDefaultAppRegistered()) {
         registerWindowsMachineAppCapabilities(executable)
     }
@@ -148,10 +149,6 @@ private fun registerWindowsAppCapabilities(executable: File): Boolean {
         name = "magnet",
         value = "qBitController.magnet",
     ) && addRegistryValue(
-        key = "HKCU\\Software\\RegisteredApplications",
-        name = "qBitController",
-        value = "Software\\qBitController\\Capabilities",
-    ) && addRegistryValue(
         key = appPathsKey,
         name = null,
         value = executable.absolutePath,
@@ -219,10 +216,13 @@ private fun registerWindowsAppCapabilities(executable: File): Boolean {
         key = "$applicationsCapabilitiesKey\\URLAssociations",
         name = "magnet",
         value = "qBitController.magnet",
-    ) && addRegistryValue(
+    )
+}
+
+private fun unregisterWindowsUserDefaultApp(): Boolean {
+    return deleteRegistryValue(
         key = "HKCU\\Software\\RegisteredApplications",
         name = "qBitController",
-        value = "Software\\qBitController\\Capabilities",
     )
 }
 
@@ -445,6 +445,18 @@ private fun addRegistryValue(key: String, name: String?, value: String): Boolean
     return try {
         ProcessBuilder(command).redirectErrorStream(true).start().waitFor()
             .let { exitCode -> exitCode == 0 }
+    } catch (_: Exception) {
+        false
+    }
+}
+
+private fun deleteRegistryValue(key: String, name: String): Boolean {
+    return try {
+        val exitCode = ProcessBuilder("reg", "delete", key, "/v", name, "/f")
+            .redirectErrorStream(true)
+            .start()
+            .waitFor()
+        exitCode == 0 || queryRegistryValue(key, name) == null
     } catch (_: Exception) {
         false
     }
