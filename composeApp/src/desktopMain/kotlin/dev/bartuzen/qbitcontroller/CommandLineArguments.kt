@@ -10,6 +10,8 @@ data class CommandLineArguments(
     val torrentUrl: String?,
     val torrentFileUris: List<String>?,
 ) {
+    val hasTorrentLaunch = torrentUrl != null || torrentFileUris != null
+
     companion object {
         fun parse(args: Array<String>): CommandLineArguments {
             var density: Float? = null
