@@ -25,13 +25,13 @@ import androidx.compose.ui.window.rememberWindowState
 import dev.bartuzen.qbitcontroller.data.ConfigMigrator
 import dev.bartuzen.qbitcontroller.data.DesktopSettingsManager
 import dev.bartuzen.qbitcontroller.data.ServerManager
+import dev.bartuzen.qbitcontroller.data.repositories.AddTorrentRepository
 import dev.bartuzen.qbitcontroller.di.appModule
 import dev.bartuzen.qbitcontroller.generated.BuildConfig
 import dev.bartuzen.qbitcontroller.model.WindowState
 import dev.bartuzen.qbitcontroller.network.UpdateChecker
 import dev.bartuzen.qbitcontroller.network.VersionInfo
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
-import dev.bartuzen.qbitcontroller.ui.main.DeepLinkDestination
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.Platform
@@ -40,11 +40,10 @@ import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.context.startKoin
 import qbitcontroller.composeapp.generated.resources.Res
@@ -56,17 +55,11 @@ import qbitcontroller.composeapp.generated.resources.update_dialog_message
 import qbitcontroller.composeapp.generated.resources.update_dialog_title
 import java.awt.Color
 import java.awt.Dimension
-import java.awt.Frame
 import java.util.Locale
 import androidx.compose.ui.text.intl.Locale as ComposeLocale
 
 fun main(args: Array<String>) {
     val cliArgs = CommandLineArguments.parse(args)
-    val cliArgumentsChannel = Channel<CommandLineArguments>(Channel.UNLIMITED)
-    val singleInstance = DesktopSingleInstance.acquire(args) { forwardedArgs ->
-        cliArgumentsChannel.trySend(forwardedArgs)
-    } ?: return
-    Runtime.getRuntime().addShutdownHook(Thread { singleInstance.close() })
 
     if (currentPlatform is Platform.Desktop.MacOS) {
         System.setProperty("apple.awt.application.appearance", "system")
@@ -85,6 +78,12 @@ fun main(args: Array<String>) {
     val updateChecker = koin.get<UpdateChecker>()
     val settingsManager = koin.get<DesktopSettingsManager>()
     val serverManager = koin.get<ServerManager>()
+    val addTorrentRepository = koin.get<AddTorrentRepository>()
+
+    if (runBlocking { handleDesktopTorrentLaunch(cliArgs, serverManager, addTorrentRepository) }) {
+        return
+    }
+
     if (BuildConfig.EnableUpdateChecker) {
         CoroutineScope(Dispatchers.Default).launch {
             settingsManager.checkUpdates.flow.collectLatest { enabled ->
@@ -98,21 +97,6 @@ fun main(args: Array<String>) {
     }
 
     val savedWindowState = settingsManager.windowState.value
-    val navigationChannel = Channel<DeepLinkDestination>()
-    suspend fun navigateFromArguments(args: CommandLineArguments) {
-        if (args.torrentUrl != null || args.torrentFileUris != null) {
-            if (serverManager.serversFlow.value.isNotEmpty()) {
-                navigationChannel.send(
-                    DeepLinkDestination.AddTorrent(
-                        torrentUrl = args.torrentUrl,
-                        torrentFileUris = args.torrentFileUris,
-                    ),
-                )
-            } else {
-                navigationChannel.send(DeepLinkDestination.TorrentList(null))
-            }
-        }
-    }
 
     application {
         val windowState = rememberWindowState(
@@ -218,20 +202,7 @@ fun main(args: Array<String>) {
                     }
                 }
 
-                LaunchedEffect(cliArgs.torrentUrl, cliArgs.torrentFileUris) {
-                    navigateFromArguments(cliArgs)
-                }
-
-                LaunchedEffect(cliArgumentsChannel) {
-                    cliArgumentsChannel.receiveAsFlow().collect { forwardedArgs ->
-                        window.extendedState = window.extendedState and Frame.ICONIFIED.inv()
-                        window.toFront()
-                        window.requestFocus()
-                        navigateFromArguments(forwardedArgs)
-                    }
-                }
-
-                MainScreen(navigationFlow = navigationChannel.receiveAsFlow())
+                MainScreen()
             }
         }
     }
