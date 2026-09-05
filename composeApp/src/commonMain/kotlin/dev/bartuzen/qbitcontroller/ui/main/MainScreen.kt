@@ -95,7 +95,7 @@ import qbitcontroller.composeapp.generated.resources.destination_settings
 import qbitcontroller.composeapp.generated.resources.destination_torrents
 
 @Composable
-fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
+fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null, onAddTorrentLaunchFinished: (() -> Unit)? = null) {
     AppTheme {
         var showNotificationPermission by remember { mutableStateOf(false) }
         val notificationPermissionLauncher = notificationPermissionLauncher()
@@ -375,6 +375,7 @@ fun MainScreen(navigationFlow: Flow<DeepLinkDestination>? = null) {
                             onNavigateToRss = { selectedTabIndex = 2 },
                             onNavigateToSearch = { selectedTabIndex = 1 },
                             onShowNotificationPermission = { showNotificationPermission = true },
+                            onAddTorrentLaunchFinished = onAddTorrentLaunchFinished,
                         )
                     }
 
