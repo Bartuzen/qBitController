@@ -158,7 +158,7 @@
     <string name="torrent_list_status_active">Actif</string>
     <string name="torrent_list_status_stalled">Suspendu</string>
     <string name="torrent_list_status_checking">Vérification</string>
-    <string name="torrent_list_no_server_title">Aucun server disponible</string>
+    <string name="torrent_list_no_server_title">Aucun serveur disponible</string>
     <string name="torrent_list_no_server_description">Vous n\'avez pas encore ajouté de serveurs. Ajoutez-en un pour commencer.</string>
     <string name="torrent_list_no_server_add">Ajouter serveur</string>
     <string name="torrent_list_empty_search">Recherche Torrents</string>
@@ -743,4 +743,5 @@
     <string name="settings_hide_server_urls">Cacher les URLs de serveur dans la barre latérale</string>
     <string name="settings_hide_server_urls_desc">Les URLs seront encore affichées pour les serveurs sans nom</string>
     <string name="settings_server_delete_confirm">Êtes-vous sûr de vouloir supprimer ce serveur ?</string>
+    <string name="settings_remember_last_selected_server">Mémoriser le dernier serveur utilisé</string>
 </resources>
