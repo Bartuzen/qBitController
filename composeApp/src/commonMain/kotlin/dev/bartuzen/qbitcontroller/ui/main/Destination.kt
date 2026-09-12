@@ -18,6 +18,7 @@ sealed class Destination {
         val initialServerId: Int? = null,
         val torrentUrl: String? = null,
         val torrentFileUris: List<String>? = null,
+        val torrentUrlDownloaders: List<String>? = null,
     ) : Destination()
 
     sealed class Rss {

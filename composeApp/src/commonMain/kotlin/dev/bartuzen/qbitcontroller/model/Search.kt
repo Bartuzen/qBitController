@@ -16,6 +16,8 @@ data class Search(
         @SerialName("descrLink")
         val descriptionLink: String,
 
+        val engineName: String,
+
         val fileName: String,
 
         @Serializable(with = NullableLongSerializer::class)
