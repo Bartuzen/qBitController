@@ -689,4 +689,5 @@
     <string name="update_dialog_title">Pembaruan Tersedia</string>
     <string name="update_dialog_message">qBitController %1$s sekarang tersedia. Anda saat ini menggunakan versi %2$s.</string>
     <string name="update_dialog_download">Unduh</string>
+    <string name="settings_remember_last_selected_server">Ingat server yang terakhir dipilih</string>
 </resources>
