@@ -16,7 +16,7 @@
     <string name="torrent_list_delete_tag_success">Etiqueta %1$s eliminada con éxito.</string>
     <string name="torrent_list_shutdown_success">qBittorrent se ha cerrado con éxito.</string>
     <string name="torrent_list_action_set_location">Establecer la ubicación</string>
-    <string name="torrent_status_paused">Pausados</string>
+    <string name="torrent_status_paused">Pausado</string>
     <string name="torrent_list_priority_maximize_success">Prioridad maximizada con éxito.</string>
     <string name="torrent_list_delete_category">Borrar Categoría</string>
     <string name="torrent_list_delete_category_success">Categoría %1$s eliminada con éxito.</string>
@@ -165,7 +165,7 @@
     <string name="torrent_list_action_priority_maximize">Maximizar Prioridad</string>
     <string name="percentage_format">%1$s%%</string>
     <string name="stats_category_user_statistics">Estadísticas de Usuario</string>
-    <string name="torrent_status_completed">Completados</string>
+    <string name="torrent_status_completed">Completado</string>
     <string name="error_api">La API devolvió un error: %1$d</string>
     <string name="torrent_status_moving">Moviendo</string>
     <string name="torrent_list_action_sort_size">Tamaño</string>
@@ -191,7 +191,7 @@
     <string name="torrent_list_action_sort_reverse">Invertir</string>
     <string name="error_unknown">Error desconocido: %1$s</string>
     <string name="torrent_tab_web_seeds">Fuentes HTTP</string>
-    <string name="torrent_status_stalled">Parados</string>
+    <string name="torrent_status_stalled">Parado</string>
     <plurals name="torrent_list_torrents_delete_success">
         <item quantity="one">%1$d torrent eliminado con éxito.</item>
         <item quantity="many">%1$d torrents eliminados con éxito.</item>
@@ -550,7 +550,7 @@
     <string name="torrent_trackers_action_edit">Editar el rastreador</string>
     <string name="rss_rule_use_global_settings">Usar las opciones globales</string>
     <string name="settings_server_advanced_basic_auth_password">Contraseña</string>
-    <string name="torrent_status_checking_resume_data">Comprobación el resumen de los datos</string>
+    <string name="torrent_status_checking_resume_data">Comprobando datos de resumen</string>
     <string name="torrent_overview_transfer">Transferencia</string>
     <string name="torrent_trackers_added">Rastreadores añadidos correctamente.</string>
     <string name="search_result_filter_results">Filtrar los resultados…</string>
@@ -743,4 +743,5 @@
     <string name="settings_hide_server_urls">Esconder las URLs del servidor en la barra lateral</string>
     <string name="settings_hide_server_urls_desc">Las URLs aún se mostrarán para los servidores sin nombre</string>
     <string name="settings_server_delete_confirm">¿Estás seguro de que quieres eliminar este servidor?</string>
+    <string name="settings_remember_last_selected_server">Recordar el último servidor seleccionado</string>
 </resources>

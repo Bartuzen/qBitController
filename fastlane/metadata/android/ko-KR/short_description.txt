@@ -1,1 +1,1 @@
-원격 제어 어떤 장치에서 qBittorrent
+어느 장치에서든 qBittorrent 원격으로 제어하기
