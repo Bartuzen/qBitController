@@ -29,8 +29,8 @@ import dev.bartuzen.qbitcontroller.generated.BuildConfig
 import dev.bartuzen.qbitcontroller.model.WindowState
 import dev.bartuzen.qbitcontroller.network.UpdateChecker
 import dev.bartuzen.qbitcontroller.network.VersionInfo
+import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
-import dev.bartuzen.qbitcontroller.ui.main.DeepLinkDestination
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
 import dev.bartuzen.qbitcontroller.utils.Platform
@@ -39,10 +39,8 @@ import dev.bartuzen.qbitcontroller.utils.rememberReplaceAndApplyStyle
 import dev.bartuzen.qbitcontroller.utils.stringResource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.core.context.startKoin
@@ -91,17 +89,6 @@ fun main(args: Array<String>) {
     }
 
     val savedWindowState = settingsManager.windowState.value
-    val navigationChannel = Channel<DeepLinkDestination>()
-    suspend fun navigateFromArguments(args: CommandLineArguments) {
-        if (args.hasTorrentLaunch) {
-            navigationChannel.send(
-                DeepLinkDestination.AddTorrent(
-                    torrentUrl = args.torrentUrl,
-                    torrentFileUris = args.torrentFileUris,
-                ),
-            )
-        }
-    }
 
     application {
         val windowState = rememberWindowState(
@@ -207,14 +194,17 @@ fun main(args: Array<String>) {
                     }
                 }
 
-                LaunchedEffect(cliArgs.torrentUrl, cliArgs.torrentFileUris) {
-                    navigateFromArguments(cliArgs)
+                if (cliArgs.hasTorrentLaunch) {
+                    AddTorrentScreen(
+                        initialServerId = null,
+                        torrentUrl = cliArgs.torrentUrl,
+                        torrentFileUris = cliArgs.torrentFileUris,
+                        onNavigateBack = ::exitApplication,
+                        onAddTorrent = { exitApplication() },
+                    )
+                } else {
+                    MainScreen()
                 }
-
-                MainScreen(
-                    navigationFlow = navigationChannel.receiveAsFlow(),
-                    onAddTorrentLaunchFinished = if (cliArgs.hasTorrentLaunch) ::exitApplication else null,
-                )
             }
         }
     }
