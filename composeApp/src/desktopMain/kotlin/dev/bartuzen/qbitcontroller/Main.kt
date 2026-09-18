@@ -29,6 +29,7 @@ import dev.bartuzen.qbitcontroller.generated.BuildConfig
 import dev.bartuzen.qbitcontroller.model.WindowState
 import dev.bartuzen.qbitcontroller.network.UpdateChecker
 import dev.bartuzen.qbitcontroller.network.VersionInfo
+import dev.bartuzen.qbitcontroller.ui.addtorrent.AddTorrentScreen
 import dev.bartuzen.qbitcontroller.ui.components.Dialog
 import dev.bartuzen.qbitcontroller.ui.main.MainScreen
 import dev.bartuzen.qbitcontroller.ui.theme.AppTheme
@@ -74,6 +75,7 @@ fun main(args: Array<String>) {
 
     val updateChecker = koin.get<UpdateChecker>()
     val settingsManager = koin.get<DesktopSettingsManager>()
+
     if (BuildConfig.EnableUpdateChecker) {
         CoroutineScope(Dispatchers.Default).launch {
             settingsManager.checkUpdates.flow.collectLatest { enabled ->
@@ -87,6 +89,7 @@ fun main(args: Array<String>) {
     }
 
     val savedWindowState = settingsManager.windowState.value
+
     application {
         val windowState = rememberWindowState(
             placement = savedWindowState.placement,
@@ -191,7 +194,17 @@ fun main(args: Array<String>) {
                     }
                 }
 
-                MainScreen()
+                if (cliArgs.hasTorrentLaunch) {
+                    AddTorrentScreen(
+                        initialServerId = null,
+                        torrentUrl = cliArgs.torrentUrl,
+                        torrentFileUris = cliArgs.torrentFileUris,
+                        onNavigateBack = ::exitApplication,
+                        onAddTorrent = { exitApplication() },
+                    )
+                } else {
+                    MainScreen()
+                }
             }
         }
     }
