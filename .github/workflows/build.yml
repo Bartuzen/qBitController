@@ -118,10 +118,14 @@ jobs:
           - os: windows-latest
             artifactName: windows-x86_64
             arch: x86_64
+            distribution: temurin
+            javaVersion: 21
 
           - os: windows-11-arm
             artifactName: windows-arm64
             arch: arm64
+            distribution: microsoft
+            javaVersion: 21.0.1
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -131,8 +135,8 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
-          distribution: temurin
-          java-version: 21
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.javaVersion }}
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
