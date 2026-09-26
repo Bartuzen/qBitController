@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +27,9 @@ import dev.bartuzen.qbitcontroller.registerWindowsDefaultTorrentHandlers
 import dev.bartuzen.qbitcontroller.utils.Platform
 import dev.bartuzen.qbitcontroller.utils.currentPlatform
 import dev.bartuzen.qbitcontroller.utils.stringResource
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import qbitcontroller.composeapp.generated.resources.Res
 import qbitcontroller.composeapp.generated.resources.settings_magnet_links
 import qbitcontroller.composeapp.generated.resources.settings_magnet_links_desc
@@ -37,12 +40,11 @@ actual fun DefaultMagnetHandlerPreference() {
     if (currentPlatform !is Platform.Desktop.Windows) return
 
     var isDefault by remember { mutableStateOf(false) }
+    var isRegistering by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        while (true) {
-            isDefault = areWindowsDefaultTorrentHandlersRegistered()
-            delay(2_000)
-        }
+        isDefault = withContext(Dispatchers.IO) { areWindowsDefaultTorrentHandlersRegistered() }
     }
 
     val preferenceTheme = LocalPreferenceTheme.current
@@ -57,14 +59,21 @@ actual fun DefaultMagnetHandlerPreference() {
             ) {
                 Button(
                     onClick = {
-                        isDefault = when (registerWindowsDefaultTorrentHandlers()) {
-                            WindowsDefaultTorrentHandlersRegistrationResult.Registered -> true
-                            WindowsDefaultTorrentHandlersRegistrationResult.OpenedDefaultAppsSettings,
-                            WindowsDefaultTorrentHandlersRegistrationResult.Unavailable,
-                            -> areWindowsDefaultTorrentHandlersRegistered()
+                        scope.launch {
+                            isRegistering = true
+                            val result = withContext(Dispatchers.IO) {
+                                registerWindowsDefaultTorrentHandlers()
+                            }
+                            isDefault = when (result) {
+                                WindowsDefaultTorrentHandlersRegistrationResult.Registered -> true
+                                WindowsDefaultTorrentHandlersRegistrationResult.OpenedDefaultAppsSettings,
+                                WindowsDefaultTorrentHandlersRegistrationResult.Unavailable,
+                                -> withContext(Dispatchers.IO) { areWindowsDefaultTorrentHandlersRegistered() }
+                            }
+                            isRegistering = false
                         }
                     },
-                    enabled = !isDefault,
+                    enabled = !isDefault && !isRegistering,
                 ) {
                     Text(text = stringResource(Res.string.settings_set_as_default))
                 }
