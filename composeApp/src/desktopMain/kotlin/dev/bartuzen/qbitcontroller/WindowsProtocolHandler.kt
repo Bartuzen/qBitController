@@ -334,7 +334,7 @@ private fun isWindowsMagnetProtocolHandlerRegistered(executable: File): Boolean 
         "HKCU\\Software\\Classes\\magnet\\shell\\open\\command",
         "HKCR\\qBitController.magnet\\shell\\open\\command",
         "HKCU\\Software\\Classes\\qBitController.magnet\\shell\\open\\command",
-    ).filterNotNull().any { key ->
+    ).any { key ->
         queryDefaultRegistryValue(key)?.equals(commandValue, ignoreCase = true) == true
     }
 }
@@ -356,10 +356,10 @@ private fun isWindowsTorrentFileHandlerRegistered(executable: File): Boolean {
             }
     }
 
-    val progIds = listOf(
+    val progIds = listOfNotNull(
         queryDefaultRegistryValue("HKCR\\.torrent"),
         queryDefaultRegistryValue("HKCU\\Software\\Classes\\.torrent"),
-    ).filterNotNull()
+    )
 
     return progIds.any { progId ->
         listOf(
