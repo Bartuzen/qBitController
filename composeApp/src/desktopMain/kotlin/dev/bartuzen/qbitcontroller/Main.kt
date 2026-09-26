@@ -197,7 +197,7 @@ fun main(args: Array<String>) {
                 if (cliArgs.hasTorrentLaunch) {
                     AddTorrentScreen(
                         initialServerId = null,
-                        torrentUrl = cliArgs.torrentUrl,
+                        torrentUrl = cliArgs.torrentUrls?.joinToString("\n"),
                         torrentFileUris = cliArgs.torrentFileUris,
                         onNavigateBack = ::exitApplication,
                         onAddTorrent = { exitApplication() },

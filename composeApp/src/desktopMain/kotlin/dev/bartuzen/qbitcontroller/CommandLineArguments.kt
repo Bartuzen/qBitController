@@ -7,10 +7,10 @@ data class CommandLineArguments(
     val fontSize: Float?,
     val densityMultiplier: Float?,
     val fontSizeMultiplier: Float?,
-    val torrentUrl: String?,
+    val torrentUrls: List<String>?,
     val torrentFileUris: List<String>?,
 ) {
-    val hasTorrentLaunch = torrentUrl != null || torrentFileUris != null
+    val hasTorrentLaunch = torrentUrls != null || torrentFileUris != null
 
     companion object {
         fun parse(args: Array<String>): CommandLineArguments {
@@ -18,7 +18,7 @@ data class CommandLineArguments(
             var fontSize: Float? = null
             var densityMultiplier: Float? = null
             var fontSizeMultiplier: Float? = null
-            var torrentUrl: String? = null
+            val torrentUrls = mutableListOf<String>()
             val torrentFileUris = mutableListOf<String>()
 
             var i = 0
@@ -44,7 +44,7 @@ data class CommandLineArguments(
                     }
                     else -> {
                         when {
-                            arg.startsWith("magnet:", ignoreCase = true) -> torrentUrl = arg
+                            arg.startsWith("magnet:", ignoreCase = true) -> torrentUrls += arg
                             arg.endsWith(".torrent", ignoreCase = true) && File(arg).isFile -> torrentFileUris += arg
                         }
                     }
@@ -58,7 +58,7 @@ data class CommandLineArguments(
                 fontSize = fontSize,
                 densityMultiplier = densityMultiplier,
                 fontSizeMultiplier = fontSizeMultiplier,
-                torrentUrl = torrentUrl,
+                torrentUrls = torrentUrls.takeIf { it.isNotEmpty() },
                 torrentFileUris = torrentFileUris.takeIf { it.isNotEmpty() },
             )
         }
