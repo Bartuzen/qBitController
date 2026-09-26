@@ -222,8 +222,10 @@ import qbitcontroller.composeapp.generated.resources.torrent_overview_piece_down
 import qbitcontroller.composeapp.generated.resources.torrent_overview_piece_downloading
 import qbitcontroller.composeapp.generated.resources.torrent_overview_piece_map
 import qbitcontroller.composeapp.generated.resources.torrent_overview_piece_not_downloaded
+import qbitcontroller.composeapp.generated.resources.torrent_overview_piece_size
 import qbitcontroller.composeapp.generated.resources.torrent_overview_pieces
-import qbitcontroller.composeapp.generated.resources.torrent_overview_pieces_format
+import qbitcontroller.composeapp.generated.resources.torrent_overview_pieces_completed
+import qbitcontroller.composeapp.generated.resources.torrent_overview_pieces_progress_format
 import qbitcontroller.composeapp.generated.resources.torrent_overview_popularity
 import qbitcontroller.composeapp.generated.resources.torrent_overview_private
 import qbitcontroller.composeapp.generated.resources.torrent_overview_private_no
@@ -761,6 +763,41 @@ fun TorrentOverviewTab(
                                 modifier = Modifier.align(Alignment.CenterHorizontally),
                             )
 
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = stringResource(Res.string.torrent_overview_pieces_completed),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                    Text(
+                                        text = properties.piecesCount?.let { piecesCount ->
+                                            stringResource(
+                                                Res.string.torrent_overview_pieces_progress_format,
+                                                properties.piecesHave,
+                                                piecesCount,
+                                            )
+                                        }.orEmpty(),
+                                    )
+                                }
+                                Column(
+                                    horizontalAlignment = Alignment.End,
+                                    modifier = Modifier.weight(1f),
+                                ) {
+                                    Text(
+                                        text = stringResource(Res.string.torrent_overview_piece_size),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                    Text(
+                                        text = properties.pieceSize?.let { formatBytes(it) }.orEmpty(),
+                                    )
+                                }
+                            }
+
                             PieceBar(
                                 pieces = pieces ?: emptyList(),
                                 modifier = Modifier
@@ -855,15 +892,18 @@ fun TorrentOverviewTab(
 
                                 InfoRow(
                                     label = stringResource(Res.string.torrent_overview_pieces),
-                                    value = if (properties.piecesCount != null && properties.pieceSize != null) {
-                                        stringResource(
-                                            Res.string.torrent_overview_pieces_format,
-                                            properties.piecesCount,
-                                            formatBytes(properties.pieceSize),
+                                    value = properties.piecesCount?.let { piecesCount ->
+                                        val progress = stringResource(
+                                            Res.string.torrent_overview_pieces_progress_format,
                                             properties.piecesHave,
+                                            piecesCount,
                                         )
-                                    } else {
-                                        null
+                                        val pieceSize = properties.pieceSize?.let { formatBytes(it) }
+                                        if (pieceSize != null) {
+                                            "$progress · $pieceSize"
+                                        } else {
+                                            progress
+                                        }
                                     },
                                 )
 

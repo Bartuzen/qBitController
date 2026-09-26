@@ -357,6 +357,9 @@
     <string name="torrent_overview_hash_v2">Hash v2</string>
     <string name="torrent_overview_comment">Comment</string>
     <string name="torrent_overview_pieces">Pieces</string>
+    <string name="torrent_overview_piece_size">Piece Size</string>
+    <string name="torrent_overview_pieces_completed">Completed</string>
+    <string name="torrent_overview_pieces_progress_format">%1$d/%2$d</string>
     <string name="torrent_overview_pieces_format">%1$d x %2$s (have %3$d)</string>
     <string name="torrent_overview_completed_on">Completed On</string>
     <string name="torrent_overview_created_by">Created By</string>
