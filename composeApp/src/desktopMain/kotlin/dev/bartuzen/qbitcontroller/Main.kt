@@ -75,7 +75,6 @@ fun main(args: Array<String>) {
 
     val updateChecker = koin.get<UpdateChecker>()
     val settingsManager = koin.get<DesktopSettingsManager>()
-
     if (BuildConfig.EnableUpdateChecker) {
         CoroutineScope(Dispatchers.Default).launch {
             settingsManager.checkUpdates.flow.collectLatest { enabled ->
@@ -89,7 +88,6 @@ fun main(args: Array<String>) {
     }
 
     val savedWindowState = settingsManager.windowState.value
-
     application {
         val windowState = rememberWindowState(
             placement = savedWindowState.placement,
