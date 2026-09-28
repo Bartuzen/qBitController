@@ -272,7 +272,6 @@
     <string name="torrent_overview_hash_v2">Hash v2</string>
     <string name="torrent_overview_comment">Comentário</string>
     <string name="torrent_overview_pieces">Partes</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (tem %3$d)</string>
     <string name="torrent_overview_completed_on">Completado em</string>
     <string name="torrent_overview_created_by">Criado por</string>
     <string name="torrent_overview_added_on">Adicionado em</string>

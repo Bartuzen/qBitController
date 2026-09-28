@@ -237,7 +237,6 @@
     <string name="torrent_export_error">Torrent dışa aktarılamadı.</string>
     <string name="torrent_rename_torrent_hint">Ad</string>
     <string name="torrent_no_categories">Kategori bulunamadı.</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (%3$d var)</string>
     <string name="torrent_overview_completed_on">Tamamlanma</string>
     <string name="torrent_overview_created_by">Oluşturan</string>
     <string name="torrent_overview_created_on">Oluşturma</string>

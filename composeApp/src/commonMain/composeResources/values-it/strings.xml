@@ -248,7 +248,6 @@
     <string name="torrent_category_update_success">Categoria aggiornata correttamente.</string>
     <string name="torrent_location_cannot_be_blank">Il percorso non può essere vuoto.</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (su %3$d)</string>
     <string name="torrent_overview_completed_on">Completato il</string>
     <string name="torrent_overview_created_by">Creato da</string>
     <string name="torrent_overview_created_on">Creato il</string>

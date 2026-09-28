@@ -47,7 +47,6 @@
     <string name="torrent_peers_details_section_files">கோப்புகள்</string>
     <string name="torrent_peers_flag_interested_peer_unchoked_local">ஆர்வம் (பியர்) மற்றும் தேர்வு செய்யப்படாத (உள்ளூர்)</string>
     <string name="torrent_peers_flag_not_interested_local_unchoked_peer">ஆர்வம் இல்லை (உள்ளூர்) மற்றும் தேர்வு செய்யப்படாத (பியர்)</string>
-    <string name="torrent_overview_pieces_format">%1$d ஃச் %2$s ( %3$d உள்ளது)</string>
     <string name="torrent_overview_completed_on">முடிக்கப்பட்டது</string>
     <string name="torrent_overview_created_by">உருவாக்கியது</string>
     <string name="torrent_overview_created_on">உருவாக்கப்பட்டது</string>

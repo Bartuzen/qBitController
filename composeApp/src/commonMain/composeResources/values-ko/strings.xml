@@ -241,7 +241,6 @@
     <string name="torrent_overview_hash_v2">정보 해시 v2</string>
     <string name="torrent_overview_comment">주석</string>
     <string name="torrent_overview_pieces">조각</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (%3$d개)</string>
     <string name="torrent_overview_completed_on">완료된 날짜</string>
     <string name="torrent_overview_created_by">생성자</string>
     <string name="torrent_overview_seeds">배포</string>

@@ -780,7 +780,7 @@ fun TorrentOverviewTab(
                                                 properties.piecesHave,
                                                 piecesCount,
                                             )
-                                        }.orEmpty(),
+                                        } ?: "-",
                                     )
                                 }
                                 Column(
@@ -793,7 +793,7 @@ fun TorrentOverviewTab(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                     Text(
-                                        text = properties.pieceSize?.let { formatBytes(it) }.orEmpty(),
+                                        text = properties.pieceSize?.let { formatBytes(it) } ?: "-",
                                     )
                                 }
                             }
@@ -816,7 +816,6 @@ fun TorrentOverviewTab(
                         Res.string.torrent_overview_hash_v2,
                         Res.string.torrent_option_save_path,
                         Res.string.torrent_overview_comment,
-                        Res.string.torrent_overview_pieces,
                         Res.string.torrent_overview_completed_on,
                         Res.string.torrent_overview_created_by,
                         Res.string.torrent_overview_created_on,
@@ -888,23 +887,6 @@ fun TorrentOverviewTab(
                                     label = stringResource(Res.string.torrent_overview_comment),
                                     value = properties.comment,
                                     autoLink = true,
-                                )
-
-                                InfoRow(
-                                    label = stringResource(Res.string.torrent_overview_pieces),
-                                    value = properties.piecesCount?.let { piecesCount ->
-                                        val progress = stringResource(
-                                            Res.string.torrent_overview_pieces_progress_format,
-                                            properties.piecesHave,
-                                            piecesCount,
-                                        )
-                                        val pieceSize = properties.pieceSize?.let { formatBytes(it) }
-                                        if (pieceSize != null) {
-                                            "$progress · $pieceSize"
-                                        } else {
-                                            progress
-                                        }
-                                    },
                                 )
 
                                 InfoRow(
