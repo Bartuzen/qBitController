@@ -239,7 +239,6 @@
     <string name="torrent_option_speed_limit">Límites de la velocidad del Torrent</string>
     <string name="torrent_overview_comment">Comentario</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (tiene %3$d)</string>
     <string name="torrent_option_update_success">Opciones de torrent actualizadas correctamente.</string>
     <string name="torrent_export_error">No se pudo exportar el torrent.</string>
     <string name="torrent_overview_total_size">Tamaño Total</string>

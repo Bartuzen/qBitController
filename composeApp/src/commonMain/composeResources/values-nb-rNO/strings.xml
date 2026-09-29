@@ -147,7 +147,6 @@
     <string name="torrent_overview_hash_v2">Sjekksum v2</string>
     <string name="torrent_overview_comment">Kommentar</string>
     <string name="torrent_overview_pieces">Deler</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (har %3$d)</string>
     <string name="torrent_overview_completed_on">Fullført</string>
     <string name="torrent_overview_created_by">Opprettet av</string>
     <string name="torrent_overview_created_on">Opprettet</string>
