@@ -231,8 +231,8 @@
     <string name="stats_read_cache_overload">Lese Cache-Überlast</string>
     <string name="size_bytes">B</string>
     <string name="torrent_list_shutdown_confirm">Sind sie sich sicher, dass die qBittorrent beenden wollen?</string>
-    <string name="torrent_list_shutdown_success">qBittorent wurde erfolgreich heruntergefahren.</string>
-    <string name="stats_connected_peers">Verbundene Teilnehmer</string>
+    <string name="torrent_list_shutdown_success">qBittorrent wurde erfolgreich heruntergefahren.</string>
+    <string name="stats_connected_peers">Verbundene Peers</string>
     <string name="stats_read_cache_hits">Lese Cache Treffer</string>
     <string name="stats_average_time_in_queue">Durchschnittliche Wartezeit</string>
     <string name="stats_total_queued_size">Gesamte Warteschlangen-Größe</string>
@@ -408,7 +408,7 @@
     <string name="torrent_force_recheck_confirm">Bist du sicher, dass du eine erneute Übrprüfung für diesen Torrent erzwingen möchtest?</string>
     <string name="torrent_overview_piece_map">Stück-Karte</string>
     <string name="torrent_overview_piece_downloading">Lädt herunter</string>
-    <string name="torrent_overview_added_on">Einen hinzufügen</string>
+    <string name="torrent_overview_added_on">Hinzugefügt am</string>
     <string name="torrent_overview_hash_v1">Hash v1</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (seit %2$s geseedet)</string>
@@ -484,4 +484,5 @@
         <item quantity="one">%1$d Torrent ausgewählt</item>
         <item quantity="other">%1$d Torrents ausgewählt</item>
     </plurals>
+    <string name="torrent_option_share_limit">Beschränkungen für Torrent-Sharing</string>
 </resources>

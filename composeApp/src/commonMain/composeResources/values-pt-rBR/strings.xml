@@ -742,4 +742,8 @@
     <string name="settings_traffic_stats_in_list_session">Sessão</string>
     <string name="settings_traffic_stats_in_list_complete">Total (Sessão)</string>
     <string name="settings_server_delete_confirm">Tem certeza de que deseja excluir este servidor?</string>
+    <string name="settings_remember_last_selected_server">Lembrar do último servidor selecionado</string>
+    <string name="settings_magnet_links">Arquivos torrent e links magnéticos</string>
+    <string name="settings_magnet_links_desc">Abra arquivos .torrent e links magnéticos com o qBitController</string>
+    <string name="settings_set_as_default">Definir como padrão</string>
 </resources>

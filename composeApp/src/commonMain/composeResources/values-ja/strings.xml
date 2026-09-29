@@ -131,16 +131,16 @@
     <string name="torrent_list_action_set_location">場所を設定</string>
     <string name="torrent_list_action_set_category">カテゴリーの設定</string>
     <plurals name="torrent_list_delete_torrents">
-        <item quantity="other">%1$d のトレントを削除</item>
+        <item quantity="other">%1$d 個のトレントを削除</item>
     </plurals>
     <plurals name="torrent_list_torrents_delete_success">
-        <item quantity="other">%1$d のトレントが正常に削除されました。</item>
+        <item quantity="other">%1$d 個のトレントが正常に削除されました。</item>
     </plurals>
     <plurals name="torrent_list_torrents_pause_success">
-        <item quantity="other">%1$d のトレントが正常に一時停止されました。</item>
+        <item quantity="other">%1$d 個のトレントが正常に一時停止されました。</item>
     </plurals>
     <plurals name="torrent_list_torrents_resume_success">
-        <item quantity="other">%1$d のトレントが正常に再開されました。</item>
+        <item quantity="other">%1$d 個のトレントが正常に再開されました。</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
         <item quantity="other">%1$d 個のトレントが選択されました</item>
@@ -480,4 +480,7 @@
     <string name="torrent_add_stop_condition_none">無し</string>
     <string name="torrent_files_action_rename">名前を変更</string>
     <string name="torrent_trackers_action_add">トラッカーを追加</string>
+    <string name="torrent_peers_details_section_flags">フラグ</string>
+    <string name="torrent_peers_details_client">クライアント</string>
+    <string name="torrent_add_button_url">URL</string>
 </resources>
