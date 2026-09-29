@@ -288,7 +288,6 @@
     <string name="torrent_overview_total_size">Velikost</string>
     <string name="torrent_overview_added_on">Přidáno</string>
     <string name="torrent_overview_comment">Komentář</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (máte %3$d)</string>
     <string name="torrent_overview_completed_on">Dokončeno</string>
     <string name="torrent_overview_pieces">Části</string>
     <string name="torrent_overview_uploaded">Odesláno</string>

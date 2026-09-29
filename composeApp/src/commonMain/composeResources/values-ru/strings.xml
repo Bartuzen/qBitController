@@ -322,7 +322,6 @@
     <string name="torrent_option_share_limit_ratio">Рейтинг</string>
     <string name="torrent_overview_total_size">Общий размер</string>
     <string name="torrent_overview_hash_v1">Инфо-хеш v1</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (из них есть %3$d)</string>
     <string name="torrent_overview_completed_on">Завершено</string>
     <string name="torrent_overview_created_by">Создан в</string>
     <string name="torrent_overview_created_on">Дата создания</string>

@@ -557,7 +557,6 @@
     <string name="torrent_overview_private">Privat</string>
     <string name="torrent_overview_private_yes">Ja</string>
     <string name="torrent_overview_private_no">Nej</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (har %3$d)</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (seedet i %2$s)</string>
     <string name="torrent_overview_popularity">Popularitet</string>
     <string name="torrent_peers_action_add">Tilføj Peers</string>

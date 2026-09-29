@@ -764,7 +764,6 @@
     <string name="update_dialog_title">Dostępna Aktualizacja</string>
     <string name="update_dialog_message">qBitController %1$s jest już dostępny. Aktualnie używasz wersji %2$s.</string>
     <string name="update_dialog_download">Pobierz</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (całość %3$d)</string>
     <string name="rss_rule_use_smart_episode_filter">Użyj Inteligentnego Filtra Odcinków</string>
     <string name="settings_traffic_stats_in_list_total">Razem</string>
     <string name="settings_traffic_stats_in_list_session">Sesja</string>

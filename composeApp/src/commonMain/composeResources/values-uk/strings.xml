@@ -619,7 +619,6 @@
     <string name="torrent_rename_torrent_hint">Ім\'я</string>
     <string name="torrent_force_recheck_confirm">Ви впевнені, що хочете примусово повторно перевірити цей торрент?</string>
     <string name="torrent_overview_information">Інформація</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (має %3$d)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s цього сеансу)</string>
     <string name="torrent_files_priority_mixed">Змішаний</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>

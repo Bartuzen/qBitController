@@ -349,7 +349,6 @@
     <string name="torrent_overview_piece_not_downloaded">Non téléchargé</string>
     <string name="torrent_overview_private">Privé</string>
     <string name="torrent_overview_pieces">Morceaux</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (possédé %3$d)</string>
     <string name="torrent_overview_completed_on">Terminé le</string>
     <string name="torrent_overview_created_by">Créé par</string>
     <string name="torrent_overview_downloaded">Téléchargé</string>

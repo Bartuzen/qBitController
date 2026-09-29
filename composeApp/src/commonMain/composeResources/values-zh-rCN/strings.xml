@@ -247,7 +247,6 @@
     <string name="torrent_overview_hash_v2">哈希值 v2</string>
     <string name="torrent_overview_comment">注释</string>
     <string name="torrent_overview_pieces">区块</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s（已完成 %3$d）</string>
     <string name="torrent_overview_completed_on">完成于</string>
     <string name="torrent_overview_created_by">创建</string>
     <string name="torrent_overview_created_on">创建于</string>

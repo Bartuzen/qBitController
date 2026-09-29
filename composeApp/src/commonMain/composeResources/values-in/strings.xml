@@ -305,7 +305,6 @@
     <string name="torrent_overview_hash_v2">Hash v2</string>
     <string name="torrent_overview_comment">Komentar</string>
     <string name="torrent_overview_pieces">Bagian</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (memiliki %3$d)</string>
     <string name="torrent_overview_completed_on">Selesai Pada</string>
     <string name="torrent_overview_created_by">Dibuat Oleh</string>
     <string name="torrent_overview_created_on">Dibuat Pada</string>

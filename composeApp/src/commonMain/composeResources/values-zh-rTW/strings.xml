@@ -177,7 +177,6 @@
     <string name="torrent_rename_torrent_hint">名稱</string>
     <string name="torrent_overview_pieces">區塊</string>
     <string name="torrent_overview_comment">註釋</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s（已完成 %3$d）</string>
     <string name="torrent_overview_uploaded">已上傳</string>
     <string name="torrent_overview_uploaded_format">%1$s（本次會話 %2$s）</string>
     <string name="torrent_files_details_format">%1$s • %2$s / %3$s • %4$s%%</string>

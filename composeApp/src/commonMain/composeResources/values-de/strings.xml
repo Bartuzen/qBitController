@@ -411,7 +411,6 @@
     <string name="torrent_overview_added_on">Hinzugefügt am</string>
     <string name="torrent_overview_hash_v1">Hash v1</string>
     <string name="torrent_overview_hash_v2">Hash v2</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (hat %3$d)</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (seit %2$s geseedet)</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s diese Sitzung)</string>
     <string name="torrent_overview_uploaded_format">%1$s (%2$s diese Sitzung)</string>

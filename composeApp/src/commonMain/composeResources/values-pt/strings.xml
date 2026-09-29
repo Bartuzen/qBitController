@@ -240,7 +240,6 @@
     <string name="torrent_deleted_success">Torrent Eliminado com Sucesso.</string>
     <string name="torrent_overview_private">Privado</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s nesta sessão)</string>
-    <string name="torrent_overview_pieces_format">%1$d x %2$s (tem %3$d)</string>
     <string name="torrent_trackers_peers">Pares</string>
     <string name="torrent_option_share_limit_ratio">Rácio</string>
     <string name="torrent_files_priority_maximum">Máximo</string>
