@@ -770,4 +770,10 @@
     <string name="settings_hide_server_urls_desc">URL-адреса серверов без имени всё равно будут видны</string>
     <string name="settings_server_delete_confirm">Вы уверены, что хотите удалить этот сервер?</string>
     <string name="settings_remember_last_selected_server">Запомнить последний выбранный сервер</string>
+    <string name="torrent_overview_piece_size">Размер части</string>
+    <string name="torrent_overview_pieces_completed">Завершено</string>
+    <string name="torrent_overview_pieces_progress_format">%1$d/%2$d</string>
+    <string name="settings_magnet_links">Торрент-файлы и magnet-ссылки</string>
+    <string name="settings_magnet_links_desc">Открыть .torrent-файлы и magnet-ссылки с помощью qBitController</string>
+    <string name="settings_set_as_default">Установить по умолчанию</string>
 </resources>
