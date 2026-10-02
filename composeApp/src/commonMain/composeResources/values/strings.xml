@@ -324,6 +324,10 @@
     <string name="torrent_option_share_limit_ratio">Ratio</string>
     <string name="torrent_option_share_limit_total_minutes">Total Minutes</string>
     <string name="torrent_option_share_limit_inactive_minutes">Inactive Minutes</string>
+    <string name="torrent_option_share_limit_mode">Mode</string>
+    <string name="torrent_option_share_limit_mode_default">Default (Match any limit)</string>
+    <string name="torrent_option_share_limit_mode_match_any">Match any limit</string>
+    <string name="torrent_option_share_limit_mode_match_all">Match all the limits</string>
     <string name="torrent_option_prioritize_first_last_piece">Download first and last pieces first</string>
     <string name="torrent_option_sequential_download">Download in sequential order</string>
 
