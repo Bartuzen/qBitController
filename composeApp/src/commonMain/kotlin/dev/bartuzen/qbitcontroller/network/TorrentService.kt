@@ -292,6 +292,7 @@ class TorrentService(
         seedingTimeLimit: Int,
         inactiveSeedingTimeLimit: Int,
         shareLimitsMode: String,
+        shareLimitAction: String,
     ): Response<Unit> = post(
         "torrents/setShareLimits",
         mapOf(
@@ -300,6 +301,7 @@ class TorrentService(
             "seedingTimeLimit" to seedingTimeLimit,
             "inactiveSeedingTimeLimit" to inactiveSeedingTimeLimit,
             "shareLimitsMode" to shareLimitsMode,
+            "shareLimitAction" to shareLimitAction,
         ),
     )
 
