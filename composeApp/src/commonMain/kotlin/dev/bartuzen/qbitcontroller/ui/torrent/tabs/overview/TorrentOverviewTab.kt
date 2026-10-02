@@ -200,7 +200,6 @@ import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_global
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_inactive_minutes
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode
-import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode_default
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode_match_all
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode_match_any
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_ratio
@@ -671,6 +670,7 @@ fun TorrentOverviewTab(
                             seedingTimeLimit = seedingTimeLimit,
                             inactiveSeedingTimeLimit = inactiveSeedingTimeLimit,
                             shareLimitsMode = shareLimitsMode,
+                            shareLimitAction = currentTorrent.shareLimitAction,
                         )
                         currentDialog = null
                     },
@@ -1999,9 +1999,8 @@ fun TorrentOptionsDialog(
                         ) {
                             OutlinedTextField(
                                 value = when (selectedShareLimitsMode) {
-                                    "MatchAny" -> stringResource(Res.string.torrent_option_share_limit_mode_match_any)
                                     "MatchAll" -> stringResource(Res.string.torrent_option_share_limit_mode_match_all)
-                                    else -> stringResource(Res.string.torrent_option_share_limit_mode_default)
+                                    else -> stringResource(Res.string.torrent_option_share_limit_mode_match_any)
                                 },
                                 onValueChange = {},
                                 readOnly = true,
@@ -2026,15 +2025,6 @@ fun TorrentOptionsDialog(
                                 expanded = shareLimitsModeExpanded,
                                 onDismissRequest = { shareLimitsModeExpanded = false },
                             ) {
-                                DropdownMenuItem(
-                                    text = {
-                                        Text(text = stringResource(Res.string.torrent_option_share_limit_mode_default))
-                                    },
-                                    onClick = {
-                                        selectedShareLimitsMode = "Default"
-                                        shareLimitsModeExpanded = false
-                                    },
-                                )
                                 DropdownMenuItem(
                                     text = {
                                         Text(text = stringResource(Res.string.torrent_option_share_limit_mode_match_any))

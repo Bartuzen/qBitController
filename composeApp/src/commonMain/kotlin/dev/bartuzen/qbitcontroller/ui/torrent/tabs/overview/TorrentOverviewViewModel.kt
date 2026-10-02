@@ -210,6 +210,7 @@ class TorrentOverviewViewModel(
         seedingTimeLimit: Int?,
         inactiveSeedingTimeLimit: Int?,
         shareLimitsMode: String?,
+        shareLimitAction: String,
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 
@@ -243,6 +244,7 @@ class TorrentOverviewViewModel(
                     seedingTimeLimit,
                     inactiveSeedingTimeLimit,
                     shareLimitsMode,
+                    shareLimitAction,
                 )
             }
         }

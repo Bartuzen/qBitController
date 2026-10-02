@@ -118,8 +118,9 @@ class TorrentOverviewRepository(
         seedingTimeLimit: Int,
         inactiveSeedingTimeLimit: Int,
         shareLimitsMode: String,
+        shareLimitAction: String,
     ) = requestManager.request(serverId) { service ->
-        service.setShareLimit(hash, ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit, shareLimitsMode)
+        service.setShareLimit(hash, ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit, shareLimitsMode, shareLimitAction)
     }
 
     suspend fun exportTorrent(serverId: Int, hash: String, block: suspend (ByteReadChannel) -> Unit) =
