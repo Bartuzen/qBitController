@@ -65,6 +65,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExposedDropdownMenu
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -196,6 +200,10 @@ import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_disable
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_global
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_inactive_minutes
+import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode
+import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode_default
+import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode_match_all
+import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_mode_match_any
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_ratio
 import qbitcontroller.composeapp.generated.resources.torrent_option_share_limit_total_minutes
 import qbitcontroller.composeapp.generated.resources.torrent_option_speed_limit
@@ -650,6 +658,7 @@ fun TorrentOverviewTab(
                             ratioLimit,
                             seedingTimeLimit,
                             inactiveSeedingTimeLimit,
+                            shareLimitsMode,
                         ->
                         viewModel.setTorrentOptions(
                             autoTmm = autoTmm,
@@ -662,6 +671,7 @@ fun TorrentOverviewTab(
                             ratioLimit = ratioLimit,
                             seedingTimeLimit = seedingTimeLimit,
                             inactiveSeedingTimeLimit = inactiveSeedingTimeLimit,
+                            shareLimitsMode = shareLimitsMode,
                         )
                         currentDialog = null
                     },
@@ -1644,6 +1654,13 @@ private fun SetTagsDialog(
     )
 }
 
+private data class ShareLimitsChange(
+    val ratioLimit: Double,
+    val seedingTimeLimit: Int,
+    val inactiveSeedingTimeLimit: Int,
+    val mode: String,
+)
+
 @Composable
 fun TorrentOptionsDialog(
     torrent: Torrent,
@@ -1659,6 +1676,7 @@ fun TorrentOptionsDialog(
         ratioLimit: Double?,
         seedingTimeLimit: Int?,
         inactiveSeedingTimeLimit: Int?,
+        shareLimitsMode: String?,
     ) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -1708,6 +1726,9 @@ fun TorrentOptionsDialog(
                 if (torrent.inactiveSeedingTimeLimit >= 0) torrent.inactiveSeedingTimeLimit.toString() else "",
             ),
         )
+    }
+    var selectedShareLimitsMode by rememberSaveable {
+        mutableStateOf(torrent.shareLimitsMode)
     }
 
     LaunchedEffect(Unit) {
@@ -1967,6 +1988,74 @@ fun TorrentOptionsDialog(
                             modifier = Modifier.fillMaxWidth(),
                             enabled = isCustomEnabled,
                         )
+
+                        var shareLimitsModeExpanded by rememberSaveable { mutableStateOf(false) }
+                        ExposedDropdownMenuBox(
+                            expanded = shareLimitsModeExpanded,
+                            onExpandedChange = {
+                                if (isCustomEnabled) {
+                                    shareLimitsModeExpanded = it
+                                }
+                            },
+                        ) {
+                            OutlinedTextField(
+                                value = when (selectedShareLimitsMode) {
+                                    "MatchAny" -> stringResource(Res.string.torrent_option_share_limit_mode_match_any)
+                                    "MatchAll" -> stringResource(Res.string.torrent_option_share_limit_mode_match_all)
+                                    else -> stringResource(Res.string.torrent_option_share_limit_mode_default)
+                                },
+                                onValueChange = {},
+                                readOnly = true,
+                                singleLine = true,
+                                enabled = isCustomEnabled,
+                                label = {
+                                    Text(
+                                        text = stringResource(Res.string.torrent_option_share_limit_mode),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                    )
+                                },
+                                trailingIcon = {
+                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = shareLimitsModeExpanded)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
+                            )
+
+                            ExposedDropdownMenu(
+                                expanded = shareLimitsModeExpanded,
+                                onDismissRequest = { shareLimitsModeExpanded = false },
+                            ) {
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = stringResource(Res.string.torrent_option_share_limit_mode_default))
+                                    },
+                                    onClick = {
+                                        selectedShareLimitsMode = "Default"
+                                        shareLimitsModeExpanded = false
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = stringResource(Res.string.torrent_option_share_limit_mode_match_any))
+                                    },
+                                    onClick = {
+                                        selectedShareLimitsMode = "MatchAny"
+                                        shareLimitsModeExpanded = false
+                                    },
+                                )
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = stringResource(Res.string.torrent_option_share_limit_mode_match_all))
+                                    },
+                                    onClick = {
+                                        selectedShareLimitsMode = "MatchAll"
+                                        shareLimitsModeExpanded = false
+                                    },
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -2023,34 +2112,27 @@ fun TorrentOptionsDialog(
                         if (downloadLimit != torrent.downloadSpeedLimit) downloadLimit else null
                     }
 
-                    val (finalRatioLimit, finalSeedingTimeLimit, finalInactiveSeedingTimeLimit) =
-                        when (selectedShareLimitOption) {
-                            0 -> Triple(-2.0, -2, -2)
-                            1 -> Triple(-1.0, -1, -1)
-                            2 -> {
-                                val ratio = ratioLimit.text.toDoubleOrNull() ?: -1.0
-                                val seeding = seedingTimeLimit.text.toIntOrNull() ?: -1
-                                val inactive = inactiveSeedingTimeLimit.text.toIntOrNull() ?: -1
+                    val shareLimitsChange = when (selectedShareLimitOption) {
+                        0 -> ShareLimitsChange(-2.0, -2, -2, "Default")
+                        1 -> ShareLimitsChange(-1.0, -1, -1, "Default")
+                        2 -> {
+                            val ratio = ratioLimit.text.toDoubleOrNull() ?: -1.0
+                            val seeding = seedingTimeLimit.text.toIntOrNull() ?: -1
+                            val inactive = inactiveSeedingTimeLimit.text.toIntOrNull() ?: -1
 
-                                if (ratio != -1.0 || seeding != -1 || inactive != -1) {
-                                    Triple(ratio, seeding, inactive)
-                                } else {
-                                    Triple(null, null, null)
-                                }
-                            }
-                            else -> Triple(null, null, null)
-                        }.let { (ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit) ->
-                            if (ratioLimit == null || seedingTimeLimit == null || inactiveSeedingTimeLimit == null) {
-                                Triple(null, null, null)
-                            } else if (ratioLimit != torrent.ratioLimit ||
-                                seedingTimeLimit != torrent.seedingTimeLimit ||
-                                inactiveSeedingTimeLimit != torrent.inactiveSeedingTimeLimit
-                            ) {
-                                Triple(ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
+                            if (ratio == -1.0 && seeding == -1 && inactive == -1 && selectedShareLimitsMode == "Default") {
+                                null
                             } else {
-                                Triple(null, null, null)
+                                ShareLimitsChange(ratio, seeding, inactive, selectedShareLimitsMode)
                             }
                         }
+                        else -> null
+                    }?.takeIf {
+                        it.ratioLimit != torrent.ratioLimit ||
+                            it.seedingTimeLimit != torrent.seedingTimeLimit ||
+                            it.inactiveSeedingTimeLimit != torrent.inactiveSeedingTimeLimit ||
+                            it.mode != torrent.shareLimitsMode
+                    }
 
                     onConfirm(
                         autoTmm,
@@ -2060,9 +2142,10 @@ fun TorrentOptionsDialog(
                         togglePrioritizeFirstLastPiece,
                         finalUploadSpeedLimit,
                         finalDownloadSpeedLimit,
-                        finalRatioLimit,
-                        finalSeedingTimeLimit,
-                        finalInactiveSeedingTimeLimit,
+                        shareLimitsChange?.ratioLimit,
+                        shareLimitsChange?.seedingTimeLimit,
+                        shareLimitsChange?.inactiveSeedingTimeLimit,
+                        shareLimitsChange?.mode,
                     )
                 },
             ) {

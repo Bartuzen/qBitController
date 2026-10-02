@@ -154,6 +154,9 @@ data class Torrent(
     @SerialName("inactive_seeding_time_limit")
     val inactiveSeedingTimeLimit: Int = -1,
 
+    @SerialName("share_limits_mode")
+    val shareLimitsMode: String = "Default",
+
     @SerialName("seeding_time")
     val seedingTime: Int = 0,
 

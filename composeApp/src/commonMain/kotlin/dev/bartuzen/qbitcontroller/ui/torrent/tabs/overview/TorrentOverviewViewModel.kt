@@ -209,6 +209,7 @@ class TorrentOverviewViewModel(
         ratioLimit: Double?,
         seedingTimeLimit: Int?,
         inactiveSeedingTimeLimit: Int?,
+        shareLimitsMode: String?,
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 
@@ -233,7 +234,7 @@ class TorrentOverviewViewModel(
         if (downloadSpeedLimit != null) {
             requests.add { repository.setDownloadSpeedLimit(serverId, torrentHash, downloadSpeedLimit) }
         }
-        if (ratioLimit != null && seedingTimeLimit != null && inactiveSeedingTimeLimit != null) {
+        if (ratioLimit != null && seedingTimeLimit != null && inactiveSeedingTimeLimit != null && shareLimitsMode != null) {
             requests.add {
                 repository.setShareLimit(
                     serverId,
@@ -241,6 +242,7 @@ class TorrentOverviewViewModel(
                     ratioLimit,
                     seedingTimeLimit,
                     inactiveSeedingTimeLimit,
+                    shareLimitsMode,
                 )
             }
         }
