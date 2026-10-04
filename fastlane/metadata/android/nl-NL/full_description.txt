@@ -1,0 +1,13 @@
+Gratis en open source (FOSS) applicatie om qBittorrent op je servers te besturen.
+
+Features:
+
+- Beheer meerdere qBittorrent servers
+- Voeg torrents toe met magnet links of bestanden
+- Bekijk gedetailleerde informatie over torrents
+- Vloer verscheidene acties uit op torrents zoals pauzeren, hervatten, verwijderen, en meer
+- Sorteer torrents op naam, grootte, voortgang, download/upload snelheid, en meer
+- Filter torrents op status, categorie, tag, en tracker
+- Beheer categorieën en tags
+- Bekijk RSS feeds, maak auto download regels
+- Zoek online naar torrents
