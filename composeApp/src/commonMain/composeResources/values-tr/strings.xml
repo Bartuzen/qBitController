@@ -206,7 +206,7 @@
     <string name="torrent_action_rename_torrent">Torrent\'i Yeniden Adlandır</string>
     <string name="torrent_action_force_recheck">Yeniden Denetlemeye Zorla</string>
     <string name="torrent_action_force_reannounce">Yeniden Duyurmaya Zorla</string>
-    <string name="torrent_action_force_start">Devam Etmeye Zorla</string>
+    <string name="torrent_action_force_start">Başlatmaya Zorla</string>
     <string name="torrent_action_super_seeding">Süper Gönderim</string>
     <string name="torrent_action_copy">Kopyala</string>
     <string name="torrent_action_copy_name">Ad</string>
@@ -722,4 +722,9 @@
     <string name="torrent_overview_piece_size">Parça Boyutu</string>
     <string name="torrent_overview_pieces_completed">Tamamlanan</string>
     <string name="torrent_overview_pieces_progress_format">%1$d/%2$d</string>
+    <string name="torrent_list_action_force_start">Başlatmaya Zorla</string>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">%1$d torrent zorla başlatıldı.</item>
+        <item quantity="other">%1$d torrent zorla başlatıldı.</item>
+    </plurals>
 </resources>
