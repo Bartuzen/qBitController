@@ -35,6 +35,11 @@ class TorrentListRepository(
         }
     }
 
+    suspend fun setForceStart(serverId: Int, hashes: List<String>, value: Boolean) =
+        requestManager.request(serverId) { service ->
+            service.setForceStart(hashes.joinToString("|"), value)
+        }
+
     suspend fun deleteCategory(serverId: Int, category: String) = requestManager.request(serverId) { service ->
         service.deleteCategories(category)
     }

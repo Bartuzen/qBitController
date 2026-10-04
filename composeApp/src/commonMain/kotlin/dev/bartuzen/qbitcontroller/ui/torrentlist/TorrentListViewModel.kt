@@ -586,6 +586,22 @@ class TorrentListViewModel(
         }
     }
 
+    fun forceStartTorrents(hashes: List<String>) = serverScope.launch {
+        val serverId = currentServer.value?.id ?: return@launch
+        when (val result = repository.setForceStart(serverId, hashes, true)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsForceStarted(hashes.size))
+                launch {
+                    delay(1.seconds)
+                    loadMainData()
+                }
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun deleteCategory(category: String) = serverScope.launch {
         val serverId = currentServer.value?.id ?: return@launch
         when (val result = repository.deleteCategory(serverId, category)) {
@@ -890,6 +906,7 @@ class TorrentListViewModel(
         data class TorrentsDeleted(val count: Int) : Event()
         data class TorrentsPaused(val count: Int) : Event()
         data class TorrentsResumed(val count: Int) : Event()
+        data class TorrentsForceStarted(val count: Int) : Event()
         data class CategoryDeleted(val name: String) : Event()
         data class TagDeleted(val name: String) : Event()
         data object TorrentsPriorityIncreased : Event()

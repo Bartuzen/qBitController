@@ -77,6 +77,7 @@ import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Sell
+import androidx.compose.material.icons.filled.Start
 import androidx.compose.material.icons.filled.SyncAlt
 import androidx.compose.material.icons.outlined.Analytics
 import androidx.compose.material.icons.outlined.Cached
@@ -256,6 +257,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_deleted_success
 import qbitcontroller.composeapp.generated.resources.torrent_item_progress_format
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_add_torrent
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_delete
+import qbitcontroller.composeapp.generated.resources.torrent_list_action_force_start
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_pause
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_decrease
@@ -355,6 +357,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_switch_speed_l
 import qbitcontroller.composeapp.generated.resources.torrent_list_switch_speed_limit_regular_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_tags
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_delete_success
+import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_force_start_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_pause_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_resume_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_selected
@@ -509,6 +512,18 @@ fun TorrentListScreen(
                     snackbarHostState.showSnackbar(
                         getPluralString(
                             Res.plurals.torrent_list_torrents_resume_success,
+                            event.count,
+                            event.count,
+                        ),
+                    )
+                }
+            }
+            is TorrentListViewModel.Event.TorrentsForceStarted -> {
+                snackbarHostState.currentSnackbarData?.dismiss()
+                scope.launch {
+                    snackbarHostState.showSnackbar(
+                        getPluralString(
+                            Res.plurals.torrent_list_torrents_force_start_success,
                             event.count,
                             event.count,
                         ),
@@ -1028,6 +1043,9 @@ fun TorrentListScreen(
                                 },
                                 onSetTorrentsLocation = { currentDialog = Dialog.SetSelectedTorrentsLocation },
                                 onSetTorrentsCategory = { currentDialog = Dialog.SetSelectedTorrentsCategory },
+                                onForceStartTorrents = {
+                                    viewModel.forceStartTorrents(selectedTorrents.toList())
+                                },
                             )
                         }
                     }
@@ -2519,6 +2537,7 @@ private fun BottomBarSelection(
     onMinimizeTorrentsPriority: () -> Unit,
     onSetTorrentsLocation: () -> Unit,
     onSetTorrentsCategory: () -> Unit,
+    onForceStartTorrents: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -2675,6 +2694,15 @@ private fun BottomBarSelection(
                                 },
                             )
                         }
+                    },
+                ),
+                ActionMenuItem(
+                    title = stringResource(Res.string.torrent_list_action_force_start),
+                    icon = Icons.Filled.Start,
+                    showAsAction = false,
+                    onClick = {
+                        onForceStartTorrents()
+                        selectedTorrents.clear()
                     },
                 ),
                 ActionMenuItem(

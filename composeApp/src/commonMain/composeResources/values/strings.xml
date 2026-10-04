@@ -149,6 +149,7 @@
     <string name="torrent_list_action_pause">Pause</string>
     <string name="torrent_list_action_resume">Resume</string>
     <string name="torrent_list_action_delete">Delete</string>
+    <string name="torrent_list_action_force_start">Force Start</string>
     <string name="torrent_list_action_priority">Priority</string>
     <string name="torrent_list_action_priority_increase">Increase Priority</string>
     <string name="torrent_list_action_priority_decrease">Decrease Priority</string>
@@ -172,6 +173,10 @@
     <plurals name="torrent_list_torrents_resume_success">
         <item quantity="one">%1$d torrent resumed successfully.</item>
         <item quantity="other">%1$d torrents resumed successfully.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">%1$d torrent force started successfully.</item>
+        <item quantity="other">%1$d torrents force started successfully.</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
         <item quantity="one">%1$d torrent selected</item>
