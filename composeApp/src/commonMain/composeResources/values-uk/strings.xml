@@ -776,4 +776,11 @@
     <string name="settings_magnet_links">Торрент-файли та магнітні посилання</string>
     <string name="settings_magnet_links_desc">Відкривайте файли .torrent і магнітні посилання за допомогою qBitController</string>
     <string name="settings_set_as_default">Встановити типовим</string>
+    <string name="torrent_list_action_force_start">Запустити примусово</string>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">%1$d торент примусово запущено.</item>
+        <item quantity="few">%1$d торенти примусово запущено.</item>
+        <item quantity="many">%1$d торентів примусово запущено.</item>
+        <item quantity="other">%1$d торентів примусово запущено.</item>
+    </plurals>
 </resources>
