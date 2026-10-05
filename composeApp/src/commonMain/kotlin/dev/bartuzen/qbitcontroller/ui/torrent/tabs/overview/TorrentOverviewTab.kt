@@ -1654,12 +1654,7 @@ private fun SetTagsDialog(
     )
 }
 
-private data class ShareLimitsChange(
-    val ratioLimit: Double,
-    val seedingTimeLimit: Int,
-    val inactiveSeedingTimeLimit: Int,
-    val mode: ShareLimitsMode?,
-)
+
 
 @Composable
 fun TorrentOptionsDialog(
@@ -2165,3 +2160,10 @@ fun TorrentOptionsDialog(
         },
     )
 }
+
+private data class ShareLimitsChange(
+    val ratioLimit: Double,
+    val seedingTimeLimit: Int,
+    val inactiveSeedingTimeLimit: Int,
+    val mode: ShareLimitsMode?,
+)

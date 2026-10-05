@@ -509,4 +509,11 @@ class TorrentOverviewViewModel(
         data object TorrentExported : Event()
         data object TorrentExportError : Event()
     }
+
+    private data class ShareLimitsChange(
+        val ratioLimit: Double,
+        val seedingTimeLimit: Int,
+        val inactiveSeedingTimeLimit: Int,
+        val mode: ShareLimitsMode?,
+    )
 }
