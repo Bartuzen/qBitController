@@ -51,6 +51,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.automirrored.filled.DriveFileMove
 import androidx.compose.material.icons.automirrored.filled.Label
+import androidx.compose.material.icons.automirrored.filled.LabelOff
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.automirrored.outlined.DriveFileMove
 import androidx.compose.material.icons.filled.Add
@@ -255,6 +256,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_category_update_suc
 import qbitcontroller.composeapp.generated.resources.torrent_delete_files
 import qbitcontroller.composeapp.generated.resources.torrent_deleted_success
 import qbitcontroller.composeapp.generated.resources.torrent_item_progress_format
+import qbitcontroller.composeapp.generated.resources.torrent_list_action_add_tags
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_add_torrent
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_delete
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_force_start
@@ -264,6 +266,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_action_priorit
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_increase
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_maximize
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_priority_minimize
+import qbitcontroller.composeapp.generated.resources.torrent_list_action_remove_tags
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_resume
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_set_category
 import qbitcontroller.composeapp.generated.resources.torrent_list_action_set_location
@@ -356,9 +359,11 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_status_stalled
 import qbitcontroller.composeapp.generated.resources.torrent_list_switch_speed_limit_alternative_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_switch_speed_limit_regular_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_tags
+import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_add_tags_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_delete_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_force_start_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_pause_success
+import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_remove_tags_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_resume_success
 import qbitcontroller.composeapp.generated.resources.torrent_list_torrents_selected
 import qbitcontroller.composeapp.generated.resources.torrent_list_trackers_all
@@ -370,6 +375,7 @@ import qbitcontroller.composeapp.generated.resources.torrent_list_untagged
 import qbitcontroller.composeapp.generated.resources.torrent_location_cannot_be_blank
 import qbitcontroller.composeapp.generated.resources.torrent_location_update_success
 import qbitcontroller.composeapp.generated.resources.torrent_no_categories
+import qbitcontroller.composeapp.generated.resources.torrent_no_tags
 import qbitcontroller.composeapp.generated.resources.torrent_queueing_is_not_enabled
 import qbitcontroller.composeapp.generated.resources.torrent_speed_alternative_speed_limits
 import qbitcontroller.composeapp.generated.resources.torrent_speed_download_limit
@@ -632,6 +638,30 @@ fun TorrentListScreen(
                 scope.launch {
                     snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(getString(Res.string.torrent_category_update_success))
+                }
+            }
+            is TorrentListViewModel.Event.TorrentsTagsAdded -> {
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(
+                        getPluralString(
+                            Res.plurals.torrent_list_torrents_add_tags_success,
+                            event.count,
+                            event.count,
+                        ),
+                    )
+                }
+            }
+            is TorrentListViewModel.Event.TorrentsTagsRemoved -> {
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(
+                        getPluralString(
+                            Res.plurals.torrent_list_torrents_remove_tags_success,
+                            event.count,
+                            event.count,
+                        ),
+                    )
                 }
             }
         }
@@ -899,6 +929,76 @@ fun TorrentListScreen(
                 )
             }
         }
+        Dialog.AddSelectedTorrentsTags -> {
+            LaunchedEffect(selectedTorrents.isEmpty()) {
+                if (selectedTorrents.isEmpty()) {
+                    currentDialog = null
+                }
+            }
+
+            if (mainData != null) {
+                val disabledTags = remember(
+                    mainData.torrents.map { it.hash to it.tags },
+                    mainData.tags,
+                    selectedTorrents.toList(),
+                ) {
+                    val selectedTorrentsList = mainData.torrents.filter { it.hash in selectedTorrents }
+                    mainData.tags
+                        .filter { tag -> selectedTorrentsList.all { tag in it.tags } }
+                        .toSet()
+                }
+
+                AddRemoveTorrentsTagsDialog(
+                    isAdd = true,
+                    tags = mainData.tags,
+                    disabledTags = disabledTags,
+                    onDismiss = {
+                        currentDialog = null
+                    },
+                    onConfirm = { tags ->
+                        currentDialog = null
+                        viewModel.addTags(selectedTorrents.toList(), tags)
+                        selectedTorrents.clear()
+                    },
+                )
+            }
+        }
+        Dialog.RemoveSelectedTorrentsTags -> {
+            LaunchedEffect(selectedTorrents.isEmpty()) {
+                if (selectedTorrents.isEmpty()) {
+                    currentDialog = null
+                }
+            }
+
+            if (mainData != null) {
+                val disabledTags = remember(
+                    mainData.torrents.map { it.hash to it.tags },
+                    mainData.tags,
+                    selectedTorrents.toList(),
+                ) {
+                    val torrentTags = mainData.torrents
+                        .filter { it.hash in selectedTorrents }
+                        .flatMap { it.tags }
+                        .toSet()
+
+                    mainData.tags.filterNot { it in torrentTags }.toSet()
+                }
+
+                AddRemoveTorrentsTagsDialog(
+                    isAdd = false,
+                    tags = mainData.tags,
+                    disabledTags = disabledTags,
+                    onDismiss = {
+                        currentDialog = null
+                    },
+                    onConfirm = { tags ->
+                        currentDialog = null
+                        viewModel.removeTags(selectedTorrents.toList(), tags)
+                        selectedTorrents.clear()
+                    },
+                )
+            }
+        }
         Dialog.SpeedLimits -> {
             LaunchedEffect(mainData == null) {
                 if (mainData == null) {
@@ -1043,6 +1143,8 @@ fun TorrentListScreen(
                                 },
                                 onSetTorrentsLocation = { currentDialog = Dialog.SetSelectedTorrentsLocation },
                                 onSetTorrentsCategory = { currentDialog = Dialog.SetSelectedTorrentsCategory },
+                                onAddTorrentsTags = { currentDialog = Dialog.AddSelectedTorrentsTags },
+                                onRemoveTorrentsTags = { currentDialog = Dialog.RemoveSelectedTorrentsTags },
                                 onForceStartTorrents = {
                                     viewModel.forceStartTorrents(selectedTorrents.toList())
                                 },
@@ -2537,6 +2639,8 @@ private fun BottomBarSelection(
     onMinimizeTorrentsPriority: () -> Unit,
     onSetTorrentsLocation: () -> Unit,
     onSetTorrentsCategory: () -> Unit,
+    onAddTorrentsTags: () -> Unit,
+    onRemoveTorrentsTags: () -> Unit,
     onForceStartTorrents: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -2722,6 +2826,22 @@ private fun BottomBarSelection(
                     },
                 ),
                 ActionMenuItem(
+                    title = stringResource(Res.string.torrent_list_action_add_tags),
+                    icon = Icons.Filled.Sell,
+                    showAsAction = false,
+                    onClick = {
+                        onAddTorrentsTags()
+                    },
+                ),
+                ActionMenuItem(
+                    title = stringResource(Res.string.torrent_list_action_remove_tags),
+                    icon = Icons.AutoMirrored.Filled.LabelOff,
+                    showAsAction = false,
+                    onClick = {
+                        onRemoveTorrentsTags()
+                    },
+                ),
+                ActionMenuItem(
                     title = stringResource(Res.string.action_select_all),
                     icon = Icons.Filled.SelectAll,
                     showAsAction = false,
@@ -2789,6 +2909,12 @@ private sealed class Dialog {
 
     @Serializable
     data object SetSelectedTorrentsCategory : Dialog()
+
+    @Serializable
+    data object AddSelectedTorrentsTags : Dialog()
+
+    @Serializable
+    data object RemoveSelectedTorrentsTags : Dialog()
 
     @Serializable
     data object SpeedLimits : Dialog()
@@ -3338,6 +3464,85 @@ private fun SetTorrentsCategoryDialog(
                     text = stringResource(Res.string.torrent_no_categories),
                     color = MaterialTheme.colorScheme.error,
                 )
+            }
+        },
+    )
+}
+
+@Composable
+private fun AddRemoveTorrentsTagsDialog(
+    isAdd: Boolean,
+    tags: List<String>,
+    onDismiss: () -> Unit,
+    onConfirm: (tags: List<String>) -> Unit,
+    modifier: Modifier = Modifier,
+    disabledTags: Set<String> = emptySet(),
+) {
+    val selectedTags = rememberSaveable(saver = stateListSaver()) { mutableStateListOf<String>() }
+
+    LaunchedEffect(tags, disabledTags) {
+        selectedTags.removeAll { it !in tags || it in disabledTags }
+    }
+
+    Dialog(
+        modifier = modifier,
+        onDismissRequest = onDismiss,
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(Res.string.dialog_cancel))
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { onConfirm(selectedTags.toList()) },
+                enabled = selectedTags.isNotEmpty(),
+            ) {
+                Text(text = stringResource(Res.string.dialog_ok))
+            }
+        },
+        title = {
+            Text(
+                text = stringResource(
+                    if (isAdd) {
+                        Res.string.torrent_list_action_add_tags
+                    } else {
+                        Res.string.torrent_list_action_remove_tags
+                    },
+                ),
+            )
+        },
+        text = {
+            AnimatedContent(targetState = tags to disabledTags) { (tags, disabledTags) ->
+                if (tags.isNotEmpty()) {
+                    val orderedTags = remember(tags, disabledTags) {
+                        tags.sortedWith(compareBy({ it in disabledTags }, { it }))
+                    }
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        orderedTags.forEach { tag ->
+                            TagChip(
+                                tag = tag,
+                                isSelected = tag in selectedTags,
+                                isEnabled = tag !in disabledTags,
+                                onClick = {
+                                    if (tag in selectedTags) {
+                                        selectedTags.remove(tag)
+                                    } else {
+                                        selectedTags.add(tag)
+                                    }
+                                },
+                            )
+                        }
+                    }
+                } else {
+                    Text(
+                        text = stringResource(Res.string.torrent_no_tags),
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
             }
         },
     )

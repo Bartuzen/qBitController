@@ -113,4 +113,14 @@ class TorrentListRepository(
         requestManager.request(serverId) { service ->
             service.setCategory(hashes.joinToString("|"), category ?: "")
         }
+
+    suspend fun addTags(serverId: Int, hashes: List<String>, tags: List<String>) =
+        requestManager.request(serverId) { service ->
+            service.addTags(hashes.joinToString("|"), tags.joinToString(","))
+        }
+
+    suspend fun removeTags(serverId: Int, hashes: List<String>, tags: List<String>) =
+        requestManager.request(serverId) { service ->
+            service.removeTags(hashes.joinToString("|"), tags.joinToString(","))
+        }
 }

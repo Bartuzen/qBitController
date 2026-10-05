@@ -157,6 +157,8 @@
     <string name="torrent_list_action_priority_minimize">Minimize Priority</string>
     <string name="torrent_list_action_set_location">Set Location</string>
     <string name="torrent_list_action_set_category">Set Category</string>
+    <string name="torrent_list_action_add_tags">Add Tags</string>
+    <string name="torrent_list_action_remove_tags">Remove Tags</string>
 
     <plurals name="torrent_list_delete_torrents">
         <item quantity="one">Delete %1$d Torrent</item>
@@ -177,6 +179,14 @@
     <plurals name="torrent_list_torrents_force_start_success">
         <item quantity="one">%1$d torrent force started successfully.</item>
         <item quantity="other">%1$d torrents force started successfully.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">Tags added to %1$d torrent successfully.</item>
+        <item quantity="other">Tags added to %1$d torrents successfully.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">Tags removed from %1$d torrent successfully.</item>
+        <item quantity="other">Tags removed from %1$d torrents successfully.</item>
     </plurals>
     <plurals name="torrent_list_torrents_selected">
         <item quantity="one">%1$d torrent selected</item>

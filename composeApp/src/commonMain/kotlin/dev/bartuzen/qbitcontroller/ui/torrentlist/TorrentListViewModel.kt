@@ -799,6 +799,32 @@ class TorrentListViewModel(
         }
     }
 
+    fun addTags(hashes: List<String>, tags: List<String>) = serverScope.launch {
+        val serverId = currentServer.value?.id ?: return@launch
+        when (val result = repository.addTags(serverId, hashes, tags)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsTagsAdded(hashes.size))
+                loadMainData()
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
+    fun removeTags(hashes: List<String>, tags: List<String>) = serverScope.launch {
+        val serverId = currentServer.value?.id ?: return@launch
+        when (val result = repository.removeTags(serverId, hashes, tags)) {
+            is RequestResult.Success -> {
+                eventChannel.send(Event.TorrentsTagsRemoved(hashes.size))
+                loadMainData()
+            }
+            is RequestResult.Error -> {
+                eventChannel.send(Event.Error(result))
+            }
+        }
+    }
+
     fun setTorrentSort(torrentSort: TorrentSort) {
         settingsManager.sort.value = torrentSort
     }
@@ -921,6 +947,8 @@ class TorrentListViewModel(
         data object SpeedLimitsUpdated : Event()
         data object Shutdown : Event()
         data object TorrentCategoryUpdated : Event()
+        data class TorrentsTagsAdded(val count: Int) : Event()
+        data class TorrentsTagsRemoved(val count: Int) : Event()
     }
 }
 

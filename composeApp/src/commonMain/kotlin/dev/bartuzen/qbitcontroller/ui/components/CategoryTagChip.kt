@@ -19,6 +19,7 @@ import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
@@ -31,15 +32,17 @@ private fun CategoryTagChip(
     selectedBackgroundColor: Color,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
+    isEnabled: Boolean = true,
     onClick: (() -> Unit)? = null,
 ) {
     val background = if (!isSelected) backgroundColor else selectedBackgroundColor
     Box(
         modifier = modifier
+            .alpha(if (isEnabled) 1f else 0.38f)
             .clip(RoundedCornerShape(8.0.dp))
             .background(background)
             .let {
-                if (onClick != null) {
+                if (onClick != null && isEnabled) {
                     it.clickable(onClick = onClick)
                 } else {
                     it
@@ -72,12 +75,14 @@ fun CategoryChip(
     category: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
+    isEnabled: Boolean = true,
     onClick: (() -> Unit)? = null,
 ) {
     CategoryTagChip(
         text = category,
         modifier = modifier,
         isSelected = isSelected,
+        isEnabled = isEnabled,
         onClick = onClick,
         backgroundColor = MaterialTheme.colorScheme.primaryContainer,
         selectedBackgroundColor = MaterialTheme.colorScheme.primary,
@@ -85,11 +90,18 @@ fun CategoryChip(
 }
 
 @Composable
-fun TagChip(tag: String, modifier: Modifier = Modifier, isSelected: Boolean = false, onClick: (() -> Unit)? = null) {
+fun TagChip(
+    tag: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    isEnabled: Boolean = true,
+    onClick: (() -> Unit)? = null,
+) {
     CategoryTagChip(
         text = tag,
         modifier = modifier,
         isSelected = isSelected,
+        isEnabled = isEnabled,
         onClick = onClick,
         backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
         selectedBackgroundColor = MaterialTheme.colorScheme.tertiary,
