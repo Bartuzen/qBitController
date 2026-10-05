@@ -727,4 +727,14 @@
         <item quantity="one">%1$d torrent zorla başlatıldı.</item>
         <item quantity="other">%1$d torrent zorla başlatıldı.</item>
     </plurals>
+    <string name="torrent_list_action_add_tags">Etiket Ekle</string>
+    <string name="torrent_list_action_remove_tags">Etiket Kaldır</string>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">%1$d torrente etiketler başarıyla eklendi.</item>
+        <item quantity="other">%1$d torrente etiketler başarıyla eklendi.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">%1$d torrentten etiketler başarıyla kaldırıldı.</item>
+        <item quantity="other">%1$d torrentten etiketler başarıyla kaldırıldı.</item>
+    </plurals>
 </resources>
