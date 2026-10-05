@@ -115,6 +115,7 @@ import androidx.compose.ui.unit.coerceAtMost
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.bartuzen.qbitcontroller.model.PieceState
+import dev.bartuzen.qbitcontroller.model.ShareLimitsMode
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.model.TorrentState
@@ -1657,7 +1658,7 @@ private data class ShareLimitsChange(
     val ratioLimit: Double,
     val seedingTimeLimit: Int,
     val inactiveSeedingTimeLimit: Int,
-    val mode: String,
+    val mode: ShareLimitsMode?,
 )
 
 @Composable
@@ -1675,7 +1676,7 @@ fun TorrentOptionsDialog(
         ratioLimit: Double?,
         seedingTimeLimit: Int?,
         inactiveSeedingTimeLimit: Int?,
-        shareLimitsMode: String?,
+        shareLimitsMode: ShareLimitsMode?,
     ) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -1988,61 +1989,73 @@ fun TorrentOptionsDialog(
                             enabled = isCustomEnabled,
                         )
 
-                        var shareLimitsModeExpanded by rememberSaveable { mutableStateOf(false) }
-                        ExposedDropdownMenuBox(
-                            expanded = shareLimitsModeExpanded,
-                            onExpandedChange = {
-                                if (isCustomEnabled) {
-                                    shareLimitsModeExpanded = it
-                                }
-                            },
-                        ) {
-                            OutlinedTextField(
-                                value = when (selectedShareLimitsMode) {
-                                    "MatchAll" -> stringResource(Res.string.torrent_option_share_limit_mode_match_all)
-                                    else -> stringResource(Res.string.torrent_option_share_limit_mode_match_any)
-                                },
-                                onValueChange = {},
-                                readOnly = true,
-                                singleLine = true,
-                                enabled = isCustomEnabled,
-                                label = {
-                                    Text(
-                                        text = stringResource(Res.string.torrent_option_share_limit_mode),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                    )
-                                },
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = shareLimitsModeExpanded)
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
-                            )
-
-                            ExposedDropdownMenu(
+                        val shareLimitsMode = selectedShareLimitsMode
+                        if (shareLimitsMode != null) {
+                            var shareLimitsModeExpanded by rememberSaveable { mutableStateOf(false) }
+                            ExposedDropdownMenuBox(
                                 expanded = shareLimitsModeExpanded,
-                                onDismissRequest = { shareLimitsModeExpanded = false },
+                                onExpandedChange = {
+                                    if (isCustomEnabled) {
+                                        shareLimitsModeExpanded = it
+                                    }
+                                },
                             ) {
-                                DropdownMenuItem(
-                                    text = {
-                                        Text(text = stringResource(Res.string.torrent_option_share_limit_mode_match_any))
+                                OutlinedTextField(
+                                    value = when (shareLimitsMode) {
+                                        ShareLimitsMode.MATCH_ALL ->
+                                            stringResource(Res.string.torrent_option_share_limit_mode_match_all)
+                                        else -> stringResource(Res.string.torrent_option_share_limit_mode_match_any)
                                     },
-                                    onClick = {
-                                        selectedShareLimitsMode = "MatchAny"
-                                        shareLimitsModeExpanded = false
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    singleLine = true,
+                                    enabled = isCustomEnabled,
+                                    label = {
+                                        Text(
+                                            text = stringResource(Res.string.torrent_option_share_limit_mode),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis,
+                                        )
                                     },
+                                    trailingIcon = {
+                                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = shareLimitsModeExpanded)
+                                    },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable),
                                 )
-                                DropdownMenuItem(
-                                    text = {
-                                        Text(text = stringResource(Res.string.torrent_option_share_limit_mode_match_all))
-                                    },
-                                    onClick = {
-                                        selectedShareLimitsMode = "MatchAll"
-                                        shareLimitsModeExpanded = false
-                                    },
-                                )
+
+                                ExposedDropdownMenu(
+                                    expanded = shareLimitsModeExpanded,
+                                    onDismissRequest = { shareLimitsModeExpanded = false },
+                                ) {
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                text = stringResource(
+                                                    Res.string.torrent_option_share_limit_mode_match_any,
+                                                ),
+                                            )
+                                        },
+                                        onClick = {
+                                            selectedShareLimitsMode = ShareLimitsMode.MATCH_ANY
+                                            shareLimitsModeExpanded = false
+                                        },
+                                    )
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(
+                                                text = stringResource(
+                                                    Res.string.torrent_option_share_limit_mode_match_all,
+                                                ),
+                                            )
+                                        },
+                                        onClick = {
+                                            selectedShareLimitsMode = ShareLimitsMode.MATCH_ALL
+                                            shareLimitsModeExpanded = false
+                                        },
+                                    )
+                                }
                             }
                         }
                     }
@@ -2102,14 +2115,18 @@ fun TorrentOptionsDialog(
                     }
 
                     val shareLimitsChange = when (selectedShareLimitOption) {
-                        0 -> ShareLimitsChange(-2.0, -2, -2, "Default")
-                        1 -> ShareLimitsChange(-1.0, -1, -1, "Default")
+                        0 -> ShareLimitsChange(-2.0, -2, -2, ShareLimitsMode.DEFAULT)
+                        1 -> ShareLimitsChange(-1.0, -1, -1, ShareLimitsMode.DEFAULT)
                         2 -> {
                             val ratio = ratioLimit.text.toDoubleOrNull() ?: -1.0
                             val seeding = seedingTimeLimit.text.toIntOrNull() ?: -1
                             val inactive = inactiveSeedingTimeLimit.text.toIntOrNull() ?: -1
 
-                            if (ratio == -1.0 && seeding == -1 && inactive == -1 && selectedShareLimitsMode == "Default") {
+                            if (ratio == -1.0 &&
+                                seeding == -1 &&
+                                inactive == -1 &&
+                                selectedShareLimitsMode == ShareLimitsMode.DEFAULT
+                            ) {
                                 null
                             } else {
                                 ShareLimitsChange(ratio, seeding, inactive, selectedShareLimitsMode)

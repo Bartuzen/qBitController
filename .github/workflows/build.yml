@@ -23,10 +23,6 @@ on:
         required: false
       key-password:
         required: false
-  push:
-    paths:
-      - '**.kt'
-      - '**.yml'
 
 jobs:
   build-android:

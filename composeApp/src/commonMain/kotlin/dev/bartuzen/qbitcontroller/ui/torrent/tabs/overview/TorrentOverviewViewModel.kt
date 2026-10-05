@@ -6,6 +6,8 @@ import dev.bartuzen.qbitcontroller.data.SettingsManager
 import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
 import dev.bartuzen.qbitcontroller.model.PieceState
+import dev.bartuzen.qbitcontroller.model.ShareLimitAction
+import dev.bartuzen.qbitcontroller.model.ShareLimitsMode
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -209,8 +211,8 @@ class TorrentOverviewViewModel(
         ratioLimit: Double?,
         seedingTimeLimit: Int?,
         inactiveSeedingTimeLimit: Int?,
-        shareLimitsMode: String?,
-        shareLimitAction: String,
+        shareLimitsMode: ShareLimitsMode?,
+        shareLimitAction: ShareLimitAction,
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 
