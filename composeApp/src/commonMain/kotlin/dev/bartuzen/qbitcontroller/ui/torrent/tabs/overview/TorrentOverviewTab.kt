@@ -654,10 +654,7 @@ fun TorrentOverviewTab(
                             togglePrioritizeFirstLastPiece,
                             uploadSpeedLimit,
                             downloadSpeedLimit,
-                            ratioLimit,
-                            seedingTimeLimit,
-                            inactiveSeedingTimeLimit,
-                            shareLimitsMode,
+                            shareLimitsChange,
                         ->
                         viewModel.setTorrentOptions(
                             autoTmm = autoTmm,
@@ -667,10 +664,7 @@ fun TorrentOverviewTab(
                             togglePrioritizeFirstLastPiece = togglePrioritizeFirstLastPiece,
                             uploadSpeedLimit = uploadSpeedLimit,
                             downloadSpeedLimit = downloadSpeedLimit,
-                            ratioLimit = ratioLimit,
-                            seedingTimeLimit = seedingTimeLimit,
-                            inactiveSeedingTimeLimit = inactiveSeedingTimeLimit,
-                            shareLimitsMode = shareLimitsMode,
+                            shareLimitsChange = shareLimitsChange,
                             shareLimitAction = currentTorrent.shareLimitAction,
                         )
                         currentDialog = null
@@ -1654,8 +1648,6 @@ private fun SetTagsDialog(
     )
 }
 
-
-
 @Composable
 fun TorrentOptionsDialog(
     torrent: Torrent,
@@ -1668,10 +1660,7 @@ fun TorrentOptionsDialog(
         togglePrioritizeFirstLastPiece: Boolean,
         uploadSpeedLimit: Int?,
         downloadSpeedLimit: Int?,
-        ratioLimit: Double?,
-        seedingTimeLimit: Int?,
-        inactiveSeedingTimeLimit: Int?,
-        shareLimitsMode: ShareLimitsMode?,
+        shareLimitsChange: ShareLimitsChange?,
     ) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -2143,10 +2132,7 @@ fun TorrentOptionsDialog(
                         togglePrioritizeFirstLastPiece,
                         finalUploadSpeedLimit,
                         finalDownloadSpeedLimit,
-                        shareLimitsChange?.ratioLimit,
-                        shareLimitsChange?.seedingTimeLimit,
-                        shareLimitsChange?.inactiveSeedingTimeLimit,
-                        shareLimitsChange?.mode,
+                        shareLimitsChange,
                     )
                 },
             ) {
@@ -2161,7 +2147,7 @@ fun TorrentOptionsDialog(
     )
 }
 
-private data class ShareLimitsChange(
+data class ShareLimitsChange(
     val ratioLimit: Double,
     val seedingTimeLimit: Int,
     val inactiveSeedingTimeLimit: Int,

@@ -7,7 +7,6 @@ import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.ShareLimitAction
-import dev.bartuzen.qbitcontroller.model.ShareLimitsMode
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -208,10 +207,7 @@ class TorrentOverviewViewModel(
         togglePrioritizeFirstLastPiece: Boolean,
         uploadSpeedLimit: Int?,
         downloadSpeedLimit: Int?,
-        ratioLimit: Double?,
-        seedingTimeLimit: Int?,
-        inactiveSeedingTimeLimit: Int?,
-        shareLimitsMode: ShareLimitsMode?,
+        shareLimitsChange: ShareLimitsChange?,
         shareLimitAction: ShareLimitAction,
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
@@ -237,14 +233,15 @@ class TorrentOverviewViewModel(
         if (downloadSpeedLimit != null) {
             requests.add { repository.setDownloadSpeedLimit(serverId, torrentHash, downloadSpeedLimit) }
         }
-        if (ratioLimit != null && seedingTimeLimit != null && inactiveSeedingTimeLimit != null && shareLimitsMode != null) {
+        if (shareLimitsChange != null) {
+            val shareLimitsMode = shareLimitsChange.mode
             requests.add {
                 repository.setShareLimit(
                     serverId,
                     torrentHash,
-                    ratioLimit,
-                    seedingTimeLimit,
-                    inactiveSeedingTimeLimit,
+                    shareLimitsChange.ratioLimit,
+                    shareLimitsChange.seedingTimeLimit,
+                    shareLimitsChange.inactiveSeedingTimeLimit,
                     shareLimitsMode,
                     shareLimitAction,
                 )
