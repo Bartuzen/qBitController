@@ -7,6 +7,7 @@ import dev.bartuzen.qbitcontroller.data.notification.TorrentDownloadedNotifier
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
 import dev.bartuzen.qbitcontroller.model.PieceState
 import dev.bartuzen.qbitcontroller.model.ShareLimitAction
+import dev.bartuzen.qbitcontroller.model.ShareLimitsMode
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentProperties
 import dev.bartuzen.qbitcontroller.network.RequestResult
@@ -506,11 +507,11 @@ class TorrentOverviewViewModel(
         data object TorrentExported : Event()
         data object TorrentExportError : Event()
     }
-
-    private data class ShareLimitsChange(
-        val ratioLimit: Double,
-        val seedingTimeLimit: Int,
-        val inactiveSeedingTimeLimit: Int,
-        val mode: ShareLimitsMode?,
-    )
 }
+
+data class ShareLimitsChange(
+    val ratioLimit: Double,
+    val seedingTimeLimit: Int,
+    val inactiveSeedingTimeLimit: Int,
+    val mode: ShareLimitsMode?,
+)
