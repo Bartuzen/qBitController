@@ -783,4 +783,18 @@
         <item quantity="many">%1$d торентів примусово запущено.</item>
         <item quantity="other">%1$d торентів примусово запущено.</item>
     </plurals>
+    <string name="torrent_list_action_add_tags">Додати теги</string>
+    <string name="torrent_list_action_remove_tags">Видалити теги</string>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">Теги успішно додано до %1$d торента.</item>
+        <item quantity="few">Теги успішно додано до %1$d торентів.</item>
+        <item quantity="many">Теги успішно додано до %1$d торентів.</item>
+        <item quantity="other">Теги успішно додано до %1$d торентів.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">Теги успішно видалено до %1$d торента.</item>
+        <item quantity="few">Теги успішно видалено до %1$d торентів.</item>
+        <item quantity="many">Теги успішно видалено до %1$d торентів.</item>
+        <item quantity="other">Теги успішно видалено до %1$d торентів.</item>
+    </plurals>
 </resources>
