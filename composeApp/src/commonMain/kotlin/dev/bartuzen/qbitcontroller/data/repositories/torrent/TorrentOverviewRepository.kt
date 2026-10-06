@@ -119,7 +119,7 @@ class TorrentOverviewRepository(
         ratioLimit: Double,
         seedingTimeLimit: Int,
         inactiveSeedingTimeLimit: Int,
-        shareLimitsMode: ShareLimitsMode,
+        shareLimitsMode: ShareLimitsMode?,
         shareLimitAction: ShareLimitAction,
     ) = requestManager.request(serverId) { service ->
         service.setShareLimit(
@@ -127,7 +127,7 @@ class TorrentOverviewRepository(
             ratioLimit,
             seedingTimeLimit,
             inactiveSeedingTimeLimit,
-            shareLimitsMode.value,
+            shareLimitsMode?.value ?: "Default",
             shareLimitAction.value,
         )
     }
