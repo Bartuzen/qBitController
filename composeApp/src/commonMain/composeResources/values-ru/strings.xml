@@ -770,4 +770,31 @@
     <string name="settings_hide_server_urls_desc">URL-адреса серверов без имени всё равно будут видны</string>
     <string name="settings_server_delete_confirm">Вы уверены, что хотите удалить этот сервер?</string>
     <string name="settings_remember_last_selected_server">Запомнить последний выбранный сервер</string>
+    <string name="torrent_overview_piece_size">Размер части</string>
+    <string name="torrent_overview_pieces_completed">Завершено</string>
+    <string name="torrent_overview_pieces_progress_format">%1$d/%2$d</string>
+    <string name="settings_magnet_links">Торрент-файлы и magnet-ссылки</string>
+    <string name="settings_magnet_links_desc">Открыть .torrent-файлы и magnet-ссылки с помощью qBitController</string>
+    <string name="settings_set_as_default">Установить по умолчанию</string>
+    <string name="torrent_list_action_force_start">Принудительный запуск</string>
+    <string name="torrent_list_action_add_tags">Добавить теги</string>
+    <string name="torrent_list_action_remove_tags">Удалить теги</string>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">Принудительный запуск %1$d торрента завершён успешно.</item>
+        <item quantity="few">Принудительный запуск %1$d торрентов завершён успешно.</item>
+        <item quantity="many">Принудительный запуск %1$d торрентов завершён успешно.</item>
+        <item quantity="other">Принудительный запуск %1$d торрентов завершён успешно.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">Теги успешно добавлены к %1$d торренту.</item>
+        <item quantity="few">Теги успешно добавлены к %1$d торрентам.</item>
+        <item quantity="many">Теги успешно добавлены к %1$d торрентам.</item>
+        <item quantity="other">Теги успешно добавлены к %1$d торрентам.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">Теги успешно удалены из %1$d торрента.</item>
+        <item quantity="few">Теги успешно удалены из %1$d торрентов.</item>
+        <item quantity="many">Теги успешно удалены из %1$d торрентов.</item>
+        <item quantity="other">Теги успешно удалены из %1$d торрентов.</item>
+    </plurals>
 </resources>

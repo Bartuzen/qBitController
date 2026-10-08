@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_add_torrent">Voeg Torrent toe</string>
+    <string name="shortcut_new_window">Nieuw venster</string>
+    <string name="destination_torrents">Torrents</string>
+    <string name="destination_search">Zoeken</string>
+    <string name="destination_rss">RSS</string>
+    <string name="destination_logs">Logboek</string>
+    <string name="destination_settings">Instellingen</string>
+    <string name="torrent_status_error">Fout</string>
+    <string name="torrent_status_missing_files">Bestanden missen</string>
+    <string name="torrent_status_seeding">Seeden</string>
+    <string name="torrent_status_paused">Gepauzeerd</string>
+    <string name="torrent_status_queued">In de wachtrij</string>
+    <string name="torrent_status_stalled">Vastgelopen</string>
+    <string name="torrent_status_checking">Wordt gecontroleerd</string>
+    <string name="torrent_status_completed">Compleet</string>
+    <string name="torrent_status_force_seeding">[F] Seeden</string>
+    <string name="torrent_status_downloading">Downloaden</string>
+    <string name="torrent_status_checking_resume_data">Controleert voortzettingsgegevens</string>
+    <string name="torrent_status_downloading_metadata">Metadata downloaden</string>
+    <string name="torrent_status_force_downloading_metadata">[F] Metadata downloaden</string>
+    <string name="torrent_status_force_downloading">[F] Downloaden</string>
+    <string name="torrent_status_moving">Verplaatsen</string>
+    <string name="torrent_status_unknown">Onbekend</string>
+    <string name="eta_seconds">%1$ss</string>
+    <string name="eta_minutes_seconds">%1$sm %2$ss</string>
+    <string name="eta_minutes">%1$sm</string>
+    <string name="eta_hours_minutes">%1$sh %2$sm</string>
+    <string name="eta_hours">%1$su</string>
+    <string name="eta_days_hours">%1$sd %2$su</string>
+    <string name="eta_days">%1$sd</string>
+    <string name="size_format">%1$s %2$s</string>
+    <string name="size_bytes">B</string>
+    <string name="size_kibibytes">KiB</string>
+    <string name="size_mebibytes">MiB</string>
+    <string name="size_gibibytes">GiB</string>
+    <string name="size_tebibytes">TiB</string>
+    <string name="size_pebibytes">PiB</string>
+    <string name="size_exbibytes">EiB</string>
+    <string name="speed_format">%1$s %2$s</string>
+    <string name="speed_bytes_per_second">B/s</string>
+    <string name="speed_kibibytes_per_second">KiB/s</string>
+    <string name="speed_mebibytes_per_second">MiB/s</string>
+    <string name="speed_gibibytes_per_second">GiB/s</string>
+    <string name="date_now">Nu</string>
+    <plurals name="date_seconds_ago">
+        <item quantity="one">%1$d seconde geleden</item>
+        <item quantity="other">%1$d seconden geleden</item>
+    </plurals>
+    <plurals name="date_minutes_ago">
+        <item quantity="one">%1$d minuut geleden</item>
+        <item quantity="other">%1$d minuten geleden</item>
+    </plurals>
+    <plurals name="date_hours_ago">
+        <item quantity="one">%1$d uur geleden</item>
+        <item quantity="other">%1$d uren geleden</item>
+    </plurals>
+    <plurals name="date_days_ago">
+        <item quantity="one">%1$d dag geleden</item>
+        <item quantity="other">%1$d dagen geleden</item>
+    </plurals>
+    <plurals name="date_weeks_ago">
+        <item quantity="one">%1$d week geleden</item>
+        <item quantity="other">%1$d weken geleden</item>
+    </plurals>
+    <plurals name="date_months_ago">
+        <item quantity="one">%1$d maand geleden</item>
+        <item quantity="other">%1$d maanden geleden</item>
+    </plurals>
+    <plurals name="date_years_ago">
+        <item quantity="one">%1$d jaar geleden</item>
+        <item quantity="other">%1$d jaren geleden</item>
+    </plurals>
+    <string name="percentage_format">%1$s%%</string>
+    <string name="error_invalid_credentials">Gebruikersnaam of wachtwoord is ongeldig.</string>
+    <string name="error_banned">Je bent geblokkeerd vanwege te veel mislukte inlogpogingen.</string>
+    <string name="error_cannot_connect">Kan niet verbinden met de server.</string>
+    <string name="error_unknown_host">Onbekende hostnaam.</string>
+    <string name="error_timeout">Verbindings time-out.</string>
+    <string name="error_no_data">Server verstuurt geen data.</string>
+    <string name="error_no_internet">Geen internetverbinding.</string>
+    <string name="error_unknown_login_response">Onbekende login response: %1$s</string>
+    <string name="error_unknown">Onbekende fout: %1$s</string>
+    <string name="error_api">API gaf foutmelding: %1$d</string>
+    <string name="error_required_field">Dit veld is verplicht.</string>
+    <string name="error_invalid_interval">Moet meer dan %1$d en minder dan %2$d zijn.</string>
+    <string name="error_invalid_interval_optional">Moet meer dan %1$d en minder dan %2$d zijn, of laat leeg om uit te schakelen.</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Annuleren</string>
+    <string name="action_search">Zoeken</string>
+    <string name="action_select_all">Selecteer alles</string>
+    <string name="action_select_inverse">Inverteer selectie</string>
+    <string name="main_action_about">Over deze app</string>
+    <string name="torrent_list_no_server_title">Geen servers beschikbaar</string>
+    <string name="torrent_list_no_server_description">Je hebt nog geen servers toegevoegd. Voeg een server toe om te starten.</string>
+    <string name="torrent_list_no_server_add">Server toevoegen</string>
+    <string name="torrent_list_empty_title">Er zijn geen Torrents gevonden</string>
+    <string name="torrent_list_empty_description">Je hebt geen Torrents. Vroeg er een toe om te starten.</string>
+    <string name="torrent_list_empty_rss">Toevoegen via RSS</string>
+    <string name="torrent_list_empty_search">Torrents zoeken</string>
+    <string name="torrent_list_empty_add">Torrent toevoegen</string>
+    <string name="torrent_list_no_result_title">Geen resultaat gevonden</string>
+</resources>
