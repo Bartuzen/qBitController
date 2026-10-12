@@ -770,4 +770,31 @@
     <string name="settings_palette_style_tonal_spot">Stonowany</string>
     <string name="settings_traffic_stats_in_list_complete">Razem (Sesja)</string>
     <string name="settings_remember_last_selected_server">Zapamiętaj ostatnio wybrany serwer</string>
+    <string name="torrent_list_action_force_start">Wymuś start</string>
+    <string name="torrent_list_action_add_tags">Dodaj tagi</string>
+    <string name="torrent_list_action_remove_tags">Usuń tagi</string>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">%1$d torrent został pomyślnie uruchomiony w trybie wymuszonym.</item>
+        <item quantity="few">%1$d torrenty zostały pomyślnie uruchomione w trybie wymuszonym.</item>
+        <item quantity="many">%1$d torrentów zostało pomyślnie uruchomionych w trybie wymuszonym.</item>
+        <item quantity="other">%1$d torrentów zostało pomyślnie uruchomionych w trybie wymuszonym.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">Tagi zostały dodane do %1$d torrenta.</item>
+        <item quantity="few">Tagi zostały dodane do %1$d torrentów.</item>
+        <item quantity="many">Tagi zostały dodane do %1$d torrentów.</item>
+        <item quantity="other">Tagi zostały dodane do %1$d torrentów.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">Tagi zostały usunięte z %1$d torrenta.</item>
+        <item quantity="few">Tagi zostały usunięte z %1$d torrentów.</item>
+        <item quantity="many">Tagi zostały usunięte z %1$d torrentów.</item>
+        <item quantity="other">Tagi zostały usunięte z %1$d torrentów.</item>
+    </plurals>
+    <string name="torrent_overview_piece_size">Rozmiar części</string>
+    <string name="torrent_overview_pieces_completed">Ukończono</string>
+    <string name="torrent_overview_pieces_progress_format">%1$d/%2$d</string>
+    <string name="settings_magnet_links">Pliki torrent i linki magnet</string>
+    <string name="settings_magnet_links_desc">Otwieraj pliki .torrent i linki typu magnet za pomocą programu qBitController</string>
+    <string name="settings_set_as_default">Ustaw jako domyślny</string>
 </resources>
