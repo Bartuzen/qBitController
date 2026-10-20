@@ -101,8 +101,14 @@ fun SearchNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, 
                 plugins = args.plugins,
                 addTorrentFlow = addTorrentChannel.receiveAsFlow(),
                 onNavigateBack = { navController.navigateUp() },
-                onNavigateToAddTorrent = { torrentUrl ->
-                    navController.navigateWithLifecycle(Destination.AddTorrent(args.serverId, torrentUrl))
+                onNavigateToAddTorrent = { torrentUrl, torrentUrlDownloaders ->
+                    navController.navigateWithLifecycle(
+                        Destination.AddTorrent(
+                            initialServerId = args.serverId,
+                            torrentUrl = torrentUrl,
+                            torrentUrlDownloaders = torrentUrlDownloaders,
+                        ),
+                    )
                 },
             )
         }
@@ -121,6 +127,7 @@ fun SearchNavHost(serverConfig: ServerConfig?, navigateToStartFlow: Flow<Unit>, 
                 initialServerId = args.initialServerId,
                 torrentUrl = args.torrentUrl,
                 torrentFileUris = args.torrentFileUris,
+                torrentUrlDownloaders = args.torrentUrlDownloaders,
                 onNavigateBack = { navController.navigateUp() },
                 onAddTorrent = { serverId ->
                     navController.previousBackStackEntry
