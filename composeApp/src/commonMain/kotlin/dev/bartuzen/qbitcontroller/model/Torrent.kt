@@ -154,6 +154,12 @@ data class Torrent(
     @SerialName("inactive_seeding_time_limit")
     val inactiveSeedingTimeLimit: Int = -1,
 
+    @SerialName("share_limits_mode")
+    val shareLimitsMode: ShareLimitsMode? = null,
+
+    @SerialName("share_limit_action")
+    val shareLimitAction: ShareLimitAction = ShareLimitAction.DEFAULT,
+
     @SerialName("seeding_time")
     val seedingTime: Int = 0,
 
@@ -319,5 +325,54 @@ object PieceStateSerializer : KSerializer<PieceState> {
         val pieceStateId = decoder.decodeInt()
         return PieceState.entries.find { it.id == pieceStateId }
             ?: throw IllegalArgumentException("Unknown PieceState id: $pieceStateId")
+    }
+}
+
+@Serializable(with = ShareLimitsModeSerializer::class)
+enum class ShareLimitsMode(val value: String) {
+    MATCH_ANY("MatchAny"),
+    MATCH_ALL("MatchAll"),
+    DEFAULT("Default"),
+}
+
+object ShareLimitsModeSerializer : KSerializer<ShareLimitsMode?> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("ShareLimitsMode", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: ShareLimitsMode?) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun deserialize(decoder: Decoder): ShareLimitsMode? {
+        return when (decoder.decodeString()) {
+            "MatchAny" -> ShareLimitsMode.MATCH_ANY
+            "MatchAll" -> ShareLimitsMode.MATCH_ALL
+            "Default" -> ShareLimitsMode.DEFAULT
+            else -> null
+        }
+    }
+}
+
+@Serializable(with = ShareLimitActionSerializer::class)
+enum class ShareLimitAction(val value: String) {
+    DEFAULT("Default"),
+    STOP("Stop"),
+    REMOVE("Remove"),
+    ENABLE_SUPER_SEEDING("EnableSuperSeeding"),
+}
+
+object ShareLimitActionSerializer : KSerializer<ShareLimitAction> {
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("ShareLimitAction", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: ShareLimitAction) {
+        throw UnsupportedOperationException()
+    }
+
+    override fun deserialize(decoder: Decoder): ShareLimitAction {
+        return when (decoder.decodeString()) {
+            "Stop" -> ShareLimitAction.STOP
+            "Remove" -> ShareLimitAction.REMOVE
+            "EnableSuperSeeding" -> ShareLimitAction.ENABLE_SUPER_SEEDING
+            else -> ShareLimitAction.DEFAULT
+        }
     }
 }

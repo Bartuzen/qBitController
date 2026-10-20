@@ -1,6 +1,8 @@
 package dev.bartuzen.qbitcontroller.data.repositories.torrent
 
 import dev.bartuzen.qbitcontroller.model.QBittorrentVersion
+import dev.bartuzen.qbitcontroller.model.ShareLimitAction
+import dev.bartuzen.qbitcontroller.model.ShareLimitsMode
 import dev.bartuzen.qbitcontroller.network.RequestManager
 import io.ktor.utils.io.ByteReadChannel
 
@@ -117,8 +119,17 @@ class TorrentOverviewRepository(
         ratioLimit: Double,
         seedingTimeLimit: Int,
         inactiveSeedingTimeLimit: Int,
+        shareLimitsMode: ShareLimitsMode?,
+        shareLimitAction: ShareLimitAction,
     ) = requestManager.request(serverId) { service ->
-        service.setShareLimit(hash, ratioLimit, seedingTimeLimit, inactiveSeedingTimeLimit)
+        service.setShareLimit(
+            hash,
+            ratioLimit,
+            seedingTimeLimit,
+            inactiveSeedingTimeLimit,
+            shareLimitsMode?.value ?: "Default",
+            shareLimitAction.value,
+        )
     }
 
     suspend fun exportTorrent(serverId: Int, hash: String, block: suspend (ByteReadChannel) -> Unit) =
