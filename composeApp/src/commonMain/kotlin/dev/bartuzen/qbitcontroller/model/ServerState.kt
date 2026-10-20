@@ -12,7 +12,7 @@ data class ServerState(
     val allTimeDownload: Long,
 
     @SerialName("use_subcategories")
-    val areSubcategoriesEnabled: Boolean = false,
+    val areSubcategoriesEnabled: Boolean = true,
 
     @SerialName("global_ratio")
     val globalRatio: String,
