@@ -10,6 +10,10 @@ class ServerSettingsRepository(
         service.getPreferences()
     }
 
+    suspend fun getBuildInfo(serverId: Int) = requestManager.request(serverId) { service ->
+        service.getBuildInfo()
+    }
+
     suspend fun setPreferences(serverId: Int, preferences: Map<String, JsonElement>) =
         requestManager.request(serverId) { service ->
             service.setPreferences(preferences)

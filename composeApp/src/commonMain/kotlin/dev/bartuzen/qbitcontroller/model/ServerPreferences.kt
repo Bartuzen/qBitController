@@ -64,6 +64,16 @@ data class ServerPreferences(
     @SerialName("recheck_completed_torrents") val recheckCompletedTorrents: Boolean? = null,
     @SerialName("merge_trackers") val mergeTrackers: Boolean? = null,
 
+    // Share limits (global)
+    @SerialName("max_ratio_enabled") val maxRatioEnabled: Boolean? = null,
+    @SerialName("max_ratio") val maxRatio: Double? = null,
+    @SerialName("max_seeding_time_enabled") val maxSeedingTimeEnabled: Boolean? = null,
+    @SerialName("max_seeding_time") val maxSeedingTime: Long? = null,
+    @SerialName("max_inactive_seeding_time_enabled") val maxInactiveSeedingTimeEnabled: Boolean? = null,
+    @SerialName("max_inactive_seeding_time") val maxInactiveSeedingTime: Long? = null,
+    @SerialName("share_limits_mode") val shareLimitsMode: String? = null,
+    @SerialName("max_ratio_act") val maxRatioAct: Long? = null,
+
     // Web UI
     @SerialName("web_ui_address") val webUiAddress: String? = null,
     @SerialName("web_ui_port") val webUiPort: Long? = null,
@@ -83,4 +93,7 @@ data class ServerPreferences(
     @SerialName("checking_memory_use") val checkingMemoryUse: Long? = null,
     @SerialName("bdecode_depth_limit") val bdecodeDepthLimit: Long? = null,
     @SerialName("bdecode_token_limit") val bdecodeTokenLimit: Long? = null,
+    @SerialName("disk_io_type") val diskIoType: Long? = null,
+    @SerialName("disk_io_read_mode") val diskIoReadMode: Long? = null,
+    @SerialName("disk_io_write_mode") val diskIoWriteMode: Long? = null,
 )

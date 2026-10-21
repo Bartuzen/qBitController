@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.ui.settings.serversettings
 
+import dev.bartuzen.qbitcontroller.model.LibtorrentVersion
 import dev.bartuzen.qbitcontroller.model.ServerPreferences
 import org.jetbrains.compose.resources.StringResource
 import qbitcontroller.composeapp.generated.resources.Res
@@ -9,6 +10,20 @@ import qbitcontroller.composeapp.generated.resources.server_settings_advanced_bd
 import qbitcontroller.composeapp.generated.resources.server_settings_advanced_checking_memory_use
 import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_cache
 import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_cache_ttl
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_read_mode
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_read_mode_disable_os_cache
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_read_mode_enable_os_cache
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type_default
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type_desc
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type_mmap
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type_posix
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type_pread_pwrite
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_type_simple_pread_pwrite
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_write_mode
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_write_mode_disable_os_cache
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_write_mode_enable_os_cache
+import qbitcontroller.composeapp.generated.resources.server_settings_advanced_disk_io_write_mode_write_through
 import qbitcontroller.composeapp.generated.resources.server_settings_advanced_file_pool_size
 import qbitcontroller.composeapp.generated.resources.server_settings_advanced_hashing_threads
 import qbitcontroller.composeapp.generated.resources.server_settings_bittorrent_max_active_checking_torrents
@@ -22,6 +37,7 @@ import qbitcontroller.composeapp.generated.resources.server_settings_category_bi
 import qbitcontroller.composeapp.generated.resources.server_settings_category_connection
 import qbitcontroller.composeapp.generated.resources.server_settings_category_downloads
 import qbitcontroller.composeapp.generated.resources.server_settings_category_general
+import qbitcontroller.composeapp.generated.resources.server_settings_category_share_limits
 import qbitcontroller.composeapp.generated.resources.server_settings_category_speed
 import qbitcontroller.composeapp.generated.resources.server_settings_category_webui
 import qbitcontroller.composeapp.generated.resources.server_settings_connection_anonymous_mode
@@ -61,6 +77,20 @@ import qbitcontroller.composeapp.generated.resources.server_settings_general_tor
 import qbitcontroller.composeapp.generated.resources.server_settings_general_torrent_content_layout_original
 import qbitcontroller.composeapp.generated.resources.server_settings_general_torrent_content_layout_subfolder
 import qbitcontroller.composeapp.generated.resources.server_settings_general_use_subcategories
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_action_enable_super_seeding
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_action_remove
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_action_remove_with_content
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_action_stop
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_inactive_seeding_time
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_inactive_seeding_time_enabled
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_ratio
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_ratio_act
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_ratio_enabled
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_seeding_time
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_max_seeding_time_enabled
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_mode
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_mode_match_all
+import qbitcontroller.composeapp.generated.resources.server_settings_share_limits_mode_match_any
 import qbitcontroller.composeapp.generated.resources.server_settings_speed_alt_dl_limit
 import qbitcontroller.composeapp.generated.resources.server_settings_speed_alt_up_limit
 import qbitcontroller.composeapp.generated.resources.server_settings_speed_dl_limit
@@ -84,11 +114,26 @@ import qbitcontroller.composeapp.generated.resources.server_settings_webui_use_h
 sealed interface ServerPreferenceItem {
     val title: StringResource
     val description: StringResource?
+    val isVisible: (ServerPreferences) -> Boolean get() = { true }
+}
+
+data class ServerPreferencesSupport(
+    val libtorrentVersion: LibtorrentVersion? = null,
+) {
+    val supportsSimplePreadPwrite: Boolean
+        get() = libtorrentVersion != null && libtorrentVersion >= LibtorrentVersion(2, 0)
+
+    val supportsPreadPwrite: Boolean
+        get() = libtorrentVersion != null && libtorrentVersion >= LibtorrentVersion(2, 1)
+
+    val supportsWriteThrough: Boolean
+        get() = libtorrentVersion != null && libtorrentVersion >= LibtorrentVersion(2, 0, 6)
 }
 
 data class SwitchItem(
     override val title: StringResource,
     override val description: StringResource? = null,
+    override val isVisible: (ServerPreferences) -> Boolean = { true },
     val value: (ServerPreferences) -> Boolean?,
     val onChange: (ServerPreferences, Boolean) -> ServerPreferences,
 ) : ServerPreferenceItem
@@ -98,20 +143,31 @@ enum class NumberFormat {
     Speed,
     Bytes,
     Seconds,
+    Minutes,
     MiB,
 }
 
 data class NumberItem(
     override val title: StringResource,
     override val description: StringResource? = null,
+    override val isVisible: (ServerPreferences) -> Boolean = { true },
     val format: NumberFormat = NumberFormat.Plain,
     val value: (ServerPreferences) -> Long?,
     val onChange: (ServerPreferences, Long) -> ServerPreferences,
 ) : ServerPreferenceItem
 
+data class DecimalItem(
+    override val title: StringResource,
+    override val description: StringResource? = null,
+    override val isVisible: (ServerPreferences) -> Boolean = { true },
+    val value: (ServerPreferences) -> Double?,
+    val onChange: (ServerPreferences, Double) -> ServerPreferences,
+) : ServerPreferenceItem
+
 data class TextItem(
     override val title: StringResource,
     override val description: StringResource? = null,
+    override val isVisible: (ServerPreferences) -> Boolean = { true },
     val value: (ServerPreferences) -> String?,
     val onChange: (ServerPreferences, String) -> ServerPreferences,
 ) : ServerPreferenceItem
@@ -124,9 +180,11 @@ data class ChoiceOption(
 data class ChoiceItem(
     override val title: StringResource,
     override val description: StringResource? = null,
+    override val isVisible: (ServerPreferences) -> Boolean = { true },
     val options: List<ChoiceOption>,
     val value: (ServerPreferences) -> Any?,
     val onChange: (ServerPreferences, Any) -> ServerPreferences,
+    val isOptionSupported: (value: Any, support: ServerPreferencesSupport) -> Boolean = { _, _ -> true },
 ) : ServerPreferenceItem
 
 data class PreferenceGroup(
@@ -400,6 +458,83 @@ val serverPreferenceGroups = listOf(
         ),
     ),
     PreferenceGroup(
+        title = Res.string.server_settings_category_share_limits,
+        items = listOf(
+            SwitchItem(
+                title = Res.string.server_settings_share_limits_max_ratio_enabled,
+                value = { it.maxRatioEnabled },
+                onChange = { prefs, enabled ->
+                    prefs.copy(
+                        maxRatioEnabled = enabled,
+                        maxRatio = if (enabled) (prefs.maxRatio?.takeIf { it >= 0 } ?: 1.0) else -1.0,
+                    )
+                },
+            ),
+            DecimalItem(
+                title = Res.string.server_settings_share_limits_max_ratio,
+                isVisible = { it.maxRatioEnabled == true },
+                value = { it.maxRatio },
+                onChange = { prefs, value -> prefs.copy(maxRatio = value) },
+            ),
+            SwitchItem(
+                title = Res.string.server_settings_share_limits_max_seeding_time_enabled,
+                value = { it.maxSeedingTimeEnabled },
+                onChange = { prefs, enabled ->
+                    val time = if (enabled) (prefs.maxSeedingTime?.takeIf { it >= 0 } ?: 1440) else -1
+                    prefs.copy(
+                        maxSeedingTimeEnabled = enabled,
+                        maxSeedingTime = time,
+                    )
+                },
+            ),
+            NumberItem(
+                title = Res.string.server_settings_share_limits_max_seeding_time,
+                format = NumberFormat.Minutes,
+                isVisible = { it.maxSeedingTimeEnabled == true },
+                value = { it.maxSeedingTime },
+                onChange = { prefs, value -> prefs.copy(maxSeedingTime = value) },
+            ),
+            SwitchItem(
+                title = Res.string.server_settings_share_limits_max_inactive_seeding_time_enabled,
+                value = { it.maxInactiveSeedingTimeEnabled },
+                onChange = { prefs, enabled ->
+                    val time = if (enabled) (prefs.maxInactiveSeedingTime?.takeIf { it >= 0 } ?: 1440) else -1
+                    prefs.copy(
+                        maxInactiveSeedingTimeEnabled = enabled,
+                        maxInactiveSeedingTime = time,
+                    )
+                },
+            ),
+            NumberItem(
+                title = Res.string.server_settings_share_limits_max_inactive_seeding_time,
+                format = NumberFormat.Minutes,
+                isVisible = { it.maxInactiveSeedingTimeEnabled == true },
+                value = { it.maxInactiveSeedingTime },
+                onChange = { prefs, value -> prefs.copy(maxInactiveSeedingTime = value) },
+            ),
+            ChoiceItem(
+                title = Res.string.server_settings_share_limits_mode,
+                value = { it.shareLimitsMode },
+                onChange = { prefs, value -> prefs.copy(shareLimitsMode = value as String) },
+                options = listOf(
+                    ChoiceOption("MatchAny", Res.string.server_settings_share_limits_mode_match_any),
+                    ChoiceOption("MatchAll", Res.string.server_settings_share_limits_mode_match_all),
+                ),
+            ),
+            ChoiceItem(
+                title = Res.string.server_settings_share_limits_max_ratio_act,
+                value = { it.maxRatioAct },
+                onChange = { prefs, value -> prefs.copy(maxRatioAct = value as Long) },
+                options = listOf(
+                    ChoiceOption(0L, Res.string.server_settings_share_limits_action_stop),
+                    ChoiceOption(1L, Res.string.server_settings_share_limits_action_remove),
+                    ChoiceOption(3L, Res.string.server_settings_share_limits_action_remove_with_content),
+                    ChoiceOption(2L, Res.string.server_settings_share_limits_action_enable_super_seeding),
+                ),
+            ),
+        ),
+    ),
+    PreferenceGroup(
         title = Res.string.server_settings_category_webui,
         items = listOf(
             TextItem(
@@ -458,6 +593,48 @@ val serverPreferenceGroups = listOf(
                 format = NumberFormat.Seconds,
                 value = { it.diskCacheTtl },
                 onChange = { prefs, value -> prefs.copy(diskCacheTtl = value) },
+            ),
+            ChoiceItem(
+                title = Res.string.server_settings_advanced_disk_io_type,
+                description = Res.string.server_settings_advanced_disk_io_type_desc,
+                value = { it.diskIoType },
+                onChange = { prefs, value -> prefs.copy(diskIoType = value as Long) },
+                options = listOf(
+                    ChoiceOption(0L, Res.string.server_settings_advanced_disk_io_type_default),
+                    ChoiceOption(1L, Res.string.server_settings_advanced_disk_io_type_mmap),
+                    ChoiceOption(2L, Res.string.server_settings_advanced_disk_io_type_posix),
+                    ChoiceOption(3L, Res.string.server_settings_advanced_disk_io_type_simple_pread_pwrite),
+                    ChoiceOption(4L, Res.string.server_settings_advanced_disk_io_type_pread_pwrite),
+                ),
+                isOptionSupported = { value, support ->
+                    when (value) {
+                        3L -> support.supportsSimplePreadPwrite
+                        4L -> support.supportsPreadPwrite
+                        else -> true
+                    }
+                },
+            ),
+            ChoiceItem(
+                title = Res.string.server_settings_advanced_disk_io_read_mode,
+                value = { it.diskIoReadMode },
+                onChange = { prefs, value -> prefs.copy(diskIoReadMode = value as Long) },
+                options = listOf(
+                    ChoiceOption(0L, Res.string.server_settings_advanced_disk_io_read_mode_disable_os_cache),
+                    ChoiceOption(1L, Res.string.server_settings_advanced_disk_io_read_mode_enable_os_cache),
+                ),
+            ),
+            ChoiceItem(
+                title = Res.string.server_settings_advanced_disk_io_write_mode,
+                value = { it.diskIoWriteMode },
+                onChange = { prefs, value -> prefs.copy(diskIoWriteMode = value as Long) },
+                options = listOf(
+                    ChoiceOption(0L, Res.string.server_settings_advanced_disk_io_write_mode_disable_os_cache),
+                    ChoiceOption(1L, Res.string.server_settings_advanced_disk_io_write_mode_enable_os_cache),
+                    ChoiceOption(2L, Res.string.server_settings_advanced_disk_io_write_mode_write_through),
+                ),
+                isOptionSupported = { value, support ->
+                    value != 2L || support.supportsWriteThrough
+                },
             ),
             NumberItem(
                 title = Res.string.server_settings_advanced_async_io_threads,

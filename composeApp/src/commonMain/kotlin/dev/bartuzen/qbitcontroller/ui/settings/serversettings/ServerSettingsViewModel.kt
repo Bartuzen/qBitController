@@ -3,6 +3,7 @@ package dev.bartuzen.qbitcontroller.ui.settings.serversettings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.bartuzen.qbitcontroller.data.repositories.serversettings.ServerSettingsRepository
+import dev.bartuzen.qbitcontroller.model.LibtorrentVersion
 import dev.bartuzen.qbitcontroller.model.ServerPreferences
 import dev.bartuzen.qbitcontroller.network.RequestResult
 import kotlinx.coroutines.channels.Channel
@@ -35,6 +36,9 @@ class ServerSettingsViewModel(
     private val _isSaving = MutableStateFlow(false)
     val isSaving = _isSaving.asStateFlow()
 
+    private val _support = MutableStateFlow(ServerPreferencesSupport())
+    val support = _support.asStateFlow()
+
     private val eventChannel = Channel<Event>()
     val eventFlow = eventChannel.receiveAsFlow()
 
@@ -51,12 +55,26 @@ class ServerSettingsViewModel(
             when (val result = repository.getPreferences(serverId)) {
                 is RequestResult.Success -> {
                     _preferences.value = result.data
+                    loadBuildInfo()
                 }
                 is RequestResult.Error -> {
                     eventChannel.send(Event.Error(result))
                 }
             }
             _isLoading.value = false
+        }
+    }
+
+    private suspend fun loadBuildInfo() {
+        when (val result = repository.getBuildInfo(serverId)) {
+            is RequestResult.Success -> {
+                _support.value = ServerPreferencesSupport(
+                    libtorrentVersion = LibtorrentVersion.fromString(result.data.libtorrent),
+                )
+            }
+            is RequestResult.Error -> {
+                // Libtorrent version is optional; settings that require a known version stay hidden.
+            }
         }
     }
 

@@ -923,4 +923,34 @@
     <string name="server_settings_advanced_checking_memory_use">Checking memory use</string>
     <string name="server_settings_advanced_bdecode_depth_limit">Bdecode depth limit</string>
     <string name="server_settings_advanced_bdecode_token_limit">Bdecode token limit</string>
+
+    <string name="server_settings_category_share_limits">Share limits</string>
+    <string name="server_settings_share_limits_max_ratio_enabled">Limit share ratio</string>
+    <string name="server_settings_share_limits_max_ratio">Share ratio limit</string>
+    <string name="server_settings_share_limits_max_seeding_time_enabled">Limit seeding time</string>
+    <string name="server_settings_share_limits_max_seeding_time">Seeding time limit</string>
+    <string name="server_settings_share_limits_max_inactive_seeding_time_enabled">Limit inactive seeding time</string>
+    <string name="server_settings_share_limits_max_inactive_seeding_time">Inactive seeding time limit</string>
+    <string name="server_settings_share_limits_mode">Share limits mode</string>
+    <string name="server_settings_share_limits_mode_match_any">Any of the above (match any)</string>
+    <string name="server_settings_share_limits_mode_match_all">All of the above (match all)</string>
+    <string name="server_settings_share_limits_max_ratio_act">When limits are reached</string>
+    <string name="server_settings_share_limits_action_stop">Stop torrent</string>
+    <string name="server_settings_share_limits_action_remove">Remove torrent</string>
+    <string name="server_settings_share_limits_action_remove_with_content">Remove torrent and its files</string>
+    <string name="server_settings_share_limits_action_enable_super_seeding">Enable super seeding for torrent</string>
+    <string name="server_settings_advanced_disk_io_type">Disk IO type</string>
+    <string name="server_settings_advanced_disk_io_type_desc">Requires restart</string>
+    <string name="server_settings_advanced_disk_io_type_default">Default</string>
+    <string name="server_settings_advanced_disk_io_type_mmap">Memory mapped files</string>
+    <string name="server_settings_advanced_disk_io_type_posix">POSIX-compliant</string>
+    <string name="server_settings_advanced_disk_io_type_simple_pread_pwrite">Simple pread/pwrite</string>
+    <string name="server_settings_advanced_disk_io_type_pread_pwrite">Pread/pwrite (libtorrent 2.1+)</string>
+    <string name="server_settings_advanced_disk_io_read_mode">Disk IO read mode</string>
+    <string name="server_settings_advanced_disk_io_read_mode_disable_os_cache">Disable OS cache</string>
+    <string name="server_settings_advanced_disk_io_read_mode_enable_os_cache">Enable OS cache</string>
+    <string name="server_settings_advanced_disk_io_write_mode">Disk IO write mode</string>
+    <string name="server_settings_advanced_disk_io_write_mode_disable_os_cache">Disable OS cache</string>
+    <string name="server_settings_advanced_disk_io_write_mode_enable_os_cache">Enable OS cache</string>
+    <string name="server_settings_advanced_disk_io_write_mode_write_through">Write-through (libtorrent 2.0.6+)</string>
 </resources>

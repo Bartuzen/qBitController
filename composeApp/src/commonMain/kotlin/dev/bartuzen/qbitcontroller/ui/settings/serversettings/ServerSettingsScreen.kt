@@ -69,6 +69,7 @@ fun ServerSettingsScreen(
     viewModel: ServerSettingsViewModel = koinViewModel(parameters = { parametersOf(serverId) }),
 ) {
     val preferences by viewModel.preferences.collectAsStateWithLifecycle()
+    val support by viewModel.support.collectAsStateWithLifecycle()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val isSaving by viewModel.isSaving.collectAsStateWithLifecycle()
 
@@ -177,6 +178,7 @@ fun ServerSettingsScreen(
                                 PreferenceItem(
                                     item = item,
                                     preferences = currentPreferences,
+                                    support = support,
                                     onPreferencesChange = { editedPreferences = it },
                                 )
                             }
@@ -188,9 +190,10 @@ fun ServerSettingsScreen(
     }
 }
 
-private fun ServerPreferenceItem.isAvailable(preferences: ServerPreferences) = when (this) {
+private fun ServerPreferenceItem.isAvailable(preferences: ServerPreferences) = isVisible(preferences) && when (this) {
     is SwitchItem -> value(preferences) != null
     is NumberItem -> value(preferences) != null
+    is DecimalItem -> value(preferences) != null
     is TextItem -> value(preferences) != null
     is ChoiceItem -> value(preferences) != null
 }
@@ -199,6 +202,7 @@ private fun ServerPreferenceItem.isAvailable(preferences: ServerPreferences) = w
 private fun PreferenceItem(
     item: ServerPreferenceItem,
     preferences: ServerPreferences,
+    support: ServerPreferencesSupport,
     onPreferencesChange: (ServerPreferences) -> Unit,
 ) {
     when (item) {
@@ -245,20 +249,40 @@ private fun PreferenceItem(
                 textToValue = { it },
             )
         }
+        is DecimalItem -> {
+            val value = item.value(preferences) ?: return
+            TextFieldPreference(
+                value = value,
+                onValueChange = { onPreferencesChange(item.onChange(preferences, it)) },
+                title = { Text(text = stringResource(item.title)) },
+                summary = item.description?.let { description ->
+                    { Text(text = stringResource(description)) }
+                },
+                textToValue = { text -> text.toDoubleOrNull()?.takeIf { it >= 0 } },
+                valueToText = { it.toString() },
+                textField = { textFieldValue, onValueChange, onOk ->
+                    DecimalTextField(textFieldValue, onValueChange, onOk)
+                },
+            )
+        }
         is ChoiceItem -> {
             val value = item.value(preferences) ?: return
-            val labels = item.options.associate { option ->
+            val supportedOptions = item.options.filter { option -> item.isOptionSupported(option.value, support) }
+            val labels = supportedOptions.associate { option ->
                 option.value to stringResource(option.label)
             }
             ListPreference(
                 value = value,
                 onValueChange = { onPreferencesChange(item.onChange(preferences, it)) },
-                values = item.options.map { it.value },
+                values = supportedOptions.map { it.value },
                 title = { Text(text = stringResource(item.title)) },
                 summary = {
                     val description = item.description?.let { stringResource(it) }
+                    val currentLabel = item.options.find { it.value == value }
+                        ?.let { stringResource(it.label) }
+                        ?: value.toString()
                     Text(
-                        text = listOfNotNull(description, labels[value] ?: value.toString()).joinToString(" · "),
+                        text = listOfNotNull(description, currentLabel).joinToString(" · "),
                     )
                 },
                 valueToText = { optionValue -> AnnotatedString(labels[optionValue] ?: optionValue.toString()) },
@@ -291,6 +315,29 @@ private fun NumberTextField(
 }
 
 @Composable
+private fun DecimalTextField(
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    onOk: () -> Unit,
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { newValue ->
+            if (newValue.text.all { it.isDigit() || it == '.' }) {
+                onValueChange(newValue)
+            }
+        },
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = ImeAction.Done,
+        ),
+        keyboardActions = KeyboardActions { onOk() },
+        singleLine = true,
+    )
+}
+
+@Composable
 private fun formatNumber(value: Long, format: NumberFormat): String = when (format) {
     NumberFormat.Plain -> value.toString()
     NumberFormat.Speed -> if (value <= 0) {
@@ -304,5 +351,6 @@ private fun formatNumber(value: Long, format: NumberFormat): String = when (form
         formatBytes(value)
     }
     NumberFormat.Seconds -> "$value s"
+    NumberFormat.Minutes -> "$value min"
     NumberFormat.MiB -> "$value MiB"
 }
