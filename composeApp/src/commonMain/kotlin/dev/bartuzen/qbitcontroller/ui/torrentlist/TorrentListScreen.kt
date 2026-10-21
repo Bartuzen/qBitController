@@ -78,6 +78,7 @@ import androidx.compose.material.icons.filled.PushPin
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Sell
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Start
 import androidx.compose.material.icons.filled.SyncAlt
 import androidx.compose.material.icons.outlined.Analytics
@@ -232,6 +233,7 @@ import qbitcontroller.composeapp.generated.resources.dialog_cancel
 import qbitcontroller.composeapp.generated.resources.dialog_ok
 import qbitcontroller.composeapp.generated.resources.main_action_about
 import qbitcontroller.composeapp.generated.resources.percentage_format
+import qbitcontroller.composeapp.generated.resources.server_settings_title
 import qbitcontroller.composeapp.generated.resources.size_kibibytes
 import qbitcontroller.composeapp.generated.resources.size_mebibytes
 import qbitcontroller.composeapp.generated.resources.stats_all_time_download
@@ -397,6 +399,7 @@ fun TorrentListScreen(
     onSelectServer: (serverId: Int) -> Unit,
     onNavigateToTorrent: (serverId: Int, torrentHash: String, torrentName: String) -> Unit,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
+    onNavigateToServerSettings: (serverId: Int) -> Unit,
     onNavigateToRss: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToAddEditServer: (serverId: Int?) -> Unit,
@@ -1109,6 +1112,7 @@ fun TorrentListScreen(
                         onReverseSortingChange = { viewModel.changeReverseSorting() },
                         onDialogOpen = { currentDialog = it },
                         onNavigateToAddTorrent = onNavigateToAddTorrent,
+                        onNavigateToServerSettings = onNavigateToServerSettings,
                     )
                 },
                 bottomBar = {
@@ -2384,6 +2388,7 @@ private fun TopBar(
     onReverseSortingChange: () -> Unit,
     onDialogOpen: (dialog: Dialog) -> Unit,
     onNavigateToAddTorrent: (serverId: Int) -> Unit,
+    onNavigateToServerSettings: (serverId: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -2603,6 +2608,14 @@ private fun TopBar(
                             )
                         }
                     },
+                ),
+                ActionMenuItem(
+                    title = stringResource(Res.string.server_settings_title),
+                    icon = Icons.Filled.Settings,
+                    onClick = {
+                        onNavigateToServerSettings(serverId)
+                    },
+                    showAsAction = false,
                 ),
                 ActionMenuItem(
                     title = stringResource(Res.string.main_action_about),
