@@ -438,7 +438,6 @@
     <string name="torrent_peers_flag_peer_from_lsd">Peer van LSD</string>
     <string name="torrent_peers_flag_encrypted_traffic">Versleuteld verkeer</string>
     <string name="torrent_peers_flag_encrypted_handshake">Versleutelde onderhandeling</string>
-    <string name="torrent_peers_flag_utp"></string>
     <string name="torrent_error_not_found">Torrent niet gevonden.</string>
     <string name="torrent_add_title">Torrent toevoegen</string>
     <string name="torrent_add_button_file">Bestand</string>
