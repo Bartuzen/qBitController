@@ -85,7 +85,7 @@
     <string name="torrent_list_category_tag_format">%1$s (%2$d)</string>
     <string name="torrent_status_force_downloading_metadata">[F] Завантаження метаданих</string>
     <string name="torrent_list_trackers_all">Усе</string>
-    <string name="torrent_list_action_sort_ratio">За співвідношенням</string>
+    <string name="torrent_list_action_sort_ratio">Рейтинг</string>
     <string name="torrent_list_trackers_title">Трекери</string>
     <string name="torrent_list_create_tag_hint">Назва тегу</string>
     <string name="torrent_status_force_downloading">[F] Завантаження</string>
@@ -104,7 +104,7 @@
     <string name="size_format">%1$s %2$s</string>
     <string name="torrent_list_action_resume">Відновити</string>
     <string name="torrent_list_action_sort_connected_seeds">Під\'єднані сіди</string>
-    <string name="torrent_speed_upload_limit">Обмеження швидкості вивантаження</string>
+    <string name="torrent_speed_upload_limit">Обмеження швидкості віддачі</string>
     <string name="share_add_torrent">Додати торрент</string>
     <string name="size_tebibytes">ТіБ</string>
     <string name="speed_bytes_per_second">Б/с</string>
@@ -153,7 +153,7 @@
         <item quantity="other">%1$d торрентів обрано</item>
     </plurals>
     <string name="torrent_list_action_sort_total_seeds">Всього сідів</string>
-    <string name="torrent_list_action_sort_upload_speed">Швидкість вивантаження</string>
+    <string name="torrent_list_action_sort_upload_speed">Швидкість віддачі</string>
     <string name="torrent_list_status_set_as_default">Встановити як типовий</string>
     <string name="torrent_list_status_all">Все</string>
     <string name="torrent_list_status_downloading">Завантаження</string>
@@ -185,9 +185,9 @@
     <string name="stats_ms_format">%1$d мс</string>
     <string name="torrent_tab_overview">Огляд</string>
     <string name="torrent_tab_files">Файли</string>
-    <string name="torrent_tab_trackers">Відстежувачі</string>
+    <string name="torrent_tab_trackers">Трекери</string>
     <string name="torrent_tab_peers">Піри</string>
-    <string name="torrent_tab_web_seeds">Вебсіди</string>
+    <string name="torrent_tab_web_seeds">HTTP Джерела</string>
     <string name="torrent_delete">Видалити торрент</string>
     <string name="torrent_delete_files">Також назавжди видалити файли</string>
     <string name="torrent_deleted_success">Торрент успішно видалено.</string>
@@ -198,7 +198,7 @@
     <string name="torrent_action_pause">Призупинити</string>
     <string name="torrent_action_resume">Поновити</string>
     <string name="torrent_action_delete">Видалити</string>
-    <string name="torrent_action_options">Налаштування торрента</string>
+    <string name="torrent_action_options">Параметри торрента</string>
     <string name="torrent_action_category">Встановити категорію</string>
     <string name="torrent_action_tags">Встановити теги</string>
     <string name="torrent_action_rename_torrent">Перейменувати торрент</string>
@@ -236,14 +236,14 @@
     <string name="rss_action_move_folder">Перемістити теку</string>
     <string name="rss_action_delete_folder">Видалити теку</string>
     <plurals name="torrent_trackers_delete_desc">
-        <item quantity="one">Ви упевнені, що хочете видалити %1$d відстежувач?</item>
-        <item quantity="few">Ви упевнені, що хочете видалити %1$d відстежувачі?</item>
-        <item quantity="many">Ви упевнені, що хочете видалити %1$d відстежувачів?</item>
-        <item quantity="other">Ви упевнені, що хочете видалити %1$d відстежувачів?</item>
+        <item quantity="one">Ви впевнені, що хочете видалити %1$d трекер?</item>
+        <item quantity="few">Ви впевнені, що хочете видалити %1$d трекери?</item>
+        <item quantity="many">Ви упевнені, що хочете видалити %1$d трекерів?</item>
+        <item quantity="other">Ви упевнені, що хочете видалити %1$d трекерів?</item>
     </plurals>
-    <string name="torrent_trackers_added">Відстежувачі успішно додано.</string>
-    <string name="torrent_trackers_deleted">Відстежувачі успішно видалено.</string>
-    <string name="torrent_trackers_edited">Відстежувачі успішно редаговано.</string>
+    <string name="torrent_trackers_added">Трекери успішно додано.</string>
+    <string name="torrent_trackers_deleted">Трекери успішно видалено.</string>
+    <string name="torrent_trackers_edited">Трекери успішно редаговано.</string>
     <string name="torrent_peers_details_peer_id_client">ID клієнта</string>
     <string name="torrent_peers_details_progress">Прогрес</string>
     <string name="torrent_peers_details_uploaded">Вивантажено</string>
@@ -261,17 +261,17 @@
     <string name="torrent_files_error_path_is_invalid_or_in_use">Невірний шлях або вже використовується.</string>
     <string name="torrent_trackers_action_delete">Видалити</string>
     <string name="torrent_trackers_downloaded">Завантажено</string>
-    <string name="torrent_trackers_action_add">Додати відстежувачі</string>
+    <string name="torrent_trackers_action_add">Додати трекери</string>
     <string name="torrent_trackers_edit_hint">Адреса відстежувача</string>
     <string name="torrent_trackers_peers">Піри</string>
     <plurals name="torrent_trackers_selected">
-        <item quantity="one">Вибрано %1$d відстежувачі</item>
-        <item quantity="few">Вибрано %1$d відстежувачі</item>
-        <item quantity="many">Вибрано %1$d відстежувачів</item>
-        <item quantity="other">Вибрано %1$d відстежувачів</item>
+        <item quantity="one">Вибрано %1$d трекер</item>
+        <item quantity="few">Вибрано %1$d трекера</item>
+        <item quantity="many">Вибрано %1$d трекерів</item>
+        <item quantity="other">Вибрано %1$d трекерів</item>
     </plurals>
-    <string name="torrent_trackers_add_hint">Відстежувачі</string>
-    <string name="torrent_trackers_action_edit">Редагувати відстежувачі</string>
+    <string name="torrent_trackers_add_hint">Трекери</string>
+    <string name="torrent_trackers_action_edit">Редагувати трекер</string>
     <string name="torrent_trackers_url_cannot_be_empty">Адреса відстежувача не повинна бути пустою.</string>
     <string name="torrent_peers_ip_format">%1$s:%2$d</string>
     <string name="torrent_peers_action_add">Додати піри</string>
@@ -350,10 +350,10 @@
     <string name="torrent_peers_invalid">Уведенні піри не дійсні.</string>
     <string name="torrent_trackers_seeds">Сіди</string>
     <plurals name="torrent_trackers_delete_title">
-        <item quantity="one">Видалити %1$d відстежувач</item>
-        <item quantity="few">Видалити %1$d відстежувачі</item>
-        <item quantity="many">Видалити %1$d відстежувачів</item>
-        <item quantity="other">Видалити %1$d відстежувачів</item>
+        <item quantity="one">Видалити %1$d трекер</item>
+        <item quantity="few">Видалити %1$d трекерів</item>
+        <item quantity="many">Видалити %1$d трекери</item>
+        <item quantity="other">Видалити %1$d трекери</item>
     </plurals>
     <string name="torrent_peers_add_hint">Піри</string>
     <plurals name="torrent_peers_selected">
@@ -393,7 +393,7 @@
     <string name="search_start_query">Пошуковий запит</string>
     <string name="search_start_category_tv_shows">Телешоу</string>
     <string name="search_result_filter_results">Фільтрувати результати…</string>
-    <string name="settings_title">Налаштування</string>
+    <string name="settings_title">Параметри</string>
     <string name="settings_category_servers">Сервери</string>
     <string name="torrent_option_share_limit_total_minutes">Загальна кількість хвилин</string>
     <string name="torrent_option_share_limit_inactive_minutes">Хвилини неактивності</string>
@@ -410,8 +410,8 @@
     <string name="torrent_overview_transfer">Трансфер</string>
     <string name="torrent_overview_downloaded">Завантажено</string>
     <string name="torrent_overview_downloaded_format">%1$s (%2$s цього сеансу)</string>
-    <string name="torrent_overview_uploaded">Вавантажено</string>
-    <string name="torrent_overview_seeds">Насіння</string>
+    <string name="torrent_overview_uploaded">Віддано</string>
+    <string name="torrent_overview_seeds">Сіди</string>
     <string name="torrent_overview_seeds_format">%1$d (усього %2$d)</string>
     <string name="torrent_files_priority_do_not_download">Не завантажувати</string>
     <string name="torrent_files_priority_normal">Нормальний</string>
@@ -427,8 +427,8 @@
     <string name="torrent_list_no_result_reset">Скинути фільтри</string>
     <string name="torrent_option_speed_limit">Обмеження швидкості торрента</string>
     <string name="torrent_option_upload_speed_limit">Обмеження швидкості завантаження (КіБ/с)</string>
-    <string name="torrent_overview_reannounce_in">Повторно оголосити In</string>
-    <string name="torrent_overview_peers">Однолітки</string>
+    <string name="torrent_overview_reannounce_in">Наступний анонс</string>
+    <string name="torrent_overview_peers">Піри</string>
     <string name="rss_success_feed_move">Канал успішно переміщено.</string>
     <string name="rss_success_folder_rename">Папку успішно перейменовано.</string>
     <string name="search_start_category">Категорія</string>
@@ -444,11 +444,11 @@
     <string name="torrent_overview_hash_v1">Хеш v1</string>
     <string name="torrent_overview_hash_v2">Хеш v2</string>
     <string name="torrent_overview_comment">Коментар</string>
-    <string name="torrent_overview_pieces">Шматки</string>
+    <string name="torrent_overview_pieces">Частини</string>
     <string name="torrent_overview_created_by">Створено</string>
     <string name="torrent_overview_last_activity">Остання активність</string>
-    <string name="torrent_overview_last_seen_complete">Останнє відвідування завершено</string>
-    <string name="torrent_overview_connections">Зв\'язки</string>
+    <string name="torrent_overview_last_seen_complete">Востаннє бачено повним</string>
+    <string name="torrent_overview_connections">Зєднання</string>
     <string name="torrent_files_action_rename">Перейменувати</string>
     <string name="torrent_overview_connections_format">%1$d (%2$d максимум)</string>
     <string name="torrent_files_rename_folder_hint">Назва папки</string>
@@ -545,8 +545,8 @@
     <string name="torrent_list_no_result_description">Жоден торрент не відповідає вашим поточним фільтрам. Спробуйте налаштувати фільтри або критерії пошуку.</string>
     <string name="torrent_list_no_result_title">Результатів не знайдено</string>
     <string name="torrent_overview_created_on">Дата створення</string>
-    <string name="torrent_overview_time_active">Час активний</string>
-    <string name="torrent_overview_completed_on">Завершено від</string>
+    <string name="torrent_overview_time_active">Активний</string>
+    <string name="torrent_overview_completed_on">Завершено</string>
     <string name="torrent_overview_time_active_seeding_time_format">%1$s (посів на %2$s)</string>
     <plurals name="torrent_files_selected">
         <item quantity="one">Вибрано %1$d файл</item>
@@ -589,7 +589,7 @@
     <string name="about_description">qBitController дозволяє відаленно керувати qBittorrent з будь-якого пристрою.\n\nДля отримання більш детальної інформації та вихідного коду: %1$s</string>
     <string name="torrent_enable_super_seeding_success">Суперзасівання успішно ввімкнено.</string>
     <string name="torrent_option_download_speed_limit">«Обмеження швидкості завантаження (КіБ/с)</string>
-    <string name="torrent_option_share_limit">Обмеження на частку торрента</string>
+    <string name="torrent_option_share_limit">Обмеження роздачі</string>
     <string name="torrent_overview_private_yes">так</string>
     <string name="torrent_overview_private_no">Ні</string>
     <string name="rss_rule_must_contain">Має містити</string>
@@ -605,13 +605,13 @@
     <string name="torrent_disable_super_seeding_success">Суперпосадку успішно вимкнено.</string>
     <string name="torrent_queueing_is_not_enabled">Торрент-черга не ввімкнена.</string>
     <string name="torrent_option_automatic_torrent_management">Автоматичне керування торрентами</string>
-    <string name="torrent_option_save_path">Зберегти шлях</string>
+    <string name="torrent_option_save_path">Зберегти до</string>
     <string name="torrent_option_download_path_enable">Використовуйте інший шлях для неповного торрента</string>
     <string name="torrent_option_download_path">Шлях завантаження</string>
-    <string name="torrent_option_share_limit_global">Використовуйте глобальне обмеження частки</string>
-    <string name="torrent_option_share_limit_disable">Вимкнути обмеження частки</string>
-    <string name="torrent_option_share_limit_custom">Встановити спеціальне обмеження частки</string>
-    <string name="torrent_option_share_limit_ratio">співвідношення</string>
+    <string name="torrent_option_share_limit_global">Використовуйте глобальне обмеження роздачі</string>
+    <string name="torrent_option_share_limit_disable">Вимкнути обмеження роздачі</string>
+    <string name="torrent_option_share_limit_custom">Встановити спеціальне обмеження роздачі</string>
+    <string name="torrent_option_share_limit_ratio">Рейтинг</string>
     <string name="torrent_option_prioritize_first_last_piece">Спочатку завантажте першу та останню частини</string>
     <string name="torrent_option_sequential_download">Завантажуйте в послідовному порядку</string>
     <string name="torrent_option_update_success">Параметри торрента успішно оновлено.</string>
@@ -625,11 +625,11 @@
     <string name="torrent_files_action_priority">Пріоритет</string>
     <string name="torrent_files_rename_file_hint">Ім\'я файлу</string>
     <string name="torrent_overview_peers_format">%1$d (усього %2$d)</string>
-    <string name="torrent_overview_wasted">Витрачено</string>
+    <string name="torrent_overview_wasted">Втрачено</string>
     <string name="torrent_overview_popularity">Популярність</string>
     <string name="rss_action_edit_feed_url">Редагувати URL каналу</string>
     <string name="rss_success_feed_change_url">URL каналу успішно змінено.</string>
-    <string name="torrent_overview_availability">Доступність</string>
+    <string name="torrent_overview_availability">Наявність</string>
     <string name="rss_rule_no_feed_found">Канал не знайдено</string>
     <string name="torrent_list_no_server_add">Додати сервер</string>
     <string name="torrent_list_no_server_title">Немає доступних серверів</string>
@@ -648,7 +648,7 @@
     </plurals>
     <string name="rss_rule_item_enabled">Увімкнено</string>
     <string name="rss_rule_item_disabled">Вимкнено</string>
-    <string name="torrent_overview_piece_map">Шматкова карта</string>
+    <string name="torrent_overview_piece_map">Карта частин</string>
     <string name="torrent_overview_piece_downloaded">Завантажено</string>
     <string name="torrent_overview_piece_downloading">Завантаження</string>
     <string name="torrent_overview_piece_not_downloaded">Не завантажено</string>
@@ -691,7 +691,7 @@
     </plurals>
     <string name="settings_pure_black_dark_mode">Чисто чорний темний режим</string>
     <string name="destination_logs">Журнали</string>
-    <string name="destination_settings">Налаштування</string>
+    <string name="destination_settings">Параметри</string>
     <string name="destination_torrents">Торренти</string>
     <string name="destination_search">Пошук</string>
     <string name="destination_rss">RSS</string>
@@ -760,7 +760,7 @@
     <string name="stats_read_cache_hits">Звернення до кешу читання</string>
     <string name="shortcut_new_window">Нове вікно</string>
     <string name="torrent_list_action_sort_downloaded">Завантажено</string>
-    <string name="torrent_list_action_sort_uploaded">Вивантажено</string>
+    <string name="torrent_list_action_sort_uploaded">Віддано</string>
     <string name="settings_traffic_stats_in_list">Статистика трафіку у списку</string>
     <string name="settings_traffic_stats_in_list_none">Жоден</string>
     <string name="settings_traffic_stats_in_list_total">Всього</string>
@@ -770,4 +770,31 @@
     <string name="settings_hide_server_urls_desc">URL-адреси все ще відображатимуться для серверів без назви</string>
     <string name="settings_server_delete_confirm">Ви впевнені, що хочете видалити цей сервер?</string>
     <string name="settings_remember_last_selected_server">Запам’ятати останній вибраний сервер</string>
+    <string name="torrent_overview_piece_size">Розмір частини</string>
+    <string name="torrent_overview_pieces_completed">Завершено</string>
+    <string name="torrent_overview_pieces_progress_format">%1$d / %2$d</string>
+    <string name="settings_magnet_links">Торрент-файли та магнітні посилання</string>
+    <string name="settings_magnet_links_desc">Відкривайте файли .torrent і магнітні посилання за допомогою qBitController</string>
+    <string name="settings_set_as_default">Встановити типовим</string>
+    <string name="torrent_list_action_force_start">Запустити примусово</string>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">%1$d торент примусово запущено.</item>
+        <item quantity="few">%1$d торенти примусово запущено.</item>
+        <item quantity="many">%1$d торентів примусово запущено.</item>
+        <item quantity="other">%1$d торентів примусово запущено.</item>
+    </plurals>
+    <string name="torrent_list_action_add_tags">Додати теги</string>
+    <string name="torrent_list_action_remove_tags">Видалити теги</string>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">Теги успішно додано до %1$d торента.</item>
+        <item quantity="few">Теги успішно додано до %1$d торентів.</item>
+        <item quantity="many">Теги успішно додано до %1$d торентів.</item>
+        <item quantity="other">Теги успішно додано до %1$d торентів.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">Теги успішно видалено до %1$d торента.</item>
+        <item quantity="few">Теги успішно видалено до %1$d торентів.</item>
+        <item quantity="many">Теги успішно видалено до %1$d торентів.</item>
+        <item quantity="other">Теги успішно видалено до %1$d торентів.</item>
+    </plurals>
 </resources>
