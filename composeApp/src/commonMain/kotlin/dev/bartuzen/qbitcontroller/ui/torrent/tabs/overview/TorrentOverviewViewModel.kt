@@ -209,7 +209,7 @@ class TorrentOverviewViewModel(
         uploadSpeedLimit: Int?,
         downloadSpeedLimit: Int?,
         shareLimitsChange: ShareLimitsChange?,
-        shareLimitAction: ShareLimitAction,
+        shareLimitAction: ShareLimitAction?,
     ) = viewModelScope.launch {
         val requests = mutableListOf<suspend () -> RequestResult<Any>>()
 

@@ -158,7 +158,7 @@ data class Torrent(
     val shareLimitsMode: ShareLimitsMode? = null,
 
     @SerialName("share_limit_action")
-    val shareLimitAction: ShareLimitAction = ShareLimitAction.DEFAULT,
+    val shareLimitAction: ShareLimitAction? = null,
 
     @SerialName("seeding_time")
     val seedingTime: Int = 0,
@@ -361,21 +361,21 @@ enum class ShareLimitAction(val value: String) {
     ENABLE_SUPER_SEEDING("EnableSuperSeeding"),
 }
 
-object ShareLimitActionSerializer : KSerializer<ShareLimitAction> {
+object ShareLimitActionSerializer : KSerializer<ShareLimitAction?> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("ShareLimitAction", PrimitiveKind.STRING)
 
-    override fun serialize(encoder: Encoder, value: ShareLimitAction) {
+    override fun serialize(encoder: Encoder, value: ShareLimitAction?) {
         throw UnsupportedOperationException()
     }
 
-    override fun deserialize(decoder: Decoder): ShareLimitAction {
+    override fun deserialize(decoder: Decoder): ShareLimitAction? {
         return when (decoder.decodeString()) {
             "Default" -> ShareLimitAction.DEFAULT
             "Stop" -> ShareLimitAction.STOP
             "Remove" -> ShareLimitAction.REMOVE
             "RemoveWithContent" -> ShareLimitAction.REMOVE_WITH_CONTENT
             "EnableSuperSeeding" -> ShareLimitAction.ENABLE_SUPER_SEEDING
-            else -> ShareLimitAction.DEFAULT
+            else -> null
         }
     }
 }
