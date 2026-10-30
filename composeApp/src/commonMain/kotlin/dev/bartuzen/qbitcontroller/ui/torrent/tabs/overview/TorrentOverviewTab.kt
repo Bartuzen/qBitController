@@ -2116,21 +2116,27 @@ fun TorrentOptionsDialog(
                     }
 
                     val shareLimitsChange = when (selectedShareLimitOption) {
-                        0 -> ShareLimitsChange(-2.0, -2, -2, ShareLimitsMode.DEFAULT)
-                        1 -> ShareLimitsChange(-1.0, -1, -1, ShareLimitsMode.DEFAULT)
+                        0 -> ShareLimitsChange(-2.0, -2, -2, torrent.shareLimitsMode)
+                        1 -> ShareLimitsChange(-1.0, -1, -1, torrent.shareLimitsMode)
                         2 -> {
-                            val ratio = ratioLimit.text.toDoubleOrNull() ?: -1.0
-                            val seeding = seedingTimeLimit.text.toIntOrNull() ?: -1
-                            val inactive = inactiveSeedingTimeLimit.text.toIntOrNull() ?: -1
+                            val ratio = ratioLimit.text.replace(getDecimalSeparator(), '.').toDoubleOrNull()
+                            val seeding = seedingTimeLimit.text.toIntOrNull()
+                            val inactive = inactiveSeedingTimeLimit.text.toIntOrNull()
 
-                            if (ratio == -1.0 &&
-                                seeding == -1 &&
-                                inactive == -1 &&
-                                selectedShareLimitsMode == ShareLimitsMode.DEFAULT
-                            ) {
-                                null
+                            if (ratio == null && seeding == null && inactive == null) {
+                                ShareLimitsChange(
+                                    torrent.ratioLimit,
+                                    torrent.seedingTimeLimit,
+                                    torrent.inactiveSeedingTimeLimit,
+                                    selectedShareLimitsMode,
+                                )
                             } else {
-                                ShareLimitsChange(ratio, seeding, inactive, selectedShareLimitsMode)
+                                ShareLimitsChange(
+                                    ratio ?: -1.0,
+                                    seeding ?: -1,
+                                    inactive ?: -1,
+                                    selectedShareLimitsMode,
+                                )
                             }
                         }
                         else -> null
