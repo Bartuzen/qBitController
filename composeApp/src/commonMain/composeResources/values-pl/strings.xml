@@ -329,7 +329,7 @@
     <string name="torrent_overview_added_on">Dodano w dniu</string>
     <string name="torrent_overview_private">Prywatny</string>
     <string name="torrent_overview_private_yes">Tak</string>
-    <string name="torrent_overview_completed_on">Ukończono</string>
+    <string name="torrent_overview_completed_on">Zakończono w dniu</string>
     <string name="torrent_overview_created_on">Stworzono</string>
     <string name="torrent_overview_transfer">Przenieś</string>
     <string name="torrent_overview_time_active">Czas aktywności</string>
