@@ -357,6 +357,7 @@ enum class ShareLimitAction(val value: String) {
     DEFAULT("Default"),
     STOP("Stop"),
     REMOVE("Remove"),
+    REMOVE_WITH_CONTENT("RemoveWithContent"),
     ENABLE_SUPER_SEEDING("EnableSuperSeeding"),
 }
 
@@ -369,8 +370,10 @@ object ShareLimitActionSerializer : KSerializer<ShareLimitAction> {
 
     override fun deserialize(decoder: Decoder): ShareLimitAction {
         return when (decoder.decodeString()) {
+            "Default" -> ShareLimitAction.DEFAULT
             "Stop" -> ShareLimitAction.STOP
             "Remove" -> ShareLimitAction.REMOVE
+            "RemoveWithContent" -> ShareLimitAction.REMOVE_WITH_CONTENT
             "EnableSuperSeeding" -> ShareLimitAction.ENABLE_SUPER_SEEDING
             else -> ShareLimitAction.DEFAULT
         }
