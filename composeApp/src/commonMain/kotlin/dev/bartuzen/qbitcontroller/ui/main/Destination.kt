@@ -63,6 +63,9 @@ sealed class Destination {
         data class Advanced(val advancedSettings: ServerConfig.AdvancedSettings) : Destination()
 
         @Serializable
+        data class ServerSettings(val serverId: Int) : Destination()
+
+        @Serializable
         data object General : Destination()
 
         @Serializable

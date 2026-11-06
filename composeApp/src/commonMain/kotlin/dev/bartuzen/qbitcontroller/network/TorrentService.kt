@@ -1,5 +1,6 @@
 package dev.bartuzen.qbitcontroller.network
 
+import dev.bartuzen.qbitcontroller.model.BuildInfo
 import dev.bartuzen.qbitcontroller.model.Category
 import dev.bartuzen.qbitcontroller.model.Log
 import dev.bartuzen.qbitcontroller.model.MainData
@@ -10,6 +11,7 @@ import dev.bartuzen.qbitcontroller.model.RssFeedWithData
 import dev.bartuzen.qbitcontroller.model.RssFeedWithDataSerializer
 import dev.bartuzen.qbitcontroller.model.RssRule
 import dev.bartuzen.qbitcontroller.model.Search
+import dev.bartuzen.qbitcontroller.model.ServerPreferences
 import dev.bartuzen.qbitcontroller.model.StartSearch
 import dev.bartuzen.qbitcontroller.model.Torrent
 import dev.bartuzen.qbitcontroller.model.TorrentFile
@@ -36,6 +38,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.serializer
 
 class TorrentService(
@@ -106,6 +109,15 @@ class TorrentService(
     )
 
     suspend fun getVersion(): Response<String> = get("app/version")
+
+    suspend fun getPreferences(): Response<ServerPreferences> = get("app/preferences")
+
+    suspend fun getBuildInfo(): Response<BuildInfo> = get("app/buildInfo")
+
+    suspend fun setPreferences(preferences: Map<String, JsonElement>): Response<Unit> = post(
+        "app/setPreferences",
+        mapOf("json" to JsonObject(preferences).toString()),
+    )
 
     suspend fun getDefaultSavePath(): Response<String> = get("app/defaultSavePath")
 

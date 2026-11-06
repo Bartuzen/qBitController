@@ -25,6 +25,7 @@ import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerResult
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.AddEditServerScreen
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsKeys
 import dev.bartuzen.qbitcontroller.ui.settings.addeditserver.advanced.AdvancedServerSettingsScreen
+import dev.bartuzen.qbitcontroller.ui.settings.serversettings.ServerSettingsScreen
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentKeys
 import dev.bartuzen.qbitcontroller.ui.torrent.TorrentScreen
 import dev.bartuzen.qbitcontroller.utils.DefaultTransitions
@@ -145,6 +146,9 @@ fun TorrentsNavHost(
                 onNavigateToAddTorrent = { initialServerId ->
                     navController.navigateWithLifecycle(Destination.AddTorrent(initialServerId))
                 },
+                onNavigateToServerSettings = { serverId ->
+                    navController.navigateWithLifecycle(Destination.Settings.ServerSettings(serverId))
+                },
                 onNavigateToRss = onNavigateToRss,
                 onNavigateToSearch = onNavigateToSearch,
                 onNavigateToAddEditServer = { serverId ->
@@ -186,6 +190,14 @@ fun TorrentsNavHost(
 
                     navController.navigateUp()
                 },
+            )
+        }
+
+        composable<Destination.Settings.ServerSettings> {
+            val args = it.toRoute<Destination.Settings.ServerSettings>()
+            ServerSettingsScreen(
+                serverId = args.serverId,
+                onNavigateBack = { navController.navigateUp() },
             )
         }
 

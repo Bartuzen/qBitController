@@ -14,6 +14,7 @@ import dev.bartuzen.qbitcontroller.data.repositories.rss.RssRulesRepository
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchPluginsRepository
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchResultRepository
 import dev.bartuzen.qbitcontroller.data.repositories.search.SearchStartRepository
+import dev.bartuzen.qbitcontroller.data.repositories.serversettings.ServerSettingsRepository
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentFilesRepository
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentOverviewRepository
 import dev.bartuzen.qbitcontroller.data.repositories.torrent.TorrentPeersRepository
@@ -36,6 +37,7 @@ import dev.bartuzen.qbitcontroller.ui.settings.appearance.AppearanceSettingsView
 import dev.bartuzen.qbitcontroller.ui.settings.general.GeneralSettingsViewModel
 import dev.bartuzen.qbitcontroller.ui.settings.network.NetworkSettingsViewModel
 import dev.bartuzen.qbitcontroller.ui.settings.servers.ServersViewModel
+import dev.bartuzen.qbitcontroller.ui.settings.serversettings.ServerSettingsViewModel
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.files.TorrentFilesViewModel
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.overview.TorrentOverviewViewModel
 import dev.bartuzen.qbitcontroller.ui.torrent.tabs.peers.TorrentPeersViewModel
@@ -81,6 +83,8 @@ val appModule = module {
 
     singleOf(::LogRepository)
 
+    singleOf(::ServerSettingsRepository)
+
     viewModelOf(::TorrentListViewModel)
 
     viewModel { (serverId: Int, hash: String) -> TorrentOverviewViewModel(serverId, hash, get(), get(), get()) }
@@ -105,6 +109,8 @@ val appModule = module {
     viewModel { (serverId: Int) -> SearchPluginsViewModel(serverId, get()) }
 
     viewModel { (serverId: Int) -> LogViewModel(serverId, get()) }
+
+    viewModel { (serverId: Int) -> ServerSettingsViewModel(serverId, get()) }
 
     viewModelOf(::ServersViewModel)
     viewModel { (serverId: Int?) -> AddEditServerViewModel(serverId, get(), get()) }
