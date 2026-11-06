@@ -186,7 +186,7 @@ fun SearchResultScreen(
     plugins: String,
     addTorrentFlow: Flow<Unit>,
     onNavigateBack: () -> Unit,
-    onNavigateToAddTorrent: (torrentUrl: String) -> Unit,
+    onNavigateToAddTorrent: (torrentUrl: String, torrentUrlDownloaders: List<String>) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SearchResultViewModel =
         koinViewModel(parameters = { parametersOf(serverId, searchQuery, category, plugins) }),
@@ -260,7 +260,7 @@ fun SearchResultScreen(
                 searchResult = dialog.searchResult,
                 onDismiss = { currentDialog = null },
                 onDownload = {
-                    onNavigateToAddTorrent(dialog.searchResult.fileUrl)
+                    onNavigateToAddTorrent(dialog.searchResult.fileUrl, listOf(dialog.searchResult.engineName))
                     currentDialog = null
                 },
                 onOpenDescription = {
@@ -518,10 +518,12 @@ fun SearchResultScreen(
                                 ActionMenuItem(
                                     title = stringResource(Res.string.search_result_action_download),
                                     onClick = {
+                                        val searchResults = selectedTorrents.map {
+                                            Json.decodeFromString<Search.Result>(it)
+                                        }
                                         onNavigateToAddTorrent(
-                                            selectedTorrents.joinToString("\n") {
-                                                Json.decodeFromString<Search.Result>(it).fileUrl
-                                            },
+                                            searchResults.joinToString("\n") { it.fileUrl },
+                                            searchResults.map { it.engineName },
                                         )
                                     },
                                     showAsAction = true,

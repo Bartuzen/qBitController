@@ -16,6 +16,7 @@ class AddTorrentRepository(
     suspend fun addTorrent(
         serverId: Int,
         links: List<String>?,
+        linkDownloaders: List<String>?,
         files: List<Pair<String, ByteArray>>?,
         savePath: String?,
         category: String?,
@@ -39,7 +40,7 @@ class AddTorrentRepository(
             else -> "paused"
         }
 
-        val multipart = MultiPartFormDataContent(
+        fun buildMultipart(links: List<String>?, downloader: String?) = MultiPartFormDataContent(
             formData {
                 files?.forEach { (fileName, byteArray) ->
                     append(
@@ -54,6 +55,7 @@ class AddTorrentRepository(
                 }
 
                 links?.joinToString("\n")?.let { append("urls", it) }
+                downloader?.let { append("downloader", it) }
 
                 append(pausedKey, isPaused.toString())
                 append("skip_checking", skipHashChecking.toString())
@@ -76,8 +78,43 @@ class AddTorrentRepository(
             },
         )
 
+        val searchLinks = links
+            ?.zip(linkDownloaders ?: emptyList())
+            ?.takeIf { it.size == links.size && it.isNotEmpty() }
+            ?.groupBy(keySelector = { it.second }, valueTransform = { it.first })
+
+        if (searchLinks != null && version >= QBittorrentVersion(5, 2, 0)) {
+            for ((downloader, downloaderLinks) in searchLinks) {
+                for (link in downloaderLinks) {
+                    when (
+                        val result = requestManager.request(serverId) { service ->
+                            service.fetchTorrentMetadata(link, downloader)
+                        }
+                    ) {
+                        is RequestResult.Success -> Unit
+                        is RequestResult.Error -> return result
+                    }
+                }
+
+                when (
+                    val result = requestManager.request(serverId) { service ->
+                        service.addTorrent(buildMultipart(downloaderLinks, downloader))
+                    }
+                ) {
+                    is RequestResult.Success -> {
+                        if (result.data == "Fails.") {
+                            return result
+                        }
+                    }
+                    is RequestResult.Error -> return result
+                }
+            }
+
+            return RequestResult.Success("Ok.")
+        }
+
         return requestManager.request(serverId) { service ->
-            service.addTorrent(multipart)
+            service.addTorrent(buildMultipart(links, null))
         }
     }
 
