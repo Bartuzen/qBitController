@@ -206,7 +206,7 @@
     <string name="torrent_action_rename_torrent">Torrent\'i Yeniden Adlandır</string>
     <string name="torrent_action_force_recheck">Yeniden Denetlemeye Zorla</string>
     <string name="torrent_action_force_reannounce">Yeniden Duyurmaya Zorla</string>
-    <string name="torrent_action_force_start">Devam Etmeye Zorla</string>
+    <string name="torrent_action_force_start">Başlatmaya Zorla</string>
     <string name="torrent_action_super_seeding">Süper Gönderim</string>
     <string name="torrent_action_copy">Kopyala</string>
     <string name="torrent_action_copy_name">Ad</string>
@@ -719,4 +719,22 @@
     <string name="settings_magnet_links">Torrent dosyaları ve magnet bağlantıları</string>
     <string name="settings_magnet_links_desc">.torrent dosyalarını ve magnet bağlantılarını qBitController ile aç</string>
     <string name="settings_set_as_default">Varsayılan Olarak Ayarla</string>
+    <string name="torrent_overview_piece_size">Parça Boyutu</string>
+    <string name="torrent_overview_pieces_completed">Tamamlanan</string>
+    <string name="torrent_overview_pieces_progress_format">%1$d/%2$d</string>
+    <string name="torrent_list_action_force_start">Başlatmaya Zorla</string>
+    <plurals name="torrent_list_torrents_force_start_success">
+        <item quantity="one">%1$d torrent zorla başlatıldı.</item>
+        <item quantity="other">%1$d torrent zorla başlatıldı.</item>
+    </plurals>
+    <string name="torrent_list_action_add_tags">Etiket Ekle</string>
+    <string name="torrent_list_action_remove_tags">Etiket Kaldır</string>
+    <plurals name="torrent_list_torrents_add_tags_success">
+        <item quantity="one">%1$d torrente etiketler başarıyla eklendi.</item>
+        <item quantity="other">%1$d torrente etiketler başarıyla eklendi.</item>
+    </plurals>
+    <plurals name="torrent_list_torrents_remove_tags_success">
+        <item quantity="one">%1$d torrentten etiketler başarıyla kaldırıldı.</item>
+        <item quantity="other">%1$d torrentten etiketler başarıyla kaldırıldı.</item>
+    </plurals>
 </resources>
