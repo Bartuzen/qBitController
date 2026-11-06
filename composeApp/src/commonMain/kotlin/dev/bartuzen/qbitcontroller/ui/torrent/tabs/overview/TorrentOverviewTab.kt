@@ -2120,24 +2120,18 @@ fun TorrentOptionsDialog(
                         1 -> ShareLimitsChange(-1.0, -1, -1, torrent.shareLimitsMode)
                         2 -> {
                             val ratio = ratioLimit.text.replace(getDecimalSeparator(), '.').toDoubleOrNull()
+                                ?: if (torrent.ratioLimit < 0) torrent.ratioLimit else -1.0
                             val seeding = seedingTimeLimit.text.toIntOrNull()
+                                ?: if (torrent.seedingTimeLimit < 0) torrent.seedingTimeLimit else -1
                             val inactive = inactiveSeedingTimeLimit.text.toIntOrNull()
+                                ?: if (torrent.inactiveSeedingTimeLimit < 0) torrent.inactiveSeedingTimeLimit else -1
 
-                            if (ratio == null && seeding == null && inactive == null) {
-                                ShareLimitsChange(
-                                    torrent.ratioLimit,
-                                    torrent.seedingTimeLimit,
-                                    torrent.inactiveSeedingTimeLimit,
-                                    selectedShareLimitsMode,
-                                )
-                            } else {
-                                ShareLimitsChange(
-                                    ratio ?: -1.0,
-                                    seeding ?: -1,
-                                    inactive ?: -1,
-                                    selectedShareLimitsMode,
-                                )
-                            }
+                            ShareLimitsChange(
+                                ratio,
+                                seeding,
+                                inactive,
+                                selectedShareLimitsMode,
+                            )
                         }
                         else -> null
                     }?.takeIf {

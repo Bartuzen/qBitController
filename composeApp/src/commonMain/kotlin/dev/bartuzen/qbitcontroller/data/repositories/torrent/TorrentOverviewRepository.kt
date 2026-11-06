@@ -127,8 +127,8 @@ class TorrentOverviewRepository(
             ratioLimit,
             seedingTimeLimit,
             inactiveSeedingTimeLimit,
-            shareLimitsMode?.value ?: "Default",
-            shareLimitAction?.value ?: "Default",
+            (shareLimitsMode ?: ShareLimitsMode.DEFAULT).value,
+            (shareLimitAction ?: ShareLimitAction.DEFAULT).value,
         )
     }
 
