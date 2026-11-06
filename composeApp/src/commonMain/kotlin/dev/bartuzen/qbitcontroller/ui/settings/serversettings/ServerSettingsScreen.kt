@@ -292,11 +292,7 @@ private fun PreferenceItem(
 }
 
 @Composable
-private fun NumberTextField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
-    onOk: () -> Unit,
-) {
+private fun NumberTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, onOk: () -> Unit) {
     OutlinedTextField(
         value = value,
         onValueChange = { newValue ->
@@ -315,11 +311,7 @@ private fun NumberTextField(
 }
 
 @Composable
-private fun DecimalTextField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
-    onOk: () -> Unit,
-) {
+private fun DecimalTextField(value: TextFieldValue, onValueChange: (TextFieldValue) -> Unit, onOk: () -> Unit) {
     OutlinedTextField(
         value = value,
         onValueChange = { newValue ->
